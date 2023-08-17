@@ -1,0 +1,38 @@
+@import "styles/index";
+
+.root {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &.active{
+    .circle{
+      background: $green;
+    }
+  }
+  &.white{
+
+  }
+  &.grey{
+
+  }
+}
+
+.label {
+  margin-left: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+  color: #E0E0E0;
+}
+.circle{
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  border: 1px solid $grey5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}

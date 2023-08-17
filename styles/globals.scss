@@ -1,0 +1,221 @@
+@import 'colors';
+
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Black.ttf");
+  font-weight: 900;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-ExtraBold.ttf");
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-SemiBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-ExtraLight.ttf");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Thin.ttf");
+  font-weight: 100;
+}
+
+
+html{
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  color: inherit;
+  letter-spacing: inherit;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: geometricPrecision;
+}
+
+body{
+  font-family: 'Montserrat', sans-serif;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  letter-spacing: 0.01em;
+  background-color: $backgroundBlack;
+  &.modal-open{
+    overflow-y: hidden;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  margin: 0;
+  font-weight: 500;
+}
+
+h1,
+.h1 {
+  font-size: 72px;
+}
+
+h2,
+.h2 {
+  font-size: 32px;
+  line-height: 38px;
+}
+
+h3,
+.h3 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+h4,
+.h4 {
+  font-size: 18px;
+  line-height: 23px;
+}
+
+h5,
+.h5 {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+h6,
+.h6 {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+p {
+  margin-bottom: 0;
+  user-select: none;
+}
+
+a,
+a:focus,
+a:active {
+  text-decoration: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+#__next{
+  position:relative;
+  min-height: 100%;
+  height: 100%;
+}
+
+button,
+input, textarea {
+  color: inherit;
+  border: none;
+  outline: none;
+  background-color: inherit;
+}
+
+ul,
+ol {
+  list-style-type: none;
+  margin-bottom: 0;
+}
+
+form{
+  display: block;
+}
+
+img {
+  pointer-events: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+
+// React Modal
+// .ReactModal__Body--open{}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  font-size: inherit;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  background: none;
+}
+
+
+.contentWrapper {
+  max-width: 1148px;
+  width: calc(100vw - 200px) ;
+  margin:  0 auto;
+}
+
+svg {
+  display: block;
+}

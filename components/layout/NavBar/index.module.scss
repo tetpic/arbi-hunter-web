@@ -1,0 +1,66 @@
+@import 'styles/index';
+
+.root {
+  position: fixed;
+  left: 0;
+  top: 86px;
+  border-right: 2px $grey solid;
+  height: calc(100vh - 86px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px 0px;
+
+  
+}
+
+.link {
+  background-color: $grey;
+  border-radius: 16px;
+  padding: 8px; 
+  display: block;
+  transform: translate3d(0,0,0);
+  transition: backGround-color .2s linear ;
+  @include exeptLast{
+    margin-bottom: 20px; 
+  }
+
+  @media (hover: hover ) {
+    &:hover {
+      animation: jello-vertical 0.9s ease 0s 1 normal both running;
+      background-color: $greyLight;
+    }
+  }
+}
+
+@keyframes jello-vertical {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+            transform: scale3d(0.95, 1.05, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+            transform: scale3d(1.05, 0.95, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(0.97, 1.03, 1);
+            transform: scale3d(0.97, 1.03, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(1.02, 0.98, 1);
+            transform: scale3d(1.02, 0.98, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(0.98, 1.02, 1);
+            transform: scale3d(0.98, 1.02, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+}
+

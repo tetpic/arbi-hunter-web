@@ -1,0 +1,294 @@
+// @import "html";
+
+@mixin mq($width, $type: min) {
+  @if $type ==max {
+    $width: $width - 1px;
+  }
+
+  @media only screen and (#{$type}-width: $width) {
+    @content;
+  }
+}
+
+@mixin mq-between($minWidth, $maxWidth) {
+  @media only screen and (min-width: $minWidth) and (max-width: ($maxWidth - 1)) {
+    @content;
+  }
+}
+
+@mixin afs($First, $Second, $Third, $Zero: $First) {
+  @include mq($TabletWidth, max) {
+    font-size: $Second;
+  }
+
+  @include mq($PhoneWidth, max) {
+    font-size: $Third;
+  }
+
+  @include mq($TabletWidth, min) {
+    font-size: $First;
+  }
+
+  @include mq($SmDesktopWidth, min) {
+    font-size: $Zero;
+  }
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin positionCenter($positionType: absolute) {
+  position: $positionType;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin positionCenterX($positionType: absolute) {
+  position: $positionType;
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin positionCenterY($positionType: absolute) {
+  position: $positionType;
+  top: 50%;
+  left: auto;
+  transform: translateY(-50%);
+}
+
+@mixin bg($path,
+  $size: cover,
+  $repeat: no-repeat,
+  $position: 50% 50%,
+  $fixed: scroll) {
+  background-image: $path;
+  background-attachment: $fixed;
+  background-position: $position;
+  background-size: $size;
+  background-repeat: $repeat;
+}
+
+@mixin dialog-wingow($width, $height: auto, $breakepoint: $TabletWidth) {
+  @include positionCenter(fixed);
+  @include size($width, $height);
+
+  @media screen and (max-width: $breakepoint) {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+@mixin br($btr, $btl: $btr, $bbr: $btr, $bbl: $btr) {
+  border-top-right-radius: $btr;
+  border-top-left-radius: $btl;
+  border-bottom-right-radius: $bbr;
+  border-bottom-left-radius: $bbl;
+}
+
+@mixin pseudo($display: block, $pos: absolute, $content: "") {
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+@mixin grad-l($deg, $direction, $color-stops, $per1: 0%, $per2: 50%) {
+  background: linear-gradient($deg, $direction $per1, $color-stops $per2);
+}
+
+@mixin sep-h($w, $h, $color) {
+  display: block;
+  height: $h;
+  width: $w;
+  margin: 0 auto;
+  background-color: $color;
+}
+
+@function get-percent($target, $width_mockup: 1920, $part: 100%) {
+  @return ($target / $width_mockup * $part);
+}
+
+@function get-vw($target, $width_mockup: 1920) {
+  $vw-context: ($width_mockup * 0.01) * 1px;
+  @return ($target / $vw-context) * 1vw;
+}
+
+@mixin radial-gradient($shape, $position, $colors) {
+  $list: ();
+  $shape: unquote($shape);
+  $position: unquote($position);
+
+  @for $i from 1 through length($colors) {
+    $list: append($list, nth($colors, $i), comma);
+  }
+
+  @if map-has-key($map-for-positions, $position) {
+    background: radial-gradient($shape map-get($map-for-positions, $position),
+        $list );
+  }
+
+  @else if not map-has-key($map-for-positions, $position) {
+    background: radial-gradient($shape $position, $list);
+  }
+}
+
+@mixin posAbsoluteAll {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0;
+}
+
+@mixin container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0px $DesktopContainerPadding;
+
+  @include mq($MdDesktopWidth, max) {
+    padding: 0px $SmDesktopContainerPadding;
+  }
+
+  @include mq($TabletWidth, max) {
+    padding: 0px $MobileContainerPadding;
+  }
+}
+
+@mixin clearfix {
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+}
+
+
+@mixin scroll_hide {
+  -ms-overflow-style: none;
+  /* IE и Edge */
+  scrollbar-width: none;
+
+  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+@mixin mobileUserAgent {
+  $p: &;
+
+  @at-root {
+    :global {
+      .mobile-ua {
+        :local {
+          #{$p} {
+            @content;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@mixin boxShadowButtonInner {
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+@mixin list($gap, $row: false) {
+  @if $row == true {
+    & > * + * {
+      margin: 0 0 0 $gap;
+    }
+  } @else {
+    & > * + * {
+      margin: $gap 0 0 0;
+    }
+  }
+}
+
+
+@mixin swiperPagination($color: $purple){
+  :global .swiper{
+    padding-bottom: 40px;
+  }
+  :global .swiper-pagination-bullet{
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    background-color: $color;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease width;
+    opacity: 0.5;
+    &:last-child {
+      margin-right: 0;
+    }
+
+  }
+  :global .swiper-pagination-bullet-active{
+    width: 24px;
+    cursor: auto;
+    opacity: 1;
+  }
+}
+
+@mixin borderDashed() {
+    -o-border-image: url(/images/icons/border_dashed.svg) 25% repeat;
+    -webkit-border-image: url(/images/icons/border_dashed.svg) 25% repeat;
+    border-image: url(/images/icons/border_dashed.svg) 25% repeat;
+    border-width: 0px;
+    border-top-width: 1px;
+    border-style: solid;
+
+}
+
+@mixin hoverLink {
+  @media (hover: hover ){
+    &:hover {
+      color: $yellow;
+    }
+  }
+}
+
+@mixin hoverButtonBlack {
+  @media (hover: hover ) {
+    &:hover {
+      background-color: $yellow;
+      color: $black;
+    }
+  }
+}
+
+@mixin transitionDefault {
+  transition: .2s ease-in-out;
+}
+
+@mixin hoverButtonYellow {
+  @media (hover: hover ) {
+    &:hover {
+      background-color: $white;
+    }
+  }
+}
+
+@mixin hoverTag {
+  @media (hover: hover ) {
+    &:hover {
+      background-color: $grey;
+    }
+  }
+}
+
+@mixin exeptLast {
+  &:not(:last-child) {
+    @content;
+  }
+}
+
+

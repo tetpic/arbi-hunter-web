@@ -1,0 +1,60 @@
+@import "styles/index";
+
+.root{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 40px;
+  border-radius: 16px;
+  &.empty{
+    background-color: $grey5;
+    cursor: pointer;
+    transition: .2s linear;
+    @include mq($PhoneWidth, max) {
+      background-color: transparent;
+      border: 2px $purple solid;
+      border-radius: 16px;
+    }
+
+    &:hover{
+      @media (hover: hover) {
+        background-color: $purple;
+        color: $white;
+      }
+    }
+  }
+  &.white{
+    .quantity{
+      color: $white;
+    }
+  }
+}
+.btn {
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  flex: 1;
+
+}
+
+.quantity{
+  flex: 1;
+    font-weight: 600;
+  font-size: 16px;
+  color: $dark2;
+  text-align: center;
+
+}
+.emptyText{
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  flex: 1;
+  @include mq($PhoneWidth, max) {
+    color: $purple;
+  }
+}

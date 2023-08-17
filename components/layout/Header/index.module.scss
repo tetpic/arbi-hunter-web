@@ -1,0 +1,96 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: $backgroundBlack;
+  border-bottom: 2px $grey solid;
+  &:after {
+    content: '';
+    width: 50px;
+  }
+}
+
+.contentWrapper {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.modeWrapper  {
+  border: 2px $greyAlt solid;
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  padding: 6px;
+  column-gap: 10px;
+  position: relative;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.buttonBack {
+  display: block;
+  position: absolute;
+  top: 50%;
+  transform: translate(0%, -50% );
+  left: 6px;
+  background-color: $greyLightAlt;
+  width: 45%;
+  height: calc(100% - 13px);
+  border-radius: 14px;
+  transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+  &_active {
+    left: calc(100% - 6px);
+    transform: translate(-100%, -50%);
+  }
+}
+
+.modeButton {
+  color: $greayLightAlt2;
+  border-radius: 14px;
+  padding: 10px 16px;
+  transition: .2s linear;
+  position: relative;
+  z-index: 2;
+  user-select: none;
+  cursor: pointer;
+
+  &_active {
+    // background-color: $greyLightAlt;
+    color: $white;
+  }
+}
+
+.link {
+  color: $white;
+  transition: .2s linear;
+  font-size: $mediumText;
+  font-weight: $medium;
+  @include hoverLink;
+}
+
+.userWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.userLink {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 2px $white solid;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.userLinkReg {
+  border: 2px $yellow solid;
+  color: $yellow;
+}

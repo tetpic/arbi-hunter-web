@@ -1,0 +1,31 @@
+@import "styles/index";
+
+.root {
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 100%;
+
+  &.normal {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.medium {
+    width: 36px;
+    height: 36px;
+  }
+
+  &.large {
+    width: Clamp(36px, 11.2vw, 48px);
+    height: Clamp(36px, 11.2vw, 48px);
+  }
+}
+
+.white {
+  background: $white;
+}

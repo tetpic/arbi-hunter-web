@@ -1,0 +1,12 @@
+@import "styles/index";
+
+.label {
+  color: $greyLight;
+  font-size: $mediumText;
+  font-weight: $medium;
+  margin-bottom: 8px;
+}
+
+// .label{
+//   @include inputLabel;
+// }
