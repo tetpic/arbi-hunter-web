@@ -12,8 +12,12 @@ import { useState } from 'react'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import CityInput from './CityInput'
-import CountryInput from './CountryInput'
+import CountryInput from './DropdownInput'
 import RegistrationRepository from 'data/repository/RegistrationRepository'
+import { useThrottleFn } from '@react-cmpt/use-throttle'
+import LocationRepository from 'data/repository/LocationRepository'
+import { ISearchCountryRequest, ISearchCountryResult, ISearchCityResult, ISearchLocalyRequest } from 'data/interfaces/ILocation'
+import DropDownInput from './DropdownInput'
 
 interface Props {
 }
@@ -26,7 +30,6 @@ export default function Registration(props: Props) {
   const [countryId, setCountryId] = useState<number>()
 
   const submit = async (data: IRegistrationComplete) => {
-
     data = {...data, cityId, countryId}
     debugger
     if(!cityId || !countryId) {
@@ -39,14 +42,11 @@ export default function Registration(props: Props) {
     .catch(err=> {
       debugger
     })
-    
-
   }
 
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
 
   const passwordHandler = () => {
-    debugger
     setPasswordOpen(!passwordIsOpen)
   }
 
@@ -59,18 +59,24 @@ export default function Registration(props: Props) {
     phone: '',
     email: '',
   }
-
   if(appContext.profileType === ProfileType.Hirer) {
     initialValues.company = ''
   }
-
-
 
   const formik = useFormik<IRegistrationComplete>({
     initialValues: initialValues,
     onSubmit: submit
   })
-  
+
+  const countryHandler = (obj: ISearchCountryResult) => {
+    debugger
+
+  }
+
+  const cityHandler = (obj: ISearchCityResult) =>  {
+    debugger
+  }
+
 
 
   return ( 
@@ -119,15 +125,20 @@ export default function Registration(props: Props) {
               />
             }
 
-            <CountryInput 
-            onSetOption={setCountryId} 
+            <DropDownInput 
+            onSetOption={countryHandler} 
             name={'countryId'} 
+            labelName={'Страна: '}
+            requestFn={LocationRepository.searchCountry}
             />
 
-            <CityInput 
-            onSetOption={setCityId} 
-            name={'cityId'}
+            <DropDownInput 
+            onSetOption={cityHandler} 
+            name={'cityId'} 
+            labelName={'Город: '}
+            requestFn={LocationRepository.searchCity}
             />
+          
 
             <PhoneCountryField 
             styleType={'horizontal'} 

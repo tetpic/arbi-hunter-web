@@ -32,10 +32,10 @@ export interface ISearchCountryRequest extends IPaginationRequest {
   lang?: string
 }
 
-export interface ISearchCityRequest extends IPaginationRequest{
+export interface ISearchLocalyRequest extends IPaginationRequest{
   search: string,
-  lang: string,
-  country: string
+  lang?: string,
+  country?: string
 }
 
 export interface ISearchCityResult {

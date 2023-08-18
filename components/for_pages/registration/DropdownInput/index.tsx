@@ -1,45 +1,42 @@
 import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
 import DropDown from 'components/ui/DropDown'
-import { ISearchCityRequest, ISearchCityResult } from 'data/interfaces/ILocation'
-import LocationRepository from 'data/repository/LocationRepository'
+import { ISearchLocalyRequest } from 'data/interfaces/ILocation'
 import { ChangeEvent, useEffect, useState } from 'react'
-import Validator from 'utils/Validator'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import classNames from 'classnames'
 
-interface Props {
-  onSetOption: (n: number) => void
+interface Props<C> {
+  onSetOption: (n: C) => void
   name: string
+  requestFn: (r: ISearchLocalyRequest) => Promise<C[]>
+  labelName: string
 }
 
-export default function CityInput(props: Props) {
+export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
   const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
-  const [options, setOptions] = useState<ISearchCityResult[]>([])
+  const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
 
-
-  
-
-  const getCitiesRequest = useThrottleFn((r: ISearchCityRequest) => {
+  const request = useThrottleFn((r: ISearchLocalyRequest) => {
     setLoading(true)
-    LocationRepository.searchCity(r)
-    .then(cities => {
+    props.requestFn(r).then(res => {
       if(r.page === 1) {
-        setOptions(cities)
+        setOptions(res)
       } else {
-        setOptions(state=> [...state, ...cities])
+        setOptions(state=> [...state, ...res])
       }
       setLoading(false)
     })
   }, 300)
 
-  const optionClickHandler = (option: ISearchCityResult) => {
+
+  const optionClickHandler = (option: C) => {
     setDropDownOpen(false)
-    props.onSetOption(option.id)
+    props.onSetOption(option)
     setInputValue(option.name)
   }
 
@@ -51,7 +48,7 @@ export default function CityInput(props: Props) {
       lang: 'ru', //поменять на динмический
       country: 'RU' //поменять на динамический
     }
-    getCitiesRequest.callback(options)
+    request.callback(options)
   }
 
   const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +67,7 @@ export default function CityInput(props: Props) {
       lang: 'ru', //TODO: поменять на динамический
       country: 'RU' //TODO: поменять на динамический
     }
-    getCitiesRequest.callback(options)
+    request.callback(options)
   }
 
 
@@ -83,7 +80,7 @@ export default function CityInput(props: Props) {
     <div className={styles.root}>
       
       <InputField 
-      label={'Город:'}
+      label={props.labelName}
       className={styles.input} 
       labelType='top' 
       styleType={'default'} 
