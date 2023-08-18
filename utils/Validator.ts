@@ -26,6 +26,10 @@ export default class Validator {
     return Formatter.cleanPhone(value ?? '')?.length >= 12 ? undefined : 'Неверный формат'
   }
 
+  static phoneLimit(value: string): string {
+    return Formatter.cleanPhone(value??'')?.length > 14 && 'Слишком длинный номер'
+  }
+
   static weekScheduleRequired(value: any): string | undefined {
     const keys = value ? Object.keys(value) : []
     for(const key of keys){

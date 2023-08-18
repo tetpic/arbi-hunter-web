@@ -2,8 +2,7 @@ import { useRef, useState } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import styles from './index.module.scss'
 import classNames from 'classnames'
-import { ICategory } from 'data/interfaces/ICategory'
-import ArrowDownSvg from 'components/svg/ArrowDown'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 
 interface Props {
   options?: ICategory[]
@@ -23,7 +22,6 @@ export default function DropdownMenu(props: Props) {
   const [currentLabel, setCurrentLabel] = useState<string>(props.style === 'more' ? '' : options[0]?.name)
 
 
-  //TODO: клик неправильно отрабатывает, поэтому надо еще посмотреть
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent> ) => {    
   
     if (options.length === 0) {

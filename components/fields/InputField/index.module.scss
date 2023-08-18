@@ -9,7 +9,18 @@
   font-weight: $medium;
   font-size: $mediumText;
   padding-inline: 16px;
+
+  &[type='password'] {
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+
+  &:-webkit-autofill {
+    webkit-text-fill-color: $yellow !important;
+  }
 }
+
+
 
 
 // $fieldHeightDefault: 50px;
@@ -17,11 +28,11 @@
 
 // .root {}
 
-// .wrapper {
-//   position: relative;
-//   display: flex;
-//   flex-direction: column;
-// }
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
 // .icon {
 //   position: absolute;
@@ -219,12 +230,12 @@
 //   right: 10px;
 // }
 
-// .suffix {
-//   position: absolute;
-//   top: 50%;
-//   transform: translateY(-50%);
-//   right: 10px;
-//   cursor: pointer;
-//   display: flex;
-//   align-items: center;
-// }
+.suffix {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

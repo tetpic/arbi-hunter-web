@@ -6,6 +6,14 @@ import { IRegistrationComplete, ProfileType } from 'data/interfaces/IRegistratio
 import { Form, FormikProvider, useFormik } from 'formik'
 import Image from 'next/image'
 import Link from 'next/link'
+import Validator from 'utils/Validator'
+import OpenEyeSvg from 'components/svg/OpenEyeSvg'
+import { useState } from 'react'
+import CloseEyeSvg from 'components/svg/CloseEyeSvg'
+import PhoneCountryField from 'components/fields/PhoneCountryField'
+import CityInput from './CityInput'
+import CountryInput from './CountryInput'
+import RegistrationRepository from 'data/repository/RegistrationRepository'
 
 interface Props {
 }
@@ -14,25 +22,55 @@ export default function Registration(props: Props) {
 
   const appContext = useAppContext()
 
-  const submit = (data: IRegistrationComplete) => {
+  const [cityId, setCityId] = useState<number>()
+  const [countryId, setCountryId] = useState<number>()
+
+  const submit = async (data: IRegistrationComplete) => {
+
+    data = {...data, cityId, countryId}
+    debugger
+    if(!cityId || !countryId) {
+      //тут показать snackbar или ошибку под инпутом
+    }
+    RegistrationRepository.completeRegistration(data)
+    .then(res=> {
+      debugger
+    })
+    .catch(err=> {
+      debugger
+    })
+    
 
   }
 
+  const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
+
+  const passwordHandler = () => {
+    debugger
+    setPasswordOpen(!passwordIsOpen)
+  }
+
+  const initialValues: IRegistrationComplete = {
+    firstName: '',
+    lastName: '',
+    password: '',    
+    profileType: appContext.profileType??ProfileType.Employee,
+    telegramNickname: '',
+    phone: '',
+    email: '',
+  }
+
+  if(appContext.profileType === ProfileType.Hirer) {
+    initialValues.company = ''
+  }
+
+
 
   const formik = useFormik<IRegistrationComplete>({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      password: '',
-      countryId: undefined,
-      cityId: undefined,
-      profileType: appContext.profileType,
-      telegramNickname: '',
-      email: '',
-      [appContext.profileType === ProfileType.Hirer&& 'company']:undefined  
-    },
+    initialValues: initialValues,
     onSubmit: submit
   })
+  
 
 
   return ( 
@@ -47,18 +85,95 @@ export default function Registration(props: Props) {
           <Link className={styles.loginLink} href={'/login'}>Войти</Link>
         </p>
         <FormikProvider value={formik} >
-          <Form className={styles.form}>
-            <InputField className={styles.input} labelType='top' styleType={'default'} color={'default'} name={'firstName'} label={'Имя:'}/>
-            <InputField className={styles.input} labelType='top' styleType={'default'} color={'default'} name={'lastName'} label={'Фамилия:'}/>
+          <Form className={styles.form} >
+
+            <InputField 
+            label={'Имя:'}
+            className={styles.input} 
+            labelType='top' 
+            styleType={'default'} 
+            color={'default'} 
+            name={'firstName'} 
+            validate={Validator.combine([Validator.required, Validator.onlyChars])}
+            />
+
+            <InputField 
+            label={'Фамилия:'}
+            className={styles.input} 
+            labelType='top' 
+            styleType={'default'} 
+            color={'default'} 
+            name={'lastName'} 
+            validate={Validator.combine([Validator.required, Validator.onlyChars])}
+            />
+
             {appContext.profileType === ProfileType.Hirer &&
-              <InputField className={styles.input} labelType='top' styleType={'default'} color={'default'} name={'company'} label={'Название компании:'}/>
+              <InputField 
+              label={'Название компании:'}
+              className={styles.input} 
+              labelType='top' 
+              styleType={'default'} 
+              color={'default'} 
+              name={'company'} 
+              validate={Validator.required}
+              />
             }
-            <InputField className={styles.input} labelType='top' styleType={'default'} color={'default'} name={'telegramNickname'} label={'Telegram:'}/>
 
+            <CountryInput 
+            onSetOption={setCountryId} 
+            name={'countryId'} 
+            />
 
+            <CityInput 
+            onSetOption={setCityId} 
+            name={'cityId'}
+            />
+
+            <PhoneCountryField 
+            styleType={'horizontal'} 
+            disabled={false} placeholder={'000 000 00 00'} 
+            name={'phone'}  
+            inputClassName={styles.input} 
+            defaultCountry={'RU'}
+            label={'Телефон:'}
+            />
+            
+            <InputField 
+            label={'Telegram:'}
+            className={styles.input} 
+            labelType='top' 
+            styleType={'default'} 
+            color={'default'} 
+            name={'telegramNickname'} 
+            />
+
+            <InputField 
+            label={'Пароль:'}
+            className={styles.input} 
+            labelType='top' 
+            styleType={'default'} 
+            color={'default'} 
+            name={'password'} 
+            type={passwordIsOpen?'text':'password'}
+            suffix={'icon'}
+            suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
+            onSuffixClick={passwordHandler}
+            validate={Validator.required}
+            />
+
+            <InputField   
+            label={'E-mail:'}
+            className={styles.input} 
+            labelType='top' 
+            styleType={'default'} 
+            color={'default'} 
+            name={'email'} 
+            validate={Validator.combine([Validator.required, Validator.email])}
+            />
+
+          <div className={styles.submitButton} onClick={()=> formik.submitForm()}>Зарегистрироваться</div>
           </Form>
         </FormikProvider>
-        <button className={styles.submitButton} type='button' onClick={formik.submitForm}>Зарегистрироваться</button>
         
       </div>
     </div>

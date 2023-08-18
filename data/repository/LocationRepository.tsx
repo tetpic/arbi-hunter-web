@@ -15,8 +15,8 @@ export default class LocationRepository {
 
   static async searchCity(data: ISearchCityRequest, config?: AxiosRequestConfig): Promise<ISearchCityResult[]> {
     const res = await request<any>({
-      method: 'post',
-      url: `api/location/city?page=${data.limit}&limit=${data.limit}&search=${data.search}&lang=${data.lang}&country=${data.country}`,
+      method: 'get',
+      url: `/api/location/city?page=${data.page}&limit=${data.limit}&search=${data.search}&lang=${data.lang}&country=${data.country}`,
       config
     })
     return res

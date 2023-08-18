@@ -27,12 +27,11 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#812292"/>
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-              <link
+              {/* <link
                 href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
-                rel="stylesheet"/>
+                rel="stylesheet"/> */}
           <meta name="msapplication-TileColor" content="#da532c"/>
           <meta name="theme-color" content="#ffffff"/>
-          <script src="https://api-maps.yandex.ru/3.0/?apikey=7cd75a8b-037e-4152-b0c5-3755e6914531&lang=ru_RU" async/>
         </Head>
 
         <body>

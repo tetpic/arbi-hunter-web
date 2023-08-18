@@ -9,6 +9,7 @@ import { ChangeEvent, MouseEventHandler, ReactElement, useEffect, useState } fro
 import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
+import { markAsUntransferable } from 'worker_threads'
 
 type FormatType = 'phone'
 
@@ -27,18 +28,19 @@ interface Props extends IField<string> {
   onClick?: MouseEventHandler<HTMLInputElement>
   labelType?: 'floating' | 'top'
   isNumbersOnly?: boolean
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function InputField(props: Props) {
   const [wrapperRef, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)
   const showError = meta.touched && !!meta.error
-  const { ref: phoneRef } = useIMask({ mask: '+7 000 000 0000' })
+  const { ref: phoneRef, value} = useIMask({ mask: '+7 000 000 00 00' })
   const [focused, setFocused] = useState(false)
   useEffect(() => {
     if (props.format === 'phone' && phoneRef.current && phoneRef.current.value) {
       // set masked default value
-      helpers.setValue(phoneRef.current.value)
+      helpers.setValue(phoneRef.current.value)      
     }
   }, [phoneRef.current])
 
@@ -54,9 +56,9 @@ export default function InputField(props: Props) {
   }
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
+      {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
       <div className={styles.wrapper} ref={wrapperRef}>
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
-        {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
         <input
           {...field}
           {...(typeof props.value !== 'undefined' ? { value: props.value } : {})}
@@ -84,6 +86,8 @@ export default function InputField(props: Props) {
             [styles.darkPurple]: props.color === 'darkPurple',
           }, styles[props.styleType])}
           placeholder={props.placeholder}
+          {...(props.format === 'phone'?{value: value}: '') }
+          {...(props.onChange&&{onChange: props.onChange}) }
         />
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}

@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { FieldValidator } from 'formik/dist/types'
 import { IField, InputStyleType } from 'types/types'
 import FieldError from 'components/ui/FieldError'
-import FieldIconSvg from 'components/svg/FieldIconSvg'
+// import FieldIconSvg from 'components/svg/FieldIconSvg'
 
 interface Props extends IField<string> {
   blurValidate?: FieldValidator
@@ -17,9 +17,10 @@ interface Props extends IField<string> {
   errorClassName?: string
   defaultCountry?: string
   countrySelectClassName?: string
-  styleType: InputStyleType
+  styleType: InputStyleType,
+  inputClassName?: string
 }
-
+//TODO: ограничить 14ю символами
 export default function PhoneField(props: Props & FieldConfig) {
   const [field, meta, helpers] = useField(props as FieldHookConfig<any>)
   const { value } = field
@@ -38,17 +39,16 @@ export default function PhoneField(props: Props & FieldConfig) {
           className={classNames({
             [styles.input]: true,
             [styles.inputError]: showError,
-            [styles.inputFocused]: focused,
-          })}
+            [styles.inputFocused]: focused,            
+          }, props.inputClassName)}
           placeholder={props.placeholder}
-          onFocus={(e) => {
+          onFocus={() => {
             setFocus(true)
           }}
           value={field.value}
           onBlur={(e) => {
             setFocus(false)
             field.onBlur(e)
-
           }}
           international
           withCountryCallingCode
@@ -59,14 +59,14 @@ export default function PhoneField(props: Props & FieldConfig) {
 
           onChange={handleChange}
         />
-        {props.iconName && (
+        {/* {props.iconName && (
           <FieldIconSvg
             iconName={props.iconName}
             error={showError}
             className={classNames([styles.icon, styles[props.styleType]])}
             color={'#6B4C9F'}
           />
-        )}
+        )} */}
         <FieldError showError={showError} />
       </div>
     </div>

@@ -1,0 +1,117 @@
+@import 'styles/index';
+
+.root {
+  position: relative;
+  margin-top: 24px;
+
+}
+
+.wrapper {
+  position: relative;
+  flex-direction: column;
+}
+.fieldWrapper{
+  border-radius: 8px;
+  width: 100%;
+}
+.input {
+ 
+  border: 0;
+  width: 100%;
+  // color: $dark200;
+  flex: 1;
+  font-weight: 500;
+  position: relative;
+
+  input {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px #24242C solid;
+    height: 40px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 14px;
+    padding-inline: 16px;
+    padding-left: 85px;
+  }
+
+
+
+  &.inputFocused {
+    input{
+    color: $white;
+    font-weight: 500;
+    }
+  }
+
+
+  &.inputError {
+    border: 1px solid #ED4700;
+
+    input{
+    color: #ED4700;
+
+    &::placeholder {
+      color: #ED4700 !important;
+    }
+  }
+  }
+
+  @media only screen and (max-device-width: 900px) {
+    -webkit-appearance: none;
+    font-size: 16px;
+  }
+
+  :global .PhoneInputCountry{
+      margin-right: 0px;
+      padding-right: 15px;
+      position: relative;
+      min-width: 52px;
+      &:after{
+        content: "";
+        position: absolute;
+        right: 0px;
+        height: 15px;
+        width: 1px;
+        // background: $dark200;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+  }
+  :global .PhoneInputCountryIcon{
+    img{
+
+    }
+  }
+  
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.withLabel {
+  display: flex;
+  align-items: center;
+  // background: #272832;
+  border-radius: 12px;
+  height: 70px;
+
+  // @media screen and (max-width: $xs-max) {
+  //   height: 50px;
+  //   // background-color: $dark700;
+  // }
+}
+
+.label {
+    color: #737389;
+    font-size: 14px;
+    font-weight: 500;
+    // margin-bottom: 8px;
+    position: absolute;
+    top: -8px;
+    // transform: translateY(-100%);
+}
+.arrow{
+  margin-left: 7px;
+}

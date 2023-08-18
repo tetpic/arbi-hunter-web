@@ -1,0 +1,27 @@
+@import 'styles/index';
+
+.root {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-height: 300px;
+}
+
+.track {
+  display: block !important;
+  width: 2px;
+  right: 2px;
+  bottom: 2px;
+  top: 2px;
+  border-radius: 3px;
+ 
+
+  div {
+    border-radius: 3px;
+    background-color: $yellow !important;
+  }
+}
+
+.dropdownContainer {
+  height: 260px;
+}

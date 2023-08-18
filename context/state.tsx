@@ -59,6 +59,12 @@ export function AppWrapper(props: Props) {
   )
 }
 
+/** базовый контекст для неспецифичных сущностей 
+ * @profileType
+ * @setProfileType
+ * @isMobile
+ * @setIsMobile
+*/
 export function useAppContext() {
   return useContext(AppContext)
 }
