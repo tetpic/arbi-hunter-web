@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { useRouter } from 'next/router'
 
 interface Props {
 }
@@ -13,18 +14,17 @@ export default function Header(props: Props) {
 
   const {profileType, setProfileType} = useAppContext()
 
-  //временно
-  const [link, changeLink] = useState<'user'|'company'>('user')
-
   const usrBtn = useRef<HTMLButtonElement>(null!)
   const cmpBtn = useRef<HTMLButtonElement>(null!)
 
+  const router = useRouter()
 
-
+  const regPath = '/registration'
+  const loginPath = '/login'
 
   return ( 
     <div className={styles.root}>
-      <Image src={'/favicon.svg'} alt={'logo'} width={50} height={50}/>
+      <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         <div className={styles.modeWrapper}>
           <div 
@@ -53,8 +53,8 @@ export default function Header(props: Props) {
         <Link className={styles.link} href={'/media'}>Медиа</Link>
         <Link className={styles.link} href={'/e-lessons'}>Онлайн обучение</Link>
         <div className={styles.userWrapper}>
-          <Link className={classnames(styles.userLink, styles.userLinkReg)} href={'/registration'}>Регистрация</Link>
-          <Link className={styles.userLink} href={'/login'}>Вход</Link>
+          <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
+          <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
         </div>
       </div>
     </div>

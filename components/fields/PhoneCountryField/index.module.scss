@@ -2,23 +2,27 @@
 
 .root {
   position: relative;
-  margin-top: 24px;
-
+  margin-bottom: 24px;
+  @include mq($TabletWidth, max ) {
+    width: 49%;
+  }
+   @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
 }
 
 .wrapper {
   position: relative;
-  flex-direction: column;
 }
+
 .fieldWrapper{
   border-radius: 8px;
   width: 100%;
 }
+
 .input {
- 
   border: 0;
   width: 100%;
-  // color: $dark200;
   flex: 1;
   font-weight: 500;
   position: relative;
@@ -78,11 +82,7 @@
         transform: translateY(-50%);
       }
   }
-  :global .PhoneInputCountryIcon{
-    img{
-
-    }
-  }
+ 
   
 }
 
@@ -92,26 +92,18 @@
 
 .withLabel {
   display: flex;
-  align-items: center;
-  // background: #272832;
+  flex-direction: column;
+  row-gap: 8px;
+  align-items: flex-start;
   border-radius: 12px;
-  height: 70px;
-
-  // @media screen and (max-width: $xs-max) {
-  //   height: 50px;
-  //   // background-color: $dark700;
-  // }
 }
 
 .label {
     color: #737389;
     font-size: 14px;
     font-weight: 500;
-    // margin-bottom: 8px;
-    position: absolute;
-    top: -8px;
-    // transform: translateY(-100%);
 }
+
 .arrow{
   margin-left: 7px;
 }

@@ -1,9 +1,6 @@
 import styles from './index.module.scss'
-import IconButton from 'components/ui/IconButton'
 import { MouseEventHandler } from 'react'
-import classNames from 'classnames'
-import { colors } from 'styles/variables'
-import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 
 interface Props {
   onClick: MouseEventHandler
@@ -16,12 +13,9 @@ interface Props {
 
 export default function BackBtn(props: Props) {
   return (
-    <IconButton onClick={props.onClick} className={classNames({
-      [styles.root]: true,
-      [styles.defaultPosition]: props.defaultPosition,
-    }, props.className)} bgColor={props.bgColor} size={props.size}>
-      <ArrowLeftSvg color={props.color ?? colors.purple} />
-    </IconButton>
+    <button onClick={props.onClick} className={styles.root} type='button'>
+      <ArrowDownSvg className={styles.arrow}/>
+    </button>
   )
 }
 

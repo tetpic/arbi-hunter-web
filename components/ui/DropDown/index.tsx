@@ -15,16 +15,20 @@ interface Props {
   onNext: ()=>void
   nameField: string
   loading: boolean
+  reference: (r: HTMLDivElement)=>void
+  isActive: boolean
 }
 
 export default function DropDown(props: Props) {
 
   const dropDownContainer = useRef<HTMLDivElement>(null!)
 
-  return ( <div className={classNames(styles.root, props.classNames.rootClassName)} >
+  return ( <div className={classNames(styles.root, props.classNames.rootClassName, !props.isActive&&styles.disabled)} ref={r=>props.reference(r)} >
 
     {props.options.length > 0 &&
-    <div className={styles.dropdownContainer} ref={dropDownContainer}>
+    <div className={styles.dropdownContainer} 
+    ref={dropDownContainer}
+    >
       <InfiniteScroll 
       className={styles.list} 
       next={props.onNext} 

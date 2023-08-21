@@ -1,0 +1,106 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+  display: flex;
+  @include mq($PhoneWidth, max) {
+    margin-top: 8px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+  row-gap: 24px;
+  width: 49%;
+   @include mq($TabletWidth, max) {
+    width: 100%;
+    margin-left: unset;
+  }
+}
+
+.regImage {
+  @include mq($TabletWidth, max) {
+    display: none !important;
+  }
+}
+
+.title {
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $medium;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  @include mq($PhoneWidth, max) {
+    justify-content: space-between;
+    &:after {
+      content: '';
+      width: 44px;
+    }
+  }
+}
+
+
+.subTitle {
+  font-size: $largeText;
+  font-weight: $medium;
+  color: $white;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 16px;
+  width: 100%;
+  @include mq($PhoneWidth, max) {
+    margin-top: 24px;
+    font-size: $mediumText;
+  }
+}
+
+.loginLink {
+  color: $yellow;
+}
+
+.form {
+  width: 100%;
+  @include mq($TabletWidth, max) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.input {
+  width: 100%;
+  @include exeptLast {
+    margin-bottom: 24px;
+  }
+  @include mq($TabletWidth, max) {
+    width: 49%;
+  }
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
+}
+
+.submitButton {
+  display: inline-block;
+  margin-top: 16px;
+  background-color: $grey;
+  color: $greyLight;
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  align-self: flex-start;
+  text-align: center;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hoverButtonBlack;
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
+}
+
+

@@ -1,4 +1,4 @@
-@import 'colors';
+@import 'index';
 
 
 @font-face {
@@ -214,6 +214,9 @@ select:-webkit-autofill:focus {
   max-width: 1148px;
   width: calc(100vw - 200px) ;
   margin:  0 auto;
+  @include mq($TabletWidth, max) {
+    width: calc(100vw - 16px);
+  }
 }
 
 svg {

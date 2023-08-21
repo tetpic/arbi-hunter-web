@@ -1,54 +1,36 @@
 import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
-import BigHomeSvg from 'components/svg/BigHomeSvg'
 import { useAppContext } from 'context/state'
 import { IRegistrationComplete, ProfileType } from 'data/interfaces/IRegistration'
-import { Form, FormikProvider, useFormik } from 'formik'
+import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import Image from 'next/image'
 import Link from 'next/link'
 import Validator from 'utils/Validator'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
-import CityInput from './CityInput'
-import CountryInput from './DropdownInput'
 import RegistrationRepository from 'data/repository/RegistrationRepository'
-import { useThrottleFn } from '@react-cmpt/use-throttle'
 import LocationRepository from 'data/repository/LocationRepository'
-import { ISearchCountryRequest, ISearchCountryResult, ISearchCityResult, ISearchLocalyRequest } from 'data/interfaces/ILocation'
-import DropDownInput from './DropdownInput'
+import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation'
+import DropDownInput from '../../fields/DropdownInput'
+import UserRegImage from 'components/ui/UserRegImage'
+import BackBtn from 'components/ui/BackBtn'
+import { useResize } from 'components/hooks/useResize'
+import { useRouter } from 'next/router'
+import { SnackbarType } from 'types/enums'
 
-interface Props {
-}
 
-export default function Registration(props: Props) {
+
+export default function Registration() {
 
   const appContext = useAppContext()
+  const {isTabletWidth} = useResize()
 
   const [cityId, setCityId] = useState<number>()
-  const [countryId, setCountryId] = useState<number>()
-
-  const submit = async (data: IRegistrationComplete) => {
-    data = {...data, cityId, countryId}
-    debugger
-    if(!cityId || !countryId) {
-      //тут показать snackbar или ошибку под инпутом
-    }
-    RegistrationRepository.completeRegistration(data)
-    .then(res=> {
-      debugger
-    })
-    .catch(err=> {
-      debugger
-    })
-  }
-
-  const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
-
-  const passwordHandler = () => {
-    setPasswordOpen(!passwordIsOpen)
-  }
+  const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined)
+  const [country, setCountry] = useState<ISearchCountryResult>()
+  const router = useRouter()
 
   const initialValues: IRegistrationComplete = {
     firstName: '',
@@ -58,40 +40,71 @@ export default function Registration(props: Props) {
     telegramNickname: '',
     phone: '',
     email: '',
+    countryId: undefined,
+    cityId: undefined,
   }
+
+  const submit = async (data: IRegistrationComplete) => {
+    debugger
+    if(!cityId || !country) {
+      appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
+    }
+
+    data = {...data, cityId, countryId : country.geoname.geonameid}
+    
+    RegistrationRepository.completeRegistration(data)
+    .then(res=> {
+      debugger
+    })
+    .catch(err=> {
+      appContext.showSnackbar(err.toString(), SnackbarType.error)
+      return
+    })
+  }
+
+  const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
+
+  const passwordHandler = () => {
+    setPasswordOpen(!passwordIsOpen)
+  }
+
+  
   if(appContext.profileType === ProfileType.Hirer) {
     initialValues.company = ''
   }
 
-  const formik = useFormik<IRegistrationComplete>({
+  const formik = useFormik({
     initialValues: initialValues,
     onSubmit: submit
   })
 
   const countryHandler = (obj: ISearchCountryResult) => {
-    debugger
-
+    setCountry(obj)
+    
+    setCityNameValue('')
   }
 
   const cityHandler = (obj: ISearchCityResult) =>  {
-    debugger
+    setCityId(obj.id)
   }
-
-
 
   return ( 
     <div className={styles.root}>
-      <div className={styles.svgWrapper}>
-        <BigHomeSvg className={styles.svg}/>
-      </div>
+      {!isTabletWidth&& 
+        <UserRegImage type={appContext.profileType} className={styles.regImage}/>
+      }
       <div className={styles.content}>
-        <p className={styles.title}>Регистрация <Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/></p>
+        <p className={styles.title}>
+          {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
+          Регистрация 
+          {!isTabletWidth&&<Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/>}
+        </p>
         <p className={styles.subTitle}>
           Уже есть аккаунт? 
           <Link className={styles.loginLink} href={'/login'}>Войти</Link>
         </p>
         <FormikProvider value={formik} >
-          <Form className={styles.form} >
+          <Form className={styles.form} autoComplete={'false'} >
 
             <InputField 
             label={'Имя:'}
@@ -130,6 +143,8 @@ export default function Registration(props: Props) {
             name={'countryId'} 
             labelName={'Страна: '}
             requestFn={LocationRepository.searchCountry}
+            className={styles.dropInput}
+            error={!country?'Выберите страну из списка':undefined}
             />
 
             <DropDownInput 
@@ -137,15 +152,21 @@ export default function Registration(props: Props) {
             name={'cityId'} 
             labelName={'Город: '}
             requestFn={LocationRepository.searchCity}
+            country={country&&country.country_code}
+            value={cityNameValue}
+            onChange={(s: string) => {setCityNameValue(s)}}
+            className={styles.dropInput}
+            error={!cityId?'Выберите город из списка':undefined}
             />
           
 
             <PhoneCountryField 
             styleType={'horizontal'} 
-            disabled={false} placeholder={'000 000 00 00'} 
+            disabled={false} 
+            placeholder={'000 000 00 00'} 
             name={'phone'}  
             inputClassName={styles.input} 
-            defaultCountry={'RU'}
+            defaultCountry={country&&country.country_code?country.country_code:'RU'}
             label={'Телефон:'}
             />
             

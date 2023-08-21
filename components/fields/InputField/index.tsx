@@ -9,7 +9,6 @@ import { ChangeEvent, MouseEventHandler, ReactElement, useEffect, useState } fro
 import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
-import { markAsUntransferable } from 'worker_threads'
 
 type FormatType = 'phone'
 
@@ -29,6 +28,8 @@ interface Props extends IField<string> {
   labelType?: 'floating' | 'top'
   isNumbersOnly?: boolean
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  autocompleteOff?: boolean
+  error?: string
 }
 
 export default function InputField(props: Props) {
@@ -54,6 +55,7 @@ export default function InputField(props: Props) {
         return props.suffix
     }
   }
+
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
@@ -65,8 +67,8 @@ export default function InputField(props: Props) {
           ref={props.format === 'phone' ? phoneRef as any : null}
           type={props.type ?? 'text'}
           disabled={props.disabled}
-          onInput=
-          {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') } : null}
+          autoComplete={props.autocompleteOff?'off':''}
+          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') } : null}
           onFocus={() => {
             setFocused(true)
           }}

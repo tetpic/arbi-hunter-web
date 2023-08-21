@@ -3,6 +3,10 @@
 .root {
   margin-top: 48px;
   display: flex;
+  padding-bottom: 24px;
+  @include mq($PhoneWidth, max) {
+    margin-top: 8px;
+  }
 }
 
 .content {
@@ -11,29 +15,33 @@
   margin-left: 16px;
   row-gap: 24px;
   width: Min(50%, 495px);
-}
-
-.svgWrapper {
-  width: Clamp(224px, 44vw, 566px);
-  height: Clamp(208px, 41vw, 527px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $grey;
-  border-radius: 24px;
-
-  svg{
-    width: Clamp(130px, 70%, 367px);
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    margin-left: unset;
   }
 }
 
+.regImage {
+  @include mq($TabletWidth, max) {
+    display: none !important;
+  }
+}
+
+
 .title {
   color: $white;
-  font-size: $hugeText;
+  font-size: Clamp($largeText, 4vw, $hugeText);
   font-weight: $medium;
   display: flex;
   align-items: center;
   column-gap: 8px;
+  @include mq($PhoneWidth, max) {
+    justify-content: space-between;
+    &:after {
+      content: '';
+      width: 44px;
+    }
+  }
 }
 
 
@@ -41,15 +49,25 @@
   font-size: $largeText;
   font-weight: $medium;
   color: $white;
+  display: flex;
+  column-gap: 8px;
+  @include mq($PhoneWidth, max) {
+    margin-top: 24px;
+    font-size: $mediumText;
+  }
 }
 
 .loginLink {
-  margin-left: 8px;
   color: $yellow;
 }
 
 .form {
   width: 100%;
+  @include mq($TabletWidth, max) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 }
 
 .input {
@@ -57,19 +75,40 @@
   @include exeptLast {
     margin-bottom: 24px;
   }
+
+  @include mq($TabletWidth, max) {
+    width: 49%;
+  }
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
 }
 
 .submitButton {
+  display: inline-block;
   background-color: $grey;
   color: $greyLight;
   border-radius: 10px;
-  padding: 8px 24px;
+  padding: 10px 24px;
   font-size: $mediumText;
   font-weight: $medium;
   align-self: flex-start;
+  text-align: center;
   cursor: pointer;
   @include transitionDefault;
   @include hoverButtonBlack;
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
 }
 
 
+.dropInput {
+  @include mq($TabletWidth, max) {
+    width: 49%;
+  }
+
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
+}

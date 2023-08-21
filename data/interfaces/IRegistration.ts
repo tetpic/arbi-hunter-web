@@ -17,3 +17,7 @@ export interface IRegistrationComplete {
     company?: string|undefined,
 }
 
+export interface IRegistrationPhone {
+  phone: string,
+  code?: string 
+}

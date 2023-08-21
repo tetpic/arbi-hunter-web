@@ -1,17 +1,16 @@
-import {createContext, useContext, useEffect, useRef, useState} from 'react'
-import { useRouter } from 'next/router'
-import {CookiesType, LocalStorageKey, ModalType, SnackbarType} from 'types/enums'
-import {Subject} from 'rxjs'
-import {useCookies} from 'react-cookie'
-import CookiesUtils from 'utils/CookiesUtils'
+import {createContext, useContext, useState} from 'react'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { isMobile } from 'react-device-detect'
+import { SnackbarType } from 'types/enums'
+import { SnackbarData } from 'types/types'
 
 interface IState {
   isMobile: boolean
   setIsMobile: (t: boolean) => void
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
+  snackbar: SnackbarData | null,
+  showSnackbar: (text: string, type: SnackbarType) => void
+
 }
 
 
@@ -24,10 +23,12 @@ interface IState {
 // const currentAddressState$ = new Subject<IUserAddress | null>()
 
 const defaultValue: IState = {
-  profileType: ProfileType.Emplyee,
+  profileType: ProfileType.Employee,
   setProfileType: () => null,
   isMobile:  false,
-  setIsMobile: () => null
+  setIsMobile: () => null,
+  snackbar: null,
+  showSnackbar: (text, type) => null,
 }
 
 const AppContext = createContext<IState>(defaultValue)
@@ -40,15 +41,23 @@ interface Props {
 
 export function AppWrapper(props: Props) {
   const [isMobile, setIsMobile] = useState<boolean>(props.isMobile)
-  const [profileType, setProfileType] = useState(ProfileType.Emplyee)
+  const [profileType, setProfileType] = useState(ProfileType.Employee)
+  const [snackbar, setSnackbar] = useState<SnackbarData | null>(null)
 
-
+  const showSnackbar = (text: string, type: SnackbarType) => {
+    setSnackbar({ text, type })
+    setTimeout(() => {
+      setSnackbar(null)
+    }, 2000)
+  }
 
   const value: IState = {
     profileType,
     setProfileType,
     isMobile,
-    setIsMobile
+    setIsMobile,
+    snackbar,
+    showSnackbar
   }
 
 

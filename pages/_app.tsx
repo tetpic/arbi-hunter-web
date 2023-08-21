@@ -11,6 +11,7 @@ import {CookiesProvider} from 'react-cookie'
 import { CookiesType } from 'types/enums'
 import Layout from 'components/layout'
 import { AppWrapper } from 'context/state'
+import Snackbar from 'components/layout/Snackbar'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -46,6 +47,9 @@ function MyApp({Component, pageProps}: AppProps) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        {/* {clientVisible && <ModalContainer/>} */}
+        {/* {clientVisible && <BottomSheetContainer/>} */}
+        {clientVisible && <Snackbar/>}
 
 
       </AppWrapper>

@@ -2,24 +2,31 @@ import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
 import DropDown from 'components/ui/DropDown'
 import { ISearchLocalyRequest } from 'data/interfaces/ILocation'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import classNames from 'classnames'
+import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 
 interface Props<C> {
   onSetOption: (n: C) => void
   name: string
   requestFn: (r: ISearchLocalyRequest) => Promise<C[]>
   labelName: string
+  country?: string 
+  value?: string
+  onChange?: (e: string) => void
+  className?: string
+  error?: string
 }
 
 export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
-  const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>('')
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLDivElement>(null!)
+  const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
   const request = useThrottleFn((r: ISearchLocalyRequest) => {
     setLoading(true)
@@ -33,20 +40,19 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     })
   }, 300)
 
-
   const optionClickHandler = (option: C) => {
     setDropDownOpen(false)
     props.onSetOption(option)
     setInputValue(option.name)
   }
 
-  const onNextHandler = () => {
+  const requestHandler = (pageNumber?: number, value?: string) => {
     const options = {
-      page: page,
+      page: pageNumber?pageNumber:page,
       limit: 10,
-      search: inputValue, 
+      search: value?value:inputValue, 
       lang: 'ru', //поменять на динмический
-      country: 'RU' //поменять на динамический
+      country: props.country?props.country:'RU' //поменять на динамический
     }
     request.callback(options)
   }
@@ -55,29 +61,33 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     setPage(1)
     const targetValue = e.target.value
     setInputValue(targetValue)
+    if(props.onChange) {props.onChange(targetValue)}
     if(targetValue.length <1) {
       setDropDownOpen(false)
       return
     }
     setDropDownOpen(true)
-    const options = {
-      page: 1,
-      limit: 10,
-      search: targetValue, 
-      lang: 'ru', //TODO: поменять на динамический
-      country: 'RU' //TODO: поменять на динамический
-    }
-    request.callback(options)
+    requestHandler(1, targetValue)
   }
 
-
+  const onClickHandler: MouseEventHandler<HTMLInputElement> = (event) => {
+    const targetValue = event.currentTarget.value
+    setDropDownOpen(true)
+    requestHandler(1, targetValue)
+  }
 
   useEffect(()=>{
-    onNextHandler()
+    requestHandler()
   }, [page])
 
+  useEffect(()=>{
+    if(props.value === '') {
+      setInputValue(props.value)
+    }
+  }, [props.value])
+
   return ( 
-    <div className={styles.root}>
+    <div className={classNames(styles.root, props.className)}>
       
       <InputField 
       label={props.labelName}
@@ -90,18 +100,22 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
       value={inputValue}
       suffix={'icon'}
       suffixIcon={<ArrowDownSvg className={classNames(styles.arrow, isDropDownOpen&&styles.arrowTop)}/>}
+      onClick={onClickHandler}
+      autocompleteOff
+      validate={(value)=> {return props.error?props.error:undefined}}
       />
-
-      {isDropDownOpen&&
-        <DropDown 
-        nameField='name'
-        options={options}
-        classNames={{ optionClassName: styles.option, rootClassName: styles.dropDownRoot }}
-        onClick={optionClickHandler} 
-        onNext={()=>setPage(page => page + 1)}       
-        loading = {loading} 
-        />
-      }
+    
+      <DropDown 
+      reference={(ref) => {dropdownRef.current = ref}}
+      isActive={isDropDownOpen}
+      nameField='name'
+      options={options}
+      classNames={{ optionClassName: styles.option, rootClassName: styles.dropDownRoot }}
+      onClick={optionClickHandler} 
+      onNext={()=>setPage(page => page + 1)}       
+      loading = {loading} 
+      />
+      
     </div>
   )
 }
