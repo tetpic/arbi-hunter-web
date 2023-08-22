@@ -5,7 +5,7 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
 import UserRegImage from 'components/ui/UserRegImage'
-import { useAppContext } from 'context/state'
+import { useUserContext } from 'context/user_state'
 import { IRegistrationComplete } from 'data/interfaces/IRegistration'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function Login(props: Props) {
-  const appContext = useAppContext()
+  const userContext = useUserContext()
   const {isTabletWidth} = useResize()
   const router = useRouter()
   
@@ -49,7 +49,7 @@ export default function Login(props: Props) {
   return ( 
     <div className={styles.root}>
       {!isTabletWidth&& 
-      <UserRegImage type={appContext.profileType} className={styles.regImage}/>
+      <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
         <p className={styles.title}>

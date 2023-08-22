@@ -6,13 +6,14 @@ import { useRef, useState } from 'react'
 import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
 
 export default function Header(props: Props) {
 
-  const {profileType, setProfileType} = useAppContext()
+  const {profileType, setProfileType} = useUserContext()
 
   const usrBtn = useRef<HTMLButtonElement>(null!)
   const cmpBtn = useRef<HTMLButtonElement>(null!)

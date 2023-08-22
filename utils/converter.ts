@@ -1,5 +1,3 @@
-import {GeoObject} from 'data/interfaces/IYandexGeocoder'
-import {IUserAddress} from 'data/interfaces/IUserAddress'
 
 export default class Converter {
   static hexToRgbA(hex: string, opacity: number) {
@@ -32,29 +30,29 @@ export default class Converter {
     return   coordinates.split(' ').map(i => parseFloat(i))
   }
 
-  static convertGeoObjectToUserAddress(geoObject: GeoObject): IUserAddress {
-    const components = geoObject.metaDataProperty.GeocoderMetaData.Address.Components
-    const point = geoObject.Point
-    return {
-      address: this.convertGeoObjectToString(geoObject),
-      city: components
-          ?.find((element) => element.kind == 'locality')
-          ?.name ??
-        '',
-      street: components
-          ?.find((element) => element.kind == 'street')
-          ?.name ??
-        '',
-      house: components
-          ?.find((element) => element.kind == 'house')
-          ?.name ??
-        '',
+  // static convertGeoObjectToUserAddress(geoObject: GeoObject): IUserAddress {
+  //   const components = geoObject.metaDataProperty.GeocoderMetaData.Address.Components
+  //   const point = geoObject.Point
+  //   return {
+  //     address: this.convertGeoObjectToString(geoObject),
+  //     city: components
+  //         ?.find((element) => element.kind == 'locality')
+  //         ?.name ??
+  //       '',
+  //     street: components
+  //         ?.find((element) => element.kind == 'street')
+  //         ?.name ??
+  //       '',
+  //     house: components
+  //         ?.find((element) => element.kind == 'house')
+  //         ?.name ??
+  //       '',
 
-      location: {lat: this.convertStringCoordinatesToLatLng(point.pos)[1], lng: this.convertStringCoordinatesToLatLng(point.pos)[0]}
-    }
-  }
+  //     location: {lat: this.convertStringCoordinatesToLatLng(point.pos)[1], lng: this.convertStringCoordinatesToLatLng(point.pos)[0]}
+  //   }
+  // }
 
-  static convertGeoObjectToString(geoObject: GeoObject): string | null {
-    return geoObject.name
-  }
+  // static convertGeoObjectToString(geoObject: GeoObject): string | null {
+  //   return geoObject.name
+  // }
 }

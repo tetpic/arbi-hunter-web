@@ -1,4 +1,4 @@
-import { ISearchCityRequest, ISearchCityResult, ISearchCountryRequest, ISearchCountryResult } from 'data/interfaces/ILocation'
+import { ISearchLocalyRequest, ISearchCityResult, ISearchCountryRequest, ISearchCountryResult } from 'data/interfaces/ILocation'
 import request from 'utils/request'
 import {AxiosRequestConfig} from 'axios'
 
@@ -13,7 +13,7 @@ export default class LocationRepository {
     return res
   }
 
-  static async searchCity(data: ISearchCityRequest, config?: AxiosRequestConfig): Promise<ISearchCityResult[]> {
+  static async searchCity(data: ISearchLocalyRequest, config?: AxiosRequestConfig): Promise<ISearchCityResult[]> {
     const res = await request<any>({
       method: 'get',
       url: `/api/location/city?page=${data.page}&limit=${data.limit}&search=${data.search}&lang=${data.lang}&country=${data.country}`,

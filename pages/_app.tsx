@@ -12,6 +12,9 @@ import { CookiesType } from 'types/enums'
 import Layout from 'components/layout'
 import { AppWrapper } from 'context/state'
 import Snackbar from 'components/layout/Snackbar'
+import { UserWrapper } from 'context/user_state'
+import ModalContainer from 'components/layout/ModalContainer'
+import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -35,23 +38,21 @@ function MyApp({Component, pageProps}: AppProps) {
 
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
-      <AppWrapper isMobile={pageProps.isMobile} token={pageProps.token} >
-        
-
-        <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
-          />
-        </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-        {/* {clientVisible && <ModalContainer/>} */}
-        {/* {clientVisible && <BottomSheetContainer/>} */}
-        {clientVisible && <Snackbar/>}
-
-
+      <AppWrapper isMobile={pageProps.isMobile}>
+        <UserWrapper token={pageProps.token}>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
+              />
+          </Head>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+          {clientVisible && <ModalContainer/>}
+          {clientVisible && <BottomSheetContainer/>}
+          {clientVisible && <Snackbar/>}
+        </UserWrapper>
       </AppWrapper>
     </CookiesProvider>
   )

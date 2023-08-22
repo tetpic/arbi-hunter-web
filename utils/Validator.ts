@@ -74,10 +74,10 @@ export default class Validator {
     return value !== allValues.password ? 'Пароли не совпадают' : undefined
   }
   static amount(value: string | number): string | undefined {
-    return isNaN(+value) || value  <= 0 ? 'Значение меньше 0' : undefined
+    return isNaN(+value) || value  <= '0' ? 'Значение меньше 0' : undefined
   }
   static minBookingPrice(value: string | number): string | undefined {
-    return isNaN(+value) || value  < 100 ? 'Минимальная сумма 100₽' : undefined
+    return isNaN(+value) || value  < '100' ? 'Минимальная сумма 100₽' : undefined
   }
   static isString = (thing: string) => Object.prototype.toString.call(thing) !== '[object String]' ? 'Ожидается строка' : undefined
 }

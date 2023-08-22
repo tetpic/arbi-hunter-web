@@ -10,7 +10,7 @@ interface Props {
 export default function Spacer(props: Props) {
   const appContext = useAppContext()
 
-  if (props.mobileOnly && appContext.isDesktop) {
+  if (props.mobileOnly) {
     return null
   }
 

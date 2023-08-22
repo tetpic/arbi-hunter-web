@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 import classNames from 'classnames'
-import Scrollbars from 'react-custom-scrollbars-2'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '../Spinner'
 import { useRef } from 'react'

@@ -1,0 +1,84 @@
+@import 'styles/index';
+
+.modalRoot {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  border-radius: unset;
+  padding: 0;
+  max-height: unset !important;
+  background-color: $backgroundBlack;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  margin-top: 78px;
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  max-width: 400px;
+  padding: 24px;
+  background-color: $black;
+  border-radius: 16px;
+  margin-top: 78px;
+}
+
+.title {
+  color: $white;
+  font-weight: $semibold;
+  font-size: $hugeText;
+}
+
+.phoneField {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.disclaimer {
+  color: $white;
+  font-size: $smallText;
+}
+
+.nextButton {
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  background-color: $yellow;
+  border-radius: 10px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  cursor: pointer;
+  @include hoverButtonYellow;
+  @include transitionDefault;
+}
+
+.haveAccount {
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $white;
+  text-align: center;
+
+  &_link {
+    color: $yellow;
+  }
+}

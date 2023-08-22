@@ -23,16 +23,13 @@ interface Props {
   onChange: (value: string) => void
   country?: string
 }
-const FlagComponent = ({
-  country,
-  countryName,
-
-}) => {
+const FlagComponent = ({country, countryName,}: {country: string, countryName: string}) => {
+  //@ts-ignore
   if (flags && flags[country]) {
+    //@ts-ignore
     return flags[country]({ title: '' })
   }
   return null
-
 }
 
 const sameWidth = {
@@ -40,10 +37,10 @@ const sameWidth = {
   enabled: true,
   phase: 'beforeWrite',
   requires: ['computeStyles'],
-  fn: ({ state }) => {
+  fn: ({ state }: any) => {
     state.styles.popper.width = `${state.rects.reference.width}px`
   },
-  effect: ({ state }) => {
+  effect: ({ state }: any) => {
     state.elements.popper.style.width = `${state.elements.reference.offsetWidth
       }px`
   }
@@ -53,9 +50,11 @@ const sameWidthWithOffset = {
   enabled: true,
   phase: 'beforeWrite',
   requires: ['computeStyles'],
+  //@ts-ignore
   fn: ({ state }) => {
     state.styles.popper.width = `${state.rects.reference.width - 20}px`
   },
+  //@ts-ignore
   effect: ({ state }) => {
     state.elements.popper.style.width = `${state.elements.reference.offsetWidth - 20
       }px`

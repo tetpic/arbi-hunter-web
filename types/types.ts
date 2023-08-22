@@ -2,7 +2,7 @@ import {UrlObject} from 'url'
 import {HTMLInputTypeAttribute, MouseEventHandler, ReactElement} from 'react'
 import {FieldConfig} from 'formik'
 import {SnackbarType} from 'types/enums'
-import {PaymentMethod} from 'data/enum/PaymentMethod'
+
 
 
 export class RequestError extends Error{
@@ -48,9 +48,7 @@ export interface IOption<T> {
   description?: string
 }
 
-export interface IPaymentOption extends IOption<PaymentMethod> {
-  icon?: ReactElement
-}
+
 
 export interface SnackbarData {
   text: string

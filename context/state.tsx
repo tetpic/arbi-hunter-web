@@ -1,34 +1,59 @@
 import {createContext, useContext, useState} from 'react'
-import { ProfileType } from 'data/interfaces/IRegistration'
-import { SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
+import ReactModal from 'react-modal'
 import { SnackbarData } from 'types/types'
 
 interface IState {
   isMobile: boolean
   setIsMobile: (t: boolean) => void
-  profileType: ProfileType|undefined
-  setProfileType: (t: ProfileType) => void,
+
   snackbar: SnackbarData | null,
   showSnackbar: (text: string, type: SnackbarType) => void
 
+  modal: ModalType | null
+  modalArguments: any
+  showModal: (type: ModalType, args?: any) => void
+  hideModal: () => void
+  modalNonSkippable: boolean,
+
+  bottomSheet: ModalType | null
+  showBottomSheet: (type: ModalType, args?: any) => void
+  hideBottomSheet: () => void
+
+  isOverlayShown?: boolean
+  showOverlay: () => void
+  hideOverlay: () => void
 }
 
 
-// const ModalsBottomSheet: ModalType[] = [
+const ModalsBottomSheet: ModalType[] = [
 
-// ]
+]
 // const loginState$ = new Subject<boolean>()
 // const loginUserState$ = new Subject<IUser | null>()
 // const cartState$ = new Subject<ICart | null>()
 // const currentAddressState$ = new Subject<IUserAddress | null>()
 
 const defaultValue: IState = {
-  profileType: ProfileType.Employee,
-  setProfileType: () => null,
   isMobile:  false,
   setIsMobile: () => null,
+
   snackbar: null,
   showSnackbar: (text, type) => null,
+
+  modal: null,
+  modalArguments: null,
+  hideModal: () => null,
+  showModal: (type) => null,
+  modalNonSkippable: false,
+
+  bottomSheet: null,
+  showBottomSheet: (type) => null,
+  hideBottomSheet: () => null,
+
+  isOverlayShown: false,
+  showOverlay: () => null,
+  hideOverlay: () => null,
 }
 
 const AppContext = createContext<IState>(defaultValue)
@@ -41,8 +66,14 @@ interface Props {
 
 export function AppWrapper(props: Props) {
   const [isMobile, setIsMobile] = useState<boolean>(props.isMobile)
-  const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [snackbar, setSnackbar] = useState<SnackbarData | null>(null)
+  const [modal, setModal] = useState<ModalType | null>(null)
+  const [modalArguments, setModalArguments] = useState<any>(null)
+  const [bottomSheet, setBottomSheet] = useState<ModalType | null>(null)
+  const [isOverlayShown, setIsOverlayShown] = useState<boolean>(false)
+  const [modalNonSkippable, setModalNonSkippable] = useState<boolean>(false)
+
+
 
   const showSnackbar = (text: string, type: SnackbarType) => {
     setSnackbar({ text, type })
@@ -51,13 +82,65 @@ export function AppWrapper(props: Props) {
     }, 2000)
   }
 
+  const showModal = (type: ModalType, args?: any) => {    
+    if (props.isMobile && ModalsBottomSheet.includes(type)) {
+      showBottomSheet(type, args)
+      return
+    }
+
+    ReactModal.setAppElement('body')
+    setModalArguments(args)
+    setModal(type)
+    if (bottomSheet) {
+      hideBottomSheet()
+    }
+  }
+
+  const hideModal = () => {
+    if (bottomSheet) {
+      hideBottomSheet()
+      // return
+    }
+    setModal(null)
+    setModalArguments(null)
+  }
+
+  const showBottomSheet = (type: ModalType, props?: any) => {
+    ReactModal.setAppElement('body')
+    setModalArguments(props)
+    setBottomSheet(type)
+  }
+
+  const hideBottomSheet = () => {
+    setBottomSheet(null)
+  }
+
+ 
+
   const value: IState = {
-    profileType,
-    setProfileType,
     isMobile,
     setIsMobile,
+
     snackbar,
-    showSnackbar
+    showSnackbar,
+
+    modal,
+    modalArguments,
+    showModal,
+    hideModal,
+    modalNonSkippable,
+
+    bottomSheet,
+    showBottomSheet,
+    hideBottomSheet,
+
+    isOverlayShown,
+    showOverlay: () => {
+      setIsOverlayShown(true)
+    },
+    hideOverlay: () => {
+      setIsOverlayShown(false)
+    },
   }
 
 
@@ -68,12 +151,7 @@ export function AppWrapper(props: Props) {
   )
 }
 
-/** базовый контекст для неспецифичных сущностей 
- * @profileType
- * @setProfileType
- * @isMobile
- * @setIsMobile
-*/
+/** базовый контекст для неспецифичных сущностей */
 export function useAppContext() {
   return useContext(AppContext)
 }

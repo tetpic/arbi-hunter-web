@@ -1,13 +1,12 @@
 import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
-import { useAppContext } from 'context/state'
 import { IRegistrationComplete, ProfileType } from 'data/interfaces/IRegistration'
-import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
+import { Form, FormikProvider, useFormik } from 'formik'
 import Image from 'next/image'
 import Link from 'next/link'
 import Validator from 'utils/Validator'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
-import { MouseEvent, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import RegistrationRepository from 'data/repository/RegistrationRepository'
@@ -18,12 +17,15 @@ import UserRegImage from 'components/ui/UserRegImage'
 import BackBtn from 'components/ui/BackBtn'
 import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/router'
-import { SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
+import { useUserContext } from 'context/user_state'
+import { useAppContext } from 'context/state'
 
 
 
 export default function Registration() {
 
+  const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
 
@@ -36,7 +38,7 @@ export default function Registration() {
     firstName: '',
     lastName: '',
     password: '',    
-    profileType: appContext.profileType??ProfileType.Employee,
+    profileType: userContext.profileType??ProfileType.Employee,
     telegramNickname: '',
     phone: '',
     email: '',
@@ -69,7 +71,7 @@ export default function Registration() {
   }
 
   
-  if(appContext.profileType === ProfileType.Hirer) {
+  if(userContext.profileType === ProfileType.Hirer) {
     initialValues.company = ''
   }
 
@@ -80,7 +82,6 @@ export default function Registration() {
 
   const countryHandler = (obj: ISearchCountryResult) => {
     setCountry(obj)
-    
     setCityNameValue('')
   }
 
@@ -88,10 +89,14 @@ export default function Registration() {
     setCityId(obj.id)
   }
 
+  // useEffect(()=>{
+  //   appContext.showModal(ModalType.RegistrationModal)
+  // }, [])
+
   return ( 
     <div className={styles.root}>
       {!isTabletWidth&& 
-        <UserRegImage type={appContext.profileType} className={styles.regImage}/>
+        <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
         <p className={styles.title}>
@@ -126,7 +131,7 @@ export default function Registration() {
             validate={Validator.combine([Validator.required, Validator.onlyChars])}
             />
 
-            {appContext.profileType === ProfileType.Hirer &&
+            {userContext.profileType === ProfileType.Hirer &&
               <InputField 
               label={'Название компании:'}
               className={styles.input} 

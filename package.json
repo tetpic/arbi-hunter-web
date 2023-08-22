@@ -21,11 +21,18 @@
     "react-dom": "^18.2.0",
     "react-imask": "^6.4.3",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-modal": "^3.16.1",
+    "react-modal-sheet": "^2.0.0",
     "react-phone-number-input": "^3.3.3",
     "react-popper": "^2.3.0",
+    "react-remove-scroll": "^2.5.6",
+    "react-scroll": "^1.8.9",
+    "react-textarea-autosize": "^8.5.2",
+    "rxjs": "^7.8.1",
     "sass": "^1.65.1",
     "spinners-react": "^1.0.7",
-    "swiper": "^10.1.0"
+    "swiper": "^10.1.0",
+    "use-interval": "^1.4.0"
   },
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 3088",
@@ -35,8 +42,12 @@
     "plop": "plop"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
+    "@types/react-modal": "^3.16.0",
+    "@types/react-scroll": "^1.8.7",
+    "eslint": "^8.47.0",
     "typescript": "5.1.6"
   }
 }

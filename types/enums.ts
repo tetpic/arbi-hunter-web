@@ -1,4 +1,5 @@
 export enum ModalType {
+  RegistrationModal = 'registrationModal'
 }
 
 export enum SnackbarType {
