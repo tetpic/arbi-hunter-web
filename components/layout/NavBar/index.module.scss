@@ -11,7 +11,7 @@
   align-items: center;
   padding: 120px 24px 0px;
   z-index: 1;
-  @include mq($SmDesktopWidth, max) {
+  @include mq($MdDesktopWidth, max) {
     justify-content: flex-end;
   }
   @include mq($TabletWidth, max) {
@@ -37,7 +37,7 @@
   @include exeptLast{
     margin-bottom: 20px; 
   }
-  @include mq($SmDesktopWidth, max) {
+  @include mq($MdDesktopWidth, max) {
     margin-bottom: 20px !important;
   }
   @include mq($TabletWidth, max) {

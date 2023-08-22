@@ -214,8 +214,10 @@ select:-webkit-autofill:focus {
   max-width: 1148px;
   width: calc(100vw - 200px) ;
   margin:  0 auto;
+  padding: 0px 24px;
   @include mq($TabletWidth, max) {
-    width: calc(100vw - 16px);
+    width: 100vw;
+    padding: 0px 16px;
   }
 }
 

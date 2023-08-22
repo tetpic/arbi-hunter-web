@@ -19,6 +19,9 @@
     width: 100%;
     margin-left: unset;
   }
+  @include mq($PhoneWidth, max) {
+    row-gap: unset;
+  }
 }
 
 .regImage {
@@ -35,7 +38,7 @@
   display: flex;
   align-items: center;
   column-gap: 8px;
-  @include mq($PhoneWidth, max) {
+  @include mq($TabletWidth, max) {
     justify-content: space-between;
     &:after {
       content: '';
@@ -67,6 +70,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+  @include mq($PhoneWidth, max) {
+    margin-top: 24px;
   }
 }
 

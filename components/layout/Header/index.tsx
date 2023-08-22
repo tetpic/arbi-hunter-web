@@ -50,9 +50,13 @@ export default function Header(props: Props) {
             Компания
           </button>
         </div>
-        <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
-        <Link className={styles.link} href={'/media'}>Медиа</Link>
-        <Link className={styles.link} href={'/e-lessons'}>Онлайн обучение</Link>
+
+        <div className={styles.linksWrapper}>
+          <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
+          <Link className={styles.link} href={'/media'}>Медиа</Link>
+          <Link className={styles.link} href={'/e-lessons'}>Онлайн обучение</Link>
+        </div>
+        
         <div className={styles.userWrapper}>
           <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
           <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
