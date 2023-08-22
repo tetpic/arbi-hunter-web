@@ -7,10 +7,16 @@ import ArbiLogoTextSvg from 'components/svg/ArbiLogoTextSvg'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { Form, FormikProvider, useField, useFormik } from 'formik'
 import { IRegistrationPhone } from 'data/interfaces/IRegistration'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
+import RegistrationRepository from 'data/repository/RegistrationRepository'
+import Validator from 'utils/Validator'
+import { useAuthContext } from 'context/auth_state'
+import OtpCodeField from 'components/fields/OtpCodeField'
+import classNames from 'classnames'
+import Formatter from 'utils/formatter'
 
 interface Props {
 }
@@ -22,18 +28,21 @@ enum RegPages {
 
 export default function RegistrationModal(props: Props) {
   const appContext = useAppContext()
+  const authContext = useAuthContext()
 
 
   const [page, setPage] = useState<RegPages>(RegPages.Phone)
   const [loading, setLoading] = useState<boolean>(false)
+  const [seconds, setSeconds] = useState<number>(0)
 
-  
+  //TODO: для разработки,удалить при деплое
+  const [code, setCode] = useState<string>('')
 
-  const submit = (data: IRegistrationPhone) => {
-    debugger
+  const submit = async(data: IRegistrationPhone) => {
+    authContext.confirmCode(data.phone, data.code).then(res=>{
+      
+    })
   }
-
- 
 
   const formik = useFormik<IRegistrationPhone>({
     initialValues: {
@@ -43,16 +52,26 @@ export default function RegistrationModal(props: Props) {
     onSubmit: submit
   })
 
-  const nextHandler = () => {
-    debugger
+  //TODO: перенести запрос в контекст user
+  const nextHandler = () => {    
     if(formik.values.phone.length < 10) {
       appContext.showSnackbar('Укажите телефон полностью', SnackbarType.error)
     } else {
-      setLoading(true)
-
-      setPage(RegPages.Code)
+      RegistrationRepository.sendSmsCode({phone: formik.values.phone}).then(res=> {        
+        setCode(res.code)
+        setLoading(false)
+        setSeconds(res.codeCanRetryIn)
+      })
+      page===RegPages.Phone&&setPage(RegPages.Code)
     }
   }
+
+  useEffect(() => {
+    if (seconds > 0) {
+      const timeoutId = setTimeout(() => setSeconds(seconds - 1), 1000)
+      return () => clearTimeout(timeoutId)
+    }
+  }, [seconds])
 
   const header = (
     <div className={styles.header}>
@@ -80,13 +99,29 @@ export default function RegistrationModal(props: Props) {
       использования сайта.    
     </p>
     <button className={styles.nextButton} type='button' onClick={nextHandler}>Продолжить</button>
-    <p className={styles.haveAccount}>Уже есть аккаунт? <Link className={styles.haveAccount_link} href={'/login'}>Войти</Link></p>
+    <p className={styles.haveAccount}>Уже есть аккаунт? <Link className={styles.haveAccount_link} onClick={appContext.hideModal} href={'/login'}>Войти</Link></p>
   </div>
   </>)
 
-  const codeField = {
-
+  const codeField = (<>
+  <p className={styles.confirmTitle}>Введите код из смс. Мы отправили его на номер {Formatter.hideSomePhoneNumbers(Formatter.formatPhone(formik.values.phone))}</p>
+    <OtpCodeField
+      name='code'
+      length={4}
+      validate={Validator.required}
+      snackbar={authContext.otpError?.show}
+      disabled={authContext.confirmSpinner}
+    />
+  {seconds === 0 
+    ? <p className={styles.timeRemain} onClick={nextHandler}>Отправить код повторно</p>
+    : <p className={styles.timeRemain}>Отправить еще код через {Formatter.formatSecondtToTime(seconds)}</p>
   }
+  <div className={styles.buttonsWrapper}>
+    <button className={classNames(styles.navButton, styles.navButton_black)} type={'button'} onClick={()=>setPage(RegPages.Phone)}>Назад</button>
+    <button className={classNames(styles.navButton, styles.navButton_yellow)} type={'button'} onClick={()=>formik.submitForm()}>Далее</button>
+  </div>
+  <p className={styles.confirmTitle}>{code}</p>
+  </>)
 
   const body = (<div className={styles.body}>
     <FormikProvider value={formik}>

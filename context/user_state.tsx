@@ -1,6 +1,6 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUser } from 'data/interfaces/IUser'
-import {createContext, useContext, useState} from 'react'
+import {createContext, useContext, useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
@@ -38,6 +38,7 @@ interface Props {
 export function UserWrapper(props: Props) {
   const [token, setUserToken] = useState<string | null>(props.token ?? null)
   const [user, setUser] = useState<IUser | null>(null)
+  const [userLoaded, setUserLoaded] = useState<boolean>(false)
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(false)
 
@@ -46,10 +47,11 @@ export function UserWrapper(props: Props) {
       setUser(newUser)
       return newUser
     } else {
+      
       const data = await UserRepository.getCurrentUser()
       if (data) {
-        debugger
-        // setUser(data)
+        
+        setUser(data)
       }
       // setUserLoaded(true)
       // return data
@@ -75,6 +77,29 @@ export function UserWrapper(props: Props) {
     }
     setIsLogged(true)
   }
+
+  useEffect(() => {    
+    if (props.token) {
+      setIsLogged(true)
+    } else {
+      setIsLogged(false)
+    }
+  }, [props.token])
+
+  useEffect(() => {
+    
+    if (props.token) {
+      updateUser()
+      .then(() => {
+          setUserLoaded(true)         
+      })
+      .catch(() => {
+        setIsLogged(false)
+      })
+    } 
+  }, [])
+
+
 
   const value: IState = {
    token,

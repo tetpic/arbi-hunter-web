@@ -82,3 +82,47 @@
     color: $yellow;
   }
 }
+
+.confirmTitle {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.timeRemain {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+ 
+
+  .navButton{
+    border-radius: 10px;
+    padding: 10px 0;
+    width: 49%;
+    cursor: pointer;
+    @include transitionDefault;
+
+    &_black {
+      background-color: $grey;
+      color: $yellow;
+      @include hoverButtonBlack;
+    }
+
+    &_yellow {
+      background-color: $yellow;
+      color: $black;
+      @include hoverButtonYellow;
+
+    }
+
+  }
+ }

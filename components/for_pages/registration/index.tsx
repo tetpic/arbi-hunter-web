@@ -8,7 +8,6 @@ import Validator from 'utils/Validator'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import { useEffect, useState } from 'react'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
-import PhoneCountryField from 'components/fields/PhoneCountryField'
 import RegistrationRepository from 'data/repository/RegistrationRepository'
 import LocationRepository from 'data/repository/LocationRepository'
 import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation'
@@ -30,38 +29,42 @@ export default function Registration() {
   const {isTabletWidth} = useResize()
 
   const [cityId, setCityId] = useState<number>()
-  const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined)
+  const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
   const router = useRouter()
 
   const initialValues: IRegistrationComplete = {
     firstName: '',
     lastName: '',
-    password: '',    
+    password: '',       
     profileType: userContext.profileType??ProfileType.Employee,
     telegramNickname: '',
-    phone: '',
     email: '',
     countryId: undefined,
     cityId: undefined,
   }
 
   const submit = async (data: IRegistrationComplete) => {
-    debugger
+    
     if(!cityId || !country) {
       appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
     }
-
-    data = {...data, cityId, countryId : country.geoname.geonameid}
-    
-    RegistrationRepository.completeRegistration(data)
-    .then(res=> {
-      debugger
-    })
-    .catch(err=> {
-      appContext.showSnackbar(err.toString(), SnackbarType.error)
-      return
-    })
+    else {
+      data = {...data, 
+        cityId, 
+        countryId : country.geoname.geonameid,
+        phone: userContext.user?.phone
+      }
+      
+      RegistrationRepository.completeRegistration(data)
+      .then(res=> {
+        
+      })
+      .catch(err=> {
+        appContext.showSnackbar(err.toString(), SnackbarType.error)
+        return
+      })
+    }
   }
 
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
@@ -89,9 +92,15 @@ export default function Registration() {
     setCityId(obj.id)
   }
 
-  // useEffect(()=>{
-  //   appContext.showModal(ModalType.RegistrationModal)
-  // }, [])
+  useEffect(()=>{
+    
+    if(!userContext.isLogged && !userContext.token) {
+      appContext.showModal(ModalType.RegistrationModal)
+    }
+    else {
+
+    }
+  }, [userContext.isLogged])
 
   return ( 
     <div className={styles.root}>
@@ -162,17 +171,6 @@ export default function Registration() {
             onChange={(s: string) => {setCityNameValue(s)}}
             className={styles.dropInput}
             error={!cityId?'Выберите город из списка':undefined}
-            />
-          
-
-            <PhoneCountryField 
-            styleType={'horizontal'} 
-            disabled={false} 
-            placeholder={'000 000 00 00'} 
-            name={'phone'}  
-            inputClassName={styles.input} 
-            defaultCountry={country&&country.country_code?country.country_code:'RU'}
-            label={'Телефон:'}
             />
             
             <InputField 

@@ -50,6 +50,15 @@ export default class Formatter {
     }
   }
 
+
+  /** get formatted phone number +7 999 999 99 99, return +7 999 ***-**-99 */
+  static hideSomePhoneNumbers(phone: string) {
+    let phoneResult = phone.split('').map((e, index)=> {
+      return (index > 6 && index < 10)||(index > 10 && index < 13) ? '*': e
+    })
+    return phoneResult.join('')
+  }
+
   static pad(pad: string, str: string, padLeft = true) {
     if (typeof str === 'undefined')
       return pad
@@ -94,6 +103,13 @@ export default class Formatter {
   }
   static formatPreOrderTime(date: Date) {
     return Formatter.formatDateRelative(date)
+  }
+
+  /** return HH:mm:ss format time */
+  static formatSecondtToTime(s: number) {
+    let date = new Date(0);
+    date.setSeconds(s);
+    return date.toISOString().substring(14, 19);
   }
 
   /** return dd.MM.yy HH:mm date format */ 

@@ -13,6 +13,8 @@ interface Props {
 
 export default function Header(props: Props) {
 
+  const userContext = useUserContext()
+
   const {profileType, setProfileType} = useUserContext()
 
   const usrBtn = useRef<HTMLButtonElement>(null!)
@@ -58,8 +60,10 @@ export default function Header(props: Props) {
         </div>
         
         <div className={styles.userWrapper}>
-          <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
-          <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
+          {!userContext.user?.id && <>
+            <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
+            <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
+          </>}
         </div>
       </div>
     </div>
