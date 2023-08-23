@@ -17,6 +17,7 @@ import { useAuthContext } from 'context/auth_state'
 import OtpCodeField from 'components/fields/OtpCodeField'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
+import Button from 'components/ui/Button'
 
 interface Props {
 }
@@ -39,8 +40,12 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationPhone) => {
+    setLoading(true)
     authContext.confirmCode(data.phone, data.code).then(res=>{
-      
+      setLoading(false)
+      if(res === false) {
+        authContext.showOtpError(true, 'Введите правильный код')
+      }
     })
   }
 
@@ -98,27 +103,43 @@ export default function RegistrationModal(props: Props) {
       и&nbsp;полностью согласны с&nbsp;условиями 
       использования сайта.    
     </p>
-    <button className={styles.nextButton} type='button' onClick={nextHandler}>Продолжить</button>
+    <Button className={styles.nextButton} onClick={nextHandler} spinner={loading}>Продолжить</Button>
+    {/* <button className={styles.nextButton} type='button' onClick={nextHandler}>Продолжить</button> */}
     <p className={styles.haveAccount}>Уже есть аккаунт? <Link className={styles.haveAccount_link} onClick={appContext.hideModal} href={'/login'}>Войти</Link></p>
   </div>
   </>)
 
+
   const codeField = (<>
   <p className={styles.confirmTitle}>Введите код из смс. Мы отправили его на номер {Formatter.hideSomePhoneNumbers(Formatter.formatPhone(formik.values.phone))}</p>
     <OtpCodeField
-      name='code'
-      length={4}
-      validate={Validator.required}
-      snackbar={authContext.otpError?.show}
-      disabled={authContext.confirmSpinner}
+    name='code'
+    length={4}
+    validate={Validator.required}
+    snackbar={authContext.otpError?.show}
+    disabled={authContext.confirmSpinner}
     />
   {seconds === 0 
-    ? <p className={styles.timeRemain} onClick={nextHandler}>Отправить код повторно</p>
+    ? <p className={styles.refreshCode} onClick={nextHandler}>Отправить код повторно</p>
     : <p className={styles.timeRemain}>Отправить еще код через {Formatter.formatSecondtToTime(seconds)}</p>
   }
   <div className={styles.buttonsWrapper}>
-    <button className={classNames(styles.navButton, styles.navButton_black)} type={'button'} onClick={()=>setPage(RegPages.Phone)}>Назад</button>
-    <button className={classNames(styles.navButton, styles.navButton_yellow)} type={'button'} onClick={()=>formik.submitForm()}>Далее</button>
+    <Button 
+    className={classNames(styles.navButton, styles.navButton_black)} 
+    type={'button'} 
+    onClick={()=>setPage(RegPages.Phone)}
+    >
+      Назад
+    </Button>
+
+    <Button
+    className={classNames(styles.navButton, styles.navButton_yellow)} 
+    type={'button'} 
+    onClick={()=>formik.submitForm()}
+    spinner={loading}
+    >
+      Далее
+    </Button>
   </div>
   <p className={styles.confirmTitle}>{code}</p>
   </>)

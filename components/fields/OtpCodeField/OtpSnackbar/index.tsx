@@ -10,7 +10,7 @@ export default function OtpSnackbar(props: Props) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.snackbar}>
-        <Image src={'/images/icons/warning.svg'} alt='' fill />
+        {/* <Image src={'/images/icons/warning.svg'} alt='' fill /> */}
         <span>{authContext.otpError?.text}</span>
       </div>
     </div>

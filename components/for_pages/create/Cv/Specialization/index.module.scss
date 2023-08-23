@@ -1,0 +1,35 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+  align-items: flex-start;
+  margin-top: 32px;
+}
+
+.title {
+  display: flex;
+  column-gap: 16px;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.link {
+  color: $yellow;
+  border-bottom: 2px dotted $yellow;
+  display: inline-block;
+  cursor: pointer;
+  @include transitionDefault;
+  @media (hover: hover ) {
+    &:hover {
+      color: $white;
+      border-bottom: 2px dotted $white;
+    }
+  }
+}
+
+.inputHidden {
+  display: none;
+}

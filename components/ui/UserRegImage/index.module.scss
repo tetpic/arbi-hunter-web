@@ -9,6 +9,7 @@
   background-color: $grey;
   border-radius: 24px;
   overflow: hidden;
+  flex-shrink: 0;
 
   svg{
     width: Clamp(130px, 70%, 367px);

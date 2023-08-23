@@ -3,14 +3,13 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import Spinner from 'components/ui/Spinner'
 import { IButton } from 'types/types'
-import { colors } from 'styles/variables'
 import usePressAndHover from 'hooks/usePressAndHover'
 import { ReactElement, RefObject } from 'react'
 import useStopPropagation from 'hooks/useStopPropagation'
 
 interface Props extends IButton {
   children: React.ReactNode
-  styleType: 'outlinedPurple' | 'outlinedWhite' | 'filledGrey' | 'filledGreen' | 'filledWhite' | 'icon';
+  styleType?: 'outlinedPurple' | 'outlinedWhite' | 'filledGrey' | 'filledGreen' | 'filledWhite' | 'icon';
   font?: 'normal12' | 'normalBold' | 'semibold14' | 'semibold16' | 'semibold18'
   className?: string
   arrow?: boolean
@@ -36,7 +35,7 @@ export default function Button(props: Props) {
     [styles.hover]: props.hover ?? hover,
     [styles.withIcon]: !!props.icon
   }, props.className)
-  const darkSpinner = props.styleType.includes('outlined')
+  // const darkSpinner = props.styleType.includes('outlined')
 
 
   if (props.href) {
@@ -84,8 +83,8 @@ export default function Button(props: Props) {
         [styles.spinner]: true,
         [styles.spinnerVisible]: props.spinner,
       })}>
-        {!darkSpinner && <Spinner size={22} color="#fff" secondaryColor="rgba(255,255,255,0.4)"/>}
-        {darkSpinner && <Spinner size={22} color={colors.black} secondaryColor={colors.grey2} />}
+        <Spinner size={22} color="#fff" secondaryColor="rgba(255,255,255,0.4)"/>
+        {/* {darkSpinner && <Spinner size={22} color={colors.black} secondaryColor={colors.grey2} />} */}
       </div>
       </button>
   )

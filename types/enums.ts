@@ -1,5 +1,6 @@
 export enum ModalType {
-  RegistrationModal = 'registrationModal'
+  RegistrationModal = 'registrationModal',
+  SpecializationModal = 'specializationModal'
 }
 
 export enum SnackbarType {
@@ -55,5 +56,31 @@ export enum FileUploadAcceptType {
   Media = 'media',
   Archives = 'archives'
 }
+
+export enum Genders {
+  Male = 'male',
+  Female = 'female'
+}
+
+export enum Answer {
+  Yes = 'yes',
+  No = 'no'
+}
+
+export enum CompensationType {
+  Salary = 'salary',
+  Commission = 'commission',
+  Gybrid = 'gybrid',
+  Piecework = 'piecework',
+  Contract = 'contract'
+}
+
+export enum Currency {
+  RUB = 'RUB',
+  USD = 'USD',
+  EUR = 'EUR',
+}
+
+
 
 

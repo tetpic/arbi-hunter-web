@@ -1,0 +1,37 @@
+@import 'styles/index';
+
+
+.link {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+  margin-top: 48px;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  cursor: pointer;
+  @include transitionDefault;
+  @media (hover: hover) {
+    &:hover {
+      color: $yellow;
+      .plusSvg {
+        path {
+          stroke: $white;
+        }
+        circle {
+          fill: $yellow;
+        }
+      }
+    }
+  }
+   
+}
+
+.plusSvg  {
+  path {
+    @include transitionDefault;
+  }
+  circle {
+    @include transitionDefault;
+  }
+}

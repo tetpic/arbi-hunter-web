@@ -1,4 +1,11 @@
-// @import "styles/index";
+@import "styles/index";
+
+.root {
+  color: $greyLight;
+  font-size: $mediumText;
+  font-weight: $medium;
+  margin-bottom: 8px;
+}
 
 // .root{
 //   position: absolute;

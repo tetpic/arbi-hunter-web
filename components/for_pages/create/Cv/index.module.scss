@@ -1,0 +1,47 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+  display: flex;
+}
+
+.content {
+  margin-left: 16px;
+  width: 100%;
+}
+
+.title {
+  font-size: $largeText;
+  font-size: $semibold;
+  color: $white;
+  margin-bottom: 24px;
+}
+
+.buttonWrapper {
+  display: flex;
+  margin-top: 32px;
+  column-gap: 16px;
+}
+
+.button {
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  cursor: pointer;
+  @include transitionDefault;
+}
+
+.buttonBlack {
+  background-color: $grey;
+  color: $yellow;
+  @extend .button;
+  @include hoverButtonBlack;
+}
+
+.buttonYellow {
+  background-color: $yellow;
+  color: $grey;
+  @extend .button;
+  @include hoverButtonYellow;
+}

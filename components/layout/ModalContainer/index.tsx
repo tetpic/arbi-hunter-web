@@ -5,6 +5,7 @@ import { ModalType } from 'types/enums'
 import classNames from 'classnames'
 import { RemoveScroll } from 'react-remove-scroll'
 import RegistrationModal from 'components/modals/RegistrationModal'
+import SpecializationModal from 'components/modals/SpecializationModal'
 
 
 interface Props { }
@@ -22,6 +23,9 @@ export default function ModalContainer(props: Props) {
       <div aria-hidden="true">
         <Modal isOpen={appContext.modal === ModalType.RegistrationModal} {...commonSettings}>
           {appContext.modal === ModalType.RegistrationModal && <RegistrationModal/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.SpecializationModal} {...commonSettings}>
+          {appContext.modal === ModalType.SpecializationModal && <SpecializationModal/>}
         </Modal>
       </div>
     </RemoveScroll>

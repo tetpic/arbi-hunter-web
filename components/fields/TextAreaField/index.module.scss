@@ -4,20 +4,22 @@
   position: relative;
 }
 
-.label{
-  @include inputLabel;
-  &.withIcon{
-    @include inputLabelWithIcon;
-  }
-}
+// .label{
+//   // @include inputLabel;
+//   &.withIcon{
+//     // @include inputLabelWithIcon;
+//   }
+// }
 .input{
-  display: block;
   width: 100%;
-  color: $white;
-  transition: background-color 0.2s, min-height 0.2s;
+  border-radius: 8px;
+  border: 1px #24242C solid;
+  height: 40px;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 16px;
   resize: none;
-  border-radius: 10px;
-  padding: 22px 15px 0 15px;
   &.default{
     border: none;
     background: #fff;
@@ -50,14 +52,14 @@
   }
   &.purple{
     border: none;
-    background: $purple4;
+    // background: $purple4;
     color: $white;
   }
   &.white {
     color: black;
     background-color: $white;
     border-radius: 16px;
-    border: 1px $grey5 solid;
+    // border: 1px $grey5 solid;
   }
 }
 

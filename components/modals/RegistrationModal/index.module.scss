@@ -97,6 +97,17 @@
   margin-top: 24px;
 }
 
+.refreshCode {
+  @extend .timeRemain;
+  cursor: pointer;
+  @include transitionDefault;
+  @media (hover: hover) {
+    &:hover {
+      color: $yellow;
+    }
+  }
+}
+
 .buttonsWrapper {
   display: flex;
   justify-content: space-between;

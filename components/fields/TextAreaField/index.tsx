@@ -4,7 +4,7 @@ import { useField } from 'formik'
 import FieldError from 'components/ui/FieldError'
 import usePressAndHover from 'hooks/usePressAndHover'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 
@@ -17,8 +17,9 @@ const TextAreaInner = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement> 
 }
 interface Props extends IField<string> {
   autoSize?: boolean
-  color: 'white' | 'purple'
+  color?: 'white' | 'purple'
   areaClassname? : string
+  onChange? : (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function TextAreaField(props: Props) {
@@ -29,6 +30,7 @@ export default function TextAreaField(props: Props) {
 
   return (
     <div className={styles.root} ref={ref} data-field={props.name}>
+      {props.label && <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel>}
       <TextAreaInner
         {...field}
         autoSize={props.autoSize}
@@ -51,7 +53,7 @@ export default function TextAreaField(props: Props) {
           [styles.purple]: props.color === 'purple',
         }, props.areaClassname&&props.areaClassname)}
       />
-      {props.label && <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel>}
+      
       <FieldError showError={showError}>{meta.error}</FieldError>
     </div>
   )

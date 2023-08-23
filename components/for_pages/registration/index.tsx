@@ -19,6 +19,9 @@ import { useRouter } from 'next/router'
 import { ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
+import FormErrorScroll from 'components/ui/FormErrorScroll'
+import Button from 'components/ui/Button'
+
 
 
 
@@ -31,6 +34,7 @@ export default function Registration() {
   const [cityId, setCityId] = useState<number>()
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
   const initialValues: IRegistrationComplete = {
@@ -93,13 +97,10 @@ export default function Registration() {
   }
 
   useEffect(()=>{
-    
     if(!userContext.isLogged && !userContext.token) {
       appContext.showModal(ModalType.RegistrationModal)
     }
-    else {
-
-    }
+    return ()=> appContext.hideModal()
   }, [userContext.isLogged])
 
   return ( 
@@ -119,7 +120,7 @@ export default function Registration() {
         </p>
         <FormikProvider value={formik} >
           <Form className={styles.form} autoComplete={'false'} >
-
+            <FormErrorScroll formik={formik} />
             <InputField 
             label={'Имя:'}
             className={styles.input} 
@@ -206,7 +207,10 @@ export default function Registration() {
             validate={Validator.combine([Validator.required, Validator.email])}
             />
 
-          <div className={styles.submitButton} onClick={()=> formik.submitForm()}>Зарегистрироваться</div>
+          {/* <div className={styles.submitButton} onClick={()=> formik.submitForm()}>Зарегистрироваться</div> */}
+          <Button className={styles.submitButton} onClick={()=> formik.submitForm()} spinner={loading}>
+            Зарегистрироваться
+          </Button>
           </Form>
         </FormikProvider>
         

@@ -1,200 +1,204 @@
 @import "styles/index";
 
 .root {
-  border: 2px solid #000;
-  border-radius: 30px;
-  padding: 17px 35px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display: inline-flex;
   position: relative;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
-
-  &.disabled {
-    color: $grey1;
-    background: $grey5;
-    border-color: transparent;
-  }
-
-  &.fluid {
-    width: 100%;
-  }
 }
 
-// style type
-.outlinedPurple {
-  background: transparent;
-  border-color: $purple;
-  color: $purple;
+// .root {
+//   border: 2px solid #000;
+//   border-radius: 30px;
+//   padding: 17px 35px;
+//   cursor: pointer;
+//   font-size: 14px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   display: inline-flex;
+//   position: relative;
+//   justify-content: center;
+//   align-items: center;
+//   transition: background-color 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
 
-  &.hover {
-    background: $purple;
-    color: $white;
-    border-color: transparent;
+//   &.disabled {
+//     color: $grey1;
+//     background: $grey5;
+//     border-color: transparent;
+//   }
 
-    &.press {
-      background: $purple;
-      @include boxShadowButtonInner;
-    }
-  }
-}
+//   &.fluid {
+//     width: 100%;
+//   }
+// }
 
-.icon{
-  border: 0;
-}
+// // style type
+// .outlinedPurple {
+//   background: transparent;
+//   border-color: $purple;
+//   color: $purple;
 
+//   &.hover {
+//     background: $purple;
+//     color: $white;
+//     border-color: transparent;
 
-.outlinedWhite {
-  background: transparent;
-  border-color: #fff;
-  color: #fff;
+//     &.press {
+//       background: $purple;
+//       @include boxShadowButtonInner;
+//     }
+//   }
+// }
 
-  &.hover {
-    background: $white;
-    color: $black;
-    border-color: transparent;
-
-    &.press {
-      border-color: transparent !important;
-      @include boxShadowButtonInner;
-    }
-  }
-}
-
-.filledGrey {
-  color: $dark2;
-  background: $grey5;
-  border: none;
-}
-
-.filledGreen {
-  color: $black;
-  background: $green;
-  border: none;
-  &.hover {
-    background: $black;
-    color: $green;
-    border-color: transparent;
-    &.press {
-      border-color: transparent !important;
-      @include boxShadowButtonInner;
-    }
-  }
-}
-
-.filledWhite {
-  color: $black;
-  background: $white;
-  border: none;
-
-  &.press {
-    @include boxShadowButtonInner;
-  }
-}
+// .icon{
+//   border: 0;
+// }
 
 
-.textDark {
-  color: $black;
-  padding: 4px 8px;
-  background: transparent;
-  border-color: transparent;
-  text-transform: none;
-  text-decoration: none;
-  text-underline-offset: 2px;
+// .outlinedWhite {
+//   background: transparent;
+//   border-color: #fff;
+//   color: #fff;
 
-}
+//   &.hover {
+//     background: $white;
+//     color: $black;
+//     border-color: transparent;
 
-.withIcon {
-  .text {
-    display: flex;
-    align-items: center;
-    > * + *{
-      margin-left: 8px;
-    }
-  }
-}
+//     &.press {
+//       border-color: transparent !important;
+//       @include boxShadowButtonInner;
+//     }
+//   }
+// }
 
-@mixin smallButton {
-  border: none;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  > * + * { margin-left: 4px}
-  padding: 0px 10px;
-  border-radius: 8px;
-  text-transform: none;
+// .filledGrey {
+//   color: $dark2;
+//   background: $grey5;
+//   border: none;
+// }
 
-}
+// .filledGreen {
+//   color: $black;
+//   background: $green;
+//   border: none;
+//   &.hover {
+//     background: $black;
+//     color: $green;
+//     border-color: transparent;
+//     &.press {
+//       border-color: transparent !important;
+//       @include boxShadowButtonInner;
+//     }
+//   }
+// }
 
-// end style type
+// .filledWhite {
+//   color: $black;
+//   background: $white;
+//   border: none;
 
-// font style
-.normal12 {
-  font-size: 12px;
+//   &.press {
+//     @include boxShadowButtonInner;
+//   }
+// }
 
-  @media (max-width: $xs-max) {
-    font-size: 12px;
-  }
-}
 
-.normalBold {
-  font-size: 14px;
-  font-weight: bold;
+// .textDark {
+//   color: $black;
+//   padding: 4px 8px;
+//   background: transparent;
+//   border-color: transparent;
+//   text-transform: none;
+//   text-decoration: none;
+//   text-underline-offset: 2px;
 
-  @media (max-width: $xs-max) {
-    font-size: 12px;
-  }
-}
+// }
 
-.semibold14 {
-  font-size: 14px;
-  font-weight: 600;
-}
+// .withIcon {
+//   .text {
+//     display: flex;
+//     align-items: center;
+//     > * + *{
+//       margin-left: 8px;
+//     }
+//   }
+// }
 
-.semibold16 {
-  font-size: 16px;
-  font-weight: 600;
+// @mixin smallButton {
+//   border: none;
+//   height: 28px;
+//   display: flex;
+//   align-items: center;
+//   text-decoration: none;
+//   > * + * { margin-left: 4px}
+//   padding: 0px 10px;
+//   border-radius: 8px;
+//   text-transform: none;
 
-  @media (max-width: $xs-max) {
-    font-size: 14px;
-  }
-}
+// }
 
-.semibold18 {
-  font-size: 18px;
-  font-weight: 600;
+// // end style type
 
-  @media (max-width: $xs-max) {
-    font-size: 16px;
-  }
-}
+// // font style
+// .normal12 {
+//   font-size: 12px;
 
-// end font style
+//   @media (max-width: $xs-max) {
+//     font-size: 12px;
+//   }
+// }
 
-.text {
-  visibility: visible;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-}
+// .normalBold {
+//   font-size: 14px;
+//   font-weight: bold;
 
-.textHidden {
-  visibility: hidden;
-}
+//   @media (max-width: $xs-max) {
+//     font-size: 12px;
+//   }
+// }
+
+// .semibold14 {
+//   font-size: 14px;
+//   font-weight: 600;
+// }
+
+// .semibold16 {
+//   font-size: 16px;
+//   font-weight: 600;
+
+//   @media (max-width: $xs-max) {
+//     font-size: 14px;
+//   }
+// }
+
+// .semibold18 {
+//   font-size: 18px;
+//   font-weight: 600;
+
+//   @media (max-width: $xs-max) {
+//     font-size: 16px;
+//   }
+// }
+
+// // end font style
+
+// .text {
+//   visibility: visible;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   pointer-events: none;
+// }
+
+// .textHidden {
+//   visibility: hidden;
+// }
 
 .spinner {
   visibility: hidden;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -204,6 +208,6 @@
   visibility: visible;
 }
 
-.arrow {
-  margin-left: 15px;
-}
+// .arrow {
+//   margin-left: 15px;
+// }
