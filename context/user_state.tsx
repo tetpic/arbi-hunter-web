@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
-import UserRepository from 'data/repository/UserRepository'
+import UserRepository from 'data/repositories/UserRepository'
 
 interface IState {
   token: string,

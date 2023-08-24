@@ -6,7 +6,7 @@ import useInterval from 'use-interval'
 import { useRouter } from 'next/router'
 import { useUserContext } from './user_state'
 import { ICodeResponse, ILoginFormData, IToken } from 'data/interfaces/IRegistration'
-import RegistrationRepository from 'data/repository/RegistrationRepository'
+import RegistrationRepository from 'data/repositories/RegistrationRepository'
 
 interface IOtpError {
   show: boolean

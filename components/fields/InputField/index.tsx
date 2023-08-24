@@ -32,7 +32,7 @@ interface Props extends IField<string> {
   error?: string
 }
 
-export default function InputField(props: Props) {
+export default function InputField(props: Props) {  
   const [wrapperRef, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)
   const showError = meta.touched && !!meta.error
@@ -63,7 +63,8 @@ export default function InputField(props: Props) {
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         <input
           {...field}
-          {...(typeof props.value !== 'undefined' ? { value: props.value } : {})}
+          // {...(typeof props.value !== 'undefined' ? { value: props.value } : {})}
+          {...(props.value&&{value:props.value})}
           ref={props.format === 'phone' ? phoneRef as any : null}
           type={props.type ?? 'text'}
           disabled={props.disabled}

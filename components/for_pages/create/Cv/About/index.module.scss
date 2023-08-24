@@ -1,0 +1,19 @@
+@import 'styles/index';
+
+
+.textarea {
+  border: unset !important;
+  border-bottom: 2px $grey solid !important;
+  border-radius: 0px;
+  margin-top: 32px;
+}
+
+.title {
+  margin-top: 48px;
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}

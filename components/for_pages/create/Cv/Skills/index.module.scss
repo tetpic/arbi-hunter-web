@@ -1,0 +1,18 @@
+@import 'styles/index';
+
+.subTitle {
+  color: $white;
+  font-weight: $semibold;
+  font-size: $largeText;
+}
+
+.radioSection {
+  margin-top: 32px;
+}
+
+.radioWrapper {
+  display: flex !important;
+  flex-direction: column;
+  row-gap: 16px !important;
+  margin-top: 16px;
+}

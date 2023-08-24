@@ -1,5 +1,9 @@
 @import 'styles/index';
 
+.root {
+  margin-top: 20px;
+}
+
 
 .link {
   display: flex;
@@ -34,4 +38,51 @@
   circle {
     @include transitionDefault;
   }
+}
+
+.radioCircle {
+  border: 1px $greyLight solid;
+  border-radius: 4px;
+}
+
+
+.radioItemActive {
+  .radioCircle {
+    background-color: $yellow;
+  }
+}
+
+.radioWrapper {
+  display: flex !important;
+  flex-direction: column;
+  row-gap: 16px !important;
+}
+
+.experienceWrapper {
+  display: grid;
+  grid-template-areas: 'i c' 'i d';
+  color: $white;
+  row-gap: 16px;
+  grid-template-columns: 1fr 2fr;
+  margin-top: 48px;
+  align-items: flex-start;
+}
+
+.time {
+  grid-area: i;
+  color: $greyLight;
+  font-size: $smallText;
+
+}
+
+.companyName {
+  grid-area: c;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.description {
+  grid-area: d;
+  font-size: $smallText;
+  font-weight: $regular;
 }

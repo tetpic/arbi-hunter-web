@@ -1,6 +1,6 @@
 import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { DeepPartial } from 'types/types'
@@ -11,6 +11,11 @@ import styles from './index.module.scss'
 import { CompensationType, Currency } from 'types/enums'
 import Compensation from './Compensation'
 import Experience from './Experience'
+import Education from './Education'
+import About from './About'
+import Skills from './Skills'
+import Busyness from './Busyness'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
@@ -32,17 +37,31 @@ export default function Cv(props: Props) {
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
 
-  const submit = () => {
+  const userContext = useUserContext()
 
+  const submit = (data: DeepPartial<ICVCreate>) => {
+
+    debugger
   }
+
+  const CVItemsCount = 7
 
   const formik = useFormik<DeepPartial<ICVCreate>>({
     initialValues: {
-      position: '',
+      firstName: userContext.user.profiles[0].firstName,
+      lastName: userContext.user.profiles[0].lastName,
+      patronymic: userContext.user.profiles[0].patronymic,
+      birthday: userContext.user.profiles[0].birthday,
       compensation: CompensationType.Salary,
+      phone: userContext.user.profiles[0].phone,
+      email: userContext.user.profiles[0].email,
+      cityId: userContext.user.profiles[0].cityId,
+      countryId: userContext.user.profiles[0].countryId,
       currency: Currency.RUB,
       experienceInfo: [],
-      
+      educationInfo: [],
+      coursesInfo: [],
+      bio: 'test',
     },
     onSubmit: submit
   })
@@ -56,6 +75,14 @@ export default function Cv(props: Props) {
         return [<Compensation/>, CvNavigation.Salary]
       case 3: 
         return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
+      case 4:
+        return [<Education name={'education'}/>, CvNavigation.Education]
+      case 5: 
+        return [<About/>, CvNavigation.About]
+      case 6: 
+        return [<Skills/>, CvNavigation.Skills]
+      case 7: 
+        return [<Busyness/>, CvNavigation.Busyness]
     }
   }
 
@@ -67,6 +94,14 @@ export default function Cv(props: Props) {
         return 'Уровень дохода'
       case CvNavigation.Experience:
         return 'Опыт работы'
+      case CvNavigation.Education:
+        return 'Образование'
+      case CvNavigation.About:
+        return 'Описание'
+      case CvNavigation.Skills:
+        return 'Навыки и инструменты'
+      case CvNavigation.Busyness:
+        return 'Занятость'
     }
   }
 
@@ -79,29 +114,31 @@ export default function Cv(props: Props) {
   useEffect(()=>{
     progressHandler(progress)
   }, [progress])
-
-
-
-
-  
   
 
   return <div className={styles.root}>
     <UserRegImage type={ProfileType.Employee}/>
     <div className={styles.content}>    
       <p className={styles.title}>{title}</p>
-      <ProgressBar progress={progress} pointsCount={9}/>
+      <ProgressBar progress={progress} pointsCount={CVItemsCount} onClick={(p: number) => setProgress(p)}/>
       <FormikProvider value={formik}>
         <Form>
           {page} 
+
+          <div className={styles.buttonWrapper}>
+            {progress > 1 && 
+              <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(state=> state-1)}>Назад</Button>
+            }
+            {progress < CVItemsCount &&
+              <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(state=> state+1)}>Продолжить</Button>
+            }
+            { progress === CVItemsCount &&
+              <Button className={styles.buttonYellow} type='submit' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+            }
+          </div>
         </Form>
       </FormikProvider>
-      <div className={styles.buttonWrapper}>
-        {progress > 1 && 
-          <Button className={styles.buttonBlack} onClick={()=>setProgress(state=> state-1)}>Назад</Button>
-        }
-        <Button className={styles.buttonYellow} onClick={()=>setProgress(state=> state+1)}>Продолжить</Button>
-    </div>
+      
     </div>
   </div>
 }

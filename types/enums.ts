@@ -81,6 +81,70 @@ export enum Currency {
   EUR = 'EUR',
 }
 
+export enum EducationTypes {
+  Secondary= 'secondary',
+  SecondarySpecial= 'secondarySpecial',
+  IncompleteHigher= 'incompleteHigher',
+  Higher= 'higher',
+  Bachelor= 'bachelor',
+  Master= 'master',
+  PhD= 'PhD',
+  Doctor= 'doctor',
+}
+
+export enum LanguagesLevel {
+  Elementary = 'elementary', 
+  Intermediate = 'intermediate', 
+  Advanced = 'advanced', 
+  Proficient = 'proficient'
+}
+
+export enum Languages {
+  en ='en',
+  de ='de',
+  fr ='fr',
+  cs ='cs',
+  nl ='nl',
+  et ='et',
+  pt ='pt',
+  it ='it',
+  ja ='ja',
+  ko ='ko',
+  lv ='lv',
+  es ='es',
+  uk ='uk',
+  zh ='zh',
+  ru ='ru',
+}
+
+
+export enum VacancyLookType {
+  ActivelyLooking = 'activelyLooking',
+  PassivelyLooking = 'passivelyLooking',
+  NotLooking = 'notLooking'
+}
+
+export enum  EmploymentType {
+  PartTime = 'partTime',
+  FullTime = 'fullTime',
+  Project = 'project',
+}
+
+export enum ScheduleType {
+  FullDay = 'fullDay', 
+  Flexible = 'flexible', 
+  Remote = 'remote'
+}
+
+export enum HirerRole {
+  Admin = 'admin',
+  Manager = 'manager'
+}
+
+export enum ActivityStatus {
+  Online = 'online',
+  Offline = 'offline'
+}
 
 
 

@@ -47,7 +47,9 @@ export default function RadioListField<T>(props: Props<T>) {
               activeClassName={props.activeItemClassName}
               labelClassName={props.itemLabelClassName}
               circleClassName={props.itemCircleClassname}
-              value={item.value} isActive={item.value === value} label={item.label}
+              value={item.value} 
+              isActive={item.value === value} 
+              label={item.label}
               onChange={() => handleCheckboxChanged(item.value)} />
         ))}
       </div>

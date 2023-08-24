@@ -25,27 +25,18 @@
   row-gap: 16px;
 }
 
-.backButton {
-  display: flex;
-  align-items: center;
-  color: $greyLight;
-  font-size: $largeText;
-  font-weight: $semibold;
-  column-gap: 8px;
-  cursor: pointer;
-  svg {
-    display: block;
-    margin-bottom: 4px;
-  }
-}
+
 
 .timeWrapper {
   display: flex;
   width: 100%;
   justify-content: space-between;
   margin-top: 24px;
-  .input {
-    width: 40%;
+  :global .react-datepicker__tab-loop {
+    position: absolute;
+    right: 0;
+    top: 0;
+
   }
 }
 
@@ -60,6 +51,4 @@
   cursor: pointer;
   @include transitionDefault;
   @include hoverButtonYellow;
-
-
 }

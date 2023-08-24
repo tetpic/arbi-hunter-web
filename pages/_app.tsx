@@ -16,6 +16,7 @@ import { UserWrapper } from 'context/user_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
+import { CvWrapper } from 'context/cv_state'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -41,6 +42,7 @@ function MyApp({Component, pageProps}: AppProps) {
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile}>
         <UserWrapper token={pageProps.token}>
+          <CvWrapper>
           <AuthWrapper>
 
             <Head>
@@ -56,6 +58,7 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <Snackbar/>}
           </AuthWrapper>
+          </CvWrapper>
         </UserWrapper>
       </AppWrapper>
     </CookiesProvider>
