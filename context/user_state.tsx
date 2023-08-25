@@ -1,6 +1,6 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUser } from 'data/interfaces/IUser'
-import {createContext, useContext, useEffect, useState} from 'react'
+import {createContext, MutableRefObject, useContext, useEffect, useRef, useState} from 'react'
 import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
@@ -11,6 +11,8 @@ interface IState {
   token: string,
   setToken: (token: string) => void
   isLogged: boolean
+  isAuth: MutableRefObject<boolean>
+  userLoaded: boolean
   user: IUser
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
@@ -23,6 +25,8 @@ const defaultValue: IState = {
   token: null,
   setToken: async (token) => null,
   isLogged: false,
+  isAuth: null,
+  userLoaded: false,
   user: undefined,
   profileType: ProfileType.Employee,
   setProfileType: () => null,
@@ -41,6 +45,8 @@ export function UserWrapper(props: Props) {
   const [userLoaded, setUserLoaded] = useState<boolean>(false)
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(false)
+  const userRef = useRef<IUser | null>(null)
+  const isAuth = useRef<boolean>(false)
 
   const updateUser = async (newUser?: IUser): Promise<IUser> => {
     if (newUser) {
@@ -50,10 +56,9 @@ export function UserWrapper(props: Props) {
       
       const data = await UserRepository.getCurrentUser()
       if (data) {
-        
         setUser(data)
       }
-      // setUserLoaded(true)
+      setUserLoaded(true)
       // return data
     }
   }
@@ -78,16 +83,18 @@ export function UserWrapper(props: Props) {
     setIsLogged(true)
   }
 
-  useEffect(() => {    
+  useEffect(() => {
+    userRef.current = user
+  }, [user])
+
+  useEffect(() => {  
     if (props.token) {
       setIsLogged(true)
-    } else {
-      setIsLogged(false)
+      isAuth.current = true
     }
   }, [props.token])
 
   useEffect(() => {
-    
     if (props.token) {
       updateUser()
       .then(() => {
@@ -105,9 +112,11 @@ export function UserWrapper(props: Props) {
    token,
    setToken,
    isLogged,
+   userLoaded,
    user,  
    profileType,
    setProfileType,
+   isAuth
   }
 
   return (

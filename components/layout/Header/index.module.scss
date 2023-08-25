@@ -39,12 +39,8 @@
 
 .linksWrapper {
   display: flex;
-  width: 40%;
+  width: Max(320px, 40%);
   justify-content: space-between;
-  @include mq($SmDesktopWidth, max) {
-    order: 2;
-    width: 55%;
-  }
 }
 
 
@@ -88,9 +84,9 @@
   cursor: pointer;
 
   &_active {
-    // background-color: $greyLightAlt;
     color: $white;
   }
+
 }
 
 .link {
@@ -120,6 +116,11 @@
     border: 2px $yellow solid;
     color: $yellow;
     pointer-events: none;
+  }
+
+  &_create {
+    border: 2px $yellow solid;
+    color: $yellow;
   }
 }
 

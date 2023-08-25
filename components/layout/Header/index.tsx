@@ -7,6 +7,7 @@ import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
+import UserPic from 'components/ui/UserPic'
 
 interface Props {
 }
@@ -29,6 +30,7 @@ export default function Header(props: Props) {
     <div className={styles.root}>
       <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
+        {!userContext.isLogged &&
         <div className={styles.modeWrapper}>
           <div 
           className={classnames(styles.buttonBack, profileType ===ProfileType.Hirer&&styles.buttonBack_active)} 
@@ -52,6 +54,7 @@ export default function Header(props: Props) {
             Компания
           </button>
         </div>
+        }
 
         <div className={styles.linksWrapper}>
           <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
@@ -60,9 +63,13 @@ export default function Header(props: Props) {
         </div>
         
         <div className={styles.userWrapper}>
-          {!userContext.user?.id && <>
+          {!userContext.isLogged && <>
             <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
             <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
+          </>}
+          {userContext.isLogged && <>
+            <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}>Создать резюме</Link>
+            <UserPic/>
           </>}
         </div>
       </div>

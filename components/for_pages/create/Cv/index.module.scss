@@ -45,3 +45,9 @@
   @extend .button;
   @include hoverButtonYellow;
 }
+
+.regImage  {
+  @include mq($SmDesktopWidth, max) {
+    display: none;
+  }
+}

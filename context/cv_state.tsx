@@ -3,14 +3,18 @@ import { createContext, useContext, useState } from 'react'
 import { DeepPartial } from 'types/types'
 
 interface IState {
-  currentCv: DeepPartial<ICVCreate>,
-  setCurrentCv: (v: DeepPartial<ICVCreate>) => void
+  currentCv: ICVCreate,
+  setCurrentCv: (v: ICVCreate) => void
+  progress: number
+  setProgress: (p: number) => void
 
 }
 
 const defaultValue: IState = {
   currentCv: null,
-  setCurrentCv: () => null
+  setCurrentCv: () => null,
+  progress: 1,
+  setProgress: (p) => null
 }
 
 const CvContext = createContext<IState>(defaultValue)
@@ -20,17 +24,24 @@ interface Props {
 }
 
 export function CvWrapper(props: Props) {
-  const [currentCv, setCv] = useState<DeepPartial<ICVCreate>>()
+  const [currentCv, setCv] = useState<ICVCreate>()
+  const [progress, handleProgress] = useState<number>(1)
 
-  const setCurrentCv = (v: DeepPartial<ICVCreate>) => {
+  const setCurrentCv = (v: ICVCreate) => {
     setCv(state=> {return {...state, ...v}})
+  }
+
+  const setProgress = (p: number) => {
+    handleProgress(p)
   }
 
 
   const value: IState = {
     ...defaultValue,
     currentCv,
-    setCurrentCv
+    setCurrentCv,
+    progress,
+    setProgress
   }
 
   return (

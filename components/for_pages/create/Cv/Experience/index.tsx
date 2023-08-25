@@ -16,7 +16,7 @@ export default function Experience(props: Props) {
   const cvContext = useCvContext()
 
   const [showDetails, setDetails] = useState<boolean>(false)
-  const [detailsInfo, setDetailsInfo] = useState<ExperienceInfo[]>([])
+  const [detailsInfo, setDetailsInfo] = useState<ExperienceInfo[]>(cvContext.currentCv?.experienceInfo||[])
   const [activeDetails, setActiveDetails] = useState<ExperienceInfo>()
   const { setFieldValue } = useFormikContext()
 
@@ -26,8 +26,10 @@ export default function Experience(props: Props) {
     setActiveDetails(undefined)
   }
 
-  useEffect(()=>{
-    setFieldValue(props.name, detailsInfo)
+  useEffect(()=>{    
+    setFieldValue(props.name, [...detailsInfo])
+    let currentCv = cvContext.currentCv
+    cvContext.setCurrentCv({...currentCv, experienceInfo: [...detailsInfo]})
   }, [detailsInfo])
 
 
@@ -45,7 +47,7 @@ export default function Experience(props: Props) {
       />     
       
    
-      {detailsInfo&&detailsInfo.length>0&&detailsInfo.map(el=> {
+      {cvContext.currentCv?.experienceInfo&&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
         return (<div className={styles.experienceWrapper} onClick={()=>setActiveDetails(el)}>
           <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
           <p className={styles.companyName}>{el.company}</p>

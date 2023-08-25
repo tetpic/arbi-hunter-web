@@ -33,3 +33,16 @@
 .inputHidden {
   display: none;
 }
+
+
+.position {
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+}
+
+.positionWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}

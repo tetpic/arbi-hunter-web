@@ -19,6 +19,7 @@ interface Props extends IButton {
   hover?: boolean
   stopPropagation?: boolean
   icon?: ReactElement
+  title? : string
 }
 
 export default function Button(props: Props) {
@@ -64,6 +65,7 @@ export default function Button(props: Props) {
       ref={props.buttonRef ?? ref}
       type={props.type}
       form={props.form}
+      title={props.title}
       onClick={(e) => {
         if (props.stopPropagation) {
           e.stopPropagation()

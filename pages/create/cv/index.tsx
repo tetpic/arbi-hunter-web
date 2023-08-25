@@ -1,10 +1,16 @@
 import Cv from 'components/for_pages/create/Cv'
+import { useUserContext } from 'context/user_state'
 import styles from './index.module.scss'
 
 interface Props {
 }
 
 export default function CvCreate(props: Props) {
+  const userContext = useUserContext()
 
-  return <Cv/>
+  return (
+    <>{userContext.isLogged && userContext.userLoaded &&
+      <Cv/>
+    }</>
+  )
 }

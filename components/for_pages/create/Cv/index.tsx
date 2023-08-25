@@ -1,6 +1,6 @@
 import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { use, useEffect, useState } from 'react'
+import { KeyboardEventHandler, use, useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { DeepPartial } from 'types/types'
@@ -16,6 +16,7 @@ import About from './About'
 import Skills from './Skills'
 import Busyness from './Busyness'
 import { useUserContext } from 'context/user_state'
+import { useCvContext } from 'context/cv_state'
 
 interface Props {
 }
@@ -32,12 +33,13 @@ enum CvNavigation {
 }
 
 export default function Cv(props: Props) {
-
-  const [progress, setProgress] = useState<number>(1)
+  
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
 
   const userContext = useUserContext()
+  const cvContext = useCvContext()
+  const {progress, setProgress} = cvContext
 
   const submit = (data: DeepPartial<ICVCreate>) => {
 
@@ -58,10 +60,10 @@ export default function Cv(props: Props) {
       cityId: userContext.user.profiles[0].cityId,
       countryId: userContext.user.profiles[0].countryId,
       currency: Currency.RUB,
-      experienceInfo: [],
-      educationInfo: [],
-      coursesInfo: [],
-      bio: 'test',
+      experienceInfo: cvContext.currentCv?.experienceInfo||[],
+      educationInfo: cvContext.currentCv?.educationInfo||[],
+      coursesInfo: cvContext.currentCv?.coursesInfo||[],
+      bio: '',
     },
     onSubmit: submit
   })
@@ -76,7 +78,7 @@ export default function Cv(props: Props) {
       case 3: 
         return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
       case 4:
-        return [<Education name={'education'}/>, CvNavigation.Education]
+        return [<Education name={'educationInfo'}/>, CvNavigation.Education]
       case 5: 
         return [<About/>, CvNavigation.About]
       case 6: 
@@ -111,26 +113,36 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
+  const keyDownHandler:KeyboardEventHandler<HTMLDivElement> = (event) => {    
+    if((event.code === 'Enter'||event.code === 'ArrowRight') && progress < CVItemsCount) {
+      setProgress(progress+1)      
+    }
+    if (event.code === "ArrowLeft" && progress > 1) {
+      setProgress(progress-1)
+    }
+    
+  }
+
   useEffect(()=>{
     progressHandler(progress)
   }, [progress])
   
 
-  return <div className={styles.root}>
-    <UserRegImage type={ProfileType.Employee}/>
+  return <div className={styles.root} onKeyDown={keyDownHandler} tabIndex={0}>
+    <UserRegImage type={ProfileType.Employee} className={styles.regImage}/>
     <div className={styles.content}>    
       <p className={styles.title}>{title}</p>
       <ProgressBar progress={progress} pointsCount={CVItemsCount} onClick={(p: number) => setProgress(p)}/>
       <FormikProvider value={formik}>
-        <Form>
+        <Form >
           {page} 
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && 
-              <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(state=> state-1)}>Назад</Button>
+              <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(state=> state+1)}>Продолжить</Button>
+              <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(progress+1)}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
               <Button className={styles.buttonYellow} type='submit' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>

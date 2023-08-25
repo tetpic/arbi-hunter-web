@@ -25,7 +25,7 @@ export default function ModalContainer(props: Props) {
           {appContext.modal === ModalType.RegistrationModal && <RegistrationModal/>}
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.SpecializationModal} {...commonSettings}>
-          {appContext.modal === ModalType.SpecializationModal && <SpecializationModal/>}
+          {appContext.modal === ModalType.SpecializationModal && <SpecializationModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
       </div>
     </RemoveScroll>

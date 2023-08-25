@@ -3,7 +3,7 @@ import request from 'utils/request'
 
 export default class CvRepository {
 
-  static async sugestCVPosition(s: string): Promise<IPosition | null> {
+  static async sugestCVPosition(s: string): Promise<IPosition[] | null> {
     const res = await request(`/api/cv/suggest?search=${s}`)
     if (res.err) {
       return null

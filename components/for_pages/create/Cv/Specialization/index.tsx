@@ -1,4 +1,5 @@
 import InputField from 'components/fields/InputField'
+import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import { ModalType } from 'types/enums'
@@ -11,6 +12,7 @@ interface Props {
 export default function Specialization(props: Props) {
 
   const appContext = useAppContext()
+  const cvContext = useCvContext()
 
 
   const openModalHandler = () => {
@@ -20,8 +22,13 @@ export default function Specialization(props: Props) {
   return ( 
     <div className={styles.root}>
       <p className={styles.title}>Выберите специализацию <Image src={'/icons/book.png'} alt={'напишите'} width={24} height={24}/></p>
-      <InputField className={styles.inputHidden} name={'position'} type={'hidden'} styleType={'default'} color={'default'}/>
-      <p className={styles.link} onClick={openModalHandler}>Выбрать специализацию</p>
+      <InputField className={styles.inputHidden} value={cvContext.currentCv?.position} name={'position'} type={'hidden'} styleType={'default'} color={'default'}/>
+      <div className={styles.positionWrapper}>
+        {cvContext?.currentCv?.position && 
+          <p className={styles.position}>{cvContext.currentCv.position}</p>
+        }
+        <p className={styles.link} onClick={openModalHandler}>{cvContext.currentCv?.position? 'Изменить специализацию': 'Выбрать специализацию'}</p>
+      </div>
     </div>
   )
 }

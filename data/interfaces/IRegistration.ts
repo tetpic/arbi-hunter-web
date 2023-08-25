@@ -17,6 +17,11 @@ export interface IRegistrationComplete {
     company?: string|undefined,
 }
 
+export interface ILogin {
+  login: string,
+  password: string
+}
+
 export interface IRegistrationPhone {
   phone: string,
   code?: string 

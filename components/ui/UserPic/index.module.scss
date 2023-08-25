@@ -1,0 +1,11 @@
+@import 'styles/index';
+
+.imageWrapper {
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $grey;
+
+  img {
+    display: block;
+  }
+}

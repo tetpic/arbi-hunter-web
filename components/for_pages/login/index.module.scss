@@ -109,4 +109,29 @@
   }
 }
 
+.buttonsWrapper {
+  display: flex;
+  column-gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.button  {
+  padding: 10px 24px;
+  background-color: $grey;
+  border-radius: 8px;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  @include transitionDefault;
+  @include hoverButtonBlack;
+  cursor: pointer;
+
+  &_active {
+    background-color: $yellow;
+    color: $black;
+    pointer-events: none;
+  }
+}
+
 
