@@ -42,7 +42,6 @@ export default function Cv(props: Props) {
   const {progress, setProgress} = cvContext
 
   const submit = (data: DeepPartial<ICVCreate>) => {
-
     debugger
   }
 
@@ -63,7 +62,9 @@ export default function Cv(props: Props) {
       experienceInfo: cvContext.currentCv?.experienceInfo||[],
       educationInfo: cvContext.currentCv?.educationInfo||[],
       coursesInfo: cvContext.currentCv?.coursesInfo||[],
-      bio: '',
+      bio: cvContext.currentCv?.bio||'',
+      skillsIds: [],
+      
     },
     onSubmit: submit
   })
@@ -113,22 +114,22 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
-  const keyDownHandler:KeyboardEventHandler<HTMLDivElement> = (event) => {    
-    if((event.code === 'Enter'||event.code === 'ArrowRight') && progress < CVItemsCount) {
-      setProgress(progress+1)      
-    }
-    if (event.code === "ArrowLeft" && progress > 1) {
-      setProgress(progress-1)
-    }
+  // const keyDownHandler:KeyboardEventHandler<HTMLDivElement> = (event) => {    
+  //   if((event.code === 'ArrowRight') && progress < CVItemsCount) {
+  //     setProgress(progress+1)      
+  //   }
+  //   if (event.code === "ArrowLeft" && progress > 1) {
+  //     setProgress(progress-1)
+  //   }
     
-  }
+  // }
 
   useEffect(()=>{
     progressHandler(progress)
   }, [progress])
   
 
-  return <div className={styles.root} onKeyDown={keyDownHandler} tabIndex={0}>
+  return <div className={styles.root}>
     <UserRegImage type={ProfileType.Employee} className={styles.regImage}/>
     <div className={styles.content}>    
       <p className={styles.title}>{title}</p>

@@ -20,7 +20,7 @@ interface Props extends IField<string> {
   autoSize?: boolean
   color?: 'white' | 'purple'
   areaClassname? : string
-  onChange? : (e: ChangeEvent<HTMLInputElement>) => void
+  onChange? : (e: ChangeEvent<HTMLTextAreaElement>) => void
   value?: string
 }
 

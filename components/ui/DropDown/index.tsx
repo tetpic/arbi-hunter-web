@@ -10,21 +10,22 @@ interface Props {
     rootClassName?: string
     optionClassName?: string,
   }
-  onClick: (el: any)=>void
-  onNext: ()=>void
+  onClick?: (el: any)=>void
+  onNext?: ()=>void
   nameField: string
-  loading: boolean
-  reference: (r: HTMLDivElement)=>void
-  isActive: boolean
+  loading?: boolean
+  reference?: (r: HTMLDivElement)=>void
+  isActive?: boolean
 }
 
 export default function DropDown(props: Props) {
+  debugger
 
   const dropDownContainer = useRef<HTMLDivElement>(null!)
 
-  return ( <div className={classNames(styles.root, props.classNames.rootClassName, !props.isActive&&styles.disabled)} ref={r=>props.reference(r)} >
+  return ( <div className={classNames(styles.root, props.classNames?.rootClassName, !props.isActive&&styles.disabled)} ref={r=>props.reference&&props.reference(r)} >
 
-    {props.options.length > 0 &&
+    {props.options?.length > 0 &&
     <div className={styles.dropdownContainer} 
     ref={dropDownContainer}
     >
@@ -37,7 +38,7 @@ export default function DropDown(props: Props) {
       loader={props.loading ? <Spinner size={50} color="#fff" secondaryColor="rgba(255,255,255,0.4)" /> : null}
       scrollableTarget='scrollableDiv'
       >
-        {props.options.map(el => {
+        {props.options?.map(el => {
           return <p className={classNames(styles.option, props.classNames.optionClassName)} onClick={()=>props.onClick(el)}>{el[props.nameField]}</p>
         })}
       </InfiniteScroll>

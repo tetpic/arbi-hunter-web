@@ -66,6 +66,17 @@ export default class CvRepository {
     }
     return res
   }
+
+  static async sourcesList(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/source`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }
 
 

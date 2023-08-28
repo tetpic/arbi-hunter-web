@@ -11,7 +11,13 @@ export interface IPosition {
   position: string
 }
 
-
+export interface ISkill {
+  id: number,
+  title: string,
+  createdAt: string,
+  updatedAt: string,
+  deletedAt: string|null
+}
 
 export interface ExperienceInfo extends TimeLine {
   company: string,
@@ -28,6 +34,14 @@ export interface CoursesInfo {
   date: string, //'2028'
   location: string,
   name: string
+}
+
+export interface Source {
+  id: number,
+  title: string,
+  createdAt: string,
+  updatedAt: string,
+  deletedAt: string|null
 }
 
 export interface ICVCreate extends IJob {
@@ -47,3 +61,4 @@ export interface ICVCreate extends IJob {
   educationInfo: EducationInfo[],
   coursesInfo: CoursesInfo[],
 }
+

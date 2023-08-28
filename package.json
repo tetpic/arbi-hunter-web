@@ -1,11 +1,13 @@
 {
   "dependencies": {
+    "@cospired/i18n-iso-languages": "^4.1.0",
     "@react-cmpt/use-throttle": "^0.3.3",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
     "formik": "^2.4.3",
     "google-libphonenumber": "^3.2.33",
+    "i18n-iso-countries": "^7.6.0",
     "js-cookie": "^3.0.5",
     "next": "^13.4.16",
     "next-i18next": "^14.0.0",

@@ -1,7 +1,8 @@
+import { ISkill } from 'data/interfaces/ICV'
 import request from 'utils/request'
 
 export default class SkillsRepository {
-  static async findSkill(data: string): Promise<any|null> {
+  static async findSkill(data: string): Promise<{data: ISkill[]}|null> {
     const res = await request({
       method: 'get',
       url: `/api/skill?search=${data}`,

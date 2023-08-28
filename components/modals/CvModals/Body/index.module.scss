@@ -1,10 +1,5 @@
 @import 'styles/index';
 
-.rootLayout {
-  background-color: $black;
-  max-width: 520px;
-}
-
 .inputWrapper {
   border-radius: 8px;
   border: 2px $grey solid;
@@ -43,22 +38,6 @@
   margin-top: 16px;
 }
 
-.position {
-  padding: 12px 16px;
-  color: $white;
-  font-weight: $medium;
-  font-size: $mediumText;
-  border-radius: 8px;
-  background-color: $grey;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hoverButtonBlack;
-  &_active {
-    background-color: $yellow;
-    color: $black;
-  }
-}
-
 .button {
   color: $white;
   font-size: $mediumText;
@@ -83,4 +62,3 @@
   justify-content: flex-end;
   margin-top: 24px;
 }
-
