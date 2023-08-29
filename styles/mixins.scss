@@ -278,6 +278,14 @@
   }
 }
 
+@mixin hoverButtonSmooth {
+  @media (hover: hover) {
+    &:hover {
+      background-color: $greyLight;
+    }
+  }
+}
+
 @mixin hoverTag {
   @media (hover: hover ) {
     &:hover {

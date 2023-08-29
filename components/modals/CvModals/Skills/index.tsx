@@ -20,7 +20,7 @@ export default function SkillsModal(props: Props) {
   const cvContext = useCvContext()
   const appContext = useAppContext()
 
-  const [skills, setSkills] = useState<ISkill[]>([])
+  const [skills, setSkills] = useState<ISkill[]>(cvContext.helpObjects?.skills||[])
   const [choosenSkill, setChoosenSkill] = useState<ISkill[]>([])
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=> {
@@ -41,11 +41,10 @@ export default function SkillsModal(props: Props) {
       appContext.showSnackbar('Выберите специализацию из списка', SnackbarType.error)
       return
     }
-    const currentCv = cvContext.currentCv
-    const skillsIds = currentCv?.skillsIds || []
-    const savedSkills = choosenSkill.map(el=> el.id)
-    cvContext.setCurrentCv({...currentCv, skillsIds: [...skillsIds, ...savedSkills]}) 
-    cvContext.setHelpObjects({skills: choosenSkill})
+    debugger
+    const helperSkills = cvContext.helpObjects?.skills||[]
+    cvContext.setHelpObjects({skills: [...helperSkills, ...choosenSkill]})
+    setChoosenSkill([])
     props.onClose()
   }
 

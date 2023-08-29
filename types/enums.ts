@@ -2,7 +2,8 @@ export enum ModalType {
   RegistrationModal = 'registrationModal',
   SpecializationModal = 'specializationModal',
   SkillsModal = 'skillsModal',
-  LanguageModal = 'languageModal'
+  LanguageModal = 'languageModal',
+  SourcesModal= 'sourcesModal'
 }
 
 export enum SnackbarType {
@@ -155,5 +156,12 @@ export enum LanguageKnowLevel {
   Advanced = 'advanced',
   Professional = 'proficient',
 }
+
+export enum WorkExperience {
+  Present = 'present',
+  Absent = 'absent',
+}
+
+
 
 

@@ -1,4 +1,4 @@
-import { ICVCreate, IPosition } from 'data/interfaces/ICV'
+import { ICategory, ICVCreate, IPosition, Source } from 'data/interfaces/ICV'
 import request from 'utils/request'
 
 export default class CvRepository {
@@ -67,10 +67,33 @@ export default class CvRepository {
     return res
   }
 
-  static async sourcesList(): Promise<any|null> {
+  static async sourcesList(): Promise<{data: Source[]}|null> {
     const res = await request({
       method: 'get',
       url: `/api/source`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getCategories(): Promise<ICategory[]|null> {
+    const res = await request({
+      method: 'get',
+      //TODO: язык должен добавляться динамически
+      url: `/api/service-category?lang=ru`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getSubCategories(data: number): Promise<ICategory[]|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/service-category?lang=ru&categoryId=${data}`,
     })
     if(res.err) {
       return null

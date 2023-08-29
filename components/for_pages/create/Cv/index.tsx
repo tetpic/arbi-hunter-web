@@ -1,14 +1,12 @@
 import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { KeyboardEventHandler, use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
 import { Form, FormikProvider, useFormik } from 'formik'
-import { DeepPartial } from 'types/types'
 import { ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
 import Specialization from './Specialization'
-import styles from './index.module.scss'
-import { CompensationType, Currency } from 'types/enums'
+import { CompensationType, Currency, EducationTypes, EmploymentType, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
 import Compensation from './Compensation'
 import Experience from './Experience'
 import Education from './Education'
@@ -17,6 +15,11 @@ import Skills from './Skills'
 import Busyness from './Busyness'
 import { useUserContext } from 'context/user_state'
 import { useCvContext } from 'context/cv_state'
+import CvRepository from 'data/repositories/CvRepository'
+import { useResize } from 'components/hooks/useResize'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
+import { useRouter } from 'next/router'
+import styles from './index.module.scss'
 
 interface Props {
 }
@@ -33,38 +36,69 @@ enum CvNavigation {
 }
 
 export default function Cv(props: Props) {
+  const {isPhoneWidth} = useResize()
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
 
   const userContext = useUserContext()
   const cvContext = useCvContext()
+  const router = useRouter()
   const {progress, setProgress} = cvContext
 
-  const submit = (data: DeepPartial<ICVCreate>) => {
+  const submit = (data: ICVCreate) => {
+    const {activeSources, languageKnowledges, skills} = cvContext?.helpObjects
+    const sendData: ICVCreate = {
+      ...data, 
+      skillsIds: skills.map(el=>el.id), 
+      salary: Number(data.salary),
+      languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
+      sourcesIds: Array.from(activeSources).map(el=> el.id)
+    }
     debugger
+    CvRepository.createCV(sendData)
+    .then(res => {
+      debugger
+    })
+    .catch(err=>{
+      debugger
+      alert(err.toString())
+    })
   }
 
   const CVItemsCount = 7
 
-  const formik = useFormik<DeepPartial<ICVCreate>>({
+  const formik = useFormik<ICVCreate>({
     initialValues: {
-      firstName: userContext.user.profiles[0].firstName,
-      lastName: userContext.user.profiles[0].lastName,
-      patronymic: userContext.user.profiles[0].patronymic,
-      birthday: userContext.user.profiles[0].birthday,
+      firstName: userContext.user?.profiles[0]?.firstName,
+      lastName: userContext.user?.profiles[0]?.lastName,
+      patronymic: userContext.user?.profiles[0]?.patronymic||'unset',
+      birthday: userContext.user?.profiles[0]?.birthday,
       compensation: CompensationType.Salary,
-      phone: userContext.user.profiles[0].phone,
-      email: userContext.user.profiles[0].email,
-      cityId: userContext.user.profiles[0].cityId,
-      countryId: userContext.user.profiles[0].countryId,
+      phone: userContext.user?.profiles[0]?.phone,
+      email: userContext.user?.profiles[0]?.email,
+      telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
+      cityId: userContext.user?.profiles[0]?.cityId,
+      countryId: userContext.user?.profiles[0]?.countryId,
       currency: Currency.RUB,
       experienceInfo: cvContext.currentCv?.experienceInfo||[],
       educationInfo: cvContext.currentCv?.educationInfo||[],
       coursesInfo: cvContext.currentCv?.coursesInfo||[],
       bio: cvContext.currentCv?.bio||'',
       skillsIds: [],
-      
+      vacancyLookType: userContext.user?.profiles[0].vacancyLookType ||VacancyLookType.NotLooking,
+      workExperiencePresense: WorkExperience.Absent,
+      education: EducationTypes.Secondary,
+      relocation: null,
+      position: '',
+      nativeLanguage: userContext.user?.language||'ru',
+      categoriesIds: null,
+      sourcesIds: null,
+      salary: null,
+      schedule: ScheduleType.FullDay, 
+      employment: EmploymentType.FullTime, 
+      languageKnowledges: null, 
+      published: false,
     },
     onSubmit: submit
   })
@@ -114,32 +148,32 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
-  // const keyDownHandler:KeyboardEventHandler<HTMLDivElement> = (event) => {    
-  //   if((event.code === 'ArrowRight') && progress < CVItemsCount) {
-  //     setProgress(progress+1)      
-  //   }
-  //   if (event.code === "ArrowLeft" && progress > 1) {
-  //     setProgress(progress-1)
-  //   }
-    
-  // }
-
   useEffect(()=>{
+    if(progress < 1) {
+      router.back()
+      return
+    }
     progressHandler(progress)
+
   }, [progress])
   
 
   return <div className={styles.root}>
     <UserRegImage type={ProfileType.Employee} className={styles.regImage}/>
     <div className={styles.content}>    
-      <p className={styles.title}>{title}</p>
+      <p className={styles.title}>
+        {isPhoneWidth &&
+          <Button className={styles.buttonBlackSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
+        }
+        {title}
+      </p>
       <ProgressBar progress={progress} pointsCount={CVItemsCount} onClick={(p: number) => setProgress(p)}/>
       <FormikProvider value={formik}>
-        <Form >
+        <Form  className={styles.form}>
           {page} 
 
           <div className={styles.buttonWrapper}>
-            {progress > 1 && 
+            {progress > 1 && !isPhoneWidth &&
               <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&

@@ -2,6 +2,12 @@
 
 .modal {
   outline: none;
+  max-height: 98vh;
+  max-height: 98dvh;
+  @include mq($PhoneWidth, max) {
+    max-height: 100vh;
+    max-height: 100dvh;
+  }
 }
 
 .overlay {

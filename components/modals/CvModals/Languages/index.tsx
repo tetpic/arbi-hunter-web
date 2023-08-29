@@ -1,17 +1,14 @@
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useEffect,  useState } from 'react'
 import Body from '../Body'
-import styles from './index.module.scss'
 import languages from '@cospired/i18n-iso-languages'
-import DropDown from 'components/ui/DropDown'
-import classnames from 'classnames'
 import classNames from 'classnames'
-import { LanguageKnowLevel } from 'types/enums'
-import RadioListField from 'components/fields/RadioListField'
+import { LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
-import { useFormikContext } from 'formik'
 import { useCvContext } from 'context/cv_state'
+import styles from './index.module.scss'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 
 interface Props {
   onClose: () => void
@@ -21,10 +18,10 @@ export default function LangaugesModal(props: Props) {
   const cvContext = useCvContext()
  
 
-  const [langs, setLangs] = useState<string[]>([])
-  const [langsActive, setLangsActive] = useState<boolean>(false)
+  const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
+  const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
   const [langRadioActive, setLangRadioActive] = useState<string>('')
-  const [levelsActive, setLevelsActive] = useState<boolean>(false)
+  const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
   const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
 
   const langLevels = [
@@ -35,16 +32,17 @@ export default function LangaugesModal(props: Props) {
   ]
   
   useEffect(()=>{
-    languages.registerLocale(require("@cospired/i18n-iso-languages/langs/ru.json"));
-    setLangs(Object.values(languages.getNames('ru')))
+    languages.registerLocale(require("@cospired/i18n-iso-languages/langs/ru.json"))
+    languages.registerLocale(require("@cospired/i18n-iso-languages/langs/en.json"))
+    const langsObj = Object.entries(Languages).map(([key, value])=> {return {en: value, ru: languages.getName(value, 'ru')}
+    })
+    setLangs(langsObj)
   }, [])
 
   const onSaveHandler = () => {
-    debugger
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||[]
-    console.log(languages.getAlpha2Code(langRadioActive, 'en'))
-    cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: languages.getAlpha2Code(langRadioActive, 'en'), level: levelRadioActive}]})
-    
+    cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive, ru: languages.getName(langRadioActive, 'ru')}]})
+    props.onClose()
   }
 
   const body = (
@@ -56,15 +54,15 @@ export default function LangaugesModal(props: Props) {
     >
       <>
       <div className={styles.wrapper}>
-        <p className={styles.title} onClick={()=>{setLangsActive(!langsActive)}}>Язык</p>
-        <div className={classNames(styles.list, langsActive&&styles.list_active)}>
+        <p className={styles.title} onClick={()=>{setLangsActive(!langsDropdownActive)}}>Язык <ArrowDownSvg className={langsDropdownActive&&styles.arrow_active}/></p>
+        <div className={classNames(styles.list, langsDropdownActive&&styles.list_active)}>
           {langs&&langs.map(el => {
               return (
                 <Radio 
                 className={styles.item} 
-                isActive={el===langRadioActive} 
-                value={el} 
-                label={el} 
+                isActive={el.en===langRadioActive} 
+                value={el.en} 
+                label={el.ru} 
                 onChange={(s) => setLangRadioActive(s)}
                 />)
             }) 
@@ -72,8 +70,8 @@ export default function LangaugesModal(props: Props) {
         </div>
       </div>
       <div className={styles.wrapper}>
-        <p className={styles.title} onClick={()=>{setLevelsActive(!levelsActive)}} >Уровень владения</p>
-        <div className={classNames(styles.list, levelsActive&&styles.list_active)}>
+        <p className={styles.title} onClick={()=>{setLevelsActive(!levelsDropdownActive)}} >Уровень владения <ArrowDownSvg className={levelsDropdownActive&&styles.arrow_active}/></p>
+        <div className={classNames(styles.list, levelsDropdownActive&&styles.list_active)}>
           {langLevels.map(el=> {
             return (
               <Radio 
@@ -81,25 +79,21 @@ export default function LangaugesModal(props: Props) {
               value={el.name} 
               label={el.translate} 
               isActive={el.name === levelRadioActive} 
-              onChange={(s)=> setLevelRadioActive(s as LanguageKnowLevel)}
+              onChange={(l)=> setLevelRadioActive(l as LanguageKnowLevel)}
               />
               )
           })}
         </div>
       </div>
       </>
-
-   
     </Body>
   )
 
   return ( 
-
     <ModalLayout  className={styles.rootLayout}>
       <ModalBody>
         {body}
       </ModalBody>
     </ModalLayout>
-
   )
 }

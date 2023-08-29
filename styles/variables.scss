@@ -34,7 +34,7 @@ $MobileContainerPadding: 10px;
 
 //space
 $space-modal: 28px;
-$space-modal-mobile: 19px;
+$space-modal-mobile: 16px;
 
 
 $xs-max: 768px;
@@ -59,7 +59,7 @@ $zIndexTop: 300;
 $smallText: 12px;
 $mediumText: 14px;
 $largeText: 16px;
-$hugeText: 24px;
+$hugeText: Clamp($largeText, 4vw, 24px);
 
 $regular: 400;
 $medium: 500;

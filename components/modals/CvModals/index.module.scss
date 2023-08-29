@@ -3,6 +3,22 @@
 .rootLayout {
   background-color: $black;
   max-width: 520px;
+  @include mq($PhoneWidth, max) {
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+    border-radius: 0px;
+    background-color: $backgroundBlack;
+  }
+}
+
+.modalBody {
+  @include mq($PhoneWidth, max) {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+  }
 }
 
 
@@ -20,4 +36,48 @@
     background-color: $yellow;
     color: $black;
   }
+}
+
+
+.subCategoryWrapper {
+  max-height: 0px;
+  overflow: auto;
+  @include transitionDefault;
+  &_active {
+    max-height: 320px;
+  }
+}
+
+.categoryTitle {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  justify-content: space-between;
+  color: $white;
+  font-size: $mediumText;
+  padding: 8px 16px;
+  background-color: $grey;
+  @include transitionDefault;
+  @include exeptLast {
+    margin-top: 8px;
+  }
+
+  &_active {
+    background-color: $greyLight;
+  }
+}
+
+.arrow {
+  @include transitionDefault;
+  &_active {
+    rotate: 180deg;
+  }
+}
+
+.subCategoryItem {
+  padding: 10px 16px;
+  color: $white;
+  font-size: $mediumText;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }

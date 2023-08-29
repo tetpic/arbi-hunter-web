@@ -7,9 +7,9 @@ export interface ILanguageKnowledge {
 
 
 export interface IJob {
-  categoriesIds: [1],//?
+  categoriesIds: number[],//?
   skillsIds :  number[],//?
-  sourcesIds :  [1,2],//?
+  sourcesIds :  number[],//?
   salary : number,
   compensation: CompensationType,
   currency : Currency,

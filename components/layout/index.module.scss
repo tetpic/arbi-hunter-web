@@ -4,4 +4,7 @@
   @include mq($TabletWidth, max) {
     padding-bottom: 100px;
   }
+  @include mq($PhoneWidth, max) {
+    padding-bottom: 74px;
+  }
 }

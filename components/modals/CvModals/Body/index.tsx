@@ -1,4 +1,6 @@
 import classnames from 'classnames'
+import { useResize } from 'components/hooks/useResize'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
 import { ChangeEvent, ReactElement } from 'react'
@@ -18,8 +20,15 @@ interface Props {
 
 export default function Body(props: Props) {
 
+  const {isPhoneWidth} = useResize()
+
   return (<>
-  <p className={styles.title}>{props.title}</p>
+  <p className={styles.title}>
+    {isPhoneWidth && 
+      <Button className={styles.buttonSmall} onClick={props.onClose}><ArrowDownSvg className={styles.arrow}/></Button>
+    }
+    {props.title}
+  </p>
     {props.withInput !== false&&
       <div className={styles.inputWrapper}>
         <LoupeSvg className={styles.loupeSvg}/>
@@ -30,7 +39,9 @@ export default function Body(props: Props) {
     {props.children}
   </div>
   <div className={styles.buttonsWrapper}>
-    <Button className={styles.button} onClick={props.onClose} >Отменить</Button>
+    {!isPhoneWidth && 
+      <Button className={styles.button} onClick={props.onClose} >Отменить</Button>
+    }
     <Button className={styles.buttonYellow} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
   </div>
   </>)

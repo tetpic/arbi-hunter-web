@@ -1,12 +1,18 @@
-import { ICVCreate, ISkill } from 'data/interfaces/ICV'
+import { ICVCreate, ISkill, Source, ICategory } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
+import CvRepository from 'data/repositories/CvRepository'
 import { createContext, useContext, useState } from 'react'
-import { DeepPartial } from 'types/types'
 
+interface ILangHelper extends ILanguageKnowledge {
+  ru?: string
+}
 
 interface HelpObject {
   skills?: ISkill[],
-  languageKnowledges?: ILanguageKnowledge[]
+  languageKnowledges?: ILangHelper[],
+  sources?: Source[]
+  activeSources?: Set<Source>
+
 }
 
 interface IState {
@@ -18,17 +24,26 @@ interface IState {
 
   progress: number
   setProgress: (p: number) => void
+
+  categories:  Map<ICategory, ICategory[]|null>
+  setCategories: ()=> void
+  setSubCategories: (v: ICategory)=>void
 }
 
 const defaultValue: IState = {
   currentCv: null,
   setCurrentCv: () => null,
 
-  helpObjects: null,
+  helpObjects: {activeSources: new Set(), skills: [], languageKnowledges: [], sources: [] },
   setHelpObjects: ()=>null,
 
   progress: 1,
-  setProgress: (p) => null
+  setProgress: (p) => null,
+
+  categories: new Map(),
+  setCategories: () => null,
+  setSubCategories: () => null
+
 }
 
 const CvContext = createContext<IState>(defaultValue)
@@ -40,7 +55,8 @@ interface Props {
 export function CvWrapper(props: Props) {
   const [currentCv, setCv] = useState<ICVCreate>()
   const [progress, handleProgress] = useState<number>(1)
-  const [helpObjects, setHelp] = useState<{[key: string]: any}>()
+  const [helpObjects, setHelp] = useState<HelpObject>({activeSources: new Set(), skills: [], languageKnowledges: [], sources: [] })
+  const [categories, setCategoriesState] = useState<Map<ICategory, ICategory[]|null>>(new Map())
 
   const setCurrentCv = (v: ICVCreate) => {
     setCv(state=> {return {...state, ...v}})
@@ -54,6 +70,34 @@ export function CvWrapper(props: Props) {
     setHelp(state=> {return {...state, ...o}})
   }
 
+  const setCategories =() => {
+    if(categories?.size < 1) {
+      CvRepository.getCategories()
+      .then(res => {
+        setCategoriesState(()=> {
+          let map = new Map()
+          res.forEach(el=> {
+            map.set(el, null)
+          })
+          return map
+        })
+      })
+    }
+  }
+
+  const setSubCategories = (s: ICategory) => {
+    if(!categories.get(s)) {
+      CvRepository.getSubCategories(s.id)
+      .then(res => {
+        setCategoriesState(state => {
+          state.set(s, res)
+          return new Map(state)
+        })
+      })
+    }
+  }
+  
+
   const value: IState = {
     ...defaultValue,
     currentCv,
@@ -63,7 +107,11 @@ export function CvWrapper(props: Props) {
     setHelpObjects,
 
     progress,
-    setProgress
+    setProgress,
+
+    categories,
+    setCategories,
+    setSubCategories
   }
 
   return (

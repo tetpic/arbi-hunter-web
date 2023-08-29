@@ -22,6 +22,16 @@
   font-size: $largeText;
   font-weight: $semibold;
   margin-bottom: 24px;
+  @include mq($PhoneWidth, max) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 39px;
+    &:after {
+      content: '';
+      width: 36px;
+    }
+  }
 }
 
 .input {
@@ -35,6 +45,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 8px;
+  overflow: auto;
   margin-top: 16px;
 }
 
@@ -56,9 +67,21 @@
   background-color: $yellow;
 }
 
+.buttonSmall {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: $grey;
+  .arrow {
+    rotate: 90deg;
+  }
+}
+
 .buttonsWrapper {
   display: flex;
   column-gap: 16px;
   justify-content: flex-end;
   margin-top: 24px;
+  @include mq($PhoneWidth, max) {
+    margin-top: auto;
+  }
 }

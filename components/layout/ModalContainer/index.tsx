@@ -8,6 +8,7 @@ import RegistrationModal from 'components/modals/RegistrationModal'
 import SpecializationModal from 'components/modals/CvModals/Specialization'
 import SkillsModal from 'components/modals/CvModals/Skills'
 import LangaugesModal from 'components/modals/CvModals/Languages'
+import SoursesModal from 'components/modals/CvModals/Sourses'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -36,6 +37,9 @@ export default function ModalContainer(props: Props) {
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.LanguageModal} {...commonSettings}>
           {appContext.modal === ModalType.LanguageModal && <LangaugesModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.SourcesModal} {...commonSettings}>
+          {appContext.modal === ModalType.SourcesModal && <SoursesModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
       </div>
     </RemoveScroll>
