@@ -4,7 +4,6 @@ import AddButton from 'components/ui/AddButton'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import { CoursesInfo, ISkill } from 'data/interfaces/ICV'
-import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
@@ -12,7 +11,17 @@ import DetailsField from '../../DetailsField'
 import styles from './index.module.scss'
 
 
+type SkillsFields = {
+skills?: boolean,
+langs?: boolean,
+courses?: boolean,
+traffic?: boolean,
+relocation?: boolean,
+portfolio?: boolean
+}
+
 interface Props {
+  fieldToHide?: SkillsFields
 }
 
 export default function Skills(props: Props) {
@@ -39,10 +48,12 @@ export default function Skills(props: Props) {
   }
 
   useEffect(()=>{    
-    setFieldValue('coursesInfo', [...detailsCoursesInfo])
-    let currentCv = cvContext.currentCv
-    cvContext.setCurrentCv({...currentCv, coursesInfo: [...detailsCoursesInfo]})
-  }, [detailsCoursesInfo])
+    if(!props.fieldToHide?.courses) {
+      setFieldValue('coursesInfo', [...detailsCoursesInfo])
+      let currentCv = cvContext.currentCv
+      cvContext.setCurrentCv({...currentCv, coursesInfo: [...detailsCoursesInfo]})
+    }
+  }, [detailsCoursesInfo, props.fieldToHide?.courses])
 
   useEffect(()=>{
     setFieldValue('skillsIds', cvContext.currentCv?.skillsIds)
@@ -83,26 +94,28 @@ export default function Skills(props: Props) {
       </div>
     } 
 
-    <AddButton 
-    className={styles.addButton} 
-    onClick={()=>{setCoursesDetails(true)}} 
-    text={'Повышение квалификации и курсы'}
-    /> 
-    {cvContext.currentCv?.coursesInfo?.length > 0 &&
-      <div className={styles.itemsWrapper}>
+    {!props.fieldToHide?.courses === true && <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{setCoursesDetails(true)}} 
+      text={'Повышение квалификации и курсы'}
+      /> 
+      {cvContext.currentCv?.coursesInfo?.length > 0 &&
+        <div className={styles.itemsWrapper}>
         {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
-        .map((el)=> 
-          <p 
-          className={styles.item} 
-          onClick={()=>{
-            setActiveDetails(el); 
-            setCoursesDetails(true)}
-          }>
-            {el.name} <CrossSvg className={styles.crossSvg}/>
-          </p>
-        )}
-      </div>
-    }
+          .map((el)=> 
+            <p 
+            className={styles.item} 
+            onClick={()=>{
+              setActiveDetails(el); 
+              setCoursesDetails(true)}
+            }>
+              {el.name} <CrossSvg className={styles.crossSvg}/>
+            </p>
+          )}
+        </div>
+      }
+    </>}
 
     <AddButton 
     className={styles.addButton} 
@@ -135,7 +148,9 @@ export default function Skills(props: Props) {
       ]}/>
     </div>
 
-    <AddButton className={styles.addButton} onClick={()=> {}} text={'Добавить порфтолио'} />
+    {!props.fieldToHide?.portfolio  && 
+      <AddButton className={styles.addButton} onClick={()=> {}} text={'Добавить порфтолио'} />
+    }
 
     {showCoursesDetails &&
       <DetailsField

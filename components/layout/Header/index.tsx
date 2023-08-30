@@ -30,7 +30,7 @@ export default function Header(props: Props) {
     <div className={styles.root}>
       <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
-        {!userContext.isLogged &&
+        {(!userContext.isLogged || !userContext.currentProfile) &&
         <div className={styles.modeWrapper}>
           <div 
           className={classnames(styles.buttonBack, profileType ===ProfileType.Hirer&&styles.buttonBack_active)} 
@@ -63,12 +63,18 @@ export default function Header(props: Props) {
         </div>
         
         <div className={styles.userWrapper}>
-          {!userContext.isLogged && <>
+          {!userContext.currentProfile && <>
             <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
             <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
           </>}
-          {userContext.isLogged && <>
+          {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
+          <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}>Создать резюме</Link>
+            <UserPic/>
+          </>}
+          {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
+          <>
+            <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}>Создать вакансию</Link>
             <UserPic/>
           </>}
         </div>

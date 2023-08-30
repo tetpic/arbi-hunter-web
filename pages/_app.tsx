@@ -17,12 +17,15 @@ import ModalContainer from 'components/layout/ModalContainer'
 import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
 import { CvWrapper } from 'context/cv_state'
+import UserRepository from 'data/repositories/UserRepository'
+import { IUser } from 'data/interfaces/IUser'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
     token: string
     region: string
+    user?: IUser
   }
 }
 
@@ -41,7 +44,7 @@ function MyApp({Component, pageProps}: AppProps) {
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile}>
-        <UserWrapper token={pageProps.token}>
+        <UserWrapper token={pageProps.token} user={pageProps.user}>
           <CvWrapper>
           <AuthWrapper>
 
@@ -82,11 +85,15 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     props.pageProps.isMobile = false
   }
 
+  
   props.pageProps.region = appContext.ctx.query.region
-
+  
   if (appContext.ctx.req) {
     if ((appContext.ctx?.req as any).cookies) {
       props.pageProps.token = (appContext.ctx as any).req.cookies[CookiesType.accessToken]
+      props.pageProps.user = await UserRepository.getCurrentUser(props.pageProps.token).catch(err => {
+        return null
+      })
     }
   }
 

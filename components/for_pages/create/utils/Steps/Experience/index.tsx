@@ -1,7 +1,9 @@
 import RadioListField from 'components/fields/RadioListField'
+import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
+import Button from 'components/ui/Button'
 import { useCvContext } from 'context/cv_state'
-import { ExperienceInfo } from 'data/interfaces/ICV'
+import { ExperienceInfo, ICVCreate } from 'data/interfaces/ICV'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import DetailsField from '../../DetailsField'
@@ -26,7 +28,8 @@ export default function Experience(props: Props) {
   const [showDetails, setDetails] = useState<boolean>(false)
   const [detailsInfo, setDetailsInfo] = useState<ExperienceInfo[]>(cvContext.currentCv?.experienceInfo||[])
   const [activeDetails, setActiveDetails] = useState<ExperienceInfo>(initialData)
-  const { setFieldValue } = useFormikContext()
+  const formikContext = useFormikContext()
+  const values = formikContext.values as ICVCreate
 
   const closeModalHandler = (fl: ExperienceInfo) => {
     setDetailsInfo(f=> [...f, {...fl}])
@@ -34,11 +37,17 @@ export default function Experience(props: Props) {
     setActiveDetails(initialData)
   }
 
+  const removeExp = (e: ExperienceInfo) => {
+    setDetailsInfo(state=> state.filter(el => el !==e))
+  }
+
   useEffect(()=>{    
-    setFieldValue(props.name, [...detailsInfo])
+    formikContext.setFieldValue(props.name, [...detailsInfo])
     let currentCv = cvContext.currentCv
     cvContext.setCurrentCv({...currentCv, experienceInfo: [...detailsInfo]})
   }, [detailsInfo])
+
+
 
 
   return (
@@ -52,17 +61,26 @@ export default function Experience(props: Props) {
         {label: 'Есть опыт', value: 'present'},
         {label: 'Нет опыта', value: 'absent'},
       ]} 
-      />     
+      />   
+       
       
-      {cvContext.currentCv?.experienceInfo&&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
-        return (<div className={styles.experienceWrapper} onClick={()=>{setActiveDetails(el); setDetails(true)}}>
+      {cvContext.currentCv?.experienceInfo&& values.workExperiencePresense === "present" &&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
+        return (<div 
+        className={styles.experienceWrapper} 
+        // onClick={()=>{setActiveDetails(el); setDetails(true)}}
+        >
           <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
           <p className={styles.companyName}>{el.company}</p>
           <p className={styles.description}>{el.description}</p>
+          <Button type='button' className={styles.trashButton} onClick={()=>removeExp(el)}><TrashBasketSvg/></Button>
         </div>)
       }) 
       }
-      <AddButton onClick={()=> setDetails(true)} text='Добавить место работы'/>
+
+      {values.workExperiencePresense === "present" &&
+        <AddButton onClick={()=> setDetails(true)} text='Добавить место работы'/>
+      }
+
       {showDetails && 
       <DetailsField
         title='Место работы'

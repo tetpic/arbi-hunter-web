@@ -1,4 +1,3 @@
-import InputField from 'components/fields/InputField'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
@@ -22,12 +21,16 @@ export default function Specialization(props: Props) {
   return ( 
     <div className={styles.root}>
       <p className={styles.title}>Выберите специализацию <Image src={'/icons/book.png'} alt={'напишите'} width={24} height={24}/></p>
-      <InputField className={styles.inputHidden} value={cvContext.currentCv?.position} name={'position'} type={'hidden'} styleType={'default'} color={'default'}/>
+
       <div className={styles.positionWrapper}>
-        {cvContext?.currentCv?.position && 
-          <p className={styles.position}>{cvContext.currentCv.position}</p>
+        {cvContext.helpObjects?.categoryIds && cvContext.helpObjects?.categoryIds?.length > 0 && 
+          <p className={styles.position}>{cvContext.helpObjects.categoryIds[0].name}</p>
         }
-        <p className={styles.link} onClick={openModalHandler}>{cvContext.currentCv?.position? 'Изменить специализацию': 'Выбрать специализацию'}</p>
+        <p 
+        className={styles.link} 
+        onClick={openModalHandler}>
+          {cvContext.helpObjects?.categoryIds?.length > 0? 'Изменить специализацию': 'Выбрать специализацию'}
+        </p>
       </div>
     </div>
   )

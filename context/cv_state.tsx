@@ -12,7 +12,19 @@ interface HelpObject {
   languageKnowledges?: ILangHelper[],
   sources?: Source[]
   activeSources?: Set<Source>
+  cityId?: number
+  countryId?: number,
+  categoryIds?: ICategory[]
+}
 
+const initialHelpObject: HelpObject = {
+  activeSources: new Set(), 
+  skills: [], 
+  languageKnowledges: [], 
+  sources: [],
+  cityId: null,
+  countryId: null,
+  categoryIds: []
 }
 
 interface IState {
@@ -34,7 +46,7 @@ const defaultValue: IState = {
   currentCv: null,
   setCurrentCv: () => null,
 
-  helpObjects: {activeSources: new Set(), skills: [], languageKnowledges: [], sources: [] },
+  helpObjects: initialHelpObject,
   setHelpObjects: ()=>null,
 
   progress: 1,

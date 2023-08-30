@@ -1,18 +1,10 @@
 import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useEffect, useState } from 'react'
-import ProgressBar from './ProgressBar'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import Specialization from './Specialization'
-import { CompensationType, Currency, EducationTypes, EmploymentType, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
-import Compensation from './Compensation'
-import Experience from './Experience'
-import Education from './Education'
-import About from './About'
-import Skills from './Skills'
-import Busyness from './Busyness'
+import { CompensationType, Currency, EducationTypes, EmploymentType, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCvContext } from 'context/cv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -20,6 +12,15 @@ import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
+import Specialization from '../utils/Steps/Specialization'
+import Compensation from '../utils/Steps/Compensation'
+import Experience from '../utils/Steps/Experience'
+import Education from '../utils/Steps/Education'
+import About from '../utils/Steps/About'
+import Skills from '../utils/Steps/Skills'
+import Busyness from '../utils/Steps/Busyness'
+import ProgressBar from '../utils/ProgressBar'
+import { useAppContext } from 'context/state'
 
 interface Props {
 }
@@ -42,26 +43,39 @@ export default function Cv(props: Props) {
   const [page, setPage] = useState<JSX.Element>()
 
   const userContext = useUserContext()
+  const appContext = useAppContext()
   const cvContext = useCvContext()
   const router = useRouter()
   const {progress, setProgress} = cvContext
 
   const submit = (data: ICVCreate) => {
-    const {activeSources, languageKnowledges, skills} = cvContext?.helpObjects
+    debugger
+    const {activeSources, languageKnowledges, skills, categoryIds} = cvContext?.helpObjects
+    if(!categoryIds||categoryIds?.length === 0) {
+      setProgress(1)
+      appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
+      return 
+    }
     const sendData: ICVCreate = {
       ...data, 
       skillsIds: skills.map(el=>el.id), 
       salary: Number(data.salary),
       languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
-      sourcesIds: Array.from(activeSources).map(el=> el.id)
+      sourcesIds: Array.from(activeSources).map(el=> el.id),
+      categoriesIds: categoryIds.map(el=>el.id)
     }
-    debugger
+   
+    
     CvRepository.createCV(sendData)
     .then(res => {
-      debugger
+      appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
+      setTimeout(()=> {
+        router.push('/')      
+      }, 3000)
+      
     })
     .catch(err=>{
-      debugger
+      
       alert(err.toString())
     })
   }
@@ -87,7 +101,7 @@ export default function Cv(props: Props) {
       bio: cvContext.currentCv?.bio||'',
       skillsIds: [],
       vacancyLookType: userContext.user?.profiles[0].vacancyLookType ||VacancyLookType.NotLooking,
-      workExperiencePresense: WorkExperience.Absent,
+      workExperiencePresense: WorkExperiencePresense.Absent,
       education: EducationTypes.Secondary,
       relocation: null,
       position: '',

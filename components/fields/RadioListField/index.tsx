@@ -33,12 +33,7 @@ export default function RadioListField<T>(props: Props<T>) {
   return (
     <div className={classNames(styles.root, props.rootClass)}>
       {label && <div className={classNames(styles.label, props.labelClassName)}>{label}</div>}
-      <div className={props.wrapperClassName} 
-      style={{
-        display: (props.grid) ? 'grid' : (props.flex) ? 'flex' : 'block',
-        gridTemplateColumns: props.grid ? Array.from({ length: props.grid }, (_, i) => '1fr').join(' ') : '',
-        gridGap: '1vw'
-      }}>
+      <div className={props.wrapperClassName} >
         {options.filter(item => restrictedValues.indexOf(item.value) === -1).map((item, index) => (
          
             <Radio<T>

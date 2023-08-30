@@ -57,5 +57,6 @@ export interface IUser {
   updatedAt: "2023-08-22T11:40:00.308Z",
   deletedAt: null,
   profiles: IUserProfile[]
+  company?: string 
 }
 

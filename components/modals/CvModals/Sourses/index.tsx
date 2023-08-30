@@ -20,7 +20,8 @@ export default function SoursesModal(props: Props) {
   const [choosenSources, setChoosenSources] = useState<Set<Source>>(cvContext?.helpObjects?.activeSources||new Set())
 
   useEffect(()=>{
-    if(!cvContext?.helpObjects?.sources) {
+    
+    if(cvContext?.helpObjects?.sources.length === 0) {
       CvRepository.sourcesList().then(res=> {
         setSources(res.data)
         const cvHelpState = cvContext.helpObjects

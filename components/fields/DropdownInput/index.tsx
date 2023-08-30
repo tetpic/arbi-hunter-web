@@ -21,7 +21,7 @@ interface Props<C> {
 }
 
 export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
-  const [inputValue, setInputValue] = useState<string>('')
+  const [inputValue, setInputValue] = useState<string>(undefined)
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)

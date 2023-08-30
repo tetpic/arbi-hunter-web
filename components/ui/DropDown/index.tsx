@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function DropDown(props: Props) {
-  debugger
+  
 
   const dropDownContainer = useRef<HTMLDivElement>(null!)
 
@@ -38,8 +38,8 @@ export default function DropDown(props: Props) {
       loader={props.loading ? <Spinner size={50} color="#fff" secondaryColor="rgba(255,255,255,0.4)" /> : null}
       scrollableTarget='scrollableDiv'
       >
-        {props.options?.map(el => {
-          return <p className={classNames(styles.option, props.classNames.optionClassName)} onClick={()=>props.onClick(el)}>{el[props.nameField]}</p>
+        {props.options?.map((el, index) => {
+          return <p key={index} className={classNames(styles.option, props.classNames.optionClassName)} onClick={()=>props.onClick(el)}>{el[props.nameField]}</p>
         })}
       </InfiniteScroll>
     </div>

@@ -44,6 +44,19 @@
     right: 0;
     top: 0;
   }
+
+  :global .react-datepicker__header {
+    white-space: nowrap;
+  }
+
+  :global .react-datepicker__year-text {
+    font-size: $largeText;
+
+  }
+
+  :global .react-datepicker {
+    width: 170px;
+  }
 }
 
 .buttonSave {

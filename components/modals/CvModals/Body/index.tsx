@@ -35,9 +35,9 @@ export default function Body(props: Props) {
           <input className={styles.input} type="text" onChange={props.onChange} placeholder={props.placeholder} />
       </div>
     }
-  <div className={styles.positionsWrapper}>
-    {props.children}
-  </div>
+      <div className={styles.positionsWrapper}>
+        {props.children}
+      </div>
   <div className={styles.buttonsWrapper}>
     {!isPhoneWidth && 
       <Button className={styles.button} onClick={props.onClose} >Отменить</Button>

@@ -1,0 +1,9 @@
+@import 'styles/index';
+
+
+.radioWrapper {
+  margin-block: 32px;
+  display: flex !important;
+  flex-direction: column;
+  row-gap: 16px !important;
+}

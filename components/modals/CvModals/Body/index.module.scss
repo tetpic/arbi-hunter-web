@@ -42,10 +42,11 @@
 
 .positionsWrapper {
   min-height: 30vh;
+  max-height: 60vh;
   display: flex;
   flex-direction: column;
   row-gap: 8px;
-  overflow: auto;
+  // overflow: auto;
   margin-top: 16px;
 }
 

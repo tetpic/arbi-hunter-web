@@ -9,12 +9,17 @@
 
 .educationWrapper {
   display: grid;
-  grid-template-areas: 'i c' 'i d';
+  grid-template-areas: 'i c b' 'i d b';
   color: $white;
   row-gap: 16px;
-  grid-template-columns: 1fr 2fr;
+  column-gap: 8px;
+  grid-template-columns: 1fr 2fr 1fr;
+  max-width: 500px;
   margin-top: 48px;
   align-items: flex-start;
+  @include mq($PhoneWidth, max) {
+    grid-template-columns: 2fr 3fr;
+  }
 }
 
 .time {
@@ -33,4 +38,12 @@
   grid-area: d;
   font-size: $smallText;
   font-weight: $regular;
+}
+
+.trashButton {
+  grid-area: b;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: $black;
+  margin-right: auto;
 }

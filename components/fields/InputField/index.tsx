@@ -63,8 +63,8 @@ export default function InputField(props: Props) {
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         <input
           {...field}
-          // {...(typeof props.value !== 'undefined' ? { value: props.value } : {})}
           {...(props.value&&{value:props.value})}
+          // value = {props.value||''}
           ref={props.format === 'phone' ? phoneRef as any : null}
           type={props.type ?? 'text'}
           disabled={props.disabled}

@@ -1,5 +1,7 @@
 import RadioListField from 'components/fields/RadioListField'
+import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
+import Button from 'components/ui/Button'
 import { EducationInfo } from 'data/interfaces/ICV'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
@@ -35,6 +37,10 @@ export default function Education(props: Props) {
     setActiveDetails(initialData)
   }
 
+  const removeItem = (e: EducationInfo) => {
+    setDetailsInfo(state => state.filter(el=> el !== e))
+  }
+
   useEffect(()=>{
     setFieldValue(props.name, detailsInfo)
   }, [detailsInfo])
@@ -58,10 +64,15 @@ export default function Education(props: Props) {
 
   {detailsInfo&&detailsInfo.length>0&&detailsInfo.map(el=> {
     return (
-      <div className={styles.educationWrapper} onClick={()=>{setActiveDetails(el); setDetails(true)}}>
+      <div 
+      key={el.date} 
+      className={styles.educationWrapper} 
+      // onClick={()=>{setActiveDetails(el); setDetails(true)}}
+      >
         <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
         <p className={styles.companyName}>{el.institution}</p>
         <p className={styles.description}>{el.speciality}</p>
+        <Button type={'button'} className={styles.trashButton} onClick={()=> removeItem(el)}><TrashBasketSvg/></Button>
       </div>)
     }) 
   }

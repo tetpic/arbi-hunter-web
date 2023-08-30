@@ -1,5 +1,5 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { IUser } from 'data/interfaces/IUser'
+import { IUser, IUserProfile } from 'data/interfaces/IUser'
 import {createContext, MutableRefObject, useContext, useEffect, useRef, useState} from 'react'
 import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
@@ -14,8 +14,11 @@ interface IState {
   isAuth: MutableRefObject<boolean>
   userLoaded: boolean
   user: IUser
+  currentProfile: IUserProfile,
+  setCurrentProfile: (p: IUserProfile) => void
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
+
 }
 
 const loginState$ = new Subject<boolean>()
@@ -28,6 +31,8 @@ const defaultValue: IState = {
   isAuth: null,
   userLoaded: false,
   user: undefined,
+  currentProfile: null,
+  setCurrentProfile: (p: IUserProfile) => null,
   profileType: ProfileType.Employee,
   setProfileType: () => null,
 }
@@ -37,14 +42,19 @@ const UserContext = createContext<IState>(defaultValue)
 interface Props {
   children: React.ReactNode
   token?: string
+  user?: IUser
 }
 
 export function UserWrapper(props: Props) {
   const [token, setUserToken] = useState<string | null>(props.token ?? null)
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useState<IUser | null>(props.user)
   const [userLoaded, setUserLoaded] = useState<boolean>(false)
+
   const [profileType, setProfileType] = useState(ProfileType.Employee)
-  const [isLogged, setIsLogged] = useState<boolean>(false)
+  const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
+  const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
+
+  
   const userRef = useRef<IUser | null>(null)
   const isAuth = useRef<boolean>(false)
 
@@ -57,6 +67,7 @@ export function UserWrapper(props: Props) {
       const data = await UserRepository.getCurrentUser()
       if (data) {
         setUser(data)
+        setCurrentProfileState(data.profiles[0])
       }
       setUserLoaded(true)
       // return data
@@ -83,16 +94,22 @@ export function UserWrapper(props: Props) {
     setIsLogged(true)
   }
 
+  const setCurrentProfile = (p: IUserProfile) => {
+
+  }
+
   useEffect(() => {
     userRef.current = user
   }, [user])
 
   useEffect(() => {  
-    if (props.token) {
+    
+    if (props.token && user && props.user?.isRegistrationCompleted) {    
       setIsLogged(true)
+      setCurrentProfileState(props.user.profiles && props.user.profiles[0])
       isAuth.current = true
     }
-  }, [props.token])
+  }, [user, props.user])
 
   useEffect(() => {
     if (props.token) {
@@ -116,6 +133,8 @@ export function UserWrapper(props: Props) {
    user,  
    profileType,
    setProfileType,
+   currentProfile,
+   setCurrentProfile,
    isAuth
   }
 

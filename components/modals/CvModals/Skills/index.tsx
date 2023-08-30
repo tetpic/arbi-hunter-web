@@ -2,6 +2,7 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import classnames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
+import CustomScrollbar from 'components/ui/CustomScrollbar'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import { ISkill } from 'data/interfaces/ICV'
@@ -41,7 +42,7 @@ export default function SkillsModal(props: Props) {
       appContext.showSnackbar('Выберите специализацию из списка', SnackbarType.error)
       return
     }
-    debugger
+    
     const helperSkills = cvContext.helpObjects?.skills||[]
     cvContext.setHelpObjects({skills: [...helperSkills, ...choosenSkill]})
     setChoosenSkill([])
@@ -67,9 +68,13 @@ export default function SkillsModal(props: Props) {
       title={'Навыки'}
       placeholder={'Поиск по навыкам'}
       >
-       {skills&&skills.length > 0&&skills.map(el=>{
-          return (<p className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
-        })}
+        <div className={styles.categoriesWrapper}>
+          <CustomScrollbar>
+          {skills&&skills.length > 0&&skills.map(el=>{
+            return (<p className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
+          })}
+          </CustomScrollbar>
+        </div>
       </Body>
     )
 

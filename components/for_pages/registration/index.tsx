@@ -50,6 +50,7 @@ export default function Registration() {
 
   const submit = async (data: IRegistrationComplete) => {
     
+    
     if(!cityId || !country) {
       appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
     }
@@ -57,12 +58,13 @@ export default function Registration() {
       data = {...data, 
         cityId, 
         countryId : country.geoname.geonameid,
-        phone: userContext.user?.phone
+        phone: userContext.user?.phone,
+        profileType: userContext.profileType
       }
       
       RegistrationRepository.completeRegistration(data)
       .then(res=> {
-        
+        router.push('/') 
       })
       .catch(err=> {
         appContext.showSnackbar(err.toString(), SnackbarType.error)
@@ -97,7 +99,7 @@ export default function Registration() {
   }
 
   useEffect(()=>{
-    if(!userContext.isLogged && !userContext.token) {
+    if(!userContext.isLogged || !userContext.currentProfile) {
       appContext.showModal(ModalType.RegistrationModal)
     }
     return ()=> appContext.hideModal()

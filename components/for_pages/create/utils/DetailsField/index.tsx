@@ -62,7 +62,7 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
               name={el.dateName}
               value={fields[el.dateValue].toString() as string}
               customInput={
-                <InputField className={styles.input} value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
+                <InputField autocompleteOff={true} className={styles.input} value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
               }
               />
             )
@@ -74,7 +74,7 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
         if(el.type === 'textarea') {
           return <TextAreaField label={el.label} value={fields[el.value].toString()} onChange={(v)=> onChangeHelper(v, el.value)} name={el.name} autoSize={true}/>
         }
-        return <InputField className={styles.input} value={fields[el.value ]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
+        return <InputField autocompleteOff={true} className={styles.input} value={fields[el.value ]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
       })}
 
       {/* <InputField className={styles.input} value={fields.institution} onChange={(v)=> onChangeHelper(v, 'institution')} labelType={'top'} styleType={'default'} color={'default'} name={'setInstitution'} label={'Заведение:'}/>

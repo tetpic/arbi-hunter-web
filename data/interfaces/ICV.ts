@@ -1,4 +1,4 @@
-import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperience } from "types/enums"
+import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from "types/enums"
 import { IJob } from "./IJob"
 
 
@@ -81,7 +81,7 @@ export interface ICVCreate extends IJob {
   patronymic: string,
   birthday: string, //05.02.2023
   gender? : Genders,
-  workExperiencePresense: WorkExperience, //"present"?
+  workExperiencePresense: WorkExperiencePresense, //"present"?
   education: EducationTypes, //"incompleteHigher" - add enums
   relocation : Answer, // enums
   position: string,

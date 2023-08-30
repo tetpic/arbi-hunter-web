@@ -20,6 +20,9 @@
       }
     }
   }
+  @include mq($PhoneWidth, max) {
+    margin-top: 25px;
+  }
 }
 
 .plusSvg  {
