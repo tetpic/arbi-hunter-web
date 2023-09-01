@@ -3,18 +3,14 @@ import classNames from 'classnames'
 
 interface Props {
   title: string
+  emoji?: JSX.Element
   className?: string
 }
 
-export default function TitleForSection(props: Props) {
+export default function Title(props: Props) {
   return (
     <div className={classNames(styles.root, props.className)}>
-      <div className={classNames({
-        [styles.text]: true,
-      })}>
-        {props.title}
-      </div>
-
+      {props.title} {props.emoji}
     </div>
   )
 }

@@ -78,7 +78,7 @@
 
 .buttonBlackSmall {
   @extend .buttonBlack;
-  padding: 10px;
+  padding: Clamp(7px, 2vw, 10px);
   width: unset !important;
   .arrow {
     rotate: 90deg;

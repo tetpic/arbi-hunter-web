@@ -4,7 +4,7 @@ import styles from './index.module.scss'
 
 interface Props {
 }
-
+//todo: сделать доступ с проверкой isAuth
 export default function CvCreate(props: Props) {
   const userContext = useUserContext()
 

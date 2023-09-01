@@ -1,0 +1,31 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 16px;
+  background-color: $black;
+  overflow: hidden;
+  max-width: 372px;
+  width: 30%;
+  flex-shrink: 0;
+}
+
+.navItem {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  cursor: pointer;
+  color: $white;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+
+  &_active {
+    background-color: $grey;
+    pointer-events: none;
+  }
+}

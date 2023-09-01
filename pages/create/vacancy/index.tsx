@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 interface Props {
 }
-
+//todo: сделать доступ с проверкой isAuth
 export default function VacancyCreate(props: Props) {
   const userContext = useUserContext()
   const router = useRouter()

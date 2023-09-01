@@ -67,7 +67,6 @@ export default function Education(props: Props) {
       <div 
       key={el.date} 
       className={styles.educationWrapper} 
-      // onClick={()=>{setActiveDetails(el); setDetails(true)}}
       >
         <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
         <p className={styles.companyName}>{el.institution}</p>

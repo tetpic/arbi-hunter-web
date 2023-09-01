@@ -1,0 +1,44 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 24px;
+  width: 100%;
+  
+}
+
+.items {
+  display: flex;
+  column-gap: clamp(30px, 20%, 120px);
+
+
+  .item {
+    color: $white;
+    font-size: $largeText;
+    font-weight: $semibold;
+    cursor: pointer;
+    @include transitionDefault;
+    @media (hover: hover) {
+      &:hover {
+        color: $greyLight;
+      }
+    }
+    &_active{
+      color: $yellow;
+      pointer-events: none;
+    }
+  }
+
+}
+
+.bottomString {
+  width: 100%;
+  background-color: $grey;
+  height: 2px;
+  margin-top: 16px;
+}
+
+.line {
+  height: 2px;
+  background-color: $yellow;
+  transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

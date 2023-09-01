@@ -1,0 +1,113 @@
+@import 'styles/index';
+
+.root {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 8px;
+}
+
+
+.balanceWrapper {
+  background: linear-gradient(93deg, #AC6CDB 6.53%, #586DE4 73.62%);
+  padding: 16px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-areas: 't a' 'b a';
+  min-width: 310px;
+  justify-content: space-between;
+  row-gap: 8px;
+
+  .title {
+    grid-area: t;
+    font-size: $smallText;
+    font-weight: $regular;
+    color: $white;
+  }
+
+  .balance {
+    grid-area: b;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    font-size: $hugeText;
+    font-weight: $semibold;
+    color: $white;
+    white-space: nowrap;
+  }
+
+  .moneyAdd {
+    grid-area: a;
+    padding: 8px 24px 6px;
+    background-color: $white;
+    border-radius: 10px;
+    align-self: center;
+    line-height: 170%;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hoverButtonBlack;
+  }
+}
+
+
+.userData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 8px;
+
+  .name {
+    color: $white;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+
+  .sub {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+}
+
+
+.itemsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  width: 100%;
+
+  .item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    column-gap: 16px;
+    color: $white;
+    font-weight: $medium;
+    font-size: $mediumText;
+    padding: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hoverButtonSmooth;
+  }
+}
+
+
+.exitButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 10px;
+  color: $red;
+  font-size: $mediumText;
+  font-weight: $medium;
+  padding: 16px;
+  column-gap: 8px;
+  border-top: 1px $grey solid ;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+}

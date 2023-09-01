@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import LoupeSvg from 'components/svg/LoupeSvg'
@@ -14,8 +13,6 @@ interface Props {
   title: string
   placeholder?: string
   withInput?: boolean|undefined
-  // returnItems: T[],
-  // items: string[]
 }
 
 export default function Body(props: Props) {

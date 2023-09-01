@@ -3,11 +3,11 @@ import classnames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
+import UserDropdownMenu from 'components/ui/UserDropdownMenu'
 
 interface Props {
 }
@@ -17,6 +17,8 @@ export default function Header(props: Props) {
   const userContext = useUserContext()
 
   const {profileType, setProfileType} = useUserContext()
+
+  const [dropdown, handleDropdown] = useState<boolean>(false)
 
   const usrBtn = useRef<HTMLButtonElement>(null!)
   const cmpBtn = useRef<HTMLButtonElement>(null!)
@@ -67,16 +69,21 @@ export default function Header(props: Props) {
             <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
             <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
           </>}
+
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}>Создать резюме</Link>
-            <UserPic/>
+            <UserPic onClick={()=> handleDropdown(!dropdown)}/>
           </>}
+
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}>Создать вакансию</Link>
-            <UserPic/>
+            <UserPic onClick={()=> handleDropdown(!dropdown)}/>
           </>}
+          {dropdown &&
+            <UserDropdownMenu className={styles.dropdown} onClose={()=> handleDropdown(false)}/>
+          }
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
@@ -6,6 +7,8 @@ interface Props {
   image?: string
   link?: string
   onClick?: ()=> void
+  className?: string
+  size?: number
 }
 
 export default function UserPic(props: Props) {
@@ -17,8 +20,8 @@ export default function UserPic(props: Props) {
   }
 
   return ( 
-    <div className={styles.imageWrapper} onClick={onClickHandler}>
-      <Image src={props.image?props.image: '/icons/defaultUser.png'} alt={'sefault user pic'} width={40} height={40}/>
+    <div className={classNames(styles.imageWrapper, props.className)} onClick={onClickHandler}>
+      <Image src={props.image?props.image: '/icons/defaultUser.png'} alt={'sefault user pic'} width={props.size||40} height={props.size||40}/>
     </div>
   )
 }

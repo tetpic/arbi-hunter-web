@@ -70,7 +70,6 @@ export function UserWrapper(props: Props) {
         setCurrentProfileState(data.profiles[0])
       }
       setUserLoaded(true)
-      // return data
     }
   }
 
@@ -106,7 +105,7 @@ export function UserWrapper(props: Props) {
     
     if (props.token && user && props.user?.isRegistrationCompleted) {    
       setIsLogged(true)
-      setCurrentProfileState(props.user.profiles && props.user.profiles[0])
+      setCurrentProfileState(props.user.profiles && props.user.profiles.find(u => user.id === u.userId))
       isAuth.current = true
     }
   }, [user, props.user])

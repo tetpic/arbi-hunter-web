@@ -1,11 +1,11 @@
-@import "styles/index";
+@import 'styles/index';
 
 .root{
-  font-size: 20px;
-  font-weight: 600;
-  color: $dark1;
-  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
 }
-.emoji{
-  margin-left: 10px;
-}
+

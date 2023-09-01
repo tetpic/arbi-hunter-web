@@ -7,6 +7,8 @@
   padding: 16px 24px;
   background-color: $backgroundBlack;
   border-bottom: 2px $grey solid;
+  position: relative;
+  z-index: 10;
   &:after {
     content: '';
     width: 50px;
@@ -101,6 +103,7 @@
   display: flex;
   align-items: center;
   column-gap: 16px;
+  position: relative;
 }
 
 .userLink {
@@ -122,6 +125,13 @@
     border: 2px $yellow solid;
     color: $yellow;
   }
+}
+
+.dropdown {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  transform: translateY(100%);
 }
 
 

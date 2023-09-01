@@ -164,6 +164,7 @@ export default function Cv(props: Props) {
 
   useEffect(()=>{
     if(progress < 1) {
+      setProgress(1)
       router.back()
       return
     }
@@ -176,7 +177,7 @@ export default function Cv(props: Props) {
     <UserRegImage type={ProfileType.Employee} className={styles.regImage}/>
     <div className={styles.content}>    
       <p className={styles.title}>
-        {isPhoneWidth &&
+        {isPhoneWidth && 
           <Button className={styles.buttonBlackSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
         }
         {title}
