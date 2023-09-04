@@ -15,20 +15,17 @@
   font-weight: $medium;
   cursor: pointer;
   @include transitionDefault;
-  @media (hover: hover) {
-    &:hover {
-      color: $yellow;
-      .plusSvg {
-        path {
-          stroke: $white;
-        }
-        circle {
-          fill: $yellow;
-        }
+  @include hover {
+    color: $yellow;
+    .plusSvg {
+      path {
+        stroke: $white;
+      }
+      circle {
+        fill: $yellow;
       }
     }
   }
-   
 }
 
 .plusSvg  {

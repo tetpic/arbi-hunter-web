@@ -8,7 +8,7 @@ import ShopSvg from 'components/svg/ShopSvg'
 import UsersSvg from 'components/svg/UsersSvg'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import CompanyProfile from './companyProfile'
 import ProfileNavigation from './Navigation'
 import UserProfile from './userProfile'
@@ -41,7 +41,7 @@ export default function Profile(props: Props) {
 
   const router = useRouter()
   const {currentProfile} = useUserContext()
-  const [page, setPage] = useState<ProfilePages>(props.page as ProfilePages ||ProfilePages.Saved)
+  const [page, setPage] = useState<ProfilePages>(props.page as ProfilePages||ProfilePages.Saved)
 
   const pager = (p: ProfilePages) => {
     setPage(p)    
@@ -69,7 +69,7 @@ export default function Profile(props: Props) {
   })()
 
 
-  const navSet = ((): NavigationSet[] => {
+  const navSet = useCallback(((): NavigationSet[] => {
     let result:{name: string, type: ProfilePages, icon: JSX.Element}[]  = []
     result = Object.values(availablePages).map(page => {
       switch(page) {
@@ -89,7 +89,7 @@ export default function Profile(props: Props) {
         return {name: 'Мои резюме', type: page, icon: <FolderSvg/>}
 
         case ProfilePages.Managers:
-        return {name: 'Менеджеры компании', type: page, icon: <UsersSvg/>}
+        return {name: 'Менеджеры вакансий', type: page, icon: <UsersSvg/>}
 
         case ProfilePages.Saved:
         return {name: 'Сохранённое', type: page, icon: <HeartSvg/>}
@@ -102,12 +102,11 @@ export default function Profile(props: Props) {
       }
     })
     return result
-  } )()
+  } ), [page])
 
 
-  useEffect(()=>{
+  useEffect(()=>{    
     pager(page)
-
     router.replace({
       query: { ...router.query, page: page },
     })
@@ -117,12 +116,12 @@ export default function Profile(props: Props) {
     <div className={classNames(styles.root)}>
       {
         currentProfile.profileType === ProfileType.Employee &&
-        <UserProfile  currentPage={page} navSet={navSet} /> 
+        <UserProfile  currentPage={page} navSet={navSet()} /> 
         ||
         currentProfile.profileType === ProfileType.Hirer &&
-        <CompanyProfile currentPage={page} navSet={navSet}/>
+        <CompanyProfile currentPage={page} navSet={navSet()}/>
       }
-      <ProfileNavigation currentPage={page} navSet={navSet} setPage={pager}/>
+      <ProfileNavigation currentPage={page} navSet={navSet()} setPage={pager}/>
     </div>
   )
 }

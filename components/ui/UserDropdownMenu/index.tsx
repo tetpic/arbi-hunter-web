@@ -64,7 +64,7 @@ export default function UserDropdownMenu(props: Props) {
       ]
       case ProfileType.Hirer:
       return userItems = [
-        {name: 'Настройки профиля', image: <SettingsSvg/>, link: '/profile?page=settings'},
+        {name: 'Настройки профиля', image: <SettingsSvg/>, link: '/profile?page=personal'},
         {name: 'Сохраненное', image: <HeartSvg/>, link: '/profile?page=saved'},
         {name: 'Вакансии', image: <FolderSvg/>, link: '/profile?page=vacancies'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
@@ -92,7 +92,7 @@ export default function UserDropdownMenu(props: Props) {
 
       <div className={styles.itemsWrapper}>
         {getUserMenu().map((el, index)=> {
-          return <Link key={index} onClick={props.onClose} href={el.link} className={styles.item}>{el.image} {el.name}</Link>
+          return <Link key={index} onClick={props.onClose} href={el.link} className={styles.item}>{el.image}  {el.name}</Link>
         })}
       </div>
 

@@ -1,4 +1,6 @@
 import { ICategory, ICVCreate, IPosition, Source } from 'data/interfaces/ICV'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import { IUser } from 'data/interfaces/IUser'
 import request from 'utils/request'
 
 export default class CvRepository {
@@ -94,6 +96,18 @@ export default class CvRepository {
     const res = await request({
       method: 'get',
       url: `/api/service-category?lang=ru&categoryId=${data}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getSavedByCurrentUser(profileType?: ProfileType): Promise<IUser[]|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv?savedByCurrentProfile=true`,
+      profile: profileType
     })
     if(res.err) {
       return null

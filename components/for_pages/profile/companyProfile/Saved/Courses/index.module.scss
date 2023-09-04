@@ -1,0 +1,101 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  // justify-content: space-between;
+  row-gap: 16px;
+  column-gap: 16px;
+
+}
+
+.item {
+  width: clamp(150px, calc(50% - 16px), 372px);
+  background-color: $black;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(90px, 14vw, 180px);
+  background-color: $greyLight;
+
+  .badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: #586DE4;
+    border-radius: 30px;
+    padding: 10px 16px 8px;
+    font-size: $smallText;
+    font-weight: $regular;
+    color: $white;
+  }
+
+  .heartButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+
+  .lessonsCount {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    color: $white;
+    font-size: $smallText;
+    font-weight: $regular;
+    line-height: 120%;
+  }
+
+  .courseName {
+    color: $white;
+    font-weight: $semibold;
+    font-size: $largeText;
+  }
+
+  .price {
+    @extend .courseName;
+    color: $yellow
+  }
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+
+  span {
+    display: flex;
+    align-items: center;
+    column-gap: 2px;
+    color: $greyLight;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+ 
+}
+
+.userSvg {
+  path {
+    fill: $greyLight;
+  }
+}
+
+.starSvg {
+  path {
+    stroke: $greyLight;
+  }
+}

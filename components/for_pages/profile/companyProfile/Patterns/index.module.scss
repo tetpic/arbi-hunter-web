@@ -1,1 +1,45 @@
-/* your css code */
+@import 'styles/index';
+
+.root {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.item {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: $black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+  cursor: pointer;
+}
+
+.arrow {
+  @include transitionDefault;
+  &_active {
+    rotate: 180deg;
+  }
+}
+
+.itemRoot {
+  background-color: $black;
+  border-radius: 10px;
+
+}
+
+.form {
+  padding: 8px 16px 16px;
+}
+
+.button {
+  @include buttonYellow;
+  margin-top: 16px;
+}

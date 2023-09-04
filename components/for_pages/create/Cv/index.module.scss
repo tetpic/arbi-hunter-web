@@ -53,27 +53,27 @@
   column-gap: 16px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
-   
   }
 }
 
 .button {
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-size: $mediumText;
-  font-weight: $medium;
-  cursor: pointer;
-  @include transitionDefault;
+  // border-radius: 10px;
+  // padding: 12px 24px;
+  // font-size: $mediumText;
+  // font-weight: $medium;
+  // cursor: pointer;
+  // @include transitionDefault;
   @include mq($PhoneWidth, max) {
     width: 100%;
   }
 }
 
 .buttonBlack {
-  background-color: $grey;
-  color: $yellow;
+  @include buttonBlack;
   @extend .button;
-  @include hoverButtonBlack;
+  // background-color: $grey;
+  // color: $yellow;
+  // @include hoverButtonBlack;
 }
 
 .buttonBlackSmall {
@@ -86,10 +86,11 @@
 }
 
 .buttonYellow {
-  background-color: $yellow;
-  color: $grey;
+  @include buttonYellow;
   @extend .button;
-  @include hoverButtonYellow;
+  // background-color: $yellow;
+  // color: $grey;
+  // @include hoverButtonYellow;
 }
 
 .regImage  {

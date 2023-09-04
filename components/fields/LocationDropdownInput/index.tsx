@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
-import DropDown from 'components/ui/DropDown'
+import DropDown from 'components/ui/InfiniteDropDown'
 import { ISearchLocalyRequest } from 'data/interfaces/ILocation'
 import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useThrottleFn } from '@react-cmpt/use-throttle'

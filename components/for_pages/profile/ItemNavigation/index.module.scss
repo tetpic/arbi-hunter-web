@@ -17,11 +17,10 @@
     font-weight: $semibold;
     cursor: pointer;
     @include transitionDefault;
-    @media (hover: hover) {
-      &:hover {
-        color: $greyLight;
-      }
+    @include hover {
+      color: $greyLight;
     }
+
     &_active{
       color: $yellow;
       pointer-events: none;

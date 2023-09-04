@@ -26,8 +26,16 @@ export default function ItemNavigation<T extends string>(props: Props<T>) {
   return (<div className={styles.root} ref={wrapperRef}> 
     <div className={styles.items}>
       {props.items.length > 0 && props.items
-        .map((el)=> {
-          return <p ref={(r)=> itemsRef.current.set(el, r)} className={classNames(styles.item, props.activeItem === el&&styles.item_active)} onClick={()=> props.onClick(el)}>{el}</p>
+        .map((el, index)=> {
+          return (
+          <p 
+          className={classNames(styles.item, props.activeItem === el&&styles.item_active)} 
+          ref={(r)=> itemsRef.current.set(el, r)} 
+          onClick={()=> props.onClick(el)}
+          key={index} 
+          >
+            {el}
+          </p>)
         })
       }
     </div>

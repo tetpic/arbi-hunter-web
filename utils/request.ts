@@ -7,6 +7,7 @@ import { isClient, isServer } from 'utils/media'
 import { RequestError } from 'types/types'
 import queryString from 'query-string'
 import {CookiesLifeTime} from 'types/constants'
+import { ProfileType } from 'data/interfaces/IRegistration'
 interface Options {
   url: string
   method?: 'post' | 'put' | 'get' | 'delete' | 'patch'
@@ -14,7 +15,8 @@ interface Options {
   token?: string
   sessionId?: string
   file?: File
-  disableCache?: boolean
+  disableCache?: boolean,
+  profile?: ProfileType
   config?: AxiosRequestConfig
 }
 
@@ -25,6 +27,7 @@ async function request<T = any>(options: string | Options): Promise<T> {
   const { HOST, CACHE_TIME_HOURS } = runtimeConfig
   const optionsIsString = typeof options === 'string'
   const accessToken = (!optionsIsString && options.token) ? options.token : Cookies.get(CookiesType.accessToken)
+  const profile = (!optionsIsString && options.profile)? options.profile : ''
   const sessionId = (!optionsIsString && options.sessionId) ? options.sessionId : Cookies.get(CookiesType.sessionId)
   let url = ''
   let method = 'get'
@@ -61,6 +64,7 @@ async function request<T = any>(options: string | Options): Promise<T> {
   const headers: HeadersInit = {
     'Authorization': accessToken ? `Bearer ${accessToken}` : '',
     'X-Session': sessionId ? sessionId : '',
+    'profile-type': profile
   }
 
   if (!file) {

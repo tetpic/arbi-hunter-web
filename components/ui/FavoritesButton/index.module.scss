@@ -1,0 +1,25 @@
+@import 'styles/index';
+
+
+.heartButton {
+  path {
+    @include transitionDefault;
+  }
+  @include hover {
+    path {
+      stroke: $black;      
+    }
+  }
+
+  &_active {
+    path {
+      stroke: $red;
+      fill: $red;
+    }
+    @include hover {
+      path {
+        stroke: $black;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import DropDownInput from 'components/fields/DropdownInput'
+import DropDownInput from 'components/fields/LocationDropdownInput'
 import RadioListField from 'components/fields/RadioListField'
 import LocationRepository from 'data/repositories/LocationRepository'
 import { useCvContext } from 'context/cv_state'

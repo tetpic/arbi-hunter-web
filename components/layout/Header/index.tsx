@@ -29,7 +29,7 @@ export default function Header(props: Props) {
   const loginPath = '/login'
 
   return ( 
-    <div className={styles.root}>
+    <div className={styles.root} >
       <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&

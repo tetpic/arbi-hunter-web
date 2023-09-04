@@ -245,23 +245,26 @@
     border-width: 0px;
     border-top-width: 1px;
     border-style: solid;
-
 }
 
-@mixin hoverLink {
-  @media (hover: hover ){
+@mixin hover {
+  @media(hover: hover) {
     &:hover {
-      color: $yellow;
+      @content;
     }
   }
 }
 
+@mixin hoverLink {
+  @include hover {
+    color: $yellow;
+  }
+}
+
 @mixin hoverButtonBlack {
-  @media (hover: hover ) {
-    &:hover {
-      background-color: $yellow;
-      color: $black;
-    }
+  @include hover {
+    background-color: $yellow;
+    color: $black;
   }
 }
 
@@ -270,29 +273,47 @@
 }
 
 @mixin hoverButtonYellow {
-  @media (hover: hover ) {
-    &:hover {
-      background-color: $white;
-      color: $black;
-    }
+  @include hover {
+    background-color: $white;
+    color: $black;
   }
 }
 
 @mixin hoverButtonSmooth {
-  @media (hover: hover) {
-    &:hover {
-      background-color: $greyLight;
-    }
+  @include hover {
+    background-color: $greyLight;
   }
 }
 
 @mixin hoverTag {
-  @media (hover: hover ) {
-    &:hover {
-      background-color: $grey;
-    }
+  @include hover {
+    background-color: $grey;
   }
 }
+
+@mixin buttonDefault {
+  border-radius: 10px;
+  padding: 10px 24px 10px;
+  font-weight: $medium;
+  font-size: $mediumText;
+  cursor: pointer;
+  @include transitionDefault;
+}
+
+@mixin buttonYellow {
+  background-color: $yellow;
+  color: $black;
+  @include buttonDefault;
+  @include hoverButtonYellow;
+}
+
+@mixin buttonBlack {
+  background-color: $grey;
+  color: $yellow;
+  @include buttonDefault;
+  @include hoverButtonBlack;
+}
+
 
 @mixin exeptLast {
   &:not(:last-child) {

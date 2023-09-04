@@ -1,0 +1,12 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.button {
+  align-self: flex-start;
+  @include buttonYellow;
+}

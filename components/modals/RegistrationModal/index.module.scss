@@ -101,10 +101,8 @@
   @extend .timeRemain;
   cursor: pointer;
   @include transitionDefault;
-  @media (hover: hover) {
-    &:hover {
-      color: $yellow;
-    }
+  @include hover {
+    color: $yellow;
   }
 }
 
