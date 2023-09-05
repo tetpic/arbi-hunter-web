@@ -5,7 +5,7 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import CustomScrollbar from 'components/ui/CustomScrollbar'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
-import { ISkill } from 'data/interfaces/ICV'
+import { ISource } from 'data/interfaces/Common'
 import SkillsRepository from 'data/repositories/SkillsRepository'
 import { ChangeEvent, useState } from 'react'
 import { SnackbarType } from 'types/enums'
@@ -21,8 +21,8 @@ export default function SkillsModal(props: Props) {
   const cvContext = useCvContext()
   const appContext = useAppContext()
 
-  const [skills, setSkills] = useState<ISkill[]>(cvContext.helpObjects?.skills||[])
-  const [choosenSkill, setChoosenSkill] = useState<ISkill[]>([])
+  const [skills, setSkills] = useState<ISource[]>(cvContext.helpObjects?.skills||[])
+  const [choosenSkill, setChoosenSkill] = useState<ISource[]>([])
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=> {
     const value = e.target.value
@@ -49,7 +49,7 @@ export default function SkillsModal(props: Props) {
     props.onClose()
   }
 
-  const onClickHandler = (el: ISkill) => {
+  const onClickHandler = (el: ISource) => {
     setChoosenSkill(state => {
       const indexFound = state.findIndex(e=> e===el)
       if(indexFound >= 0) {

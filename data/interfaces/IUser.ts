@@ -1,8 +1,9 @@
-import { ActivityStatus, HirerRole, VacancyLookType } from "types/enums"
+import { ActivityStatus, HirerRole, HirerRolePermission, Languages, VacancyLookType } from "types/enums"
+import { TimeStamp } from "./Common"
 import { IGeoName } from "./ILocation"
 import { ProfileType } from "./IRegistration"
 
-export interface IUserProfile {
+export interface IUserProfile extends TimeStamp {
     id: number,
     userId: number,
     profileType: ProfileType,
@@ -15,7 +16,7 @@ export interface IUserProfile {
     phone: string,
     email: string,
     position: string|null,
-    company: string|null,
+    company?: string|null,
     countryId: number,
     cityId: number,
     vacancyLookType: VacancyLookType|null,
@@ -26,11 +27,8 @@ export interface IUserProfile {
     statsShowResponses: boolean,
     statsShowNewVacanciesCount: boolean,
     statsShowNewCVsCount: boolean,
-    permissions: [],
+    permissions: HirerRolePermission[],
     ownerId: null,
-    createdAt: string,// Date
-    updatedAt: string, // Date
-    deletedAt: string|null, // Date
     image: string|null,
     country: IGeoName,
     city: IGeoName,
@@ -39,24 +37,21 @@ export interface IUserProfile {
 }
 
 
-export interface IUser {
+export interface IUser extends TimeStamp {
   name: string
   id: number,
   phone: string,
-  language: string,//'ru' - add enums
+  language: Languages,
   email: string|null,
   regType: string,//'site' - add enums
   socialId: null,
   isRegistrationCompleted: false,
-  balance: 0,
-  blockComment: null,
-  blocked: false,
-  blockedAt: null,
-  blockedUntil: null,
-  createdAt: "2023-08-22T11:40:00.308Z",
-  updatedAt: "2023-08-22T11:40:00.308Z",
-  deletedAt: null,
+  balance: number,
+  blockComment: string|null,
+  blocked: boolean,
+  blockedAt: string|null,
+  blockedUntil: string|null,
   profiles: IUserProfile[]
-  company?: string 
+  company?: string|null,
 }
 

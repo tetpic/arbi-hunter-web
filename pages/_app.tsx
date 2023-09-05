@@ -19,6 +19,9 @@ import { AuthWrapper } from 'context/auth_state'
 import { CvWrapper } from 'context/cv_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
+import { ManagerWrapper } from 'context/manager_state'
+import { VacancyWrapper } from 'context/vacancy_state'
+import { ArticleWrapper } from 'context/article_state'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -45,7 +48,10 @@ function MyApp({Component, pageProps}: AppProps) {
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile}>
         <UserWrapper token={pageProps.token} user={pageProps.user}>
+          <ManagerWrapper>
+          <VacancyWrapper>
           <CvWrapper>
+          <ArticleWrapper>
           <AuthWrapper>
 
             <Head>
@@ -61,7 +67,10 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <Snackbar/>}
           </AuthWrapper>
+          </ArticleWrapper>
           </CvWrapper>
+          </VacancyWrapper>
+          </ManagerWrapper>
         </UserWrapper>
       </AppWrapper>
     </CookiesProvider>

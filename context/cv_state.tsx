@@ -1,4 +1,5 @@
-import { ICVCreate, ISkill, Source, ICategory } from 'data/interfaces/ICV'
+import { ISource } from 'data/interfaces/Common'
+import { ICVCreate, ICategory } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import CvRepository from 'data/repositories/CvRepository'
 import { createContext, useContext, useState } from 'react'
@@ -8,10 +9,10 @@ interface ILangHelper extends ILanguageKnowledge {
 }
 
 interface HelpObject {
-  skills?: ISkill[],
+  skills?: ISource[],
   languageKnowledges?: ILangHelper[],
-  sources?: Source[]
-  activeSources?: Set<Source>
+  sources?: ISource[]
+  activeSources?: Set<ISource>
   cityId?: number
   countryId?: number,
   categoryIds?: ICategory[]

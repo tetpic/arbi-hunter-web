@@ -3,7 +3,7 @@ import CrossSvg from 'components/svg/CrossSvg'
 import AddButton from 'components/ui/AddButton'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
-import { CoursesInfo, ISkill } from 'data/interfaces/ICV'
+import { CoursesInfo, ISource } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
@@ -60,7 +60,7 @@ export default function Skills(props: Props) {
   }, [cvContext.currentCv])
 
 
-  const removeSource = (el: ISkill) => {
+  const removeSource = (el: ISource) => {
     const helperState = cvContext.helpObjects
     helperState.activeSources.delete(el)
     cvContext.setHelpObjects({...helperState})
@@ -76,7 +76,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.skills?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.skills
-        .map((el: ISkill)=> <p className={styles.item}>{el.title} <CrossSvg className={styles.crossSvg}/></p>)
+        .map((el: ISource)=> <p className={styles.item}>{el.title} <CrossSvg className={styles.crossSvg}/></p>)
         }
       </div>
     } 

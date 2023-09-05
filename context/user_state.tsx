@@ -4,9 +4,12 @@ import {createContext, MutableRefObject, useCallback, useContext, useEffect, use
 import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
-import { Subject } from 'rxjs'
+import { async, Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
 import CvRepository from 'data/repositories/CvRepository'
+import { ICV } from 'data/interfaces/ICV'
+import { IManager, IManagerCreate } from 'data/interfaces/IManager'
+import ManagerRepository from 'data/repositories/ManagerRepository'
 
 interface IState {
   token: string,
@@ -19,8 +22,9 @@ interface IState {
   setCurrentProfile: (p: IUserProfile) => void
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
-  savedCvs: IUser[],
+  savedCvs: ICV[],
   setSavedCvs: ()=>Promise<boolean>
+
 }
 
 const loginState$ = new Subject<boolean>()
@@ -38,7 +42,8 @@ const defaultValue: IState = {
   profileType: ProfileType.Employee,
   setProfileType: () => null,
   savedCvs: null,
-  setSavedCvs: async()=> null
+  setSavedCvs: async()=> null,
+  
 }
 
 const UserContext = createContext<IState>(defaultValue)
@@ -57,7 +62,7 @@ export function UserWrapper(props: Props) {
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
-  const [savedCvs, setSavedCvsState] = useState<IUser[]>(undefined)
+  const [savedCvs, setSavedCvsState] = useState<ICV[]>(undefined)
 
   
   const userRef = useRef<IUser | null>(null)
@@ -118,6 +123,8 @@ export function UserWrapper(props: Props) {
     }
   }
 
+
+
   useEffect(() => {
     userRef.current = user
   }, [user])
@@ -157,7 +164,8 @@ export function UserWrapper(props: Props) {
    setCurrentProfile,
    isAuth,
    savedCvs,
-   setSavedCvs
+   setSavedCvs,
+
   }
 
   return (

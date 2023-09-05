@@ -1,95 +1,74 @@
-import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from "types/enums"
+import { EducationTypes, Genders, Languages, ScheduleType, VacancyLookType, WorkExperiencePresense } from "types/enums"
+import { CoursesInfo, EducationInfo, ExperienceInfo, ITranslation, TimeStamp } from "./Common"
 import { IJob } from "./IJob"
+import { IGeoName } from "./ILocation"
+import { IUser, IUserProfile } from "./IUser"
 
 
-export interface TimeLine {
-  toDate?: string, 
-  fromDate?: string,
-  date?: string
-}
-
-export interface IPosition {
-  position: string
-}
-
-export interface ISkill {
-  id: number,
-  title: string,
-  createdAt: string,
-  updatedAt: string,
-  deletedAt: string|null
-}
-
-export interface ExperienceInfo extends TimeLine {
-  company: string,
-  position: string,
-  description: string
-}
-
-export interface EducationInfo extends TimeLine {
-  institution: string,
-  speciality: string
-}
-
-export interface CoursesInfo extends TimeLine {
-  location: string,
-  name: string
-}
-
-export interface Source {
-  id: number,
-  title: string,
-  createdAt: string,
-  updatedAt: string,
-  deletedAt: string|null
-}
-
-
-interface Translation {
-  id: number,
-  createdAt: string,
-  updatedAt: string,
-  languageCode: Languages,
-  name: string,
-  description: string|null,
-  baseId: number
-}
-export interface ICategory {
-  id: number,
-  createdAt: string,
-  updatedAt: string,
+export interface ICategory extends TimeStamp {
+  id: number, 
   imageId: number|null,
   showOnMain: boolean,
   color: number|null,
   importId: number|null,
   parentId: number|null,
   sort: number,
-  deletedAt: string|null,
   image: string|null,
-  translations: Translation[],
+  translations: ITranslation[],
   languageCode: Languages,
   name: string,
   description: string|null,
   baseId: number,
   isMain: boolean
+  vacanciesCount?: number|null,
+  cvsCount?: number|null,
+  newVacanciesCount?: number|null,
+  newCvsCount?: number|null,
+  minVacanciesSalary?: number|null,
+  maxVacanciesSalary?: number|null,
+  minCVsSalary?: number|null,
+  maxCVsSalary?: number|null,
 }
 
 export interface ICVCreate extends IJob {
-  vacancyLookType : VacancyLookType,//add enums looktype
+  vacancyLookType : VacancyLookType,
   firstName : string,
   lastName: string,
   patronymic: string,
   birthday: string, //05.02.2023
   gender? : Genders,
-  workExperiencePresense: WorkExperiencePresense, //"present"?
-  education: EducationTypes, //"incompleteHigher" - add enums
-  relocation : Answer, // enums
+  workExperiencePresense: WorkExperiencePresense, 
+  education: EducationTypes, 
+  relocation : EducationTypes, 
   position: string,
   bio: string,
-  nativeLanguage: string, //?"ru"
+  nativeLanguage: Languages, 
   experienceInfo: ExperienceInfo[],
   educationInfo: EducationInfo[],
   coursesInfo: CoursesInfo[],
 }
 
 
+export interface ICV extends ICVCreate, IUserProfile{
+  businessTrips?: boolean|null,
+  portfolio: string|null,
+  profileId: number,
+  commission: string|null,
+  moderationStatus: string,  // "approved"add enums
+  moderationRejectReason: string|null,
+  published: boolean,
+  totalViews: string|null,
+  totalProposals: number|null,
+  isTop: boolean,
+  topPurchasedAt: string|null,
+  hash: string,
+  image: string|null,
+  categories: ICategory[],
+  city: IGeoName,
+  profile: IUserProfile,
+  savedByProfiles: IUserProfile[],
+  proposalByCurrentUser: boolean|null,//???
+  isSavedByCurrentProfile: boolean,
+  age: number,
+  lastExperienceInfo: ExperienceInfo
+}

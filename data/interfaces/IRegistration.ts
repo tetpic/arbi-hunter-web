@@ -5,16 +5,16 @@ export enum ProfileType {
 }
 
 export interface IRegistrationComplete {
-    firstName : string,
-    lastName : string,
-    password : string,
-    phone?: string,
-    countryId?: number|undefined,
-    cityId?: number|undefined,
-    profileType : ProfileType,
-    telegramNickname : string,
-    email: string,
-    company?: string|undefined,
+  firstName : string,
+  lastName : string,
+  password : string,
+  phone?: string,
+  countryId?: number|undefined,
+  cityId?: number|undefined,
+  profileType : ProfileType,
+  telegramNickname : string,
+  email: string,
+  company?: string|undefined,
 }
 
 export interface ILogin {

@@ -1,9 +1,15 @@
+import CheckboxListField from 'components/fields/CheckboxListField'
 import InputField from 'components/fields/InputField'
+import PasswordField from 'components/fields/PasswordField'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import RadioListField from 'components/fields/RadioListField'
 import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
+import { IManagerCreate } from 'data/interfaces/IManager'
+import ManagerRepository from 'data/repositories/ManagerRepository'
 import { Form, FormikProvider, useFormik } from 'formik'
+import { HirerRole, HirerRolePermission } from 'types/enums'
+import { TranslateHirerRole, TranslateHirerRolePermission } from 'utils/enumsTranslations'
 import Validator from 'utils/Validator'
 import styles from './index.module.scss'
 
@@ -11,18 +17,7 @@ interface Props {
   onClose: ()=> void
 }
 
-interface NewManager {
-  rights: string
-  archive?: string
-  active?: string
-  personalData: string
-  firstName: string
-  lastName: string
-  position?: string
-  region?: string
-  phone?: string
-  email?: string
-}
+
 
 
 
@@ -30,22 +25,27 @@ interface NewManager {
 export default function AddManager(props: Props) {
 
 
-  const submit = (data: NewManager) => {
+  const submit = (data: IManagerCreate) => {
     debugger
+    ManagerRepository.createNewManager(data)
+    .then(res=> {
+      debugger
+    })
+    .catch(err=> {
+      debugger
+    })
   }
 
-  const formik = useFormik<NewManager>({
+  const formik = useFormik<IManagerCreate>({
     initialValues: {
-      rights: 'manager',
-      archive: '',
-      active: '',
-      personalData: '',
+      hirerRole: HirerRole.Manager,
       firstName: '',
       lastName: '',
       position: '',
-      region: '',
-      phone: '',
+      password: '',
       email: '',
+      phone: '',
+      permissions: []
     },
     onSubmit: submit
   })
@@ -58,22 +58,24 @@ export default function AddManager(props: Props) {
      
         <RadioListField 
         label='Статус сотрудника'
-        name={'rights'} 
+        name={'hirerRole'} 
         itemCircleClassname={styles.radioCircle}
         itemClassName={styles.radioItem}
         activeItemClassName={styles.radioItem_active}
         wrapperClassName={styles.radioWrapper}
         itemLabelClassName={styles.radioItem_label}
         labelClassName={styles.radioWrapper_label}
-        options={[
-          {value: 'manager', label: 'Менеджер'},
-          {value: 'admin', label: 'Администратор'}
-        ]}
+        options={Object.values(HirerRole).map(el=> {return {value: el, label: TranslateHirerRole(el)}})}
         />
 
         <p className={styles.subTitle}>Дополнительные права для работы</p>
 
-        <InputField 
+        <CheckboxListField 
+        name={'permissions'}
+        options={Object.values(HirerRolePermission).map(el=>{return {value: el, label: TranslateHirerRolePermission(el)}})} 
+        />
+
+        {/* <InputField 
         styleType={'default'} 
         color={'default'} 
         name={'active'}
@@ -95,7 +97,7 @@ export default function AddManager(props: Props) {
         name={'personalData'}  
         labelType={'top'}      
         label={'С личными данными менеджеров:'}
-        />
+        /> */}
 
         <p className={styles.subTitle}>Личные данные</p>
 
@@ -149,6 +151,8 @@ export default function AddManager(props: Props) {
         name={'email'} 
         validate={Validator.combine([Validator.required, Validator.email])}
         />
+
+        <PasswordField/>
 
         <Button className={styles.button}>Сохранить</Button>
 

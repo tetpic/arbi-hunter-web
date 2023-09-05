@@ -140,8 +140,8 @@ export enum ScheduleType {
 }
 
 export enum HirerRole {
+  Manager = 'manager',
   Admin = 'admin',
-  Manager = 'manager'
 }
 
 export enum ActivityStatus {
@@ -167,6 +167,28 @@ export enum WorkExperience {
   From3to6 = 'from3to6',
   From6 = 'from6',
 }
+
+
+export enum HirerRolePermission {
+  ChangeEmail = 'changeEmail',
+  ChangePassword = 'changePassword',
+  ViewStats = 'viewStats',
+  CreateVacancies = 'createVacancies',
+  ManageApplications = 'manageApplications',
+  EditCompanyProfile = 'editCompanyProfile',
+  EditCompanyBlog = 'editCompanyBlog'
+}
+
+export enum CategoryType {
+  News = 'news',
+  Course = 'course',
+  CourseNews = 'courseNews',
+  CourseCompilation = 'courseCompilation'
+}
+
+
+  
+
 
 
 

@@ -18,7 +18,7 @@ export default function CompanyProfile(props: Props) {
 
   const choosenNav = props.navSet.find(s => s.type === props.currentPage)
 
-  const title = (
+  const title =  (
     <Title title={choosenNav.name}/>
   )
   
@@ -44,8 +44,8 @@ export default function CompanyProfile(props: Props) {
 
   return (
    <div className={styles.root}>
-   {title}
-   {body}
+   {title||null}
+   {body||null}
    </div>
   )
 }

@@ -124,6 +124,24 @@ export default class Formatter {
     }
     return formatRelative(typeof date === 'string' ? new Date(date) : date, new Date(), {locale})
   }
+
+  /** get arr like [['02.2022', '03.2023'], ['02.1992', '03.1993']], return for example '2 года 2 месяца' */
+  static fullTimeLine = (arr: string[][]) => {
+    let allMonths = arr.map((el) => {
+      let oldString = el[0].split('.');
+      let oldDate = new Date(+oldString[1], +oldString[0] - 1);
+      let newString = el[1].split('.');
+      let newDate = new Date(+newString[1], +newString[0] - 1)
+      let m1=oldDate.getMonth()+(oldDate.getFullYear()*12);
+      let m2=newDate.getMonth()+(newDate.getFullYear()*12);
+      return (m2-m1)+1
+    })
+    .reduce((p, c)=>p+c)
+  
+    let years = ~~(allMonths/12)
+    let months = allMonths%12
+    return `${years} ${Formatter.pluralize(years, 'год', 'года', 'лет')} ${months > 0?months +' '+ Formatter.pluralize(months, 'месяц', 'месяца', 'месяцев'):null}`
+  }
 }
 
 export const pad = Formatter.pad

@@ -1,4 +1,4 @@
-import { ICategory, ICVCreate, IPosition, Source } from 'data/interfaces/ICV'
+import { ICategory, ICV, ICVCreate, IPosition, Source } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUser } from 'data/interfaces/IUser'
 import request from 'utils/request'
@@ -103,7 +103,7 @@ export default class CvRepository {
     return res
   }
 
-  static async getSavedByCurrentUser(profileType?: ProfileType): Promise<IUser[]|null> {
+  static async getSavedByCurrentUser(profileType?: ProfileType): Promise<ICV[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv?savedByCurrentProfile=true`,

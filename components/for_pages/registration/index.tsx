@@ -21,6 +21,7 @@ import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
 import Button from 'components/ui/Button'
+import PasswordField from 'components/fields/PasswordField'
 
 
 
@@ -71,12 +72,6 @@ export default function Registration() {
         return
       })
     }
-  }
-
-  const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
-
-  const passwordHandler = () => {
-    setPasswordOpen(!passwordIsOpen)
   }
 
   
@@ -185,7 +180,7 @@ export default function Registration() {
             name={'telegramNickname'} 
             />
 
-            <InputField 
+            {/* <InputField 
             label={'Пароль:'}
             className={styles.input} 
             labelType='top' 
@@ -197,7 +192,9 @@ export default function Registration() {
             suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
             onSuffixClick={passwordHandler}
             validate={Validator.required}
-            />
+            /> */}
+
+            <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />
 
             <InputField   
             label={'E-mail:'}

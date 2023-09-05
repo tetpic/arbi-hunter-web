@@ -1,0 +1,63 @@
+@import 'styles/index';
+
+.item {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background-color: $black;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: flex-start;
+
+  .name {
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+  }
+  
+  .price {
+    color: $yellow;
+    font-size: $largeText;
+    font-weight: $semibold;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+  }
+}
+
+.stats {
+  display: flex;
+  column-gap: 40px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+
+  &_title {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+    width: 100%;
+  }
+
+  &_desc {
+    font-size: $medium;
+    color: $greyLight;
+    font-weight: $medium;
+    margin-bottom: 8px;
+  }
+
+  &_count {
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+    text-align: center;
+
+    span {
+      color: $green;
+    }
+  }
+}
+
+.button {
+  @include buttonBlack;
+}

@@ -10,7 +10,6 @@ interface Props {
 enum VacanciesNavigation {
   Active = 'Активные',
   Archive = 'Архив',
-  Patterns = 'Шаблоны'
 }
 
 export default function Vacancies(props: Props) {
@@ -25,11 +24,6 @@ export default function Vacancies(props: Props) {
       activeItem === VacanciesNavigation.Active && <VacanciesActive/>
       ||
       activeItem === VacanciesNavigation.Archive && <VacanciesArchive/>
-      // ||
-      // activeItem === VacanciesNavigation.Patterns && <VAcanciesPatterns/>
     }
-
-
-
   </div>)
 }

@@ -7,14 +7,8 @@
   align-items: center;
   &.active{
     .circle{
-      background: $green;
+      background: $yellow;
     }
-  }
-  &.white{
-
-  }
-  &.grey{
-
   }
 }
 
@@ -29,8 +23,9 @@
 .circle{
   width: 24px;
   height: 24px;
-  border-radius: 100%;
-  border: 1px solid $grey5;
+  border-radius: 8px;
+  border: 1px $grey solid;
+  // border: 1px solid $grey5;
   display: flex;
   align-items: center;
   justify-content: center;

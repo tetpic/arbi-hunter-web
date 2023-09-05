@@ -1,20 +1,20 @@
-import { CompensationType, Currency, LanguageKnowLevel } from "types/enums";
+import { CompensationType, Currency, EmploymentType, LanguageKnowLevel, Languages, ScheduleType } from "types/enums";
 
 export interface ILanguageKnowledge {
-  language : string, //? 'en'
+  language : Languages, //? 'en'
   level : LanguageKnowLevel //? 'intermediate'
 }
 
 
 export interface IJob {
-  categoriesIds: number[],//?
-  skillsIds :  number[],//?
-  sourcesIds :  number[],//?
+  categoriesIds: number[],
+  skillsIds :  number[],
+  sourcesIds :  number[],
   salary : number,
   compensation: CompensationType,
   currency : Currency,
-  schedule : string, //? add enum "fullDay"
-  employment: string,//?add enum "fullTime"
+  schedule : ScheduleType, 
+  employment: EmploymentType,
   languageKnowledges : ILanguageKnowledge[],
   telegramNickname: string,
   countryId: number,
@@ -22,4 +22,8 @@ export interface IJob {
   phone : string,
   email : string,
   published : boolean,
+}
+
+export interface IModeration {
+  
 }
