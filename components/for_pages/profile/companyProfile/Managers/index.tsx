@@ -1,49 +1,39 @@
 import classnames from 'classnames'
-import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import Button from 'components/ui/Button'
-import IconButton from 'components/ui/IconButton'
-import UserPic from 'components/ui/UserPic'
+import Spinner from 'components/ui/Spinner'
 import { useManagerContext } from 'context/manager_state'
-import { useUserContext } from 'context/user_state'
 import { IManager } from 'data/interfaces/IManager'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { TranslateHirerRole } from 'utils/enumsTranslations'
+import { colors } from 'styles/variables'
 import AddManager from './AddManager'
 import styles from './index.module.scss'
+import Manager from './ManagerItem'
 
 interface Props {
 }
 
-interface ManagerProps {
-  manager: IManager
-}
 
-function Manager({manager}: ManagerProps) {
-  return (
-    <div className={styles.item}>
-      <div className={styles.top}>
-        <UserPic size={42} className={styles.userPic}/>
-        <p className={styles.name}>{manager.firstName} {manager.lastName}</p>
-        <p className={styles.role}>{TranslateHirerRole(manager.hirerRole)}</p>
-        <IconButton bgColor={'transparent'} className={styles.remove}><TrashBasketSvg/></IconButton>
-      </div>
-      <p className={styles.stats}>367 просмотров за неделю</p>
-      <Button className={styles.setAdmin}>Сделать администратором</Button>
-    </div>
-  )
-}
 
 export default function Managers(props: Props) {
 
   const managerContext = useManagerContext()
 
   const [addManagerModal, showManagerModal] = useState<boolean>(false)
+  const [managerToEdit, setManagerToEdit] = useState<IManager>()
 
-  const limit = 5
+  const removeManagerHandler = (el: IManager) => {
+    
+  }
+
+  
 
   useEffect(()=>{
-    managerContext.setManagers(1, limit)  
+    managerToEdit?showManagerModal(true):showManagerModal(false)
+  }, [managerToEdit])
+ 
+  useEffect(()=>{
+    managerContext.setManagers(1)  
   }, [])
 
   return (<div className={styles.root}> 
@@ -55,17 +45,18 @@ export default function Managers(props: Props) {
 
     <div className={styles.managers}>
      <InfiniteScroll 
-     next={()=>{managerContext.setManagers(managerContext.managersPage+1, limit)}} 
+     height={'100%'}
+     next={()=>{managerContext.setManagers(managerContext.managersPage+1)}} 
      hasMore={true} 
-     loader={''} 
+     loader={<Spinner size={24} color={colors.yellow}/>} 
      dataLength={0}>
         {managerContext.managers&& managerContext.managers.size > 0 && 
           [...managerContext.managers.values()].map(el=> {
-            return <Manager manager={el} />
+            return <Manager onEdit={()=>setManagerToEdit(el)}  onRemove={()=>removeManagerHandler(el)}  manager={el}/>
           })
         }
      </InfiniteScroll>
     </div>
-    {addManagerModal && <AddManager onClose={()=>showManagerModal(false)}/>}
+    {addManagerModal && <AddManager managerToEdit={managerToEdit} onClose={()=>{showManagerModal(false); setManagerToEdit(null)}}/>}
   </div>)
 }

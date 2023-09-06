@@ -7,3 +7,9 @@
   height: calc(100dvh - 240px);
 }
 
+
+.emptyMessage {
+  color: $white;
+  font-weight: $medium;
+  font-size: $smallText;
+}

@@ -5,7 +5,7 @@ import { useUserContext } from './user_state'
 
 interface IState {
   savedArticles: Map<number, IArticle>
-  setSavedArticles: ()=>Promise<boolean>
+  setSavedArticles: (p: number)=>Promise<boolean|{total: number}>
 }
 
 const defaultValue: IState = {
@@ -24,18 +24,17 @@ export function ArticleWrapper(props: Props) {
 
   const userContext = useUserContext()
 
-  const setSavedArticles = async():Promise<boolean> => {
-    return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType)
-    .then(res=> {
+  const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
 
+    return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType, page)
+    .then(res=> {
       setSavedArticlesState(state=> {
-        state.clear()
-        res.forEach(e=> {
+        res.data.forEach(e=> {
           state.set(e.id, e)
         })
-        return state
+        return new Map(state)
       })
-      return true
+      return {total: res.total}
     })
     .catch(err=>false)
   }

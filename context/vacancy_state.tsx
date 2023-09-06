@@ -63,7 +63,7 @@ export function VacancyWrapper(props: Props) {
   const editVacancy = async(v: Partial<IVacancy>, id: number): Promise<boolean> => {
     return VacancyRepository.editVacancyById(v, id)
     .then(res=>{
-      debugger
+      
       return true
     })
     .catch(err=> {return false})

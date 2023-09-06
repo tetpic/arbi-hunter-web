@@ -18,7 +18,7 @@ function Item(props: ItemProps) {
   const [isActive, setActive] = useState<boolean>(false)
 
   const submit = (data: ItemProps) => {
-    debugger
+    
   }
 
   const formik = useFormik<ItemProps>({

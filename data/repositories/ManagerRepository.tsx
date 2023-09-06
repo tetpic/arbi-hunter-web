@@ -1,12 +1,14 @@
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import request from 'utils/request'
 
 export default class ManagerRepository {
-  static async createNewManager(data: IManagerCreate): Promise<IManager|null> {
+  static async createNewManager(data: IManagerCreate, profileType: ProfileType): Promise<IManager|null> {
     const res = await request({
       method: 'post',
       url: `/api/manager`,
-      data
+      data,
+      profile: profileType
     })
     if(res.err) {
       return null
@@ -14,7 +16,7 @@ export default class ManagerRepository {
     return res
   }
 
-  static async getManagersList(page: number, limit: number): Promise<IManager[]|null> {
+  static async getManagersList(page: number, limit: number|string = process.env.NEXT_PUBLIC_LOAD_LIMIT): Promise<IManager[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/manager?page=${page}&limit=${limit}`,
@@ -25,16 +27,16 @@ export default class ManagerRepository {
     return res.data
   }
 
-  static async editManagerById(data: IManagerCreate, id: string): Promise<any|null> {
+  static async editManagerById(data: IManagerCreate, id: number, profileType: ProfileType): Promise<any|null> {
     const res = await request({
       method: 'put',
       url: `/api/manager/${id}`,
-      data
+      data, 
+      profile: profileType
     })
     if(res.err) {
       return null
     }
     return res
   }
-
 }

@@ -21,40 +21,22 @@ export const breakpoints = {
 }
 
 export const colors = {
-  white: '#FFFFFF',
-  black: '#000000',
-
-// Text Colors
-  dark1: '#4C4958',
-  dark2: '#333333',
-  grey1: '#6C6C6C',
-  grey2: '#828282',
-  grey3: '#AEAEAE',
-  grey4: '#CACACA',
-
-  grey5: '#F2F2F2',
-// Base Purple
-  purple: '#812292',
-  purple2: '#781F88',
-  purple3: '#F0ECFB',
-
-// Base Green
-  green: '#61D56E',
-  green2: '#C6EFCB',
-  green3: '#B7D8BD',
-  green4: '#F4FFF6',
-// Orange
-  orange: '#F58220',
-  orange1: '#ED5F1C',
-  orange2: '#F2994A',
-
-// Red
-  red: '#EB5757',
-
-// Blue
-  blue: '#474EEB',
-  blue1: '#01C7F6',
-  blue3: '#98DCDB',
+  white: '#ffffff',
+  backgroundBlack: '#16161B',
+  black: '#1B1B22',
+  grey: '#24242C',
+  greyAlt: '#23232A',
+  greyLight: '#737389',
+  greyLightAlt: '#7C7C8C',
+  greayLightAlt2: '#A2A3A4',
+  
+  yellow: '#F3CE7B',
+  green: '#339B62',
+  
+  //other colors
+  red: '#E76056',
+  blueDark: '#586DE4',
+  blueLight: '#6BABFF',
 
 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { CompensationType, Currency, EducationTypes, EmploymentType, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
+import { CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCvContext } from 'context/cv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -49,7 +49,7 @@ export default function Cv(props: Props) {
   const {progress, setProgress} = cvContext
 
   const submit = (data: ICVCreate) => {
-    debugger
+    
     const {activeSources, languageKnowledges, skills, categoryIds} = cvContext?.helpObjects
     if(!categoryIds||categoryIds?.length === 0) {
       setProgress(1)
@@ -105,7 +105,7 @@ export default function Cv(props: Props) {
       education: EducationTypes.Secondary,
       relocation: null,
       position: '',
-      nativeLanguage: userContext.user?.language||'ru',
+      nativeLanguage: userContext.user?.language||Languages.ru,
       categoriesIds: null,
       sourcesIds: null,
       salary: null,

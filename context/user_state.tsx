@@ -24,6 +24,7 @@ interface IState {
   setProfileType: (t: ProfileType) => void,
   savedCvs: ICV[],
   setSavedCvs: ()=>Promise<boolean>
+  editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
 
 }
 
@@ -43,6 +44,7 @@ const defaultValue: IState = {
   setProfileType: () => null,
   savedCvs: null,
   setSavedCvs: async()=> null,
+  editCurrentProfile: async()=>null
   
 }
 
@@ -123,6 +125,17 @@ export function UserWrapper(props: Props) {
     }
   }
 
+  const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<boolean> => {
+    return UserRepository.editProfileByType(data, currentProfile.profileType)
+    .then(res=> {
+      setCurrentProfile(res)
+      return true
+    })
+    .catch(err=> {
+      return false
+    })
+  }
+
 
 
   useEffect(() => {
@@ -165,6 +178,7 @@ export function UserWrapper(props: Props) {
    isAuth,
    savedCvs,
    setSavedCvs,
+   editCurrentProfile
 
   }
 

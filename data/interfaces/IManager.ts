@@ -6,7 +6,7 @@ export interface IManagerCreate {
   firstName : string,
   lastName : string,
   position: string,
-  password : string,
+  password?: string,
   email: string,
   phone: string,
   permissions?: HirerRolePermission[]

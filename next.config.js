@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  env: {
+    files: 'https://arbi-hunter.dev.glob-com.ru/api/asset/files/'
+  },
 
   publicRuntimeConfig: {
     HOST: process.env.HOST,
@@ -20,7 +23,7 @@ const nextConfig = {
     ROBOTS_FILE: process.env.ROBOTS_FILE,
   },
   images: {
-    domains: ['api.arbi.dev.glob-com.ru', 'api.arbi.com'],
+    domains: ['api.arbi-hunter.dev.glob-com.ru', 'api.arbi.com', 'arbi-hunter.dev.glob-com.ru'],
     formats: ['image/webp'],
     minimumCacheTTL: 60 * 60 * 24,
   },

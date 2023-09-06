@@ -5,7 +5,8 @@ import PhoneCountryField from 'components/fields/PhoneCountryField'
 import RadioListField from 'components/fields/RadioListField'
 import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
-import { IManagerCreate } from 'data/interfaces/IManager'
+import { useUserContext } from 'context/user_state'
+import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import ManagerRepository from 'data/repositories/ManagerRepository'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { HirerRole, HirerRolePermission } from 'types/enums'
@@ -15,44 +16,63 @@ import styles from './index.module.scss'
 
 interface Props {
   onClose: ()=> void
+  managerToEdit?: IManager
 }
-
-
-
-
-
 
 export default function AddManager(props: Props) {
 
+  const {currentProfile} = useUserContext()
+
+  const managerToEdit = props.managerToEdit
 
   const submit = (data: IManagerCreate) => {
-    debugger
-    ManagerRepository.createNewManager(data)
-    .then(res=> {
-      debugger
-    })
-    .catch(err=> {
-      debugger
-    })
+    
+    if(managerToEdit) {
+      if(data.password === '') {
+        delete data.password
+      }
+      data
+      
+      ManagerRepository.editManagerById(data, managerToEdit?.id, currentProfile.profileType)
+      .then(res=> {
+        
+        props.onClose()
+        
+      })
+      .catch(err=> {
+        
+      })
+    }
+    else {
+      ManagerRepository.createNewManager(data, currentProfile.profileType)
+      .then(res=> {
+        
+        props.onClose()
+        
+      })
+      .catch(err=> {
+        
+      })
+    }
   }
 
   const formik = useFormik<IManagerCreate>({
     initialValues: {
-      hirerRole: HirerRole.Manager,
-      firstName: '',
-      lastName: '',
-      position: '',
+      hirerRole: managerToEdit?.hirerRole||HirerRole.Manager,
+      firstName: managerToEdit?.firstName||'',
+      lastName: managerToEdit?.lastName||'',
+      position: managerToEdit?.position||'',
       password: '',
-      email: '',
-      phone: '',
-      permissions: []
+      email: managerToEdit?.email||'',
+      phone: managerToEdit?.phone||'',
+      permissions: managerToEdit?.permissions||[]
     },
     onSubmit: submit
   })
 
   return (<div className={styles.root}> 
     <BackTextButton onClick={props.onClose}/>
-    <p className={styles.title}>Новый менеджер</p>
+    <p className={styles.title}>{managerToEdit? 'Редактирование данных менеджера ' : 'Новый менеджер'}</p>
     <FormikProvider value={formik} >
       <Form className={styles.form}>
      
@@ -152,7 +172,7 @@ export default function AddManager(props: Props) {
         validate={Validator.combine([Validator.required, Validator.email])}
         />
 
-        <PasswordField/>
+        <PasswordField notRequired={managerToEdit?true:false}/>
 
         <Button className={styles.button}>Сохранить</Button>
 

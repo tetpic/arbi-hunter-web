@@ -9,7 +9,7 @@ interface Props {
   label?: string
   name?: string
   className?: string
-  
+  notRequired?: boolean
 }
 
 export default function PasswordField(props: Props) {
@@ -32,7 +32,7 @@ export default function PasswordField(props: Props) {
   suffix={'icon'}
   suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
   onSuffixClick={passwordHandler}
-  validate={Validator.required}
+  validate={!props.notRequired&&Validator.required}
   />
 
   )

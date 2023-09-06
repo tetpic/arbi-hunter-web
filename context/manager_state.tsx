@@ -1,11 +1,13 @@
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import ManagerRepository from 'data/repositories/ManagerRepository'
+import { env } from 'process'
 import { createContext, useContext, useState } from 'react'
+import { useUserContext } from './user_state'
 
 interface IState {  
   managers: Map<number, IManager>
   managersPage: number
-  setManagers: (page: number, limit: number)=> Promise<boolean>
+  setManagers: (page?: number, limit?: number)=> void
   addNewManager: (m: IManagerCreate) => Promise<boolean>
 }
 
@@ -24,19 +26,20 @@ interface Props {
 }
 
 export function ManagerWrapper(props: Props) {
+  const userContext = useUserContext()
   const [managers, setManagersState] = useState<Map<number, IManager>>(new Map())
   const [managersPage, setManagersPageState] = useState<number>(null)
 
-  const setManagers = async(page: number, limit: number): Promise<boolean> => {
-    if(page === managersPage) {return false}
-    return ManagerRepository.getManagersList(page, limit)
+  const setManagers = async(page: number = 1) => {
+    
+    ManagerRepository.getManagersList(page)
     .then(res=> {
       setManagersPageState(page)
       setManagersState(state=> {
         res.forEach(e=>{
           state.set(e.id, e)
         })
-        return state
+        return new Map(state)
       })
       return true
     })
@@ -44,7 +47,7 @@ export function ManagerWrapper(props: Props) {
   } 
 
   const addNewManager = async(m: IManagerCreate): Promise<boolean> => {
-    return ManagerRepository.createNewManager(m)
+    return ManagerRepository.createNewManager(m, userContext.currentProfile.profileType)
     .then(res=> {
       setManagersState(state=> {
         state.set(res.id, res)

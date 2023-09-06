@@ -4,5 +4,14 @@
   margin-top: 24px;
   display: flex;
   height: calc(100dvh - 240px);
+  overflow: auto;
+
+  >div {
+    width: 100%;
+  }
+}
+
+.infinite {
+  width: 100%;
 }
 

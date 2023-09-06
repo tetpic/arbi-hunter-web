@@ -1,30 +1,37 @@
 import InputField from 'components/fields/InputField'
-import PhoneCountryField from 'components/fields/PhoneCountryField'
 import Button from 'components/ui/Button'
+import { useAppContext } from 'context/state'
+import { useUserContext } from 'context/user_state'
+import { IUserProfile } from 'data/interfaces/IUser'
 import { Form, FormikProvider, useFormik } from 'formik'
+import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import styles from './index.module.scss'
 
 interface Props {
 }
 
-interface PersonalData {
-  position: string,
-  phone: string,
-  email: string
-}
 
 export default function PersonalInformation(props: Props) {
 
-  const submitData = (data: PersonalData) =>{
-    debugger
+  const userContext = useUserContext()
+  const appContext = useAppContext()
+
+  const submitData = (data: Partial<IUserProfile>) =>{
+    userContext.editCurrentProfile(data)
+    .then(res=> {
+      if(res) {
+        appContext.showSnackbar('Данные сохранены', SnackbarType.success)
+      }
+    })
   }
 
-  const dataFormik = useFormik<PersonalData>({
+  const dataFormik = useFormik<Partial<IUserProfile>>({
     initialValues: {
-      position: '',
-      phone: '',
-      email: ''
+      firstName: userContext.currentProfile.firstName,
+      lastName: userContext.currentProfile.lastName,
+      patronymic: userContext.currentProfile.patronymic,
+      email: userContext.currentProfile.email
     },
     onSubmit: submitData
   })
@@ -35,19 +42,25 @@ export default function PersonalInformation(props: Props) {
         <InputField 
         styleType={'default'} 
         color={'default'} 
-        name={'position'}
-        label={'Должность менеджера: '}
+        name={'firstName'}
+        label={'Имя: '}
         labelType={'top'}
         />
 
-        <PhoneCountryField 
-        styleType={'horizontal'} 
-        disabled={false} 
-        placeholder={'000 000 00 00'} 
-        name={'phone'}  
-        inputClassName={styles.input} 
-        defaultCountry={'RU'}
-        label={'Телефон:'}
+        <InputField 
+        styleType={'default'} 
+        color={'default'} 
+        name={'lastName'}
+        label={'Фамилия: '}
+        labelType={'top'}
+        />
+
+        <InputField 
+        styleType={'default'} 
+        color={'default'} 
+        name={'patronymic'}
+        label={'Отчество: '}
+        labelType={'top'}
         />
 
         <InputField   

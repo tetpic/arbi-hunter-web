@@ -1,0 +1,70 @@
+@import 'styles/index';
+
+.item {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-bottom: 16px;
+
+  .top {
+    display: grid;
+    grid-template-areas: 'i n e' 'i r e';
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+    position: relative;
+  }
+
+  .name {
+    grid-area: n;
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+  }
+
+  .userPic {
+    grid-area: i;
+  }
+
+  .role {
+    grid-area: r;
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+
+  }
+
+  .edit {
+    grid-area: e;
+    
+    path {
+      @include transitionDefault;
+    }
+    @include hover {
+      path {
+        fill: $black;
+      }
+    }
+  }
+
+
+
+  .dots {
+    width: 24px;
+    height: 24px;
+  }
+
+  .stats {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+  }
+
+  .setAdmin {
+    align-self: flex-start;
+    @include buttonBlack;
+  }
+}
