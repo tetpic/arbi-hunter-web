@@ -2,6 +2,7 @@ import Button from 'components/ui/Button'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Image from 'next/image'
+import { Router, useRouter } from 'next/router'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 
@@ -13,6 +14,9 @@ interface Props {
 }
 
 export default function VacancyItem({vacancy, isActive}: Props) {
+  
+
+  const router = useRouter()
 
   const vacancyContext = useVacancyContext() 
 
@@ -40,14 +44,19 @@ export default function VacancyItem({vacancy, isActive}: Props) {
         </div>
         <div className={styles.stats_item}>
           <p className={styles.stats_desc}>Отклики</p>
-          <p className={styles.stats_count}>{vacancy.statsShowResponses||'0'}<span>{vacancy.statsShowNewVacanciesCount}</span></p>
+          <p className={styles.stats_count}>{vacancy.totalApplications||'0'}<span>{vacancy.statsShowNewVacanciesCount}</span></p>
         </div>
       </div>
-      {!isActive && 
-      <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
-      ||
-      <Button  className={styles.button}>Пригласить подходящих</Button>
-      }
+      <div className={styles.buttonsWrapper}>
+        {!isActive && 
+          <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
+        ||
+          <Button  className={styles.button}>Пригласить подходящих</Button>
+        }
+        {vacancy.totalApplications &&+vacancy.totalApplications > 0 &&
+          <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>
+        }
+    </div>
 
   </div>)
 }

@@ -186,7 +186,27 @@ export enum CategoryType {
   CourseCompilation = 'courseCompilation'
 }
 
+export enum AcceptApplicationType {
+  PhoneInterview = 'phoneInterview',
+  Interview = 'interview',
+  WorkApplication = 'workApplication',
+  GoingToWork = 'goingToWork',
+  Esmitate = 'esmitate'
+}
 
+export enum PatternTypes {
+  Interview = 'interview',
+  InfoRequest = 'infoRequest',
+  Rejection = 'rejection'
+}
+
+export enum  DataNotifyType {
+  UserRegistered = 'userRegistered',
+  ChatMessage = 'chatMessage',
+  NewApplication = 'newApplication',
+  NewProposal = 'newProposal'
+
+}
   
 
 

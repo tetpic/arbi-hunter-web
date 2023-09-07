@@ -21,7 +21,6 @@ export default function CompanyProfile(props: Props) {
   const title =  (
     <Title title={choosenNav.name}/>
   )
-  
 
   const body = ((): JSX.Element=> {
     switch(props.currentPage) {
@@ -40,7 +39,6 @@ export default function CompanyProfile(props: Props) {
       }
     }
   )()
-
 
   return (
    <div className={styles.root}>

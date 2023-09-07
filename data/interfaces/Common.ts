@@ -62,3 +62,15 @@ export interface IImage extends TimeStamp {
   focalPoint: IFocalPoint,
   userId: number|null
 }
+
+export interface IChat extends  TimeStamp { 
+  id: number,
+  type: "chat",
+  name: string|null,
+  isGroup: boolean,
+  profileId: number,
+  participantId: number,
+  applicationId: number,
+  proposalId: number|null,
+  lastMessageAt: string,
+}

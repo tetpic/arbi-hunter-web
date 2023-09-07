@@ -1,4 +1,4 @@
-import { Currency, HirerRole, HirerRolePermission } from "types/enums";
+import { AcceptApplicationType, Currency, HirerRole, HirerRolePermission, PatternTypes } from "types/enums";
 
 export const TranslateHirerRolePermission = (p: HirerRolePermission) => {
   switch (p) {
@@ -38,4 +38,31 @@ export const TranslateCurrency = (c: Currency) => {
       return '$'
   }
   
+}
+
+export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
+  switch (t) {
+    case AcceptApplicationType.PhoneInterview:
+      return 'Телефонное интервью';
+    case AcceptApplicationType.Interview:
+      return 'Интервью';
+    case AcceptApplicationType.WorkApplication:
+      return 'Предложение о работе';
+    case AcceptApplicationType.GoingToWork:
+      return 'Выход на работу';
+    case AcceptApplicationType.Esmitate:
+      return 'Оценка';
+  }
+}
+
+
+export const TranslatePatternType = (p: PatternTypes) => {
+  switch (p) {
+    case PatternTypes.InfoRequest:
+      return 'Запрос информации';
+    case PatternTypes.Interview:
+      return 'Собеседование';
+    case PatternTypes.Rejection:
+      return 'Отказ';
+  }
 }

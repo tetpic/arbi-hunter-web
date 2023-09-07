@@ -1,0 +1,53 @@
+@import 'styles/index';
+
+.item {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: $black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+  cursor: pointer;
+}
+
+.arrow {
+  @include transitionDefault;
+  &_active {
+    rotate: 180deg;
+  }
+}
+
+.itemRoot {
+  background-color: $black;
+  border-radius: 10px;
+
+}
+
+.form {
+  padding: 8px 16px 16px;
+  color: $white;
+
+  
+  >div {
+    outline:none;
+    border: 1px $grey solid;
+    min-height: 50px;
+    border-radius: 16px;
+    padding: 16px;
+    line-height: 150%;
+  }
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.button {
+  @include buttonYellow;
+  margin-top: 16px;
+}

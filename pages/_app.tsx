@@ -22,6 +22,7 @@ import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ArticleWrapper } from 'context/article_state'
+import { PatternWrapper } from 'context/pattern_state'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -52,6 +53,9 @@ function MyApp({Component, pageProps}: AppProps) {
           <VacancyWrapper>
           <CvWrapper>
           <ArticleWrapper>
+          <PatternWrapper>
+
+         
           <AuthWrapper>
 
             <Head>
@@ -67,6 +71,7 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <Snackbar/>}
           </AuthWrapper>
+          </PatternWrapper>
           </ArticleWrapper>
           </CvWrapper>
           </VacancyWrapper>
