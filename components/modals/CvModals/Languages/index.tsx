@@ -20,7 +20,7 @@ export default function LangaugesModal(props: Props) {
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
-  const [langRadioActive, setLangRadioActive] = useState<string>('')
+  const [langRadioActive, setLangRadioActive] = useState<Languages>(null)
   const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
   const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
 
@@ -32,8 +32,8 @@ export default function LangaugesModal(props: Props) {
   ]
   
   useEffect(()=>{
-    languages.registerLocale(require("@cospired/i18n-iso-languages/langs/ru.json"))
-    languages.registerLocale(require("@cospired/i18n-iso-languages/langs/en.json"))
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'))
     const langsObj = Object.entries(Languages).map(([key, value])=> {return {en: value, ru: languages.getName(value, 'ru')}
     })
     setLangs(langsObj)
@@ -63,7 +63,7 @@ export default function LangaugesModal(props: Props) {
                 isActive={el.en===langRadioActive} 
                 value={el.en} 
                 label={el.ru} 
-                onChange={(s) => setLangRadioActive(s)}
+                onChange={(s) => setLangRadioActive(s as Languages)}
                 />)
             }) 
           }

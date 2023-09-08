@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import { useEffect, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
-import classNames from 'classnames';
+import { v4 as uuidv4 } from 'uuid'
+import classNames from 'classnames'
 
 interface Props {
   progress: number

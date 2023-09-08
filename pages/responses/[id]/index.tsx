@@ -1,7 +1,7 @@
-import { useUserContext } from 'context/user_state';
-import ApplicationRepository from 'data/repositories/ApplicationRepository';
+import { useUserContext } from 'context/user_state'
+import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export default function ResponceItem(props: Props) {
   const router = useRouter()
 
-  const { id } = router.query;
+  const { id } = router.query
 
   const userContext = useUserContext()
 

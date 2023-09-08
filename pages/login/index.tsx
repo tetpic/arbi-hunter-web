@@ -1,5 +1,4 @@
 import Login from 'components/for_pages/login'
-import styles from './index.module.scss'
 
 interface Props {
   isMobile: boolean

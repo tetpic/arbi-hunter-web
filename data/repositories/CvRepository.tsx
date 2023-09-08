@@ -1,6 +1,6 @@
-import { ICategory, ICV, ICVCreate, IPosition, Source } from 'data/interfaces/ICV'
+import { IPosition, ISource } from 'data/interfaces/Common'
+import { ICategory, ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { IUser } from 'data/interfaces/IUser'
 import request from 'utils/request'
 
 export default class CvRepository {
@@ -69,7 +69,7 @@ export default class CvRepository {
     return res
   }
 
-  static async sourcesList(): Promise<{data: Source[]}|null> {
+  static async sourcesList(): Promise<{data: ISource[]}|null> {
     const res = await request({
       method: 'get',
       url: `/api/source`,

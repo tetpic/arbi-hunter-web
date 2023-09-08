@@ -1,11 +1,11 @@
-import InputField from 'components/fields/InputField';
-import TextAreaField from 'components/fields/TextAreaField';
+import InputField from 'components/fields/InputField'
+import TextAreaField from 'components/fields/TextAreaField'
 import BackTextButton from 'components/ui/BackTextButton'
-import Button from 'components/ui/Button';
-import { TimeLine } from 'data/interfaces/ICV';
-import { ChangeEvent, useState } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Button from 'components/ui/Button'
+import { TimeLine } from 'data/interfaces/Common'
+import { ChangeEvent, useState } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import styles from './index.module.scss'
 
 interface Props<T> {

@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { useCvContext } from 'context/cv_state'
-import { Source } from 'data/interfaces/ICV'
+import { ISource } from 'data/interfaces/Common'
 import CvRepository from 'data/repositories/CvRepository'
 import { useEffect, useState } from 'react'
 import Body from '../Body'
@@ -16,8 +16,8 @@ export default function SoursesModal(props: Props) {
     
   const cvContext = useCvContext()
 
-  const [sources, setSources] = useState<Source[]>(cvContext?.helpObjects?.sources||[])
-  const [choosenSources, setChoosenSources] = useState<Set<Source>>(cvContext?.helpObjects?.activeSources||new Set())
+  const [sources, setSources] = useState<ISource[]>(cvContext?.helpObjects?.sources||[])
+  const [choosenSources, setChoosenSources] = useState<Set<ISource>>(cvContext?.helpObjects?.activeSources||new Set())
 
   useEffect(()=>{
     
@@ -36,7 +36,7 @@ export default function SoursesModal(props: Props) {
     props.onClose()
   }
 
-  const onClickItemHandler = (e: Source) => {
+  const onClickItemHandler = (e: ISource) => {
     if(!choosenSources.has(e)) {
       setChoosenSources(state =>  new Set(state.add(e)))
     }

@@ -18,7 +18,7 @@ export default function CloseModalBtn(props: Props) {
       [styles.root]: true,
       [styles.defaultPosition]: props.defaultPosition,
     }, props.className)} bgColor={'transparent'}>
-      <CrossSvg color={props.color ?? colors.purple} />
+      <CrossSvg color={props.color ?? colors.black} />
     </IconButton>
   )
 }

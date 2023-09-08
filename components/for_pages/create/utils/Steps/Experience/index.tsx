@@ -3,7 +3,8 @@ import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
 import { useCvContext } from 'context/cv_state'
-import { ExperienceInfo, ICVCreate } from 'data/interfaces/ICV'
+import { ExperienceInfo } from 'data/interfaces/Common'
+import { ICVCreate } from 'data/interfaces/ICV'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import DetailsField from '../../DetailsField'
@@ -64,7 +65,7 @@ export default function Experience(props: Props) {
       />   
        
       
-      {cvContext.currentCv?.experienceInfo&& values.workExperiencePresense === "present" &&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
+      {cvContext.currentCv?.experienceInfo&& values.workExperiencePresense === 'present' &&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
         return (<div 
         className={styles.experienceWrapper} 
         // onClick={()=>{setActiveDetails(el); setDetails(true)}}
@@ -77,7 +78,7 @@ export default function Experience(props: Props) {
       }) 
       }
 
-      {values.workExperiencePresense === "present" &&
+      {values.workExperiencePresense === 'present' &&
         <AddButton onClick={()=> setDetails(true)} text='Добавить место работы'/>
       }
 

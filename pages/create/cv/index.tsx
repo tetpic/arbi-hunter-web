@@ -1,6 +1,5 @@
 import Cv from 'components/for_pages/create/Cv'
 import { useUserContext } from 'context/user_state'
-import styles from './index.module.scss'
 
 interface Props {
 }

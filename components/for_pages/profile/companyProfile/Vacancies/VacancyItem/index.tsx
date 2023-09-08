@@ -2,7 +2,7 @@ import Button from 'components/ui/Button'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Image from 'next/image'
-import { Router, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 

@@ -1,5 +1,4 @@
 import styles from './index.module.scss'
-import Image from 'next/image'
 import { useAuthContext } from 'context/auth_state'
 
 interface Props { }

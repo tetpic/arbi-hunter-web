@@ -1,6 +1,5 @@
 import DotSvg from 'components/svg/DotSvg'
 import Button from 'components/ui/Button'
-// import CustomScrollbar from 'components/ui/CustomScrollbar'
 import FavoritesButton from 'components/ui/FavoritesButton'
 import UserPic from 'components/ui/UserPic'
 import { useUserContext } from 'context/user_state'
@@ -24,7 +23,7 @@ function Item({cv}: ItemProps) {
     <div className={styles.itemWrapper}>
     <div className={styles.top}>
       <UserPic size={46} className={styles.userPic}/>
-      <p className={styles.position}>{cv.position||"Должность не указана"}</p>
+      <p className={styles.position}>{cv.position||'Должность не указана'}</p>
       <p className={styles.name}>{cv.firstName} {cv.lastName} <DotSvg/> {cv.age} {Formatter.pluralize(cv.age, 'год', 'года', 'лет')}</p>
       <FavoritesButton className={styles.heartButton}/>
     </div>
@@ -34,7 +33,7 @@ function Item({cv}: ItemProps) {
     </div>
     <div className={styles.middle}>
       <p className={styles.title}>Последнее место работы</p>
-      <p className={styles.data}>{cv.lastExperienceInfo.description} "{cv.lastExperienceInfo.company}"</p>
+      <p className={styles.data}>{cv.lastExperienceInfo.description} &quot;{cv.lastExperienceInfo.company}&quot;</p>
     </div>
     <Button className={styles.button} >Пригласить</Button>
   </div>

@@ -1,5 +1,5 @@
-import Title from "components/ui/TitleForSection"
-import { NavigationSet, ProfilePages } from ".."
+import Title from 'components/ui/TitleForSection'
+import { NavigationSet, ProfilePages } from '..'
 
 interface Props {
   currentPage: ProfilePages 

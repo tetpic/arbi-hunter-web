@@ -107,7 +107,7 @@ export default function Skills(props: Props) {
             <p 
             className={styles.item} 
             onClick={()=>{
-              setActiveDetails(el); 
+              setActiveDetails(el)
               setCoursesDetails(true)}
             }>
               {el.name} <CrossSvg className={styles.crossSvg}/>

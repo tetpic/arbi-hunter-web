@@ -87,7 +87,7 @@ export default function UserDropdownMenu(props: Props) {
           <Image src={'/icons/money.png'} alt={'money image'} width={24} height={24}/>
           {Formatter.formatNumber(user.balance||0)}
         </p>
-        <Button className={styles.moneyAdd} type='button' onClick={()=> {console.log('пополнить');}}>Пополнить</Button>
+        <Button className={styles.moneyAdd} type='button' onClick={()=> {}}>Пополнить</Button>
       </div>
 
       <div className={styles.itemsWrapper}>

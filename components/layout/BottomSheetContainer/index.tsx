@@ -1,5 +1,4 @@
 import styles from './index.module.scss'
-import Sheet from 'react-modal-sheet'
 import { useAppContext } from 'context/state'
 import { RemoveScroll } from 'react-remove-scroll'
 
@@ -9,7 +8,7 @@ export default function BottomSheetContainer(props: Props) {
   const appContext = useAppContext()
   return (
     <RemoveScroll enabled={!!appContext.bottomSheet}>
-      <div className={styles.root} aria-hidden="true">
+      <div className={styles.root} aria-hidden='true'>
 
       </div>
     </RemoveScroll>

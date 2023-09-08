@@ -1,11 +1,11 @@
-import Title from "components/ui/TitleForSection"
-import { NavigationSet, ProfilePages } from ".."
-import Managers from "./Managers"
-import Patterns from "./Patterns"
-import Personal from "./Personal"
-import Saved from "./Saved"
-import Shop from "./Shop"
-import Vacancies from "./Vacancies"
+import Title from 'components/ui/TitleForSection'
+import { NavigationSet, ProfilePages } from '..'
+import Managers from './Managers'
+import Patterns from './Patterns'
+import Personal from './Personal'
+import Saved from './Saved'
+import Shop from './Shop'
+import Vacancies from './Vacancies'
 import styles from './index.module.scss'
 
 

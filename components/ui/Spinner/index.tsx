@@ -18,8 +18,8 @@ export default function Spinner(props: Props) {
     })}>
       <SpinnerCircular
         size={props.size}
-        color={props.color ?? colors.purple}
-        secondaryColor={props.secondaryColor ?? colors.purple3}
+        color={props.color ?? colors.black}
+        secondaryColor={props.secondaryColor ?? colors.black}
         thickness={150}
       />
     </div>

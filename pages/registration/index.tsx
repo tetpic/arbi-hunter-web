@@ -2,7 +2,6 @@ import Registration from 'components/for_pages/registration'
 import { useUserContext } from 'context/user_state'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import styles from './index.module.scss'
 
 interface Props {
 }

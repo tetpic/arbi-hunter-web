@@ -4,7 +4,7 @@ import { useField } from 'formik'
 import FieldError from 'components/ui/FieldError'
 import usePressAndHover from 'hooks/usePressAndHover'
 import classNames from 'classnames'
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 

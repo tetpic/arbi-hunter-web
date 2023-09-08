@@ -10,7 +10,6 @@ import FieldError from 'components/ui/FieldError'
 import { format } from 'date-fns'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
-import parse from 'date-fns/parse'
 import FieldLabel from 'components/ui/FieldLabel'
 
 interface Props extends IField<string> {

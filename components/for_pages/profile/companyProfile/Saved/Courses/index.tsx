@@ -3,7 +3,6 @@ import PlayButtonSvg from 'components/svg/PlayButtonSvg'
 import StarSvg from 'components/svg/StarSvg'
 import UserSvg from 'components/svg/UserSvg'
 import FavoritesButton from 'components/ui/FavoritesButton'
-import IconButton from 'components/ui/IconButton'
 import Image from 'next/image'
 import styles from './index.module.scss'
 

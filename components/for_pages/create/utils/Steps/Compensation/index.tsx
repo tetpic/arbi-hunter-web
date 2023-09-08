@@ -1,4 +1,3 @@
-import CheckboxListField from 'components/fields/CheckboxListField'
 import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import { CompensationType, Currency } from 'types/enums'

@@ -2,7 +2,7 @@ import RadioListField from 'components/fields/RadioListField'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
-import { EducationInfo } from 'data/interfaces/ICV'
+import { EducationInfo } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { EducationTypes } from 'types/enums'
@@ -33,7 +33,7 @@ export default function Education(props: Props) {
   }
 
   const closeModalHandler = () => {
-    setDetails(false); 
+    setDetails(false)
     setActiveDetails(initialData)
   }
 

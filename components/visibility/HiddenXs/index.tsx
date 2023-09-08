@@ -1,4 +1,3 @@
-import { useAppContext } from 'context/state'
 import {ReactElement} from 'react'
 
 interface Props {

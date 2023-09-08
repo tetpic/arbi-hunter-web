@@ -49,8 +49,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "plop": "plop"
+    "plop": "plop",
+    "ts": "tsc --noEmit"
   },
+  "pre-commit": [
+    "lint",
+    "ts"
+  ],
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
     "@types/node": "20.5.0",
@@ -60,7 +65,10 @@
     "@types/react-scroll": "^1.8.7",
     "@types/react-sticky": "^6.0.4",
     "@types/uuid": "^9.0.2",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^13.4.19",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "pre-commit": "^1.2.2",
     "typescript": "5.1.6"
   }
 }
