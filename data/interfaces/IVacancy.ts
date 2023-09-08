@@ -1,8 +1,8 @@
-import { WorkExperience } from "types/enums"
-import { ISource } from "./Common"
-import { ICV,} from "./ICV"
-import { IJob } from "./IJob"
-import { IUserProfile } from "./IUser"
+import { WorkExperience } from 'types/enums'
+import { ISource } from './Common'
+import { ICV,} from './ICV'
+import { IJob } from './IJob'
+import { IUserProfile } from './IUser'
 
 export interface IVacancyCreate extends IJob {
     name : string,
@@ -18,6 +18,6 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
     schedulePublishAt: null,
     isRemote: true,
     published: boolean,
-    totalApplications: "0",
+    totalApplications: '0',
     skills: ISource[],
 }

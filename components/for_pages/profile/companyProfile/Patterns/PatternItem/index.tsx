@@ -1,19 +1,19 @@
+import styles from './index.module.scss'
 import classNames from 'classnames'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Accordeon from 'components/ui/Accordeon'
 import Button from 'components/ui/Button'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
-import styles from './index.module.scss'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import InputField from 'components/fields/InputField'
 import { IPattern, IPatternBase } from 'data/interfaces/IPattern'
-import { PatternTypes } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
+import RichTextField from 'components/fields/RichTextField'
+import RadioListField from 'components/fields/RadioListField'
+import { usePatternContext } from 'context/pattern_state'
 
 interface Props {
-  pattern: IPattern
+  pattern?: IPattern
+  new?: boolean
 }
 
 
@@ -21,25 +21,21 @@ export default function PatternItem(props: Props) {
 
   const [isActive, setActive] = useState<boolean>(false)
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-     
-    ],
-    content: props.pattern.template
-  })
-
+  const patternContext = usePatternContext()
 
   const submit = (data: IPatternBase) => {
-    let html = editor.getText()
-    
-    
+    if(props.new) {
+      patternContext.createPattern(data)
+    }
+    else {
+      patternContext.editPattern(data, props.pattern?.id)
+    }
   }
 
   const formik = useFormik<IPatternBase>({
     initialValues: {
-      type: props.pattern.type||PatternTypes.InfoRequest,
-      template: ''
+      type: props.pattern?.type||[...patternContext.patternsNotExist.values()][0],
+      template: props.pattern?.template||''
     },
     onSubmit: submit
   })
@@ -52,7 +48,7 @@ export default function PatternItem(props: Props) {
       onClick={()=>setActive(!isActive)}
       className={styles.item}
       >
-        {TranslatePatternType(props.pattern.type)}
+        {props.new?'Создание нового шаблона':TranslatePatternType(props.pattern?.type)}
         <ArrowDownSvg className={classNames(styles.arrow, isActive&&styles.arrow_active)}/>
       </div>
     } 
@@ -60,8 +56,20 @@ export default function PatternItem(props: Props) {
       <>
       <FormikProvider value={formik}>
         <Form className={styles.form}>
-          <InputField type={'hidden'} className={styles.hiddenInput} value={''} name='template' styleType={'hidden'} color={'white'}/>
-          <EditorContent editor={editor} />
+          {props.new && patternContext.patternsNotExist.size>0 &&
+          <RadioListField 
+          name={'type'} 
+          itemCircleClassname={styles.circle}
+          wrapperClassName={styles.wrapper}
+          itemClassName={styles.radio}
+          activeItemClassName={styles.radioActive}
+          itemLabelClassName={styles.radioLabel}
+          options={
+            [...patternContext.patternsNotExist.values()].map(el=> {return {value: el, label: TranslatePatternType(el)}})
+          }
+          />
+        }
+          <RichTextField name={'template'}/>
           <Button className={styles.button}>Сохранить</Button>
         </Form>
       </FormikProvider>

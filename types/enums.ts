@@ -208,6 +208,12 @@ export enum  DataNotifyType {
 
 }
   
+export enum ProposalRequestType {
+  New = 'new',
+  Rejection = 'rejection',
+  Interview = 'interview',
+  InfoRequest = 'infoRequest',
+}
 
 
 

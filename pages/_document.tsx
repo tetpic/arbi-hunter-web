@@ -1,7 +1,7 @@
 import Document, {Html, Head, Main, NextScript, DocumentContext} from 'next/document'
 import { Cookies } from 'react-cookie'
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+  static async getStaticProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage
 
     ctx.renderPage = () =>

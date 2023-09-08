@@ -1,0 +1,38 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  column-gap: 8px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  perspective: 1000px;
+  perspective-origin: center;
+}
+
+.svg {
+  width: 16px;
+  height: 16px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px $greyLight solid;
+  border-radius: 8px;  
+  font-size: $smallText;
+  min-width: 24px;
+  height: 24px;
+  padding: 0px 4px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color .3s ease-in-out;
+  @include hover {
+    animation: jello-vertical .9s linear normal forwards;
+    animation-fill-mode: forwards;
+    background-color: $greyLight;
+  }
+}
+
+@include animationJello;
+

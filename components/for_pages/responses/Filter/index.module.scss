@@ -1,0 +1,96 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 16px;
+  margin-bottom: 24px;
+  padding: 8px 0px;
+  // padding: 16px;
+  background-color: $black;
+  border-radius: 10px;
+  justify-content: center;
+
+}
+
+.item {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+  column-gap: 16px;
+  position: relative;
+  border-radius: 10px;
+  position: relative;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+  cursor: pointer;
+
+  &_active {
+    background-color: $yellow;
+  }
+}
+
+.accRoot {
+  position: relative;
+  @include exeptLast {
+    &::after {
+     height: 60%;
+     width: 1px;
+     content: '';
+     position: absolute;
+     right: -8px;
+     top: 50%;
+     transform: translateY(-50%);
+     background-color: $greyLight;
+     display: block;
+    }
+  }
+}
+
+
+
+.accWrapper  {
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(100%);
+  background-color: $grey;
+  z-index: 20;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.accItem {
+  color: $white;
+  padding: 16px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+}
+
+.accContentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+ 
+}
+
+.accContent {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+
+
+}

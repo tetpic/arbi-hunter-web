@@ -1,0 +1,28 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: $hugeText;
+  font-weight: $semibold;
+  color: $white;
+  margin-bottom: 24px;
+}
+
+.main {
+  width: 70%;
+}
+
+.empty {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $medium;
+}
+
+
+

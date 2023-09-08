@@ -1,8 +1,8 @@
-import { IChat, TimeStamp } from "./Common";
-import { ICV } from "./ICV";
-import { INotification } from "./INotification";
-import { IUserProfile } from "./IUser"
-import { IVacancy } from "./IVacancy";
+import { IChat, TimeStamp } from './Common'
+import { ICV } from './ICV'
+import { INotification } from './INotification'
+import { IUserProfile } from './IUser'
+import { IVacancy } from './IVacancy'
 
 export interface IApplication extends TimeStamp{
   id: number,

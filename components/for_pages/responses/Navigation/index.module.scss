@@ -1,0 +1,44 @@
+@import 'styles/index';
+
+
+.root {
+  width: 29%;
+  display: flex;
+  flex-direction: column;
+  background-color: $black;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.item {
+  padding: 16px;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  font-size: $mediumText;
+  font-weight: $medium;
+  padding-block: 18px;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hoverButtonBlack;
+
+
+  &_active {
+    background-color: $grey;
+    pointer-events: none;
+  }
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: $greyLight;
+  font-size: $smallText;
+  padding-top: 2px;
+  padding-inline: 3px;
+
+}

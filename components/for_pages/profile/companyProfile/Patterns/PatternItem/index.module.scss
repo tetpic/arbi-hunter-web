@@ -25,7 +25,6 @@
 .itemRoot {
   background-color: $black;
   border-radius: 10px;
-
 }
 
 .form {
@@ -35,10 +34,10 @@
   
   >div {
     outline:none;
-    border: 1px $grey solid;
-    min-height: 50px;
-    border-radius: 16px;
-    padding: 16px;
+    // border: 1px $grey solid;
+    // min-height: 50px;
+    // border-radius: 16px;
+    // padding: 0px 16px;
     line-height: 150%;
   }
 }
@@ -50,4 +49,33 @@
 .button {
   @include buttonYellow;
   margin-top: 16px;
+}
+
+.circle {
+  display: none;
+}
+
+.wrapper {
+  display: flex;
+  column-gap: 8px;
+  margin-bottom: 8px;
+}
+
+.radio {
+  border-radius: 8px;
+  padding: 4px;
+  font-size: $smallText;
+  font-weight: $regular;
+  border: 1px $grey solid;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+}
+
+.radioActive {
+  background-color: $greyAlt;
+  pointer-events: none;
+}
+
+.radioLabel {
+  margin-left: unset;
 }

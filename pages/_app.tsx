@@ -23,6 +23,7 @@ import { ManagerWrapper } from 'context/manager_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ArticleWrapper } from 'context/article_state'
 import { PatternWrapper } from 'context/pattern_state'
+import { ResponseWrapper } from 'context/response_state'
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -54,8 +55,7 @@ function MyApp({Component, pageProps}: AppProps) {
           <CvWrapper>
           <ArticleWrapper>
           <PatternWrapper>
-
-         
+          <ResponseWrapper>
           <AuthWrapper>
 
             <Head>
@@ -70,7 +70,9 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <ModalContainer/>}
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <Snackbar/>}
+            
           </AuthWrapper>
+          </ResponseWrapper>
           </PatternWrapper>
           </ArticleWrapper>
           </CvWrapper>

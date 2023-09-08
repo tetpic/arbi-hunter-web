@@ -19,7 +19,7 @@ export default class PatternRepository {
   static async getPatternText(data: IPatternRequest, profile: ProfileType): Promise<IPatternResponce|null> {
     const res = await request({
       method: 'get',
-      url: `/api/cover-letter/`,
+      url: '/api/cover-letter/',
       data,
       profile
     })
@@ -32,7 +32,20 @@ export default class PatternRepository {
   static async createPatternText(data: IPatternBase, profile: ProfileType): Promise<any|null> {
     const res = await request({
       method: 'post',
-      url: `/api/cover-letter`,
+      url: '/api/cover-letter',
+      data,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async editPatternById(data: IPatternBase, id: number, profile: ProfileType): Promise<any|null> {
+    const res = await request({
+      method: 'patch',
+      url: `/api/cover-letter/${id}`,
       data,
       profile
     })
