@@ -7,5 +7,19 @@
   color: $white;
   font-size: $hugeText;
   font-weight: $semibold;
+  @include mq($TabletWidth, max) {
+    justify-content: space-between;
+    text-align: center;
+  }
+}
+
+.backButton {
+  padding: 8px;
+  border-radius: 10px;
+  background-color: $grey;
+}
+
+.filler {
+  width: 24px;
 }
 

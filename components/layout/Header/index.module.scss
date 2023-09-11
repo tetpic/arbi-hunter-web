@@ -13,8 +13,8 @@
     content: '';
     width: 50px;
   }
-
-  @include mq($TabletWidth, max) {
+  @include mq($SmDesktopWidth, max) {
+    justify-content: space-between;
     &:after {
       display: none;
     }
@@ -22,6 +22,7 @@
 
   @include mq($TabletWidth, max) {
     display: none;
+   
   }
 }
 

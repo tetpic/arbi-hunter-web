@@ -1,6 +1,11 @@
 @import 'styles/index';
 
 .root {
+
+
+}
+
+.filterWrapper {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -11,7 +16,6 @@
   background-color: $black;
   border-radius: 10px;
   justify-content: center;
-
 }
 
 .item {
@@ -28,11 +32,31 @@
   @include transitionDefault;
   @include hoverButtonSmooth;
   cursor: pointer;
+  svg {
+    @include transitionDefault;
+  }
 
   &_active {
     background-color: $yellow;
+    color: $black;
+    svg {
+      rotate: 180deg;
+      path {
+        stroke: $black;
+      }
+    }
   }
 }
+
+
+.filterResults {
+  display: flex;
+  column-gap: 8px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
 
 .accRoot {
   position: relative;
@@ -71,11 +95,18 @@
 .accItem {
   color: $white;
   padding: 16px;
+  font-size: $smallText;
   width: 100%;
   text-align: center;
   cursor: pointer;
   @include transitionDefault;
   @include hoverButtonSmooth;
+  
+  &_active {
+    background-color: $yellow;
+    color: $black;
+    pointer-events: none;
+  }
 }
 
 .accContentWrapper {
@@ -83,7 +114,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
- 
 }
 
 .accContent {
@@ -91,6 +121,4 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-
-
 }

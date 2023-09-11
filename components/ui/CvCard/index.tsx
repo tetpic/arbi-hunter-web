@@ -1,5 +1,7 @@
 import DotSvg from 'components/svg/DotSvg'
+import { IChat } from 'data/interfaces/Common'
 import { ICV } from 'data/interfaces/ICV'
+import { useRouter } from 'next/router'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import FavoritesButton from '../FavoritesButton'
@@ -8,11 +10,20 @@ import styles from './index.module.scss'
 
 interface ItemProps {
   cv: ICV
+  chat?: IChat
 }
 
-export default function CvCard({cv}: ItemProps) {
+export default function CvCard({cv, chat}: ItemProps) {
+
+  const router = useRouter()
 
   const experience = cv.experienceInfo?Formatter.fullTimeLine(cv.experienceInfo?.map(el=>[el.fromDate, el.toDate])):'Без опыта'
+
+  
+
+  const chatbuttonClickHandler = () => {
+    router.push('/chat/' + chat.id + '/')
+  }
 
   return (
     <div className={styles.itemWrapper}>
@@ -32,7 +43,12 @@ export default function CvCard({cv}: ItemProps) {
       <p className={styles.data}>{cv.lastExperienceInfo?.description&&cv.lastExperienceInfo?.description} {cv.lastExperienceInfo?.company&&('"' + cv.lastExperienceInfo?.company + '"')}</p>
     </div>
     }
-    <Button className={styles.button} >Пригласить</Button>
+    <div className={styles.buttonsWrapper}>
+      <Button className={styles.button} >Пригласить</Button>
+      {chat&& 
+        <Button className={styles.buttonBlack} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
+      }
+    </div>
   </div>
   )
 }

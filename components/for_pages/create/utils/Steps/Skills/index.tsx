@@ -1,6 +1,7 @@
 import RadioListField from 'components/fields/RadioListField'
 import CrossSvg from 'components/svg/CrossSvg'
 import AddButton from 'components/ui/AddButton'
+import RemovableItem from 'components/ui/RemovableItem'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import { CoursesInfo, ISource } from 'data/interfaces/Common'
@@ -76,7 +77,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.skills?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.skills
-        .map((el: ISource)=> <p className={styles.item}>{el.title} <CrossSvg className={styles.crossSvg}/></p>)
+        .map((el: ISource)=> <RemovableItem text={el.title}/>)
         }
       </div>
     } 
@@ -89,7 +90,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.languageKnowledges
-        .map((el)=> <p className={styles.item}>{el.ru} <CrossSvg className={styles.crossSvg}/></p>)
+        .map((el)=> <RemovableItem text={el.ru} /> )
         }
       </div>
     } 
@@ -127,9 +128,7 @@ export default function Skills(props: Props) {
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects && Array.from(cvContext.helpObjects?.activeSources)
         .map((el)=> 
-          <p className={styles.item}>
-            {el.title} <CrossSvg className={styles.crossSvg} onClick={()=>removeSource(el)}/>
-          </p>
+        <RemovableItem text={el.title} onClick={()=>removeSource(el)}/>
         )}
       </div>
     }

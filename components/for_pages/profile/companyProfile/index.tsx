@@ -12,6 +12,7 @@ import styles from './index.module.scss'
 interface Props {
   currentPage: ProfilePages 
   navSet: NavigationSet[]
+  onBackClick?: ()=> void
 }
 
 export default function CompanyProfile(props: Props) {
@@ -19,7 +20,7 @@ export default function CompanyProfile(props: Props) {
   const choosenNav = props.navSet.find(s => s.type === props.currentPage)
 
   const title =  (
-    <Title title={choosenNav.name}/>
+    <Title title={choosenNav.name} onBackClick={props.onBackClick}/>
   )
 
   const body = ((): JSX.Element=> {

@@ -1,30 +1,35 @@
-import { AcceptApplicationType, Currency, HirerRole, HirerRolePermission, PatternTypes } from "types/enums";
+import { AcceptApplicationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, PatternTypes, WorkExperience } from 'types/enums'
+
+export const arrayFromEnum = (k: {[key: string|number]: string}) => {
+  return [...Object.values(k)]
+}
+
 
 export const TranslateHirerRolePermission = (p: HirerRolePermission) => {
   switch (p) {
     case HirerRolePermission.ChangeEmail:
-      return 'Изменение почты';
+      return 'Изменение почты'
     case HirerRolePermission.ChangePassword:
-      return 'Изменение пароля';
+      return 'Изменение пароля'
     case HirerRolePermission.ViewStats:
-      return 'Просмотр статистики';
+      return 'Просмотр статистики'
     case HirerRolePermission.ManageApplications:
-      return 'Отклики на соискателей';
+      return 'Отклики на соискателей'
     case HirerRolePermission.CreateVacancies:
-      return 'Создание и продление вакансий';
+      return 'Создание и продление вакансий'
     case HirerRolePermission.EditCompanyProfile:
-      return 'Изменения профиля компании';
+      return 'Изменения профиля компании'
     case HirerRolePermission.EditCompanyBlog:
-      return 'Изменение блога компании';
+      return 'Изменение блога компании'
   }
 }
 
 export const TranslateHirerRole = (p: HirerRole) => {
   switch (p) {
     case HirerRole.Admin:
-      return 'Администратор';
+      return 'Администратор'
     case HirerRole.Manager:
-      return 'Менеджер';
+      return 'Менеджер'
   }
 }
 
@@ -43,15 +48,15 @@ export const TranslateCurrency = (c: Currency) => {
 export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
   switch (t) {
     case AcceptApplicationType.PhoneInterview:
-      return 'Телефонное интервью';
+      return 'Телефонное интервью'
     case AcceptApplicationType.Interview:
-      return 'Интервью';
+      return 'Интервью'
     case AcceptApplicationType.WorkApplication:
-      return 'Предложение о работе';
+      return 'Предложение о работе'
     case AcceptApplicationType.GoingToWork:
-      return 'Выход на работу';
+      return 'Выход на работу'
     case AcceptApplicationType.Esmitate:
-      return 'Оценка';
+      return 'Оценка'
   }
 }
 
@@ -59,10 +64,52 @@ export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
 export const TranslatePatternType = (p: PatternTypes) => {
   switch (p) {
     case PatternTypes.InfoRequest:
-      return 'Запрос информации';
+      return 'Запрос информации'
     case PatternTypes.Interview:
-      return 'Собеседование';
+      return 'Собеседование'
     case PatternTypes.Rejection:
-      return 'Отказ';
+      return 'Отказ'
   }
 }
+
+export const TranslateGenderType = (g: Genders) => {
+  switch(g) {
+    case Genders.Female: 
+    return 'Женский'
+    case Genders.Male: 
+    return 'Мужской'  
+  }
+}
+
+export const TranslateEducationType = (e: EducationTypes) => {
+  switch(e) {
+    case EducationTypes.Bachelor:
+      return 'Бакалавр'
+    case EducationTypes.Doctor: 
+      return 'Доктор наук'
+    case EducationTypes.Higher: 
+      return 'Высшее'
+    case EducationTypes.IncompleteHigher: 
+      return 'Неоконченное высшее'
+    case EducationTypes.Master:
+      return 'Магистр'
+    case EducationTypes.PhD:
+      return 'Кандидат наук'
+    case EducationTypes.Secondary:
+      return 'Среднее'
+    case EducationTypes.SecondarySpecial:
+      return 'Средне специальное'
+  }
+}
+
+export const TranslateWorkExperience = (w: WorkExperience) => {
+  switch(w) {
+    case WorkExperience.From1to3:
+      return 'От 1 до 3'
+    case WorkExperience.From3to6:
+      return 'От 3 до 6'
+    case WorkExperience.From6:
+      return 'Более 6 лет'
+  }
+}
+

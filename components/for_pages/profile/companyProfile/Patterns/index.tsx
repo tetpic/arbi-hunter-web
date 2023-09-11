@@ -1,5 +1,6 @@
 import Button from 'components/ui/Button'
 import { usePatternContext } from 'context/pattern_state'
+import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import PatternItem from './PatternItem'
@@ -25,13 +26,17 @@ export default function Patterns(props: Props) {
   }, [])
 
   return (<div className={styles.root}> 
-    {patternContext.patterns && patternContext.patterns.size > 0 && 
-    [...patternContext.patterns.values()].map(el=> 
-      <PatternItem pattern={el}/>
-    )}
-    {creation&& 
-    <PatternItem new/>
+    <Scrollbars>
+  <div className={styles.wrapper}>
+      {patternContext.patterns && patternContext.patterns.size > 0 && 
+      [...patternContext.patterns.values()].map(el=> 
+        <PatternItem pattern={el}/>
+        )}
+      {creation&& 
+      <PatternItem new/>
     }
+  </div>
+    </Scrollbars>
     {patternContext.patternsNotExist?.size > 0 && !creation &&
     <Button className={styles.createNew} onClick={createPatternHandler}>Создать</Button>
     }

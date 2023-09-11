@@ -4,6 +4,7 @@ import StarSvg from 'components/svg/StarSvg'
 import UserSvg from 'components/svg/UserSvg'
 import FavoritesButton from 'components/ui/FavoritesButton'
 import Image from 'next/image'
+import Scrollbars from 'react-custom-scrollbars-2'
 import styles from './index.module.scss'
 
 interface Props {
@@ -11,8 +12,6 @@ interface Props {
 
 interface ItemProps {
   image?: string
-
-
 }
 
 
@@ -44,10 +43,14 @@ function Item(props: ItemProps) {
 export default function SavedCourses(props: Props) {
 
   return (<div className={styles.root}> 
-    <Item/>
-    <Item/>
-    <Item/>
-    <Item/>
+  <Scrollbars style={{height: '100%'}}  autoHide universal>
+    <div className={styles.wrapper}>
+      <Item/>
+      <Item/>
+      <Item/>
+      <Item/>
+    </div>
+  </Scrollbars>
 
   </div>)
 }

@@ -57,9 +57,9 @@ $zIndexTop: 300;
 
 //text
 $smallText: 12px;
-$mediumText: 14px;
-$largeText: 16px;
-$hugeText: Clamp($largeText, 4vw, 24px);
+$mediumText: Clamp(12px, 3.2vw, 14px);
+$largeText: Clamp(14px, 3.4vw, 16px);
+$hugeText: Clamp(16px, 4vw, 24px);
 
 $regular: 400;
 $medium: 500;

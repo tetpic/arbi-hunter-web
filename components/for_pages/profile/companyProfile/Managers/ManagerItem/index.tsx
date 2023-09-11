@@ -14,18 +14,16 @@ import styles from './index.module.scss'
 
 
 interface ManagerProps {
-  manager: IManager
+  manager: IManager  
   onEdit: ()=>void
   onRemove: () => void
 }
 
 export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
   
-
   const {currentProfile} = useUserContext()
-
   const managerContext = useManagerContext()
-
+  const [loading, setIsLoading] = useState<boolean>(false)
   const [dropdownActive, setDropDown] = useState<boolean>()
 
 
@@ -41,8 +39,10 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
       email: manager.email,
       phone: manager.phone
     }
+    setIsLoading(true)
     ManagerRepository.editManagerById(data, manager.id, currentProfile.profileType)
     .then(res=>{
+      setIsLoading(false)
       managerContext.setManagers()
     })
   }
@@ -63,7 +63,7 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
         }
       </div>
       <p className={styles.stats}>367 просмотров за неделю</p>
-      <Button className={styles.setAdmin} onClick={setAdminHandler}>Сделать {
+      <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>Сделать {
       manager.hirerRole===HirerRole.Manager&&'администратором'
       ||
       manager.hirerRole===HirerRole.Admin&&'менеджером'

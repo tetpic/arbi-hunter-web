@@ -20,6 +20,7 @@ interface Props extends IButton {
   stopPropagation?: boolean
   icon?: ReactElement
   title? : string
+  isProcess?: boolean
 }
 
 export default function Button(props: Props) {
@@ -77,13 +78,15 @@ export default function Button(props: Props) {
       disabled={props.disabled}
       className={classNames(cn)}
     >
-      <span className={classNames({
-        [styles.text]: true,
-        [styles.textHidden]: props.spinner,
-      })}>{props.icon}{props.children}</span>
+      {!props.isProcess &&
+        <span className={classNames({
+          [styles.text]: true,
+          [styles.textHidden]: props.spinner,
+        })}>{props.icon}{props.children}</span>
+      }
       <div className={classNames({
         [styles.spinner]: true,
-        [styles.spinnerVisible]: props.spinner,
+        [styles.spinnerVisible]: props.spinner||props.isProcess,
       })}>
         <Spinner size={22} color="#fff" secondaryColor="rgba(255,255,255,0.4)"/>
         {/* {darkSpinner && <Spinner size={22} color={colors.black} secondaryColor={colors.grey2} />} */}

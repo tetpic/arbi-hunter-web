@@ -1,10 +1,21 @@
 @import 'styles/index';
 
 .root {
-  display: flex;
-  flex-wrap: wrap;
   margin-top: 24px;
+  height: calc(100vh - 260px);
+  height: calc(100dvh - 260px);
   // justify-content: space-between;
+  @include mq($TabletWidth, max) {
+    padding-bottom: 20px;
+    height: calc(100vh - 208px);
+    height: calc(100dvh - 208px);
+  }
+}
+
+.wrapper {
+  display: flex;
+  row-gap: 16px;
+  flex-wrap: wrap;
   row-gap: 16px;
   column-gap: 16px;
 
@@ -15,6 +26,9 @@
   background-color: $black;
   border-radius: 16px;
   overflow: hidden;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .top {
@@ -22,8 +36,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: clamp(90px, 14vw, 180px);
+  height: clamp(90px, 40vw, 180px);
   background-color: $greyLight;
+  
 
   .badge {
     position: absolute;

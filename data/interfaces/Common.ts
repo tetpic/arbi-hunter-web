@@ -1,4 +1,4 @@
-import { Languages } from "types/enums"
+import { Languages } from 'types/enums'
 
 export interface TimeStamp {
   createdAt: string,
@@ -54,8 +54,8 @@ export interface IImage extends TimeStamp {
   id: number,
   published: boolean,
   name: string,
-  type: "IMAGE",
-  mimeType: "image/png",
+  type: 'IMAGE',
+  mimeType: 'image/png',
   fileSize: number,
   duration: string|number|null,
   source: string,
@@ -65,7 +65,7 @@ export interface IImage extends TimeStamp {
 
 export interface IChat extends  TimeStamp { 
   id: number,
-  type: "chat",
+  type: 'chat',
   name: string|null,
   isGroup: boolean,
   profileId: number,

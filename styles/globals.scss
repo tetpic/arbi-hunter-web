@@ -83,7 +83,24 @@ body{
  
 }
 
-*{
+// *{
+//   scrollbar-width: thin;          /* "auto" или "thin" */
+//   scrollbar-color: $greyLight $grey;  
+//   &::-webkit-scrollbar {
+//     width: 4px;               
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: $grey;        
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background-color: $greyLight;    
+//     border-radius: 20px;       
+//     border: 1px solid $grey; 
+//   }
+// }
+.infinite-scroll-component {
   scrollbar-width: thin;          /* "auto" или "thin" */
   scrollbar-color: $greyLight $grey;  
   &::-webkit-scrollbar {
@@ -91,7 +108,7 @@ body{
   }
 
   &::-webkit-scrollbar-track {
-    background: $grey;        
+    background: $backgroundBlack;        
   }
 
   &::-webkit-scrollbar-thumb {
@@ -236,9 +253,15 @@ select:-webkit-autofill:focus {
   margin:  0 auto;
   padding: 0px 24px;
   position: relative;
+  @include mq ($SmDesktopWidth, max) {
+    width: calc(100vw - 100px);
+    margin: unset;
+    margin-left: 80px;
+  }
   @include mq($TabletWidth, max) {
     width: 100vw;
     padding: 0px 16px;
+    margin-left: unset;
   }
 }
 

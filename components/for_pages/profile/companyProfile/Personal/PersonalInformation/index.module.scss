@@ -1,12 +1,25 @@
 @import 'styles/index';
 
 .root {
-  display: flex;
-  flex-direction: column;
-  row-gap: 24px;
+  height: 350px;
+  
+  // height: calc(100vh - 240px);
+  // height: calc(100dvh - 240px);
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 270px);
+    height: calc(100dvh - 270px);
+
+  }
 }
 
 .button {
   align-self: flex-start;
   @include buttonYellow;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  padding-bottom: 24px;
 }

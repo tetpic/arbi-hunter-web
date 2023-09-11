@@ -24,7 +24,6 @@ import { VacancyWrapper } from 'context/vacancy_state'
 import { ArticleWrapper } from 'context/article_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { ResponseWrapper } from 'context/response_state'
-
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -37,6 +36,8 @@ export interface AppProps extends NextAppProps {
 function MyApp({Component, pageProps}: AppProps) {
   const [clientVisible, setClientVisible] = useState(false)
 
+
+
   useEffect(() => {
       setClientVisible(true)
       if (pageProps.isMobile) {
@@ -44,7 +45,7 @@ function MyApp({Component, pageProps}: AppProps) {
         document.documentElement.className = 'mobile-ua'
       }
     },
-    [])
+  [])
 
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
@@ -64,8 +65,9 @@ function MyApp({Component, pageProps}: AppProps) {
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
-            <Layout>
+            <Layout>           
               <Component {...pageProps} />
+            
             </Layout>
             {clientVisible && <ModalContainer/>}
             {clientVisible && <BottomSheetContainer/>}

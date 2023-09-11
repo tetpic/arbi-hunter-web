@@ -4,6 +4,7 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { Form, FormikProvider, useFormik } from 'formik'
+import Scrollbars from 'rc-scrollbars'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import styles from './index.module.scss'
@@ -39,39 +40,43 @@ export default function PersonalInformation(props: Props) {
   return (
     <FormikProvider value={dataFormik} >
       <Form className={styles.root}> 
-        <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'firstName'}
-        label={'Имя: '}
-        labelType={'top'}
-        />
+      <Scrollbars universal style={{height: '100%'}}>
+        <div className={styles.wrapper}>
+          <InputField 
+          styleType={'default'} 
+          color={'default'} 
+          name={'firstName'}
+          label={'Имя: '}
+          labelType={'top'}
+          />
 
-        <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'lastName'}
-        label={'Фамилия: '}
-        labelType={'top'}
-        />
+          <InputField 
+          styleType={'default'} 
+          color={'default'} 
+          name={'lastName'}
+          label={'Фамилия: '}
+          labelType={'top'}
+          />
 
-        <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'patronymic'}
-        label={'Отчество: '}
-        labelType={'top'}
-        />
+          <InputField 
+          styleType={'default'} 
+          color={'default'} 
+          name={'patronymic'}
+          label={'Отчество: '}
+          labelType={'top'}
+          />
 
-        <InputField   
-        label={'Электронная почта:'}
-        className={styles.input} 
-        labelType='top' 
-        styleType={'default'} 
-        color={'default'} 
-        name={'email'} 
-        validate={Validator.combine([Validator.required, Validator.email])}
-        />
+          <InputField   
+          label={'Электронная почта:'}
+          className={styles.input} 
+          labelType='top' 
+          styleType={'default'} 
+          color={'default'} 
+          name={'email'} 
+          validate={Validator.combine([Validator.required, Validator.email])}
+          />
+        </div>
+      </Scrollbars>
 
         <Button className={styles.button}>Сохранить</Button>
       </Form>

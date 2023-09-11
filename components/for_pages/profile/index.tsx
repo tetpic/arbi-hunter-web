@@ -14,6 +14,7 @@ import ProfileNavigation from './Navigation'
 import UserProfile from './userProfile'
 import styles from './index.module.scss'
 import { useRouter } from 'next/router'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
   page?: string
@@ -41,7 +42,9 @@ export default function Profile(props: Props) {
 
   const router = useRouter()
   const {currentProfile} = useUserContext()
+  const {isTabletWidth} = useResize()
   const [page, setPage] = useState<ProfilePages>(props.page as ProfilePages||ProfilePages.Saved)
+  const [showNav, setShowNav] = useState<boolean>(isTabletWidth)
 
   const pager = (p: ProfilePages) => {
     setPage(p)    
@@ -104,6 +107,10 @@ export default function Profile(props: Props) {
     return result
   } ), [page])
 
+  const navHandler = () => {
+
+  }
+
 
   useEffect(()=>{    
     pager(page)
@@ -115,13 +122,15 @@ export default function Profile(props: Props) {
   return ( 
     <div className={classNames(styles.root)}>
       {
-        currentProfile.profileType === ProfileType.Employee &&
-        <UserProfile  currentPage={page} navSet={navSet()} /> 
+        currentProfile.profileType === ProfileType.Employee && ((!showNav && isTabletWidth) || !isTabletWidth ) &&
+        <UserProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
         ||
-        currentProfile.profileType === ProfileType.Hirer &&
-        <CompanyProfile currentPage={page} navSet={navSet()}/>
+        currentProfile.profileType === ProfileType.Hirer && (!showNav) &&
+        <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
-      <ProfileNavigation currentPage={page} navSet={navSet()} setPage={pager}/>
+      {((showNav && isTabletWidth) || !isTabletWidth) &&
+        <ProfileNavigation currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
+      }
     </div>
   )
 }

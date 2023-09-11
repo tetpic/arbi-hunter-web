@@ -1,15 +1,27 @@
 @import 'styles/index';
 
 .root {
+ 
+  max-width: 372px;
+  width: 30%;
+  flex-shrink: 0;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    // margin-top: 24px;
+    max-width: unset;
+  }
+}
+
+.wrapper {
   display: flex;
   flex-direction: column;
   padding: 0;
   border-radius: 16px;
   background-color: $black;
   overflow: hidden;
-  max-width: 372px;
-  width: 30%;
-  flex-shrink: 0;
+  @include mq($TabletWidth, max) {
+    margin-top: 24px;
+  }
 }
 
 .navItem {
@@ -27,5 +39,9 @@
   &_active {
     background-color: $grey;
     pointer-events: none;
+  }
+
+  svg {
+    flex-shrink: 0;
   }
 }

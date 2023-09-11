@@ -31,28 +31,19 @@ export default function AddManager(props: Props) {
       if(data.password === '') {
         delete data.password
       }
-      data
       
       ManagerRepository.editManagerById(data, managerToEdit?.id, currentProfile.profileType)
       .then(res=> {
-        
         props.onClose()
-        
       })
-      .catch(err=> {
-        
-      })
+      .catch(err=> {})
     }
     else {
       ManagerRepository.createNewManager(data, currentProfile.profileType)
       .then(res=> {
-        
         props.onClose()
-        
       })
-      .catch(err=> {
-        
-      })
+      .catch(err=> {})
     }
   }
 
@@ -94,30 +85,6 @@ export default function AddManager(props: Props) {
         name={'permissions'}
         options={Object.values(HirerRolePermission).map(el=>{return {value: el, label: TranslateHirerRolePermission(el)}})} 
         />
-
-        {/* <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'active'}
-        labelType={'top'}
-        label={'С активными вакансиями:'}
-        />
-
-        <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'archive'}
-        labelType={'top'}
-        label={'С архивом вакансий:'}
-        />
-
-        <InputField 
-        styleType={'default'} 
-        color={'default'} 
-        name={'personalData'}  
-        labelType={'top'}      
-        label={'С личными данными менеджеров:'}
-        /> */}
 
         <p className={styles.subTitle}>Личные данные</p>
 

@@ -2,13 +2,24 @@
 
 .root {
   margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
+  height: calc(100vh - 175px);
+  height: calc(100dvh - 175px);
+   @include mq($TabletWidth, max) {
+    height: calc(100vh - 175px);
+    height: calc(100dvh - 175px);
+  }
 }
 
 .createNew {
   @include buttonYellow;
   align-self: flex-end;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+ 
 }
 
