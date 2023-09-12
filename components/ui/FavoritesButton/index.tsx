@@ -17,7 +17,7 @@ export default function FavoritesButton(props: Props) {
     onClick={props.onClick} 
     className={classnames(styles.heartButton, props.isActive&&styles.heartButton_active, props.className)} 
     bgColor={'transparent'}>
-      <HeartSvg size={props.size||24}/>
+      <HeartSvg size={props.size||24} className={props.isActive&&styles.heartRed}/>
     </IconButton>
   )
 }

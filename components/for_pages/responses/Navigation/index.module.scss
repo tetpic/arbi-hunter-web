@@ -8,6 +8,11 @@
   background-color: $black;
   border-radius: 10px;
   overflow: hidden;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
 }
 
 .item {

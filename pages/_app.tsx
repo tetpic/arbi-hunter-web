@@ -23,7 +23,7 @@ import { ManagerWrapper } from 'context/manager_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ArticleWrapper } from 'context/article_state'
 import { PatternWrapper } from 'context/pattern_state'
-import { ResponseWrapper } from 'context/response_state'
+import { FeedbacksWrapper } from 'context/feedbacks_state'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -56,7 +56,7 @@ function MyApp({Component, pageProps}: AppProps) {
           <CvWrapper>
           <ArticleWrapper>
           <PatternWrapper>
-          <ResponseWrapper>
+          <FeedbacksWrapper>
           <AuthWrapper>
 
             <Head>
@@ -74,7 +74,7 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <Snackbar/>}
             
           </AuthWrapper>
-          </ResponseWrapper>
+          </FeedbacksWrapper>
           </PatternWrapper>
           </ArticleWrapper>
           </CvWrapper>

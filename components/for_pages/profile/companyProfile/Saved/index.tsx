@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import ItemNavigation from '../../ItemNavigation'
-import SavedCourses from './Courses'
+import SavedCourses from '../Courses'
 import SavedCVs from './Cvs'
 import styles from './index.module.scss'
-import SavedMedia from './Media'
+import SavedMedia from '../../Media'
 
 interface Props {
 }

@@ -3,8 +3,11 @@ import classNames from 'classnames'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Accordeon from 'components/ui/Accordeon'
 import RemovableItem from 'components/ui/RemovableItem'
+import Spinner from 'components/ui/Spinner'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { EducationTypes, Genders, WorkExperience } from 'types/enums'
+import { colors } from 'styles/variables'
+import { EducationTypes, Genders, ProposalRequestType, WorkExperience } from 'types/enums'
 import { arrayFromEnum, TranslateEducationType, TranslateGenderType, TranslateWorkExperience } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
 
@@ -39,6 +42,9 @@ export default function ResponsesFilter(props: Props) {
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [activeFilter, setActiveFilter] = useState<FilterItem>()
   const [filterOptions, setFilterOptions] = useState<Map<FilterItem, FilterItem>>(new Map())
+  const responsesContext = useFeedbacksContext()
+  const [switcher, setSwitcher] = useState<boolean>(false)
+  const [switcherLoading, setSwitcherLoading] = useState<boolean>(false)
 
   const getItems = (p: FilterItems): FilterItem => {
     let arr:any[] = []
@@ -55,8 +61,30 @@ export default function ResponsesFilter(props: Props) {
       case FilterItems.Gender:
         arr = arrayFromEnum(Genders)
         return { type:p, items: arr, translatedItems: arr.map(el=> TranslateGenderType(el)), activeItem: null, translatedActiveItem: null,  translation: 'Пол'}
-      // case FilterItems.New:
-      //   return {translation: 'Только новые'}
+      case FilterItems.New:
+        return {type: p, translation: 'Только новые'}
+    }
+  }
+
+  const onlyNewHandler = (value?: FilterItem) => {
+    if(switcher===false) {
+      setSwitcherLoading(true)
+      responsesContext.setResponsesByStat(ProposalRequestType.New)
+      .then(res=> {
+        responsesContext.setFilteredVcResponses(res)       
+        setSwitcher(true)
+        setSwitcherLoading(false)
+      })
+     
+    }
+    else if(switcher===true) {
+      setSwitcherLoading(true)
+      responsesContext.setResponsesByStat(null)
+      .then(res=> {
+        responsesContext.setFilteredVcResponses(res)      
+        setSwitcher(false)
+        setSwitcherLoading(false)
+      })
     }
   }
 
@@ -64,14 +92,13 @@ export default function ResponsesFilter(props: Props) {
     setActiveFilter(activeFilter===value?null:value)
   }
 
-  const filterOptionsHandler = (k: FilterItem, index: number) => {
-    
+  const filterOptionsHandler = (value: FilterItem, index: number) => {
     setFilterOptions(state=> {
       if(index === undefined) {
-        state.delete(k)
+        state.delete(value)
         return new Map(state)
       }
-      state.set(k, {...k, activeItem: k.items[index], translatedActiveItem: k.translatedItems[index]})
+      state.set(value, {...value, activeItem: value.items[index], translatedActiveItem: value.translatedItems[index]})
       return new Map(state)
     })
     setActiveFilter(null)
@@ -94,13 +121,22 @@ export default function ResponsesFilter(props: Props) {
 
   return (<div className={styles.root}>
     <div className={styles.filterWrapper}>
-      {[...filters.entries()].map(([key, value])=> {
+      {[...filters.entries()].map(([key, value], index)=> {
         if(key === FilterItems.New) {
-          return
-          // return <p className={value.active&&styles.active} >{key}</p>
+          return (
+            <div key={index} className={styles.item} onClick={()=>onlyNewHandler(value)} >
+              Только новые
+              <div className={classNames(styles.switcher, switcher&&styles.switcher_active)}>
+                <div className={styles.roller}>
+                  {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.yellow}/>}
+                </div>
+              </div>
+            </div>
+          )
         }
 
         return <Accordeon 
+        key={index}
         classNames={{root: styles.accRoot, content: styles.accContent, wrapper: styles.accWrapper }}
         onOutsideClick={()=>accordeonHandler()}
         body={
@@ -117,8 +153,8 @@ export default function ResponsesFilter(props: Props) {
     </div>
     <div className={styles.filterResults}>
     {filterOptions.size > 0 && 
-      [...filterOptions.entries()].map(([k, v])=> {
-        return <RemovableItem text={v.translatedActiveItem} onClick={()=> filterOptionsHandler(k, undefined)}/>
+      [...filterOptions.entries()].map(([k, v], index)=> {
+        return <RemovableItem key={index} text={v.translatedActiveItem} onClick={()=> filterOptionsHandler(k, undefined)}/>
       })
     }
     </div>

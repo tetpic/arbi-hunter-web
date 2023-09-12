@@ -62,8 +62,13 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 8px;
 }
 
 .button {
   @include buttonBlack;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }

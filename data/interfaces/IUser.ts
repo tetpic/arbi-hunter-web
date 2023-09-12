@@ -1,7 +1,7 @@
-import { ActivityStatus, HirerRole, HirerRolePermission, Languages, VacancyLookType } from "types/enums"
-import { TimeStamp } from "./Common"
-import { IGeoName } from "./ILocation"
-import { ProfileType } from "./IRegistration"
+import { ActivityStatus, HirerRole, HirerRolePermission, Languages, VacancyLookType } from 'types/enums'
+import { TimeStamp } from './Common'
+import { IGeoName } from './ILocation'
+import { ProfileType } from './IRegistration'
 
 export interface IUserProfile extends TimeStamp {
     id: number,

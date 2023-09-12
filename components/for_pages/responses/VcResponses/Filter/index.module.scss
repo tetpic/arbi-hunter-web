@@ -1,10 +1,5 @@
 @import 'styles/index';
 
-.root {
-
-
-}
-
 .filterWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -12,10 +7,9 @@
   column-gap: 16px;
   margin-bottom: 24px;
   padding: 8px 0px;
-  // padding: 16px;
   background-color: $black;
   border-radius: 10px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .item {
@@ -48,7 +42,6 @@
   }
 }
 
-
 .filterResults {
   display: flex;
   column-gap: 8px;
@@ -56,7 +49,6 @@
   flex-wrap: wrap;
   margin-bottom: 24px;
 }
-
 
 .accRoot {
   position: relative;
@@ -74,8 +66,6 @@
     }
   }
 }
-
-
 
 .accWrapper  {
   position: absolute;
@@ -121,4 +111,33 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
+}
+
+.switcher {
+  width: 40px;
+  height: 24px;
+  background-color: $red;
+  border-radius: 24px;
+  position: relative;
+  @include transitionDefault;
+  .roller{
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    transform: translateX(0%);
+    background-color: $white;
+    border-radius: 50%;
+    @include transitionDefault;
+  }
+
+  &_active {
+    background-color: $yellow;
+    .roller {
+      left: calc(100% - 2px);
+      transform: translateX(-100%);
+    }
+  }
 }

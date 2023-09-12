@@ -27,8 +27,8 @@ interface UserData {
 
 export default function UserDropdownMenu(props: Props) {
 
-  const {currentProfile, user} = useUserContext()
-  const profileType = currentProfile.profileType
+  const {currentProfile, user, logout} = useUserContext()
+  const profileType = currentProfile?.profileType||null
 
   const wrapper = useRef()
   const [isActive, setIsActive] = useDetectOutsideClick(wrapper.current, true)
@@ -42,7 +42,7 @@ export default function UserDropdownMenu(props: Props) {
       case ProfileType.Employee: 
         return {
           name: `${currentProfile.firstName} ${currentProfile.lastName}`, 
-          sub: `${currentProfile.city}`
+          sub: `${currentProfile.city.locName}`
         }
       case ProfileType.Hirer: 
         return {
@@ -56,19 +56,21 @@ export default function UserDropdownMenu(props: Props) {
     let userItems: {name: string, image: JSX.Element, link: string}[]  = []
     switch(profileType) {
       case ProfileType.Employee: 
-      return userItems = [
-        {name: 'Настройки профиля', image: <SettingsSvg/>, link: '/profile?page=settings'},
+       userItems = [
+        // {name: 'Настройки профиля', image: <SettingsSvg/>, link: '/profile?page=settings'},
         {name: 'Сохраненное', image: <HeartSvg/>, link: '/profile?page=saved'},
         {name: 'Мои резюме', image: <FolderSvg/>, link: '/profile?page=cvs'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
       ]
+      return userItems
       case ProfileType.Hirer:
-      return userItems = [
+      userItems = [
         {name: 'Настройки профиля', image: <SettingsSvg/>, link: '/profile?page=personal'},
         {name: 'Сохраненное', image: <HeartSvg/>, link: '/profile?page=saved'},
         {name: 'Вакансии', image: <FolderSvg/>, link: '/profile?page=vacancies'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
       ]
+      return userItems
     }
   }
 
@@ -77,26 +79,26 @@ export default function UserDropdownMenu(props: Props) {
       <UserPic size={80}/>
 
       <div className={styles.userData}>
-        <p className={styles.name}>{getUserData().name}</p>
-        <p className={styles.sub}>{getUserData().sub}</p>
+        <p className={styles.name}>{getUserData()?.name}</p>
+        <p className={styles.sub}>{getUserData()?.sub}</p>
       </div>
 
       <div className={styles.balanceWrapper}>
         <p className={styles.title}>Баланс профиля</p>
         <p className={styles.balance}>
           <Image src={'/icons/money.png'} alt={'money image'} width={24} height={24}/>
-          {Formatter.formatNumber(user.balance||0)}
+          {Formatter.formatNumber(user?.balance||0)}
         </p>
         <Button className={styles.moneyAdd} type='button' onClick={()=> {}}>Пополнить</Button>
       </div>
 
       <div className={styles.itemsWrapper}>
-        {getUserMenu().map((el, index)=> {
+        {getUserMenu()?.map((el, index)=> {
           return <Link key={index} onClick={props.onClose} href={el.link} className={styles.item}>{el.image}  {el.name}</Link>
         })}
       </div>
 
-      <button className={styles.exitButton}><ExitRedSvg/>Выйти</button>
+      <button className={styles.exitButton} onClick={logout}><ExitRedSvg/>Выйти</button>
     </div>
   )
 }

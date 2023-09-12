@@ -23,8 +23,8 @@ export default function VacanciesActive(props: Props) {
   return (
   <div className={styles.root}> 
   {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
-    [...vacancyContext.activeVacancies.values()].map(el=> {
-      return <VacancyItem vacancy={el} isActive={true}/>
+    [...vacancyContext.activeVacancies.values()].map((el, index)=> {
+      return <VacancyItem key={index} vacancy={el} isActive={true}/>
     })  
     ||
     isLoaded&&vacancyContext.activeVacancies.size === 0 &&

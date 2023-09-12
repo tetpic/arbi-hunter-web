@@ -17,6 +17,7 @@ export interface IGeoName {
   fcode: string,
   country: string,
   timezone: null,
+  locName: string,
   alternates: IAlternatesGeoName[]
 }
 

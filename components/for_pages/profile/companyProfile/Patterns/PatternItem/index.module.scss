@@ -49,6 +49,9 @@
 .button {
   @include buttonYellow;
   margin-top: 16px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .circle {

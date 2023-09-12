@@ -5,6 +5,10 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+    flex-direction: column;
+  }
 }
 
 .title {
@@ -12,10 +16,16 @@
   font-weight: $semibold;
   color: $white;
   margin-bottom: 24px;
+  @include mq($TabletWidth, max) {
+    margin-bottom: 16px;
+  }
 }
 
 .main {
   width: 70%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .empty {

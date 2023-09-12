@@ -1,31 +1,31 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUser, IUserProfile } from 'data/interfaces/IUser'
-import {createContext, MutableRefObject, useCallback, useContext, useEffect, useRef, useState} from 'react'
+import {createContext, MutableRefObject, useContext, useEffect, useRef, useState} from 'react'
 import Cookies from 'js-cookie'
 import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
-import { async, Subject } from 'rxjs'
+import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
 import CvRepository from 'data/repositories/CvRepository'
 import { ICV } from 'data/interfaces/ICV'
-import { IManager, IManagerCreate } from 'data/interfaces/IManager'
-import ManagerRepository from 'data/repositories/ManagerRepository'
 
 interface IState {
   token: string,
   setToken: (token: string) => void
   isLogged: boolean
   isAuth: MutableRefObject<boolean>
+  logout: () => void
   userLoaded: boolean
   user: IUser
   currentProfile: IUserProfile,
   setCurrentProfile: (p: IUserProfile) => void
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
+  editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
   savedCvs: ICV[],
   setSavedCvs: ()=>Promise<boolean>
-  editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
-
+  saveCv: (id: number)=> void
+  removeCvfromSaved: (id: number) => void
 }
 
 const loginState$ = new Subject<boolean>()
@@ -36,16 +36,18 @@ const defaultValue: IState = {
   setToken: async (token) => null,
   isLogged: false,
   isAuth: null,
+  logout: () => null,
   userLoaded: false,
   user: undefined,
   currentProfile: null,
   setCurrentProfile: (p: IUserProfile) => null,
   profileType: ProfileType.Employee,
   setProfileType: () => null,
+  editCurrentProfile: async()=>null,
   savedCvs: null,
   setSavedCvs: async()=> null,
-  editCurrentProfile: async()=>null
-  
+  saveCv: () => null,
+  removeCvfromSaved: () => null,
 }
 
 const UserContext = createContext<IState>(defaultValue)
@@ -64,7 +66,7 @@ export function UserWrapper(props: Props) {
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
-  const [savedCvs, setSavedCvsState] = useState<ICV[]>(undefined)
+  const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
 
   
   const userRef = useRef<IUser | null>(null)
@@ -110,18 +112,25 @@ export function UserWrapper(props: Props) {
   }
 
   const setSavedCvs = async():Promise<boolean> => {
-    if(!savedCvs) {
+    if(currentProfile.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser(currentProfile.profileType)
       .then(res=> {
         setSavedCvsState(res)
         return true
       })
       .catch(err=>{
-        console.warn(err)
         return false
       })
-    } else {
-      return false
+    }
+    else if(currentProfile.profileType === ProfileType.Employee) {
+      return CvRepository.getCVListOfCurrentUser()
+      .then(res=> {
+        setSavedCvsState(res)
+        return true
+      })
+      .catch(err=>{
+        return false
+      })
     }
   }
 
@@ -136,6 +145,29 @@ export function UserWrapper(props: Props) {
     })
   }
 
+  const logout = () => {
+    Cookies.remove(CookiesType.accessToken)
+    setUserToken(null)
+    setIsLogged(false)
+    setCurrentProfileState(null)
+    setUser(null)
+    loginState$.next(false)
+  }
+
+  const saveCv=(id: number) => {
+    CvRepository.addCvToSaved(id, currentProfile.profileType)
+    .then(res=> {
+      setSavedCvs()
+    })
+
+  }
+
+  const removeCvfromSaved = (id: number) => {
+    CvRepository.removeCvFromSaved(id, currentProfile.profileType)
+    .then(res=> {
+      setSavedCvs()
+    })
+  }
 
 
   useEffect(() => {
@@ -176,9 +208,12 @@ export function UserWrapper(props: Props) {
    currentProfile,
    setCurrentProfile,
    isAuth,
+   logout,
    savedCvs,
    setSavedCvs,
-   editCurrentProfile
+   editCurrentProfile,
+   saveCv,
+   removeCvfromSaved,
 
   }
 

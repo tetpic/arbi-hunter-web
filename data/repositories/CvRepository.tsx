@@ -58,10 +58,10 @@ export default class CvRepository {
     return res
   }
 
-  static async getCVListOfCurrentUser(): Promise<any|null> {
+  static async getCVListOfCurrentUser(): Promise<ICV[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/cv/currentUser`,
+      url: '/api/cv/currentUser',
     })
     if(res.err) {
       return null
@@ -72,7 +72,7 @@ export default class CvRepository {
   static async sourcesList(): Promise<{data: ISource[]}|null> {
     const res = await request({
       method: 'get',
-      url: `/api/source`,
+      url: '/api/source',
     })
     if(res.err) {
       return null
@@ -84,7 +84,7 @@ export default class CvRepository {
     const res = await request({
       method: 'get',
       //TODO: язык должен добавляться динамически
-      url: `/api/service-category?lang=ru`,
+      url: '/api/service-category?lang=ru',
     })
     if(res.err) {
       return null
@@ -106,8 +106,32 @@ export default class CvRepository {
   static async getSavedByCurrentUser(profileType?: ProfileType): Promise<ICV[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/cv?savedByCurrentProfile=true`,
+      url: '/api/cv?savedByCurrentProfile=true',
       profile: profileType
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async removeCvFromSaved(id: number, profile: ProfileType): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${id}/removeFromSaved`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async addCvToSaved(id: number, profile: ProfileType): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${id}/save`,
+      profile
     })
     if(res.err) {
       return null

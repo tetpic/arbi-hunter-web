@@ -1,16 +1,21 @@
 import Profile from 'components/for_pages/profile'
 import { useUserContext } from 'context/user_state'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 interface Props {
 }
 
-//todo: сделать доступ с проверкой isAuth
-
 export default function ProfilePage() {
-
-
   const {currentProfile} = useUserContext()
+  const router = useRouter()
+
+  useEffect(()=>{
+    if(!currentProfile) {
+      router.replace('/')
+    }
+  }, [])
+
   const searchParams = useSearchParams()
 
   return (<>

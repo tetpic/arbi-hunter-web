@@ -122,10 +122,10 @@ export default function Profile(props: Props) {
   return ( 
     <div className={classNames(styles.root)}>
       {
-        currentProfile.profileType === ProfileType.Employee && ((!showNav && isTabletWidth) || !isTabletWidth ) &&
+        currentProfile.profileType === ProfileType.Employee && !showNav &&
         <UserProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
         ||
-        currentProfile.profileType === ProfileType.Hirer && (!showNav) &&
+        currentProfile.profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&

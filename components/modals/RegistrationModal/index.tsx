@@ -18,6 +18,7 @@ import OtpCodeField from 'components/fields/OtpCodeField'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
@@ -30,6 +31,7 @@ enum RegPages {
 export default function RegistrationModal(props: Props) {
   const appContext = useAppContext()
   const authContext = useAuthContext()
+  const userContext = useUserContext()
 
 
   const [page, setPage] = useState<RegPages>(RegPages.Phone)
@@ -40,12 +42,22 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationPhone) => {
+    debugger
     setLoading(true)
-    authContext.confirmCode(data.phone, data.code).then(res=>{
-      setLoading(false)
-      if(res === false) {
+    authContext.confirmCode(data.phone, data.code)
+    .then(res=>{
+      debugger
+      if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
+        setLoading(false)
       }
+      else {
+        appContext.hideModal()
+        setLoading(false)
+      }
+    })
+    .catch(err=>{
+      authContext.showOtpError(true, 'Введите правильный код')
     })
   }
 

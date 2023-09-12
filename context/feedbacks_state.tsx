@@ -8,38 +8,43 @@ import { useUserContext } from './user_state'
 
 interface IState {
   currentVacancy: IVacancy
-  VCResponses: Map<number, IApplication>
+  VCFeedbacks: Map<number, IApplication>,
+  filteredVcResponses: IApplication[],
+  setFilteredVcResponses: (a: IApplication[])=> void
   setVCResponses: (id?: number)=>void
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
-  CVResponses: Map<number, IVacancy[]>
+  CVFeedbacks: Map<number, IVacancy[]>
 }
 
 const defaultValue: IState = {
   currentVacancy: null,
-  VCResponses: new Map(),
+  VCFeedbacks: new Map(),
+  filteredVcResponses: null,
+  setFilteredVcResponses: ()=>null,
   setVCResponses: ()=>null,
   setCurrentVacancy: ()=>null,
   setResponsesByStat: (v: ProposalRequestType)=> null,
   currentCV: null,
-  CVResponses: new Map(),
+  CVFeedbacks: new Map(),
 
 }
 
-const ResponseContext = createContext<IState>(defaultValue)
+const FeedbacksContext = createContext<IState>(defaultValue)
 
 interface Props {
   children: React.ReactNode
 }
 
-export function ResponseWrapper(props: Props) {
+export function FeedbacksWrapper(props: Props) {
   const userContext = useUserContext()
 
   const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
-  const [VCResponses, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
+  const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
+  const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVResponses, setCurrentCVResponsesState] = useState<Map<number, IVacancy[]>>(new Map())
+  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<number, IVacancy[]>>(new Map())
 
   const setVCResponses = (id?:number) => {
     ApplicationRepository.getVacancyApplication(id = currentVacancy?.id||id, userContext?.currentProfile?.profileType)
@@ -63,25 +68,31 @@ export function ResponseWrapper(props: Props) {
     return res
   }
 
+  const setFilteredVcResponses = (a: IApplication[])=> {
+    setFilteredVcResponsesState(a)
+  }
+
 
 
 
   const value: IState = {
     ...defaultValue,
     currentVacancy,
-    VCResponses,
+    VCFeedbacks,
+    filteredVcResponses,
+    setFilteredVcResponses,
     setVCResponses,
     setCurrentVacancy,
     setResponsesByStat
   }
 
   return (
-    <ResponseContext.Provider value={value}>
+    <FeedbacksContext.Provider value={value}>
       {props.children}
-    </ResponseContext.Provider>
+    </FeedbacksContext.Provider>
   )
 }
 
-export function useResponseContext() {
-  return useContext(ResponseContext)
+export function useFeedbacksContext() {
+  return useContext(FeedbacksContext)
 }

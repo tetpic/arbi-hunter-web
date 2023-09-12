@@ -9,8 +9,8 @@
 .items {
   display: flex;
   // column-gap: clamp(30px, 20%, 120px);
-  column-gap: clamp(30px, 10vw, 120px);
-
+  // column-gap: clamp(30px, 10vw, 120px);
+  column-gap: clamp(30px, 10%, 120px);
 
   .item {
     color: $white;

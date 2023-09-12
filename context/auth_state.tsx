@@ -26,7 +26,6 @@ interface IState {
   confirmCode: (phone: string, code: string) => Promise<boolean>
   setSending: (value: boolean) => void
   setSendingAgain: (value: boolean) => void
-  logOut: () => void
   clear: () => void
   setRedirect: (val: string) => void
   otpError: IOtpError
@@ -46,7 +45,6 @@ const defaultValue: IState = {
   remainSec: 0,
   sendCodeAgain: () => null,
   setSendingAgain: (value) => null,
-  logOut: () => null,
   clear: () => null,
   setRedirect: (val) => null,
   otpError: null,
@@ -92,6 +90,7 @@ export function AuthWrapper(props: Props) {
 
   const showOtpError = (show: boolean, text: string) => {
     setOtpError({ show, text })
+    setTimeout(()=>setOtpError(null), 1000)
   }
 
   // Sign up step 2
@@ -102,8 +101,8 @@ export function AuthWrapper(props: Props) {
 
     try {
       accessToken = await RegistrationRepository.phoneConfirmation({phone: phone, code: code})
-    } catch (err) {
-      
+    } 
+    catch (err) {
       if (err instanceof RequestError) {
         showOtpError(true, err.message)
       }
@@ -112,21 +111,19 @@ export function AuthWrapper(props: Props) {
     }
 
     if (!accessToken) {
-      
       appContext.showSnackbar('Token error', SnackbarType.error)
       setConfirmSpinner(false)
       return false
     }
-    
     userContext.setToken(accessToken.accessToken)   
     appContext.hideModal()
     appContext.hideBottomSheet()
 
     setConfirmSpinner(false)
-    if (redirect) {
+    // if (redirect) {
       
-      await router.push(redirect)
-    }
+    //   await router.push(redirect)
+    // }
     return true
   }
 
@@ -155,10 +152,6 @@ export function AuthWrapper(props: Props) {
     setAgainSpinner(false)
   }
 
-  const logOut = () => {
-
-  }
-
   const clear = () => {
     setLoginFormData(null)
     setCodeRes(null)
@@ -176,8 +169,7 @@ export function AuthWrapper(props: Props) {
     remainSec,
     sendCodeAgain,
     againSpinner,
-    confirmSpinner,
-    logOut,
+    confirmSpinner,    
     clear,
     setRedirect
   }

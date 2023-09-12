@@ -13,11 +13,9 @@ export default function RegistrationPage(props: Props) {
 
   useEffect(()=>{
     if(userContext.isLogged && userContext.currentProfile) {
-      router.back()
+      router.replace('/')
     }
   }, [])
-
- 
 
   return ( 
     <Registration/>

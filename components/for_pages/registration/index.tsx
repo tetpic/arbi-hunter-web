@@ -48,8 +48,6 @@ export default function Registration() {
   }
 
   const submit = async (data: IRegistrationComplete) => {
-    
-    
     if(!cityId || !country) {
       appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
     }
@@ -92,8 +90,11 @@ export default function Registration() {
   }
 
   useEffect(()=>{
-    if(!userContext.isLogged || !userContext.currentProfile) {
+    if(!userContext.isLogged) {
       appContext.showModal(ModalType.RegistrationModal)
+    }
+    else {
+      // router.replace('/')
     }
     return ()=> appContext.hideModal()
   }, [userContext.isLogged])

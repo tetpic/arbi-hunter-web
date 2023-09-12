@@ -1,0 +1,96 @@
+@import 'styles/index';
+
+.root {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.top {
+  display: grid;
+  grid-template-areas: 'i c h' 'i l h';
+  column-gap: 16px;
+  row-gap: 8px;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+
+  .company {
+    grid-area: c;
+    font-weight: $semibold;
+    font-weight: $largeText;
+    color: $white;
+  }
+
+  .city {
+    grid-area: l;
+    font-weight: $medium;
+    font-size: $mediumText;
+    color: $greyLight;
+  }
+
+  .heartButton {
+    grid-area: h;
+  }
+
+
+
+  .userPic {
+    grid-area: i;
+  }
+}
+
+.heartButton {
+  padding: 8px;
+  border-radius: 10px;
+  background-color: $grey;
+  @include transitionDefault;
+  cursor: pointer;
+  svg {
+    path {
+      @include transitionDefault;
+    }
+  }
+
+  @include hover {
+    background-color: $yellow;
+    svg {
+      path {
+        stroke: $black;
+      }
+    }
+  }
+}
+
+.vcName {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.salary {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  @include buttonYellow;
+}
+
+.time {
+  color: $greyLight;
+  font-weight: $medium;
+  font-size: $mediumText;
+}

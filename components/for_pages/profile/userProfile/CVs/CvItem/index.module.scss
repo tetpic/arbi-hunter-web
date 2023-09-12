@@ -1,0 +1,85 @@
+@import 'styles/index';
+
+.root {
+  padding: 16px;
+  border-radius: 16px;
+  background-color: $black;
+}
+
+.button {
+  @include buttonYellow;
+}
+
+.buttonBlack {
+  @include buttonBlack;
+}
+
+.buttonsWrapper {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 8px;
+}
+
+.top {
+  display: grid;
+  grid-template-areas: 'i p' 'i r';
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 8px;
+
+  .position {
+    grid-area: p;
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+  }
+
+  .refreshed {
+    grid-area: r;
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
+  .userPic {
+    grid-area: i;
+  }
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  column-gap: 24px;
+
+  &_title {
+    width: 100%;
+    color: $white;
+    font-weight: $medium;
+    font-size: $mediumText;
+    margin-bottom: 10px;
+  }
+
+  
+  &_sub {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
+  &_count {
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+  
+  }
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 8px;
+  }
+}
