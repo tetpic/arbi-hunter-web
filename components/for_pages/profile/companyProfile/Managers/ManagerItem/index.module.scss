@@ -39,22 +39,6 @@
 
   .edit {
     grid-area: e;
-    
-    path {
-      @include transitionDefault;
-    }
-    @include hover {
-      path {
-        fill: $black;
-      }
-    }
-  }
-
-
-
-  .dots {
-    width: 24px;
-    height: 24px;
   }
 
   .stats {

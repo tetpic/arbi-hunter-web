@@ -3,7 +3,10 @@ export enum ModalType {
   SpecializationModal = 'specializationModal',
   SkillsModal = 'skillsModal',
   LanguageModal = 'languageModal',
-  SourcesModal= 'sourcesModal'
+  SourcesModal= 'sourcesModal',
+  CvOptionsModal = 'cvOptionsModal',
+  ProposalModal= 'proposalModal',
+  ProposalTextModal= 'proposalTextModal'
 }
 
 export enum SnackbarType {
@@ -215,6 +218,10 @@ export enum ProposalRequestType {
   InfoRequest = 'infoRequest',
 }
 
-
+export enum ApplicationBSSelectType {
+  ThisVacancy= 'thisVacancy',
+  AnotherVacancy = 'anotherVacancy',
+  Reject = 'reject'
+}
 
 

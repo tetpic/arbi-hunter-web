@@ -16,7 +16,7 @@ import { UserWrapper } from 'context/user_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
-import { CvWrapper } from 'context/cv_state'
+import { CreateVcCvWrapper} from 'context/createVcCv_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
@@ -24,6 +24,7 @@ import { VacancyWrapper } from 'context/vacancy_state'
 import { ArticleWrapper } from 'context/article_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
+import { CvWrapper } from 'context/cv_state'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -52,6 +53,7 @@ function MyApp({Component, pageProps}: AppProps) {
       <AppWrapper isMobile={pageProps.isMobile}>
         <UserWrapper token={pageProps.token} user={pageProps.user}>
           <ManagerWrapper>
+          <CreateVcCvWrapper>
           <VacancyWrapper>
           <CvWrapper>
           <ArticleWrapper>
@@ -79,6 +81,7 @@ function MyApp({Component, pageProps}: AppProps) {
           </ArticleWrapper>
           </CvWrapper>
           </VacancyWrapper>
+          </CreateVcCvWrapper>
           </ManagerWrapper>
         </UserWrapper>
       </AppWrapper>

@@ -1,4 +1,4 @@
-import { CompensationType, Currency, EmploymentType, LanguageKnowLevel, Languages, ScheduleType } from "types/enums";
+import { CompensationType, Currency, EmploymentType, LanguageKnowLevel, Languages, ScheduleType } from 'types/enums'
 
 export interface ILanguageKnowledge {
   language : Languages, //? 'en'

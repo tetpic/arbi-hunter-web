@@ -6,8 +6,6 @@ import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
-import CvRepository from 'data/repositories/CvRepository'
-import { ICV } from 'data/interfaces/ICV'
 
 interface IState {
   token: string,
@@ -22,10 +20,6 @@ interface IState {
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
-  savedCvs: ICV[],
-  setSavedCvs: ()=>Promise<boolean>
-  saveCv: (id: number)=> void
-  removeCvfromSaved: (id: number) => void
 }
 
 const loginState$ = new Subject<boolean>()
@@ -44,10 +38,6 @@ const defaultValue: IState = {
   profileType: ProfileType.Employee,
   setProfileType: () => null,
   editCurrentProfile: async()=>null,
-  savedCvs: null,
-  setSavedCvs: async()=> null,
-  saveCv: () => null,
-  removeCvfromSaved: () => null,
 }
 
 const UserContext = createContext<IState>(defaultValue)
@@ -66,7 +56,6 @@ export function UserWrapper(props: Props) {
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
-  const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
 
   
   const userRef = useRef<IUser | null>(null)
@@ -111,29 +100,6 @@ export function UserWrapper(props: Props) {
 
   }
 
-  const setSavedCvs = async():Promise<boolean> => {
-    if(currentProfile.profileType === ProfileType.Hirer){
-      return CvRepository.getSavedByCurrentUser(currentProfile.profileType)
-      .then(res=> {
-        setSavedCvsState(res)
-        return true
-      })
-      .catch(err=>{
-        return false
-      })
-    }
-    else if(currentProfile.profileType === ProfileType.Employee) {
-      return CvRepository.getCVListOfCurrentUser()
-      .then(res=> {
-        setSavedCvsState(res)
-        return true
-      })
-      .catch(err=>{
-        return false
-      })
-    }
-  }
-
   const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<boolean> => {
     return UserRepository.editProfileByType(data, currentProfile.profileType)
     .then(res=> {
@@ -153,22 +119,6 @@ export function UserWrapper(props: Props) {
     setUser(null)
     loginState$.next(false)
   }
-
-  const saveCv=(id: number) => {
-    CvRepository.addCvToSaved(id, currentProfile.profileType)
-    .then(res=> {
-      setSavedCvs()
-    })
-
-  }
-
-  const removeCvfromSaved = (id: number) => {
-    CvRepository.removeCvFromSaved(id, currentProfile.profileType)
-    .then(res=> {
-      setSavedCvs()
-    })
-  }
-
 
   useEffect(() => {
     userRef.current = user
@@ -195,8 +145,6 @@ export function UserWrapper(props: Props) {
     } 
   }, [])
 
-
-
   const value: IState = {
    token,
    setToken,
@@ -209,12 +157,7 @@ export function UserWrapper(props: Props) {
    setCurrentProfile,
    isAuth,
    logout,
-   savedCvs,
-   setSavedCvs,
    editCurrentProfile,
-   saveCv,
-   removeCvfromSaved,
-
   }
 
   return (

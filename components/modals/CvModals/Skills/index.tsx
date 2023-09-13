@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import CustomScrollbar from 'components/ui/CustomScrollbar'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import { ISource } from 'data/interfaces/Common'
 import SkillsRepository from 'data/repositories/SkillsRepository'
@@ -18,7 +18,7 @@ interface Props {
 
 export default function SkillsModal(props: Props) {
   
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
 
   const [skills, setSkills] = useState<ISource[]>(cvContext.helpObjects?.skills||[])

@@ -1,4 +1,4 @@
-import { useUserContext } from 'context/user_state'
+import { useCvContext } from 'context/cv_state'
 import { ICV } from 'data/interfaces/ICV'
 import { useEffect, useState } from 'react'
 import ItemNavigation from '../../ItemNavigation'
@@ -15,32 +15,32 @@ enum CVNavigation {
 }
 
 export default function CVs(props: Props) {
-  const userContext = useUserContext()
+  const cvContext = useCvContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
   const items = Object.values(CVNavigation)
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
 
   useEffect(()=>{
-    userContext.setSavedCvs()
+    cvContext.setSavedCvs()
   }, [])
 
   useEffect(()=>{
-    setFilteredCvs(userContext?.savedCvs)
-  }, [userContext.savedCvs])
+    setFilteredCvs(cvContext?.savedCvs)
+  }, [cvContext.savedCvs])
 
   useEffect(()=>{
     switch(activeItem) {
       case CVNavigation.Active :
-        setFilteredCvs(userContext?.savedCvs.filter(el => el.published === true))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === true))
         break
       case CVNavigation.Archive: 
-        setFilteredCvs(userContext?.savedCvs.filter(el => el.published === false))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false))
         break
       case CVNavigation.Drafts: 
-        setFilteredCvs(userContext?.savedCvs.filter(el => el.published === false))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false))
         break
     }
-  }, [activeItem])
+  }, [activeItem, cvContext.savedCvs])
 
 
 

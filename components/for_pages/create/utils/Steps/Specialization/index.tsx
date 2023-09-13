@@ -1,4 +1,4 @@
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import { ModalType } from 'types/enums'
@@ -11,7 +11,7 @@ interface Props {
 export default function Specialization(props: Props) {
 
   const appContext = useAppContext()
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
 
 
   const openModalHandler = () => {

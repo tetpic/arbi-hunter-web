@@ -1,8 +1,8 @@
-import { EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from "types/enums"
-import { CoursesInfo, EducationInfo, ExperienceInfo, ITranslation, TimeStamp } from "./Common"
-import { IJob } from "./IJob"
-import { IGeoName } from "./ILocation"
-import { IUserProfile } from "./IUser"
+import { EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from 'types/enums'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ITranslation, TimeStamp } from './Common'
+import { IJob } from './IJob'
+import { IGeoName } from './ILocation'
+import { IUserProfile } from './IUser'
 
 
 export interface ICategory extends TimeStamp {

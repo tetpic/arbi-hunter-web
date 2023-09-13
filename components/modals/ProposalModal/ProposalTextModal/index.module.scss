@@ -1,0 +1,42 @@
+@import 'styles/index';
+
+.title {
+  justify-content: space-between !important;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.layout {
+  max-width: 640px;
+}
+
+.form {
+  margin-top: 24px;
+}
+
+.buttonYellow {
+  margin-top: 16px;
+  @include buttonYellow;
+}
+
+.patterns {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 8px;
+ 
+
+}
+
+.choosePattern {
+  color: $white;
+  background-color: $grey;
+  border-radius: 20px;
+  padding: 8px 10px 6px;
+  font-size: $smallText;
+  font-weight: $medium;
+  cursor: pointer;
+   @include transitionDefault;
+  @include hoverButtonSmooth;
+}

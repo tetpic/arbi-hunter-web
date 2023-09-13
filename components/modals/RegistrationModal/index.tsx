@@ -42,11 +42,11 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationPhone) => {
-    debugger
+    
     setLoading(true)
     authContext.confirmCode(data.phone, data.code)
     .then(res=>{
-      debugger
+      
       if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
         setLoading(false)

@@ -9,6 +9,9 @@ import SpecializationModal from 'components/modals/CvModals/Specialization'
 import SkillsModal from 'components/modals/CvModals/Skills'
 import LangaugesModal from 'components/modals/CvModals/Languages'
 import SoursesModal from 'components/modals/CvModals/Sourses'
+import CvOptionsModal from 'components/modals/CvModals/OptionsModal'
+import ProposalModal from 'components/modals/ProposalModal'
+import ProposalTextModal from 'components/modals/ProposalModal/ProposalTextModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -40,6 +43,15 @@ export default function ModalContainer(props: Props) {
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.SourcesModal} {...commonSettings}>
           {appContext.modal === ModalType.SourcesModal && <SoursesModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.CvOptionsModal} {...commonSettings}>
+          {appContext.modal === ModalType.CvOptionsModal && <CvOptionsModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.ProposalModal} {...commonSettings}>
+          {appContext.modal === ModalType.ProposalModal && <ProposalModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.ProposalTextModal} {...commonSettings}>
+          {appContext.modal === ModalType.ProposalTextModal && <ProposalTextModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
       </div>
     </RemoveScroll>

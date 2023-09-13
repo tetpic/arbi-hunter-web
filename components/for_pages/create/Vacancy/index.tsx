@@ -5,7 +5,7 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
 import { useUserContext } from 'context/user_state'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
@@ -48,7 +48,7 @@ export default function Cv(props: Props) {
 
   const userContext = useUserContext()
   const appContext = useAppContext()
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
   const router = useRouter()
   const {progress, setProgress} = cvContext
 

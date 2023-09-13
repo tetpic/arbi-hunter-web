@@ -93,6 +93,11 @@
   // @include hoverButtonYellow;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: .4;
+}
+
 .regImage  {
   @include mq($SmDesktopWidth, max) {
     display: none;

@@ -1,6 +1,5 @@
-import ThreeDotsSvg from 'components/svg/ThreeDotsSvg'
 import Button from 'components/ui/Button'
-import IconButton from 'components/ui/IconButton'
+import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useManagerContext } from 'context/manager_state'
 import { useUserContext } from 'context/user_state'
@@ -53,7 +52,7 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
         <UserPic size={42} className={styles.userPic}/>
         <p className={styles.name}>{manager.firstName} {manager.lastName}</p>
         <p className={styles.role}>{TranslateHirerRole(manager.hirerRole)}</p>
-        <IconButton bgColor={'transparent'}className={styles.edit} onClick={()=>setDropDown(state=> state&&false||!state&&true)}><ThreeDotsSvg className={styles.dots} /></IconButton>
+        <ThreeDotsButton onClick={()=>setDropDown(state=> state&&false||!state&&true)} className={styles.edit}/>
         {dropdownActive && 
           <ManagerDropdownMenu 
           onClose={()=>setDropDown(false)} 

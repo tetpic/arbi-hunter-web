@@ -10,7 +10,7 @@ import { EditorState } from '@tiptap/pm/state'
 import { EditorView } from '@tiptap/pm/view'
 
 import { useField } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IField } from 'types/types'
 import FieldError from 'components/ui/FieldError'
 import RichTextToolbar from './RichTextToolbar'
@@ -26,6 +26,7 @@ interface IBubbleShowProps {
 
 interface Props extends IField<string | null>{
   className?: string
+  value?: string
 }
 
 export default function RichTextField(props: Props) {
@@ -79,7 +80,7 @@ export default function RichTextField(props: Props) {
         }
       }),
     ],
-    content: value,
+    content: props.value||value,
     onBlur: ({editor}) => {
       helpers.setValue(editor.getHTML())
       setFocus(false)
@@ -88,6 +89,13 @@ export default function RichTextField(props: Props) {
       setFocus(true)
     }
   })
+
+  useEffect(()=>{
+    if(props.value && editor) {
+      editor.commands.clearContent()
+      editor.commands.insertContent(props.value)
+    }
+  }, [props.value, editor])
 
   const hasError = !!meta.error && meta.touched
 

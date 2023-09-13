@@ -1,6 +1,10 @@
+import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
+import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
+import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
+import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 
@@ -10,11 +14,24 @@ interface Props {
 
 export default function CVItem({cv}: Props) {
 
+  const appContext = useAppContext()
+  const {isTabletWidth} = useResize()
+
+  const openModal = () => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet(ModalType.CvOptionsModal, cv)
+    }
+    else {
+      appContext.showModal(ModalType.CvOptionsModal, cv)
+    }
+  }
+
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic}/>
       <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
+      <ThreeDotsButton className={styles.dots} onClick={openModal}/>
     </div>
     <div className={styles.stats}>
       <p className={styles.stats_title}>Статистика за неделю</p>

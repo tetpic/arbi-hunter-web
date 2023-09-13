@@ -36,10 +36,12 @@ export default class CvRepository {
     return res
   }
 
-  static async updateCV(data: number): Promise<any|null> {
+  static async updateCV(id: number, data: ICVCreate): Promise<any|null> {
+    
     const res = await request({
       method: 'patch',
-      url: `/api/cv/${data}`,
+      url: `/api/cv/${id}`,
+      data
     })
     if(res.err) {
       return null
@@ -47,10 +49,10 @@ export default class CvRepository {
     return res
   }
 
-  static async deleteCV(data: any): Promise<any|null> {
+  static async deleteCV(id: number): Promise<any|null> {
     const res = await request({
       method: 'delete',
-      url: `/api/cv/${data}`,
+      url: `/api/cv/${id}`,
     })
     if(res.err) {
       return null
@@ -85,6 +87,17 @@ export default class CvRepository {
       method: 'get',
       //TODO: язык должен добавляться динамически
       url: '/api/service-category?lang=ru',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getCategoryById(id: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/service-categorylang=ru&categoryId=${id}`,
     })
     if(res.err) {
       return null

@@ -1,0 +1,25 @@
+@import 'styles/index';
+
+.threeDots {
+  padding: 6px;
+  background-color: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  @include transitionDefault;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    circle{
+      @include transitionDefault;
+    }
+  }
+  @include hover {
+    background-color: $greyLight;
+    svg {
+      circle{
+        fill: $black;
+      }
+    }
+  }
+}

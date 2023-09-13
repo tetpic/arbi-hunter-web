@@ -3,10 +3,10 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: $white;
+  // background: $white;
+  background-color: $black;
   width: 796px;
   position: relative;
-  background: white;
   border-radius: $borderRadiusModal;
 
   @media (max-width: $xs-max) {

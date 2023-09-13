@@ -1,0 +1,23 @@
+@import 'styles/index';
+
+
+.layout {
+  max-width: 340px;
+}
+
+.radioWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  margin-top: 24px;
+}
+
+.titleWrapper {
+  padding-left: unset;
+}
+
+.buttonYellow {
+  margin-top: 16px;
+  width: 100%;
+  @include buttonYellow;
+}

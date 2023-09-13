@@ -26,7 +26,7 @@ export default function Patterns(props: Props) {
   }, [])
 
   return (<div className={styles.root}> 
-    <Scrollbars>
+    <Scrollbars universal autoHide>
   <div className={styles.wrapper}>
       {patternContext.patterns && patternContext.patterns.size > 0 && 
       [...patternContext.patterns.values()].map(el=> 

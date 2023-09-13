@@ -1,5 +1,5 @@
 import CvCard from 'components/ui/CvCard'
-import { useUserContext } from 'context/user_state'
+import { useCvContext } from 'context/cv_state'
 import Scrollbars from 'rc-scrollbars'
 import { useEffect } from 'react'
 import styles from './index.module.scss'
@@ -9,20 +9,20 @@ interface Props {
 
 export default function SavedCVs() {
 
-  const userContext = useUserContext()
+  const cvContext = useCvContext()
 
   useEffect(()=>{
-    if(!userContext.savedCvs||userContext.savedCvs.length < 0){
-      userContext.setSavedCvs()
+    if(!cvContext.savedCvs||cvContext.savedCvs.length < 0){
+      cvContext.setSavedCvs()
     }
-  }, [userContext.savedCvs])
+  }, [cvContext.savedCvs])
 
   return (
     <div className={styles.root}> 
     <Scrollbars universal style={{height: '100%'}}>
       <div className={styles.wrapper}>
-        {userContext.savedCvs&&userContext.savedCvs.map(el => {
-          return <CvCard key={el.id} cv={el}/>
+        {cvContext.savedCvs&&cvContext.savedCvs.map(el => {
+          return <CvCard key={el.id} cv={el} vcId={0}/>
         })}
       </div>
     </Scrollbars>

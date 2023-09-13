@@ -107,9 +107,9 @@ export default class Formatter {
 
   /** return HH:mm:ss format time */
   static formatSecondtToTime(s: number) {
-    let date = new Date(0);
-    date.setSeconds(s);
-    return date.toISOString().substring(14, 19);
+    let date = new Date(0)
+    date.setSeconds(s)
+    return date.toISOString().substring(14, 19)
   }
 
   /** return dd.MM.yy HH:mm date format */ 
@@ -126,21 +126,25 @@ export default class Formatter {
   }
 
   /** get arr like [['02.2022', '03.2023'], ['02.1992', '03.1993']], return for example '2 года 2 месяца' */
+
   static fullTimeLine = (arr: string[][]) => {
     let allMonths = arr.map((el) => {
-      let oldString = el[0].split('.');
-      let oldDate = new Date(+oldString[1], +oldString[0] - 1);
-      let newString = el[1].split('.');
+
+      let oldString = el[0].split('.')
+      let oldDate = new Date(+oldString[1], +oldString[0] - 1)
+      let newString = el[0]?el[1]?.split('.'):[new Date().getMonth, new Date().getFullYear()]
       let newDate = new Date(+newString[1], +newString[0] - 1)
-      let m1=oldDate.getMonth()+(oldDate.getFullYear()*12);
-      let m2=newDate.getMonth()+(newDate.getFullYear()*12);
+      let m1=oldDate.getMonth()+(oldDate.getFullYear()*12)
+      let m2=newDate.getMonth()+(newDate.getFullYear()*12)
       return (m2-m1)+1
     })
-    .reduce((p, c)=>p+c)
+    .reduce((p, c)=>{return p+c}, 0)
   
     let years = ~~(allMonths/12)
     let months = allMonths%12
-    return `${years} ${Formatter.pluralize(years, 'год', 'года', 'лет')} ${months > 0?months +' '+ Formatter.pluralize(months, 'месяц', 'месяца', 'месяцев'):null}`
+    let yearsString = years>0 ? (years + ' ' + Formatter.pluralize(years, 'год', 'года', 'лет')):''
+    let monthsString = months > 0 ? months +' '+ Formatter.pluralize(months, 'месяц', 'месяца', 'месяцев'):''
+    return (yearsString?yearsString + ' ':'') + monthsString
   }
 }
 

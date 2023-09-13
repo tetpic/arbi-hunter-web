@@ -1,6 +1,7 @@
 import TextAreaField from 'components/fields/TextAreaField'
 import { useResize } from 'components/hooks/useResize'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { useFormikContext } from 'formik'
 import Image from 'next/image'
 import { ChangeEvent } from 'react'
 import styles from './index.module.scss'
@@ -11,11 +12,13 @@ interface Props {
 
 export default function About(props: Props) {
 
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
   const {isPhoneWidth} = useResize()
+  const { setFieldValue, setFieldTouched } = useFormikContext()
 
   const onTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     cvContext.setCurrentCv({...cvContext.currentCv, bio: e.currentTarget.value})
+    setFieldValue('bio', e.currentTarget.value)
   }
 
   return (

@@ -1,8 +1,7 @@
 import RadioListField from 'components/fields/RadioListField'
-import CrossSvg from 'components/svg/CrossSvg'
 import AddButton from 'components/ui/AddButton'
 import RemovableItem from 'components/ui/RemovableItem'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import { CoursesInfo, ISource } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
@@ -33,7 +32,7 @@ export default function Skills(props: Props) {
     name: ''
   }
 
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
   const appContext  = useAppContext()
 
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
@@ -105,14 +104,18 @@ export default function Skills(props: Props) {
         <div className={styles.itemsWrapper}>
         {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
           .map((el)=> 
-            <p 
-            className={styles.item} 
-            onClick={()=>{
-              setActiveDetails(el)
-              setCoursesDetails(true)}
-            }>
-              {el.name} <CrossSvg className={styles.crossSvg}/>
-            </p>
+          <RemovableItem text={el.name} onClick={()=>{
+            setActiveDetails(el)
+            setCoursesDetails(true)}
+          }/>
+            // <p 
+            // className={styles.item} 
+            // onClick={()=>{
+            //   setActiveDetails(el)
+            //   setCoursesDetails(true)}
+            // }>
+            //   {el.name} <CrossSvg className={styles.crossSvg}/>
+            // </p>
           )}
         </div>
       }

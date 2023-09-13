@@ -2,7 +2,7 @@ import RadioListField from 'components/fields/RadioListField'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ExperienceInfo } from 'data/interfaces/Common'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { useFormikContext } from 'formik'
@@ -24,7 +24,7 @@ export default function Experience(props: Props) {
     description: ''
   }
 
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
 
   const [showDetails, setDetails] = useState<boolean>(false)
   const [detailsInfo, setDetailsInfo] = useState<ExperienceInfo[]>(cvContext.currentCv?.experienceInfo||[])

@@ -9,6 +9,7 @@ interface Props {
   emoji?: JSX.Element
   className?: string
   onBackClick?: ()=>void
+  showButton?: boolean 
 }
 
 export default function Title(props: Props) {
@@ -17,12 +18,12 @@ export default function Title(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.className)}>
-      {isTabletWidth&&props.onBackClick&&
+      {((isTabletWidth&&props.onBackClick)||props.showButton) &&
         <Button className={styles.backButton} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
       }
 
       {props.title} {props.emoji}
-      {isTabletWidth&&props.onBackClick &&
+      {((isTabletWidth&&props.onBackClick)||props.showButton)&&
         <div className={styles.filler}></div>
       }
     </div>

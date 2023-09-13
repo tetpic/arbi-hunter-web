@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISource } from 'data/interfaces/Common'
 import CvRepository from 'data/repositories/CvRepository'
 import { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ interface Props {
 
 export default function SoursesModal(props: Props) {
     
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
 
   const [sources, setSources] = useState<ISource[]>(cvContext?.helpObjects?.sources||[])
   const [choosenSources, setChoosenSources] = useState<Set<ISource>>(cvContext?.helpObjects?.activeSources||new Set())

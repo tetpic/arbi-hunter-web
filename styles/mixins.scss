@@ -293,7 +293,7 @@
 
 @mixin buttonDefault {
   border-radius: 10px;
-  padding: 10px 24px 10px;
+  padding: 10px 24px 8px;
   font-weight: $medium;
   font-size: $mediumText;
   cursor: pointer;
@@ -303,6 +303,7 @@
 @mixin buttonYellow {
   background-color: $yellow;
   color: $black;
+
   @include buttonDefault;
   @include hoverButtonYellow;
 }

@@ -62,8 +62,9 @@ export function VacancyWrapper(props: Props) {
         state.clear()
         res.forEach(e=> {
           state.set(e.id, e)
+          
         })
-        return state
+        return new Map(state)
       })
       return true
     })

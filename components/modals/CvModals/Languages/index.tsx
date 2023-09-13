@@ -6,7 +6,7 @@ import languages from '@cospired/i18n-iso-languages'
 import classNames from 'classnames'
 import { LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import styles from './index.module.scss'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function LangaugesModal(props: Props) {
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
  
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])

@@ -2,14 +2,14 @@ import styles from './index.module.scss'
 import DropDownInput from 'components/fields/LocationDropdownInput'
 import RadioListField from 'components/fields/RadioListField'
 import LocationRepository from 'data/repositories/LocationRepository'
-import { useCvContext } from 'context/cv_state'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISearchCityResult, ISearchCountryResult } from 'data/interfaces/ILocation'
 
 interface Props {
 }
 
 export default function WorkPlace(props: Props) {
-  const cvContext = useCvContext()
+  const cvContext = useCreateVcCvContext()
 
   const cityHandler = (c: ISearchCityResult) => {
     const cvHelpers = cvContext.helpObjects
