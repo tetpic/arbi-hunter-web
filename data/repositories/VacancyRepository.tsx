@@ -84,4 +84,15 @@ export default class VacancyRepository {
     }
     return res
   }
+
+  static async removeVacancy(id: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/vacancy/${id}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

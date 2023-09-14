@@ -30,7 +30,7 @@ export default function Patterns(props: Props) {
   <div className={styles.wrapper}>
       {patternContext.patterns && patternContext.patterns.size > 0 && 
       [...patternContext.patterns.values()].map(el=> 
-        <PatternItem pattern={el}/>
+        <PatternItem pattern={el} key={el.id}/>
         )}
       {creation&& 
       <PatternItem new/>

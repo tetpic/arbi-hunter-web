@@ -1,8 +1,12 @@
+import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
+import ThreeDotsButton from 'components/ui/ThreeDotsButton'
+import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { ModalType } from 'types/enums'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 
@@ -14,24 +18,36 @@ interface Props {
 }
 
 export default function VacancyItem({vacancy, isActive}: Props) {
-  
-
   const router = useRouter()
-
   const vacancyContext = useVacancyContext() 
+  const appContext = useAppContext()
+  const {isTabletWidth} = useResize()
 
   const setActiveHandler = () => {
     vacancyContext.editVacancy({published: true}, vacancy.id)
     .then(res=> res&&vacancyContext.setArchiveVacancies())
   }
+
+  const openModalHandler =()=> {
+    if (isTabletWidth) {
+      appContext.showBottomSheet(ModalType.CvVcOptionsModal, {vc: vacancy})
+    }
+    else {
+      appContext.showModal(ModalType.CvVcOptionsModal, {vc: vacancy})
+    }
+  }
   
 
   return (<div className={styles.item}> 
-    <p className={styles.name}>{vacancy.name}</p>
-      <p className={styles.price}>
-        <Image src={'/icons/money.png'} alt={'money icon'} width={26} height={24}/> 
-        от {Formatter.formatNumber(vacancy.salary)} {TranslateCurrency(vacancy.currency)}
-      </p>
+      <div className={styles.top}>
+        <p className={styles.name}>{vacancy.name}</p>
+        <p className={styles.price}>
+          <Image src={'/icons/money.png'} alt={'money icon'} width={26} height={24}/> 
+          от {Formatter.formatNumber(vacancy.salary)} {TranslateCurrency(vacancy.currency)}
+        </p>
+        <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
+      </div>
+    
       <div className={styles.stats}>
         <p className={styles.stats_title}>Статистика за неделю</p>
         <div className={styles.stats_item}>

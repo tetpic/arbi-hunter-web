@@ -1,6 +1,7 @@
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { createContext, useContext, useState } from 'react'
+import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
 
 interface IState {
@@ -8,11 +9,14 @@ interface IState {
   setArchiveVacancies: ()=>Promise<boolean>
   activeVacancies: Map<number, IVacancy>,
   setActiveVacancies: ()=>Promise<boolean>,
-  editVacancy: (v: Partial<IVacancy>, id: number)=>Promise<boolean>
+  editVacancy: (v: Partial<IVacancy>, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
   savedVCs: IVacancy[],
   setSavedVacancies: ()=>void
   saveVacancy: (id: number) => void
   removeVacancyFromSaved: (id: number) => void
+  removeVacancy: (id: number, published: boolean) => void
+  editVcInEditor: (vc: IVacancy)=> void
+  
 
 }
 
@@ -25,7 +29,9 @@ const defaultValue: IState = {
   savedVCs: null,
   setSavedVacancies: ()=>null,
   saveVacancy: () => null,
-  removeVacancyFromSaved: () => null
+  removeVacancyFromSaved: () => null,
+  removeVacancy: (id: number, published: boolean) =>null,
+  editVcInEditor: () => null
 }
 
 const VacancyContext = createContext<IState>(defaultValue)
@@ -36,6 +42,7 @@ interface Props {
 
 export function VacancyWrapper(props: Props) {
   const userContext = useUserContext()
+  const createVcCvContext = useCreateVcCvContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>([])
@@ -48,7 +55,7 @@ export function VacancyWrapper(props: Props) {
         res.forEach(e=> {
           state.set(e.id, e)
         })
-        return state
+        return new Map(state)
       })
       return true
     })
@@ -71,14 +78,7 @@ export function VacancyWrapper(props: Props) {
     .catch(err=> false)
   }
 
-  const editVacancy = async(v: Partial<IVacancy>, id: number): Promise<boolean> => {
-    return VacancyRepository.editVacancyById(v, id)
-    .then(res=>{
-      
-      return true
-    })
-    .catch(err=> {return false})
-  }
+  
 
   const setSavedVacancies = () => {
     VacancyRepository.getSavedFromCurrentProfile(userContext.currentProfile?.profileType)
@@ -100,6 +100,30 @@ export function VacancyWrapper(props: Props) {
     })
   }
 
+  const removeVacancy = (id: number, published: boolean) =>{
+    VacancyRepository.removeVacancy(id)
+    .then(res=> {
+      published?setActiveVacancies():setArchiveVacancies()
+    })
+  }
+
+  const editVacancy = async(v: Partial<IVacancy>, id: number, published?: 'archive'|'active'): Promise<boolean> => {
+    return VacancyRepository.editVacancyById(v, id)
+    .then(res=>{
+      
+      if(published !==undefined) {
+
+        published==='active'?setActiveVacancies():setArchiveVacancies()
+      }
+      return true
+    })
+    .catch(err=> {return false})
+  }
+
+  const editVcInEditor = (vc: IVacancy) => {
+    createVcCvContext.setEditedItem(vc)
+  }
+
 
 
   const value: IState = {
@@ -112,7 +136,9 @@ export function VacancyWrapper(props: Props) {
     savedVCs,
     setSavedVacancies,
     saveVacancy,
-    removeVacancyFromSaved
+    removeVacancyFromSaved,
+    removeVacancy,
+    editVcInEditor
   }
 
   return (

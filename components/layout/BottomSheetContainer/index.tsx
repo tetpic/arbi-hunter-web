@@ -1,6 +1,11 @@
 import styles from './index.module.scss'
 import { useAppContext } from 'context/state'
 import { RemoveScroll } from 'react-remove-scroll'
+import Sheet from 'react-modal-sheet'
+import { ModalType } from 'types/enums'
+import ProposalModal from 'components/modals/ProposalModal'
+import CvVcOptionsModal from 'components/modals/OptionsModal'
+
 
 interface Props { }
 
@@ -9,9 +14,26 @@ export default function BottomSheetContainer(props: Props) {
   return (
     <RemoveScroll enabled={!!appContext.bottomSheet}>
       <div className={styles.root} aria-hidden='true'>
-
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ProposalModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[400]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <ProposalModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.CvVcOptionsModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[400]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <CvVcOptionsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
       </div>
     </RemoveScroll>
   )
 }
+
+
 

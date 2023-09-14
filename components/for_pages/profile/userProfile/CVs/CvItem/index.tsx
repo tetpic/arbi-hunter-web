@@ -19,10 +19,10 @@ export default function CVItem({cv}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet(ModalType.CvOptionsModal, cv)
+      appContext.showBottomSheet(ModalType.CvVcOptionsModal, {cv: cv})
     }
     else {
-      appContext.showModal(ModalType.CvOptionsModal, cv)
+      appContext.showModal(ModalType.CvVcOptionsModal, {cv: cv})
     }
   }
 

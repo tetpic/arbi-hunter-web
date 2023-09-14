@@ -1,4 +1,4 @@
-import { ProposalRequestType } from 'types/enums'
+import { ApplicationStatus, ProposalRequestType } from 'types/enums'
 
 export interface IProposal {
   applicationId?: number,
@@ -6,4 +6,9 @@ export interface IProposal {
   vacancyId: number,
   type: ProposalRequestType,
   coverLetter : string
+}
+
+export interface IStat {
+  status: ApplicationStatus,
+  count: number
 }

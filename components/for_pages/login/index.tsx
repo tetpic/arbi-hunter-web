@@ -87,8 +87,8 @@ export default function Login(props: Props) {
             <p className={styles.subTitle}>Войти через</p>            
 
             <div className={styles.buttonsWrapper}>
-              <Button className={classnames(styles.button, loginType === 'phone'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('phone')}>Телефон</Button>
-              <Button className={classnames(styles.button, loginType === 'email'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('email')}>E-mail</Button>
+              <Button type='button' className={classnames(styles.button, loginType === 'phone'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('phone')}>Телефон</Button>
+              <Button type='button' className={classnames(styles.button, loginType === 'email'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('email')}>E-mail</Button>
             </div>
 
             {loginType=== 'email' &&

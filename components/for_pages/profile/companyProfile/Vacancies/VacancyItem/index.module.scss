@@ -10,19 +10,34 @@
   row-gap: 16px;
   align-items: flex-start;
 
+  .top {
+    display: grid;
+    grid-template-areas: 'n d' 'p d';
+    grid-template-columns: 1fr auto;
+    row-gap: 16px;
+    align-items: start;
+    width: 100%;
+  }
+
   .name {
+    grid: n;
     font-size: $largeText;
     font-weight: $semibold;
     color: $white;
   }
   
   .price {
+    grid-area: p;
     color: $yellow;
     font-size: $largeText;
     font-weight: $semibold;
     display: flex;
     align-items: center;
     column-gap: 8px;
+  }
+
+  .dots {
+    grid-area: d;
   }
 }
 

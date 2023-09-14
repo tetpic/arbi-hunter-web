@@ -2,11 +2,11 @@
 
 .root {
   width: Clamp(224px, 49%, 566px);
-  height: Clamp(208px, 41vw, 527px);
+  height: Clamp(208px, 35vw, 527px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $grey;
+ 
   border-radius: 24px;
   overflow: hidden;
   flex-shrink: 0;
@@ -17,7 +17,9 @@
 
   .empImage {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: block;
+    // height: 100%;
+    object-fit: contain;
+    background-color: $grey;
   }
 }

@@ -5,6 +5,7 @@ import Accordeon from 'components/ui/Accordeon'
 import RemovableItem from 'components/ui/RemovableItem'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import { FilterItem, FilterItems } from 'data/interfaces/IFilter'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import { EducationTypes, Genders, ProposalRequestType, WorkExperience } from 'types/enums'
@@ -13,25 +14,7 @@ import styles from './index.module.scss'
 
 
 
-export enum FilterItems {
-  Experience = 'experience',
-  Age = 'age',
-  Education = 'education',
-  Gender = 'gender',
-  New = 'onlyNew'
-}
 
-
-
-export interface FilterItem {
-  // active: boolean, 
-  type: FilterItems
-  items?: string[], 
-  translatedItems?: string[]
-  translatedActiveItem?: string
-  activeItem?: string|null
-  translation: string
-}
 
 interface Props {
   filtersHandler?: (v: Map<FilterItem, FilterItem>)=> void
@@ -39,12 +22,14 @@ interface Props {
 
 export default function ResponsesFilter(props: Props) {
 
+  const feedbacksContext = useFeedbacksContext()
+  const {filterOptions, setFilterOptions} = feedbacksContext
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [activeFilter, setActiveFilter] = useState<FilterItem>()
-  const [filterOptions, setFilterOptions] = useState<Map<FilterItem, FilterItem>>(new Map())
   const responsesContext = useFeedbacksContext()
   const [switcher, setSwitcher] = useState<boolean>(false)
   const [switcherLoading, setSwitcherLoading] = useState<boolean>(false)
+  
 
   const getItems = (p: FilterItems): FilterItem => {
     let arr:any[] = []
@@ -104,10 +89,8 @@ export default function ResponsesFilter(props: Props) {
     setActiveFilter(null)
   }
 
-  useEffect(()=>{
-    filterOptions
-    
-    props.filtersHandler&&props.filtersHandler(filterOptions)
+  useEffect(()=>{    
+    feedbacksContext.withFilter()
   }, [filterOptions])
 
   useEffect(()=>{
@@ -151,12 +134,14 @@ export default function ResponsesFilter(props: Props) {
       })}
 
     </div>
-    <div className={styles.filterResults}>
     {filterOptions.size > 0 && 
-      [...filterOptions.entries()].map(([k, v], index)=> {
-        return <RemovableItem key={index} text={v.translatedActiveItem} onClick={()=> filterOptionsHandler(k, undefined)}/>
-      })
-    }
+    <div className={styles.filterResults}>
+      {
+        [...filterOptions.entries()].map(([k, v], index)=> {
+          return <RemovableItem key={index} text={v.translatedActiveItem} onClick={()=> filterOptionsHandler(k, undefined)}/>
+        })
+      }
     </div>
+    }
   </div>)
 }

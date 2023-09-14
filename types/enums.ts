@@ -4,7 +4,7 @@ export enum ModalType {
   SkillsModal = 'skillsModal',
   LanguageModal = 'languageModal',
   SourcesModal= 'sourcesModal',
-  CvOptionsModal = 'cvOptionsModal',
+  CvVcOptionsModal = 'cvOptionsModal',
   ProposalModal= 'proposalModal',
   ProposalTextModal= 'proposalTextModal'
 }
@@ -222,6 +222,12 @@ export enum ApplicationBSSelectType {
   ThisVacancy= 'thisVacancy',
   AnotherVacancy = 'anotherVacancy',
   Reject = 'reject'
+}
+
+export enum ApplicationStatus {
+  Applied = 'applied',
+  Accepted = 'accepted',
+  Rejected = 'rejected',
 }
 
 

@@ -2,6 +2,7 @@ import { EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePres
 import { CoursesInfo, EducationInfo, ExperienceInfo, ITranslation, TimeStamp } from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
+import { IProposal } from './IProposal'
 import { IUserProfile } from './IUser'
 
 
@@ -67,7 +68,7 @@ export interface ICV extends ICVCreate, IUserProfile{
   city: IGeoName,
   profile: IUserProfile,
   savedByProfiles: IUserProfile[],
-  proposalByCurrentUser: boolean|null,//???
+  proposalByCurrentUser: IProposal|null,//???
   isSavedByCurrentProfile: boolean,
   age: number,
   lastExperienceInfo: ExperienceInfo

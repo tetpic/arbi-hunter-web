@@ -16,9 +16,9 @@ interface Props {
 export default function ClosingTitle(props: Props) {
 
   return (    
-  <div className={classNames(styles.titleWrapper, props.classNames.wrapper)}>
-    <p className={classNames(styles.title, props.classNames.title)}>{props.title}</p>
-    <Button onClick={props.onClose} className={classNames(styles.buttonClose, props.classNames.button)} ><CrossSvg/></Button>
+  <div className={classNames(styles.titleWrapper, props?.classNames?.wrapper)}>
+    <p className={classNames(styles.title, props?.classNames?.title)}>{props.title}</p>
+    <Button onClick={props.onClose} className={classNames(styles.buttonClose, props?.classNames?.button)} ><CrossSvg/></Button>
   </div>
   )
 }

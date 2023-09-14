@@ -1,6 +1,7 @@
 import { ISource } from 'data/interfaces/Common'
 import { ICVCreate, ICategory, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
+import { IVacancy } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import router from 'next/router'
 import { createContext, useContext, useState } from 'react'
@@ -44,7 +45,7 @@ interface IState {
   setSubCategories: (v: ICategory)=>void
   reset: ()=>void
 
-  setEditedCv: (cv: ICV) => void
+  setEditedItem: (cv: ICV) => void
 }
 
 const defaultValue: IState = {
@@ -62,7 +63,7 @@ const defaultValue: IState = {
   setSubCategories: () => null,
   reset: ()=>null,
 
-  setEditedCv: () => null
+  setEditedItem: () => null
 }
 
 const CreateVcCvContext = createContext<IState>(defaultValue)
@@ -116,14 +117,16 @@ export function CreateVcCvWrapper(props: Props) {
     }
   }
 
-  const setEditedCv = async(cv: ICV) => {
-    setCv(state=> {return {...state, ...cv,
-      categoriesIds: cv.categories.map(el=> el.id)
+  const setEditedItem = async(item: ICV|IVacancy) => {
+    setCv(state=> {return {...state, ...item,
+      categoriesIds: item.categories.map(el=> el.id)
 
     }})
-    setHelp(state=>{return {...state, categoryIds: cv.categories, }})
-    router.push(`/create/cv?id=${cv.id}`)
+    setHelp(state=>{return {...state, categoryIds: item.categories, }})
+    router.push(`/create/cv?id=${item.id}`)
   }
+
+
 
   const reset = () => {
     handleProgress(1)
@@ -148,7 +151,7 @@ export function CreateVcCvWrapper(props: Props) {
     setSubCategories,
     reset,
 
-    setEditedCv
+    setEditedItem
   }
 
   return (

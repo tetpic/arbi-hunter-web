@@ -1,7 +1,6 @@
 import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CvRepository from 'data/repositories/CvRepository'
-import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
@@ -9,8 +8,8 @@ import { useUserContext } from './user_state'
 interface IState {
   savedCvs: ICV[],
   setSavedCvs: ()=>Promise<boolean>
-  saveCv: (id: number)=> void
-  removeCvfromSaved: (id: number) => void
+  saveCv: (id: number)=> Promise<boolean>
+  removeCvfromSaved: (id: number) => Promise<boolean>
   deleteCv: (id: number) => void
   updateCv: (id: number, cv: ICV) =>void
   editCv: (cv: ICV) => void
@@ -35,11 +34,11 @@ interface Props {
 export function CvWrapper(props: Props) {
   const {currentProfile} = useUserContext()
   const createVcCvContext = useCreateVcCvContext()
-  const router = useRouter()
 
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
 
   const setSavedCvs = async():Promise<boolean> => {
+    
     if(currentProfile.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser(currentProfile.profileType)
       .then(res=> {
@@ -62,18 +61,24 @@ export function CvWrapper(props: Props) {
     }
   }
   
-  const saveCv=(id: number) => {
-    CvRepository.addCvToSaved(id, currentProfile.profileType)
-    .then(res=> {
+  const saveCv = async (id: number) => {
+    try {
+      const res = await CvRepository.addCvToSaved(id, currentProfile.profileType)
       setSavedCvs()
-    })
+      return true
+    } catch (e) {
+      return false
+    }
   }
 
-  const removeCvfromSaved = (id: number) => {
-    CvRepository.removeCvFromSaved(id, currentProfile.profileType)
-    .then(res=> {
-      setSavedCvsState(state=> state.filter(el=> el.id !== id))
-    })
+  const removeCvfromSaved = async (id: number) => {
+    try {
+      await CvRepository.removeCvFromSaved(id, currentProfile.profileType)
+      setSavedCvsState(state => state.filter(el => el.id !== id))
+      return true
+    } catch (e) {
+      return false
+    }
   }
 
   const deleteCv = (id: number) => {
@@ -94,10 +99,8 @@ export function CvWrapper(props: Props) {
   }
 
   const editCv = (cv: ICV) => {
-    createVcCvContext.setEditedCv(cv)
+    createVcCvContext.setEditedItem(cv)
   }
-
-
 
   const value: IState = {
     ...defaultValue,

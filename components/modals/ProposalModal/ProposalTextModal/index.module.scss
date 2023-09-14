@@ -17,6 +17,10 @@
 .buttonYellow {
   margin-top: 16px;
   @include buttonYellow;
+  @include mq($PhoneWidth, max) {
+    position: absolute;
+    bottom: 16px;
+  }
 }
 
 .patterns {

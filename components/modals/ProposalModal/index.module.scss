@@ -20,4 +20,10 @@
   margin-top: 16px;
   width: 100%;
   @include buttonYellow;
+  @include mq($TabletWidth, max) {
+    position: absolute;
+    bottom: 16px;
+    width: calc(100% - 32px);
+
+  }
 }

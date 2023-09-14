@@ -1,4 +1,5 @@
 import { IApplication } from 'data/interfaces/IApplication'
+import { IStat } from 'data/interfaces/IProposal'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { ProposalRequestType } from 'types/enums'
 import request from 'utils/request'
@@ -27,6 +28,7 @@ export default class ApplicationRepository {
     return res
   }
 
+  /* does not work */
   static async getVacanciesByStat(status: ProposalRequestType, profile: ProfileType): Promise<any|null> {
     const res = await request({
       method: 'get',
@@ -38,4 +40,18 @@ export default class ApplicationRepository {
     }
     return res
   }
+
+  static async getStatsCountByVacancy(vacancyId: number|string, profile: ProfileType): Promise<IStat[]|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/application/stats?s=${JSON.stringify({vacancyId: vacancyId})}`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+
 }

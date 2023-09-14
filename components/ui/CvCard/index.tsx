@@ -1,10 +1,13 @@
 import { useResize } from 'components/hooks/useResize'
+import { ProposalModalPager } from 'components/modals/ProposalModal'
 import DotSvg from 'components/svg/DotSvg'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
 import { IChat } from 'data/interfaces/Common'
+import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { useRouter } from 'next/router'
+import { useCallback, useState } from 'react'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
@@ -15,16 +18,18 @@ import styles from './index.module.scss'
 interface ItemProps {
   cv: ICV
   chat?: IChat
-  vcId: number
+  application?: IApplication
+  vcId?: number
 }
 
-export default function CvCard({cv, chat, vcId}: ItemProps) {
-  
+export default function CvCard({cv, chat, vcId, application}: ItemProps) {
   const router = useRouter()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
+  const [currentCV, setCurrentCV] = useState<ICV>(cv)
+  
   const experience = 
-    (cv.experienceInfo&&cv.experienceInfo.length>0&&Formatter.fullTimeLine(cv.experienceInfo?.map(el=>[el.fromDate, el.toDate])))
+    (currentCV?.experienceInfo&&currentCV?.experienceInfo.length>0&&Formatter.fullTimeLine(currentCV.experienceInfo?.map(el=>[el.fromDate, el.toDate])))
     // ||
     // cv?.experienceInfo?.length===1&& ('c ' +  cv.experienceInfo[0].fromDate)
     ||
@@ -35,16 +40,31 @@ export default function CvCard({cv, chat, vcId}: ItemProps) {
     router.push('/chat/' + chat.id + '/')
   }
 
-  const removeFromSaved = () => {
-    cvContext.removeCvfromSaved(cv.id)
-  }
+  const saveHandler = useCallback(() => {
+    currentCV
+    if(currentCV.isSavedByCurrentProfile) {
+      
+      cvContext.removeCvfromSaved(currentCV.id)
+      .then(res=>{
+        res===true &&
+        setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: false}})
+      })
+    }
+    else {
+      cvContext.saveCv(currentCV.id)
+      .then(res=> {
+        res===true&&
+        setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: true}})
+      })
+    }
+  }, [currentCV])
 
   const inviteHandler = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet(ModalType.ProposalModal, [cv, vcId])
+      appContext.showBottomSheet(ModalType.ProposalModal, {application: application, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
     }
     else {
-      appContext.showModal(ModalType.ProposalModal, [cv, vcId])
+      appContext.showModal(ModalType.ProposalModal, {application: application, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
     }
   }
 
@@ -52,9 +72,9 @@ export default function CvCard({cv, chat, vcId}: ItemProps) {
     <div className={styles.itemWrapper}>
     <div className={styles.top}>
       <UserPic size={46} className={styles.userPic}/>
-      <p className={styles.position}>{cv.position||cv.categories[0].name||'Должность не указана'}</p>
-      <p className={styles.name}>{cv.firstName} {cv.lastName} <DotSvg/> {cv.age} {Formatter.pluralize(cv.age, 'год', 'года', 'лет')}</p>
-      <FavoritesButton className={styles.heartButton} isActive={cv.isSavedByCurrentProfile} onClick={removeFromSaved}/>
+      <p className={styles.position}>{currentCV.position||currentCV.categories[0].name||'Должность не указана'}</p>
+      <p className={styles.name}>{currentCV.firstName} {currentCV.lastName} <DotSvg/> {currentCV.age} {Formatter.pluralize(currentCV.age, 'год', 'года', 'лет')}</p>
+      <FavoritesButton className={styles.heartButton} isActive={currentCV.isSavedByCurrentProfile} onClick={saveHandler}/>
     </div>
     <div className={styles.middle}>
       <p className={styles.title}>Опыт работы</p>
@@ -63,11 +83,17 @@ export default function CvCard({cv, chat, vcId}: ItemProps) {
     {cv.lastExperienceInfo &&
     <div className={styles.middle}>
       <p className={styles.title}>Последнее место работы</p>
-      <p className={styles.data}>{cv.lastExperienceInfo?.description&&cv.lastExperienceInfo?.description} {cv.lastExperienceInfo?.company&&('"' + cv.lastExperienceInfo?.company + '"')}</p>
+      <p className={styles.data}>{currentCV.lastExperienceInfo?.description&&currentCV.lastExperienceInfo?.description} {currentCV.lastExperienceInfo?.company&&('"' + currentCV.lastExperienceInfo?.company + '"')}</p>
     </div>
     }
+    {
+      currentCV.proposalByCurrentUser&&
+      <div className={styles.middle}>
+        <p className={styles.title}>Приглашение выслано</p>
+      </div>
+    }
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={inviteHandler} >Пригласить</Button>
+      <Button className={styles.button} onClick={inviteHandler}>{currentCV.proposalByCurrentUser?'Пригласить повторно':'Пригласить'}</Button>
       {chat&& 
         <Button className={styles.buttonBlack} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }

@@ -1,3 +1,4 @@
+import { ApplicationStatus } from 'types/enums'
 import { IChat, TimeStamp } from './Common'
 import { ICV } from './ICV'
 import { INotification } from './INotification'
@@ -9,7 +10,7 @@ export interface IApplication extends TimeStamp{
   vacancyId: number,
   cvId: number,
   profileId: number,
-  status: string, //"applied"
+  status: ApplicationStatus, //"applied"
   coverLetter: string,
   vacancy: IVacancy,
   profile: IUserProfile,

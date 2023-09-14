@@ -37,10 +37,6 @@ export default function Managers(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.head}>
-      {/* <div className={styles.findButtons}>
-        <Button className={classnames(styles.findButton, styles.findButton_active)}>Все менеджеры</Button>
-        <Button className={styles.findButton} >Показать администратора</Button>
-      </div> */}
       {!isTabletWidth &&
         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>Добавить менеджера</Button>
       }
@@ -54,8 +50,8 @@ export default function Managers(props: Props) {
       loader={<Spinner size={24} color={colors.yellow}/>} 
       dataLength={0}>
          {managerContext.managers&& managerContext.managers.size > 0 && 
-           [...managerContext.managers.values()].map(el=> {
-             return <Manager onEdit={()=>setManagerToEdit(el)}  onRemove={()=>removeManagerHandler(el)}  manager={el}/>
+           [...managerContext.managers.values()].map((el, index)=> {
+             return <Manager key={index} onEdit={()=>setManagerToEdit(el)}  onRemove={()=>removeManagerHandler(el)}  manager={el}/>
            })
          }
       </InfiniteScroll>

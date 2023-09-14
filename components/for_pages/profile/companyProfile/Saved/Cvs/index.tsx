@@ -12,17 +12,18 @@ export default function SavedCVs() {
   const cvContext = useCvContext()
 
   useEffect(()=>{
-    if(!cvContext.savedCvs||cvContext.savedCvs.length < 0){
+    
+    if(!cvContext.savedCvs||cvContext.savedCvs.length === 0){
       cvContext.setSavedCvs()
     }
-  }, [cvContext.savedCvs])
+  }, [])
 
   return (
     <div className={styles.root}> 
     <Scrollbars universal style={{height: '100%'}}>
       <div className={styles.wrapper}>
         {cvContext.savedCvs&&cvContext.savedCvs.map(el => {
-          return <CvCard key={el.id} cv={el} vcId={0}/>
+          return <CvCard key={el.id} cv={el}/>
         })}
       </div>
     </Scrollbars>

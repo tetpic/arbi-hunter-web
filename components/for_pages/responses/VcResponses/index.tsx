@@ -1,36 +1,43 @@
 import CvCard from 'components/ui/CvCard'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
-import { IApplication } from 'data/interfaces/IApplication'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
-import { ProposalRequestType } from 'types/enums'
-import ResponsesFilter, { FilterItem } from './Filter'
+import { ApplicationStatus} from 'types/enums'
+import ResponsesFilter from './Filter'
 import ResponsesNavigation from '../Navigation'
 import styles from './index.module.scss'
-import { ICV } from 'data/interfaces/ICV'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
+import { IStat } from 'data/interfaces/IProposal'
 
 interface Props {
   id?: number
 }
 
-enum VCNaviagation {
+export enum VCNaviagation {
   All= 'all',
   Interview = 'interview',
   Rejection = 'rejection'
 }
 
+export interface NavSet {
+  name: string, 
+  type: VCNaviagation, 
+  count?: number
+}
+
 export default function VCFeedbacks(props: Props) {  
   
   const responsesContext = useFeedbacksContext()
+  const {withFilter, setStats, stats} = responsesContext
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState<VCNaviagation>(VCNaviagation.All)
   const {isTabletWidth} = useResize()
   const [showNav, setShowNav] = useState<boolean>(isTabletWidth)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [navSet, setNavSet] = useState<NavSet[]>([])
 
   const TranslateVCNavigation = (v: VCNaviagation) =>{
     switch(v) {
@@ -43,53 +50,48 @@ export default function VCFeedbacks(props: Props) {
     }
   }
 
-  const navigationSet: {name: string, type: VCNaviagation}[] = 
-  Object.values(VCNaviagation).map(el=> {
-      return {name: TranslateVCNavigation(el), type: el}
-  })
-  
+  const navigationSet = (stats: IStat[]) => {
+    let res = Object.values(VCNaviagation).map(el=> {
+      const count = stats.find(s=> s.status === (el===VCNaviagation.Rejection?ApplicationStatus.Rejected:ApplicationStatus.Applied))
+      return {name: TranslateVCNavigation(el), type: el, count: count?count.count:0}
+    })
+    setNavSet(res)
+  }
+
   useEffect(()=>{
+    navigationSet(stats)
+  }, [stats])
+
+  
+  useEffect(()=>{    
+    setLoading(true)
+    const feedbacks = [...responsesContext.VCFeedbacks.values()]
+    let arr: any
     switch(currentPage) {
       case VCNaviagation.All:
-        responsesContext.setFilteredVcResponses([...responsesContext.VCFeedbacks.values()])
+        responsesContext.setFilteredVcResponses(feedbacks)
+        withFilter()
+        setLoading(false)
         break
       case VCNaviagation.Interview:
-        setLoading(true)
-        responsesContext.setResponsesByStat(ProposalRequestType.Interview)
-        .then(res => {
-          responsesContext.setFilteredVcResponses(res)
-          setLoading(false)
-        })
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)
+        withFilter(arr)
+        // responsesContext.setFilteredVcResponses(arr)      
+        setLoading(false)
         break
       case VCNaviagation.Rejection: 
-        responsesContext.setResponsesByStat(ProposalRequestType.Rejection)
-        .then(res=> {
-          responsesContext.setFilteredVcResponses(res)
-        })
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Rejected)||[]
+        withFilter(arr)
+        // responsesContext.setFilteredVcResponses(arr)
+        setLoading(false)
         break
     }
   }, [currentPage, responsesContext.VCFeedbacks])
 
-  const filtersHandler = (v: Map<FilterItem, FilterItem>) => {
-    const all = [...responsesContext.VCFeedbacks.values()]
-    if(v.size === 0) {
-      responsesContext.setFilteredVcResponses(all)
-    }
-    let filtered: IApplication[] =  all;
-    [...v.entries()].forEach(([key, value])=>{
-      let keyType = value.type as keyof ICV
-      if(keyType === 'age') {
-        let ageArr = value.activeItem.split(' ')
-        filtered = filtered.filter(el=> el.cv.age > +ageArr[0]&&el.cv.age < +ageArr[1])
-      }
-      else {
-        filtered = filtered.filter(el=> el.cv[keyType] === value.activeItem)
-      }
-      responsesContext.setFilteredVcResponses(filtered)
-    })
-  }
+ 
 
   const onNavigationClick = (t: VCNaviagation) => {
+
     setCurrentPage(t)
     if(isTabletWidth) {
       setShowNav(false)
@@ -97,8 +99,16 @@ export default function VCFeedbacks(props: Props) {
   }
 
   useEffect(()=>{
+    setStats(props.id)
     responsesContext.setVCResponses(props.id)
+    .then(res=> {
+      setLoading(false)
+    })
   }, [])
+
+  useEffect(()=>{
+    
+  }, [currentPage])
 
   return (<div className={styles.root}> 
   <div className={styles.main}>
@@ -110,11 +120,11 @@ export default function VCFeedbacks(props: Props) {
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
-      <ResponsesFilter filtersHandler={(v) => {filtersHandler(v)}}/>
+      <ResponsesFilter />
       {
-        responsesContext.filteredVcResponses.length>0&&
+        responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.map(el=> {
-          return <CvCard cv={el.cv} vcId={props.id} chat={el.chat[0]} />
+          return <CvCard cv={el.cv} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||
         loading && <Spinner size={24} color={colors.yellow}/>
@@ -126,7 +136,7 @@ export default function VCFeedbacks(props: Props) {
 
   </div>
   {((showNav && isTabletWidth) || !isTabletWidth) &&
-    <ResponsesNavigation items={navigationSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} className={''}/>
+    <ResponsesNavigation items={navSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} />
   }
   </div>)
 }

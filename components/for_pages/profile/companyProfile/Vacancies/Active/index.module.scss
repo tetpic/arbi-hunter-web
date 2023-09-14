@@ -2,9 +2,13 @@
 
 .root {
   margin-top: 24px;
+
+  height: calc(100dvh - 240px);
+}
+
+.wrapper {
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - 240px);
 }
 
 

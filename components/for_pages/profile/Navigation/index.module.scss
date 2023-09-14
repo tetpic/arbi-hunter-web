@@ -39,6 +39,9 @@
   &_active {
     background-color: $grey;
     pointer-events: none;
+    @include mq($TabletWidth, max) {
+      pointer-events: all;
+    }
   }
 
   svg {

@@ -23,8 +23,8 @@ export default function VacanciesArchive(props: Props) {
       return <VacancyItem vacancy={el} isActive={false}/>
     })
     ||
-    isLoaded&&vacancyContext.activeVacancies.size === 0 &&
-    <p className={styles.emptyMessage}>Нет активных вакансий</p>  
+    isLoaded&&vacancyContext.archiveVacancies.size === 0 &&
+    <p className={styles.emptyMessage}>Нет архивных вакансий</p>  
     ||
     !isLoaded &&
     <Spinner color={colors.yellow} size={24}/>

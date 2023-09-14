@@ -1,5 +1,6 @@
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
+import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import VacancyItem from '../VacancyItem'
@@ -22,17 +23,21 @@ export default function VacanciesActive(props: Props) {
 
   return (
   <div className={styles.root}> 
-  {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
-    [...vacancyContext.activeVacancies.values()].map((el, index)=> {
-      return <VacancyItem key={index} vacancy={el} isActive={true}/>
-    })  
-    ||
-    isLoaded&&vacancyContext.activeVacancies.size === 0 &&
-    <p className={styles.emptyMessage}>Нет активных вакансий</p>  
-    ||
-    !isLoaded &&
-    <Spinner color={colors.yellow} size={24}/>
-  } 
+    <Scrollbars universal style={{height: '100%'}} autoHide>
+      <div className={styles.wrapper}>
+        {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
+          [...vacancyContext.activeVacancies.values()].map((el, index)=> {
+            return <VacancyItem key={index} vacancy={el} isActive={true}/>
+          })  
+          ||
+          isLoaded&&vacancyContext.activeVacancies.size === 0 &&
+          <p className={styles.emptyMessage}>Нет активных вакансий</p>  
+          ||
+          !isLoaded &&
+          <Spinner color={colors.yellow} size={24}/>
+        } 
+      </div>
+    </Scrollbars>
 
   </div>)
 }
