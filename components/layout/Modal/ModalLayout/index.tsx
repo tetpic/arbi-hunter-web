@@ -9,6 +9,8 @@ interface Props {
   children?: ReactElement | ReactElement[]
   className?: string,
   backgroundColor? : string
+  mobileFullScreen?:boolean
+
 
 }
 
@@ -17,7 +19,7 @@ export default function ModalLayout(props: Props) {
 
   return (
     <div 
-      className={classNames(styles.root, {[styles.fixed]: props.fixed || context.isMobile}, props.className)}
+      className={classNames(styles.root, {[styles.fixed]: props.fixed || context.isMobile}, props.className, props.mobileFullScreen&&styles.fullScreen)}
       style={{background: props.backgroundColor}}
     >
       {props.children}

@@ -1,8 +1,8 @@
 import { useVacancyContext } from 'context/vacancy_state'
 import Scrollbars from 'rc-scrollbars'
 import { useEffect } from 'react'
-import styles from './index.module.scss'
 import VacancyItem from './VacancyItem'
+import styles from './index.module.scss'
 
 interface Props {
 }

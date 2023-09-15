@@ -1,12 +1,14 @@
 import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
-import { FilterItem} from 'data/interfaces/IFilter'
+import { FilterItem, FilterItems} from 'data/interfaces/IFilter'
 import { IProposal, IStat } from 'data/interfaces/IProposal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import ProposalRepository from 'data/repositories/ProposalRepository'
-import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
-import { ProposalRequestType } from 'types/enums'
+import VacancyRepository from 'data/repositories/VacancyRepository'
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import { EducationTypes, Genders, ProposalRequestType, WorkExperience } from 'types/enums'
+import { arrayFromEnum, TranslateEducationType, TranslateGenderType, TranslateWorkExperience } from 'utils/enumsTranslations'
 import { useUserContext } from './user_state'
 
 interface IState {
@@ -14,17 +16,24 @@ interface IState {
   VCFeedbacks: Map<number, IApplication>,
   filteredVcResponses: IApplication[],
   setFilteredVcResponses: (a: IApplication[])=> void
-  setVCResponses: (id?: number)=>Promise<boolean>
+  setVCResponses: (id?:number)=>Promise<boolean>
+  setCVResponses: ()=>Promise<boolean>
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
-  CVFeedbacks: Map<number, IVacancy[]>
+  CVFeedbacks: Map<IApplication, IVacancy>
   createProposal: (p: IProposal)=> Promise<boolean>
-  filterOptions: Map<FilterItem, FilterItem>
-  setFilterOptions: Dispatch<SetStateAction<Map<FilterItem, FilterItem>>>
-  withFilter: (f?: IApplication[])=>void
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
+  
+  filters:Map<FilterItems, FilterItem>
+  setFilters: Dispatch<SetStateAction<Map<FilterItems, FilterItem>>>
+  filterOptions: Map<FilterItem, FilterItem>
+  withFilter: (f?: IApplication[])=>void
+  setFilterOptions: (value?: FilterItem, index?: number)=>void
+  sorted:IApplication[],
+  setSorted: Dispatch<SetStateAction<IApplication[]>>,
+  getFilterItems : (p: FilterItems)=> FilterItem
 
 }
 
@@ -34,17 +43,23 @@ const defaultValue: IState = {
   filteredVcResponses: null,
   setFilteredVcResponses: ()=>null,
   setVCResponses: ()=>null,
+  setCVResponses: ()=>null,
   setCurrentVacancy: ()=>null,
   setResponsesByStat: (v: ProposalRequestType)=> null,
   currentCV: null,
   CVFeedbacks: new Map(),
   createProposal: async()=> null,
-  filterOptions: new Map(),
-  setFilterOptions: ()=>null,
-  withFilter: ()=>null,
   stats: [],
-  setStats: (vcId: number)=>null
-
+  setStats: (vcId: number)=>null,
+  
+  filters: null,
+  setFilters: ()=> null,
+  filterOptions: new Map(),
+  withFilter: ()=>null,
+  setFilterOptions: ()=>null,
+  sorted: [],
+  setSorted: ()=>null,
+  getFilterItems: ()=>null
 }
 
 const FeedbacksContext = createContext<IState>(defaultValue)
@@ -60,8 +75,10 @@ export function FeedbacksWrapper(props: Props) {
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
   const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<number, IVacancy[]>>(new Map())
-  const [filterOptions, setFilterOptions] = useState<Map<FilterItem, FilterItem>>(new Map())
+  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<IApplication, IVacancy>>(new Map())
+  const [sorted, setSorted] = useState<IApplication[]|null>(null)
+  const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
+  const [filterOptions, setFilterOptionsState] = useState<Map<FilterItem, FilterItem>>(new Map())
   const [stats, setStatsState] = useState<IStat[]>([])
   
 
@@ -79,6 +96,45 @@ export function FeedbacksWrapper(props: Props) {
     } catch (err) {
       return false
     }
+  }
+
+  const setCVResponses = async(): Promise<boolean> => {
+    return ProposalRepository.getProposalByProfileType(userContext?.currentProfile?.profileType)
+    .then(proposal=> {
+
+      const vacancies = Promise.all(proposal.map(el=> VacancyRepository.getVacancyById(el.vacancyId, userContext?.currentProfile?.profileType)))
+      return vacancies.then(res=> {
+        setCurrentCVResponsesState(new Map())
+        res.forEach((vc, index)=>{
+          setCurrentCVResponsesState(state=> {
+            state.set(proposal[index], vc)
+            return new Map(state)
+          })
+        })
+        return true
+      })
+      
+    })
+    .catch(err=>{
+      return false
+    })
+  }
+
+  const setFilterOptions =(value?: FilterItem, index?: number)=> {
+    
+    setFilterOptionsState(state=> {
+      if(value===undefined) {
+        state.clear()
+        return new Map(state)
+      }
+      if(index === undefined) {
+        state.delete(value)
+        return new Map(state)
+      }
+      
+      state.set(value, {...value, activeItem: value.items[index], translatedActiveItem: value.translatedItems[index]})
+      return new Map(state)
+    })
   }
 
   const setCurrentVacancy = (v?: IVacancy|null) => {
@@ -104,7 +160,7 @@ export function FeedbacksWrapper(props: Props) {
   }
 
   const withFilter = (f?: IApplication[]) => {
-    const all = f||[...VCFeedbacks.values()]
+    const all = sorted||[...VCFeedbacks.values()]
     if(filterOptions.size === 0) {
       setFilteredVcResponses(all)
     }
@@ -132,24 +188,65 @@ export function FeedbacksWrapper(props: Props) {
     }
   }
 
+  const getFilterItems = (p: FilterItems): FilterItem => {
+    let arr:any[] = []
+    switch(p) {
+      case FilterItems.Age:
+        arr = ['18 30', '30 40', '40 50', '50 100']
+        return {type:p, items: arr, translatedItems: ['от 18 до 30 лет', 'от 30 до 40 лет', 'от 40 до 50 лет', 'больше 60 лет'], activeItem: null, translatedActiveItem: null,  translation: 'Возраст'}
+      case FilterItems.Education:
+        arr = arrayFromEnum(EducationTypes)
+        return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el)), activeItem: null, translatedActiveItem: null, translation: 'Образование'}
+      case FilterItems.Experience:
+        arr = arrayFromEnum(WorkExperience)
+        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el)), activeItem: null, translatedActiveItem: null,  translation: 'Опыт'}
+      case FilterItems.Gender:
+        arr = arrayFromEnum(Genders)
+        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateGenderType(el)), activeItem: null, translatedActiveItem: null,  translation: 'Пол'}
+      case FilterItems.New:
+        return {type: p, translation: 'Только новые'}
+    }
+  }
 
+  useEffect(()=>{    
+    withFilter()
+  }, [filterOptions])
 
+  useEffect(()=>{
+    Object.values(FilterItems).forEach(el => {
+      setFilters(state=> {
+        state.set(el, getFilterItems(el))
+        return new Map(state)
+      })
+    })
+  }, [])
+
+  useEffect(()=>{
+    withFilter()
+  }, [sorted])
 
   const value: IState = {
     ...defaultValue,
     currentVacancy,
     VCFeedbacks,
+    CVFeedbacks,
     filteredVcResponses,
     setFilteredVcResponses,
     setVCResponses,
+    setCVResponses,
     setCurrentVacancy,
     setResponsesByStat,
     createProposal,
+
+    filters,
+    setFilters,
     filterOptions,
     setFilterOptions,
     withFilter,
     stats,
-    setStats
+    setStats,
+    setSorted,
+    getFilterItems
   }
 
   return (

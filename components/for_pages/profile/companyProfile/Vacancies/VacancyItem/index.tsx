@@ -1,5 +1,6 @@
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
+import Statistics from 'components/ui/Statistics'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
@@ -24,7 +25,7 @@ export default function VacancyItem({vacancy, isActive}: Props) {
   const {isTabletWidth} = useResize()
 
   const setActiveHandler = () => {
-    vacancyContext.editVacancy({published: true}, vacancy.id)
+    vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
     .then(res=> res&&vacancyContext.setArchiveVacancies())
   }
 
@@ -47,22 +48,16 @@ export default function VacancyItem({vacancy, isActive}: Props) {
         </p>
         <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
       </div>
-    
-      <div className={styles.stats}>
-        <p className={styles.stats_title}>Статистика за неделю</p>
-        <div className={styles.stats_item}>
-          <p className={styles.stats_desc}>Показы</p>
-          <p className={styles.stats_count}>{vacancy.statsShowViews||'0'}</p>
-        </div>
-        <div className={styles.stats_item}>
-          <p className={styles.stats_desc}>Просмотры</p>
-          <p className={styles.stats_count}>{vacancy.statsShowResponses||'0'}</p>
-        </div>
-        <div className={styles.stats_item}>
-          <p className={styles.stats_desc}>Отклики</p>
-          <p className={styles.stats_count}>{vacancy.totalApplications||'0'}<span>{vacancy.statsShowNewVacanciesCount}</span></p>
-        </div>
-      </div>
+
+      <Statistics 
+      title='Статистика за неделю'
+      items={[
+        {name: 'Показы', count: vacancy.totalProposals},
+        {name: 'Просмотры', count: vacancy.totalViews},
+        {name: 'Отклики', count: vacancy.totalApplications},
+      ]}
+      />
+      
       <div className={styles.buttonsWrapper}>
         {!isActive && 
           <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>

@@ -1,0 +1,28 @@
+@import 'styles/index';
+
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: $mediumText;
+  font-weight: $medium;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-weight: $semibold;
+  font-size: $largeText;
+  color: $white;
+}
+
+.back {
+  color: $greyLight;
+}
+
+.next {
+  color: $yellow;
+}
+
+.button {
+  @include buttonYellow;
+}

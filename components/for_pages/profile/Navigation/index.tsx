@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
+import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import { NavigationSet, ProfilePages } from '..'
@@ -30,7 +31,16 @@ export default function ProfileNavigation(props: Props) {
     }
     <nav className={styles.wrapper}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {
-        return <p key={index} onClick={()=>onClickHandler(el.type)} className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>{el.icon} {el.name}</p>
+        return (
+          <p 
+          key={index} 
+          onClick={()=>onClickHandler(el.type)} 
+          className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>
+            {el.icon} {el.name}
+            {isTabletWidth&& <ArrowRightSvg className={styles.arrow}/>}
+          </p>
+
+        )
       })}
     </nav>
   </div>

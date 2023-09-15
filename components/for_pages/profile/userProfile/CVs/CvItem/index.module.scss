@@ -53,37 +53,5 @@
 }
 
 .stats {
-  display: flex;
-  flex-wrap: wrap;
   margin-top: 24px;
-  column-gap: 24px;
-
-  &_title {
-    width: 100%;
-    color: $white;
-    font-weight: $medium;
-    font-size: $mediumText;
-    margin-bottom: 10px;
-  }
-
-  
-  &_sub {
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $greyLight;
-  }
-
-  &_count {
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
-  
-  }
-
-  &_item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 8px;
-  }
 }

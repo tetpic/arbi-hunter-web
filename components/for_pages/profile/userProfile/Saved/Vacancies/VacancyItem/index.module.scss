@@ -35,8 +35,6 @@
     grid-area: h;
   }
 
-
-
   .userPic {
     grid-area: i;
   }
@@ -68,6 +66,17 @@
   color: $white;
   font-size: $largeText;
   font-weight: $semibold;
+}
+
+.status {
+  border-radius: 30px;
+  border: 1px $white solid;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  align-self: flex-start;
+  padding: 8px 16px 8px;
+
 }
 
 .salary {

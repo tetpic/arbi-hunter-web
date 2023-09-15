@@ -4,6 +4,10 @@
 
   height: calc(100vh - 236px);
   height: calc(100dvh - 236px);
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 200px);
+    height: calc(100dvh - 200px);
+  }
 }
 
 .wrapper {

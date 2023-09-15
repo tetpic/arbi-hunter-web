@@ -1,7 +1,7 @@
 import { ISource } from 'data/interfaces/Common'
 import { ICVCreate, ICategory, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
-import { IVacancy } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import router from 'next/router'
 import { createContext, useContext, useState } from 'react'
@@ -34,6 +34,9 @@ interface IState {
   currentCv: ICVCreate,
   setCurrentCv: (v: ICVCreate) => void
 
+  currentVc: IVacancyCreate,
+  setCurrentVc: (v: IVacancyCreate) => void
+
   helpObjects: HelpObject
   setHelpObjects: (o: HelpObject)=> void
 
@@ -45,12 +48,15 @@ interface IState {
   setSubCategories: (v: ICategory)=>void
   reset: ()=>void
 
-  setEditedItem: (cv: ICV) => void
+  setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
 }
 
 const defaultValue: IState = {
   currentCv: null,
   setCurrentCv: () => null,
+
+  currentVc: null,
+  setCurrentVc: (v: IVacancyCreate) => null,
 
   helpObjects: initialHelpObject,
   setHelpObjects: ()=>null,
@@ -74,12 +80,17 @@ interface Props {
 
 export function CreateVcCvWrapper(props: Props) {
   const [currentCv, setCv] = useState<ICVCreate>()
+  const [currentVc, setVc] = useState<IVacancyCreate>()
   const [progress, handleProgress] = useState<number>(1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ICategory, ICategory[]|null>>(new Map())
 
   const setCurrentCv = (v: ICVCreate) => {
     setCv(state=> {return {...state, ...v}})
+  }
+
+  const setCurrentVc = (v: IVacancyCreate) => {
+    setVc(state=> {return {...state, ...v}})
   }
 
   const setProgress = (p: number) => {
@@ -117,13 +128,24 @@ export function CreateVcCvWrapper(props: Props) {
     }
   }
 
-  const setEditedItem = async(item: ICV|IVacancy) => {
-    setCv(state=> {return {...state, ...item,
-      categoriesIds: item.categories.map(el=> el.id)
-
-    }})
+  const setEditedItem = async(item: ICV|IVacancy, type: 'cv'|'vc') => {
     setHelp(state=>{return {...state, categoryIds: item.categories, }})
-    router.push(`/create/cv?id=${item.id}`)
+
+    
+
+    if(type === 'vc') {
+      setVc(state=> {return {...state, ...item,
+        categoriesIds: item.categories.map(el=> el.id)
+      }})
+      router.push(`/create/vacancy?id=${item.id}`)
+    } 
+    else if(type === 'cv') {
+      setCv(state=> {return {...state, ...item,
+        categoriesIds: item.categories.map(el=> el.id)
+      }})
+      router.push(`/create/cv?id=${item.id}`)
+    }
+
   }
 
 
@@ -132,6 +154,7 @@ export function CreateVcCvWrapper(props: Props) {
     handleProgress(1)
     setHelp(initialHelpObject)
     setCv(null)
+    setVc(null)
   }
   
 
@@ -140,6 +163,9 @@ export function CreateVcCvWrapper(props: Props) {
     currentCv,
     setCurrentCv,
 
+    currentVc,
+    setCurrentVc,
+    
     helpObjects,
     setHelpObjects,
 

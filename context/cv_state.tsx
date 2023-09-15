@@ -99,7 +99,7 @@ export function CvWrapper(props: Props) {
   }
 
   const editCv = (cv: ICV) => {
-    createVcCvContext.setEditedItem(cv)
+    createVcCvContext.setEditedItem(cv, 'cv')
   }
 
   const value: IState = {

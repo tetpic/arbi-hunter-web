@@ -11,6 +11,7 @@ export interface IVacancyCreate extends IJob {
     contactName : string,
     company? : string|null, 
     isRemote: boolean,
+    published?: boolean
 }
 
 export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {

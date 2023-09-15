@@ -37,11 +37,23 @@ export default class VacancyRepository {
     return res
   }
 
-  static async editVacancyById(data: Partial<IVacancy>, id: number): Promise<any|null> {
+  static async editVacancyById(data: IVacancyCreate, id: number): Promise<any|null> {
     const res = await request({
       method: 'patch',
       url: `/api/vacancy/${id}`,
       data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getVacancyById(id: number, profile: ProfileType): Promise<IVacancy|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/vacancy/${id}`,
+      profile
     })
     if(res.err) {
       return null

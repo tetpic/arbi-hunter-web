@@ -1,5 +1,5 @@
-import { CategoryType } from "types/enums"
-import { IImage, ITranslation, TimeStamp } from "./Common"
+import { CategoryType } from 'types/enums'
+import { IImage, ITranslation, TimeStamp } from './Common'
 
 export interface IArticleCategory extends TimeStamp {
   id: number,   
@@ -33,9 +33,9 @@ export interface IArticle extends TimeStamp {
   orderCategory: null,
   order: null, 
   isTop: boolean,
-  "image": IImage, 
-  "images": IImage[],
-  "articleCategory": IArticleCategory,
+  image: IImage, 
+  images: IImage[],
+  articleCategory: IArticleCategory,
   community: null,//???
   likes: [],//???
   savedByProfiles: [],//???

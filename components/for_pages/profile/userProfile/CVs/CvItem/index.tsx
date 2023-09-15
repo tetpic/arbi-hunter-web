@@ -1,5 +1,6 @@
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
+import Statistics from 'components/ui/Statistics'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
@@ -33,21 +34,16 @@ export default function CVItem({cv}: Props) {
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots} onClick={openModal}/>
     </div>
-    <div className={styles.stats}>
-      <p className={styles.stats_title}>Статистика за неделю</p>
-      <div className={styles.stats_item}>
-        <p className={styles.stats_sub}>Показы</p>
-        <p className={styles.stats_count}>{cv.statsShowViews||'0'}</p>
-      </div>
-      <div className={styles.stats_item}>
-        <p className={styles.stats_sub}>Просмотры</p>
-        <p className={styles.stats_count}>{cv.totalViews||'0'}</p>
-      </div>
-      <div className={styles.stats_item}>
-        <p className={styles.stats_sub}>Приглашения</p>
-        <p className={styles.stats_count}>{cv.totalProposals||'0'}</p>
-      </div>
-    </div>
+
+    <Statistics 
+    title={'Статистика за неделю'}
+    className={styles.stats}
+    items={[
+      {name: 'Просмотры', count: cv.totalViews},
+      {name: 'Приглашения', count: cv.totalProposals},
+    ]} 
+    />
+    
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button}>Поднять в поиске</Button>
       <Button className={styles.buttonBlack}>456 вакансий</Button>

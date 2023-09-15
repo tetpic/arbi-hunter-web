@@ -21,7 +21,7 @@ export interface IJob {
   cityId: number,
   phone : string,
   email : string,
-  published : boolean,
+  published? : boolean,
 }
 
 export interface IModeration {

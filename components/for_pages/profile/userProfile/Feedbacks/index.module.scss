@@ -1,1 +1,31 @@
-/* your css code */
+@import 'styles/index';
+
+.navigationWrapper {
+  width: 100%;
+  height: 70px;
+
+  // .navigation{  
+  //   min-width: 500px;   
+  // } 
+
+}
+
+.empty {
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+  margin-top: 24px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-top: 24px;
+}
+
+.itemWrapper {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+}

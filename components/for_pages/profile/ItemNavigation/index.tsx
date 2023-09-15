@@ -6,6 +6,7 @@ interface Props<T> {
   activeItem: T
   items: T[]
   onClick: (n: T) => void
+  className?: string
 }
 
 export default function ItemNavigation<T extends string>(props: Props<T>) {
@@ -23,7 +24,7 @@ export default function ItemNavigation<T extends string>(props: Props<T>) {
     setTransition(activeItem.left - box.left)
   }, [props.activeItem])  
 
-  return (<div className={styles.root} ref={wrapperRef}> 
+  return (<div className={classNames(styles.root, props.className) } ref={wrapperRef}> 
     <div className={styles.items}>
       {props.items.length > 0 && props.items
         .map((el, index)=> {

@@ -22,8 +22,12 @@
     height: unset;
     width: 100%;
     column-gap: 16px;
-    background-color: $backgroundBlack;
-    border-top: 2px $grey solid;
+    background-color: $black;
+    border: unset;
+    justify-content: space-evenly;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0px 23px 35px 30px $backgroundBlack;
   }
 }
 
@@ -42,6 +46,7 @@
   }
   @include mq($TabletWidth, max) {
     margin-bottom: unset !important;
+    background-color: unset;
   }
 
  

@@ -41,37 +41,6 @@
   }
 }
 
-.stats {
-  display: flex;
-  column-gap: 40px;
-  row-gap: 8px;
-  flex-wrap: wrap;
-
-  &_title {
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $white;
-    width: 100%;
-  }
-
-  &_desc {
-    font-size: $medium;
-    color: $greyLight;
-    font-weight: $medium;
-    margin-bottom: 8px;
-  }
-
-  &_count {
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
-    text-align: center;
-
-    span {
-      color: $green;
-    }
-  }
-}
 
 .buttonsWrapper {
   width: 100%;

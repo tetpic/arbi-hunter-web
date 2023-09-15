@@ -1,0 +1,29 @@
+@import 'styles/index';
+
+.modalLayout {
+  width: unset;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  justify-content: space-evenly;
+}
+
+.text {
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 48%;
+  @include buttonYellow;
+}

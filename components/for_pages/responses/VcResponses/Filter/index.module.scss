@@ -1,5 +1,14 @@
 @import 'styles/index';
 
+.root {
+  @include mq($TabletWidth, max) {
+    height: 70vh;
+    height: 70dvh;
+    overflow: auto;
+    margin-bottom: 16px;
+  }
+}
+
 .filterWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -10,6 +19,10 @@
   background-color: $black;
   border-radius: 10px;
   justify-content: flex-start;
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .item {
@@ -40,6 +53,17 @@
       }
     }
   }
+
+  @include mq($TabletWidth, max) {
+    padding: 0px 0px 8px;
+  }
+}
+
+.radioWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  margin-bottom: 16px;
 }
 
 .filterResults {

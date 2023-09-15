@@ -1,16 +1,18 @@
+import styles from './index.module.scss'
 import CvCard from 'components/ui/CvCard'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
-import { ApplicationStatus} from 'types/enums'
+import { ApplicationStatus, ModalType} from 'types/enums'
 import ResponsesFilter from './Filter'
 import ResponsesNavigation from '../Navigation'
-import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
 import { IStat } from 'data/interfaces/IProposal'
+import FiltersSvg from 'components/svg/FiltersSvg'
+import { useAppContext } from 'context/state'
 
 interface Props {
   id?: number
@@ -31,7 +33,8 @@ export interface NavSet {
 export default function VCFeedbacks(props: Props) {  
   
   const responsesContext = useFeedbacksContext()
-  const {withFilter, setStats, stats} = responsesContext
+  const appContext = useAppContext()
+  const {setStats, stats, filterOptions} = responsesContext
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState<VCNaviagation>(VCNaviagation.All)
   const {isTabletWidth} = useResize()
@@ -64,34 +67,35 @@ export default function VCFeedbacks(props: Props) {
 
   
   useEffect(()=>{    
+    
     setLoading(true)
     const feedbacks = [...responsesContext.VCFeedbacks.values()]
     let arr: any
     switch(currentPage) {
       case VCNaviagation.All:
         responsesContext.setFilteredVcResponses(feedbacks)
-        withFilter()
+        responsesContext.setSorted(null)
+      
         setLoading(false)
         break
       case VCNaviagation.Interview:
         arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)
-        withFilter(arr)
-        // responsesContext.setFilteredVcResponses(arr)      
+        responsesContext.setSorted(arr)     
         setLoading(false)
         break
       case VCNaviagation.Rejection: 
         arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Rejected)||[]
-        withFilter(arr)
-        // responsesContext.setFilteredVcResponses(arr)
+        responsesContext.setSorted(arr)
         setLoading(false)
         break
     }
   }, [currentPage, responsesContext.VCFeedbacks])
 
- 
+  const openFiltersHandler = () => {
+    appContext.showBottomSheet(ModalType.VcResponsesFilterModal)
+  }
 
   const onNavigationClick = (t: VCNaviagation) => {
-
     setCurrentPage(t)
     if(isTabletWidth) {
       setShowNav(false)
@@ -120,7 +124,10 @@ export default function VCFeedbacks(props: Props) {
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
-      <ResponsesFilter />
+      {isTabletWidth
+      ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?'Фильтры':'Фильтр'} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
+      :<ResponsesFilter />
+      }
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.map(el=> {

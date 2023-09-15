@@ -6,7 +6,9 @@ export enum ModalType {
   SourcesModal= 'sourcesModal',
   CvVcOptionsModal = 'cvOptionsModal',
   ProposalModal= 'proposalModal',
-  ProposalTextModal= 'proposalTextModal'
+  ProposalTextModal= 'proposalTextModal',
+  ConfirmModal= 'confirmModal',
+  VcResponsesFilterModal= 'vcResponsesFilterModal'
 }
 
 export enum SnackbarType {

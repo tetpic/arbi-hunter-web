@@ -1,4 +1,4 @@
-import { IVacancy } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
@@ -9,7 +9,7 @@ interface IState {
   setArchiveVacancies: ()=>Promise<boolean>
   activeVacancies: Map<number, IVacancy>,
   setActiveVacancies: ()=>Promise<boolean>,
-  editVacancy: (v: Partial<IVacancy>, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
+  editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
   savedVCs: IVacancy[],
   setSavedVacancies: ()=>void
   saveVacancy: (id: number) => void
@@ -107,7 +107,7 @@ export function VacancyWrapper(props: Props) {
     })
   }
 
-  const editVacancy = async(v: Partial<IVacancy>, id: number, published?: 'archive'|'active'): Promise<boolean> => {
+  const editVacancy = async(v: IVacancyCreate, id: number, published?: 'archive'|'active'): Promise<boolean> => {
     return VacancyRepository.editVacancyById(v, id)
     .then(res=>{
       
@@ -121,7 +121,7 @@ export function VacancyWrapper(props: Props) {
   }
 
   const editVcInEditor = (vc: IVacancy) => {
-    createVcCvContext.setEditedItem(vc)
+    createVcCvContext.setEditedItem(vc, 'vc')
   }
 
 

@@ -23,6 +23,7 @@ import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
 
 interface Props {
+  id?: number
 }
 
 enum VacancyNavigation {
@@ -38,7 +39,8 @@ enum VacancyNavigation {
   Tariff = 'tariff'
 }
 
-export default function Cv(props: Props) {
+export default function Vacancy(props: Props) {
+  
   const {isPhoneWidth} = useResize()
   
   const [title, setTitle] = useState<string>('Специализация')
@@ -49,11 +51,15 @@ export default function Cv(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
   const cvContext = useCreateVcCvContext()
+
   const router = useRouter()
   const {progress, setProgress} = cvContext
 
+  
+
 
   const submit = (data: IVacancyCreate) => {
+    
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = cvContext?.helpObjects
     const sendData: IVacancyCreate = {
@@ -66,45 +72,61 @@ export default function Cv(props: Props) {
       countryId,
       categoriesIds: categoryIds.map(el=> el.id)
     }
-    
-    VacancyRepository.createVacancy(sendData)
-    .then(res => {
-      setLoading(false)
-      appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
-      setTimeout(()=> {
-        router.push('/')    
-      }, 2000)
-    })
-    .catch(err=>{
-      alert(err.toString())
-    })
+
+    if(props.id) {
+      VacancyRepository.editVacancyById(sendData, props.id)
+      .then(res=>{
+        appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
+        cvContext.reset()
+        setTimeout(()=> {
+          router.back()      
+        }, 2000)
+      })
+      .catch(err=>{        
+        appContext.showSnackbar(err, SnackbarType.error)
+      })
+
+    }
+    else {
+      VacancyRepository.createVacancy(sendData)
+      .then(res => {
+        setLoading(false)
+        appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
+        setTimeout(()=> {
+          router.push('/')    
+        }, 2000)
+      })
+      .catch(err=>{
+        alert(err.toString())
+      })
+    }
   }
 
   const CVItemsCount = 7
 
   const formik = useFormik<IVacancyCreate>({
     initialValues: {
-      name: '',
-      description: '',
-      experience: WorkExperience.From1to3, 
-      contactName: userContext.currentProfile.firstName, 
-      company: userContext.currentProfile.company, 
-      isRemote: false,
-      compensation: CompensationType.Salary,
-      phone: userContext.currentProfile.phone,
-      email: userContext.user?.profiles[0]?.email,
-      telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
-      cityId: null,
-      countryId: null,
-      currency: Currency.RUB,
-      skillsIds: [],
-      categoriesIds: null,
-      sourcesIds: null,
-      salary: null,
-      schedule: ScheduleType.FullDay, 
-      employment: EmploymentType.FullTime, 
-      languageKnowledges: null, 
-      published: false,
+      name: cvContext?.currentVc?.name||'',
+      description: cvContext?.currentVc?.description||'',
+      experience: cvContext?.currentVc?.experience||WorkExperience.From1to3, 
+      contactName: cvContext?.currentVc?.contactName||userContext.currentProfile.firstName, 
+      company: cvContext?.currentVc?.company||userContext.currentProfile.company, 
+      isRemote: cvContext?.currentVc?.isRemote||false,
+      compensation: cvContext?.currentVc?.compensation||CompensationType.Salary,
+      phone: cvContext?.currentVc?.phone||userContext.currentProfile.phone,
+      email: cvContext?.currentVc?.email||userContext.user?.profiles[0]?.email,
+      telegramNickname: cvContext?.currentVc?.telegramNickname||userContext.user?.profiles[0]?.telegramNickname, 
+      cityId: cvContext?.currentVc?.cityId||null,
+      countryId: cvContext?.currentVc?.countryId||null,
+      currency: cvContext?.currentVc?.currency|| Currency.RUB,
+      skillsIds: cvContext?.currentVc?.skillsIds|| [],
+      categoriesIds: cvContext?.currentVc?.categoriesIds||  null,
+      sourcesIds: cvContext?.currentVc?.sourcesIds|| null,
+      salary: cvContext?.currentVc?.salary|| null,
+      schedule: cvContext?.currentVc?.schedule|| ScheduleType.FullDay, 
+      employment: cvContext?.currentVc?.employment||EmploymentType.FullTime, 
+      languageKnowledges: cvContext?.currentVc?.languageKnowledges|| null, 
+      published: cvContext?.currentVc?.published||false,
     },
     onSubmit: submit
   })

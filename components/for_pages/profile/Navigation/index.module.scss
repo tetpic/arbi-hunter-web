@@ -35,6 +35,11 @@
   color: $white;
   @include transitionDefault;
   @include hoverButtonSmooth;
+  @include mq($TabletWidth, max) {
+    @include exeptLast{
+      border-bottom: 1px $grey solid;
+    }
+  }
 
   &_active {
     background-color: $grey;
@@ -42,6 +47,10 @@
     @include mq($TabletWidth, max) {
       pointer-events: all;
     }
+  }
+
+  .arrow {
+    margin-left: auto;
   }
 
   svg {

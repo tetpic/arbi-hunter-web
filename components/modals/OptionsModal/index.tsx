@@ -15,6 +15,7 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { ICV } from 'data/interfaces/ICV'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import { ModalType } from 'types/enums'
 import styles from './index.module.scss'
 
 interface Props {
@@ -42,7 +43,7 @@ export default function CvVcOptionsModal(props: Props) {
       cvContext.updateCv(cv.id, {...cv, published: !cv?.published})
     }
     else {
-      vacancyContext.editVacancy({published: !vc.published}, vc.id, vc.published?'active':'archive')
+      vacancyContext.editVacancy({...vc, published: !vc.published}, vc.id, vc.published?'active':'archive')
     }
     hideModal()
   }
@@ -58,13 +59,17 @@ export default function CvVcOptionsModal(props: Props) {
   }
 
   const removeHandler =()=> {
-    if(cv) {
-      cvContext.deleteCv(cv.id)
-    }
-    else {
-      vacancyContext.removeVacancy(vc.id, vc.published)
-    }
-    hideModal()
+    appContext.showModal(ModalType.ConfirmModal, 
+      {text: vc?'Вы действительно хотите удалить вакансию?':'Вы действительно хотите удалить резюме?',
+      callback: ()=>{
+        if(cv) {
+          cvContext.deleteCv(cv.id)
+        }
+        else {
+          vacancyContext.removeVacancy(vc.id, vc.published)
+        }
+      }
+    })
   }
 
   const body = (
