@@ -2,6 +2,7 @@ import RadioListField from 'components/fields/RadioListField'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { EducationInfo } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
@@ -21,8 +22,12 @@ export default function Education(props: Props) {
     speciality: ''
   }
 
+  const creationContext = useCreateVcCvContext()
+
+
+
   const [showDetails, setDetails] = useState<boolean>(false)
-  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>([])
+  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv.educationInfo||[])
   const [activeDetails, setActiveDetails] = useState<EducationInfo>(initialData)
   const { setFieldValue } = useFormikContext()
 

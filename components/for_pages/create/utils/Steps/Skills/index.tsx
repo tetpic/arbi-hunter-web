@@ -8,16 +8,18 @@ import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
 import DetailsField from '../../DetailsField'
+import languages from '@cospired/i18n-iso-languages'
 import styles from './index.module.scss'
+import { ILanguageKnowledge } from 'data/interfaces/IJob'
 
 
 type SkillsFields = {
-skills?: boolean,
-langs?: boolean,
-courses?: boolean,
-traffic?: boolean,
-relocation?: boolean,
-portfolio?: boolean
+  skills?: boolean,
+  langs?: boolean,
+  courses?: boolean,
+  traffic?: boolean,
+  relocation?: boolean,
+  portfolio?: boolean
 }
 
 interface Props {
@@ -59,15 +61,29 @@ export default function Skills(props: Props) {
     setFieldValue('skillsIds', cvContext.currentCv?.skillsIds)
   }, [cvContext.currentCv])
 
-
-  const removeSource = (el: ISource) => {
+  useEffect(()=>{
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+  }, [])
+  
+  const removeSource = (el: number) => {
     const helperState = cvContext.helpObjects
     helperState.activeSources.delete(el)
     cvContext.setHelpObjects({...helperState})
   }
 
-  return ( <div className={styles.root}>
+  const removeLanguage = (l: ILanguageKnowledge) => {
+    const helperState = cvContext.helpObjects
+    const filteredLangs = helperState.languageKnowledges.filter(e=> e.language !== l.language)
+    cvContext.setHelpObjects({...helperState, languageKnowledges: filteredLangs})
+  }
 
+  const removeSkill = (s: ISource) => {
+    const helperState = cvContext.helpObjects
+    const filteredSkills = helperState.skills.filter(e=> e.id !== s.id)
+    cvContext.setHelpObjects({...helperState, skills: filteredSkills})
+  }
+
+  return ( <div className={styles.root}>
     <AddButton 
     className={styles.addButton} 
     onClick={()=>appContext.showModal(ModalType.SkillsModal)} 
@@ -76,7 +92,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.skills?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.skills
-        .map((el: ISource)=> <RemovableItem text={el.title}/>)
+        .map((el: ISource)=> <RemovableItem onClick={()=>removeSkill(el)} text={el.title}/>)
         }
       </div>
     } 
@@ -89,7 +105,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.languageKnowledges
-        .map((el)=> <RemovableItem text={el.ru} /> )
+        .map((el)=> <RemovableItem onClick={()=>removeLanguage(el)} text={languages.getName(el.language, 'ru')} /> )
         }
       </div>
     } 
@@ -104,18 +120,10 @@ export default function Skills(props: Props) {
         <div className={styles.itemsWrapper}>
         {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
           .map((el)=> 
-          <RemovableItem text={el.name} onClick={()=>{
-            setActiveDetails(el)
-            setCoursesDetails(true)}
-          }/>
-            // <p 
-            // className={styles.item} 
-            // onClick={()=>{
-            //   setActiveDetails(el)
-            //   setCoursesDetails(true)}
-            // }>
-            //   {el.name} <CrossSvg className={styles.crossSvg}/>
-            // </p>
+            <RemovableItem text={el.name} onClick={()=>{
+              setActiveDetails(el)
+              setCoursesDetails(true)}
+            }/>
           )}
         </div>
       }
@@ -129,26 +137,27 @@ export default function Skills(props: Props) {
     /> 
      {cvContext.helpObjects?.activeSources?.size > 0 &&
       <div className={styles.itemsWrapper}>
-        {cvContext.helpObjects && Array.from(cvContext.helpObjects?.activeSources)
-        .map((el)=> 
-        <RemovableItem text={el.title} onClick={()=>removeSource(el)}/>
+        {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
+        .map(([key, value])=> 
+        <RemovableItem text={value.title} onClick={()=>removeSource(key)}/>
         )}
       </div>
     }
 
-    
-    <div className={styles.radioSection}>
-      <p className={styles.subTitle}>
-        Переезд
-      </p>
-      <RadioListField 
-      name={'relocation'} 
-      wrapperClassName={styles.radioWrapper}
-      options={[
-        {value: Answer.Yes, label: 'Возможен'},
-        {value: Answer.No, label: 'Не возможен'}
-      ]}/>
-    </div>
+    {!props.fieldToHide?.relocation===true && 
+      <div className={styles.radioSection}>
+        <p className={styles.subTitle}>
+          Переезд
+        </p>
+        <RadioListField 
+        name={'relocation'} 
+        wrapperClassName={styles.radioWrapper}
+        options={[
+          {value: Answer.Yes, label: 'Возможен'},
+          {value: Answer.No, label: 'Не возможен'}
+        ]}/>
+      </div>
+    }
 
     {!props.fieldToHide?.portfolio  && 
       <AddButton className={styles.addButton} onClick={()=> {}} text={'Добавить порфтолио'} />

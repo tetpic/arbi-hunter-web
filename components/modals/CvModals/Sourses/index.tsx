@@ -17,7 +17,7 @@ export default function SoursesModal(props: Props) {
   const cvContext = useCreateVcCvContext()
 
   const [sources, setSources] = useState<ISource[]>(cvContext?.helpObjects?.sources||[])
-  const [choosenSources, setChoosenSources] = useState<Set<ISource>>(cvContext?.helpObjects?.activeSources||new Set())
+  const [choosenSources, setChoosenSources] = useState<Map<number, ISource>>(cvContext?.helpObjects?.activeSources||new Map())
 
   useEffect(()=>{
     
@@ -37,20 +37,22 @@ export default function SoursesModal(props: Props) {
   }
 
   const onClickItemHandler = (e: ISource) => {
-    if(!choosenSources.has(e)) {
-      setChoosenSources(state =>  new Set(state.add(e)))
+    if(!choosenSources.has(e.id)) {
+      setChoosenSources(state =>  new Map(state.set(e.id, e)))
     }
     else {
       setChoosenSources(state => {
-        state.delete(e)
-        return new Set(state)
+        state.delete(e.id)
+        return new Map(state)
       })
     }
   }
 
   useEffect(()=>{
-    choosenSources
-  }, [choosenSources])
+    if(cvContext?.helpObjects?.activeSources) {
+      setChoosenSources(cvContext.helpObjects.activeSources)    
+    }
+  }, [cvContext?.helpObjects?.activeSources])
 
   const body = (
     <Body 
@@ -63,7 +65,7 @@ export default function SoursesModal(props: Props) {
         {sources?.length>0&&sources
         .map(el=> 
             <p 
-            className={classNames(styles.source, choosenSources.has(el)&&styles.source_active)} 
+            className={classNames(styles.source, choosenSources.has(el.id)&&styles.source_active)} 
             onClick={()=> {onClickItemHandler(el)}}
             >
               {el.title}
@@ -74,7 +76,7 @@ export default function SoursesModal(props: Props) {
   )
 
   return ( 
-    <ModalLayout className={styles.rootLayout}>
+    <ModalLayout mobileFullScreen className={styles.rootLayout}>
       <ModalBody>
         {body}
       </ModalBody>

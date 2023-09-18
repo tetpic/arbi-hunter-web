@@ -18,7 +18,7 @@ export default function VacancyCreate(props: Props) {
   }, [userContext.isLogged, userContext.userLoaded])
 
   if(userContext.currentProfile?.profileType === ProfileType.Hirer) {
-    return  <Vacancy/>
+    return  <Vacancy id={Number(router.query.id) as number}/>
   } 
   return null
 

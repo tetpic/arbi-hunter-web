@@ -5,7 +5,6 @@
   max-width: 520px;
 }
 
-
 .position {
   padding: 12px 16px;
   color: $white;
@@ -25,9 +24,7 @@
 .wrapper {
   border-radius: 16px;
   background-color: $grey;
-
 }
-
 
 .item {
   text-transform: capitalize;
@@ -41,7 +38,8 @@
   @include transitionDefault;
 
   &_active {
-    max-height: min(400px, 30vh);
+    max-height: min(400px, 50vh);
+    max-height: min(400px, 50dvh);
   }
 }
 
@@ -57,7 +55,6 @@
   cursor: pointer;
   @include transitionDefault;
   @include hoverButtonSmooth;
- 
 }
 
 .arrow {

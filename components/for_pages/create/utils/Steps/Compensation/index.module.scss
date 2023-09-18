@@ -2,6 +2,9 @@
 
 .root {
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }
 
 .radio {
@@ -15,12 +18,29 @@
   }
 }
 
+.suffix {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $greyLight;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.input {
+  margin-top: 16px;
+}
+
 .title {
   margin-bottom: 16px;
   font-size: $largeText;
   font-weight: $semibold;
   color: $white;
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: 16px;
+  }
 }
 
 .circleCurrency {
@@ -34,7 +54,7 @@
 }
 
 .currencyItem {
-  padding: 10px 16px;
+  padding: 10px 16px 8px;
   border: 1px solid $grey;
   border-radius: 50px;
   @include transitionDefault;
@@ -49,5 +69,6 @@
 
 .currencyLabel {
   margin-left: unset !important;
+
   @include transitionDefault;
 }

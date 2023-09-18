@@ -8,17 +8,18 @@ import styles from './index.module.scss'
 
 interface Props {
   title?: string
+  fieldName?: string
 }
 
 export default function About(props: Props) {
 
   const cvContext = useCreateVcCvContext()
   const {isPhoneWidth} = useResize()
-  const { setFieldValue, setFieldTouched } = useFormikContext()
+  const {values, setFieldValue } = useFormikContext()
 
   const onTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     cvContext.setCurrentCv({...cvContext.currentCv, bio: e.currentTarget.value})
-    setFieldValue('bio', e.currentTarget.value)
+    setFieldValue(props.fieldName||'bio', e.currentTarget.value)
   }
 
   return (
@@ -28,6 +29,6 @@ export default function About(props: Props) {
       {!props.title &&(isPhoneWidth ? 'Расскажите о себе': 'О себе')}
       <Image src={'/icons/scribe.png'} alt={'about me'} width={24} height={24}/>
       </p>
-    <TextAreaField areaClassname={styles.textarea} name='bio' value={cvContext.currentCv?.bio} onChange={onTextAreaChange}  autoSize={true}/>
+    <TextAreaField areaClassname={styles.textarea} name={props.fieldName||'bio'} value={cvContext.currentCv?.bio||cvContext.currentVc?.description} onChange={onTextAreaChange}  autoSize={true}/>
   </div>)
 }

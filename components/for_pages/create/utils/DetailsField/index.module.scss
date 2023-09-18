@@ -9,7 +9,7 @@
   background: $backgroundBlack;
   z-index: 4;
   @include mq($PhoneWidth, max) {
-    padding: 48px 16px;
+    padding: 16px 16px;
     height: 100vh;
     height: 100dvh;
     display: flex;

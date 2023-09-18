@@ -1,5 +1,5 @@
-import { IPosition, ISource } from 'data/interfaces/Common'
-import { ICategory, ICV, ICVCreate, } from 'data/interfaces/ICV'
+import { ICategory, IPosition, ISource } from 'data/interfaces/Common'
+import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import request from 'utils/request'
 

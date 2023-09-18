@@ -9,18 +9,18 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
-import styles from './index.module.scss'
 import Specialization from '../utils/Steps/Specialization'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
 import ProgressBar from '../utils/ProgressBar'
 import WorkPlace from '../utils/Steps/WorkPlace'
-import { IVacancyCreate } from 'data/interfaces/IVacancy'
+import {IVacancyCreate} from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import Compensation from '../utils/Steps/Compensation'
 import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
+import styles from './index.module.scss'
 
 interface Props {
   id?: number
@@ -40,52 +40,45 @@ enum VacancyNavigation {
 }
 
 export default function Vacancy(props: Props) {
-  
   const {isPhoneWidth} = useResize()
+  const router = useRouter()
+
+  const appContext = useAppContext()
+  const userContext = useUserContext()
+  const creationContext = useCreateVcCvContext()
+  const {progress, setProgress} = creationContext
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
-  
 
-  const userContext = useUserContext()
-  const appContext = useAppContext()
-  const cvContext = useCreateVcCvContext()
-
-  const router = useRouter()
-  const {progress, setProgress} = cvContext
-
-  
-
+  const CVItemsCount = 7
 
   const submit = (data: IVacancyCreate) => {
-    
+    debugger
     setLoading(true)
-    const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = cvContext?.helpObjects
+    const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {
       ...data, 
+      commission: (data.commission&&Number(data.commission))||null,
       skillsIds: skills.map(el=>el.id), 
       salary: Number(data.salary),
       languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
-      sourcesIds: Array.from(activeSources).map(el=> el.id),
+      sourcesIds: [...activeSources.keys()],
       cityId,
       countryId,
       categoriesIds: categoryIds.map(el=> el.id)
     }
-
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
         appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
-        cvContext.reset()
-        setTimeout(()=> {
-          router.back()      
-        }, 2000)
+        creationContext.reset()      
+        router.back()   
       })
       .catch(err=>{        
-        appContext.showSnackbar(err, SnackbarType.error)
+        appContext.showSnackbar(err.toString(), SnackbarType.error)
       })
-
     }
     else {
       VacancyRepository.createVacancy(sendData)
@@ -102,35 +95,47 @@ export default function Vacancy(props: Props) {
     }
   }
 
-  const CVItemsCount = 7
+  const initialValues: IVacancyCreate = {
+    name: creationContext?.currentVc?.name||'',
+    description: creationContext?.currentVc?.description||'',
+    experience: creationContext?.currentVc?.experience||WorkExperience.From1to3, 
+    contactName: creationContext?.currentVc?.contactName||userContext.currentProfile.firstName, 
+    company: creationContext?.currentVc?.company||userContext.currentProfile.company, 
+    isRemote: creationContext?.currentVc?.isRemote||false,
+    compensation: creationContext?.currentVc?.compensation||CompensationType.Salary,
+    phone: creationContext?.currentVc?.phone||userContext.currentProfile.phone,
+    email: creationContext?.currentVc?.email||userContext.user?.profiles[0]?.email,
+    telegramNickname: creationContext?.currentVc?.telegramNickname||userContext.user?.profiles[0]?.telegramNickname, 
+    cityId: null,
+    countryId: null,
+    commission: creationContext?.currentVc?.commission||null,
+    currency: creationContext?.currentVc?.currency|| Currency.RUB,
+    skillsIds: creationContext?.currentVc?.skillsIds|| [],
+    categoriesIds: creationContext?.currentVc?.categoriesIds||  null,
+    sourcesIds: creationContext?.currentVc?.sourcesIds|| null,
+    salary: creationContext?.currentVc?.salary|| null,
+    schedule: creationContext?.currentVc?.schedule|| ScheduleType.FullDay, 
+    employment: creationContext?.currentVc?.employment||EmploymentType.FullTime, 
+    languageKnowledges: creationContext?.currentVc?.languageKnowledges|| null, 
+    published: creationContext?.currentVc?.published||false,
+  }
 
-  const formik = useFormik<IVacancyCreate>({
-    initialValues: {
-      name: cvContext?.currentVc?.name||'',
-      description: cvContext?.currentVc?.description||'',
-      experience: cvContext?.currentVc?.experience||WorkExperience.From1to3, 
-      contactName: cvContext?.currentVc?.contactName||userContext.currentProfile.firstName, 
-      company: cvContext?.currentVc?.company||userContext.currentProfile.company, 
-      isRemote: cvContext?.currentVc?.isRemote||false,
-      compensation: cvContext?.currentVc?.compensation||CompensationType.Salary,
-      phone: cvContext?.currentVc?.phone||userContext.currentProfile.phone,
-      email: cvContext?.currentVc?.email||userContext.user?.profiles[0]?.email,
-      telegramNickname: cvContext?.currentVc?.telegramNickname||userContext.user?.profiles[0]?.telegramNickname, 
-      cityId: cvContext?.currentVc?.cityId||null,
-      countryId: cvContext?.currentVc?.countryId||null,
-      currency: cvContext?.currentVc?.currency|| Currency.RUB,
-      skillsIds: cvContext?.currentVc?.skillsIds|| [],
-      categoriesIds: cvContext?.currentVc?.categoriesIds||  null,
-      sourcesIds: cvContext?.currentVc?.sourcesIds|| null,
-      salary: cvContext?.currentVc?.salary|| null,
-      schedule: cvContext?.currentVc?.schedule|| ScheduleType.FullDay, 
-      employment: cvContext?.currentVc?.employment||EmploymentType.FullTime, 
-      languageKnowledges: cvContext?.currentVc?.languageKnowledges|| null, 
-      published: cvContext?.currentVc?.published||false,
-    },
+  const formik = useFormik({
+    initialValues: initialValues,
     onSubmit: submit
   })
 
+  useEffect(()=>{
+    if(props.id && !creationContext.currentVc) {
+      creationContext.getCurrentVc(props.id)
+    }  
+  }, [])
+
+  useEffect(()=>{
+    if(creationContext.currentVc) {
+      formik.setValues(initialValues)
+    }
+  }, [creationContext.currentVc])
 
   const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
     switch (progress) {
@@ -145,9 +150,9 @@ export default function Vacancy(props: Props) {
       case 5: 
         return [<Compensation/>, VacancyNavigation.Salary]
       case 6: 
-        return [<About title={'Описание вакансии'}/>, VacancyNavigation.About]
+        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
       case 7:
-        return [<Skills fieldToHide={{courses: true, portfolio: true}}/>, VacancyNavigation.Skills]
+        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true}}/>, VacancyNavigation.Skills]
     }
   }
 
@@ -212,7 +217,7 @@ export default function Vacancy(props: Props) {
               <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(progress+1)}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button spinner={loading} disabled={loading} className={styles.buttonYellow}  type='submit' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+              <Button spinner={loading} disabled={loading} className={styles.buttonYellow}  type='submit' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
         </Form>

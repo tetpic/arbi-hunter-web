@@ -1,35 +1,9 @@
 import { EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from 'types/enums'
-import { CoursesInfo, EducationInfo, ExperienceInfo, ITranslation, TimeStamp } from './Common'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ICategory, ISource} from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
 import { IProposal } from './IProposal'
 import { IUserProfile } from './IUser'
-
-
-export interface ICategory extends TimeStamp {
-  id: number, 
-  imageId: number|null,
-  showOnMain: boolean,
-  color: number|null,
-  importId: number|null,
-  parentId: number|null,
-  sort: number,
-  image: string|null,
-  translations: ITranslation[],
-  languageCode: Languages,
-  name: string,
-  description: string|null,
-  baseId: number,
-  isMain: boolean
-  vacanciesCount?: number|null,
-  cvsCount?: number|null,
-  newVacanciesCount?: number|null,
-  newCvsCount?: number|null,
-  minVacanciesSalary?: number|null,
-  maxVacanciesSalary?: number|null,
-  minCVsSalary?: number|null,
-  maxCVsSalary?: number|null,
-}
 
 export interface ICVCreate extends IJob {
   vacancyLookType : VacancyLookType,
@@ -47,6 +21,13 @@ export interface ICVCreate extends IJob {
   experienceInfo: ExperienceInfo[],
   educationInfo: EducationInfo[],
   coursesInfo: CoursesInfo[],
+  commission?: number|null,
+}
+
+export interface ICVVC {
+  categories: ICategory[],
+  city: IGeoName,
+  commission?: number|null,
 }
 
 
@@ -54,7 +35,6 @@ export interface ICV extends ICVCreate, IUserProfile{
   businessTrips?: boolean|null,
   portfolio: string|null,
   profileId: number,
-  commission: string|null,
   moderationStatus: string,  // "approved"add enums
   moderationRejectReason: string|null,
   published: boolean,
@@ -63,12 +43,11 @@ export interface ICV extends ICVCreate, IUserProfile{
   isTop: boolean,
   topPurchasedAt: string|null,
   hash: string,
-  categories: ICategory[],
-  city: IGeoName,
   profile: IUserProfile,
   savedByProfiles: IUserProfile[],
-  proposalByCurrentUser: IProposal|null,//???
-  isSavedByCurrentProfile: boolean,
+  proposalByCurrentUser: IProposal|null,
   age: number,
-  lastExperienceInfo: ExperienceInfo
+  lastExperienceInfo: ExperienceInfo,
+  skills?: ISource[],
+  sources?: ISource[]
 }

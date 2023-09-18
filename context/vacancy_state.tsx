@@ -1,5 +1,6 @@
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
+import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
@@ -42,6 +43,7 @@ interface Props {
 
 export function VacancyWrapper(props: Props) {
   const userContext = useUserContext()
+  const router = useRouter()
   const createVcCvContext = useCreateVcCvContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
@@ -110,9 +112,7 @@ export function VacancyWrapper(props: Props) {
   const editVacancy = async(v: IVacancyCreate, id: number, published?: 'archive'|'active'): Promise<boolean> => {
     return VacancyRepository.editVacancyById(v, id)
     .then(res=>{
-      
       if(published !==undefined) {
-
         published==='active'?setActiveVacancies():setArchiveVacancies()
       }
       return true
@@ -122,6 +122,7 @@ export function VacancyWrapper(props: Props) {
 
   const editVcInEditor = (vc: IVacancy) => {
     createVcCvContext.setEditedItem(vc, 'vc')
+    router.push(`/create/vacancy?id=${vc.id}`)
   }
 
 

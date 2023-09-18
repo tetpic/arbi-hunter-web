@@ -1,6 +1,7 @@
 import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CvRepository from 'data/repositories/CvRepository'
+import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export function CvWrapper(props: Props) {
+  const router = useRouter()
   const {currentProfile} = useUserContext()
   const createVcCvContext = useCreateVcCvContext()
 
@@ -100,6 +102,7 @@ export function CvWrapper(props: Props) {
 
   const editCv = (cv: ICV) => {
     createVcCvContext.setEditedItem(cv, 'cv')
+    router.push(`/create/cv?id=${cv.id}`)
   }
 
   const value: IState = {

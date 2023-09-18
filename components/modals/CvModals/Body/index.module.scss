@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 39px;
+    margin-top: unset;
     &:after {
       content: '';
       width: 36px;
@@ -42,35 +42,20 @@
 
 .positionsWrapper {
   min-height: 30vh;
-  max-height: 60vh;
   display: flex;
   flex-direction: column;
   row-gap: 8px;
-  // overflow: auto;
   margin-top: 16px;
 }
 
-.button {
-  color: $white;
-  font-size: $mediumText;
-  font-weight: $medium;
-  padding: 12px 24px;
-  border-radius: 14px;
-  background-color: $grey;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hoverButtonYellow;
-}
 
 .buttonYellow {
-  @extend .button;
-  color: $black;
-  background-color: $yellow;
+  @include buttonYellow;
 }
 
 .buttonSmall {
-  padding: 10px;
-  border-radius: 8px;
+  padding: Clamp(7px, 2vw, 10px);
+  border-radius: 10px;
   background-color: $grey;
   .arrow {
     rotate: 90deg;
@@ -84,5 +69,8 @@
   margin-top: 24px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
   }
 }

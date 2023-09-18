@@ -1,27 +1,25 @@
-import { ISource } from 'data/interfaces/Common'
-import { ICVCreate, ICategory, ICV } from 'data/interfaces/ICV'
+import { ICategory, ISource } from 'data/interfaces/Common'
+import { ICVCreate, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
-import router from 'next/router'
+import VacancyRepository from 'data/repositories/VacancyRepository'
 import { createContext, useContext, useState } from 'react'
+import { useUserContext } from './user_state'
 
-interface ILangHelper extends ILanguageKnowledge {
-  ru?: string
-}
 
 interface HelpObject {
   skills?: ISource[],
-  languageKnowledges?: ILangHelper[],
+  languageKnowledges?: ILanguageKnowledge[],
   sources?: ISource[]
-  activeSources?: Set<ISource>
+  activeSources?: Map<number, ISource>
   cityId?: number
   countryId?: number,
   categoryIds?: ICategory[]
 }
 
 const initialHelpObject: HelpObject = {
-  activeSources: new Set(), 
+  activeSources: new Map(), 
   skills: [], 
   languageKnowledges: [], 
   sources: [],
@@ -33,9 +31,11 @@ const initialHelpObject: HelpObject = {
 interface IState {
   currentCv: ICVCreate,
   setCurrentCv: (v: ICVCreate) => void
+  getCurrentCv: (id: number) => void
 
-  currentVc: IVacancyCreate,
-  setCurrentVc: (v: IVacancyCreate) => void
+  currentVc: IVacancy,
+  setCurrentVc: (v: IVacancy) => void
+  getCurrentVc: (id: number) => void
 
   helpObjects: HelpObject
   setHelpObjects: (o: HelpObject)=> void
@@ -54,9 +54,11 @@ interface IState {
 const defaultValue: IState = {
   currentCv: null,
   setCurrentCv: () => null,
+  getCurrentCv: (id: number) => null,
 
   currentVc: null,
   setCurrentVc: (v: IVacancyCreate) => null,
+  getCurrentVc: (id: number) => null,
 
   helpObjects: initialHelpObject,
   setHelpObjects: ()=>null,
@@ -79,8 +81,10 @@ interface Props {
 }
 
 export function CreateVcCvWrapper(props: Props) {
+  const userContext = useUserContext()
+
   const [currentCv, setCv] = useState<ICVCreate>()
-  const [currentVc, setVc] = useState<IVacancyCreate>()
+  const [currentVc, setVc] = useState<IVacancy>()
   const [progress, handleProgress] = useState<number>(1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ICategory, ICategory[]|null>>(new Map())
@@ -128,27 +132,50 @@ export function CreateVcCvWrapper(props: Props) {
     }
   }
 
-  const setEditedItem = async(item: ICV|IVacancy, type: 'cv'|'vc') => {
-    setHelp(state=>{return {...state, categoryIds: item.categories, }})
-
-    
-
+  const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
     if(type === 'vc') {
-      setVc(state=> {return {...state, ...item,
-        categoriesIds: item.categories.map(el=> el.id)
+      const vcItem = item as IVacancy
+      setHelp(state=>{return {...state, 
+        categoryIds: vcItem.categories,   
+        cityId: vcItem.cityId,
+        countryId: vcItem.countryId,
+        skills: vcItem.skills,
+        languageKnowledges: vcItem.languageKnowledges,
+        activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
       }})
-      router.push(`/create/vacancy?id=${item.id}`)
+      setVc(state=> {return {...state, ...item,
+        categoriesIds: item.categories.map(el=> el.id),
+      }})
     } 
     else if(type === 'cv') {
+      const cvItem = item as ICV
+      setHelp(state=>{return {...state, 
+        categoryIds: cvItem.categories,   
+        cityId: cvItem.cityId,
+        countryId: cvItem.countryId,
+        skills: cvItem.skills,
+        languageKnowledges: cvItem.languageKnowledges,
+        activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))
+      }})
       setCv(state=> {return {...state, ...item,
         categoriesIds: item.categories.map(el=> el.id)
       }})
-      router.push(`/create/cv?id=${item.id}`)
     }
-
   }
 
+  const getCurrentVc = (id: number) => {
+    VacancyRepository.getVacancyById(id, userContext.currentProfile.profileType)
+    .then(res=> {
+      setEditedItem(res, 'vc')
+    })
+  }
 
+  const getCurrentCv = (id: number) => {
+    CvRepository.getById(id)
+    .then(res=> {
+      setEditedItem(res, 'cv')
+    })
+  }
 
   const reset = () => {
     handleProgress(1)
@@ -162,9 +189,11 @@ export function CreateVcCvWrapper(props: Props) {
     ...defaultValue,
     currentCv,
     setCurrentCv,
+    getCurrentCv,
 
     currentVc,
     setCurrentVc,
+    getCurrentVc,
     
     helpObjects,
     setHelpObjects,

@@ -53,6 +53,10 @@
   column-gap: 16px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
+ 
+    position: absolute;
+    bottom: 16px;
+    width: calc(100% - 32px);
   }
 }
 

@@ -21,7 +21,7 @@ interface Props<C> {
 }
 
 export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
-  const [inputValue, setInputValue] = useState<string>(undefined)
+  const [inputValue, setInputValue] = useState<string>(props.value)
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
@@ -79,12 +79,6 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
   useEffect(()=>{
     requestHandler()
   }, [page])
-
-  useEffect(()=>{
-    if(props.value === '') {
-      setInputValue(props.value)
-    }
-  }, [props.value])
 
   return ( 
     <div className={classNames(styles.root, props.className)}>

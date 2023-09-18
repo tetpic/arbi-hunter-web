@@ -24,7 +24,7 @@
 
 .fullScreen {
   @include mq($PhoneWidth, max) {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     height: 100dvh;
     border-radius: unset;

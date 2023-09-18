@@ -90,19 +90,10 @@
 }
 
 .submitButton {
-  display: inline-block;
-  margin-top: 16px;
-  background-color: $grey;
-  color: $greyLight;
-  border-radius: 10px;
+  @include buttonBlack;
   padding: 10px 24px;
-  font-size: $mediumText;
-  font-weight: $medium;
-  align-self: flex-start;
-  text-align: center;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hoverButtonBlack;
+  margin-top: 16px;
+  display: inline-block;
   @include mq($PhoneWidth, max) {
     width: 100%;
     margin-top: auto;

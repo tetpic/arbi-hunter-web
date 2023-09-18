@@ -43,22 +43,23 @@ export default function Cv(props: Props) {
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
-  const [submitButton, setSubmitButton] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const userContext = useUserContext()
   const appContext = useAppContext()
-  const cvContext = useCreateVcCvContext()
+  const creationContext = useCreateVcCvContext()
   const router = useRouter()
-  const {progress, setProgress} = cvContext
+  const {progress, setProgress} = creationContext
 
   useEffect(()=>{
-    if(props.id && !cvContext.currentCv) {
-      router.replace('/')
+    if(props.id && !creationContext.currentCv) {
+      creationContext.getCurrentCv(props.id)
     }  
   }, [])
 
   const submit = (data: ICVCreate) => {
-    const {activeSources, languageKnowledges, skills, categoryIds} = cvContext?.helpObjects
+    debugger
+    const {activeSources, languageKnowledges, skills, categoryIds} = creationContext?.helpObjects
     if(!categoryIds||categoryIds?.length === 0) {
       setProgress(1)
       appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
@@ -66,10 +67,11 @@ export default function Cv(props: Props) {
     }
     const sendData: ICVCreate = {
       ...data, 
+      commission: Number(data.commission),
       skillsIds: skills.map(el=>el.id), 
       salary: Number(data.salary),
       languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
-      sourcesIds: Array.from(activeSources).map(el=> el.id),
+      sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=>el.id)
     }
    
@@ -77,10 +79,8 @@ export default function Cv(props: Props) {
       CvRepository.updateCV(props.id, sendData)
       .then(res=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
-        cvContext.reset()
-        setTimeout(()=> {
-          router.back()      
-        }, 2000)
+        creationContext.reset()
+        router.back()      
       })
       .catch(err=>{        
         appContext.showSnackbar(err, SnackbarType.error)
@@ -91,9 +91,7 @@ export default function Cv(props: Props) {
       CvRepository.createCV(sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
-        setTimeout(()=> {
           router.push('/')      
-        }, 2000)
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
@@ -103,38 +101,41 @@ export default function Cv(props: Props) {
 
   const CVItemsCount = 7
 
-  const formik = useFormik<ICVCreate>({
-    initialValues: {
-      firstName: userContext.user?.profiles[0]?.firstName,
-      lastName: userContext.user?.profiles[0]?.lastName,
-      patronymic: userContext.user?.profiles[0]?.patronymic||'unset',
-      birthday: userContext.user?.profiles[0]?.birthday,
-      compensation: cvContext.currentCv?.compensation||CompensationType.Salary,
-      phone: userContext.user?.profiles[0]?.phone,
-      email: userContext.user?.profiles[0]?.email,
-      telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
-      cityId: userContext.user?.profiles[0]?.cityId,
-      countryId: userContext.user?.profiles[0]?.countryId,
-      currency: cvContext.currentCv?.currency||Currency.RUB,
-      experienceInfo: cvContext.currentCv?.experienceInfo||[],
-      educationInfo: cvContext.currentCv?.educationInfo||[],
-      coursesInfo: cvContext.currentCv?.coursesInfo||[],
-      bio: '',
-      skillsIds: cvContext.currentCv?.skillsIds||[],
-      vacancyLookType: cvContext.currentCv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
-      workExperiencePresense: cvContext.currentCv?.workExperiencePresense||WorkExperiencePresense.Absent,
-      education: cvContext.currentCv?.education||EducationTypes.Secondary,
-      relocation: cvContext.currentCv?.relocation||null,
-      position: cvContext.currentCv?.position||'',
-      nativeLanguage: cvContext.currentCv?.nativeLanguage||userContext.user?.language||Languages.ru,
-      categoriesIds: cvContext.currentCv?.categoriesIds||null,
-      sourcesIds: cvContext.currentCv?.sourcesIds||null,
-      salary: cvContext.currentCv?.salary||null,
-      schedule: cvContext.currentCv?.schedule||ScheduleType.FullDay, 
-      employment: cvContext.currentCv?.employment||EmploymentType.FullTime, 
-      languageKnowledges: cvContext.currentCv?.languageKnowledges||null, 
-      published: cvContext.currentCv?.published||false,
-    },
+  const initialValues:ICVCreate  = {
+    firstName: userContext.user?.profiles[0]?.firstName,
+    lastName: userContext.user?.profiles[0]?.lastName,
+    patronymic: userContext.user?.profiles[0]?.patronymic||'unset',
+    birthday: userContext.user?.profiles[0]?.birthday,
+    compensation: creationContext.currentCv?.compensation||CompensationType.Salary,
+    phone: userContext.user?.profiles[0]?.phone,
+    email: userContext.user?.profiles[0]?.email,
+    telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
+    cityId: userContext.user?.profiles[0]?.cityId,
+    countryId: userContext.user?.profiles[0]?.countryId,
+    currency: creationContext.currentCv?.currency||Currency.RUB,
+    experienceInfo: creationContext.currentCv?.experienceInfo||[],
+    educationInfo: creationContext.currentCv?.educationInfo||[],
+    coursesInfo: creationContext.currentCv?.coursesInfo||[],
+    bio: creationContext.currentCv?.bio||'',
+    skillsIds: creationContext.currentCv?.skillsIds||[],
+    commission: creationContext?.currentCv?.commission||null,
+    vacancyLookType: creationContext.currentCv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
+    workExperiencePresense: creationContext.currentCv?.workExperiencePresense||WorkExperiencePresense.Absent,
+    education: creationContext.currentCv?.education||EducationTypes.Secondary,
+    relocation: creationContext.currentCv?.relocation||null,
+    position: creationContext.currentCv?.position||'',
+    nativeLanguage: creationContext.currentCv?.nativeLanguage||userContext.user?.language||Languages.ru,
+    categoriesIds: creationContext.currentCv?.categoriesIds||null,
+    sourcesIds: creationContext.currentCv?.sourcesIds||null,
+    salary: creationContext.currentCv?.salary||null,
+    schedule: creationContext.currentCv?.schedule||ScheduleType.FullDay, 
+    employment: creationContext.currentCv?.employment||EmploymentType.FullTime, 
+    languageKnowledges: creationContext.currentCv?.languageKnowledges||null, 
+    published: creationContext.currentCv?.published||false,
+  }
+
+  const formik = useFormik({
+    initialValues: initialValues,
     onSubmit: submit
   })
 
@@ -192,6 +193,12 @@ export default function Cv(props: Props) {
     progressHandler(progress)
 
   }, [progress])
+
+  useEffect(()=>{
+    if(creationContext.currentCv) {
+      formik.setValues(initialValues)
+    }
+  }, [creationContext.currentCv])
   
 
   return <div className={styles.root}>
@@ -216,7 +223,7 @@ export default function Cv(props: Props) {
               <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(progress+1)}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button className={classNames(styles.buttonYellow, !submitButton&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+              <Button spinner={loading} disabled={loading} className={classNames(styles.buttonYellow, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
             }
           </div>
         </Form>

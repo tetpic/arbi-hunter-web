@@ -1,14 +1,13 @@
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
+import SalaryItem from 'components/ui/SalaryItem'
 import Statistics from 'components/ui/Statistics'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ModalType } from 'types/enums'
-import { TranslateCurrency } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 
 import styles from './index.module.scss'
@@ -42,10 +41,7 @@ export default function VacancyItem({vacancy, isActive}: Props) {
   return (<div className={styles.item}> 
       <div className={styles.top}>
         <p className={styles.name}>{vacancy.name}</p>
-        <p className={styles.price}>
-          <Image src={'/icons/money.png'} alt={'money icon'} width={26} height={24}/> 
-          от {Formatter.formatNumber(vacancy.salary)} {TranslateCurrency(vacancy.currency)}
-        </p>
+        <SalaryItem vacancy={vacancy}/>
         <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
       </div>
 

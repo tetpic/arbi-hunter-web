@@ -7,8 +7,9 @@ import classNames from 'classnames'
 import { LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
-import styles from './index.module.scss'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
+import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import styles from './index.module.scss'
 
 interface Props {
   onClose: () => void
@@ -23,13 +24,6 @@ export default function LangaugesModal(props: Props) {
   const [langRadioActive, setLangRadioActive] = useState<Languages>(null)
   const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
   const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
-
-  const langLevels = [
-    {name: LanguageKnowLevel.Beginner,  translate: 'Начинающий'}, 
-    {name: LanguageKnowLevel.Intermediate,  translate: 'Средний'}, 
-    {name: LanguageKnowLevel.Advanced, translate: 'Продвинутый' }, 
-    {name: LanguageKnowLevel.Professional,  translate: 'Профессионал'}, 
-  ]
   
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
@@ -41,7 +35,7 @@ export default function LangaugesModal(props: Props) {
 
   const onSaveHandler = () => {
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||[]
-    cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive, ru: languages.getName(langRadioActive, 'ru')}]})
+    cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive}]})
     props.onClose()
   }
 
@@ -72,13 +66,13 @@ export default function LangaugesModal(props: Props) {
       <div className={styles.wrapper}>
         <p className={styles.title} onClick={()=>{setLevelsActive(!levelsDropdownActive)}} >Уровень владения <ArrowDownSvg className={levelsDropdownActive&&styles.arrow_active}/></p>
         <div className={classNames(styles.list, levelsDropdownActive&&styles.list_active)}>
-          {langLevels.map(el=> {
+          {Object.values(LanguageKnowLevel).map(el=> {
             return (
               <Radio 
               className={styles.item} 
-              value={el.name} 
-              label={el.translate} 
-              isActive={el.name === levelRadioActive} 
+              value={el} 
+              label={TranslateLanguageKnowLevel(el)} 
+              isActive={el === levelRadioActive} 
               onChange={(l)=> setLevelRadioActive(l as LanguageKnowLevel)}
               />
               )
@@ -90,7 +84,7 @@ export default function LangaugesModal(props: Props) {
   )
 
   return ( 
-    <ModalLayout  className={styles.rootLayout}>
+    <ModalLayout mobileFullScreen  className={styles.rootLayout}>
       <ModalBody>
         {body}
       </ModalBody>

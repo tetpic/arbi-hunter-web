@@ -1,5 +1,6 @@
 import Document, {Html, Head, Main, NextScript, DocumentContext} from 'next/document'
 import { Cookies } from 'react-cookie'
+import { colors } from 'styles/variables'
 class MyDocument extends Document {
   static async getStaticProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage
@@ -28,7 +29,8 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
           <link rel="preconnect" href="https://fonts.gstatic.com" />       
           <meta name="msapplication-TileColor" content="#da532c"/>
-          <meta name="theme-color" content="#ffffff"/>
+          <meta name="msapplication-navbutton-color" content={colors.backgroundBlack} />
+          <meta name="theme-color" content={colors.backgroundBlack}/>
         </Head>
 
         <body>

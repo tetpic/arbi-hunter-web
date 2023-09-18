@@ -2,6 +2,7 @@
   "dependencies": {
     "@cospired/i18n-iso-languages": "^4.1.0",
     "@react-cmpt/use-throttle": "^0.3.3",
+    "@react-spring/web": "^9.7.3",
     "@tiptap/extension-link": "^2.1.8",
     "@tiptap/extension-placeholder": "^2.1.8",
     "@tiptap/extension-underline": "^2.1.8",

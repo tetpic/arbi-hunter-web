@@ -74,3 +74,28 @@ export interface IChat extends  TimeStamp {
   proposalId: number|null,
   lastMessageAt: string,
 }
+
+export interface ICategory extends TimeStamp {
+  id: number, 
+  imageId: number|null,
+  showOnMain: boolean,
+  color: number|null,
+  importId: number|null,
+  parentId: number|null,
+  sort: number,
+  image: string|null,
+  translations: ITranslation[],
+  languageCode: Languages,
+  name: string,
+  description: string|null,
+  baseId: number,
+  isMain: boolean
+  vacanciesCount?: number|null,
+  cvsCount?: number|null,
+  newVacanciesCount?: number|null,
+  newCvsCount?: number|null,
+  minVacanciesSalary?: number|null,
+  maxVacanciesSalary?: number|null,
+  minCVsSalary?: number|null,
+  maxCVsSalary?: number|null,
+}

@@ -89,5 +89,6 @@
 }
 
 .categoriesWrapper {
-  height: 60vh;
+  height: calc(100vh - 200px) ;
+  height: calc(100dvh - 200px) ;
 }
