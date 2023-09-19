@@ -33,7 +33,7 @@ export interface IUserProfile extends TimeStamp {
   country: IGeoName,
   city: IGeoName,
   activityStatus: ActivityStatus,
-  countryCode: string
+  countryCode: Languages
 }
 
 

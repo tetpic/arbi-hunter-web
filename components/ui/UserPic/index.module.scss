@@ -5,24 +5,11 @@
   overflow: hidden;
   background-color: $grey;
   display: inline-block;
-  cursor: pointer;
-  @media(hover: hover ){
-    &:hover {
-      
-      animation:  pulsate .8s ease-in-out infinite alternate;
-    }
-  }
+
 
   img {
     display: block;
+    object-fit: cover;
   }
 }
 
-@keyframes pulsate {
-  0%{
-    box-shadow: 0px 0px 1px 1px $grey;
-  }
-  100% {
-    box-shadow: 0px 0px 2px 2px $yellow;
-  }
-}

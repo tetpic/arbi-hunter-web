@@ -1,4 +1,4 @@
-import { Languages } from 'types/enums'
+import { CategoryType, Languages } from 'types/enums'
 
 export interface TimeStamp {
   createdAt: string,
@@ -63,6 +63,19 @@ export interface IImage extends TimeStamp {
   userId: number|null
 }
 
+export interface IVideo extends TimeStamp {
+  duration: number,
+  fileSize: number,
+  focalPoint: any|null,
+  id: number,
+  mimeType: 'video/mp4'
+  name: string,
+  published: boolean,
+  source: string,
+  type: 'VIDEO',
+  userId: number|null
+}
+
 export interface IChat extends  TimeStamp { 
   id: number,
   type: 'chat',
@@ -75,7 +88,7 @@ export interface IChat extends  TimeStamp {
   lastMessageAt: string,
 }
 
-export interface ICategory extends TimeStamp {
+export interface ISpecializationCategory extends TimeStamp {
   id: number, 
   imageId: number|null,
   showOnMain: boolean,
@@ -98,4 +111,38 @@ export interface ICategory extends TimeStamp {
   maxVacanciesSalary?: number|null,
   minCVsSalary?: number|null,
   maxCVsSalary?: number|null,
+}
+
+
+export interface CategoryTranslation extends TimeStamp {
+  id: number,
+  languageCode: Languages,
+  name: string,
+  baseId: number,
+  priceDescription: string,
+  shortDescription: string,
+  fullDescription: string,
+  audience: string,
+  courseTime: string,
+  requirements: string,
+
+
+  
+  
+}
+
+export interface ICourseCategory extends TimeStamp, CategoryTranslation {
+  categoryType: CategoryType,
+  published: boolean,
+  isMain: boolean,
+  sort: string|null,
+  description: string|null,
+  color: string|null,
+  imageId: number|null,
+  articlesCount: string, //number
+  deletedAt: string|null,
+  image: string|null,
+  translations: CategoryTranslation[],
+  subscribers: number[],
+  isSubscribedByCurrentProfile: boolean,
 }

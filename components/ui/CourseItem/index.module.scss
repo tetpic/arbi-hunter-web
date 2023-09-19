@@ -1,0 +1,106 @@
+@import 'styles/index';
+
+.item {
+  width: clamp(150px, calc(50% - 16px), 372px);
+  background-color: $black;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+}
+
+.top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(90px, 40vw, 180px);
+  background-color: $greyLight;
+  
+
+  .badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: #586DE4;
+    border-radius: 30px;
+    padding: 10px 16px 8px;
+    font-size: $smallText;
+    font-weight: $regular;
+    color: $white;
+  }
+
+  .heartButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+
+  .lessonsCount {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    color: $white;
+    font-size: $smallText;
+    font-weight: $regular;
+    line-height: 120%;
+  }
+
+  .courseName {
+    color: $white;
+    font-weight: $semibold;
+    font-size: $largeText;
+    -webkit-line-clamp: 2; /* Число отображаемых строк */
+    display: -webkit-box; /* Включаем флексбоксы */
+    -webkit-box-orient: vertical; /* Вертикальная ориентация */
+    overflow: hidden; 
+  }
+
+  .price {
+    @extend .courseName;
+    color: $yellow
+  }
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+
+  span {
+    display: flex;
+    align-items: center;
+    column-gap: 2px;
+    color: $greyLight;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+ 
+}
+
+.imageWrapper {
+  img {
+    object-fit: cover;
+  }
+}
+
+.userSvg {
+  path {
+    fill: $greyLight;
+  }
+}
+
+.starSvg {
+  path {
+    stroke: $greyLight;
+  }
+}

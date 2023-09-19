@@ -1,4 +1,4 @@
-import { ICategory, ISource } from 'data/interfaces/Common'
+import { ISpecializationCategory, ISource } from 'data/interfaces/Common'
 import { ICVCreate, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
@@ -15,7 +15,7 @@ interface HelpObject {
   activeSources?: Map<number, ISource>
   cityId?: number
   countryId?: number,
-  categoryIds?: ICategory[]
+  categoryIds?: ISpecializationCategory[]
 }
 
 const initialHelpObject: HelpObject = {
@@ -43,9 +43,9 @@ interface IState {
   progress: number
   setProgress: (p: number) => void
 
-  categories:  Map<ICategory, ICategory[]|null>
+  categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
   setCategories: ()=> void
-  setSubCategories: (v: ICategory)=>void
+  setSubCategories: (v: ISpecializationCategory)=>void
   reset: ()=>void
 
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
@@ -87,7 +87,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [currentVc, setVc] = useState<IVacancy>()
   const [progress, handleProgress] = useState<number>(1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
-  const [categories, setCategoriesState] = useState<Map<ICategory, ICategory[]|null>>(new Map())
+  const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
 
   const setCurrentCv = (v: ICVCreate) => {
     setCv(state=> {return {...state, ...v}})
@@ -120,7 +120,7 @@ export function CreateVcCvWrapper(props: Props) {
     }
   }
 
-  const setSubCategories = (s: ICategory) => {
+  const setSubCategories = (s: ISpecializationCategory) => {
     if(!categories.get(s)) {
       CvRepository.getSubCategories(s.id)
       .then(res => {

@@ -1,0 +1,85 @@
+@import 'styles/index';
+
+.root {
+  padding: 32px;
+  background-color: $black;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+}
+
+.title {
+  font-weight: $semibold;
+  font-size: $largeText;
+  color: $white;
+  margin-bottom: 16px;
+}
+
+.text {
+  color: $white;
+  font-weight: $regular;
+  font-size: $mediumText;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 16px;
+
+  .stat {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 8px;
+    border-radius: 12px;
+    width: 32%;
+    background-color: $grey;
+
+    &_title {
+      color: $greyLight;
+      font-size: $smallText;
+      font-weight: $regular;
+    }
+
+    &_value {
+      color: $white;
+      font-weight: $medium;
+      font-size: $mediumText;
+    }
+  }
+}
+
+.author {
+  &_wrapper {
+    display: grid;
+    grid-template-areas: 'i n' 'i d';
+    column-gap: 16px;
+    row-gap: 8px;
+    align-items: flex-start;
+    font-size: $mediumText;
+    font-weight: $medium;
+    margin-top: 16px;
+
+  }
+
+  &_image {
+    grid-area: i;
+  }
+
+  &_name {
+    grid-area: n;
+    color: $white;
+  }
+
+  &_description {
+    grid-area: d;
+    color: $greyLight
+  }
+}
+
+.video {
+  width: 100%;
+  border-radius: 16px;
+}

@@ -1,0 +1,96 @@
+@import 'styles/index';
+
+.root {
+  padding-bottom: 32px;
+}
+
+.header {
+  background: $gradient;
+  border-radius: 16px;
+  padding: 40px 50px 28px;
+  min-height: 200px;
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 32px;
+  position: relative;
+
+  .title {
+    font-size: $text32;
+    color: $white;
+    font-weight: $semibold;
+  }
+
+  .description {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    max-width: 50%;
+  }
+
+  .price {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    color: $white;
+    font-size: $text20;
+    font-weight: $extrabold;
+  }
+
+  .buttonsWrapper {
+    display: flex;
+    column-gap: 16px;
+  }
+
+  .buttonYellow {
+    @include buttonYellow;
+  }
+
+  .buttonWhite {
+    @include buttonWhite;
+  }
+
+  .courseImage {
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .iconButtonsWrapper {
+    position: absolute;
+    top: 24px;
+    right: 30px;
+    display: flex;
+    column-gap: 16px;
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .iconButton {
+    border: 2px $white solid;
+    background-color: transparent;
+    @include hover {
+      background-color: $black;
+    }
+  }
+
+
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.mainContent {
+  width: 69%;
+}

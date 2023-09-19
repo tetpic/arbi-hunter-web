@@ -10,11 +10,12 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useCallback, useEffect, useState } from 'react'
 import CompanyProfile from './companyProfile'
-import ProfileNavigation from './Navigation'
+import Navigation from '../../ui/Navigation'
 import UserProfile from './userProfile'
 import styles from './index.module.scss'
 import { useRouter } from 'next/router'
 import { useResize } from 'components/hooks/useResize'
+import { NavigationSet } from 'types/types'
 
 interface Props {
   page?: string
@@ -32,11 +33,7 @@ export enum ProfilePages {
   Patterns = 'patterns'
 }
 
-export interface NavigationSet {
-  name: string, 
-  type: ProfilePages, 
-  icon: JSX.Element
-}
+
 
 export default function Profile(props: Props) {
 
@@ -72,7 +69,7 @@ export default function Profile(props: Props) {
   })()
 
 
-  const navSet = useCallback(((): NavigationSet[] => {
+  const navSet = useCallback(((): NavigationSet<ProfilePages>[] => {
     let result:{name: string, type: ProfilePages, icon: JSX.Element}[]  = []
     result = Object.values(availablePages).map(page => {
       switch(page) {
@@ -129,7 +126,7 @@ export default function Profile(props: Props) {
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&
-        <ProfileNavigation currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
+        <Navigation currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
       }
     </div>
   )

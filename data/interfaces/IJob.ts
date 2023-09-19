@@ -1,5 +1,5 @@
 import { CompensationType, Currency, EmploymentType, LanguageKnowLevel, Languages, ScheduleType } from 'types/enums'
-import { ICategory } from './Common'
+import { ISpecializationCategory } from './Common'
 
 export interface ILanguageKnowledge {
   language : Languages, //? 'en'
@@ -24,7 +24,7 @@ export interface IJob {
   email : string,
   published? : boolean,
   isSavedByCurrentProfile?: boolean,
-  categories?: ICategory[],
+  categories?: ISpecializationCategory[],
   commission?: number|null,
 }
 

@@ -126,7 +126,6 @@ export default class Formatter {
   }
 
   /** get arr like [['02.2022', '03.2023'], ['02.1992', '03.1993']], return for example '2 года 2 месяца' */
-
   static fullTimeLine = (arr: string[][]) => {
     let allMonths = arr.map((el) => {
 
@@ -146,6 +145,20 @@ export default class Formatter {
     let monthsString = months > 0 ? months +' '+ Formatter.pluralize(months, 'месяц', 'месяца', 'месяцев'):''
     return (yearsString?yearsString + ' ':'') + monthsString
   }
+
+  /** get array, return some random elements from it with limit */
+  static randomElementsFromArray = (arr: any[], limit: number): any[] => {
+    const arrLength = arr.length
+    let newArray = []
+    while (newArray.length < (arrLength<=limit?arrLength:limit)) {
+      let randomInt = ~~(Math.random() * (arrLength))
+      newArray.push(arr[randomInt])
+      newArray = newArray.filter((v, i, arr) => arr.indexOf(v) == i)
+    }
+    return newArray
+  }
+
+
 }
 
 export const pad = Formatter.pad

@@ -3,22 +3,22 @@ import { useResize } from 'components/hooks/useResize'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
-import { NavigationSet, ProfilePages } from '..'
+import { NavigationSet } from 'types/types'
 import styles from './index.module.scss'
 
-interface Props {
-  setPage: (p: ProfilePages) => void
-  currentPage: ProfilePages
-  navSet?: NavigationSet[]
+interface Props<T extends string> {
+  setPage: (p: T) => void
+  currentPage: T
+  navSet?: NavigationSet<T>[]
   onClickHandler?: ()=>void
 }
 
-export default function ProfileNavigation(props: Props) {
+export default function Navigation<T extends string>(props: Props<T>) {
 
   const {isTabletWidth} = useResize()
   const router = useRouter()
 
-  const onClickHandler = (s: ProfilePages) => {
+  const onClickHandler = (s: T) => {
     props.setPage(s)
     if(isTabletWidth) {
       props.onClickHandler()

@@ -25,6 +25,7 @@ import { ArticleWrapper } from 'context/article_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
+import { CoursesWrapper } from 'context/courses_state'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -59,6 +60,7 @@ function MyApp({Component, pageProps}: AppProps) {
           <ArticleWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
+          <CoursesWrapper>
           <AuthWrapper>
 
             <Head>
@@ -76,6 +78,7 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <Snackbar/>}
             
           </AuthWrapper>
+          </CoursesWrapper>
           </FeedbacksWrapper>
           </PatternWrapper>
           </ArticleWrapper>

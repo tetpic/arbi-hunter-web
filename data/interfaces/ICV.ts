@@ -1,5 +1,5 @@
 import { EducationTypes, Genders, Languages, VacancyLookType, WorkExperiencePresense } from 'types/enums'
-import { CoursesInfo, EducationInfo, ExperienceInfo, ICategory, ISource} from './Common'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource} from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
 import { IProposal } from './IProposal'
@@ -25,7 +25,7 @@ export interface ICVCreate extends IJob {
 }
 
 export interface ICVVC {
-  categories: ICategory[],
+  categories: ISpecializationCategory[],
   city: IGeoName,
   commission?: number|null,
 }

@@ -279,6 +279,13 @@
   }
 }
 
+@mixin hoverButtonWhite {
+  @include hover {
+    background-color: $black;
+    color: $white;
+  }
+}
+
 @mixin hoverButtonSmooth {
   @include hover {
     background-color: $greyLight;
@@ -315,7 +322,13 @@
   @include hoverButtonBlack;
 }
 
+@mixin buttonWhite {
+  background-color: $white;
+  color: $black;
+  @include buttonDefault;
 
+}
+ 
 @mixin exeptLast {
   &:not(:last-child) {
     @content;

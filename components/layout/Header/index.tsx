@@ -61,7 +61,7 @@ export default function Header(props: Props) {
         <div className={styles.linksWrapper}>
           <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
           <Link className={styles.link} href={'/media'}>Медиа</Link>
-          <Link className={styles.link} href={'/e-lessons'}>Онлайн обучение</Link>
+          <Link className={styles.link} href={'/courses'}>Онлайн обучение</Link>
         </div>
         
         <div className={styles.userWrapper}>
@@ -73,13 +73,13 @@ export default function Header(props: Props) {
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}>Создать резюме</Link>
-            <UserPic onClick={()=> handleDropdown(!dropdown)}/>
+            <UserPic className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}>Создать вакансию</Link>
-            <UserPic onClick={()=> handleDropdown(!dropdown)}/>
+            <UserPic className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
           {dropdown &&
             <UserDropdownMenu className={styles.dropdown} onClose={()=> handleDropdown(false)}/>

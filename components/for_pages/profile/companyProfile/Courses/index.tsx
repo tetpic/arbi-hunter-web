@@ -17,7 +17,7 @@ interface ItemProps {
 
 function Item(props: ItemProps) {
   return (
-    <div className={styles.item}>
+  <div className={styles.item}>
     <div className={styles.top}>
       <div className={styles.imageWrapper}>
         { 

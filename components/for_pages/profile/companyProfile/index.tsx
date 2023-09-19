@@ -1,5 +1,5 @@
 import Title from 'components/ui/TitleForSection'
-import { NavigationSet, ProfilePages } from '..'
+import { ProfilePages } from '..'
 import Managers from './Managers'
 import Patterns from './Patterns'
 import Personal from './Personal'
@@ -7,11 +7,12 @@ import Saved from './Saved'
 import Shop from './Shop'
 import Vacancies from './Vacancies'
 import styles from './index.module.scss'
+import { NavigationSet } from 'types/types'
 
 
 interface Props {
   currentPage: ProfilePages 
-  navSet: NavigationSet[]
+  navSet: NavigationSet<ProfilePages>[]
   onBackClick?: ()=> void
 }
 

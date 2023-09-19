@@ -1,5 +1,5 @@
 import {UrlObject} from 'url'
-import {HTMLInputTypeAttribute, MouseEventHandler, ReactElement} from 'react'
+import {HTMLInputTypeAttribute, MouseEventHandler} from 'react'
 import {FieldConfig} from 'formik'
 import {SnackbarType} from 'types/enums'
 
@@ -62,5 +62,11 @@ export interface IButton {
   onClick?: MouseEventHandler
   href?: string | UrlObject
   isExternalHref?: boolean // add target blank and no referrer
+}
+
+export interface NavigationSet<T extends string> {
+  name: string, 
+  type: T, 
+  icon?: JSX.Element
 }
 

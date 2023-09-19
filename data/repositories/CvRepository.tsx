@@ -1,4 +1,4 @@
-import { ICategory, IPosition, ISource } from 'data/interfaces/Common'
+import { ISpecializationCategory, IPosition, ISource } from 'data/interfaces/Common'
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import request from 'utils/request'
@@ -82,7 +82,7 @@ export default class CvRepository {
     return res
   }
 
-  static async getCategories(): Promise<ICategory[]|null> {
+  static async getCategories(): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       //TODO: язык должен добавляться динамически
@@ -105,7 +105,7 @@ export default class CvRepository {
     return res
   }
 
-  static async getSubCategories(data: number): Promise<ICategory[]|null> {
+  static async getSubCategories(data: number): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/service-category?lang=ru&categoryId=${data}`,
