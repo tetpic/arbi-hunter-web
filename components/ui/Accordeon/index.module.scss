@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .wrapper {
-  transition: min-height .5s ease-in-out;
+  transition: max-height .5s ease-in-out;
   overflow: hidden;
   opacity: 0;
   @include transitionDefault;

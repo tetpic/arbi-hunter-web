@@ -1,1 +1,50 @@
 @import 'styles/index';
+
+
+.activeStar {
+  path {
+    fill: $yellow;
+    stroke: $yellow;
+  }
+}
+
+.feedback {
+  @include exeptLast {
+    margin-bottom: 16px;
+  }
+  padding: 16px;
+  background-color: $black;
+  border-radius: 16px;
+  display: grid;
+  grid-template-areas: 'i n' 'i s' 'c c';
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  row-gap: 8px;
+  align-items: flex-start;
+
+  .userPic {
+    grid-area: i;
+  }
+
+  .name {
+    grid-area: n;
+    color: $white;
+    font-weight: $semibold;
+    font-size: $largeText;
+  }
+
+  .stats {
+    grid-area: s;
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    grid-area: c;
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+    margin-top: 8px;
+  }
+}
+

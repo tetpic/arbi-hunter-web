@@ -5,6 +5,7 @@ import IconButton from 'components/ui/IconButton'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
+import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -19,6 +20,7 @@ import styles from './index.module.scss'
 
 interface Props {
   id: number
+  course: ICourse
 }
 
 enum CurrentCoursesNav {
@@ -31,18 +33,19 @@ enum CurrentCoursesNav {
 export default function CurrentCourse(props: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
-  const {currentCourse, setCurrentCourse} = useCoursesContext()
+  const {currentCourse, setCurrentCourse, clearModules} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(CurrentCoursesNav.Information)
   const filePath = process.env.files
+  const course = props.course || currentCourse
   
   const body = (()=>{
     switch(page) {
       case CurrentCoursesNav.Information:
-        return <CoursesInformation course={currentCourse}/>
+        return <CoursesInformation course={course}/>
       case CurrentCoursesNav.Feedbacks:
-        return <CourseFeedbacks/>
+        return <CourseFeedbacks id={props.id}/>
         case CurrentCoursesNav.Modules:
-          return <CourseModules/>
+          return <CourseModules course={course}/>
           case CurrentCoursesNav.News:
         return <CourseNews/>
       }
@@ -83,10 +86,13 @@ export default function CurrentCourse(props: Props) {
   }, [page])
 
   useEffect(()=>{
-    setCurrentCourse(props.id)
+    setCurrentCourse(props.id, props.course)
     .then(()=> 
       setLoading(false)
     )
+    return ()=>{
+      clearModules()
+    }
   }, [])
 
 
@@ -96,18 +102,18 @@ export default function CurrentCourse(props: Props) {
       {!loading && 
       <>
         <div className={styles.content}>
-          <p className={styles.title}>{currentCourse.name}</p>
-          <p className={styles.description}>{currentCourse.shortDescription}</p>
+          <p className={styles.title}>{course.name}</p>
+          <p className={styles.description}>{course.shortDescription}</p>
           <p className={styles.price}>
             <Image src={'/icons/money.png'} alt={'money icon'} width={24} height={24}/>
-            {Formatter.formatPrice(currentCourse.price)}
+            {Formatter.formatPrice(course.price)}
           </p>
           <div className={styles.buttonsWrapper}>
             <Button className={styles.buttonYellow}>Купить курс</Button>
             <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
           </div>
         </div>
-        <Image className={styles.courseImage} src={filePath + currentCourse.image.source} alt={currentCourse.name} width={180} height={180}/>
+        <Image className={styles.courseImage} src={filePath + course.image.source} alt={course.name} width={180} height={180}/>
         <div className={styles.iconButtonsWrapper}>
           <IconButton className={styles.iconButton} bgColor={'transparent'}>
             <ShareSvg/>

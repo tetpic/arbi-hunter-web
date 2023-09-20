@@ -4,9 +4,9 @@ import styles from './index.module.scss'
 
 interface Props {
   children: JSX.Element,
-  body: JSX.Element
+  body?: JSX.Element
   isActive: boolean
-  onOutsideClick?: ()=>void
+  // onOutsideClick?: ()=>void //todo: реализовать!!!
   classNames?: {
     root?: string,
     content?: string,
@@ -28,7 +28,7 @@ export default function Accordeon(props: Props) {
   return (
   <div className={classNames(styles.root, props.classNames?.root)}> 
   {props.body}
-  <div className={classNames(styles.wrapper, props.classNames?.wrapper, props.isActive&&styles.wrapper_active)} style={{maxHeight: props.isActive&&8000||0, minHeight: props.isActive&&contentHeight||0}}>
+  <div className={classNames(styles.wrapper, props.classNames?.wrapper, props.isActive&&styles.wrapper_active)} style={{maxHeight: props.isActive&&contentRef.current.getBoundingClientRect().height||0}}>
     <div className={classNames(styles.content, props.classNames?.content) } ref={contentRef}>
       {props.children}
     </div>

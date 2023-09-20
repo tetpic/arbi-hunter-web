@@ -1,3 +1,5 @@
+
+
 export enum ModalType {
   RegistrationModal = 'registrationModal',
   SpecializationModal = 'specializationModal',
@@ -20,7 +22,9 @@ export enum CookiesType {
   accessToken = 'accessToken',
   sessionId = 'x-session',
   uuid = 'uuid',
-  address = 'address'
+  address = 'address',
+  profileType = 'profile-type',
+  language = 'language'
 }
 
 export enum LocalStorageKey {

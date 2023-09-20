@@ -3,6 +3,7 @@ import ICourse from 'data/interfaces/ICourse'
 import languages from '@cospired/i18n-iso-languages'
 import styles from './index.module.scss'
 import UserPic from 'components/ui/UserPic'
+import ReactPlayer from 'react-player'
 
 interface Props {
   course: ICourse
@@ -37,7 +38,9 @@ export default function CoursesInformation({course}: Props) {
 
     {course.video && 
       <div className={styles.item}>
-        <video className={styles.video} src={filePath + course.video.source}/>
+        <div className={styles.videoWrapper}>
+          <ReactPlayer width={'100%'} height={'auto'} url={filePath + course.video.source} controls/>
+        </div>
       </div>
     }
 

@@ -85,7 +85,7 @@ export default function ResponsesFilter(props: Props) {
           : <Accordeon 
             key={index}
             classNames={{root: styles.accRoot, content: styles.accContent, wrapper: styles.accWrapper }}
-            onOutsideClick={()=>accordeonHandler()}
+            // onOutsideClick={()=>accordeonHandler()}
             body={
               <p onClick={()=>accordeonHandler(value)} className={classNames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
             } 

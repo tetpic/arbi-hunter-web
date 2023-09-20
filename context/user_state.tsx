@@ -133,6 +133,12 @@ export function UserWrapper(props: Props) {
     }
   }, [user, props.user])
 
+
+  useEffect(()=>{
+    Cookies.set(CookiesType.profileType, currentProfile.profileType)
+    Cookies.set(CookiesType.language, currentProfile.countryCode)
+  }, [currentProfile])
+
   useEffect(() => {
     if (props.token) {
       updateUser()

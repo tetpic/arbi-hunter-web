@@ -125,10 +125,6 @@ export interface CategoryTranslation extends TimeStamp {
   audience: string,
   courseTime: string,
   requirements: string,
-
-
-  
-  
 }
 
 export interface ICourseCategory extends TimeStamp, CategoryTranslation {

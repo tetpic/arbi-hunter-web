@@ -1,1 +1,95 @@
 @import 'styles/index';
+
+.root {
+  min-height: 50vh;
+  min-height: 50dvh;
+}
+
+.item {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  @include exeptLast {
+    margin-bottom: 16px;
+  }
+}
+
+.top {
+  display: grid;
+  grid-template-areas: 'i t a' 'i c a';
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  cursor: pointer;
+  scale: 1;
+  @include transitionDefault;
+  @include hover {
+    scale: 1.01;
+  }
+
+  .title {
+    grid-area: t;
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+ 
+  }
+
+  .counter {
+    grid-area: c;
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
+  .image {
+    grid-area: i;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .arrow {
+    grid-area: a;
+    @include transitionDefault;
+    
+    &_active {
+      rotate: 180deg;
+    }
+  }
+}
+
+.step {
+  color: $white;
+  padding-block: 16px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  @include transitionDefault;
+
+
+  @include exeptLast {
+    border-bottom: 2px $grey solid;
+  }
+
+  .stepTitle {
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    column-gap: 16px;
+  }
+
+  .stepBody {
+    color: $greyLight;
+  }
+
+  .checkSvg {
+    border-radius: 50%;
+    padding: 6px;
+    background-color: $yellow;
+    flex-shrink: 0;
+    path {
+      stroke: $black;
+    }
+  }
+}
+

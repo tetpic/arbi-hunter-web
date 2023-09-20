@@ -79,7 +79,12 @@
   }
 }
 
-.video {
+.videoWrapper {
   width: 100%;
   border-radius: 16px;
+  overflow: hidden;
+
+  video {
+    display: block;
+  }
 }
