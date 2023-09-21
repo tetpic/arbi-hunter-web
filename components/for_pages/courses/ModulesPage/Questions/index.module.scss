@@ -1,0 +1,72 @@
+@import 'styles/index';
+
+.hide {
+  display: none;
+}
+
+.text {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.question {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+
+  .radioWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .answer {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    padding: 16px;
+    min-width: 100%;
+    background-color: $grey;
+    cursor: pointer;
+    border-radius: 16px;
+    justify-content: center;
+    @include transitionDefault;
+    @include hoverButtonBlack;
+    @include hover {
+      *{
+        color: $black;
+      }
+    }
+
+    .label {
+      margin-left: unset;
+      width: 100%;
+      text-align: center;
+    }
+
+    &_ok {
+      border: 2px $green solid;
+    }
+
+    &_err {
+      border: 2px $red solid;
+    }
+
+    &_active {
+      background-color: $greyLight;
+      *{
+        color: $black !important;
+      } 
+    }
+  }
+
+  .answerButton {
+    @include buttonYellow;
+  }
+}

@@ -6,6 +6,7 @@ import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
 import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
@@ -20,6 +21,7 @@ export default function CourseModules({course}: Props) {
   const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true)
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
   const itemsRefs = useRef<Map<ICourseBlock, HTMLDivElement>>(new Map())
+  const router = useRouter()
   const filePath = process.env.files
 
   useEffect(()=>{
@@ -40,7 +42,7 @@ export default function CourseModules({course}: Props) {
 
   return (<div className={styles.root}> 
     {!loadingBlocks && modules.size > 0 &&
-      [...modules.entries()].map(([k, v])=> (
+      [...modules.entries()].map(([k, v], blockIndex)=> (
         <div className={styles.item}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>
             <Image className={styles.image} src={filePath + k.image.source} width={65} height={48} alt={'course title'}/>
@@ -54,7 +56,7 @@ export default function CourseModules({course}: Props) {
               v.map((el, index) => {
                 return (
                   <div className={classNames(styles.step)}>
-                      <p className={styles.stepTitle}>{index + 1}. {el.title} <CheckSvg className={styles.checkSvg}/></p>
+                      <p className={styles.stepTitle} onClick={()=> router.push(`/courses/${course.id}/modules?block=${blockIndex+1}&step=${index+1}`)}>{index + 1}. {el.title} <CheckSvg className={styles.checkSvg}/></p>
                       <div className={styles.stepBody} dangerouslySetInnerHTML={{__html: el.body}}></div>
                   </div>
                 )
@@ -66,6 +68,8 @@ export default function CourseModules({course}: Props) {
       ))
       ||
       loadingBlocks && <Spinner size={32} color={colors.yellow}/>
+      ||
+      <p className={'empty'}>Нет добавленных образовательных модулей</p>
     }
   </div>)
 }

@@ -266,6 +266,13 @@ select:-webkit-autofill:focus {
   }
 }
 
+.empty {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  margin-top: 24px;
+} 
+
 svg {
   display: block;
 }

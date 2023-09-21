@@ -19,7 +19,7 @@ import Education from '../utils/Steps/Education'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
 import Busyness from '../utils/Steps/Busyness'
-import ProgressBar from '../utils/ProgressBar'
+import ProgressBar from '../../../ui/ProgressBar'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
 
@@ -178,6 +178,8 @@ export default function Cv(props: Props) {
     }
   }
 
+  const titles = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
+
   const progressHandler = (p: number) => {
     const [element, type] = getComponent(p)
     setTitle(getTitle(type))   
@@ -210,7 +212,7 @@ export default function Cv(props: Props) {
         }
         {title}
       </p>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} onClick={(p: number) => setProgress(p)}/>
+      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={setProgress}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 

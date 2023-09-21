@@ -50,7 +50,7 @@ export default function CVs(props: Props) {
       {
       filteredCvs?.length > 0 && filteredCvs.map((el, index) => <CVItem cv={el} key={index}/>)
       ||
-      <p className={styles.empty}>Нет созданных резюме</p>
+      <p className={'empty'}>Нет созданных резюме</p>
       }
     </div>
   )

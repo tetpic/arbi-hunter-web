@@ -1,0 +1,44 @@
+@import 'styles/index';
+
+.root {
+  width: 30%;
+  background-color: $black;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.module {
+  &_active {
+    background-color: $grey;
+    
+    .title {
+      pointer-events: none;
+    }
+  }
+
+  .title {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    padding: 16px;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hoverButtonBlack;
+  }
+
+  .item {
+    color: $greyLight;
+    font-size: $mediumText;
+    font-weight: $medium;
+    padding: 16px;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hoverButtonYellow;
+
+    &_active {
+      color: $yellow;
+      pointer-events: none;
+    }
+
+  }
+}

@@ -1,5 +1,6 @@
 import { ICourseCategory } from 'data/interfaces/Common'
-import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStep } from 'data/interfaces/ICourse'
+import { IArticle } from 'data/interfaces/IArticle'
+import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { CategoryType, Languages } from 'types/enums'
 import request from 'utils/request'
@@ -125,11 +126,12 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseBlock(profile: ProfileType, lang: Languages, courseId: number): Promise<{total: number, data: ICourseBlock[]}|null> {
+  static async getCourseBlock(profile: ProfileType, lang: Languages, courseId: number, token?: string): Promise<{total: number, data: ICourseBlock[]}|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block?sort=order,ASC&s={"courseId":${courseId}}&language=${lang}`,
-      profile
+      profile,
+      token
     })
     if(res.err) {
       return null
@@ -149,16 +151,37 @@ export default class CoursesRepository {
     return res
   }
 
-  static async setStepAnswer(profile: ProfileType, courseBlockStepId: number, answers: number[] ): Promise<any|null> {
+  static async setStepAnswer(profile: ProfileType, data: ICourseStepAnswer ): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/course-block-step-answer',
-      data: {
-        courseBlockStepId,
-        answers
-      },
+      data,
       profile
 
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getCoursesNews(profile: ProfileType, lang: Languages, courseId: number, limit: number, page: number): Promise<IArticle[]|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/article?categoryType=news&sort=createdAt,DESC&limit=${limit}&page=${page}&courseId=${courseId}&language=${lang}`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res.data
+  }
+
+  static async getCourseFeedbackStats(profile: ProfileType, courseId: number): Promise<ICourseStats|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/feedback/stats?s={"courseId": ${courseId}}`,
+      profile
     })
     if(res.err) {
       return null

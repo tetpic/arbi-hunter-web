@@ -46,7 +46,7 @@ export default function CheckboxListField<T>(props: Props<T>) {
         {options.filter(item => restrictedValues.indexOf(item.value) === -1).map(item => (
           <Checkbox<T>
             circleClassName={props.circleClassName}
-            className={classNames(props.itemClassName, [...(!props.grid ? [styles.radioNoGrid] : [])])}
+            className={classNames(props.itemClassName, item.className, [...(!props.grid ? [styles.radioNoGrid] : [])])}
             labelClassName={props.itemLabelClassName}
             activeClassName={props.activeClassName}
             value={item.value} isActive={value.includes(item.value)} label={item.label}

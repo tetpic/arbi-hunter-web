@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import Specialization from '../utils/Steps/Specialization'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
-import ProgressBar from '../utils/ProgressBar'
+import ProgressBar from '../../../ui/ProgressBar'
 import WorkPlace from '../utils/Steps/WorkPlace'
 import {IVacancyCreate} from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
@@ -179,6 +179,9 @@ export default function Vacancy(props: Props) {
     }
   }
 
+  const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
+
+
   const progressHandler = (p: number) => {
     const [element, type] = getComponent(p)
     setTitle(getTitle(type))   
@@ -204,7 +207,7 @@ export default function Vacancy(props: Props) {
         }
         {title}
       </p>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} onClick={(p: number) => setProgress(p)}/>
+      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={setProgress}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 

@@ -1,5 +1,6 @@
 import { ICourseCategory } from 'data/interfaces/Common'
-import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStep } from 'data/interfaces/ICourse'
+import { IArticle } from 'data/interfaces/IArticle'
+import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
@@ -11,15 +12,23 @@ interface IState {
   setCurrentCourse: (id: number, course?: ICourse) => Promise<boolean>
 
   modules: Map<ICourseBlock, ICourseStep[]>
-  setCourseBlocks: (courseId: number) => Promise<boolean>
+  setCourseBlocks: (courseId: number, blocks?: ICourseBlock[]) => Promise<boolean>
   setCourseSteps: (blockId: number) => Promise<boolean>
   clearModules: ()=> void
+
+  coursesNews: IArticle[]
+  setCoursesNews: (courseId: number, page: number)=>void
+
+  setStepAnswer: (data: ICourseStepAnswer, blockId?: number) => Promise<boolean>
 
   feedBacks: ICourseFeedback[]
   setFeedbacks: (courseId: number, page: number, limit: number)=>  Promise<boolean>
 
   categories: ICourseCategory[]
   setCoursesCategories: ()=>void
+
+  courseStats: ICourseStats,
+  getCourseFeedbackStats: (courseId: number) => void
 
 }
 
@@ -34,11 +43,19 @@ const defaultValue: IState = {
   setCourseSteps: (blockId: number) => null,
   clearModules: ()=> null,
 
+  coursesNews: [],
+  setCoursesNews:(courseId: number, page: number) => null,
+ 
+  setStepAnswer: (data: ICourseStepAnswer, blockId?: number) => null,
+
   feedBacks: null,
   setFeedbacks: ()=>null,
 
   categories: null,
   setCoursesCategories: () => null,
+
+  courseStats: null,
+  getCourseFeedbackStats: (courseId: number) => null
 }
 
 const CoursesContext = createContext<IState>(defaultValue)
@@ -56,6 +73,9 @@ export function CoursesWrapper(props: Props) {
   const [currentCourse, setCurrentCourseState] = useState<ICourse>()
   const [modules, setModulesState] = useState<Map<ICourseBlock, ICourseStep[]>>(new Map())
   const [feedBacks, setFeedbacksState] = useState<ICourseFeedback[]>([])
+  const [coursesNews, setCoursesNewsState] = useState<IArticle[]>([])
+  const [courseStats, setCoursesStats] = useState<ICourseStats>()
+  
 
   const setCoursesCategories = () => {
     if(categories.length > 0) return
@@ -110,18 +130,18 @@ export function CoursesWrapper(props: Props) {
     })
   }
 
-  const setCourseBlocks = async (courseId: number): Promise<boolean> => {
+  const setCourseBlocks = async (courseId: number, blocks?: ICourseBlock[]): Promise<boolean> => {
     try {
-      const res = await CoursesRepository.getCourseBlock(profileType, countryCode, courseId)
-      if (res.data) {
+      const res = blocks||await CoursesRepository.getCourseBlock(profileType, countryCode, courseId).then(r=> r.data)
+      if (res) {
         setModulesState(state => {
           state.clear()
-          res.data.forEach(el => {
+          res.forEach(el => {
             state.set(el, [])
           })
           return new Map(state)
         })
-        Promise.all(res.data.map(el=> setCourseSteps(el.id)))
+        Promise.all(res.map(el=> setCourseSteps(el.id)))
       }
       return true
     } catch (err) {
@@ -139,6 +159,31 @@ export function CoursesWrapper(props: Props) {
     }
   }
 
+  const setStepAnswer = async (data: ICourseStepAnswer, blockId?: number) => {
+    const res = await CoursesRepository.setStepAnswer(profileType, data)
+    if(blockId && res) {
+      setCourseSteps(blockId)
+    }
+    return true
+  }
+
+  const setCoursesNews = (courseId: number, page: number) => {
+    const limit = 10
+    CoursesRepository.getCoursesNews(profileType, countryCode, courseId, limit, page)
+    .then(res=> {
+      setCoursesNewsState(res)
+
+    })
+  }
+
+  const getCourseFeedbackStats = (courseId: number) => {
+    CoursesRepository.getCourseFeedbackStats(profileType, courseId)
+    .then(res=>{
+      setCoursesStats(res)
+    })
+
+  }
+
 
 
   const value: IState = {
@@ -153,11 +198,19 @@ export function CoursesWrapper(props: Props) {
     setCourseSteps,
     clearModules,
 
+    coursesNews,
+    setCoursesNews,
+
+    setStepAnswer,
+
     feedBacks,
     setFeedbacks,
 
     setCoursesCategories,
-    categories
+    categories,
+
+    courseStats,
+    getCourseFeedbackStats
   }
 
   return (

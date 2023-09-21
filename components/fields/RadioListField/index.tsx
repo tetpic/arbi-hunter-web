@@ -38,7 +38,7 @@ export default function RadioListField<T>(props: Props<T>) {
          
             <Radio<T>
               key={index}
-              className={classNames(props.itemClassName, [...(!props.grid ? [styles.radioNoGrid] : [])])}
+              className={classNames(props.itemClassName, item.className, [...(!props.grid ? [styles.radioNoGrid] : [])])}
               activeClassName={props.activeItemClassName}
               labelClassName={props.itemLabelClassName}
               circleClassName={props.itemCircleClassname}

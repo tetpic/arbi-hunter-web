@@ -1,5 +1,6 @@
 import BookMarkSvg from 'components/svg/BookMarkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
+import StarSvg from 'components/svg/StarSvg'
 import Button from 'components/ui/Button'
 import IconButton from 'components/ui/IconButton'
 import Navigation from 'components/ui/Navigation'
@@ -33,7 +34,7 @@ enum CurrentCoursesNav {
 export default function CurrentCourse(props: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
-  const {currentCourse, setCurrentCourse, clearModules} = useCoursesContext()
+  const {currentCourse, setCurrentCourse, clearModules, courseStats} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(CurrentCoursesNav.Information)
   const filePath = process.env.files
   const course = props.course || currentCourse
@@ -47,7 +48,7 @@ export default function CurrentCourse(props: Props) {
         case CurrentCoursesNav.Modules:
           return <CourseModules course={course}/>
           case CurrentCoursesNav.News:
-        return <CourseNews/>
+        return <CourseNews id={props.id}/>
       }
     }
   )()
@@ -131,7 +132,32 @@ export default function CurrentCourse(props: Props) {
       <section className={styles.mainContent}>
         {!loading && body || <Spinner size={36} color={colors.yellow}/>}
       </section>
-      <Navigation setPage={pager} navSet={navSet()} currentPage={page}/>
+      <aside className={styles.right}>
+        <Navigation rootClassName={styles.navigation} setPage={pager} navSet={navSet()} currentPage={page}/>
+        {page === CurrentCoursesNav.Feedbacks && courseStats &&
+          <div className={styles.stats}>
+            <div className={styles.statsLeft}>
+              <p className={styles.rating}>{courseStats.raiting.raiting}</p>
+              <p className={styles.stars}>{Formatter.getMarks(courseStats.raiting.raiting).map(el=> <StarSvg className={el&&styles.activeStar} />)}</p>
+              <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, 'отзыв', 'отзыва', 'отзывов')}</p>
+            </div>
+            <div className={styles.statsRight}>
+              {courseStats.stats.map(el=> {
+                return (
+                  <div className={styles.lineWrapper}>
+                    <p className={styles.lineText}>{el.mark}</p>
+                    <div className={styles.line}>
+                      <div className={styles.progress} style={{width : `${(Number(el.count) / courseStats.count) * 100}%`}}></div>
+                    </div>
+
+
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        }
+      </aside>
     </div>
   </div>)
 }

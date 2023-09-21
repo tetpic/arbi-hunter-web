@@ -70,7 +70,7 @@ export default function Feedbacks(props: Props) {
             return (<VacancyItem vc={vc} application={app} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
-          <p className={styles.empty}>Нет откликов</p>
+          <p className={'empty'}>Нет откликов</p>
         }
       </div>
     </div>)

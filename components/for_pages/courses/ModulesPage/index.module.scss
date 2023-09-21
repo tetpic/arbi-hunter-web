@@ -1,0 +1,54 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+
+
+.body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 48px;
+  width: 69%;
+}
+
+.title {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $medium;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.stepTitle {
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+}
+
+.text {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+
+.progressItem {
+  max-width: 50px;
+}
+
+.button {
+  align-self: flex-start;
+  @include buttonYellow;
+}
+
+
+

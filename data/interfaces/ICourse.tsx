@@ -1,4 +1,4 @@
-import { Languages } from 'types/enums'
+import { CoursesStepType, CourseStepAnswerType, Languages } from 'types/enums'
 import { CategoryTranslation,IImage, IVideo, TimeStamp} from './Common'
 import { IUserProfile } from './IUser'
 
@@ -15,6 +15,17 @@ export interface IAuthor {
   id: number,
   image: IImage,
   name: string
+}
+
+export interface IStepVariantTranslation {
+  answer: string,
+  languageCode: Languages,
+}
+
+export interface IStepVariant extends IStepVariantTranslation {
+  correct: boolean,
+  id: string,
+  translations: IStepVariantTranslation[]
 }
 
 export default interface ICourse extends CategoryTranslation {
@@ -63,15 +74,37 @@ export interface ICourseBlock extends ICourseBlockTranslation {
   translations: ICourseBlockTranslation[],
 }
 
+export interface ICourseStepAnswer extends TimeStamp {
+  courseBlockStepId?: number,
+  answers: number[],
+  id?: number,
+  userId?: number,
+}
+
 export interface ICourseStep extends ICourseBlockTranslation{
-  stepType: 'info',
-  answerType: null,
+  stepType: CoursesStepType,
+  answerType: CourseStepAnswerType|null,
+  answer?: ICourseStepAnswer[]
   courseBlockId: 20,
   order: 0,
   image: IImage,
   courseBlock: ICourseBlock,
   translations: ICourseBlockTranslation[],
-  answers: [],
+  answers: ICourseStepAnswer[],
+  variants?: IStepVariant[]
+}
+
+export interface ICouseStat {
+  mark: number,
+  count: string
+}
+
+export interface  ICourseStats {
+  count: number,
+  raiting: {
+      raiting: number
+  },
+  stats: ICouseStat[]
 }
 
 export interface ICourseFeedback extends TimeStamp {
@@ -83,3 +116,4 @@ export interface ICourseFeedback extends TimeStamp {
   course:ICourse,
   profile: IUserProfile
 }
+

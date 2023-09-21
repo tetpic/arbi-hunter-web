@@ -1,8 +1,8 @@
 import { CategoryType, Languages } from 'types/enums'
 
 export interface TimeStamp {
-  createdAt: string,
-  updatedAt: string,
+  createdAt?: string,
+  updatedAt?: string,
   deletedAt?: string|null
 }
 

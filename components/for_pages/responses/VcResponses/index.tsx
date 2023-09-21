@@ -136,7 +136,7 @@ export default function VCFeedbacks(props: Props) {
         ||
         loading && <Spinner size={24} color={colors.yellow}/>
         ||
-        <p className={styles.empty}>Нет откликов</p>
+        <p className={'empty'}>Нет откликов</p>
       }
       </>
     }

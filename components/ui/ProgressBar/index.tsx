@@ -9,6 +9,7 @@ interface Props {
   rootClassName?: string
   itemClassName?: string
   onClick: (p: number)=> void
+  titles?: string[]
 }
 
 interface ProgressItem {
@@ -21,16 +22,16 @@ export default function ProgressBar(props: Props) {
 
   const [progressItems, setProgressItems] = useState<ProgressItem[]>([])
 
-  const titles = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
+ 
 
   const progressHandler = (p: number, max: number):ProgressItem[] => {
     let arr:ProgressItem[] = []
     for(let i = 0; i < max; i++) {
       if(i < p) {
-        arr.push({active: true, key: uuidv4(), title: titles[i]})
+        arr.push({active: true, key: uuidv4(), title: props.titles&&props.titles[i]})
       }
       else {
-        arr.push({active: false, key: uuidv4(), title: titles[i]})
+        arr.push({active: false, key: uuidv4(), title: props.titles&&props.titles[i]})
       }
     }
     return arr
@@ -38,7 +39,7 @@ export default function ProgressBar(props: Props) {
 
   useEffect(()=>{
     setProgressItems(progressHandler(props.progress, props.pointsCount))
-  }, [props.progress])
+  }, [props.progress, props.pointsCount])
 
 
   return ( 

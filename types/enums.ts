@@ -236,5 +236,15 @@ export enum ApplicationStatus {
   Rejected = 'rejected',
 }
 
+export enum CourseStepAnswerType {
+  Multiple= 'multiple',
+  Single = 'single'
+}
+
+export enum CoursesStepType {
+  Info= 'info',
+  Question ='question'
+}
+
 
 

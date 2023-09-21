@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import classnames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
@@ -11,6 +12,7 @@ interface Props<T extends string> {
   currentPage: T
   navSet?: NavigationSet<T>[]
   onClickHandler?: ()=>void
+  rootClassName?: string
 }
 
 export default function Navigation<T extends string>(props: Props<T>) {
@@ -25,7 +27,7 @@ export default function Navigation<T extends string>(props: Props<T>) {
     }
   }
 
-  return ( <div className={styles.root}>
+  return ( <div className={classNames(styles.root, props.rootClassName) }>
     {isTabletWidth &&
     <TitleForSection title={'Настройка профиля'} onBackClick={()=>{router.back()}}/>
     }

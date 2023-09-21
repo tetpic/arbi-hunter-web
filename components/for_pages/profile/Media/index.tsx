@@ -49,7 +49,7 @@ export default function SavedMedia(props: Props) {
       })
       ||
       loaded&&mediaContext.savedArticles.size === 0&&
-      <p className={styles.empty}>Нет добавленных медиа</p>
+      <p className={'empty'}>Нет добавленных медиа</p>
      }
     </InfiniteScroll>
   </div>)

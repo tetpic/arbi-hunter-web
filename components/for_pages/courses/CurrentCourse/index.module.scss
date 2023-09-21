@@ -4,6 +4,15 @@
   padding-bottom: 32px;
 }
 
+.activeStar {
+  width: 12px;
+  height: 12px;
+  path {
+    fill: $yellow;
+    stroke: $yellow;
+  }
+} 
+
 .header {
   background: $gradient;
   border-radius: 16px;
@@ -94,3 +103,80 @@
 .mainContent {
   width: 69%;
 }
+
+.right {
+  width: 30%;
+}
+
+.navigation {
+  width: 100%;
+}
+
+.stats {
+  display: flex;
+  row-gap: 12px;
+  margin-top: 16px;
+  justify-content: space-between;
+
+}
+
+.statsLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.stars {
+  display: flex;
+}
+
+.rating {
+  color: $white;
+  font-size: $text36;
+  font-weight: $bold;
+}
+
+.counter {
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $greyLight;
+}
+
+.statsRight {
+  width: 65%;
+}
+
+.lineWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+
+  .line {
+    width: 90%;
+    height: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: $grey;
+  }
+
+  .lineText {
+    font-size: $smallText;
+    font-weight: $semibold;
+    color: $greyLight;
+  }
+
+  .progress {
+    height: 100%;
+    display: block;
+    background-color: $yellow;
+  }
+}
+
+
+
+

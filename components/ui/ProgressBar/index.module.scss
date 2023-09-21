@@ -11,6 +11,7 @@
   height: 6px;
   border-radius: 6px;
   cursor: pointer;
+  max-width: 100px;
   @include transitionDefault;
   &_active {
     background-color: $yellow;
