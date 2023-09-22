@@ -28,6 +28,12 @@
   row-gap: 24px;
 }
 
+.textContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
 .stepTitle {
   color: $white;
   font-size: $hugeText;

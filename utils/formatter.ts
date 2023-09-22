@@ -158,10 +158,15 @@ export default class Formatter {
     return newArray
   }
 
-  static getMarks = (n: number): boolean[] => {
-    let result: boolean[] = []
+  static getMarks = (n: number): (boolean|number)[] => {
+    let result: (boolean|number)[] = []
     for(let i = 0; i < 5; i++) {
-      result.push(i<n)
+      if((n-i) < 1 && n%1>0 && i<n) {
+        result.push(n%1)
+      } 
+      else {
+        result.push(i<n)
+      }
     }
     return result
   }

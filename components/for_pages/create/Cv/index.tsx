@@ -58,7 +58,7 @@ export default function Cv(props: Props) {
   }, [])
 
   const submit = (data: ICVCreate) => {
-    debugger
+    
     const {activeSources, languageKnowledges, skills, categoryIds} = creationContext?.helpObjects
     if(!categoryIds||categoryIds?.length === 0) {
       setProgress(1)

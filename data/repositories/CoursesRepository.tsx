@@ -31,6 +31,18 @@ export default class CoursesRepository {
     return res
   }
 
+  static async getCourseModules(courseId: number, lang: Languages, token?: string): Promise<ICourseBlock[]|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/course-module?sort=order,ASC&s={"courseId": ${courseId}}&language=${lang}`,
+      token
+    })
+    if(res.err) {
+      return null
+    }
+    return res.data
+  }
+
   static async getCategoryById(id: number, lang: Languages, type: CategoryType): Promise<any|null> {
     const res = await request({
       method: 'get',
@@ -139,7 +151,7 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseModule(profile: ProfileType, lang: Languages, courseId: number): Promise<{total: number, data: ICourseStep[]}|null> {
+  static async getCourseSteps(profile: ProfileType, lang: Languages, courseId: number): Promise<{total: number, data: ICourseStep[]}|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block-step/?sort=order,ASC&s={"courseBlockId":${courseId}}&language=${lang}`,
@@ -166,6 +178,7 @@ export default class CoursesRepository {
   }
 
   static async getCoursesNews(profile: ProfileType, lang: Languages, courseId: number, limit: number, page: number): Promise<IArticle[]|null> {
+    
     const res = await request({
       method: 'get',
       url: `/api/article?categoryType=news&sort=createdAt,DESC&limit=${limit}&page=${page}&courseId=${courseId}&language=${lang}`,

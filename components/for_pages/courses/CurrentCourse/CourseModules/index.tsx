@@ -1,32 +1,33 @@
 import classNames from 'classnames'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import CheckSvg from 'components/svg/CheckSvg'
+import PlayTransparentSvg from 'components/svg/PlayTransparentSvg'
 import Accordeon from 'components/ui/Accordeon'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
 import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 
 interface Props {
   course: ICourse
+  modules: ICourseBlock[]
 }
 
 export default function CourseModules({course}: Props) {
-  const {modules, setCourseBlocks} = useCoursesContext()
+  const {courseModules, setCourseModules} = useCoursesContext()
   const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true)
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
-  const itemsRefs = useRef<Map<ICourseBlock, HTMLDivElement>>(new Map())
   const router = useRouter()
-  const filePath = process.env.files
+  const filePath = process.env.files 
 
   useEffect(()=>{
-    if(modules.size === 0) {
-      setCourseBlocks(course.id)
+    if(courseModules?.size === 0) {
+      setCourseModules(course.id)
       .then(res => {
         setLoadingBlocks(false)
       })
@@ -36,18 +37,23 @@ export default function CourseModules({course}: Props) {
     }
   }, [])
 
+
+
   const onTitleClick = (c: ICourseBlock) => {
+    
     setActiveModule(state=> state===c?null:c)
   }
 
   return (<div className={styles.root}> 
-    {!loadingBlocks && modules.size > 0 &&
-      [...modules.entries()].map(([k, v], blockIndex)=> (
+    {!loadingBlocks && courseModules.size > 0 &&
+      [...courseModules.entries()].map(([k, v], blockIndex)=> (
         <div className={styles.item}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>
-            <Image className={styles.image} src={filePath + k.image.source} width={65} height={48} alt={'course title'}/>
+            {k.image?.source &&
+              <Image className={styles.image} src={filePath + k.image?.source} width={65} height={48} alt={'course title'}/>
+            }
             <p className={styles.title}>{k.title}</p>
-            <p className={styles.counter}>{k.stepsCount} {Formatter.pluralize(Number(k.stepsCount), 'урок', 'урока', 'уроков')}</p>
+            <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), 'урок', 'урока', 'уроков')}</p>
             <ArrowDownSvg className={classNames(styles.arrow, activeModule === k&&styles.arrow_active)}/>
           </div>
           <Accordeon isActive={activeModule === k}>
@@ -56,7 +62,11 @@ export default function CourseModules({course}: Props) {
               v.map((el, index) => {
                 return (
                   <div className={classNames(styles.step)}>
-                      <p className={styles.stepTitle} onClick={()=> router.push(`/courses/${course.id}/modules?block=${blockIndex+1}&step=${index+1}`)}>{index + 1}. {el.title} <CheckSvg className={styles.checkSvg}/></p>
+                      <p 
+                      className={styles.stepTitle} 
+                      onClick={()=> router.push(`/courses/${course.id}/modules?module=${blockIndex+1}&block=${index+1}&step=1`)}>
+                        {index + 1}. {el.title} {el.progress === 100?<CheckSvg className={styles.checkSvg}/>:<PlayTransparentSvg className={styles.playSvg}/>}
+                      </p>
                       <div className={styles.stepBody} dangerouslySetInnerHTML={{__html: el.body}}></div>
                   </div>
                 )

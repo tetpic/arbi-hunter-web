@@ -37,7 +37,7 @@ export default function Questions({activeStep}: Props) {
   return ( <div className={styles.question}>
     <p className={styles.text} dangerouslySetInnerHTML={{__html: activeStep?.body}}></p>
     <FormikProvider value={formik}>
-      <Form>
+      <Form className={styles.form}>
         {activeStep.answerType === CourseStepAnswerType.Single &&
           <RadioListField  
           itemClassName={styles.answer}

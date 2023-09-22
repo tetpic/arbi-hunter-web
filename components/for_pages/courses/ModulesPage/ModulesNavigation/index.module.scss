@@ -2,9 +2,20 @@
 
 .root {
   width: 30%;
+}
+
+.moduleWrapper {
   background-color: $black;
   border-radius: 16px;
   overflow: hidden;
+}
+
+.moduleTitle {
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $white;
+  margin-top: 24px;
+  margin-bottom: 16px;
 }
 
 .module {

@@ -55,7 +55,7 @@ export default function Vacancy(props: Props) {
   const CVItemsCount = 7
 
   const submit = (data: IVacancyCreate) => {
-    debugger
+    
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {

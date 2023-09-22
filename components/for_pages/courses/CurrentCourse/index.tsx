@@ -1,12 +1,13 @@
 import BookMarkSvg from 'components/svg/BookMarkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
-import StarSvg from 'components/svg/StarSvg'
+import SmallStarPassiveSvg from 'components/svg/SmallStarPassiveSvg'
+import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import Button from 'components/ui/Button'
 import IconButton from 'components/ui/IconButton'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
-import ICourse from 'data/interfaces/ICourse'
+import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -22,9 +23,12 @@ import styles from './index.module.scss'
 interface Props {
   id: number
   course: ICourse
+  modules: ICourseBlock[]
+  blocks: ICourseBlock[]
+  page?: CurrentCoursesNav
 }
 
-enum CurrentCoursesNav {
+export enum CurrentCoursesNav {
   Information='information',
   Modules='modules',
   Feedbacks='feedbacks',
@@ -34,8 +38,8 @@ enum CurrentCoursesNav {
 export default function CurrentCourse(props: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
-  const {currentCourse, setCurrentCourse, clearModules, courseStats} = useCoursesContext()
-  const [page, setPage] = useState<CurrentCoursesNav>(CurrentCoursesNav.Information)
+  const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks} = useCoursesContext()
+  const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const filePath = process.env.files
   const course = props.course || currentCourse
   
@@ -46,7 +50,7 @@ export default function CurrentCourse(props: Props) {
       case CurrentCoursesNav.Feedbacks:
         return <CourseFeedbacks id={props.id}/>
         case CurrentCoursesNav.Modules:
-          return <CourseModules course={course}/>
+          return <CourseModules course={course} modules={props.modules}/>
           case CurrentCoursesNav.News:
         return <CourseNews id={props.id}/>
       }
@@ -87,6 +91,8 @@ export default function CurrentCourse(props: Props) {
   }, [page])
 
   useEffect(()=>{
+    setCourseModules(props.id, props.modules)
+    setCourseBlocks(props.id, props.blocks)
     setCurrentCourse(props.id, props.course)
     .then(()=> 
       setLoading(false)
@@ -98,9 +104,10 @@ export default function CurrentCourse(props: Props) {
 
 
 
+
   return (<div className={styles.root}> 
     <div className={styles.header}>
-      {!loading && 
+      {course && 
       <>
         <div className={styles.content}>
           <p className={styles.title}>{course.name}</p>
@@ -114,7 +121,7 @@ export default function CurrentCourse(props: Props) {
             <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
           </div>
         </div>
-        <Image className={styles.courseImage} src={filePath + course.image.source} alt={course.name} width={180} height={180}/>
+        <Image className={styles.courseImage} src={filePath + course.image.source} alt={course.name} width={1145} height={400}/>
         <div className={styles.iconButtonsWrapper}>
           <IconButton className={styles.iconButton} bgColor={'transparent'}>
             <ShareSvg/>
@@ -130,7 +137,7 @@ export default function CurrentCourse(props: Props) {
     </div>
     <div className={styles.wrapper}>
       <section className={styles.mainContent}>
-        {!loading && body || <Spinner size={36} color={colors.yellow}/>}
+        {course && body || <Spinner size={36} color={colors.yellow}/>}
       </section>
       <aside className={styles.right}>
         <Navigation rootClassName={styles.navigation} setPage={pager} navSet={navSet()} currentPage={page}/>
@@ -138,7 +145,7 @@ export default function CurrentCourse(props: Props) {
           <div className={styles.stats}>
             <div className={styles.statsLeft}>
               <p className={styles.rating}>{courseStats.raiting.raiting}</p>
-              <p className={styles.stars}>{Formatter.getMarks(courseStats.raiting.raiting).map(el=> <StarSvg className={el&&styles.activeStar} />)}</p>
+              <p className={styles.stars}>{Formatter.getMarks(courseStats.raiting.raiting).map(el=> el===true&&<SmallStarActiveSvg/>||Number(el)>0&&<SmallStarPassiveSvg className={styles.halfStar}/>||<SmallStarPassiveSvg/>)}</p>
               <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, 'отзыв', 'отзыва', 'отзывов')}</p>
             </div>
             <div className={styles.statsRight}>
@@ -149,8 +156,6 @@ export default function CurrentCourse(props: Props) {
                     <div className={styles.line}>
                       <div className={styles.progress} style={{width : `${(Number(el.count) / courseStats.count) * 100}%`}}></div>
                     </div>
-
-
                   </div>
                 )
               })}

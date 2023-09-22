@@ -9,6 +9,7 @@ interface Props {
 
 export default function CourseNews(props: Props) {
   const {coursesNews, setCoursesNews} = useCoursesContext()
+  
 
   useEffect(()=>{
     setCoursesNews(props.id, 1)
@@ -16,7 +17,7 @@ export default function CourseNews(props: Props) {
 
   return (<div className={styles.root}> 
   {coursesNews.length>0 && coursesNews.map((el)=> {
-    return <MediaItem media={el} key={el.id}/>
+    return <MediaItem type={'news'} showContent media={el} key={el.id}/>
   })
   ||
   <p className={'empty'}>Нет новостей</p>

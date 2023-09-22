@@ -38,8 +38,19 @@ export interface IArticle extends TimeStamp {
   articleCategory: IArticleCategory,
   community: null,//???
   likes: [],//???
-  savedByProfiles: [],//???
-  isSavedByCurrentProfile: boolean,
-  isLikedByCurrentProfile: boolean,
+  savedByProfiles?: [],//???
+  isSavedByCurrentProfile?: boolean,
+  isLikedByCurrentProfile?: boolean,
   imagesIds: []//???
+  blocks?: {
+    id: number,
+    title: string|null,
+    body: string
+    imageId: number,
+    imageLargeId: number,
+    image: IImage,
+    images: IImage[],
+    imageLarge: IImage,
+    imagesIds: number[]
+  }[]
 }

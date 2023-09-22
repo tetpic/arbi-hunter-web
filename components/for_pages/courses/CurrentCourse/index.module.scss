@@ -5,11 +5,8 @@
 }
 
 .activeStar {
-  width: 12px;
-  height: 12px;
   path {
     fill: $yellow;
-    stroke: $yellow;
   }
 } 
 
@@ -42,6 +39,24 @@
     flex-direction: column;
     row-gap: 16px;
     max-width: 50%;
+    position: relative;
+    z-index: 3;
+    * {
+      z-index: 2;
+    }
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $black;
+      opacity: .4;
+      border-radius: 50px;
+      filter: blur(40px);
+    }
   }
 
   .price {
@@ -69,6 +84,12 @@
   .courseImage {
     object-fit: cover;
     border-radius: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: brightness(.5) blur(2px);
   }
 
   .iconButtonsWrapper {
@@ -77,6 +98,20 @@
     right: 30px;
     display: flex;
     column-gap: 16px;
+    z-index: 3;
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $black;
+      opacity: .4;
+      filter: blur(5px);
+    }
+    
     svg {
       width: 32px;
       height: 32px;
@@ -86,6 +121,8 @@
   .iconButton {
     border: 2px $white solid;
     background-color: transparent;
+    position: relative;
+    z-index: 3;
     @include hover {
       background-color: $black;
     }
@@ -117,6 +154,7 @@
   row-gap: 12px;
   margin-top: 16px;
   justify-content: space-between;
+  max-width: 372px;
 
 }
 
@@ -125,10 +163,7 @@
   flex-direction: column;
   align-items: center;
   row-gap: 10px;
-  svg {
-    width: 12px;
-    height: 12px;
-  }
+
 }
 
 .stars {
@@ -176,6 +211,20 @@
     background-color: $yellow;
   }
 }
+
+.halfStar {
+  
+  path{
+    fill: transparent; 
+  }
+  @include starPath;
+  background: linear-gradient(to right, $yellow 50%, $grey 50%);
+
+
+
+
+}
+
 
 
 

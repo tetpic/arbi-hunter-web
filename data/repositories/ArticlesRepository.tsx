@@ -1,5 +1,6 @@
 import { IArticle } from 'data/interfaces/IArticle'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { Languages } from 'types/enums'
 import request from 'utils/request'
 
 export default class ArticlesRepository {
@@ -8,6 +9,17 @@ export default class ArticlesRepository {
       method: 'get',
       url: `/api/article?savedByCurrentProfile=true&limit=${limit}&page=${page}`,
       profile: profileType
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getById(articleId: number, lang: Languages): Promise<IArticle|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/article/${articleId}?categoryType=news&language=${lang}`,
     })
     if(res.err) {
       return null

@@ -2,7 +2,7 @@ import { ICourseCategory } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useUserContext } from './user_state'
 
 interface IState {
@@ -11,7 +11,9 @@ interface IState {
   setCourses: (data: CoursesData) => void
   setCurrentCourse: (id: number, course?: ICourse) => Promise<boolean>
 
-  modules: Map<ICourseBlock, ICourseStep[]>
+  courseModules: Map<ICourseBlock, ICourseBlock[]>
+  setCourseModules: (courseId: number, modules?: ICourseBlock[])=> Promise<boolean>
+  courseBlocks: Map<ICourseBlock, ICourseStep[]>
   setCourseBlocks: (courseId: number, blocks?: ICourseBlock[]) => Promise<boolean>
   setCourseSteps: (blockId: number) => Promise<boolean>
   clearModules: ()=> void
@@ -38,7 +40,9 @@ const defaultValue: IState = {
   setCourses: () => null,
   setCurrentCourse: (id: number) => null, 
 
-  modules: new Map(),
+  courseModules: null,
+  setCourseModules: ()=> null,
+  courseBlocks: new Map(),
   setCourseBlocks: (courseId: number) => null,
   setCourseSteps: (blockId: number) => null,
   clearModules: ()=> null,
@@ -71,7 +75,8 @@ export function CoursesWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<any[]>([])
   const [courses, setCoursesState] = useState<ICourse[]>([])
   const [currentCourse, setCurrentCourseState] = useState<ICourse>()
-  const [modules, setModulesState] = useState<Map<ICourseBlock, ICourseStep[]>>(new Map())
+  const [courseModules, setCourseModulesState] = useState<Map<ICourseBlock, ICourseBlock[]>>(new Map())
+  const [courseBlocks, setBlocksState] = useState<Map<ICourseBlock, ICourseStep[]>>(new Map())
   const [feedBacks, setFeedbacksState] = useState<ICourseFeedback[]>([])
   const [coursesNews, setCoursesNewsState] = useState<IArticle[]>([])
   const [courseStats, setCoursesStats] = useState<ICourseStats>()
@@ -109,9 +114,9 @@ export function CoursesWrapper(props: Props) {
 
   const setCourseSteps = async (blockId: number): Promise<boolean> => {
     try {
-      const res = await CoursesRepository.getCourseModule(profileType, countryCode, blockId)
+      const res = await CoursesRepository.getCourseSteps(profileType, countryCode, blockId)
       if (res.data.length > 0) {
-        setModulesState(state => {
+        setBlocksState(state => {
           const key = [...state.keys()].find(k => k.id === blockId)
           state.set(key, res.data)
           return new Map(state)
@@ -124,7 +129,7 @@ export function CoursesWrapper(props: Props) {
   }
 
   const clearModules = () => {
-    setModulesState(state=> {
+    setBlocksState(state=> {
       state.clear()
       return state
     })
@@ -134,7 +139,7 @@ export function CoursesWrapper(props: Props) {
     try {
       const res = blocks||await CoursesRepository.getCourseBlock(profileType, countryCode, courseId).then(r=> r.data)
       if (res) {
-        setModulesState(state => {
+        setBlocksState(state => {
           state.clear()
           res.forEach(el => {
             state.set(el, [])
@@ -153,6 +158,23 @@ export function CoursesWrapper(props: Props) {
     try {
       const res = await CoursesRepository.getFeedbacks(courseId, profileType, page, limit)
       setFeedbacksState(res.data)
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  const setCourseModules = async (courseId: number, modules?: ICourseBlock[]):Promise<boolean>  => {
+    try {
+      
+      const res = modules|| await CoursesRepository.getCourseModules(courseId, countryCode)
+      setCourseModulesState(state => {
+        state.clear()
+        res.forEach(e => {
+          state.set(e, [])
+        })
+        return new Map(state)
+      })
       return true
     } catch (err) {
       return false
@@ -181,8 +203,21 @@ export function CoursesWrapper(props: Props) {
     .then(res=>{
       setCoursesStats(res)
     })
-
   }
+
+  useEffect(()=>{
+    if(courseBlocks.size>0 && courseModules.size > 0) {
+      
+      setCourseModulesState(state=> {
+        const moduleKeys = [...courseModules.keys()]
+        moduleKeys.forEach(el=> {
+          state.set(el, [...courseBlocks.keys()].filter(b=> b.courseModuleId === el.id))
+        })
+        return new Map(state)
+      })
+    }
+  
+  }, [courseBlocks])
 
 
 
@@ -193,7 +228,9 @@ export function CoursesWrapper(props: Props) {
     currentCourse,
     setCurrentCourse,
 
-    modules,
+    courseModules,
+    setCourseModules,
+    courseBlocks,
     setCourseBlocks,
     setCourseSteps,
     clearModules,
