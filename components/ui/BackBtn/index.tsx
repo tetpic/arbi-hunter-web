@@ -1,6 +1,7 @@
 import styles from './index.module.scss'
 import { MouseEventHandler } from 'react'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
+import classNames from 'classnames'
 
 interface Props {
   onClick: MouseEventHandler
@@ -13,7 +14,7 @@ interface Props {
 
 export default function BackBtn(props: Props) {
   return (
-    <button onClick={props.onClick} className={styles.root} type='button'>
+    <button onClick={props.onClick} className={classNames(styles.root, props.className)} type='button'>
       <ArrowDownSvg className={styles.arrow}/>
     </button>
   )

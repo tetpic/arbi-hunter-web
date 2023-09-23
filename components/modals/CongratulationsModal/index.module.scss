@@ -1,0 +1,55 @@
+@import 'styles/index';
+
+.modalBody {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 20px;
+  &:before {
+    content: '';
+    margin-bottom: auto;
+  }
+}
+
+.title {
+  font-size: $text32;
+  max-width: 65%;
+  text-align: center;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.info {
+  font-size: $smallText;
+  font-weight: $regular;
+  color: $white;
+}
+
+.buttonsWrapper {
+  margin-top: auto; 
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  min-width: 300px;
+  row-gap: 16px;
+
+  .buttonYellow {
+    width: 100%;
+    @include buttonYellow;
+  }
+
+  .buttonBlack {
+    width: 100%;
+    @include buttonBlack;
+  }
+
+ 
+}

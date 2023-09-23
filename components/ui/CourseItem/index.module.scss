@@ -18,6 +18,9 @@
   justify-content: center;
   height: clamp(90px, 40vw, 180px);
   background-color: $greyLight;
+  @include mq($TabletWidth, max) {
+     height: clamp(90px, 40vw, 230px);
+  }
   
 
   .badge {

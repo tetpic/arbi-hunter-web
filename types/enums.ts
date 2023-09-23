@@ -10,7 +10,8 @@ export enum ModalType {
   ProposalModal= 'proposalModal',
   ProposalTextModal= 'proposalTextModal',
   ConfirmModal= 'confirmModal',
-  VcResponsesFilterModal= 'vcResponsesFilterModal'
+  VcResponsesFilterModal= 'vcResponsesFilterModal',
+  CongratulationsModal = 'congratulationsModal'
 }
 
 export enum SnackbarType {

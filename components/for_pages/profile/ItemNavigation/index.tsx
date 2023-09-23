@@ -4,9 +4,10 @@ import styles from './index.module.scss'
 
 interface Props<T> {
   activeItem: T
-  items: T[]
+  items: {name: string, type: T}[]
   onClick: (n: T) => void
   className?: string
+  bottomStringClass?: string
 }
 
 export default function ItemNavigation<T extends string>(props: Props<T>) {
@@ -30,17 +31,17 @@ export default function ItemNavigation<T extends string>(props: Props<T>) {
         .map((el, index)=> {
           return (
           <p 
-          className={classNames(styles.item, props.activeItem === el&&styles.item_active)} 
-          ref={(r)=> itemsRef.current.set(el, r)} 
-          onClick={()=> props.onClick(el)}
+          className={classNames(styles.item, props.activeItem === el.type&&styles.item_active)} 
+          ref={(r)=> itemsRef.current.set(el.type, r)} 
+          onClick={()=> props.onClick(el.type)}
           key={index} 
           >
-            {el}
+            {el.name}
           </p>)
         })
       }
     </div>
-    <div className={styles.bottomString}>
+    <div className={classNames(styles.bottomString, props.bottomStringClass)}>
       <div className={styles.line} style={{transform: `translateX(${transition}px)`, width: activeWidth}}></div>
     </div>
   </div>)

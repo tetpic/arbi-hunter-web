@@ -6,10 +6,13 @@ import { useCoursesContext } from 'context/courses_state'
 import ICourse, { ICourseBlock, ICourseStep } from 'data/interfaces/ICourse'
 import { useRouter} from 'next/router'
 import { useEffect, useState } from 'react'
-import { CoursesStepType } from 'types/enums'
+import { CoursesStepType, ModalType } from 'types/enums'
 import ModulesNavigation from './ModulesNavigation'
 import Questions from './Questions'
 import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import BackBtn from 'components/ui/BackBtn'
+import { useAppContext } from 'context/state'
 
 interface Props {
   course?: ICourse,
@@ -23,10 +26,15 @@ interface Props {
 
 export default function ModulesPage(props: Props) {  
   const router = useRouter()
+  const appContext = useAppContext()
+
   const courseContext = useCoursesContext()
   const [page, pager] = useState<number>(1)
+  const {isTabletWidth} = useResize()
   const initialBlockIndex = props.blocks.findIndex(f=> f.courseModuleId === props.modules[Number(props.module)-1].id)
-  const [activeBlock, setActiveBlock] = useState<ICourseBlock>(props.blocks[initialBlockIndex+1]||props.blocks[0])
+  const [activeBlock, setActiveBlock] = useState<ICourseBlock>(props.blocks[initialBlockIndex+(Number(props.initialBlock)-1)]||props.blocks[0])
+
+  
   const [activeStep, setActiveStep] = useState<ICourseStep>()
   const [progressLimit, setProgressLimit] = useState<number>()
   const [loading, setLoading] = useState<boolean>(true)
@@ -44,8 +52,9 @@ export default function ModulesPage(props: Props) {
         setIsEnd(false)
         setActiveBlock(blocksArr[activeIndex+1])
       }
-      else if(activeIndex === blocksArr.length -1) {
+      else if(activeIndex === blocksArr.length-1) {
         !endOfCourse&&setIsEnd(true)
+        appContext.showModal(ModalType.CongratulationsModal)
       }
     }
   }  
@@ -63,7 +72,9 @@ export default function ModulesPage(props: Props) {
     if(activeStep && stepNumber > 0) {
       activeStep&&pager(stepNumber)  
       const blockNumber = [...courseContext.courseBlocks.keys()].indexOf(activeBlock)
-      router.replace({query: { ...router.query, step: stepNumber, block:  blockNumber+1}}, undefined, {shallow: true})
+      router.replace({query: { ...router.query, step: stepNumber, block:  blockNumber+1}}, undefined, {shallow: true});
+      ((activeStep.stepType === CoursesStepType.Info && activeStep.answers.length === 0)||(activeStep.stepType === CoursesStepType.Question))
+      && courseContext.setStepAnswer({courseBlockStepId: activeStep.id})
     }
   }, [activeStep])
 
@@ -90,7 +101,11 @@ export default function ModulesPage(props: Props) {
   return (
   <div className={styles.root}> 
     <div className={styles.body}>
-      <BackTextButton onClick={()=>router.push(`/courses/${props.id}?page=modules`)}/>
+      {isTabletWidth&&
+        <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${props.id}?page=modules`)} bgColor={'transparent'}/>
+        ||
+        <BackTextButton onClick={()=>router.push(`/courses/${props.id}?page=modules`)}/>
+      }
       <div className={styles.titleWrapper}>
         <h2 className={styles.title}>{activeBlock?.translations[0]?.title}</h2>
         {progressLimit > 1 && !loading && 
@@ -108,12 +123,14 @@ export default function ModulesPage(props: Props) {
       }
       <Button className={styles.button} onClick={()=> progressHandler(page+1)} >{endOfCourse?'Завершить курс': 'Продолжить'}</Button>
     </div>
-    <ModulesNavigation 
-    activeBlock={activeBlock} 
-    activeStep={activeStep}
-    changeBlock={(b: ICourseBlock)=>setActiveBlock(b)} 
-    changeStep={(s: ICourseStep)=> setActiveStep(s)} 
-    />
+    {!isTabletWidth &&
+      <ModulesNavigation 
+      activeBlock={activeBlock} 
+      activeStep={activeStep}
+      changeBlock={(b: ICourseBlock)=>setActiveBlock(b)} 
+      changeStep={(s: ICourseStep)=> setActiveStep(s)} 
+      />
+    }
     
   </div>)
 }

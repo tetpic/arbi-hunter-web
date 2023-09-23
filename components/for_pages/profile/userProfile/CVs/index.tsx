@@ -9,15 +9,26 @@ interface Props {
 }
 
 enum CVNavigation {
-  Active = 'Активные',
-  Drafts = 'Черновики',
-  Archive = 'Архив',
+  Active = 'active',
+  Drafts = 'drafts',
+  Archive = 'archive',
+}
+
+function translate (n: CVNavigation) {
+  switch(n) {
+    case CVNavigation.Active:
+      return 'Активные'
+    case CVNavigation.Drafts:
+      return 'Черновики'
+    case CVNavigation.Archive:
+      return 'Архив'
+  }
 }
 
 export default function CVs(props: Props) {
   const cvContext = useCvContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
-  const items = Object.values(CVNavigation)
+  const items = Object.values(CVNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
 
   useEffect(()=>{

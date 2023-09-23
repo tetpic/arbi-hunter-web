@@ -11,9 +11,20 @@ interface Props {
 }
 
 enum ReviewsNavigation {
-  Any = 'Любые отклики',
-  Invite = 'Приглашение',
-  Reject = 'Отказ',
+  Any = 'any',
+  Invite = 'invite',
+  Reject = 'reject',
+}
+
+function translate (n: ReviewsNavigation) {
+  switch(n) {
+    case ReviewsNavigation.Any:
+      return 'Любые отклики'
+    case ReviewsNavigation.Invite:
+      return 'Приглашение'
+    case ReviewsNavigation.Reject:
+      return 'Отказ'
+  }
 }
 
 export default function Feedbacks(props: Props) {
@@ -22,7 +33,7 @@ export default function Feedbacks(props: Props) {
   const {CVFeedbacks} = feedBackContext
 
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
-  const items = Object.values(ReviewsNavigation)
+  const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filtered, setFiltered] = useState<Map<IApplication, IVacancy>>(CVFeedbacks)
 
   useEffect(()=>{    

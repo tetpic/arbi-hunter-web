@@ -13,6 +13,7 @@ import ProposalModal from 'components/modals/ProposalModal'
 import ProposalTextModal from 'components/modals/ProposalModal/ProposalTextModal'
 import CvVcOptionsModal from 'components/modals/OptionsModal'
 import ConfirmModal from 'components/modals/ConfirmModal'
+import CongratulationsModal from 'components/modals/CongratulationsModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -56,6 +57,9 @@ export default function ModalContainer(props: Props) {
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.ConfirmModal} {...commonSettings}>
           {appContext.modal === ModalType.ConfirmModal && <ConfirmModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.CongratulationsModal} {...commonSettings}>
+          {appContext.modal === ModalType.CongratulationsModal && <CongratulationsModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
       </div>
     </RemoveScroll>

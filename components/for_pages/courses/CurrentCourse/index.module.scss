@@ -10,6 +10,24 @@
   }
 } 
 
+.titleStats {
+  display: flex;
+  align-items: center;
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $white;
+
+  span {
+    color: $yellow;
+    margin-right: 16px;
+  }
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+}
+
 .header {
   background: $gradient;
   border-radius: 16px;
@@ -21,11 +39,47 @@
   justify-content: flex-start;
   column-gap: 32px;
   position: relative;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+    width: 100vw;
+    margin-left: -16px;
+    border-radius: unset;
+    overflow: hidden;
+    padding: 16px 16px 0px;
+    align-items: flex-end;
+    min-height: 250px;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: -16px;
+      width: calc(100% + 34px);
+      height: 70%;
+      background: linear-gradient(to top, $backgroundBlack 30%, transparent 100%);
+      filter: blur(6px);
+    }
+  }
+
+  .mobileNavigation {
+    overflow: auto;
+    .bottomString {
+      margin-top: 8px;
+    }
+    *{
+      font-size: $smallText;
+    }
+  }
 
   .title {
     font-size: $text32;
     color: $white;
     font-weight: $semibold;
+    @include mq($TabletWidth, max) {
+      font-size: $mediumText;
+      width: 65%;
+      min-width: 180px;
+      text-align: center;
+    }
   }
 
   .description {
@@ -56,6 +110,12 @@
       opacity: .4;
       border-radius: 50px;
       filter: blur(40px);
+    }
+
+    @include mq($TabletWidth, max) {
+      width: 100%;
+      max-width: unset;
+      align-items: center;
     }
   }
 
@@ -90,6 +150,10 @@
     width: 100%;
     height: 100%;
     filter: brightness(.5) blur(2px);
+    @include mq($TabletWidth, max) {
+      filter: unset;
+      border-radius: unset;
+    }
   }
 
   .iconButtonsWrapper {
@@ -111,7 +175,18 @@
       opacity: .4;
       filter: blur(5px);
     }
-    
+    @include mq($TabletWidth, max) {
+      width: calc(100% - 32px);
+      right: unset;
+      top: 16px;
+      // padding-inline: 16px;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      &::after {
+        display: none;
+      }
+    }
+     
     svg {
       width: 32px;
       height: 32px;
@@ -126,23 +201,43 @@
     @include hover {
       background-color: $black;
     }
+
+    @include mq($TabletWidth, max) {
+      background-color: #1b1b22bd;
+      border: unset;
+      // padding: 4px;
+      svg {
+        width: Clamp(20px, 5vw, 30px);
+        height: Clamp(20px, 5vw, 30px);
+      }
+    }
   }
-
-
 }
 
 .wrapper {
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
+  @include mq($TabletWidth, max) {
+    flex-direction: column-reverse;
+    row-gap: 16px;
+  }
+  
 }
 
 .mainContent {
   width: 69%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .right {
   width: 30%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+
 }
 
 .navigation {
@@ -155,6 +250,9 @@
   margin-top: 16px;
   justify-content: space-between;
   max-width: 372px;
+  @include mq($TabletWidth, max) {
+    align-items: center;
+  }
 
 }
 

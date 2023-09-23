@@ -41,11 +41,12 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 }) 
 
 export default function CourseModulesPage(props: Props) {
+ 
 
   return (<>
     <Head>
-      <title>Arbi Hunter|Курсы|{props.course?.name}</title>
-      <meta name='description' content={props.course?.fullDescription}/>
+      <title>{'Arbi Hunter|Курсы|'+props.course?.name.toString()}</title>
+      <meta name='description' content={props.course?.fullDescription.toString()}/>
     </Head>
     <ModulesPage course={props.course} modules={props.modules} initialStep={props.initialStep} id={props.id} blocks={props.blocks} initialBlock={props.initialBlock} module={props.module}/>
   </>)

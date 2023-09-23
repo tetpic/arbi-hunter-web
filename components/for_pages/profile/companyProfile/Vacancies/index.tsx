@@ -8,14 +8,23 @@ interface Props {
 }
 
 enum VacanciesNavigation {
-  Active = 'Активные',
-  Archive = 'Архив',
+  Active =  'active',
+  Archive = 'archive',
+}
+
+function translate (n: VacanciesNavigation) {
+  switch(n) {
+    case VacanciesNavigation.Active:
+      return 'Активные'
+    case VacanciesNavigation.Archive:
+      return 'Архив'
+  }
 }
 
 export default function Vacancies(props: Props) {
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)
-  const items = Object.values(VacanciesNavigation).map(el=> el)
+  const items = Object.values(VacanciesNavigation).map(el=> {return {name: translate(el), type: el}})
 
 
   return (<div className={styles.root}> 

@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 import styles from './index.module.scss'
 
 interface Props {
@@ -52,6 +54,9 @@ export default function CourseModules({course}: Props) {
             {k.image?.source &&
               <Image className={styles.image} src={filePath + k.image?.source} width={65} height={48} alt={'course title'}/>
             }
+            <div className={styles.progressBarWrapper}>
+              <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.yellow})} value={k.progress} text={`${k.progress}%`}/>
+            </div>
             <p className={styles.title}>{k.title}</p>
             <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), 'урок', 'урока', 'уроков')}</p>
             <ArrowDownSvg className={classNames(styles.arrow, activeModule === k&&styles.arrow_active)}/>

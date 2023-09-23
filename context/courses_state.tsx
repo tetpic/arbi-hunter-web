@@ -133,6 +133,7 @@ export function CoursesWrapper(props: Props) {
       state.clear()
       return state
     })
+    setFeedbacksState([])
   }
 
   const setCourseBlocks = async (courseId: number, blocks?: ICourseBlock[]): Promise<boolean> => {

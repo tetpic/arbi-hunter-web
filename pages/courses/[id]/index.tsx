@@ -41,8 +41,8 @@ export default function Course(props: Props) {
   return (
     <>
       <Head>
-        <title>Arbi Hunter|Курсы|{props.course?.name}</title>
-        <meta name='description' content={props?.course?.fullDescription}/>
+        <title>{'Arbi Hunter|Курсы|' + props.course?.name?.toString()}</title>
+        <meta name='description' content={props?.course?.fullDescription?.toString()}/>
       </Head>
       <CurrentCourse course={props.course} page={props.page} modules={props.modules} id={Number(props.id)} blocks={props.blocks}/>
     </>

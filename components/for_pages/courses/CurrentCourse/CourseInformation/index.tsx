@@ -4,27 +4,38 @@ import languages from '@cospired/i18n-iso-languages'
 import styles from './index.module.scss'
 import UserPic from 'components/ui/UserPic'
 import ReactPlayer from 'react-player'
+import { useEffect, useState } from 'react'
 
 interface Props {
   course: ICourse
+  isMobile?: boolean
 }
 
-export default function CoursesInformation({course}: Props) {
+export default function CoursesInformation({course, isMobile}: Props) {
 
-  languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+  const [loaded, setLoaded] = useState<boolean>(false)
+
+  useEffect(()=>{
+    setLoaded(true)
+  }, [])
+  
+
+  languages.registerLocale(require(`@cospired/i18n-iso-languages/langs/${course.language}.json`))
   const courseLang = languages.getName(course.language, course.language)
   const filePath = process.env.files
 
   return (<div className={styles.root}> 
     <div className={styles.item}>
-      <p className={styles.title}>Описание</p>
+      {!isMobile &&
+        <p className={styles.title}>Описание</p>
+      }
       <p className={styles.text}>{course.fullDescription}</p>
     </div>
 
     <div className={classNames(styles.item, styles.stats)}>
       <div className={styles.stat}>
         <p className={styles.stat_title}>Язык</p>
-        <p className={styles.stat_value}>{courseLang.charAt(0).toUpperCase() + courseLang.slice(1)}</p>
+        <p className={styles.stat_value}>{courseLang&&(courseLang.charAt(0).toUpperCase() + courseLang.slice(1))}</p>
       </div>
       <div className={styles.stat}>
         <p className={styles.stat_title}>Время</p>
@@ -36,7 +47,7 @@ export default function CoursesInformation({course}: Props) {
       </div>
     </div>
 
-    {course.video && 
+    {course.video && loaded &&
       <div className={styles.item}>
         <div className={styles.videoWrapper}>
           <ReactPlayer width={'100%'} height={'auto'} url={filePath + course.video.source} controls/>
@@ -47,8 +58,8 @@ export default function CoursesInformation({course}: Props) {
     <div className={classNames(styles.item, styles.author)}>
         <p className={styles.title}>Об {course.authors.length>1?'авторах':'авторе'}</p>
         {course.authors.length>0&&
-        course.authors.map(el=> {
-          return <div className={styles.author_wrapper}>
+        course.authors.map((el, index)=> {
+          return <div key={index} className={styles.author_wrapper}>
             <UserPic className={styles.author_image} image={filePath+el.image.source} size={75}/>
             <p className={styles.author_name}>{el.name}</p>
             <p className={styles.author_description}>{el.description}</p>

@@ -76,7 +76,7 @@ export interface ICourseBlock extends ICourseBlockTranslation {
 
 export interface ICourseStepAnswer extends TimeStamp {
   courseBlockStepId?: number,
-  answers: number[],
+  answers?: number[],
   id?: number,
   userId?: number,
 }

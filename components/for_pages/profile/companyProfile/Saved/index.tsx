@@ -9,16 +9,27 @@ interface Props {
 }
 
 enum SavedNavigation {
-  CVS = 'Резюме',
-  Courses = 'Курсы',
-  Media = 'Медиа'
+  CVS = 'cvs',
+  Courses = 'courses',
+  Media = 'media'
+}
+
+function translate (n: SavedNavigation) {
+  switch(n) {
+    case SavedNavigation.CVS:
+      return 'Резюме'
+    case SavedNavigation.Courses:
+      return 'Курсы'
+    case SavedNavigation.Media:
+      return 'Медиа'
+  }
 }
 
 
 export default function Saved(props: Props) {
 
   const [activeItem, setActiveItem] = useState<SavedNavigation>(SavedNavigation.CVS)
-  const items = Object.values(SavedNavigation).map(el=> el)
+  const items = Object.values(SavedNavigation).map(el=> {return {name: translate(el), type: el}})
 
   return (<div className={styles.root}> 
     <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>

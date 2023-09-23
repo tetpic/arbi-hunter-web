@@ -8,8 +8,17 @@ interface Props {
 }
 
 enum PersonalNavigation {
-  Personal = 'Личная информация',
-  Password = 'Изменить пароль'
+  Personal = 'personal',
+  Password = 'password'
+}
+
+function translatePersonalNavigation(p: PersonalNavigation) {
+  switch(p) {
+    case PersonalNavigation.Personal:
+      return 'Личная информация'
+    case PersonalNavigation.Password: 
+      return 'Изменить пароль'
+  }
 }
 
 
@@ -18,7 +27,7 @@ enum PersonalNavigation {
 export default function Personal(props: Props) {
 
   const [activeItem, setActiveItem] = useState<PersonalNavigation>(PersonalNavigation.Personal)
-  const items = Object.values(PersonalNavigation).map(el=> el)
+  const items = Object.values(PersonalNavigation).map(el=> {return {name: translatePersonalNavigation(el), type: el}})
 
   return (
     <div className={styles.root}> 
