@@ -70,7 +70,8 @@ interface Props {
 
 export function CoursesWrapper(props: Props) {
   const userContext = useUserContext()
-  const {profileType, countryCode} = userContext.currentProfile
+  const profileType = userContext?.currentProfile?.profileType
+  const countryCode = userContext?.currentProfile?.countryCode
 
   const [categories, setCategoriesState] = useState<any[]>([])
   const [courses, setCoursesState] = useState<ICourse[]>([])
