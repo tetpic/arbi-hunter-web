@@ -4,6 +4,7 @@ import { createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
 
 interface IState {
+  
   savedArticles: Map<number, IArticle>
   setSavedArticles: (p: number)=>Promise<boolean|{total: number}>
 }
@@ -21,6 +22,7 @@ interface Props {
 
 export function ArticleWrapper(props: Props) {
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map())
+
 
   const userContext = useUserContext()
 
