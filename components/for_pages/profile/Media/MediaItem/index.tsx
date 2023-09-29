@@ -10,6 +10,7 @@ import { Languages } from 'types/enums'
 import styles from './index.module.scss'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
+import { FILES } from 'types/constants'
 
 
 interface Props {
@@ -20,7 +21,6 @@ interface Props {
 
 export default function MediaItem({media, showContent, type}: Props) {
 
-  const filePath = process.env.files
   const [content, setContent] = useState<IArticle>()
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -36,7 +36,7 @@ export default function MediaItem({media, showContent, type}: Props) {
   return (  <div className={styles.item}>
     <div className={styles.head}>
       {(!type || type !== 'news') &&
-        <UserPic size={48} className={styles.userPic} image={media.image?.source&&filePath+media.image.source}/>
+        <UserPic size={48} className={styles.userPic} image={media.image?.source&&FILES+media.image.source}/>
       }
       <p className={styles.name}>{media.community||media.shortDescription||(type === 'news'&&media.name)}</p>
       <p className={styles.date}>{Formatter.formatDateRelative(media.createdAt)}</p>
@@ -57,7 +57,7 @@ export default function MediaItem({media, showContent, type}: Props) {
       </>)
     })
     ||
-    (loading && <Spinner size={32} color={colors.yellow}/>)
+    (loading && showContent && <Spinner size={32} color={colors.yellow}/>)
     }
     <div className={styles.stats}>
       <p ><HeartSvg size={24}/> {media.likesCount||'0'}</p>

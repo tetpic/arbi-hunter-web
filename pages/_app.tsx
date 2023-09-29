@@ -21,7 +21,7 @@ import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
 import { VacancyWrapper } from 'context/vacancy_state'
-import { ArticleWrapper } from 'context/article_state'
+import { MediaWrapper } from 'context/media_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
@@ -57,7 +57,7 @@ function MyApp({Component, pageProps}: AppProps) {
           <CreateVcCvWrapper>
           <VacancyWrapper>
           <CvWrapper>
-          <ArticleWrapper>
+          <MediaWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
           <CoursesWrapper>
@@ -81,7 +81,7 @@ function MyApp({Component, pageProps}: AppProps) {
           </CoursesWrapper>
           </FeedbacksWrapper>
           </PatternWrapper>
-          </ArticleWrapper>
+          </MediaWrapper>
           </CvWrapper>
           </VacancyWrapper>
           </CreateVcCvWrapper>

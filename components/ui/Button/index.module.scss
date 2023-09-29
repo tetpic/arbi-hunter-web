@@ -4,6 +4,23 @@
   position: relative;
 }
 
+.spinner {
+  visibility: hidden;
+  // position: absolute;
+  // top: 50%;
+  // left: 10px;
+  // transform: translateY(-50%);
+  // margin-top: 4px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinnerVisible {
+  visibility: visible;
+}
+
 
 
 // .root {
@@ -194,22 +211,7 @@
 //   visibility: hidden;
 // }
 
-.spinner {
-  visibility: hidden;
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  margin-top: 4px;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.spinnerVisible {
-  visibility: visible;
-}
 
 // .arrow {
 //   margin-left: 15px;

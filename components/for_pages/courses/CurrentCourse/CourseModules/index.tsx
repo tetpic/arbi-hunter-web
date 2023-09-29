@@ -14,6 +14,7 @@ import Formatter from 'utils/formatter'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import styles from './index.module.scss'
+import { FILES } from 'types/constants'
 
 interface Props {
   course: ICourse
@@ -25,7 +26,6 @@ export default function CourseModules({course}: Props) {
   const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true)
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
   const router = useRouter()
-  const filePath = process.env.files 
 
   useEffect(()=>{
     if(courseModules?.size === 0) {
@@ -52,7 +52,7 @@ export default function CourseModules({course}: Props) {
         <div className={styles.item}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>
             {k.image?.source &&
-              <Image className={styles.image} src={filePath + k.image?.source} width={65} height={48} alt={'course title'}/>
+              <Image className={styles.image} src={FILES + k.image?.source} width={65} height={48} alt={'course title'}/>
             }
             <div className={styles.progressBarWrapper}>
               <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.yellow})} value={k.progress} text={`${k.progress}%`}/>

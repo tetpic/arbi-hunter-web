@@ -11,6 +11,6 @@ export default interface ICommunity extends TimeStamp {
   profile: IUserProfile,
   logo: IImage|null,
   members: IUser[],
-  isSubscribedByCurrentProfile: false,
+  isSubscribedByCurrentProfile: boolean,
   membersCount: string
 }

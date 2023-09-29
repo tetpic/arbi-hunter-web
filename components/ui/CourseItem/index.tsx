@@ -5,6 +5,7 @@ import UserSvg from 'components/svg/UserSvg'
 import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import FavoritesButton from '../FavoritesButton'
 import styles from './index.module.scss'
@@ -18,14 +19,13 @@ interface Props {
 export default function CourseItem(props: Props) {
   const router = useRouter()
 
-  const env = process.env.files
 
   return (
     <div className={styles.item} onClick={()=> router.push('/courses/' + props.course.id)}>
       <div className={styles.top}>
         <div className={styles.imageWrapper}>
           { 
-            (props.image|| props.course.image.source) &&<Image src={props.image||env + props.course.image.source} alt={'courses image'} fill/>
+            (props.image|| props.course.image.source) &&<Image src={props.image||FILES + props.course.image.source} alt={'courses image'} fill/>
             ||
             <FolderSvg/>
           }

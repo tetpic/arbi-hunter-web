@@ -83,14 +83,15 @@ export default function Button(props: Props) {
           [styles.text]: true,
           [styles.textHidden]: props.spinner,
         })}>{props.icon}{props.children}</span>
+      ||
+        <div className={classNames({
+          [styles.spinner]: true,
+          [styles.spinnerVisible]: props.spinner||props.isProcess,
+        })}>
+          <Spinner size={22} color="#fff" secondaryColor="rgba(255,255,255,0.4)"/>
+          {/* {darkSpinner && <Spinner size={22} color={colors.black} secondaryColor={colors.grey2} />} */}
+        </div>
       }
-      <div className={classNames({
-        [styles.spinner]: true,
-        [styles.spinnerVisible]: props.spinner||props.isProcess,
-      })}>
-        <Spinner size={22} color="#fff" secondaryColor="rgba(255,255,255,0.4)"/>
-        {/* {darkSpinner && <Spinner size={22} color={colors.black} secondaryColor={colors.grey2} />} */}
-      </div>
       </button>
   )
 }

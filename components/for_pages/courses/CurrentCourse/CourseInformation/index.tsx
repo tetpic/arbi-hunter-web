@@ -5,6 +5,7 @@ import styles from './index.module.scss'
 import UserPic from 'components/ui/UserPic'
 import ReactPlayer from 'react-player'
 import { useEffect, useState } from 'react'
+import { FILES } from 'types/constants'
 
 interface Props {
   course: ICourse
@@ -22,7 +23,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
 
   languages.registerLocale(require(`@cospired/i18n-iso-languages/langs/${course.language}.json`))
   const courseLang = languages.getName(course.language, course.language)
-  const filePath = process.env.files
+  const filePath = FILES
 
   return (<div className={styles.root}> 
     <div className={styles.item}>

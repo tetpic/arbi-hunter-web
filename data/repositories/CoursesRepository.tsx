@@ -2,6 +2,7 @@ import { ICourseCategory } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { LOAD_LIMIT } from 'types/constants'
 import { CategoryType, Languages } from 'types/enums'
 import request from 'utils/request'
 
@@ -18,6 +19,8 @@ export default class CoursesRepository {
     }
     return res
   }
+
+
 
   static async getAllCategoryList(profile: ProfileType): Promise<{data: ICourseCategory[], total: number}|null> {
     const res = await request({

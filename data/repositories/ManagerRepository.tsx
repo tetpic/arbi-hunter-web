@@ -1,5 +1,6 @@
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { LOAD_LIMIT } from 'types/constants'
 import request from 'utils/request'
 
 export default class ManagerRepository {
@@ -16,7 +17,7 @@ export default class ManagerRepository {
     return res
   }
 
-  static async getManagersList(page: number, limit: number|string = process.env.NEXT_PUBLIC_LOAD_LIMIT): Promise<IManager[]|null> {
+  static async getManagersList(page: number, limit: number|string = LOAD_LIMIT): Promise<IManager[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/manager?page=${page}&limit=${limit}`,

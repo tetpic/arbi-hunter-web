@@ -16,6 +16,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
+import { FILES } from 'types/constants'
 import { NavigationSet } from 'types/types'
 import Formatter from 'utils/formatter'
 import CourseFeedbacks from './CourseFeedbacks'
@@ -45,7 +46,6 @@ export default function CurrentCourse(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
-  const filePath = process.env.files
   const course = props.course || currentCourse
   
   const body = (()=>{
@@ -132,7 +132,7 @@ export default function CurrentCourse(props: Props) {
           }
          
         </div>
-        <Image className={styles.courseImage} src={filePath + course.image.source} alt={course.name} fill/>
+        <Image className={styles.courseImage} src={FILES + course.image.source} alt={course.name} fill/>
           <div className={styles.iconButtonsWrapper}>
             <IconButton className={styles.iconButton} bgColor={'transparent'}>
               <ShareSvg/>

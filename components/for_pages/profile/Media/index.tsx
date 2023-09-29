@@ -1,5 +1,5 @@
 import Spinner from 'components/ui/Spinner'
-import { useArticleContext } from 'context/article_state'
+import { useMediaContext } from 'context/media_state'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import styles from './index.module.scss'
@@ -12,13 +12,12 @@ interface Props {
 
 export default function SavedMedia(props: Props) {
 
-  const mediaContext = useArticleContext()
+  const mediaContext = useMediaContext()
   const [loaded, setLoaded] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
 
   useEffect(()=>{
-    
     mediaContext.setSavedArticles(page).then(res=> {
       if(typeof res === 'object') {
         setLoaded(true) 
@@ -26,13 +25,6 @@ export default function SavedMedia(props: Props) {
       }
     })
   }, [page])
-
-  useEffect(()=>{
-    total
-    page
-    mediaContext.savedArticles
-    
-  }, [total, page, mediaContext.savedArticles])
 
   return (
   <div className={styles.root}> 

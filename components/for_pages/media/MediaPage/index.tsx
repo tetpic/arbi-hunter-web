@@ -1,4 +1,5 @@
 import Navigation from 'components/ui/Navigation'
+import TitleForSection from 'components/ui/TitleForSection'
 import { useCallback, useState } from 'react'
 import { NavigationSet } from 'types/types'
 import MediaCommunities from './Communities'
@@ -45,9 +46,24 @@ export default function MediaPage(props: Props) {
     }
   })()
 
+  const title = (()=> {
+    switch(page) {
+      case MediaNav.AllArticles:
+        return 'Медиа'
+      case MediaNav.Subscriptions:
+        return 'Мои подписки'
+      case MediaNav.Communities:
+        return 'Сообщества'
+    }
+  })()
+
+
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
-      {body}
+      <TitleForSection title={title}/>
+      <div className={styles.bodyWrapper}>
+        {body}
+      </div>
     </div>
     <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet()}/>
   </div>)

@@ -3,8 +3,13 @@
 .root {
   display: flex;
   margin-top: 48px;
+  column-gap: 16px;
 }
 
 .contentWrapper {
   width: 69%;
+}
+
+.bodyWrapper {
+  margin-top: 16px;
 }

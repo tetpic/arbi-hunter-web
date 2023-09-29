@@ -1,11 +1,21 @@
+import ICommunity from 'data/interfaces/ICommunity'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { IUserProfile } from 'data/interfaces/IUser'
+import { LOAD_LIMIT } from 'types/constants'
 import request from 'utils/request'
 
+interface Response <T> {
+  total: number,
+  data: T,
+  count?: number,
+  pageCount?: number
+}
+
 export default class CommunitiesRepository {
-  static async getCommunities(profile: ProfileType,limit: number, page: number): Promise<any|null> {
+  static async getCommunities(profile: ProfileType, page: number): Promise<Response<ICommunity[]>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/community?$limit=${limit}&page=${page}`,
+      url: `/api/community?limit=${20}&page=${page}`,
       profile
     })
     if(res.err) {
@@ -18,17 +28,6 @@ export default class CommunitiesRepository {
     const res = await request({
       method: 'post',
       url: '/api/community',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async getCommunityById(profile: ProfileType,  communityId: number): Promise<any|null> {
-    const res = await request({
-      method: 'get',
-      url: `/api/community/${communityId}`,
       profile
     })
     if(res.err) {
@@ -37,10 +36,21 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityMembers(profile: ProfileType, communityId: number,  page: number, limit: number, search?: string): Promise<any|null> {
+  static async getCommunityById(communityId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
-      url: `/api/community/${communityId}/subscribers?limit=${limit}&page=${page}` +(search&&`&search=${search}`),
+      url: `/api/community/${communityId}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getCommunityMembers(profile: ProfileType, communityId: number,  page: number,  search?: string): Promise<Response<IUserProfile[]>|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/community/${communityId}/subscribers?limit=${LOAD_LIMIT}&page=${page}` +(search?`&search=${search}`:''),
       profile
     })
     if(res.err) {
