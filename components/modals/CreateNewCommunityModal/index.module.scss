@@ -1,0 +1,44 @@
+@import 'styles/index';
+
+.modalLayout {
+  max-width: 514px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 8px;
+}
+
+.blackButton {
+  @include buttonBlack;
+}
+
+.yellowButton {
+  @include buttonYellow;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.title {
+  font-size: $text20;
+  color: $white;
+  font-weight: $semibold;
+}
+
+.radioItem {
+  background-color: $grey;
+  padding: 10px 16px;
+  border-radius: 8px;
+  @include exeptLast {
+    margin-bottom: 8px;
+  }
+
+  &_active {
+    border: 1px $yellow solid;
+  }
+}

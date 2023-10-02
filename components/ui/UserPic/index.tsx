@@ -9,9 +9,11 @@ interface Props {
   onClick?: ()=> void
   className?: string
   size?: number
+  icon?: JSX.Element
 }
 
 export default function UserPic(props: Props) {
+  
   const router = useRouter()
 
   const onClickHandler = () => {
@@ -21,7 +23,11 @@ export default function UserPic(props: Props) {
 
   return ( 
     <div className={classNames(styles.imageWrapper, props.className)} onClick={onClickHandler}>
+      {
+      props.icon !== null && props.icon 
+      ||
       <Image src={props.image?props.image: '/icons/defaultUser.png'} alt={'sefault user pic'} width={props.size||40} height={props.size||40}/>
+      }
     </div>
   )
 }

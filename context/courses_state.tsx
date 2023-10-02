@@ -1,8 +1,10 @@
-import { ICourseCategory } from 'data/interfaces/Common'
+import { ICategory } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
+import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { CategoryType } from 'types/enums'
 import { useUserContext } from './user_state'
 
 interface IState {
@@ -26,7 +28,7 @@ interface IState {
   feedBacks: ICourseFeedback[]
   setFeedbacks: (courseId: number, page: number, limit: number)=>  Promise<boolean>
 
-  categories: ICourseCategory[]
+  categories: ICategory[]
   setCoursesCategories: ()=>void
 
   courseStats: ICourseStats,
@@ -85,7 +87,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCoursesCategories = () => {
     if(categories.length > 0) return
-    CoursesRepository.getCoursesCategoryList(profileType)
+    ArticlesRepository.getCategoryList(profileType, CategoryType.Course)
     .then(res=>{
       setCategoriesState(res.data)
     })

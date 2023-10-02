@@ -1,7 +1,7 @@
 import UserSvg from 'components/svg/UserSvg'
 import Button from 'components/ui/Button'
 import UserPic from 'components/ui/UserPic'
-import { useMediaContext } from 'context/media_state'
+import { useCommunityContext } from 'context/community_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -14,13 +14,13 @@ interface Props {
 }
 
 export default function CommunityItem({community}: Props) {
-  const mediaContext = useMediaContext()
+  const communityContext = useCommunityContext()
   const router = useRouter()
   const [load, setLoad] = useState<boolean>(false)
 
   const onClickHandler = async () => {
     setLoad(true)
-    await mediaContext.communitySubsription(community.id, community.isSubscribedByCurrentProfile)
+    await communityContext.communitySubsription(community.id, community.isSubscribedByCurrentProfile)
     setLoad(false)
   }
 
@@ -39,6 +39,6 @@ export default function CommunityItem({community}: Props) {
     >
       {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
     </Button>
-    <p className={styles.name}>{community.name}</p>
+    <p className={styles.name}  onClick={()=>router.push(`/media/community/${community.id}`)}>{community.name}</p>
   </div>)
 }

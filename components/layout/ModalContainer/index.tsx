@@ -14,6 +14,8 @@ import ProposalTextModal from 'components/modals/ProposalModal/ProposalTextModal
 import CvVcOptionsModal from 'components/modals/OptionsModal'
 import ConfirmModal from 'components/modals/ConfirmModal'
 import CongratulationsModal from 'components/modals/CongratulationsModal'
+import CreateNewCommunityModal from 'components/modals/CreateNewCommunityModal'
+import EditCommunityModal from 'components/modals/EditCommunityModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -60,6 +62,12 @@ export default function ModalContainer(props: Props) {
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.CongratulationsModal} {...commonSettings}>
           {appContext.modal === ModalType.CongratulationsModal && <CongratulationsModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.CreateNewCommunityModal} {...commonSettings}>
+          {appContext.modal === ModalType.CreateNewCommunityModal && <CreateNewCommunityModal onClose={commonSettings.onRequestClose}/>}
+        </Modal>
+        <Modal isOpen={appContext.modal === ModalType.EditCommunityModal} {...commonSettings}>
+          {appContext.modal === ModalType.EditCommunityModal && <EditCommunityModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
       </div>
     </RemoveScroll>

@@ -48,7 +48,8 @@ export default function Login(props: Props) {
       router.push('/')
     })
     .catch(err=> {
-      appContext.showSnackbar(err.errors, SnackbarType.error)
+      
+      appContext.showSnackbar(err.message.toString(), SnackbarType.error)
     })
   }
  

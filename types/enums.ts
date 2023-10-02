@@ -11,7 +11,9 @@ export enum ModalType {
   ProposalTextModal= 'proposalTextModal',
   ConfirmModal= 'confirmModal',
   VcResponsesFilterModal= 'vcResponsesFilterModal',
-  CongratulationsModal = 'congratulationsModal'
+  CongratulationsModal = 'congratulationsModal',
+  CreateNewCommunityModal= 'createNewCommunityModal',
+  EditCommunityModal='editCommunityModal'
 }
 
 export enum SnackbarType {

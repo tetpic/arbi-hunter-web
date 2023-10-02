@@ -1,54 +1,80 @@
+import EditSvg from 'components/svg/EditSvg'
+import PhotoCameraSvg from 'components/svg/PhotoCameraSvg'
 import UsersSvg from 'components/svg/UsersSvg'
 import Button from 'components/ui/Button'
 import UserPic from 'components/ui/UserPic'
-import { useMediaContext } from 'context/media_state'
-import { IImage } from 'data/interfaces/Common'
+import { useCommunityContext } from 'context/community_state'
+import { useAppContext } from 'context/state'
+import { useUserContext } from 'context/user_state'
+import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
 import { useState } from 'react'
 import { FILES } from 'types/constants'
+import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 
 interface Props {
-  image: IImage
-  logo: IImage
-  id: number
-  name: string
-  members: number
-  subscribed: boolean
+  community: ICommunity
 }
 
-export default function CommunityHeader(props: Props) {
-  const mediaContext = useMediaContext()
+export default function CommunityHeader({community}: Props) {
+  
+  const communityContext = useCommunityContext()
+  const userContext = useUserContext()
+  const appContext = useAppContext()
   const [isLoading, setIsLoading] = useState<boolean>()
 
   const buttonHandler = async () => {
     setIsLoading(true)
-    await mediaContext.communitySubsription(props.id, props.subscribed)
+    await communityContext.communitySubsription(community.id, community.isSubscribedByCurrentProfile)
     setIsLoading(false)
   }
 
+  const size = 114
+
+  const isAdmin = community.profile.id === userContext.currentProfile.id
+
+  const camera = (
+    <div className={styles.svgWrapper}  style={{width: size, height: size}}>
+      <PhotoCameraSvg/>
+    </div>
+  )
+
   return (<div className={styles.root}> 
     <div className={styles.background}>
-      {props.image &&
-        <Image src={FILES+ props.image.source} alt={props.name + ' background'} fill/>
+      {community.image &&
+        <Image src={FILES+ community.image.source} alt={community.name + ' background'} fill/>
+      }
+      {isAdmin &&
+        <Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
       }
     </div>
     <div className={styles.content}>
-      <UserPic className={styles.userPic} image={props.logo&&FILES + props.logo.source} size={/*props.image?114:80*/ 144}/>
-      <p className={styles.name}>{props.name}</p>
+      <UserPic 
+      className={styles.userPic} 
+      image={community.logo&&FILES + community.logo.source} 
+      icon={community.profile.id === userContext.currentProfile.id&&!community.logo&&camera} 
+      size={/*props.image?114:80*/ size}
+      />
+      <p className={styles.name}>{community.name}</p>
       <p className={styles.members}>
         <UsersSvg/>
-        {Formatter.formatNumber(props.members)} участников
+        {Formatter.formatNumber(Number(community.membersCount))} участников
       </p>
-      <Button 
-      isProcess={isLoading}
-      disabled={isLoading}
-      className={styles.button}
-      onClick={buttonHandler} 
-      >
-        {props.subscribed?'Подписаться': 'Отписаться'}
-      </Button>
+      {
+        isAdmin?
+        <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}>Настройки сообщества</Button>
+        :
+        <Button 
+        isProcess={isLoading}
+        disabled={isLoading}
+        className={styles.button}
+        onClick={buttonHandler} 
+        >
+          {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
+        </Button>
+      }
     </div>
 
 

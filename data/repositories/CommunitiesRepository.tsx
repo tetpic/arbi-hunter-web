@@ -1,3 +1,4 @@
+import { UpdateCommunityForm } from 'data/interfaces/Common'
 import ICommunity from 'data/interfaces/ICommunity'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
@@ -24,10 +25,11 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async createCommunity(profile: ProfileType,  data: {name: string, categoryId: number}): Promise<any|null> {
+  static async createCommunity(profile: ProfileType,  data: UpdateCommunityForm): Promise<ICommunity|null> {
     const res = await request({
       method: 'post',
       url: '/api/community',
+      data,
       profile
     })
     if(res.err) {
@@ -59,7 +61,7 @@ export default class CommunitiesRepository {
     return res
   }
   
-  static async updateCommunity(profile: ProfileType, communityId: number, data: {name?: string, imageId?: number, logoId?: number}): Promise<any|null> {
+  static async updateCommunity(profile: ProfileType, communityId: number, data: UpdateCommunityForm): Promise<ICommunity|null> {
     const res = await request({
       method: 'patch',
       url: `/api/community/${communityId}`,

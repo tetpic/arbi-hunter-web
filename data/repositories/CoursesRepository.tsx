@@ -1,38 +1,11 @@
-import { ICourseCategory } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { LOAD_LIMIT } from 'types/constants'
-import { CategoryType, Languages } from 'types/enums'
+import { Languages } from 'types/enums'
+import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class CoursesRepository {
-
-  static async getCoursesCategoryList(profile: ProfileType): Promise<{data: ICourseCategory[], total: number}|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/article-category?categoryType=course',
-      profile
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-
-
-  static async getAllCategoryList(profile: ProfileType): Promise<{data: ICourseCategory[], total: number}|null> {
-    const res = await request({
-      method: 'get',
-      url: `/api/article-category?s=${JSON.stringify({'categoryType': 'course'})}`,
-      profile
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
 
   static async getCourseModules(courseId: number, lang: Languages, token?: string): Promise<ICourseBlock[]|null> {
     const res = await request({
@@ -44,17 +17,6 @@ export default class CoursesRepository {
       return null
     }
     return res.data
-  }
-
-  static async getCategoryById(id: number, lang: Languages, type: CategoryType): Promise<any|null> {
-    const res = await request({
-      method: 'get',
-      url: `'/api/article-category/${id}?lang=${lang}&categoryType=${type}'`,
-    })
-    if(res.err) {
-      return null
-    }
-    return res
   }
 
   static async getCourseById(id: number, token?: string): Promise<ICourse|null> {
@@ -69,7 +31,7 @@ export default class CoursesRepository {
     return res
   }  
 
-  static async getCourses(data: CoursesData, lang: Languages): Promise<{data: ICourse[], total: number}|null> {
+  static async getCourses(data: CoursesData, lang: Languages): Promise<IPagination<ICourse>|null> {
     const object = {
       page: data.page!= null ? `&page=${data.page}` : null,
       limit: data.limit!= null ? `&limit=${data.limit}` : null,
@@ -87,8 +49,7 @@ export default class CoursesRepository {
     return res
   }
 
-
-  static async getFeedbacks(courseId: number, profile: ProfileType, page: number, limit: number ): Promise<{data: ICourseFeedback[], total: number}|null> {
+  static async getFeedbacks(courseId: number, profile: ProfileType, page: number, limit: number ): Promise<IPagination<ICourseFeedback>|null> {
     const res = await request({
       method: 'get',
       url: `/api/feedback?s={"courseId": ${courseId}}&sort=createdAt,DESC&page=${page}&limit=${limit}`,
@@ -141,7 +102,7 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseBlock(profile: ProfileType, lang: Languages, courseId: number, token?: string): Promise<{total: number, data: ICourseBlock[]}|null> {
+  static async getCourseBlock(profile: ProfileType, lang: Languages, courseId: number, token?: string): Promise<IPagination<ICourseBlock>|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block?sort=order,ASC&s={"courseId":${courseId}}&language=${lang}`,
@@ -154,7 +115,7 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseSteps(profile: ProfileType, lang: Languages, courseId: number): Promise<{total: number, data: ICourseStep[]}|null> {
+  static async getCourseSteps(profile: ProfileType, lang: Languages, courseId: number): Promise<IPagination<ICourseStep>|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block-step/?sort=order,ASC&s={"courseBlockId":${courseId}}&language=${lang}`,
@@ -181,7 +142,6 @@ export default class CoursesRepository {
   }
 
   static async getCoursesNews(profile: ProfileType, lang: Languages, courseId: number, limit: number, page: number): Promise<IArticle[]|null> {
-    
     const res = await request({
       method: 'get',
       url: `/api/article?categoryType=news&sort=createdAt,DESC&limit=${limit}&page=${page}&courseId=${courseId}&language=${lang}`,

@@ -1,6 +1,6 @@
 import Spinner from 'components/ui/Spinner'
 import UserPic from 'components/ui/UserPic'
-import { useMediaContext } from 'context/media_state'
+import { useCommunityContext } from 'context/community_state'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
@@ -10,11 +10,11 @@ interface Props {
 }
 
 export default function CommunityMembers(props: Props) {
-  const mediaContext = useMediaContext()
+  const communityContext = useCommunityContext()
   const [loading, setLoad] = useState<boolean>(true)
 
   useEffect(()=>{
-    mediaContext.setCommunityMembers(1)
+    communityContext.setCommunityMembers(1)
     .then(_=> {
         setLoad(false)
       }
@@ -26,8 +26,8 @@ export default function CommunityMembers(props: Props) {
   return (<div className={styles.root}> 
   <p className={styles.title}>Участники</p>
   <div className={styles.wrapper}>
-    {mediaContext.communityMembers.size > 0 && !loading &&
-    [...mediaContext.communityMembers.values()].slice(0, 8).map(user=> {
+    {communityContext.communityMembers.size > 0 && !loading &&
+    [...communityContext.communityMembers.values()].slice(0, 8).map(user=> {
       return(
         <div className={styles.user}>
           <UserPic image={user.image&&FILES+user.image.source} size={60}/>

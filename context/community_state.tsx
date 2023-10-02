@@ -1,0 +1,180 @@
+import { UpdateCommunityForm, ICategory } from 'data/interfaces/Common'
+import { IArticle } from 'data/interfaces/IArticle'
+import ICommunity from 'data/interfaces/ICommunity'
+import { IUserProfile } from 'data/interfaces/IUser'
+import ArticlesRepository from 'data/repositories/ArticlesRepository'
+import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
+import { useRouter } from 'next/router'
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import { CategoryType } from 'types/enums'
+import { useAppContext } from './state'
+import { useUserContext } from './user_state'
+
+interface IState {
+  communities: Map<number, ICommunity>
+  setCommunities: (p: number) => Promise<boolean|{total: number}>
+  currentCommunity: ICommunity,
+  setCurrentCommunity: Dispatch<SetStateAction<ICommunity>>
+  communityNews: Map<number, IArticle>
+  getCommunityNews: (id: number) => Promise<boolean|{total: number}>
+  setCommunityNews: Dispatch<SetStateAction<Map<number, IArticle>>>
+  communityMembers: Map<number, IUserProfile>
+  setCommunityMembers: (page: number) => Promise<boolean|{total: number}>
+  communitySubsription: (id: number, isSubsribed: boolean) => Promise<boolean>
+  categories: ICategory[]
+  createCommunity: (c: UpdateCommunityForm) => void
+  updateCommunity: (data: UpdateCommunityForm) => Promise<boolean>
+}
+
+const CommunityContext = createContext<Partial<IState>>({})
+
+interface Props {
+  children: React.ReactNode
+}
+
+export function CommunityWrapper(props: Props) {
+  const userContext = useUserContext()
+  const appContext = useAppContext()
+  const profileType = userContext?.currentProfile?.profileType||null
+  const router = useRouter()
+
+
+  const [communities, setCommunitiesState] = useState<Map<number, ICommunity>>(new Map)
+  const [communityNews, setCommunityNews] = useState<Map<number, IArticle>>(new Map())
+  const [currentCommunity, setCurrentCommunity] = useState<ICommunity>()
+  const [communityMembers, setCommunityMembersState] = useState<Map<number, IUserProfile>>(new Map)
+  const [categories, setCategoriesState] = useState<ICategory[]>([])
+
+  const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
+    try {
+      const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, page)
+      setCommunityMembersState(state => {
+        state.clear()
+        res.data.forEach(r => {
+          state.set(r.id, r)
+        })
+        return new Map(state)
+      })
+      return { total: res.total }
+    } catch (err) {
+      return false
+    }
+  }
+
+  const getCommunityNews = async (page: number) => {
+    return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
+    .then(res => {
+      setCommunityNews(state=> {
+        state.clear()
+        res.data.forEach(r=> {
+          state.set(r.id, r)
+        })
+        return new Map(state)
+      })
+      return {total: res.total}
+    })
+    .catch(err=> {
+      return false
+    })
+  }
+
+  const setCommunities = async (p: number) => {
+    const res = await CommunitiesRepository.getCommunities(profileType, p)
+    if (res) {
+      setCommunitiesState(s => {
+        res.data.forEach(e=> {
+          s.set(e.id, e)
+        })
+        return new Map(s)
+      })
+      return {total: res.total}
+    }
+    else {
+      return false
+    }
+  }
+  
+  const communitySubsription = async (id: number, isSubsribed: boolean):Promise<boolean> => {
+    const changeState = (b: boolean) => {
+      if(currentCommunity) {
+        setCurrentCommunity(state=> {
+          state.isSubscribedByCurrentProfile = !isSubsribed
+          return {...state}
+        })
+      }
+      else {
+        setCommunitiesState(state=> {
+          const comm = state.get(id)
+          comm.isSubscribedByCurrentProfile = b
+          state.set(id, comm)
+          return new Map(state)
+        })
+      }
+    }
+
+    if(isSubsribed) {
+      await CommunitiesRepository.unsubscribeCommunity(profileType, id)
+      changeState(!isSubsribed)
+      return true
+    }
+    else {
+      await CommunitiesRepository.subscribeCommunity(profileType, id)
+      changeState(!isSubsribed)
+      return true
+    }
+  }
+
+  const setCategories = () => {
+    ArticlesRepository.getCategoryList(profileType, CategoryType.News)
+    .then(res=> {
+      setCategoriesState(res.data)
+    })
+  }
+
+  const createCommunity = (data: UpdateCommunityForm) => {
+    CommunitiesRepository.createCommunity(profileType, data)
+    .then(res=> {
+      appContext.hideModal()
+      router.push(`media/community/${res.id}`)
+    })
+  }
+
+  const updateCommunity = async (data: UpdateCommunityForm):Promise<boolean> => {
+    const res = await CommunitiesRepository.updateCommunity(profileType, currentCommunity.id, data)
+    appContext.hideModal()
+    setCurrentCommunity(res)
+    return true
+  }
+
+  useEffect(()=>{
+    if(categories.length === 0 && userContext.currentProfile) {
+      setCategories()
+    }
+  }, [userContext.currentProfile])
+
+  const value: IState = {
+    communities,
+    setCommunities,
+    currentCommunity,
+    setCurrentCommunity,
+    communityNews,
+    setCommunityNews,
+    getCommunityNews,
+    communityMembers,
+    setCommunityMembers,
+    communitySubsription,
+    categories,
+    createCommunity,
+    updateCommunity
+  }
+
+  return (
+    <CommunityContext.Provider value={value}>
+      {props.children}
+    </CommunityContext.Provider>
+  )
+}
+
+export function useCommunityContext() {
+  return useContext(CommunityContext)
+}

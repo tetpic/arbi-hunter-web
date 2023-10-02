@@ -40,13 +40,7 @@
   flex-wrap: wrap;
   align-self: start;
   .tag {
-    border-radius: 20px;
-    border: 2px solid $grey;
-    color: $white;
-    padding: 8px 16px;
-    cursor: pointer;
-    @include transitionDefault;
-    @include hoverTag;
+    @include tag;
   }
 }
 

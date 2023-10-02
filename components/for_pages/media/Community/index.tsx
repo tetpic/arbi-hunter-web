@@ -1,9 +1,9 @@
-import { useMediaContext } from 'context/media_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import { useEffect } from 'react'
 import CommunityHeader from './CommunityHeader'
 import styles from './index.module.scss'
 import dynamic from 'next/dynamic'
+import { useCommunityContext } from 'context/community_state'
 
 const CommunityContent = dynamic(()=> import('./CommunityContent'), {ssr: false})
 const CommunityMembers = dynamic(()=> import('./CommunityMembers'), {ssr: false})
@@ -15,30 +15,24 @@ interface Props {
 
 export default function CommunityPage({community, id}: Props) {
   
-  const mediaContext = useMediaContext()
+  const communityContext = useCommunityContext()
 
-  const com = mediaContext.currentCommunity||community
+  const com = communityContext.currentCommunity||community
 
   useEffect(()=>{
-    mediaContext.setCurrentCommunity(community)
-    return ()=>{mediaContext.setCurrentCommunity(null)}
+    communityContext.setCurrentCommunity(community)
+    // return ()=>{communityContext.setCurrentCommunity(null)}
   }, [])
 
   useEffect(()=>{
     
-  }, [mediaContext.currentCommunity])
+  }, [communityContext.currentCommunity])
   
 
   return (<div className={styles.root}> 
-  <CommunityHeader 
-  image={com.image} 
-  logo={com.logo} 
-  id={id} 
-  name={com.name} 
-  members={Number(com.membersCount)} 
-  subscribed={com.isSubscribedByCurrentProfile}/>
+  <CommunityHeader community={com} />
   
-  {mediaContext.currentCommunity &&
+  {communityContext.currentCommunity &&
   <>
     <CommunityContent/>
     <CommunityMembers/>

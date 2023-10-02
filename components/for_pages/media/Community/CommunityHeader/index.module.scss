@@ -10,11 +10,43 @@
 .background {
   height: 192px;
   width: 100%;
+  background: $gradient;
+  position: relative;
+
   img {
     position: static !important;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.editCover {
+  @include buttonDefault;
+  background-color: rgba(35, 35, 42, 0.44);
+  color: $white;
+  padding: 16px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  @include transitionDefault;
+  @include hover {
+    background-color: $greyAlt;
+  }
+  span{
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+  }
+}
+
+.editCommunity {
+  grid-area: b;
+  @include buttonDefault;
+  background-color: $grey;
+  @include transitionDefault;
+  @include hover {
+    background-color: $greyLight;
   }
 }
 
@@ -27,11 +59,13 @@
   align-items: flex-end;
   color: $white;
   height: 90px;
+  position: relative;
+  z-index: 2;
 
 
   .userPic {
     grid-area: p;
-    box-shadow: 0px 0px 0px 5px $grey;
+    box-shadow: 0px 0px 0px 5px $blackAlt;
   }
 
   .button {
@@ -45,8 +79,6 @@
     font-size: $text20;
   }
 
- 
-
   .members {
     grid-area: m;
     display: flex;
@@ -54,4 +86,15 @@
     column-gap: 8px;
   }
 
+}
+
+.svgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    background-color: $greyLight;
+  }
 }

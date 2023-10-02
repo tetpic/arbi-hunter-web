@@ -2,11 +2,12 @@
 
 
 .root {
-  height: calc(100vh - 168px);
-  height: calc(100dvh - 168px);
+  height: calc(100vh - 100px);
+  height: calc(100dvh - 100px);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   overflow: auto;
+  margin-top: 16px;
   >div {
     height: 100%;
   }
@@ -18,4 +19,22 @@
   flex-direction: column;
   border-radius: 16px;
   background-color: $black;
+}
+
+.topButtons{
+  display: flex;
+  margin-top: 16px;
+  column-gap: 8px;
+}
+
+.buttonBlack {
+  @include tag;
+  &_active {
+    background-color: $grey;
+  }
+}
+
+.createButton {
+  @include buttonYellow;
+  margin-left: auto;
 }

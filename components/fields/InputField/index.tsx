@@ -30,6 +30,8 @@ interface Props extends IField<string> {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   autocompleteOff?: boolean
   error?: string
+  minLength?: number
+  
 }
 
 export default function InputField(props: Props) {  
@@ -73,6 +75,7 @@ export default function InputField(props: Props) {
           onFocus={() => {
             setFocused(true)
           }}
+          minLength={props.minLength}
           onBlur={() => {
             setFocused(false)
           }}

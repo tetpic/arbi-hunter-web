@@ -127,7 +127,7 @@ export interface CategoryTranslation extends TimeStamp {
   requirements: string,
 }
 
-export interface ICourseCategory extends TimeStamp, CategoryTranslation {
+export interface ICategory extends TimeStamp, CategoryTranslation {
   categoryType: CategoryType,
   published: boolean,
   isMain: boolean,
@@ -141,4 +141,38 @@ export interface ICourseCategory extends TimeStamp, CategoryTranslation {
   translations: CategoryTranslation[],
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,
+}
+
+export interface UpdateCommunityForm {
+  name: string, 
+  categoryId?: number
+  imageId?: number, 
+  logoId?: number
+}
+
+export interface PreviewImage {
+  image: Blob,
+  loaded: boolean
+  id: string
+}
+
+
+
+export default interface IFile {
+  link: string
+  focalPoint?: IFocalPoint
+}
+
+export interface IFileDownload {
+  id: string
+  name: string
+  source: string
+  type: 'IMAGE' | 'BINARY'
+  fileSize: number
+  focalPoint?: IFocalPoint
+  authorName?: string
+  metadata: {
+    width?: number
+    height?: number
+  }
 }

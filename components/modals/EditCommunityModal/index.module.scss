@@ -1,0 +1,121 @@
+@import 'styles/index';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+  margin-top: 16px;
+
+}
+
+.title {
+  font-size: $text20;
+  font-weight: $semibold;
+  color: $white;
+  text-align: center;
+}
+
+.image {
+  width: 114px;
+  height: 114px;
+  border-radius: 50%;
+  background-color: $grey;
+  position: relative;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+
+  }
+
+
+  .userSvg {
+    width: 50%;
+    height: 50%;
+  }
+
+  .logoLabel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+
+
+  .editSvg {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    bottom: 6px;
+    right: 0px;
+    border: 2px $black solid;
+    border-radius: 50%;
+    background-color: $grey;
+    padding: 2px;
+    svg {
+      width: 100%;
+      height: 100%;
+      path {
+        fill: $yellow;
+      }
+    }
+
+  }
+}
+
+.dropZone {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px $grey dotted;
+  border-radius: 10px;
+
+  .bannerImage {
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include clearfix;
+    // padding-inline: 16px 50px;
+    cursor: pointer;
+    padding: 10px 0px;
+
+    svg {
+      margin-left: 16px;
+    }
+  }
+
+  .addBanneer {
+    text-align: center;
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    margin-right: 40px;
+
+    span {
+      font-size: $smallText;
+    }
+  }
+}
+
+.input {
+  width: 100%;
+}
+
+.modalLayout {
+  max-width: 400px;
+}
+
+.yellowButton {
+  @include buttonYellow;
+}

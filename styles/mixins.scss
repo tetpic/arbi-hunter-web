@@ -328,6 +328,16 @@
   @include buttonDefault;
 
 }
+
+@mixin tag {
+  border-radius: 20px;
+  border: 2px solid $grey;
+  color: $white;
+  padding: 8px 16px;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hoverTag;
+}
  
 @mixin exeptLast {
   &:not(:last-child) {
