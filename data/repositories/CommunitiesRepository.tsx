@@ -38,6 +38,19 @@ export default class CommunitiesRepository {
     return res
   }
 
+  static async myCommunity(profile: ProfileType, token?: string): Promise<Response<ICommunity[]>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/community/my',
+      profile,
+      token
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getCommunityById(communityId: number): Promise<any|null> {
     const res = await request({
       method: 'get',

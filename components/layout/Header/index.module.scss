@@ -93,11 +93,12 @@
 }
 
 .link {
-  color: $white;
-  transition: .2s linear;
-  font-size: $mediumText;
-  font-weight: $medium;
-  @include hoverLink;
+  // color: $white;
+  // transition: .2s linear;
+  // font-size: $mediumText;
+  // font-weight: $medium;
+  // @include hoverLink;
+  @include textGradient;
 }
 
 .userWrapper {
@@ -108,24 +109,25 @@
 }
 
 .userLink {
-  padding: 10px 24px 8px;
-  border-radius: 10px;
-  border: 2px $white solid;
-  color: $white;
-  font-size: $mediumText;
-  font-weight: $medium;
-  @include transitionDefault;
-  @include hoverButtonBlack;
-  &_active {
-    border: 2px $yellow solid;
-    color: $yellow;
-    pointer-events: none;
-  }
+  @include buttonBlack;
+  // padding: 10px 24px 8px;
+  // border-radius: 10px;
+  // border: 2px $white solid;
+  // color: $white;
+  // font-size: $mediumText;
+  // font-weight: $medium;
+  // @include transitionDefault;
+  // @include hoverButtonBlack;
+  // &_active {
+  //   border: 2px $yellow solid;
+  //   color: $yellow;
+  //   pointer-events: none;
+  // }
 
-  &_create {
-    border: 2px $yellow solid;
-    color: $yellow;
-  }
+  // &_create {
+  //   border: 2px $yellow solid;
+  //   color: $yellow;
+  // }
 }
 
 .dropdown {

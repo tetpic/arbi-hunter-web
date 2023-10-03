@@ -3,8 +3,8 @@ import RadioListField from 'components/fields/RadioListField'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
-import { useCommunityContext } from 'context/community_state'
-import { UpdateCommunityForm } from 'data/interfaces/Common'
+import { useAppContext } from 'context/state'
+import { ICategory, UpdateCommunityForm } from 'data/interfaces/Common'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import styles from './index.module.scss'
@@ -16,22 +16,17 @@ interface Props {
 
 
 export default function CreateNewCommunityModal(props: Props) {
-  const communityContext = useCommunityContext()
+  const appContext = useAppContext()
+  const args = appContext.modalArguments as {submit: (data: UpdateCommunityForm)=> void, categories: ICategory[]}
 
   const [page, pager] = useState<number>(1)
-
-
-
-  const submit = (data: UpdateCommunityForm) => {
-    communityContext.createCommunity(data)
-  }
 
   const formik = useFormik<UpdateCommunityForm>({
     initialValues: {
       name: '',
       categoryId: null
     },
-    onSubmit: submit
+    onSubmit: args.submit
   })
 
   
@@ -49,7 +44,7 @@ export default function CreateNewCommunityModal(props: Props) {
       itemClassName={styles.radioItem}  
       name={'categoryId'} 
       activeItemClassName={styles.radioItem_active}
-      options={communityContext.categories.map(c=> {
+      options={args.categories.map(c=> {
         return {label: c.name, value: c.id}
       })}/>
       }

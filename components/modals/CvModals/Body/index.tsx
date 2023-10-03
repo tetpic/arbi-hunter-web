@@ -37,7 +37,7 @@ export default function Body(props: Props) {
       </div>
   <div className={styles.buttonsWrapper}>
     {!isPhoneWidth && 
-      <Button className={styles.button} onClick={props.onClose} >Отменить</Button>
+      <Button className={styles.buttonDefault} onClick={props.onClose} >Отменить</Button>
     }
     <Button className={styles.buttonYellow} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
   </div>

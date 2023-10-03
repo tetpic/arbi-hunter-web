@@ -38,7 +38,7 @@ export default function MediaItem({media, showContent, type}: Props) {
       {(!type || type !== 'news') &&
         <UserPic size={48} className={styles.userPic} image={media.image?.source&&FILES+media.image.source}/>
       }
-      <p className={styles.name}>{media.community||media.shortDescription||(type === 'news'&&media.name)}</p>
+      <p className={styles.name}>{media.community.name||media.shortDescription||(type === 'news'&&media.name)}</p>
       <p className={styles.date}>{Formatter.formatDateRelative(media.createdAt)}</p>
       {!type || type !== 'news' && <ThreeDotsButton className={styles.dots}/>}
     </div>

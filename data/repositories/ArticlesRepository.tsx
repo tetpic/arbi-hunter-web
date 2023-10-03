@@ -1,4 +1,4 @@
-import { ICategory } from 'data/interfaces/Common'
+import { ICategory, ICreateNews } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { LOAD_LIMIT } from 'types/constants'
@@ -57,7 +57,7 @@ export default class ArticlesRepository {
   static async getCommunityNewsList(profile: ProfileType, communityId: number, page: number): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article?articleType=news&limit=${LOAD_LIMIT}&page=${page}&communities=${communityId}`,
+      url: `/api/article?sort=createdAt,DESC&articleType=news&limit=${LOAD_LIMIT}&page=${page}&communities=${communityId}`,
       profile
     })
     if(res.err) {
@@ -82,6 +82,19 @@ export default class ArticlesRepository {
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}/unlike`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async createNews(profile: ProfileType, data: ICreateNews): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/article-community',
+      data, 
       profile
     })
     if(res.err) {

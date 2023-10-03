@@ -21,7 +21,7 @@ export default function CommunityPage({community, id}: Props) {
 
   useEffect(()=>{
     communityContext.setCurrentCommunity(community)
-    // return ()=>{communityContext.setCurrentCommunity(null)}
+    return ()=>{communityContext.setCurrentCommunity(null)}
   }, [])
 
   useEffect(()=>{

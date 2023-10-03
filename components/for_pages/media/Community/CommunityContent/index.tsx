@@ -6,20 +6,25 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useCommunityContext } from 'context/community_state'
 import { useMediaContext } from 'context/media_state'
+import { useAppContext } from 'context/state'
 import { IArticle } from 'data/interfaces/IArticle'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
+import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 
+const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {
 }
 
 export default function CommunityContent(props: Props) {
   const mediaContext = useMediaContext()
+  const appContext = useAppContext()
   const communityContext = useCommunityContext()
   const [loading, setLoading] = useState()
   const [page, setPage] = useState<number>(1)
@@ -34,13 +39,18 @@ export default function CommunityContent(props: Props) {
     })
   }, [page])
 
-  const likeHandler = async (news: IArticle) => {
+  const likeHandler = async (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>, news: IArticle) => {
+    e.stopPropagation()
     await mediaContext.likeArticle(news)
     communityContext.setCommunityNews(state=>{     
       const counter = news.isLikedByCurrentProfile?Number(news.likesCount) -1: Number(news.likesCount) +1
       state.set(news.id, {...news, isLikedByCurrentProfile: !news.isLikedByCurrentProfile, likesCount: String(counter) })
       return new Map(state)
     })
+  }
+
+  const openNewsHandler = (news: IArticle) => {
+    appContext.showModal(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity] )
   }
 
   return (
@@ -53,10 +63,13 @@ export default function CommunityContent(props: Props) {
     height={'100%'}
     >
       <div className={styles.infinite}>
+        {communityContext.myCommunity?.id === communityContext.currentCommunity.id &&
+          <CreateNewCommunityArticle/>
+        }
         {communityContext.communityNews&&communityContext.communityNews.size > 0 && !loading &&
         [...communityContext.communityNews.values()].map(news=> {
           return (
-              <div className={styles.item} key={news.id}>
+              <div className={styles.item} key={news.id} onClick={()=>openNewsHandler(news)}>
                 <div className={styles.top}>
                   <UserPic className={styles.userPic} image={communityContext.currentCommunity.logo&&FILES + communityContext.currentCommunity.logo.source} size={48}/>
                   <p className={styles.communityName}>{communityContext.currentCommunity.name}</p>
@@ -70,7 +83,7 @@ export default function CommunityContent(props: Props) {
                 </div>
                 }
                 <div className={styles.bottom}>
-                  <p className={styles.likes} onClick={()=>likeHandler(news)}><HeartSvg className={classNames(news.isLikedByCurrentProfile&&styles.heartFilled)}/> {news.likesCount}</p>
+                  <p className={styles.likes} onClick={(e)=>likeHandler(e, news)}><HeartSvg className={classNames(news.isLikedByCurrentProfile&&styles.heartFilled)}/> {news.likesCount}</p>
                   <p className={styles.views}><OpenEyeSvg/> {news.totalViews}</p>
                 </div>
             </div>

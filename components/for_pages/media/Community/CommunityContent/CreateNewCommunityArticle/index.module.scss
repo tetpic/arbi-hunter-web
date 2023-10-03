@@ -1,0 +1,55 @@
+@import 'styles/index';
+
+.root {
+  border-radius: 16px;
+  background-color: $black;
+  padding: 16px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 8px;
+}
+
+.title {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+  margin-bottom: 16px;
+}
+
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.label {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.imagesWrapper {
+  display: flex;
+  column-gap: 1%;
+  flex-wrap: wrap;
+  
+  img{
+    max-width: 10%;
+    object-fit: cover;
+  }
+}
+
+
+
+.yellowButton {
+  @include buttonYellow;
+}
+
+.iconButton {
+  @include buttonDefault;
+  padding: 8px;
+}

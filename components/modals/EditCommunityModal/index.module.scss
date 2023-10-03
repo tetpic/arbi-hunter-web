@@ -6,7 +6,6 @@
   align-items: center;
   row-gap: 16px;
   margin-top: 16px;
-
 }
 
 .title {
@@ -22,11 +21,11 @@
   border-radius: 50%;
   background-color: $grey;
   position: relative;
+  cursor: pointer;
 
   img {
     width: 100%;
     object-fit: cover;
-
   }
 
 

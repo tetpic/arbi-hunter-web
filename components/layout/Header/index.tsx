@@ -7,7 +7,11 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
-import UserDropdownMenu from 'components/ui/UserDropdownMenu'
+import Spinner from 'components/ui/Spinner'
+import dynamic from 'next/dynamic'
+import { FILES } from 'types/constants'
+
+const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
 interface Props {
 }
@@ -66,20 +70,20 @@ export default function Header(props: Props) {
         
         <div className={styles.userWrapper}>
           {!userContext.currentProfile && <>
-            <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}>Регистрация</Link>
+            <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}><span>Регистрация</span></Link>
             <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
-            <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}>Создать резюме</Link>
-            <UserPic className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
+            <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
-            <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}>Создать вакансию</Link>
-            <UserPic className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
+            <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
           {dropdown &&
             <UserDropdownMenu className={styles.dropdown} onClose={()=> handleDropdown(false)}/>

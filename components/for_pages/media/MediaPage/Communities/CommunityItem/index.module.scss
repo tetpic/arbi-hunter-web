@@ -9,13 +9,14 @@
   column-gap: 8px;
   row-gap: 12px;
   color: $white;
+    cursor: pointer;
   @include exeptLast {
     border-bottom: 2px $grey solid;
   }
 
   .userPic {
     grid-area: p;
-    cursor: pointer;
+  
     
     @include transitionDefault;
     @include hover {

@@ -53,6 +53,10 @@
   @include buttonYellow;
 }
 
+.buttonDefault {
+  @include buttonGray;
+}
+
 .buttonSmall {
   padding: Clamp(7px, 2vw, 10px);
   border-radius: 10px;

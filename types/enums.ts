@@ -13,7 +13,8 @@ export enum ModalType {
   VcResponsesFilterModal= 'vcResponsesFilterModal',
   CongratulationsModal = 'congratulationsModal',
   CreateNewCommunityModal= 'createNewCommunityModal',
-  EditCommunityModal='editCommunityModal'
+  EditCommunityModal='editCommunityModal',
+  CommunityNewsViewModal = 'communityNewsViewModal'
 }
 
 export enum SnackbarType {

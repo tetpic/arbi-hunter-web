@@ -1,4 +1,4 @@
-import { UpdateCommunityForm, ICategory } from 'data/interfaces/Common'
+import { UpdateCommunityForm, ICategory, ICreateNews } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICommunity from 'data/interfaces/ICommunity'
 import { IUserProfile } from 'data/interfaces/IUser'
@@ -24,6 +24,8 @@ interface IState {
   categories: ICategory[]
   createCommunity: (c: UpdateCommunityForm) => void
   updateCommunity: (data: UpdateCommunityForm) => Promise<boolean>
+  myCommunity: ICommunity
+  createNews:(data: ICreateNews)=> Promise<boolean>
 }
 
 const CommunityContext = createContext<Partial<IState>>({})
@@ -44,6 +46,7 @@ export function CommunityWrapper(props: Props) {
   const [currentCommunity, setCurrentCommunity] = useState<ICommunity>()
   const [communityMembers, setCommunityMembersState] = useState<Map<number, IUserProfile>>(new Map)
   const [categories, setCategoriesState] = useState<ICategory[]>([])
+  const [myCommunity, setMyCommunityState] = useState<ICommunity>()
 
   const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
     try {
@@ -146,9 +149,24 @@ export function CommunityWrapper(props: Props) {
     return true
   }
 
+  const setMyCommunity = () =>{
+    CommunitiesRepository.myCommunity(profileType)
+    .then(res=> {
+      setMyCommunityState(res.data[0])
+    })
+  }
+
+  const createNews = (data: ICreateNews): Promise<boolean> => {
+    return ArticlesRepository.createNews(profileType, data)
+    .then(res=> {
+      return true
+    })
+  }
+
   useEffect(()=>{
     if(categories.length === 0 && userContext.currentProfile) {
       setCategories()
+      setMyCommunity()
     }
   }, [userContext.currentProfile])
 
@@ -165,7 +183,10 @@ export function CommunityWrapper(props: Props) {
     communitySubsription,
     categories,
     createCommunity,
-    updateCommunity
+    updateCommunity,
+    myCommunity,
+    createNews,
+
   }
 
   return (

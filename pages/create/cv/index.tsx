@@ -1,5 +1,7 @@
 import Cv from 'components/for_pages/create/Cv'
+import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { useUserContext } from 'context/user_state'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 interface Props {
@@ -10,8 +12,15 @@ export default function CvCreate(props: Props) {
   const router = useRouter()
 
   return (
-    <>{userContext.isLogged && userContext.userLoaded &&
+    <>
+    <Head>
+      <title>{'Arbi Hunter|Редактирование Резюме'}</title>
+      <meta name='description' content={'Редактирование Резюме'}/>
+    </Head>
+    {userContext.isLogged && userContext.userLoaded &&
+      <CreateVcCvWrapper>
       <Cv id={Number(router.query.id) as number}/>
+      </CreateVcCvWrapper>
     }</>
   )
 }

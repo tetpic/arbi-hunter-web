@@ -10,10 +10,12 @@ import { EditorState } from '@tiptap/pm/state'
 import { EditorView } from '@tiptap/pm/view'
 
 import { useField } from 'formik'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { IField } from 'types/types'
 import FieldError from 'components/ui/FieldError'
 import RichTextToolbar from './RichTextToolbar'
+import Image from '@tiptap/extension-image'
+import { PreviewImage } from 'data/interfaces/Common'
 
 interface IBubbleShowProps {
   editor: Editor,
@@ -24,9 +26,21 @@ interface IBubbleShowProps {
   to: number
 }
 
+export interface Buttons {
+  bold?: boolean,
+  italic?: boolean,
+  headings?: number[],
+  ol?: boolean,
+  ul?: boolean,
+  helpers?: boolean
+}
+
 interface Props extends IField<string | null>{
   className?: string
-  value?: string
+  value?: string,
+  onAddImage?: Dispatch<SetStateAction<PreviewImage[]>>
+  hideButtons?: Buttons
+  returnValueType?: 'json'|'html'
 }
 
 export default function RichTextField(props: Props) {
@@ -64,9 +78,10 @@ export default function RichTextField(props: Props) {
         codeBlock: false,
       }),
 
+      Image.configure({}),
       Underline,
       Placeholder.configure({
-        emptyEditorClass: 'empty',
+        emptyEditorClass: 'emptyText',
         placeholder: 'Введите текст',
       }),
       Link.extend({
@@ -82,7 +97,17 @@ export default function RichTextField(props: Props) {
     ],
     content: props.value||value,
     onBlur: ({editor}) => {
-      helpers.setValue(editor.getHTML())
+      if(props.returnValueType) {
+        switch(props.returnValueType){
+          case 'html':
+            helpers.setValue(editor.getHTML())
+          case 'json':
+            helpers.setValue(editor.getJSON())
+        }
+      }
+      else {
+        helpers.setValue(editor.getHTML())
+      }
       setFocus(false)
     },
     onFocus: () => {
@@ -102,7 +127,7 @@ export default function RichTextField(props: Props) {
   return (<div className={styles.root}> 
   <div className={styles.field}>
 
-    <RichTextToolbar editor={editor}/>
+    <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
     <div className={styles.editor}>
       <EditorContent editor={editor} />
     </div>

@@ -1,5 +1,6 @@
 import { CategoryType } from 'types/enums'
-import { IImage, ITranslation, TimeStamp } from './Common'
+import { IArticleBlock, IImage, ITranslation, TimeStamp } from './Common'
+import ICommunity from './ICommunity'
 
 export interface IArticleCategory extends TimeStamp {
   id: number,   
@@ -36,21 +37,11 @@ export interface IArticle extends TimeStamp {
   image: IImage, 
   images: IImage[],
   articleCategory: IArticleCategory,
-  community: null,//???
+  community: ICommunity,//???
   likes: [],//???
   savedByProfiles?: [],//???
   isSavedByCurrentProfile?: boolean,
   isLikedByCurrentProfile?: boolean,
   imagesIds: []//???
-  blocks?: {
-    id: number,
-    title: string|null,
-    body: string
-    imageId: number,
-    imageLargeId: number,
-    image: IImage,
-    images: IImage[],
-    imageLarge: IImage,
-    imagesIds: number[]
-  }[]
+  blocks?: IArticleBlock[]
 }

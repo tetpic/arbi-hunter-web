@@ -1,21 +1,20 @@
-import Button from 'components/ui/Button'
 import Spinner from 'components/ui/Spinner'
 import { useCommunityContext } from 'context/community_state'
-import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
-import { ModalType } from 'types/enums'
 import CommunityItem from './CommunityItem'
 import styles from './index.module.scss'
+
+const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 
 
 export default function MediaCommunities() {
   const communityContext = useCommunityContext()
   const userContext = useUserContext()
-  const appContext = useAppContext()
   const [page, setPage] = useState<number>(1)
   const [loaded, setIsLoaded] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
@@ -38,11 +37,7 @@ export default function MediaCommunities() {
     <div className={styles.top}>
       <div className={styles.search}></div>
       {userContext.currentProfile?.profileType === ProfileType.Hirer &&
-        <div className={styles.topButtons}>
-          <Button className={styles.buttonBlack}>Все сообщества</Button>
-          <Button className={styles.buttonBlack}>Мои сообщества</Button>
-          <Button onClick={()=> appContext.showModal(ModalType.CreateNewCommunityModal)} className={styles.createButton}>Создать сообщество</Button>
-        </div>
+        <CommunityTopButtons isMyComunityExist/>
       }
     </div>
     <div className={styles.root}> 
@@ -54,6 +49,9 @@ export default function MediaCommunities() {
         dataLength={communityContext.communities.size}  
         >
           <div className={styles.infinite}>
+            {communityContext.myCommunity &&
+              <CommunityItem community={communityContext.myCommunity}/>
+            }
             {(loaded && communityContext.communities.size > 0) &&
               [...communityContext.communities.values()].map(com => {
                 return <CommunityItem community={com}/>

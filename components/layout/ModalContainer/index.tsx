@@ -16,6 +16,7 @@ import ConfirmModal from 'components/modals/ConfirmModal'
 import CongratulationsModal from 'components/modals/CongratulationsModal'
 import CreateNewCommunityModal from 'components/modals/CreateNewCommunityModal'
 import EditCommunityModal from 'components/modals/EditCommunityModal'
+import CommunityNewsViewModal from 'components/modals/CommunityNewsViewModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -30,16 +31,74 @@ export default function ModalContainer(props: Props) {
     overlayClassName: classNames([styles.overlay, appContext.modal && styles[appContext.modal]]),
   }
 
+  const currentModal = ((): JSX.Element=>{
+    switch(appContext.modal) {
+      case ModalType.RegistrationModal:
+        return <Modal isOpen {...commonSettings}>
+           <RegistrationModal/>
+        </Modal>
+      case ModalType.SpecializationModal: 
+        return <Modal isOpen {...commonSettings}>
+          <SpecializationModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.SkillsModal:
+        return <Modal isOpen {...commonSettings}>
+          <SkillsModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.LanguageModal:
+        return <Modal isOpen {...commonSettings}>
+          <LangaugesModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.SourcesModal:
+        return <Modal isOpen {...commonSettings}>
+          <SoursesModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CvVcOptionsModal:
+        return <Modal isOpen {...commonSettings}>
+          <CvVcOptionsModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ProposalModal:
+        return <Modal isOpen {...commonSettings}>
+          <ProposalModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ProposalTextModal:
+        return <Modal isOpen {...commonSettings}>
+          <ProposalTextModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ConfirmModal:
+        return <Modal isOpen {...commonSettings}>
+          <ConfirmModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CongratulationsModal:
+        return <Modal isOpen {...commonSettings}>
+          <CongratulationsModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CreateNewCommunityModal:
+        return  <Modal isOpen {...commonSettings}>
+          <CreateNewCommunityModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.EditCommunityModal:
+        return  <Modal isOpen {...commonSettings}>
+          <EditCommunityModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CommunityNewsViewModal:
+        return  <Modal isOpen {...commonSettings}>
+          <CommunityNewsViewModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+    }
+  })()
+
   return (
     <RemoveScroll enabled={!!appContext.modal}>
       <div aria-hidden="true">
-        <Modal isOpen={appContext.modal === ModalType.RegistrationModal} {...commonSettings}>
+        {/* <Modal isOpen={appContext.modal === ModalType.RegistrationModal} {...commonSettings}>
           {appContext.modal === ModalType.RegistrationModal && <RegistrationModal/>}
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.SpecializationModal} {...commonSettings}>
           {appContext.modal === ModalType.SpecializationModal && <SpecializationModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.SkillsModal} {...commonSettings}>
+        </Modal> */}
+        {currentModal}
+        {/* <Modal isOpen={appContext.modal === ModalType.SkillsModal} {...commonSettings}>
           {appContext.modal === ModalType.SkillsModal && <SkillsModal onClose={commonSettings.onRequestClose}/>}
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.LanguageModal} {...commonSettings}>
@@ -68,7 +127,7 @@ export default function ModalContainer(props: Props) {
         </Modal>
         <Modal isOpen={appContext.modal === ModalType.EditCommunityModal} {...commonSettings}>
           {appContext.modal === ModalType.EditCommunityModal && <EditCommunityModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
+        </Modal> */}
       </div>
     </RemoveScroll>
   )

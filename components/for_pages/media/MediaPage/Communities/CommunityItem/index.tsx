@@ -25,8 +25,8 @@ export default function CommunityItem({community}: Props) {
   }
 
 
-  return ( <div className={styles.item}>
-    <UserPic onClick={()=>router.push(`/media/community/${community.id}`)} className={styles.userPic} image={community.logo&&FILES + community.logo.source} size={80} />
+  return ( <div className={styles.item} onClick={()=>router.push(`/media/community/${community.id}`)}>
+    <UserPic  className={styles.userPic} image={community.logo&&FILES + community.logo.source} size={80} />
     <p className={styles.counter}>
       <UserSvg/>
       {Formatter.formatNumber(Number(community.membersCount))}
@@ -34,11 +34,11 @@ export default function CommunityItem({community}: Props) {
     <Button
     disabled={load}
     isProcess={load}
-    onClick={onClickHandler} 
+    onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
     className={styles.button}
     >
       {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
     </Button>
-    <p className={styles.name}  onClick={()=>router.push(`/media/community/${community.id}`)}>{community.name}</p>
+    <p className={styles.name}>{community.name}</p>
   </div>)
 }

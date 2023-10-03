@@ -86,10 +86,7 @@
 }
 
 .buttonYellow {
-  background-color: $yellow;
-  color: $grey;
-  @extend .button;
-  @include hoverButtonYellow;
+  @include buttonYellow;
 }
 
 .regImage  {

@@ -8,7 +8,8 @@ $greyLightAlt: #7C7C8C;
 $greayLightAlt2: #A2A3A4;
 $blackAlt: #1F1F25;
 
-$yellow: #F3CE7B;
+// $yellow: #F3CE7B;
+$yellow: #4E81F3;
 $green: #339B62;
 
 //other colors
@@ -17,4 +18,6 @@ $blueDark: #586DE4;
 $blueLight: #6BABFF;
 
 
-$gradient: linear-gradient(152deg, #AC6CDB 0%, #586DE4 100%);
+$gradient: linear-gradient(152deg, #AC6CDB 0%, #586DE4 50%, #AC6CDB 100%);
+$gradientAlt: linear-gradient(93deg, #AC6CDB 6.53%, #586DE4 73.62%);
+$textGradient: linear-gradient(-152deg, #AC6CDB 0%, #586DE4 35%, #ffffff 60%)

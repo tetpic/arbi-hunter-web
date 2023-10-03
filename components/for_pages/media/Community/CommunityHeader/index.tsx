@@ -60,7 +60,7 @@ export default function CommunityHeader({community}: Props) {
       <p className={styles.name}>{community.name}</p>
       <p className={styles.members}>
         <UsersSvg/>
-        {Formatter.formatNumber(Number(community.membersCount))} участников
+        {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
       </p>
       {
         isAdmin?

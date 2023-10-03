@@ -176,3 +176,23 @@ export interface IFileDownload {
     height?: number
   }
 }
+
+export interface IArticleBlock {
+  id?: number,
+  title?: string,
+  body?: string|{[key: string]: any},
+  image?: Partial<IImage>
+  images?: Partial<IImage>[],
+  imageLarge?: Partial<IImage>,
+  imagesIds?: number[]
+}
+
+export interface ICreateNews {
+  communityId: number,
+  articleType: CategoryType,
+  name: string,
+  published: boolean,
+  image: {id: number},
+  imageIds: number[],
+  blocks: IArticleBlock[]
+}
