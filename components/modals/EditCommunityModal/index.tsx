@@ -15,6 +15,9 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Image from 'next/image'
 import { useState } from 'react'
 import { FILES } from 'types/constants'
+import TitleForSection from 'components/ui/TitleForSection'
+import { useResize } from 'components/hooks/useResize'
+import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 
 interface Props {
@@ -25,6 +28,8 @@ export default function EditCommunityModal(props: Props) {
   const communityContext = useCommunityContext()
   const appContext = useAppContext()
   const modalArgs = appContext.modalArguments as ICommunity
+  const {isTabletWidth} = useResize()
+  const router = useRouter()
 
   const [previewLogo, setPreviewLogo] = useState<PreviewImage>()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()
@@ -48,8 +53,9 @@ export default function EditCommunityModal(props: Props) {
   })
 
   const body = (<div className={styles.body}>
-  <p className={styles.title}>Редактирование</p>
-  <FormikProvider value={formik}>
+    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={'Редактирование'}/>
+    {/* <p className={styles.title}>Редактирование</p> */}
+    <FormikProvider value={formik}>
     <Form className={styles.form}>
     <div className={styles.image}>
       {previewLogo &&
@@ -91,7 +97,7 @@ export default function EditCommunityModal(props: Props) {
   </FormikProvider>
   </div>)
 
-  return (<ModalLayout className={styles.modalLayout}>
+  return (<ModalLayout mobileFullScreen className={styles.modalLayout} >
     <ModalBody >
       {body}
     </ModalBody>

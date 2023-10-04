@@ -11,6 +11,8 @@ import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import { CategoryType } from 'types/enums'
 import styles from './index.module.scss'
+import TitleForSection from 'components/ui/TitleForSection'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
   article?: IArticle
@@ -23,6 +25,7 @@ export default function CreateNewCommunityArticle(props: Props) {
   const appContext = useAppContext()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()
   const [images, setImages] = useState<PreviewImage[]>([])
+  const {isTabletWidth} = useResize()
 
   const submit = (data: IArticleBlock, helpers: FormikHelpers<IArticleBlock>) => {    
     const submitData:ICreateNews = {
@@ -68,7 +71,8 @@ export default function CreateNewCommunityArticle(props: Props) {
   
 
   return (<div className={styles.root}> 
-    <p className={styles.title}>{props.title||'Опубликуйте запись'}</p>
+    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||'Опубликуйте запись'}/>
+    {/* <p className={styles.title}>{props.title||'Опубликуйте запись'}</p> */}
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <InputField placeholder='Название' name={'title'} styleType={'default'} color={'default'} />

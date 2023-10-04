@@ -40,7 +40,7 @@ export default function MediaItemActionsModal(props: Props) {
   const appContext = useAppContext()
   const communityContext = useCommunityContext()
   const args = appContext.modalArguments as {isAdmin: boolean, news: IArticle}
-  const [isSaved, setSaved] = useState<boolean>(args.news.isSavedByCurrentProfile)
+  const [isSaved, setSaved] = useState<boolean>(args?.news?.isSavedByCurrentProfile||null)
 
   const items = (actions: ActionItems[]):ActionType[] => {
     return actions.map(action=> {

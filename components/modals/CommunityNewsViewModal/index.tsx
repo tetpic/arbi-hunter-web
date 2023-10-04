@@ -20,7 +20,7 @@ interface Props {
 
 export default function CommunityNewsViewModal(props: Props) {
   const appContext = useAppContext()
-  const [item, community] = appContext.modalArguments as [IArticle, ICommunity]
+  const [item, community, isAdmin] = appContext.modalArguments as [IArticle, ICommunity, boolean]
   const [article, setArticle] = useState<IArticle>()
   const [isLoading, setLoading] = useState<boolean>(true)
 
@@ -43,7 +43,9 @@ export default function CommunityNewsViewModal(props: Props) {
       <UserPic size={46} className={styles.userPic} image={community.logo && FILES + community.logo.source}/>
       <p className={styles.commName}>{item.community.name}</p>
       <p className={styles.published}>{Formatter.formatDateRelative(item.createdAt)}</p>
-      <Button className={styles.yellowButton}>Подписаться</Button>
+      {!isAdmin &&
+        <Button className={styles.yellowButton}>Подписаться</Button>
+      }
     </div>
     <div className={styles.content}>
       <p className={styles.title}>{item.name}</p>

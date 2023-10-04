@@ -22,15 +22,16 @@ export default function CommunityPage({community, id}: Props) {
   const com = communityContext.currentCommunity||community
 
   useEffect(()=>{
-    debugger
-    communityContext.setCommunityMembers(1)
-    .then(_=> {
+    if(communityContext.currentCommunity) {
+      communityContext.setCommunityMembers(1)
+      .then(_=> {
         setLoad(false)
       }
-    )
+      )
+    }
     communityContext.setCurrentCommunity(community)
     return ()=>{communityContext.setCurrentCommunity(null)}
-  }, [])
+  }, [communityContext.currentCommunity])
 
   useEffect(()=>{
     
@@ -43,7 +44,7 @@ export default function CommunityPage({community, id}: Props) {
   {communityContext.currentCommunity &&
   <>
     <CommunityContent/>
-    {!isTabletWidth &&
+    {!isTabletWidth && !loading &&
       <CommunityMembers members={[...communityContext.communityMembers.values()]} loading={loading}/>
     }
   </>

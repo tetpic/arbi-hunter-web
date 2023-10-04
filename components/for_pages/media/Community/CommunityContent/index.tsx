@@ -68,7 +68,7 @@ export default function CommunityContent(props: Props) {
   }
 
   const openNewsHandler = (news: IArticle) => {
-    appContext.showModal(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity] )
+    appContext.showModal(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
   }
 
 
@@ -82,7 +82,7 @@ export default function CommunityContent(props: Props) {
     height={'100%'}
     >
       <div className={styles.infinite}>
-        {communityContext.myCommunity?.id === communityContext.currentCommunity.id &&
+        {communityContext.myCommunity?.id === communityContext.currentCommunity.id && !isTabletWidth &&
           <CreateNewCommunityArticle/>
         }
         {communityContext.communityNews&&contentLength.current > 0 && !loading &&

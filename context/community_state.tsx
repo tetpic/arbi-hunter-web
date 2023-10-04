@@ -51,6 +51,7 @@ export function CommunityWrapper(props: Props) {
   const [myCommunity, setMyCommunityState] = useState<ICommunity>()
 
   const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
+    
     try {
       const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, page)
       setCommunityMembersState(state => {

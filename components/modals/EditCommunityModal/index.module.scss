@@ -6,6 +6,10 @@
   align-items: center;
   row-gap: 16px;
   margin-top: 16px;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 100px);
+    height: calc(100dvh - 100px);
+  }
 }
 
 .title {
@@ -28,7 +32,6 @@
     object-fit: cover;
   }
 
-
   .userSvg {
     width: 50%;
     height: 50%;
@@ -44,8 +47,6 @@
     justify-content: center;
     cursor: pointer;
   }
-
-
 
   .editSvg {
     position: absolute;
@@ -113,8 +114,16 @@
 
 .modalLayout {
   max-width: 400px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
+
 }
 
 .yellowButton {
   @include buttonYellow;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    width: 100%;
+  }
 }

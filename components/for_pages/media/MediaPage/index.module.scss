@@ -8,6 +8,9 @@
 
 .contentWrapper {
   width: 69%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .bodyWrapper {

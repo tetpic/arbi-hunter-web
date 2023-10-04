@@ -27,6 +27,7 @@
   .name {
     grid-area: n;
     cursor: pointer;
+    @include lineClamp(2);
   }
 
   .counter {

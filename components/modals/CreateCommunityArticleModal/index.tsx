@@ -29,7 +29,7 @@ export default function CreateCommunityArticleModal(props: Props) {
   }, [])
 
   return (
-  <ModalLayout className={styles.modalLayout}>
+  <ModalLayout mobileFullScreen className={styles.modalLayout}>
     <ModalBody>
       {fullArticle && !loading &&
         <CreateNewCommunityArticle article={fullArticle} title={'Изменить запись'} />

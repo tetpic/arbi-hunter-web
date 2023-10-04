@@ -16,10 +16,10 @@ export default function CommunityTopButtons(props: Props) {
 
   return (
   <div className={styles.topButtons}>
-    <Button className={styles.buttonBlack}>Все сообщества</Button>
-    <Button className={styles.buttonBlack} onClick={()=>router.push('media/community/my')}>Моё сообщество</Button>
+    {/* <Button className={styles.buttonBlack}>Все сообщества</Button>
+    <Button className={styles.buttonBlack} onClick={()=>router.push('media/community/my')}>Моё сообщество</Button> */}
     {
-      props.isMyComunityExist &&
+      !props.isMyComunityExist &&
       <Button onClick={()=> appContext.showModal(ModalType.CreateNewCommunityModal, {submit: communityContext.createCommunity, categories: communityContext.categories})} className={styles.createButton}>Создать сообщество</Button>
     }
   </div>

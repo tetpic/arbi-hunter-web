@@ -37,7 +37,7 @@ export default function MediaCommunities() {
     <div className={styles.top}>
       <div className={styles.search}></div>
       {userContext.currentProfile?.profileType === ProfileType.Hirer &&
-        <CommunityTopButtons isMyComunityExist/>
+        <CommunityTopButtons isMyComunityExist={!!communityContext.myCommunity}/>
       }
     </div>
     <div className={styles.root}> 

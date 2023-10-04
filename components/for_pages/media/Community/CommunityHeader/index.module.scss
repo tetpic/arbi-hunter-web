@@ -76,7 +76,6 @@
   column-gap: 16px;
   align-items: flex-end;
   color: $white;
-  // height: 90px;
   position: relative;
   z-index: 2;
   @include mq($TabletWidth, max) {
@@ -85,7 +84,6 @@
     flex-direction: column;
     row-gap: 8px;
   }
-
 
   .userPic {
     margin-top: -20px;
@@ -117,6 +115,9 @@
     margin-right: auto;
     @include hover {
       text-decoration: underline;
+    }
+    @include mq($TabletWidth, max) {
+      margin-right: unset;
     }
   }
 

@@ -4,6 +4,8 @@ import { useCallback, useState } from 'react'
 import { NavigationSet } from 'types/types'
 import MediaCommunities from './Communities'
 import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 
 interface Props {
 }
@@ -17,6 +19,7 @@ export enum MediaNav {
 
 export default function MediaPage(props: Props) {
   const [page, pager] = useState<MediaNav>(MediaNav.Communities)
+  const {isTabletWidth} = useResize()
 
   const navSet = useCallback(((): NavigationSet<MediaNav>[] => {
     let result:{name: string, type: MediaNav, icon?: JSX.Element}[]  = []
@@ -61,10 +64,15 @@ export default function MediaPage(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
       <TitleForSection title={title}/>
+      {isTabletWidth && 
+        <ItemNavigation activeItem={page} items={navSet()} onClick={(p)=> pager(p)}/>
+      }
       <div className={styles.bodyWrapper}>
         {body}
       </div>
     </div>
-    <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet()}/>
+    {!isTabletWidth && 
+      <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet()}/>
+    }
   </div>)
 }
