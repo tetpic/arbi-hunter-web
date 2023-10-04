@@ -15,7 +15,7 @@ export interface IArticleCategory extends TimeStamp {
 }
 
 export interface IArticle extends TimeStamp {
-  id: 27,
+  id: number,
   articleCategoryId: number,
   articleType: CategoryType,
   name: string,

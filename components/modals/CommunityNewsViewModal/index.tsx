@@ -51,7 +51,7 @@ export default function CommunityNewsViewModal(props: Props) {
         {article && article.blocks.length > 0 &&
           article.blocks.map((block, index)=> {
             if(block.body) {
-              return (<div dangerouslySetInnerHTML={{__html: block.body}}></div>)
+              return (<div className={styles.text} dangerouslySetInnerHTML={{__html: block.body}}></div>)
             }
           })
         } 

@@ -14,7 +14,7 @@
   max-width: 100px;
   @include transitionDefault;
   &_active {
-    background-color: $yellow;
+    background-color: $blue;
   }
 
   @include hover {

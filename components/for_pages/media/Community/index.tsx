@@ -1,9 +1,10 @@
 import ICommunity from 'data/interfaces/ICommunity'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CommunityHeader from './CommunityHeader'
 import styles from './index.module.scss'
 import dynamic from 'next/dynamic'
 import { useCommunityContext } from 'context/community_state'
+import { useResize } from 'components/hooks/useResize'
 
 const CommunityContent = dynamic(()=> import('./CommunityContent'), {ssr: false})
 const CommunityMembers = dynamic(()=> import('./CommunityMembers'), {ssr: false})
@@ -14,12 +15,19 @@ interface Props {
 }
 
 export default function CommunityPage({community, id}: Props) {
-  
   const communityContext = useCommunityContext()
+  const {isTabletWidth} = useResize()
+  const [loading, setLoad] = useState<boolean>(true)
 
   const com = communityContext.currentCommunity||community
 
   useEffect(()=>{
+    debugger
+    communityContext.setCommunityMembers(1)
+    .then(_=> {
+        setLoad(false)
+      }
+    )
     communityContext.setCurrentCommunity(community)
     return ()=>{communityContext.setCurrentCommunity(null)}
   }, [])
@@ -35,7 +43,9 @@ export default function CommunityPage({community, id}: Props) {
   {communityContext.currentCommunity &&
   <>
     <CommunityContent/>
-    <CommunityMembers/>
+    {!isTabletWidth &&
+      <CommunityMembers members={[...communityContext.communityMembers.values()]} loading={loading}/>
+    }
   </>
   }
 

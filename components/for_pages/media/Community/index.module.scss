@@ -1,3 +1,5 @@
+@import 'styles/index';
+
 .root {
   margin-top: 28px;
   display: grid;
@@ -8,4 +10,10 @@
   gap: 16px;
   min-height: 140vh;
   min-height: 140dvh;
+  @include mq($TabletWidth, max) {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: unset;
+  }
 }

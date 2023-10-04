@@ -71,7 +71,7 @@
 
 .buttonBlack {
   background-color: $grey;
-  color: $yellow;
+  color: $blue;
   @extend .button;
   @include hoverButtonBlack;
 }

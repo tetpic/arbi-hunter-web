@@ -1,0 +1,96 @@
+@import 'styles/index';
+
+.top {
+
+  .navigation {
+    @include clearfix;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 16px;
+  }
+
+  .title {
+    font-weight: $medium;
+    font-size: $largeText;
+    color: $white;
+  }
+
+  .input {
+    padding: 16px 16px;
+    background-color: $grey;
+    border-radius: 10px;
+    font-size: $mediumText;
+    font-weight: $medium;
+    margin-top: 16px;
+    color: $white;
+    width: 100%;
+  }
+
+  .button {
+    cursor: pointer;
+    @include transitionDefault;
+    @include hover {
+      background-color: $greyLight;
+    }
+  }
+
+}
+
+.modalLayout {
+  max-width: 500px;
+  width: 80vw;
+}
+
+.bodyWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-top: 16px;
+}
+
+.member {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 8px;
+  align-items: center;
+  padding-block: 16px;
+  @include exeptLast {
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      height: 1px;
+      background-color: $grey;
+      bottom: 0;
+      right: 0;
+      width: calc(100% - 42px);
+    }
+  }
+
+  .name {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+
+
+  .status {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: $medium;
+    font-size: $mediumText;
+    margin-left: auto;
+  }
+
+  .offline {
+    background-color: #e7605650;
+    color: $red;
+  }
+
+  .online {
+    background-color: #339b6250;
+    color: $green;
+
+  }
+}

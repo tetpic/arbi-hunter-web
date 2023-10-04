@@ -97,12 +97,15 @@ export default function RichTextField(props: Props) {
     ],
     content: props.value||value,
     onBlur: ({editor}) => {
+      
       if(props.returnValueType) {
         switch(props.returnValueType){
           case 'html':
             helpers.setValue(editor.getHTML())
+            break
           case 'json':
             helpers.setValue(editor.getJSON())
+            break
         }
       }
       else {
@@ -116,9 +119,11 @@ export default function RichTextField(props: Props) {
   })
 
   useEffect(()=>{
-    if(props.value && editor) {
+    
+    if(editor) {
       editor.commands.clearContent()
       editor.commands.insertContent(props.value)
+      // editor.commands.setContent(props.value)
     }
   }, [props.value, editor])
 

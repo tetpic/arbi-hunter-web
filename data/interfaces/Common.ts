@@ -188,6 +188,7 @@ export interface IArticleBlock {
 }
 
 export interface ICreateNews {
+  id?: number
   communityId: number,
   articleType: CategoryType,
   name: string,

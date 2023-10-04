@@ -16,7 +16,7 @@
   @include transitionDefault;
   @include hoverButtonBlack;
   &_active {
-    background-color: $yellow;
+    background-color: $blue;
     color: $black;
   }
 }

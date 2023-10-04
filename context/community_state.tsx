@@ -6,7 +6,7 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
 import { useRouter } from 'next/router'
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
-import { CategoryType } from 'types/enums'
+import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
 
@@ -25,7 +25,9 @@ interface IState {
   createCommunity: (c: UpdateCommunityForm) => void
   updateCommunity: (data: UpdateCommunityForm) => Promise<boolean>
   myCommunity: ICommunity
-  createNews:(data: ICreateNews)=> Promise<boolean>
+  createNews:(data: ICreateNews, id?: number)=> Promise<boolean>
+  removeNews: (id: number) => Promise<boolean>
+  saveArticle: (id: number)=> Promise<boolean>
 }
 
 const CommunityContext = createContext<Partial<IState>>({})
@@ -68,7 +70,7 @@ export function CommunityWrapper(props: Props) {
     return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
     .then(res => {
       setCommunityNews(state=> {
-        state.clear()
+        // state.clear()
         res.data.forEach(r=> {
           state.set(r.id, r)
         })
@@ -156,11 +158,46 @@ export function CommunityWrapper(props: Props) {
     })
   }
 
-  const createNews = (data: ICreateNews): Promise<boolean> => {
-    return ArticlesRepository.createNews(profileType, data)
-    .then(res=> {
+  const createNews = async (data: ICreateNews, id?: number): Promise<boolean> => {
+    if(id) {
+      const res = await ArticlesRepository.editCommunityNews(profileType, data, id)
+      setCommunityNews(state=> {
+        state.set(id, res)
+        return new Map(state)
+      })
+      appContext.showSnackbar('Элемент удален', SnackbarType.success)
       return true
+    }
+    else {
+      const res = await ArticlesRepository.createNews(profileType, data)
+      setCommunityNews(state=> {
+        const oldState = [...state.entries()]
+        return new Map([[res.id, res], ...oldState])
+      })
+      appContext.showSnackbar('Элемент успешно изменен', SnackbarType.success)
+      return true
+    }
+  }
+
+  const removeNews = async (id: number): Promise<boolean> => {
+    await ArticlesRepository.removeArticle(profileType, id)
+    setCommunityNews(state => {
+      state.delete(id)
+      return new Map(state)
     })
+    appContext.showSnackbar('Успешно удалено', SnackbarType.success)
+    return true
+  }
+
+  const saveArticle = async (id: number): Promise<boolean> => {
+    await ArticlesRepository.addArticleToSaved(profileType, id)
+    setCommunityNews(state=> {
+      const item = state.get(id)
+      item.isSavedByCurrentProfile = !item.isSavedByCurrentProfile
+      state.set(id, item)
+      return new Map(state)
+    })
+    return true
   }
 
   useEffect(()=>{
@@ -169,6 +206,8 @@ export function CommunityWrapper(props: Props) {
       setMyCommunity()
     }
   }, [userContext.currentProfile])
+
+
 
   const value: IState = {
     communities,
@@ -186,6 +225,8 @@ export function CommunityWrapper(props: Props) {
     updateCommunity,
     myCommunity,
     createNews,
+    removeNews,
+    saveArticle
 
   }
 

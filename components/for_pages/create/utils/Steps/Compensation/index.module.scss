@@ -60,7 +60,7 @@
   @include transitionDefault;
 
   &_active {
-    background-color: $yellow;
+    background-color: $blue;
     .currencyLabel{
       color: $black;
     }

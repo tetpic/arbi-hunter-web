@@ -12,10 +12,10 @@
   @include transitionDefault;
   @media (hover: hover) {
     &:hover {
-      color: $yellow;
+      color: $blue;
       .plusSvg {
         circle {
-          fill: $yellow;
+          fill: $blue;
         }
       }
     }

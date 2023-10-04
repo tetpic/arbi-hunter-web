@@ -69,7 +69,7 @@
     margin-left: 16px;
     list-style-type:auto;
     &::marker {
-      color: $yellow;
+      color: $blue;
     }
   }
 
@@ -80,7 +80,7 @@
 
   a {
     text-decoration: underline;
-    color: $yellow;
+    color: $blue;
   }
 
   ol {

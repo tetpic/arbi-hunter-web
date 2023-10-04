@@ -39,6 +39,11 @@ export default function Button(props: Props) {
   }, props.className)
   // const darkSpinner = props.styleType.includes('outlined')
 
+  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.stopPropagation()
+    props.onClick(e)
+  }
+
 
   if (props.href) {
     return (
@@ -48,7 +53,7 @@ export default function Button(props: Props) {
           className={classNames(cn)}
           target={props.isExternalHref ? '_blank' : ''}
           rel={props.isExternalHref ? 'noreferrer' : ''}
-          onClick={props.onClick}
+          onClick={(e)=>{clickHandler(e)}}
         >
            <span className={classNames({
              [styles.text]: true,

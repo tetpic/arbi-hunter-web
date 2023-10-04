@@ -1,0 +1,42 @@
+import CreateNewCommunityArticle from 'components/for_pages/media/Community/CommunityContent/CreateNewCommunityArticle'
+import ModalBody from 'components/layout/Modal/ModalBody'
+import ModalLayout from 'components/layout/Modal/ModalLayout'
+import Spinner from 'components/ui/Spinner'
+import { useAppContext } from 'context/state'
+import { IArticle } from 'data/interfaces/IArticle'
+import ArticlesRepository from 'data/repositories/ArticlesRepository'
+import { useEffect, useState } from 'react'
+import { colors } from 'styles/variables'
+import { Languages } from 'types/enums'
+import styles from './index.module.scss'
+
+interface Props {
+  onClose: ()=>void
+}
+
+export default function CreateCommunityArticleModal(props: Props) {
+  const appContext = useAppContext()
+  const args = appContext.modalArguments as IArticle
+  const [fullArticle, setFullArticle] = useState<IArticle>()
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(()=>{
+    ArticlesRepository.getById(args.id, Languages.ru)
+    .then(res=> {
+      setLoading(false)
+      setFullArticle(res)
+    })
+  }, [])
+
+  return (
+  <ModalLayout className={styles.modalLayout}>
+    <ModalBody>
+      {fullArticle && !loading &&
+        <CreateNewCommunityArticle article={fullArticle} title={'Изменить запись'} />
+        ||
+        loading && <Spinner size={24} color={colors.yellow}/>
+      }
+    </ModalBody>
+  </ModalLayout>
+  )
+}

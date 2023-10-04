@@ -255,11 +255,16 @@
       @content;
     }
   }
+  @media(hover: none) {
+    &:active {
+      @content;
+    }
+  }
 }
 
 @mixin hoverLink {
   @include hover {
-    color: $yellow;
+    color: $blue;
   }
 }
 

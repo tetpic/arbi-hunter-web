@@ -59,7 +59,7 @@
 }
 
 .loginLink {
-  color: $yellow;
+  color: $blue;
 }
 
 .form {
@@ -119,7 +119,7 @@
   cursor: pointer;
 
   &_active {
-    background-color: $yellow;
+    background-color: $blue;
     color: $black;
     pointer-events: none;
   }

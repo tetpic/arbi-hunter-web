@@ -1,6 +1,8 @@
+import { useResize } from 'components/hooks/useResize'
 import EditSvg from 'components/svg/EditSvg'
 import PhotoCameraSvg from 'components/svg/PhotoCameraSvg'
 import UsersSvg from 'components/svg/UsersSvg'
+import BackBtn from 'components/ui/BackBtn'
 import Button from 'components/ui/Button'
 import UserPic from 'components/ui/UserPic'
 import { useCommunityContext } from 'context/community_state'
@@ -8,6 +10,7 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
@@ -23,6 +26,8 @@ export default function CommunityHeader({community}: Props) {
   const communityContext = useCommunityContext()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = useResize()
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>()
 
   const buttonHandler = async () => {
@@ -58,7 +63,7 @@ export default function CommunityHeader({community}: Props) {
       size={/*props.image?114:80*/ size}
       />
       <p className={styles.name}>{community.name}</p>
-      <p className={styles.members}>
+      <p className={styles.members} onClick={()=>appContext.showModal(ModalType.MembersModal, [...communityContext.communityMembers.values()])}>
         <UsersSvg/>
         {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
       </p>
@@ -76,6 +81,9 @@ export default function CommunityHeader({community}: Props) {
         </Button>
       }
     </div>
+    {isTabletWidth && 
+    <BackBtn className={styles.back} onClick={()=>router.back()} bgColor={'transparent'}/>
+    }
 
 
   </div>)

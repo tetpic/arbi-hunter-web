@@ -1,0 +1,45 @@
+@import 'styles/index';
+
+.modalLayout {
+  max-width: 300px;
+  width: 90vw;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title {
+    color: $white;
+    font-weight: $semibold;
+    font-size: $largeText;
+    padding-left: 10px;
+  }
+}
+
+.itemsWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  margin-top: 16px;
+
+  .item {
+    display: flex;
+    column-gap: 16px;
+    align-items: center;
+    padding-block: 10px;
+    padding-inline: 4px;
+    border-radius: 10px;
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    cursor: pointer;
+    background-color: transparent;
+    background-size: 120%;
+    @include transitionDefault;
+    @include hover {
+      background-color: $grey;
+    }
+  }
+}

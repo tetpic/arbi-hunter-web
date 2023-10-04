@@ -31,6 +31,18 @@ export default class ArticlesRepository {
     return res
   }
 
+  static async removeArticle(profile: ProfileType, id: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/article-community/${id}`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getCategoryById(id: number, lang: Languages, type: CategoryType): Promise<any|null> {
     const res = await request({
       method: 'get',
@@ -90,11 +102,36 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async createNews(profile: ProfileType, data: ICreateNews): Promise<any|null> {
+  static async addArticleToSaved(profile: ProfileType, id: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/article/${id}/save`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async createNews(profile: ProfileType, data: ICreateNews): Promise<IArticle|null> {
     const res = await request({
       method: 'post',
       url: '/api/article-community',
       data, 
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async editCommunityNews(profile: ProfileType, data: ICreateNews, articleId: number): Promise<IArticle|null> {
+    const res = await request({
+      method: 'patch',
+      url: `/api/article-community/${articleId}`,
+      data,
       profile
     })
     if(res.err) {

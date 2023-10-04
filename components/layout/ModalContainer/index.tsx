@@ -17,6 +17,9 @@ import CongratulationsModal from 'components/modals/CongratulationsModal'
 import CreateNewCommunityModal from 'components/modals/CreateNewCommunityModal'
 import EditCommunityModal from 'components/modals/EditCommunityModal'
 import CommunityNewsViewModal from 'components/modals/CommunityNewsViewModal'
+import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
+import CreateCommunityArticleModal from 'components/modals/CreateCommunityArticleModal'
+import MembersModal from 'components/modals/MembersModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -84,6 +87,18 @@ export default function ModalContainer(props: Props) {
       case ModalType.CommunityNewsViewModal:
         return  <Modal isOpen {...commonSettings}>
           <CommunityNewsViewModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.MediaItemActionsModal:
+        return  <Modal isOpen {...commonSettings}>
+          <MediaItemActionsModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CreateCommunityArticleModal:
+        return  <Modal isOpen {...commonSettings}>
+          <CreateCommunityArticleModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+        case ModalType.MembersModal:
+        return  <Modal isOpen {...commonSettings}>
+          <MembersModal onClose={commonSettings.onRequestClose}/>
         </Modal>
     }
   })()

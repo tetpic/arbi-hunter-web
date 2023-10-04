@@ -6,7 +6,7 @@
 
 .activeStar {
   path {
-    fill: $yellow;
+    fill: $blue;
   }
 } 
 
@@ -18,7 +18,7 @@
   color: $white;
 
   span {
-    color: $yellow;
+    color: $blue;
     margin-right: 16px;
   }
   svg {
@@ -312,7 +312,7 @@
   .progress {
     height: 100%;
     display: block;
-    background-color: $yellow;
+    background-color: $blue;
   }
 }
 
@@ -322,7 +322,7 @@
     fill: transparent; 
   }
   @include starPath;
-  background: linear-gradient(to right, $yellow 50%, $grey 50%);
+  background: linear-gradient(to right, $blue 50%, $grey 50%);
 
 
 

@@ -24,6 +24,8 @@ export default function CommunityItem({community}: Props) {
     setLoad(false)
   }
 
+  const isAdmin = communityContext.myCommunity?.id === community.id 
+
 
   return ( <div className={styles.item} onClick={()=>router.push(`/media/community/${community.id}`)}>
     <UserPic  className={styles.userPic} image={community.logo&&FILES + community.logo.source} size={80} />
@@ -31,14 +33,16 @@ export default function CommunityItem({community}: Props) {
       <UserSvg/>
       {Formatter.formatNumber(Number(community.membersCount))}
     </p>
-    <Button
-    disabled={load}
-    isProcess={load}
-    onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
-    className={styles.button}
-    >
-      {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
-    </Button>
+    {!isAdmin &&
+      <Button
+      disabled={load}
+      isProcess={load}
+      onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
+      className={styles.button}
+      >
+        {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
+      </Button>
+    }
     <p className={styles.name}>{community.name}</p>
   </div>)
 }

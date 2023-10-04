@@ -31,7 +31,7 @@
   @include transitionDefault;
   @include hoverButtonSmooth;
   &_active {
-    background-color: $yellow;
+    background-color: $blue;
     color: $black;
   }
 }

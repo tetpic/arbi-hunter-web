@@ -16,13 +16,13 @@
   cursor: pointer;
   @include transitionDefault;
   @include hover {
-    color: $yellow;
+    color: $blue;
     .plusSvg {
       path {
         stroke: $white;
       }
       circle {
-        fill: $yellow;
+        fill: $blue;
       }
     }
   }
@@ -45,7 +45,7 @@
 
 .radioItemActive {
   .radioCircle {
-    background-color: $yellow;
+    background-color: $blue;
   }
 }
 

@@ -63,7 +63,7 @@
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  background-color: $yellow;
+  background-color: $blue;
   border-radius: 10px;
   font-size: $mediumText;
   font-weight: $medium;
@@ -79,7 +79,7 @@
   text-align: center;
 
   &_link {
-    color: $yellow;
+    color: $blue;
   }
 }
 
@@ -102,7 +102,7 @@
   cursor: pointer;
   @include transitionDefault;
   @include hover {
-    color: $yellow;
+    color: $blue;
   }
 }
 
@@ -122,12 +122,12 @@
 
     &_black {
       background-color: $grey;
-      color: $yellow;
+      color: $blue;
       @include hoverButtonBlack;
     }
 
     &_yellow {
-      background-color: $yellow;
+      background-color: $blue;
       color: $black;
       @include hoverButtonYellow;
 

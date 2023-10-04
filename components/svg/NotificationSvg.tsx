@@ -7,7 +7,7 @@ export default function NotificationSvg(props: Props) {
   return (
     <svg className={props.className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14.6457 20C13.9406 20.6223 13.0144 20.9999 12 20.9999C10.9856 20.9999 10.0594 20.6223 9.35426 20M17.9974 13.1808V10C17.9974 6.67772 15.3223 4 12 4C8.67772 4 5.96637 6.56356 5.96637 10V13.1593C5.96637 13.6424 5.89106 14.1224 5.74334 14.5808L5.00488 16.8723C4.98466 16.9351 5.02981 16.9999 5.09375 16.9999H18.8632C18.9308 16.9999 18.9788 16.934 18.958 16.8697L18.2146 14.5626C18.0707 14.1161 17.9974 13.6499 17.9974 13.1808Z" stroke="white" strokeLinecap="round"/>
-      <circle cx="17" cy="6" r="4" fill="#F3CE7B" stroke="#24242C" strokeWidth="2"/>
+      <circle cx="17" cy="6" r="4" fill="#4E81F3" stroke="#24242C" strokeWidth="2"/>
     </svg>
   )
 }

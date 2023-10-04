@@ -4,32 +4,34 @@ import RichTextField from 'components/fields/RichTextField'
 import PhotoSvg from 'components/svg/PhotoSvg'
 import Button from 'components/ui/Button'
 import { useCommunityContext } from 'context/community_state'
+import { useAppContext } from 'context/state'
 import { ICreateNews, IArticleBlock, PreviewImage } from 'data/interfaces/Common'
+import { IArticle } from 'data/interfaces/IArticle'
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import { CategoryType } from 'types/enums'
 import styles from './index.module.scss'
 
 interface Props {
+  article?: IArticle
+  title?: string
 }
 
 export default function CreateNewCommunityArticle(props: Props) {
+  
   const communityContext = useCommunityContext()
+  const appContext = useAppContext()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()
   const [images, setImages] = useState<PreviewImage[]>([])
-  // const [blocks, setBlocks] = useState<any>()
 
-
-  const submit = (data: IArticleBlock, helpers: FormikHelpers<IArticleBlock>) => {
-    
+  const submit = (data: IArticleBlock, helpers: FormikHelpers<IArticleBlock>) => {    
     const submitData:ICreateNews = {
       communityId: communityContext.currentCommunity.id,
-      articleType: CategoryType.News,
+      articleType: CategoryType.News,     
       name: data.title,
       published: true,
       image: {id: +previewImage?.id||null},
       imageIds: images.map(i=> +i.id),
-      // images: images.map(i=> +i.id),
       blocks: [
         {
           title: '',
@@ -47,41 +49,38 @@ export default function CreateNewCommunityArticle(props: Props) {
         })
       ],
     }
-    communityContext.createNews(submitData)
+    communityContext.createNews(submitData, props?.article?.id)
     .then(_=> {
       helpers.resetForm()
       setPreviewImage(null)
       setImages([])
+      appContext.hideModal()
     })
   }
 
   const formik = useFormik<IArticleBlock>({
     initialValues: {
-      title: '',
-      body: '',
+      title: props?.article?.name||'',
+      body: props?.article?.blocks[0].body||'',
     },
     onSubmit: submit
   })
-
-
-
   
 
   return (<div className={styles.root}> 
-    <p className={styles.title}>Опубликуйте запись</p>
+    <p className={styles.title}>{props.title||'Опубликуйте запись'}</p>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <InputField placeholder='Название' name={'title'} styleType={'default'} color={'default'} />
         {previewImage && 
           <img src={URL.createObjectURL(previewImage.image)}/>
         }
-        <RichTextField returnValueType={'html'}  placeholder='Введите текст' name={'body'} onAddImage={setImages} hideButtons={{helpers: true}}/>
+        <RichTextField value={formik.values.body.toString()}  returnValueType={'html'}  placeholder='Введите текст' name={'body'} onAddImage={setImages} hideButtons={{helpers: true}}/>
         {images &&images.length > 0 &&
         <div className={styles.imagesWrapper}>
           {images.map(i=> {
             return  <img src={URL.createObjectURL(i.image)} alt={''}/>
           })}
-
         </div>
         }
         <div className={styles.buttonsWrapper}>
@@ -94,7 +93,5 @@ export default function CreateNewCommunityArticle(props: Props) {
         </div>
       </Form>
     </FormikProvider>
-
-
   </div>)
 }

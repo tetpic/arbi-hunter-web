@@ -6,6 +6,7 @@ import { ModalType } from 'types/enums'
 import ProposalModal from 'components/modals/ProposalModal'
 import CvVcOptionsModal from 'components/modals/OptionsModal'
 import VcResponsesFilterModal from 'components/modals/VcResponsesFilterModal'
+import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 
 
 interface Props { }
@@ -38,6 +39,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <VcResponsesFilterModal  onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.MediaItemActionsModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[400]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <MediaItemActionsModal isBottomSheet={true}  onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

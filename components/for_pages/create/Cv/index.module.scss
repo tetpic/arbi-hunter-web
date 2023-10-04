@@ -76,7 +76,7 @@
   @include buttonBlack;
   @extend .button;
   // background-color: $grey;
-  // color: $yellow;
+  // color: $blue;
   // @include hoverButtonBlack;
 }
 
@@ -92,7 +92,7 @@
 .buttonYellow {
   @include buttonYellow;
   @extend .button;
-  // background-color: $yellow;
+  // background-color: $blue;
   // color: $grey;
   // @include hoverButtonYellow;
 }
