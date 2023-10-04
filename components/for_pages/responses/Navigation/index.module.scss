@@ -26,10 +26,11 @@
   padding-block: 18px;
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  // @include hoverButtonBlack;
   @include hover {
+    background-color: $greayLightAlt2;
     .stat {
-      background-color: $white;
+      background-color: $greyAlt;
     }
   }
 

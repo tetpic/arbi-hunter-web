@@ -71,19 +71,19 @@ export default function Header(props: Props) {
         <div className={styles.userWrapper}>
           {!userContext.currentProfile && <>
             <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}><span>Регистрация</span></Link>
-            <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}>Вход</Link>
+            <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}><span>Вход</span></Link>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
           </>}
           {dropdown &&
             <UserDropdownMenu className={styles.dropdown} onClose={()=> handleDropdown(false)}/>

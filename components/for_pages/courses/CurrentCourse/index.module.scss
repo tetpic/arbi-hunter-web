@@ -135,10 +135,16 @@
 
   .buttonYellow {
     @include buttonYellow;
+    font-size: $largeText;
+    font-weight: $semibold;
+    padding: 16px 32px;
   }
 
   .buttonWhite {
     @include buttonWhite;
+    font-size: $largeText;
+    font-weight: $semibold;
+    padding: 16px 32px;
   }
 
   .courseImage {

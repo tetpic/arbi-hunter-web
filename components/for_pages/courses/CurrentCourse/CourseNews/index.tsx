@@ -17,7 +17,7 @@ export default function CourseNews(props: Props) {
 
   return (<div className={styles.root}> 
   {coursesNews.length>0 && coursesNews.map((el)=> {
-    return <MediaItem type={'news'} showContent media={el} key={el.id}/>
+    return <MediaItem type={el.articleType} showContent media={el} key={el.id}/>
   })
   ||
   <p className={'empty'}>Нет новостей</p>

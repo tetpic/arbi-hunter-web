@@ -37,7 +37,7 @@ export default function SavedMedia(props: Props) {
     dataLength={0}>
      {loaded&&mediaContext.savedArticles && mediaContext.savedArticles.size > 0 &&
       [...mediaContext.savedArticles.values()].map(el=> {
-        return <MediaItem media={el} key={el.id}/>
+        return <MediaItem media={el} key={el.id} type={el.articleType}/>
       })
       ||
       loaded&&mediaContext.savedArticles.size === 0&&

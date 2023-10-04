@@ -29,7 +29,7 @@ export default function CoursesMain(props: Props) {
       </div>
       
       <div className={styles.imageWrapper}>
-        <Image className={styles.coursesImage} src={courseImage} alt={'courses image'}  />
+        <Image className={styles.coursesImage} src={courseImage} alt={'courses image'}/>
       </div>
     </div>
 

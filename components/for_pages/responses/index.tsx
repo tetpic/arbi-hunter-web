@@ -13,10 +13,10 @@ export default function Responses(props: Props) {
 
   return (<>
   { 
-    userContext.currentProfile.profileType === ProfileType.Hirer && 
+    userContext.currentProfile?.profileType === ProfileType.Hirer && 
     <VCFeedbacks id ={props.id}/>
     ||
-    userContext.currentProfile.profileType === ProfileType.Employee &&
+    userContext.currentProfile?.profileType === ProfileType.Employee &&
     <CVFeedbacks/>  
   }
   </>

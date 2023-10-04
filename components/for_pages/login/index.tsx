@@ -132,7 +132,7 @@ export default function Login(props: Props) {
 
             <p className={styles.subTitle}>Забыли пароль?</p>
             
-            <div className={styles.submitButton} onClick={formik.submitForm}>Войти</div>
+            <div className={styles.submitButton} onClick={formik.submitForm}><span>Войти</span></div>
           </Form>
         </FormikProvider>
       </div>

@@ -4,7 +4,6 @@
   margin-top: 24px;
   height: calc(100vh - 260px);
   height: calc(100dvh - 260px);
-  // justify-content: space-between;
   @include mq($TabletWidth, max) {
     padding-bottom: 20px;
     height: calc(100vh - 208px);
@@ -82,8 +81,10 @@
   }
 
   .price {
+    @include textGradientDefault;
+
     @extend .courseName;
-    color: $yellow
+    // color: $yellow
   }
 }
 

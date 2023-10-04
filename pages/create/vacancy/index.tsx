@@ -14,7 +14,7 @@ export default function VacancyCreate(props: Props) {
   const router = useRouter()
 
   useEffect(()=>{
-    if(!userContext.currentProfile || userContext.currentProfile.profileType !== ProfileType.Hirer) {
+    if(!userContext.currentProfile || userContext.currentProfile?.profileType !== ProfileType.Hirer) {
       router.push('/')
     }
   }, [userContext.isLogged, userContext.userLoaded])

@@ -98,7 +98,7 @@
   // font-size: $mediumText;
   // font-weight: $medium;
   // @include hoverLink;
-  @include textGradient;
+  @include textGradientWithHover;
 }
 
 .userWrapper {

@@ -27,7 +27,7 @@ export default function ManagerDropdownMenu(props: Props) {
 
   return ( 
   <div className={styles.dropDown} ref={dropDownRef}>
-    <IconButton onClick={onEditHandler} bgColor={'transparent'} className={styles.drpButton}><EditPencilSvg/> Редактировать профиль</IconButton>
-    <IconButton onClick={props.onRemove} bgColor={'transparent'} className={styles.drpButton}><TrashBasketSvg/> Удалить профиль</IconButton>
+    <IconButton onClick={onEditHandler} bgColor={'transparent'} className={styles.drpButton}><EditPencilSvg/> <span>Редактировать профиль</span></IconButton>
+    <IconButton onClick={props.onRemove} bgColor={'transparent'} className={styles.drpButton}><TrashBasketSvg/> <span>Удалить профиль</span></IconButton>
   </div>)
 }

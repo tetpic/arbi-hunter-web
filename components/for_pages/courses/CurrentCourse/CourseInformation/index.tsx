@@ -6,6 +6,10 @@ import UserPic from 'components/ui/UserPic'
 import ReactPlayer from 'react-player'
 import { useEffect, useState } from 'react'
 import { FILES } from 'types/constants'
+import Button from 'components/ui/Button'
+import GlobusSvg from 'components/svg/GlobusSvg'
+import TimerSvg from 'components/svg/TimerSvg'
+import EducationSvg from 'components/svg/EducationSvg'
 
 interface Props {
   course: ICourse
@@ -35,14 +39,17 @@ export default function CoursesInformation({course, isMobile}: Props) {
 
     <div className={classNames(styles.item, styles.stats)}>
       <div className={styles.stat}>
+        <Button className={styles.button}><GlobusSvg/></Button>
         <p className={styles.stat_title}>Язык</p>
         <p className={styles.stat_value}>{courseLang&&(courseLang.charAt(0).toUpperCase() + courseLang.slice(1))}</p>
       </div>
       <div className={styles.stat}>
+        <Button className={styles.button}><TimerSvg/></Button>
         <p className={styles.stat_title}>Время</p>
         <p className={styles.stat_value}>{course.courseTime}</p>
       </div>
       <div className={styles.stat}>
+      <Button className={styles.button}><EducationSvg/></Button>
         <p className={styles.stat_title}>Сертификат</p>
         <p className={styles.stat_value}>{course.withCertificate?'Выдается': 'Не выдаётся'}</p>
       </div>

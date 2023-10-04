@@ -21,7 +21,7 @@ export default function CreateNewCommunityArticle(props: Props) {
 
 
   const submit = (data: IArticleBlock, helpers: FormikHelpers<IArticleBlock>) => {
-    debugger
+    
     const submitData:ICreateNews = {
       communityId: communityContext.currentCommunity.id,
       articleType: CategoryType.News,

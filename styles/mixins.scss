@@ -165,18 +165,7 @@
   }
 }
 
-@mixin textGradient {
-  background: $textGradient;
-  background-size: 300%;
-  background-position-x: 0%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  @include transitionDefault;
-  @include hover {
-    background-position-x: 100%;
-  }
-}
+
 
 
 @mixin scroll_hide {
@@ -349,13 +338,11 @@
 }
 
 @mixin buttonBlack {
-
   background-size: 100%;
   background-color: $grey;
   position: relative;
   @include buttonDefault;
   @include hoverButtonBlack;
-
   &:after {
     content: '';
     position: absolute;
@@ -470,4 +457,26 @@
   clip-path: path('M6 0L7.67166 3.69916L11.7063 4.1459L8.7048 6.87884L9.52671 10.8541L6 8.844L2.47329 10.8541L3.2952 6.87884L0.293661 4.1459L4.32834 3.69916L6 0Z');
 }
 
+
+@mixin textGradientDefault {
+  background: $gradientAlt;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+
+@mixin textGradientWithHover {
+  background: $textGradient;
+  background-size: 300%;
+  background-position-x: 0%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  @include transitionDefault;
+  @include hover {
+    background-position-x: 100%;
+  }
+}
 

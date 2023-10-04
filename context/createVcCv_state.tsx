@@ -164,7 +164,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const getCurrentVc = (id: number) => {
-    VacancyRepository.getVacancyById(id, userContext.currentProfile.profileType)
+    VacancyRepository.getVacancyById(id, userContext.currentProfile?.profileType)
     .then(res=> {
       setEditedItem(res, 'vc')
     })

@@ -6,6 +6,7 @@ import { CookiesType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
+import { useRouter } from 'next/router'
 
 interface IState {
   token: string,
@@ -52,6 +53,7 @@ export function UserWrapper(props: Props) {
   const [token, setUserToken] = useState<string | null>(props.token ?? null)
   const [user, setUser] = useState<IUser | null>(props.user)
   const [userLoaded, setUserLoaded] = useState<boolean>(false)
+  const router = useRouter()
 
   const [profileType, setProfileType] = useState(ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
@@ -112,6 +114,7 @@ export function UserWrapper(props: Props) {
   }
 
   const logout = () => {
+    router.replace('/')
     Cookies.remove(CookiesType.accessToken)
     setUserToken(null)
     setIsLogged(false)

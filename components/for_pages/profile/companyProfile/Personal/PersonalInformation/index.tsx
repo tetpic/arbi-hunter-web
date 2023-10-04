@@ -29,10 +29,10 @@ export default function PersonalInformation(props: Props) {
 
   const dataFormik = useFormik<Partial<IUserProfile>>({
     initialValues: {
-      firstName: userContext.currentProfile.firstName,
-      lastName: userContext.currentProfile.lastName,
-      patronymic: userContext.currentProfile.patronymic,
-      email: userContext.currentProfile.email
+      firstName: userContext.currentProfile?.firstName,
+      lastName: userContext.currentProfile?.lastName,
+      patronymic: userContext.currentProfile?.patronymic,
+      email: userContext.currentProfile?.email
     },
     onSubmit: submitData
   })

@@ -47,7 +47,7 @@ export function ManagerWrapper(props: Props) {
   } 
 
   const addNewManager = async(m: IManagerCreate): Promise<boolean> => {
-    return ManagerRepository.createNewManager(m, userContext.currentProfile.profileType)
+    return ManagerRepository.createNewManager(m, userContext.currentProfile?.profileType)
     .then(res=> {
       setManagersState(state=> {
         state.set(res.id, res)

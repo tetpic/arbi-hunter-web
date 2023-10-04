@@ -7,6 +7,7 @@
   width: calc(100vw - 200px);
   min-width: 100%;
   height: 100%;
+  z-index: 3;
   background-color: $backgroundBlack;
   @include mq($TabletWidth, max) {
     position: fixed;
