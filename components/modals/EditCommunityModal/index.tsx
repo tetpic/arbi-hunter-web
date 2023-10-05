@@ -54,7 +54,6 @@ export default function EditCommunityModal(props: Props) {
 
   const body = (<div className={styles.body}>
     <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={'Редактирование'}/>
-    {/* <p className={styles.title}>Редактирование</p> */}
     <FormikProvider value={formik}>
     <Form className={styles.form}>
     <div className={styles.image}>

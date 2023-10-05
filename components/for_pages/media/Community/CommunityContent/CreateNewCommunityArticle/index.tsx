@@ -10,9 +10,9 @@ import { IArticle } from 'data/interfaces/IArticle'
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import { CategoryType } from 'types/enums'
-import styles from './index.module.scss'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
+import styles from './index.module.scss'
 
 interface Props {
   article?: IArticle
@@ -72,6 +72,7 @@ export default function CreateNewCommunityArticle(props: Props) {
 
   return (<div className={styles.root}> 
     <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||'Опубликуйте запись'}/>
+    
     {/* <p className={styles.title}>{props.title||'Опубликуйте запись'}</p> */}
     <FormikProvider value={formik}>
       <Form className={styles.form}>

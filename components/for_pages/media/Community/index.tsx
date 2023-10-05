@@ -33,25 +33,15 @@ export default function CommunityPage({community, id}: Props) {
     return ()=>{communityContext.setCurrentCommunity(null)}
   }, [communityContext.currentCommunity])
 
-  useEffect(()=>{
-    
-  }, [communityContext.currentCommunity])
-  
-
   return (<div className={styles.root}> 
   <CommunityHeader community={com} />
-  
   {communityContext.currentCommunity &&
-  <>
-    <CommunityContent/>
-    {!isTabletWidth && !loading &&
-      <CommunityMembers members={[...communityContext.communityMembers.values()]} loading={loading}/>
-    }
-  </>
+    <>
+      <CommunityContent/>
+      {!isTabletWidth && !loading &&
+        <CommunityMembers members={[...communityContext.communityMembers.values()]} loading={loading}/>
+      }
+    </>
   }
-
-
-  
-
   </div>)
 }

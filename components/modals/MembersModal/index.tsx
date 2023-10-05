@@ -39,7 +39,7 @@ export default function MembersModal(props: Props) {
     }
   </div>)
 
-  return (<ModalLayout className={styles.modalLayout}>
+  return (<ModalLayout mobileFullScreen className={styles.modalLayout}>
     <ModalBody>
       {top}
       {body}

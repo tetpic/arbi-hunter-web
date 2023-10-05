@@ -15,6 +15,7 @@ import { useState } from 'react'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
+import SettingSvg from 'components/svg/SettingSvg'
 import styles from './index.module.scss'
 
 interface Props {
@@ -51,8 +52,11 @@ export default function CommunityHeader({community}: Props) {
       {community.image &&
         <Image src={FILES+ community.image.source} alt={community.name + ' background'} fill/>
       }
-      {isAdmin &&
+      {isAdmin && !isTabletWidth &&
         <Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
+        ||
+        isAdmin && isTabletWidth &&
+        <Button className={styles.editCover} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}><SettingSvg/></Button>
       }
     </div>
     <div className={styles.content}>
@@ -68,9 +72,12 @@ export default function CommunityHeader({community}: Props) {
         {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
       </p>
       {
-        isAdmin?
+        isAdmin && !isTabletWidth &&
         <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}>Настройки сообщества</Button>
-        :
+        ||
+        isAdmin && isTabletWidth &&
+        <Button className={styles.createButton} onClick={()=>appContext.showModal(ModalType.CreateCommunityArticleModal)}><span>Создать запись</span></Button>
+        ||
         <Button 
         isProcess={isLoading}
         disabled={isLoading}

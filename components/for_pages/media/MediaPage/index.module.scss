@@ -4,15 +4,25 @@
   display: flex;
   margin-top: 48px;
   column-gap: 16px;
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+  }
 }
 
 .contentWrapper {
   width: 69%;
   @include mq($TabletWidth, max) {
     width: 100%;
+   
   }
 }
 
 .bodyWrapper {
   margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }

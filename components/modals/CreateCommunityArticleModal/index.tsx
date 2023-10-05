@@ -21,18 +21,23 @@ export default function CreateCommunityArticleModal(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(()=>{
-    ArticlesRepository.getById(args.id, Languages.ru)
-    .then(res=> {
+    if(args) {
+      ArticlesRepository.getById(args.id, Languages.ru)
+      .then(res=> {
+        setLoading(false)
+        setFullArticle(res)
+      })
+    }
+    else {
       setLoading(false)
-      setFullArticle(res)
-    })
+    }
   }, [])
 
   return (
   <ModalLayout mobileFullScreen className={styles.modalLayout}>
     <ModalBody>
-      {fullArticle && !loading &&
-        <CreateNewCommunityArticle article={fullArticle} title={'Изменить запись'} />
+      {!loading &&
+        <CreateNewCommunityArticle article={fullArticle} title={fullArticle?'Изменить запись': 'Создать запись'} />
         ||
         loading && <Spinner size={24} color={colors.yellow}/>
       }

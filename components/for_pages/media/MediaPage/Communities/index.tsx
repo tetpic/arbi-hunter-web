@@ -33,13 +33,15 @@ export default function MediaCommunities() {
     }
   }, [page])
 
+  const isMyCommunityExist = !!communityContext.myCommunity
+
   return (<>
-    <div className={styles.top}>
-      <div className={styles.search}></div>
-      {userContext.currentProfile?.profileType === ProfileType.Hirer &&
-        <CommunityTopButtons isMyComunityExist={!!communityContext.myCommunity}/>
-      }
-    </div>
+    {userContext.currentProfile?.profileType === ProfileType.Hirer && !isMyCommunityExist &&
+      <div className={styles.top}>
+        <div className={styles.search}></div>
+          <CommunityTopButtons isMyComunityExist={isMyCommunityExist}/>
+      </div>
+    }
     <div className={styles.root}> 
         <InfiniteScroll
         height={'100%'}

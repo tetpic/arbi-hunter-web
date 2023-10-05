@@ -15,7 +15,23 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -70%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150%;
+      height: 100%;
+      background-color: #24242Cbb;
+      filter: blur(40px);
+      z-index: 1;
+    }
   }
+}
+
+.createButton {
+  @include buttonBlack;
 }
 
 .background {
@@ -45,7 +61,7 @@
   color: $white;
   padding: 16px;
   position: absolute;
-  top: 16px;
+  top: 8px;
   right: 16px;
   @include transitionDefault;
   @include hover {
@@ -56,6 +72,11 @@
     align-items: center;
     column-gap: 8px;
   }
+
+  @include mq($TabletWidth, max) {
+    padding: 12px;
+  }
+
 }
 
 .editCommunity {
@@ -136,7 +157,6 @@
 
 .back {
   position: absolute;
-  top: 16px;
+  top: 8px;
   left: 16px;
-
 }

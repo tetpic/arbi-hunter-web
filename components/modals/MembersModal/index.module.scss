@@ -40,6 +40,9 @@
 .modalLayout {
   max-width: 500px;
   width: 80vw;
+  @include mq($TabletWidth, max) {
+    width: 100vw;
+  }
 }
 
 .bodyWrapper {

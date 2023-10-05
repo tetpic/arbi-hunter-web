@@ -71,7 +71,9 @@ export function CommunityWrapper(props: Props) {
     return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
     .then(res => {
       setCommunityNews(state=> {
-        // state.clear()
+        if(page === 1) {
+          state.clear()
+        }
         res.data.forEach(r=> {
           state.set(r.id, r)
         })

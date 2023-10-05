@@ -9,15 +9,13 @@
   column-gap: 8px;
   row-gap: 12px;
   color: $white;
-    cursor: pointer;
+  cursor: pointer;
   @include exeptLast {
     border-bottom: 2px $grey solid;
   }
 
   .userPic {
     grid-area: p;
-  
-    
     @include transitionDefault;
     @include hover {
       box-shadow: 0px 0px 1px 1px $blue;
@@ -26,6 +24,8 @@
 
   .name {
     grid-area: n;
+    font-size: $mediumText;
+    font-weight: $medium;
     cursor: pointer;
     @include lineClamp(2);
   }
@@ -35,12 +35,22 @@
     display: flex;
     align-items: center;
     column-gap: 8px;
-
   }
 
   .button {
     grid-area: b;
     @include buttonBlack;
   }
+}
 
+.buttonYellow {
+  @include buttonBlack;
+  padding: 4px;
+}
+
+.buttonBlack {
+  border-radius: 10px;
+  background-color: $grey;
+  padding: 4px;
+  cursor: pointer;
 }

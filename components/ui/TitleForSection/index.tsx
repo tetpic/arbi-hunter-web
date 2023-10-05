@@ -1,8 +1,8 @@
-import styles from './index.module.scss'
 import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import Button from '../Button'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import styles from './index.module.scss'
 
 interface Props {
   title: string
