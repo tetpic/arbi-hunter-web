@@ -1,4 +1,4 @@
-import CommunityPage from 'components/for_pages/media/Community'
+import CommunityPage from 'components/for_pages/communities/Community'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
 import Head from 'next/head'

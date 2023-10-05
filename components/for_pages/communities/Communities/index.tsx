@@ -12,7 +12,7 @@ import styles from './index.module.scss'
 const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 
 
-export default function MediaCommunities() {
+export default function Communities() {
   const communityContext = useCommunityContext()
   const userContext = useUserContext()
   const [page, setPage] = useState<number>(1)

@@ -318,7 +318,7 @@
   border-radius: 10px;
   padding: 10px 24px 8px;
   font-weight: $medium;
-  font-size: $mediumText;
+  font-size: $largeText;
   cursor: pointer;
   @include transitionDefault;
   span {
@@ -374,7 +374,7 @@
     border-radius: 10px;
   }
 
-  span {
+  >span {
     position: relative;
     z-index: 3;
     background: $gradient;
@@ -388,6 +388,8 @@
 
 @mixin buttonGray {
   @include buttonDefault;
+  font-size: $largeText;
+  font-weight: $semibold;
   background-color: $grey;
   color: $white;
   @include hover {

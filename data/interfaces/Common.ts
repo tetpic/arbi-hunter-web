@@ -137,7 +137,7 @@ export interface ICategory extends TimeStamp, CategoryTranslation {
   imageId: number|null,
   articlesCount: string, //number
   deletedAt: string|null,
-  image: string|null,
+  image: IImage|null,
   translations: CategoryTranslation[],
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,

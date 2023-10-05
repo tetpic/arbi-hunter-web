@@ -54,11 +54,12 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCategoryList(profile: ProfileType, type: CategoryType): Promise<IPagination<ICategory>|null> {
+  static async getCategoryList(profile: ProfileType, type?: CategoryType, page?: number, limit?: number, token?: string): Promise<IPagination<ICategory>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article-category?categoryType=${type}`,
-      profile
+      url: `/api/article-category?${type?`categoryType=${type}`:''}${page?`&page=${page}`:''}&limit=${limit||40||LOAD_LIMIT}`,
+      profile,
+      token
     })
     if(res.err) {
       return null

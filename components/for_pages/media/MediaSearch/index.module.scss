@@ -1,0 +1,32 @@
+@import 'styles/index';
+
+.root {
+  @include buttonBlack;
+  padding: 4px 4px 4px 16px;
+  height: 62px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 16px;
+
+  .button {
+    @include buttonYellow;
+    padding: 18px 38px;
+    position: relative;
+    z-index: 4;
+  }
+
+  .input {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    position: relative;
+    z-index: 4;
+    width: unset;
+    min-width: 258px;
+  }
+
+  .filterButton {
+    margin-left: auto;
+  }
+
+}

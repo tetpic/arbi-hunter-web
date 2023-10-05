@@ -1,0 +1,141 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.slide {
+  width: calc(25% - 16px);
+  max-width: 286px;
+}
+
+.title {
+  font-size: $hugeText;
+  font-weight: $semibold;
+  color: $white;
+  text-align: center;
+}
+
+.content {
+  margin-top: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 134px;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  overflow: hidden;
+  background: $gradientAlt;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.logoWrapper {
+  height: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .logo {
+    width: 74px;
+    height: 74px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: $black;
+    border: 2px $grey solid;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.swiper {
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $grey;
+  padding-bottom: 24px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  @include transitionDefault;
+  cursor: pointer;
+  @include hover {
+    border: 2px $blue solid;
+  }
+}
+
+.name {
+  margin-top: 62px;
+  color: $white;
+  font-weight: $semibold;
+  font-size: $text20;
+  padding-inline: 16px;
+  text-align: center;
+  @include lineClamp(1)
+}
+
+.stats {
+  margin-top: 24px;
+  color: $greyLight;
+  font-size: $largeText;
+  font-weight: $medium;
+}
+
+.button {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: #ffffff30;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    background-color: black;
+  }
+
+}
+
+.buttonRight {
+  @extend .button;
+  right: -40px;
+}
+
+.buttonLeft {
+  @extend .button;
+  left: -40px;
+}
+
+.watchAll {
+  @include buttonDefault;
+  background-color: #22222A;
+  color: $white;
+  padding: 16px 32px;
+  font-weight: $semibold;
+  font-size: $largeText;
+  margin-top: 24px;
+  
+}

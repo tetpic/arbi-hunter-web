@@ -33,7 +33,7 @@ export default function CommunityItem({community}: Props) {
   const isSubscribed = community.isSubscribedByCurrentProfile
 
 
-  return ( <div className={styles.item} onClick={()=>router.push(`/media/community/${community.id}`)}>
+  return ( <div className={styles.item} onClick={()=>router.push(`/communities/${community.id}`)}>
     <UserPic  className={styles.userPic} image={community.logo&&FILES + community.logo.source} size={isTabletWidth?42:80} />
     <p className={styles.counter}>
       <UserSvg/>

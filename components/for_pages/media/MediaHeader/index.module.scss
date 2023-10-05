@@ -1,0 +1,59 @@
+@import 'styles/index';
+
+.header {
+  margin-top: 42px;
+  margin-bottom: 100px;
+    display: grid;
+    grid-template-areas: 'il cnt ir' 'il btn ir';
+    grid-template-columns: 10% 1fr 10%;
+    row-gap: 16px;
+    max-width: 716px;
+    justify-content: center;
+    margin-inline: auto;
+    column-gap: 16px;  
+  
+    .registerButton {
+      @include buttonYellow;
+      grid-area: btn;
+      font-weight: $semibold !important;
+      font-size: $mediumText !important;
+      max-width: 206px;
+      justify-self: center;
+    }
+  
+    .title {
+      font-size: $text36;
+      font-weight: $bold;
+      color: white;
+      text-align: center;
+      line-height: 180%;
+      padding-top: 48px;
+      white-space: nowrap;
+      span {
+        @include textGradientDefault;    
+      }
+    }
+  
+    .content {
+      grid-area: cnt;
+      max-width: 580px;
+    }
+  
+    .headerImageLeft {
+      grid-area: il;
+      justify-self: flex-end;
+    }
+  
+    .headerImageRight{
+      grid-area: ir;
+      justify-self: flex-start;
+    }
+  
+    .text {
+      max-width: 574px;
+      text-align: center;
+      font-size: $mediumText;
+      font-weight: $medium;
+      color: $white;
+    }  
+  }

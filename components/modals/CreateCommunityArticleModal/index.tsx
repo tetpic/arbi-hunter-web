@@ -1,4 +1,4 @@
-import CreateNewCommunityArticle from 'components/for_pages/media/Community/CommunityContent/CreateNewCommunityArticle'
+import CreateNewCommunityArticle from 'components/for_pages/communities/Community/CommunityContent/CreateNewCommunityArticle'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Spinner from 'components/ui/Spinner'

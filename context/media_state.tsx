@@ -2,11 +2,14 @@ import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
+import { ICategory } from 'data/interfaces/Common'
 
 interface IState {
   savedArticles: Map<number, IArticle>
   setSavedArticles: (p: number)=>Promise<boolean|{total: number}>
   likeArticle: (article: IArticle) => Promise<boolean>
+  categories: Map<number, ICategory>
+  setCategories: ()=>Promise<boolean>
 }
 
 const MediaContext = createContext<Partial<IState>>({})
@@ -20,6 +23,7 @@ export function MediaWrapper(props: Props) {
   const profileType = userContext?.currentProfile?.profileType||null
 
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map)
+  const [categories, setCategoriesState] = useState<Map<number, ICategory>>()
 
 
   const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
@@ -34,6 +38,17 @@ export function MediaWrapper(props: Props) {
       return {total: res.total}
     })
     .catch(err=>false)
+  }
+
+  const setCategories = async ():Promise<boolean> => {
+    const res = await ArticlesRepository.getCategoryList(profileType)
+    setCategoriesState(state=> {
+      res.data.forEach(r=>{
+        state.set(r.id, r)
+      })
+      return state
+    } )
+    return true
   }
 
   
@@ -61,6 +76,8 @@ export function MediaWrapper(props: Props) {
     setSavedArticles,
     savedArticles,
     likeArticle,
+    categories,
+    setCategories
   }
 
   return (

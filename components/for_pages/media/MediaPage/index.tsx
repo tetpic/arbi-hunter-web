@@ -1,80 +1,36 @@
-import Navigation from 'components/ui/Navigation'
-import TitleForSection from 'components/ui/TitleForSection'
-import { useCallback, useState } from 'react'
-import { NavigationSet } from 'types/types'
-import MediaCommunities from './Communities'
-import { useResize } from 'components/hooks/useResize'
-import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
-import { useRouter } from 'next/router'
+import { useMediaContext } from 'context/media_state'
+import MediaPageHeader from '../MediaHeader'
+import MediaSearch from '../MediaSearch'
 import styles from './index.module.scss'
+import { ICategory } from 'data/interfaces/Common'
+import MediaCategories from '../MediaCategories'
+import MediaNewsSection from '../MediaNewsSection'
+import { useUserContext } from 'context/user_state'
+import ICommunity from 'data/interfaces/ICommunity'
+import MediaCommunities from '../MediaCommunities'
+
 
 interface Props {
-}
-
-export enum MediaNav {
-  AllArticles='allArticles',
-  Subscriptions='subscriptions',
-  Communities='communities',
-  
+  categories: ICategory[]  
+  communities: ICommunity[]
 }
 
 export default function MediaPage(props: Props) {
-  const [page, pager] = useState<MediaNav>(MediaNav.Communities)
-  const {isTabletWidth} = useResize()
-  const router = useRouter()
+  const mediacontext = useMediaContext()
+  const userContext = useUserContext()
+  // const categories = mediacontext.categories || props.categories
+  
 
-  const navSet = useCallback(((): NavigationSet<MediaNav>[] => {
-    let result:{name: string, type: MediaNav, icon?: JSX.Element}[]  = []
-    result = Object.values(MediaNav).map(page => {
-      switch(page) {
-        case MediaNav.AllArticles:
-        return {name: 'Все статьи', type: page}
-
-        case MediaNav.Subscriptions:
-        return {name: 'Мои подписки', type: page}
-
-        case MediaNav.Communities:
-        return {name: 'Сообщества', type: page}
+  return (
+    <div className={styles.root}>
+      {!userContext.currentProfile &&
+        <MediaPageHeader/>  
       }
-    })
-    return result
-  } ), [page])
-
-  const body = (()=>{
-    switch(page) {
-      case MediaNav.AllArticles:
-        return <>Раздел &quot;все статьи&quot; в разработке</>
-      case MediaNav.Subscriptions:
-        return <>мои подписки</>
-      case MediaNav.Communities:
-        return <MediaCommunities/>
-    }
-  })()
-
-  const title = (()=> {
-    switch(page) {
-      case MediaNav.AllArticles:
-        return 'Медиа'
-      case MediaNav.Subscriptions:
-        return 'Мои подписки'
-      case MediaNav.Communities:
-        return 'Сообщества'
-    }
-  })()
-
-
-  return (<div className={styles.root}> 
-    <div className={styles.contentWrapper}>
-      <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
-      {isTabletWidth && 
-        <ItemNavigation activeItem={page} items={navSet()} onClick={(p)=> pager(p)}/>
-      }
-      <div className={styles.bodyWrapper}>
-        {body}
-      </div>
+      <MediaSearch/>
+      <MediaCategories categories={props.categories.filter(el=>el.image)}/>
+      <MediaNewsSection title='Популярное'/>
+      <MediaCommunities communities={props.communities}/>
+      <MediaNewsSection title='Новости'/>
     </div>
-    {!isTabletWidth && 
-      <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet()}/>
-    }
-  </div>)
+  )
 }

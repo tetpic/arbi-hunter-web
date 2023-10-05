@@ -13,11 +13,12 @@ interface Response <T> {
 }
 
 export default class CommunitiesRepository {
-  static async getCommunities(profile: ProfileType, page: number): Promise<Response<ICommunity[]>|null> {
+  static async getCommunities(profile: ProfileType, page: number, token?: string): Promise<Response<ICommunity[]>|null> {
     const res = await request({
       method: 'get',
       url: `/api/community?limit=${20}&page=${page}`,
-      profile
+      profile,
+      token
     })
     if(res.err) {
       return null
