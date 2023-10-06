@@ -55,7 +55,7 @@
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 3088",
     "build": "next build",
-    "start": "next start -p 3088",
+    "start": "next start",
     "lint": "next lint",
     "plop": "plop",
     "ts": "tsc --noEmit"
