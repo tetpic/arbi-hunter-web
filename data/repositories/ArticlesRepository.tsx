@@ -31,6 +31,19 @@ export default class ArticlesRepository {
     return res
   }
 
+  static async getNews(profile?: ProfileType, token?: string): Promise<IPagination<IArticle>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/article?articleType=news&isTop=true',
+      profile, 
+      token
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async removeArticle(profile: ProfileType, id: number): Promise<any|null> {
     const res = await request({
       method: 'delete',

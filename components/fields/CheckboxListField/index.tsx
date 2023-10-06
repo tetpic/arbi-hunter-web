@@ -43,8 +43,9 @@ export default function CheckboxListField<T>(props: Props<T>) {
         gridTemplateColumns: props.grid ? Array.from({length: props.grid}, (_, i) => '1fr').join(' ') : '',
         gridGap: '1vw'
       }}>
-        {options.filter(item => restrictedValues.indexOf(item.value) === -1).map(item => (
+        {options.filter(item => restrictedValues.indexOf(item.value) === -1).map((item, index) => (
           <Checkbox<T>
+            key={index}
             circleClassName={props.circleClassName}
             className={classNames(props.itemClassName, item.className, [...(!props.grid ? [styles.radioNoGrid] : [])])}
             labelClassName={props.itemLabelClassName}

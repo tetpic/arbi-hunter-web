@@ -31,31 +31,37 @@ export default function MediaCategories(props: Props) {
   >
     {props.categories.length > 0 && props.categories.map(category=> {
       return (
-        <SwiperSlide className={styles.swiperSlide}>
+        <SwiperSlide className={styles.swiperSlide} key={category.id}>
           <div className={styles.categoryItem}>
-            {category.image &&
-              <Image 
-              src={FILES+category.image.source} 
-              alt={category.name+ ' image'} 
-              width={'0'} 
-              height="0"
-              sizes="100vw"
-              className={styles.image}
-              />
-            }
+            <div className={styles.imageWrapper}>
+              {category.image &&
+                <Image 
+                src={FILES+category.image.source} 
+                alt={category.name+ ' image'} 
+                width={100} 
+                height={100}
+                style={{objectFit:'cover'}}
+                // sizes="100px"
+                // layout="fill"
+                // objectFit="cover"
+                // fill
+                className={styles.image}
+                />
+              }
+            </div>
             <p className={styles.name}>{category.name}</p>
             <Button className={styles.artCounter}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Button>
           </div>
-    </SwiperSlide>
+        </SwiperSlide>
       )
     })}
 
 
     </Swiper>
-    <div className={styles.swiperNav}>
-      <Button className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
-      <Button className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
-    </div>
+    {/* <div className={styles.swiperNav}> */}
+      <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
+      <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
+    {/* </div> */}
     <Button className={styles.watchAll}>Смотреть все</Button>
   </section>
   )

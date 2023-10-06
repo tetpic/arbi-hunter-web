@@ -102,6 +102,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setHelpObjects = (o: HelpObject) => {
+    debugger
     setHelp(state=> {return {...state, ...o}})
   }
 

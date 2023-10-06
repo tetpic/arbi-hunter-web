@@ -186,6 +186,7 @@ export function CoursesWrapper(props: Props) {
   }
 
   const setStepAnswer = async (data: ICourseStepAnswer, blockId?: number) => {
+    
     const res = await CoursesRepository.setStepAnswer(profileType, data)
     if(blockId && res) {
       setCourseSteps(blockId)

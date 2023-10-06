@@ -33,10 +33,10 @@ export default function CourseFeedbacks(props: Props) {
   {coursesContext.feedBacks.length > 0 &&
     coursesContext.feedBacks.map(el => {
       return  (
-        <div className={styles.feedback}>
+        <div className={styles.feedback} key={el.id}>
           <UserPic className={styles.userPic} size={48}/>
           <p className={styles.name}>{el.profile.firstName} {el.profile.lastName}</p>
-          <p className={styles.stats}>{getMarks(el.mark).map(el=> <StarSvg className={el&&styles.activeStar} />)}</p>
+          <p className={styles.stats}>{getMarks(el.mark).map((el, index)=> <StarSvg key={index} className={el&&styles.activeStar} />)}</p>
           {el.content&&
             <p className={styles.content}>{el.content}</p>
           }

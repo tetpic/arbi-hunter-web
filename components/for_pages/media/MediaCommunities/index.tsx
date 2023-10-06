@@ -1,6 +1,5 @@
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import {Autoplay} from 'swiper/modules'
-import styles from './index.module.scss'
 import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
@@ -10,6 +9,7 @@ import Button from 'components/ui/Button'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useRef } from 'react'
+import styles from './index.module.scss'
 
 interface Props {
   communities: ICommunity[]
@@ -30,20 +30,29 @@ export default function MediaCommunities(props: Props) {
     slidesPerView={'auto'}
     freeMode
     modules={[Autoplay]}
-    spaceBetween={16}
     ref={swiper}
     className={styles.swiper}
     >
       {props.communities&& props.communities.map(comm => {
         return (
-          <SwiperSlide className={styles.slide}>
+          <SwiperSlide className={styles.slide} key={comm.id}>
             <div className={styles.item} onClick={()=>{router.push(`/communities/${comm.id}`)}}>
               <div className={styles.imageWrapper}>
-                {comm.image&& <Image src={FILES + comm.image.source} alt={comm.name + ' background'} width={286} height={134} />}
+                {comm.image&& 
+                  <Image 
+                  src={FILES + comm.image.source} 
+                  alt={comm.name + ' background'} 
+                  width={286} 
+                  height={134} 
+                  style={{objectFit:'cover'}}
+                  // layout="fill"
+                  // objectFit="cover"
+                  />
+                }
               </div>
               <div className={styles.logoWrapper}>
                 <div className={styles.logo}>
-                  {comm.logo&&<Image src={FILES+comm.logo.source} width={52} height={52} alt={comm.name + ' logo'}/>}
+                  {comm.logo&&<Image src={FILES+comm.logo.source}  width={52} height={52} alt={comm.name + ' logo'}/>}
                 </div>
               </div>
               <p className={styles.name}>{comm.name}</p>
@@ -55,8 +64,9 @@ export default function MediaCommunities(props: Props) {
     </Swiper>
     <Button 
     className={styles.buttonLeft} 
+    title='previous slide'
     onClick={(e)=>{
-      swiper.current.swiper.slideNext()
+      swiper.current.swiper.slidePrev()
     }}
     >
       <ArrowLeftSvg/>
@@ -64,6 +74,7 @@ export default function MediaCommunities(props: Props) {
 
     <Button 
     className={styles.buttonRight} 
+    title='next slide'
     onClick={e=> {
       swiper.current.swiper.slideNext()
     }}

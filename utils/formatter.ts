@@ -147,7 +147,7 @@ export default class Formatter {
   }
 
   /** get array, return some random elements from it with limit */
-  static randomElementsFromArray = (arr: any[], limit: number): any[] => {
+  static randomElementsFromArray = <T>(arr: any[], limit: number): T[] => {
     const arrLength = arr.length
     let newArray = []
     while (newArray.length < (arrLength<=limit?arrLength:limit)) {

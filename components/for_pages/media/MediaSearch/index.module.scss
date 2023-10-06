@@ -7,6 +7,8 @@
   display: flex;
   justify-content: space-between;
   column-gap: 16px;
+  cursor: default;
+
 
   .button {
     @include buttonYellow;
@@ -21,8 +23,14 @@
     font-weight: $medium;
     position: relative;
     z-index: 4;
-    width: unset;
+    width: calc(100% - 160px);
     min-width: 258px;
+    &:focus {
+      &::placeholder {
+        color: transparent;
+      }
+    }
+
   }
 
   .filterButton {

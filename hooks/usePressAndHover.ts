@@ -16,12 +16,12 @@ export default function usePressAndHover(): [RefObject<any>, boolean, boolean] {
   useEffect(() => {
     const node = ref.current
     if (node) {
-      node.addEventListener('mouseover', handleMouseOver)
-      node.addEventListener('mouseout', handleMouseOut)
-      node.addEventListener('mousedown', handleMouseDown)
-      node.addEventListener('mouseup', handleMouseUp)
-      node.addEventListener('touchstart', handleMouseDown)
-      node.addEventListener('touchend', handleMouseUp)
+      node.addEventListener('mouseover', handleMouseOver, {passive: true})
+      node.addEventListener('mouseout', handleMouseOut, {passive: true})
+      node.addEventListener('mousedown', handleMouseDown, {passive: true})
+      node.addEventListener('mouseup', handleMouseUp, {passive: true})
+      node.addEventListener('touchstart', handleMouseDown, {passive: true})
+      node.addEventListener('touchend', handleMouseUp, {passive: true})
       return () => {
         node.removeEventListener('mouseover', handleMouseOver)
         node.removeEventListener('mouseout', handleMouseOut)

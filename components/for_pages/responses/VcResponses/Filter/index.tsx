@@ -78,7 +78,7 @@ export default function ResponsesFilter(props: Props) {
               <p className={styles.item}>{value.translation}</p>
               {value.translatedItems.map((el, index)=>{
                 return (
-                  <Radio value={el} label={el} isActive={filterOptions.get(value)?.translatedActiveItem===el} onChange={()=>setFilterOptions(value, index)}/>
+                  <Radio key={index} value={el} label={el} isActive={filterOptions.get(value)?.translatedActiveItem===el} onChange={()=>setFilterOptions(value, index)}/>
                 )
               })}
             </div>
@@ -94,6 +94,7 @@ export default function ResponsesFilter(props: Props) {
                 {value.translatedItems && value.translatedItems.map((el, index)=>{
                   return (
                     <p 
+                    key={index}
                     className={classnames(styles.accItem, filterOptions.get(value)?.translatedActiveItem===el&&styles.accItem_active)} 
                     onClick={()=>setFilterOptions(value, index)}>
                       {el}

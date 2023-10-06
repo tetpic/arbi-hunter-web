@@ -70,11 +70,11 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
         </div>
       }
 
-      {props.inputsSettings&&props.inputsSettings.map(el => {
+      {props.inputsSettings&&props.inputsSettings.map((el, index) => {
         if(el.type === 'textarea') {
-          return <TextAreaField label={el.label} value={fields[el.value].toString()} onChange={(v)=> onChangeHelper(v, el.value)} name={el.name} autoSize={true}/>
+          return <TextAreaField key={index} label={el.label} value={fields[el.value].toString()} onChange={(v)=> onChangeHelper(v, el.value)} name={el.name} autoSize={true}/>
         }
-        return <InputField autocompleteOff={true} className={styles.input} value={fields[el.value ]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
+        return <InputField key={index} autocompleteOff={true} className={styles.input} value={fields[el.value ]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
       })}
 
       {/* <InputField className={styles.input} value={fields.institution} onChange={(v)=> onChangeHelper(v, 'institution')} labelType={'top'} styleType={'default'} color={'default'} name={'setInstitution'} label={'Заведение:'}/>

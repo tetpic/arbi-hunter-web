@@ -19,7 +19,6 @@ interface Props {
 export default function CourseItem(props: Props) {
   const router = useRouter()
 
-
   return (
     <div className={styles.item} onClick={()=> router.push('/courses/' + props.course.id)}>
       <div className={styles.top}>
@@ -30,7 +29,16 @@ export default function CourseItem(props: Props) {
             <FolderSvg/>
           }
         </div>
-        <p className={styles.badge}>Разработка</p>
+        <div className={styles.badges}>
+          {props.course.categories.length > 0  &&
+          props.course.categories.filter(f=>f.id !== 30).map(ctg => {
+            return (
+              <p key={ctg.id} className={styles.badge}>{ctg.name}</p>
+              )
+            })
+          }
+        </div>
+        
         <FavoritesButton className={styles.heartButton}/>
       </div>
       <div className={styles.bottom}>

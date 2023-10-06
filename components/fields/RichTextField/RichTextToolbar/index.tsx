@@ -11,7 +11,6 @@ import UnorderedListSvg from 'components/svg/UnorderedListSvg'
 import { Buttons } from '..'
 import PhotoSvg from 'components/svg/PhotoSvg'
 import FileRepository from 'data/repositories/FileRepository'
-import { useField } from 'formik'
 import { PreviewImage } from 'data/interfaces/Common'
 
 interface Props {
@@ -43,11 +42,14 @@ const ToolbarButton = ({onClick, children, isActive, disabled}: {onClick: () => 
 
 export default function RichTextToolbar(props: Props) {
   const {editor, onEditLink, hideButtons} = props
-  const [field, meta, helpers] = useField(props as any)
 
   const addImage = useCallback(() => {
+    if(!props.onAddImage) {
+      return
+    }
     const input = document.createElement('input')
     input.type = 'file'
+    input.name ='helper'
     input.click()
     input.addEventListener('change', (event: Event)=> {
       const target = event.target as HTMLInputElement
@@ -57,7 +59,6 @@ export default function RichTextToolbar(props: Props) {
         FileRepository.uploadFile(file)
         .then(fl => {
           props.onAddImage(state=> [...state, {image: file, loaded: true, id: fl.id}])
-          // editor.commands.setImage({ src: FILES + fl.source, })
         })
       }
       catch(e) {

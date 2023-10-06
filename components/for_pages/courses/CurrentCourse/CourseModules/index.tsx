@@ -49,7 +49,7 @@ export default function CourseModules({course}: Props) {
   return (<div className={styles.root}> 
     {!loadingBlocks && courseModules.size > 0 &&
       [...courseModules.entries()].map(([k, v], blockIndex)=> (
-        <div className={styles.item}>
+        <div className={styles.item} key={k.id}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>
             {k.image?.source &&
               <Image className={styles.image} src={FILES + k.image?.source} width={65} height={48} alt={'course title'}/>
@@ -66,7 +66,7 @@ export default function CourseModules({course}: Props) {
             {v.length > 0 && 
               v.map((el, index) => {
                 return (
-                  <div className={classNames(styles.step)}>
+                  <div className={classNames(styles.step)} key={el.id}>
                       <p 
                       className={styles.stepTitle} 
                       onClick={()=> router.push(`/courses/${course.id}/modules?module=${blockIndex+1}&block=${index+1}&step=1`)}>

@@ -34,6 +34,7 @@ export default function LangaugesModal(props: Props) {
   }, [])
 
   const onSaveHandler = () => {
+    debugger
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||[]
     cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive}]})
     props.onClose()
@@ -50,9 +51,10 @@ export default function LangaugesModal(props: Props) {
       <div className={styles.wrapper}>
         <p className={styles.title} onClick={()=>{setLangsActive(!langsDropdownActive)}}>Язык <ArrowDownSvg className={langsDropdownActive&&styles.arrow_active}/></p>
         <div className={classNames(styles.list, langsDropdownActive&&styles.list_active)}>
-          {langs&&langs.map(el => {
+          {langs&&langs.map((el, index) => {
               return (
                 <Radio 
+                key={index}
                 className={styles.item} 
                 isActive={el.en===langRadioActive} 
                 value={el.en} 
@@ -66,9 +68,10 @@ export default function LangaugesModal(props: Props) {
       <div className={styles.wrapper}>
         <p className={styles.title} onClick={()=>{setLevelsActive(!levelsDropdownActive)}} >Уровень владения <ArrowDownSvg className={levelsDropdownActive&&styles.arrow_active}/></p>
         <div className={classNames(styles.list, levelsDropdownActive&&styles.list_active)}>
-          {Object.values(LanguageKnowLevel).map(el=> {
+          {Object.values(LanguageKnowLevel).map((el, index)=> {
             return (
               <Radio 
+              key={index}
               className={styles.item} 
               value={el} 
               label={TranslateLanguageKnowLevel(el)} 

@@ -33,6 +33,7 @@
   display: flex;
   justify-content: space-between;
   column-gap: 16px;
+ 
 
   .stat {
     padding: 16px;
@@ -47,6 +48,12 @@
     align-items: center;
     grid-template-areas: 'b t' 'v v';
     grid-template-columns: auto 1fr;
+    @include mq($MdDesktopWidth, max) {
+      grid-template-areas: 'b' 't' 'v';
+      grid-template-columns: auto;
+      justify-content: center;
+      justify-items: center;
+    }
 
     @include mq($TabletWidth, max) {
       padding: unset;

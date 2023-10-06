@@ -21,12 +21,19 @@
   @include mq($TabletWidth, max) {
      height: clamp(90px, 40vw, 230px);
   }
-  
 
-  .badge {
+  .badges {
     position: absolute;
     top: 16px;
     left: 16px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    align-items: flex-start;
+  }
+  
+
+  .badge {
     background-color: #586DE4;
     border-radius: 30px;
     padding: 10px 16px 8px;

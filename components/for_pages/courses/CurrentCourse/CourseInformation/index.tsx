@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import ICourse from 'data/interfaces/ICourse'
 import languages from '@cospired/i18n-iso-languages'
-import styles from './index.module.scss'
 import UserPic from 'components/ui/UserPic'
 import ReactPlayer from 'react-player'
 import { useEffect, useState } from 'react'
@@ -10,6 +9,7 @@ import Button from 'components/ui/Button'
 import GlobusSvg from 'components/svg/GlobusSvg'
 import TimerSvg from 'components/svg/TimerSvg'
 import EducationSvg from 'components/svg/EducationSvg'
+import styles from './index.module.scss'
 
 interface Props {
   course: ICourse

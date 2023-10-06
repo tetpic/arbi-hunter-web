@@ -28,6 +28,7 @@ interface Props {
 
 export default function Skills(props: Props) {
 
+
   const initialCoursesData: CoursesInfo = {
     date: '',
     location: '',
@@ -41,7 +42,6 @@ export default function Skills(props: Props) {
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
   const [activeDetails, setActiveDetails] = useState<CoursesInfo>(initialCoursesData)
   const {setFieldValue} = useFormikContext()
-
 
   const closeModalHandler = (fl: CoursesInfo) => {
     setDetailsCoursesInfo(f=> [...f, {...fl}])
@@ -92,7 +92,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.skills?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.skills
-        .map((el: ISource)=> <RemovableItem onClick={()=>removeSkill(el)} text={el.title}/>)
+        .map((el: ISource)=> <RemovableItem key={el.id} onClick={()=>removeSkill(el)} text={el.title}/>)
         }
       </div>
     } 
@@ -105,7 +105,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.length > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&&cvContext.helpObjects?.languageKnowledges
-        .map((el)=> <RemovableItem onClick={()=>removeLanguage(el)} text={languages.getName(el.language, 'ru')} /> )
+        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={languages.getName(el.language, 'ru')} /> )
         }
       </div>
     } 
@@ -120,7 +120,7 @@ export default function Skills(props: Props) {
         <div className={styles.itemsWrapper}>
         {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
           .map((el)=> 
-            <RemovableItem text={el.name} onClick={()=>{
+            <RemovableItem key={el.date} text={el.name} onClick={()=>{
               setActiveDetails(el)
               setCoursesDetails(true)}
             }/>
@@ -139,7 +139,7 @@ export default function Skills(props: Props) {
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
         .map(([key, value])=> 
-        <RemovableItem text={value.title} onClick={()=>removeSource(key)}/>
+        <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
         )}
       </div>
     }

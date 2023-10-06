@@ -131,7 +131,7 @@ export default function VCFeedbacks(props: Props) {
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.map(el=> {
-          return <CvCard cv={el.cv} application={el} vcId={props.id} chat={el.chat[0]} />
+          return <CvCard cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||
         loading && <Spinner size={24} color={colors.yellow}/>

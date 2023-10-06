@@ -65,8 +65,13 @@ export default function Experience(props: Props) {
       />   
        
       
-      {cvContext.currentCv?.experienceInfo&& values.workExperiencePresense === 'present' &&cvContext.currentCv?.experienceInfo.length>0&&cvContext.currentCv?.experienceInfo.map(el=> {
+      {cvContext.currentCv?.experienceInfo
+      && values.workExperiencePresense === 'present' 
+      &&cvContext.currentCv?.experienceInfo.length>0
+      &&cvContext.currentCv?.experienceInfo
+      .map((el, index)=> {
         return (<div 
+          key={index}
         className={styles.experienceWrapper} 
         // onClick={()=>{setActiveDetails(el); setDetails(true)}}
         >

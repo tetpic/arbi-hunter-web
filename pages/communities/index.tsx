@@ -18,6 +18,5 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
   }) 
 
 export default function Communities(props: Props) {
-
   return (<CommunitiesPage/>)
 }

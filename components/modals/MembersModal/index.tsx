@@ -28,7 +28,7 @@ export default function MembersModal(props: Props) {
 
   const body = (<div className={styles.bodyWrapper}>
     {filtered.length > 0 &&filtered.map(member=> {
-      return <div className={styles.member}>
+      return <div className={styles.member} key={member.id}>
         <UserPic size={42} image={member.image&&FILES+member.image.source}/>
         <p className={styles.name}>{member.firstName} {member.lastName}</p>
         <p className={classNames(styles.status, styles[member.activityStatus])}>{member.activityStatus}</p>

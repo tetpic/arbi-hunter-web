@@ -56,7 +56,7 @@ export default function Communities() {
             }
             {(loaded && communityContext.communities.size > 0) &&
               [...communityContext.communities.values()].map(com => {
-                return <CommunityItem community={com}/>
+                return <CommunityItem community={com} key={com.id}/>
               })
               ||
               !loaded &&

@@ -1,0 +1,42 @@
+@import 'styles/index';
+
+.root {
+  background: $gradientAlt;
+  border-radius: 16px;
+  padding-block: 40px;
+  padding-inline: 40px 0px ;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 100px;
+}
+
+.title {
+  font-size: $text32;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.imageWrapper {
+  display: flex;
+  align-items: flex-end;
+  height: 130px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: flex-start;
+  color: $white;
+}
+
+.subTitle {
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.button {
+  @include buttonDefault;
+  background-color: black;
+  font-weight: $semibold;
+}

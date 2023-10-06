@@ -5,7 +5,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
 import { useRouter } from 'next/router'
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
@@ -51,7 +51,6 @@ export function CommunityWrapper(props: Props) {
   const [myCommunity, setMyCommunityState] = useState<ICommunity>()
 
   const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
-    
     try {
       const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, page)
       setCommunityMembersState(state => {
@@ -67,7 +66,7 @@ export function CommunityWrapper(props: Props) {
     }
   }
 
-  const getCommunityNews = async (page: number) => {
+  const getCommunityNews = useCallback(async (page: number) => {
     return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
     .then(res => {
       setCommunityNews(state=> {
@@ -84,7 +83,7 @@ export function CommunityWrapper(props: Props) {
     .catch(err=> {
       return false
     })
-  }
+  }, [currentCommunity?.id])
 
   const setCommunities = async (p: number) => {
     const res = await CommunitiesRepository.getCommunities(profileType, p)
@@ -154,12 +153,12 @@ export function CommunityWrapper(props: Props) {
     return true
   }
 
-  const setMyCommunity = () =>{
+  const setMyCommunity = useCallback(() =>{
     CommunitiesRepository.myCommunity(profileType)
     .then(res=> {
       setMyCommunityState(res.data[0])
     })
-  }
+  }, [myCommunity])
 
   const createNews = async (data: ICreateNews, id?: number): Promise<boolean> => {
     if(id) {
@@ -210,8 +209,6 @@ export function CommunityWrapper(props: Props) {
     }
   }, [userContext.currentProfile])
 
-
-
   const value: IState = {
     communities,
     setCommunities,
@@ -230,7 +227,6 @@ export function CommunityWrapper(props: Props) {
     createNews,
     removeNews,
     saveArticle
-
   }
 
   return (

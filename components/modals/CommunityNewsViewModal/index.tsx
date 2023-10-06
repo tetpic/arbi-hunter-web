@@ -53,14 +53,14 @@ export default function CommunityNewsViewModal(props: Props) {
         {article && article.blocks.length > 0 &&
           article.blocks.map((block, index)=> {
             if(block.body) {
-              return (<div className={styles.text} dangerouslySetInnerHTML={{__html: block.body}}></div>)
+              return (<div key={index} className={styles.text} dangerouslySetInnerHTML={{__html: block.body}}></div>)
             }
           })
         } 
         <div className={styles.imagesWrapper}>
         {article&&article.images&&article.images.map(image=> {
           return(
-            <div className={styles.image} style={{width: article.images.length > 1?'50%': '100%'}}>
+            <div key={image.id} className={styles.image} style={{width: article.images.length > 1?'50%': '100%'}}>
               <Image src={FILES+ image.source} alt={'article Image'} layout="fill" objectFit='cover' />
             </div>
           )

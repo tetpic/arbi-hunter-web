@@ -67,8 +67,8 @@ export default function ModulesPage(props: Props) {
     }
   }, [activeBlock])
 
-  useEffect(()=>{
-    const stepNumber = courseContext.courseBlocks?.get(activeBlock)?.indexOf(activeStep) + 1
+  useEffect(()=>{    
+    const stepNumber = courseContext.courseBlocks?.get(activeBlock)?.findIndex(el=> el?.id === activeStep?.id)+1
     if(activeStep && stepNumber > 0) {
       activeStep&&pager(stepNumber)  
       const blockNumber = [...courseContext.courseBlocks.keys()].indexOf(activeBlock)
@@ -78,11 +78,13 @@ export default function ModulesPage(props: Props) {
     }
   }, [activeStep])
 
-  useEffect(()=>{    
+  useEffect(()=>{   
+     
     const steps = courseContext.courseBlocks.get(activeBlock)
     if(steps && steps.length > 0) {
+      const stepNumber = courseContext.courseBlocks?.get(activeBlock)?.findIndex(el=> el?.id === activeStep?.id)
       setProgressLimit(courseContext.courseBlocks.get(activeBlock).length)
-      setActiveStep(steps[Number(props.initialStep) - 1])
+      setActiveStep(steps[stepNumber>=0?stepNumber:(Number(props.initialStep) - 1)])
     }
   }, [courseContext.courseBlocks])
 

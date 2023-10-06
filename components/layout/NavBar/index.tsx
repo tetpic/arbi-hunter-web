@@ -11,19 +11,19 @@ interface Props {
 export default function NavBar(props: Props) {
 
   return ( <div className={styles.root}>
-    <Link  className={styles.link} href={'/'}>
+    <Link aria-label='go to main page' className={styles.link} href={'/'}>
       <HomeSvg className={styles.linkSvg}/>
     </Link>
 
-    <Link  className={styles.link} href={'/chats'}>
+    <Link aria-label='to chats'  className={styles.link} href={'/chats'}>
       <MessageSvg className={styles.linkSvg}/>
     </Link>
 
-    <Link  className={styles.link} href={'/notifications'}>
+    <Link aria-label='to nitofications'  className={styles.link} href={'/notifications'}>
       <NotificationSvg className={styles.linkSvg}/>
     </Link>
 
-    <Link  className={styles.link} href={'/payments'}>
+    <Link aria-label='tp payments'  className={styles.link} href={'/payments'}>
       <WalletSvg className={styles.linkSvg}/>
     </Link>
 

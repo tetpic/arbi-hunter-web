@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import Formatter from 'utils/formatter'
 import CourseItem from 'components/ui/CourseItem'
 import styles from './index.module.scss'
+import { ICategory } from 'data/interfaces/Common'
 
 interface Props {
 }
@@ -22,8 +23,8 @@ export default function CoursesMain(props: Props) {
       <h1 className={styles.title}>Станьте<br/> востребованным<br/> <span>специалистом</span></h1>
       <div className={styles.tagsWrapper}>
         {coursesContext.categories.length > 0 &&
-          Formatter.randomElementsFromArray(coursesContext.categories, 4).map(el=> {
-            return  <p className={styles.tag}>{el.name}</p>
+          Formatter.randomElementsFromArray<ICategory>(coursesContext.categories, 4).map(el=> {
+            return  <p className={styles.tag} key={el.id}>{el.name}</p>
           })
         }
       </div>
@@ -37,7 +38,7 @@ export default function CoursesMain(props: Props) {
     <div className={styles.coursesWrapper}>
       {coursesContext.courses.length > 0 &&
         coursesContext.courses.map(el => {
-          return <CourseItem course={el} />
+          return <CourseItem course={el} key={el.id} />
         })
       }
     </div>

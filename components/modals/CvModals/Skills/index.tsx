@@ -70,8 +70,8 @@ export default function SkillsModal(props: Props) {
       >
         <div className={styles.categoriesWrapper}>
           <CustomScrollbar>
-          {skills&&skills.length > 0&&skills.map(el=>{
-            return (<p className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
+          {skills&&skills.length > 0&&skills.map((el, index)=>{
+            return (<p key={index} className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
           })}
           </CustomScrollbar>
         </div>

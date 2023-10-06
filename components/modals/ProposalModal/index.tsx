@@ -84,12 +84,20 @@ export default function ProposalModal(props: Props) {
       <Form>
         {
         page === ProposalModalPager.Invite &&
-          <RadioListField wrapperClassName={styles.radioWrapper} name={'type'} options={Object.values(ApplicationBSSelectType).map(el=> {
+          <RadioListField 
+          wrapperClassName={styles.radioWrapper} 
+          name={'type'} 
+          options={Object.values(ApplicationBSSelectType)
+          .map(el=> {
             return {value: el, label: TranslateApplicationBSSelectType(el)}
           })}/>
         ||
         page === ProposalModalPager.OtherVacancy && !loading &&
-          <RadioListField wrapperClassName={styles.radioWrapper} name={'vcId'} options={[...vacancyContext.activeVacancies.values()].map(el => {
+          <RadioListField 
+          wrapperClassName={styles.radioWrapper} 
+          name={'vcId'} 
+          options={[...vacancyContext.activeVacancies.values()]
+          .map(el => {
             return {value: el.id, label: el.name}
           })}/>          
         ||

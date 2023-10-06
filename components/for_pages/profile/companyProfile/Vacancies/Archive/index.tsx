@@ -20,7 +20,7 @@ export default function VacanciesArchive(props: Props) {
   return (<div className={styles.root}> 
   {isLoaded&&vacancyContext.archiveVacancies && vacancyContext.archiveVacancies.size > 0 &&
     [...vacancyContext.archiveVacancies.values()].map(el=>{
-      return <VacancyItem vacancy={el} isActive={false}/>
+      return <VacancyItem vacancy={el} key={el.id} isActive={false}/>
     })
     ||
     isLoaded&&vacancyContext.archiveVacancies.size === 0 &&

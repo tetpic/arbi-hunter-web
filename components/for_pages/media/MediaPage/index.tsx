@@ -1,4 +1,3 @@
-import { useMediaContext } from 'context/media_state'
 import MediaPageHeader from '../MediaHeader'
 import MediaSearch from '../MediaSearch'
 import styles from './index.module.scss'
@@ -8,18 +7,18 @@ import MediaNewsSection from '../MediaNewsSection'
 import { useUserContext } from 'context/user_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import MediaCommunities from '../MediaCommunities'
+import MediaCrypto from '../MediaCrypto'
+import { IArticle } from 'data/interfaces/IArticle'
 
 
 interface Props {
   categories: ICategory[]  
   communities: ICommunity[]
+  news: IArticle[]
 }
 
 export default function MediaPage(props: Props) {
-  const mediacontext = useMediaContext()
   const userContext = useUserContext()
-  // const categories = mediacontext.categories || props.categories
-  
 
   return (
     <div className={styles.root}>
@@ -28,9 +27,10 @@ export default function MediaPage(props: Props) {
       }
       <MediaSearch/>
       <MediaCategories categories={props.categories.filter(el=>el.image)}/>
-      <MediaNewsSection title='Популярное'/>
+      <MediaNewsSection title='Популярное' news={props.news.slice(4, 9)}/>
       <MediaCommunities communities={props.communities}/>
-      <MediaNewsSection title='Новости'/>
+      <MediaNewsSection title='Новости' news={props.news} link={'/news'}/>
+      <MediaCrypto/>
     </div>
   )
 }

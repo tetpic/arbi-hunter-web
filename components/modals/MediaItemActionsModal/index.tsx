@@ -104,8 +104,8 @@ export default function MediaItemActionsModal(props: Props) {
   const body = (<>
     <div className={styles.itemsWrapper}>
       {items(args.isAdmin && [ActionItems.Edit, ActionItems.Copy, ActionItems.Delete]||[ActionItems.Save, ActionItems.Copy, ActionItems.Share, ActionItems.Hide])
-        .map(el=>{
-          return <p style={{color: el.color}} className={styles.item} onClick={(e)=> {el.onClick()}} >{el.icon} {el.title}</p>
+        .map((el, index)=>{
+          return <p key={index}  style={{color: el.color}} className={styles.item} onClick={(e)=> {el.onClick()}} >{el.icon} {el.title}</p>
         })
       }
     </div>

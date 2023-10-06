@@ -43,9 +43,10 @@
     @include transitionDefault;
     @include hoverButtonBlack;
     @include hover {
-      *{
-        color: $black;
-      }
+      background-color: $blue;
+      // *{
+      //   color: $white;
+      // }
     }
 
     .label {

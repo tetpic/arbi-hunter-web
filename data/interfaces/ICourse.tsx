@@ -1,5 +1,5 @@
 import { CoursesStepType, CourseStepAnswerType, Languages } from 'types/enums'
-import { CategoryTranslation,IImage, IVideo, TimeStamp} from './Common'
+import { CategoryTranslation,ICategory,IImage, IVideo, TimeStamp} from './Common'
 import { IUserProfile } from './IUser'
 
 export interface CoursesData {
@@ -48,6 +48,7 @@ export default interface ICourse extends CategoryTranslation {
   deletedAt: string|null,
   image: IImage,
   categoriesIds: number[],
+  categories?: ICategory[]
   benefits: string,
   translations: CategoryTranslation[]
 }

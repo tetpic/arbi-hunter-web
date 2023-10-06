@@ -13,7 +13,11 @@ export default function Layout(props: Props) {
   return ( 
   <div className={styles.root}>
     <StickyContainer>
-      <Sticky>{({style}) => <div className={styles.headerWrapper} style={style}><Header/></div>}</Sticky>
+      <Sticky>
+        {({style, distanceFromTop}) => <div className={styles.headerWrapper}  style={style}>
+          <Header distanceFromTop={distanceFromTop}  />
+          </div>}
+      </Sticky>
       <NavBar/>
       <div className='contentWrapper'>
         {props.children}

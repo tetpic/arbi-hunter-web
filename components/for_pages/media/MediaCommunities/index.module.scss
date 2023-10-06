@@ -9,8 +9,9 @@
 }
 
 .slide {
-  width: calc(25% - 16px);
+  width: 25%;
   max-width: 286px;
+  padding-inline: 8px;
 }
 
 .title {
@@ -33,11 +34,13 @@
   border-top-left-radius: 16px;
   overflow: hidden;
   background: $gradientAlt;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  position: relative;
+  z-index: 0;
+  // img {
+  //   width: 100%;
+  //   height: 100%;
+  //   object-fit: cover;
+  // }
 }
 
 .logoWrapper {
@@ -46,6 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   .logo {
     width: 74px;
@@ -117,6 +121,11 @@
     background-color: black;
   }
 
+  svg {
+    width: 36px;
+    height: 36px;
+  }
+
 }
 
 .buttonRight {
@@ -137,5 +146,8 @@
   font-weight: $semibold;
   font-size: $largeText;
   margin-top: 24px;
+  @include hover {
+    background-color: $greyLight;
+  }
   
 }

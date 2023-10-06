@@ -39,8 +39,6 @@ export interface AppProps extends NextAppProps {
 function MyApp({Component, pageProps}: AppProps) {
   const [clientVisible, setClientVisible] = useState(false)
 
-
-
   useEffect(() => {
       setClientVisible(true)
       if (pageProps.isMobile) {
@@ -64,17 +62,18 @@ function MyApp({Component, pageProps}: AppProps) {
           <CoursesWrapper>
           <CommunityWrapper>
           <AuthWrapper>
-
+            
             <Head>
               <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
+
             <Layout>           
               <Component {...pageProps} />
-            
             </Layout>
+
             {clientVisible && <ModalContainer/>}
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <Snackbar/>}

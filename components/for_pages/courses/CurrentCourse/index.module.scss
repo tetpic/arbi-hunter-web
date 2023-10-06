@@ -42,6 +42,7 @@
   @include mq($TabletWidth, max) {
     margin-top: unset;
     width: 100vw;
+    height: 70vw;
     margin-left: -16px;
     border-radius: unset;
     overflow: hidden;

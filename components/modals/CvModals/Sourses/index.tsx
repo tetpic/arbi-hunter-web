@@ -65,6 +65,7 @@ export default function SoursesModal(props: Props) {
         {sources?.length>0&&sources
         .map(el=> 
             <p 
+            key={el.id}
             className={classNames(styles.source, choosenSources.has(el.id)&&styles.source_active)} 
             onClick={()=> {onClickItemHandler(el)}}
             >

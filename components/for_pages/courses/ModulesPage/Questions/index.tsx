@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function Questions({activeStep}: Props) {
+  
   const courseContext = useCoursesContext()
 
   const [activeRadio, setActiveRadio] = useState<number>()
@@ -22,7 +23,6 @@ export default function Questions({activeStep}: Props) {
       answers: Array.isArray(data.answers)?data.answers.map(e=> Number(e)): [Number(data.answers)],
       courseBlockStepId: activeStep.id
     }
-
     courseContext.setStepAnswer(dataToSend, activeStep.courseBlockId)
     .then()
   }
@@ -47,7 +47,7 @@ export default function Questions({activeStep}: Props) {
           wrapperClassName={styles.radioWrapper}
           name={'answers'} 
           options={activeStep.variants.map(v=> {
-            const isAnswered = activeStep.answers[0]?.answers?.findIndex(e=>   e === Number(v.id))>-1
+            const isAnswered = activeStep.answers[0]?.answers?.findIndex(e=> e === Number(v.id)) > -1
             return {label: v.answer, value: v.id, className: isAnswered&&(v.correct&&styles.answer_ok||!v.correct&&styles.answer_err)}
           })}/>
           ||

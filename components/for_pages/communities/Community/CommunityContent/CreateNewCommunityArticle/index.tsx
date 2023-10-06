@@ -84,7 +84,7 @@ export default function CreateNewCommunityArticle(props: Props) {
         {images &&images.length > 0 &&
         <div className={styles.imagesWrapper}>
           {images.map(i=> {
-            return  <img src={URL.createObjectURL(i.image)} alt={''}/>
+            return  <img key={i.id} src={URL.createObjectURL(i.image)} alt={''}/>
           })}
         </div>
         }

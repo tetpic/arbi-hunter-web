@@ -29,7 +29,9 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
   const [currentCV, setCurrentCV] = useState<ICV>(cv)
   
   const experience = 
-    (currentCV?.experienceInfo&&currentCV?.experienceInfo.length>0&&Formatter.fullTimeLine(currentCV.experienceInfo?.map(el=>[el.fromDate, el.toDate])))
+    (currentCV?.experienceInfo
+      &&currentCV?.experienceInfo.length>0
+      &&Formatter.fullTimeLine(currentCV.experienceInfo?.map(el=>[el.fromDate, el.toDate])))
     // ||
     // cv?.experienceInfo?.length===1&& ('c ' +  cv.experienceInfo[0].fromDate)
     ||
