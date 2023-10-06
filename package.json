@@ -46,7 +46,6 @@
     "react-textarea-autosize": "^8.5.2",
     "rxjs": "^7.8.1",
     "sass": "^1.65.1",
-    "sharp": "^0.32.6",
     "spinners-react": "^1.0.7",
     "swiper": "^10.1.0",
     "use-interval": "^1.4.0",
