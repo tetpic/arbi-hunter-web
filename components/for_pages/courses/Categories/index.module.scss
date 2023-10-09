@@ -1,0 +1,92 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 120px;
+
+}
+
+.title {
+  color: $white;
+  font-size: $text32;
+  font-weight: $semibold;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 16px;
+}
+
+.item {
+  display: grid;
+  grid-template-areas: 'n i' 'c i';
+  padding: 32px;
+  column-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  background-color: $grey;
+  border-radius: 35px;
+  height: clamp(160px, 50vw, 260px);
+  min-width: 350px;
+  @include mq($MdDesktopWidth, max) {
+    width: unset !important;
+    grid-template-columns: auto;
+    min-width: unset;
+  }
+  @include mq($PhoneWidth, max) {
+    width: 100% !important;
+  }
+
+  .name {
+    grid-area: n;
+    color: $white;
+    font-size: $hugeText;
+    font-weight: $semibold;
+
+  }
+
+  .counter {
+    grid-area: c;
+    padding: clamp(8px, 2vw, 16px) clamp(12px, 4vw, 24px);
+    background: $gradientAlt;
+    color: $white;
+    align-self: flex-end;
+    margin-right: auto;
+    border-radius: 30px;
+    font-size: $text18;
+    font-weight: $semibold;
+
+  }
+
+  .imageWrapper {
+    grid-area: i;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: flex-end;
+    align-self: flex-end;
+    border-radius: 16px;
+    overflow: hidden;
+    width: Clamp(80px, 10vw, 114px);
+    height: Clamp(80px, 10vw, 114px);
+}
+
+  &_large {
+    .imageWrapper {
+      align-self: flex-end;
+      width: Clamp(80px, 14vw, 200px);
+      height: Clamp(80px, 14vw, 200px);
+    }
+    .name {
+      font-size: clamp(12px, 2.3vw, 32px);
+      @include mq($MdDesktopWidth, max) {
+        font-size: $hugeText;
+      }
+    }
+  }
+}
+
+
+

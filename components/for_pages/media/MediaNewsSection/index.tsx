@@ -35,7 +35,7 @@ export default function MediaNewsSection(props: Props) {
           priority 
           src={FILES + firstItem.image.source} 
           alt={firstItem.name} 
-          style={{objectFit:'cover'}}
+          style={{objectFit:'cover', width: '100%'}}
           width={664}
           height={345}
           />

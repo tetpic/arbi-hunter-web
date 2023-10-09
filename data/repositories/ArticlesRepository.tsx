@@ -31,12 +31,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(profile?: ProfileType, token?: string): Promise<IPagination<IArticle>|null> {
+  static async getNews(): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/article?articleType=news&isTop=true',
-      profile, 
-      token
     })
     if(res.err) {
       return null
@@ -67,12 +65,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCategoryList(profile: ProfileType, type?: CategoryType, page?: number, limit?: number, token?: string): Promise<IPagination<ICategory>|null> {
+  static async getCategoryList(type?: CategoryType, page?: number, limit?: number, token?: string): Promise<IPagination<ICategory>|null> {
     const res = await request({
       method: 'get',
       url: `/api/article-category?${type?`categoryType=${type}`:''}${page?`&page=${page}`:''}&limit=${limit||40||LOAD_LIMIT}`,
-      profile,
-      token
     })
     if(res.err) {
       return null

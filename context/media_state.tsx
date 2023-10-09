@@ -41,7 +41,7 @@ export function MediaWrapper(props: Props) {
   }
 
   const setCategories = async ():Promise<boolean> => {
-    const res = await ArticlesRepository.getCategoryList(profileType)
+    const res = await ArticlesRepository.getCategoryList()
     setCategoriesState(state=> {
       res.data.forEach(r=>{
         state.set(r.id, r)

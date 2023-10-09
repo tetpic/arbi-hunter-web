@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .item {
-  width: clamp(150px, calc(50% - 16px), 372px);
+  // width: clamp(150px, calc(50% - 16px), 372px);
   background-color: $black;
   border-radius: 16px;
   overflow: hidden;
@@ -69,10 +69,7 @@
     color: $white;
     font-weight: $semibold;
     font-size: $largeText;
-    -webkit-line-clamp: 2; /* Число отображаемых строк */
-    display: -webkit-box; /* Включаем флексбоксы */
-    -webkit-box-orient: vertical; /* Вертикальная ориентация */
-    overflow: hidden; 
+    @include lineClamp(2);
   }
 
   .price {

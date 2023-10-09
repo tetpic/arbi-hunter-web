@@ -9,6 +9,7 @@ import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEf
 import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface IState {
   communities: Map<number, ICommunity>
@@ -86,7 +87,7 @@ export function CommunityWrapper(props: Props) {
   }, [currentCommunity?.id])
 
   const setCommunities = async (p: number) => {
-    const res = await CommunitiesRepository.getCommunities(profileType, p)
+    const res = await CommunitiesRepository.getCommunities(p)
     if (res) {
       setCommunitiesState(s => {
         res.data.forEach(e=> {
@@ -132,7 +133,7 @@ export function CommunityWrapper(props: Props) {
   }
 
   const setCategories = () => {
-    ArticlesRepository.getCategoryList(profileType, CategoryType.News)
+    ArticlesRepository.getCategoryList(CategoryType.News)
     .then(res=> {
       setCategoriesState(res.data)
     })
@@ -205,7 +206,7 @@ export function CommunityWrapper(props: Props) {
   useEffect(()=>{
     if(categories.length === 0 && userContext.currentProfile) {
       setCategories()
-      setMyCommunity()
+      userContext.currentProfile.profileType === ProfileType.Hirer&&setMyCommunity()
     }
   }, [userContext.currentProfile])
 

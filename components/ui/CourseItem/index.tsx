@@ -7,7 +7,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
-import FavoritesButton from '../FavoritesButton'
 import styles from './index.module.scss'
 
 interface Props {
@@ -39,7 +38,7 @@ export default function CourseItem(props: Props) {
           }
         </div>
         
-        <FavoritesButton className={styles.heartButton}/>
+        {/* <FavoritesButton className={styles.heartButton}/> */}
       </div>
       <div className={styles.bottom}>
         <p className={styles.lessonsCount}><PlayButtonSvg/>{props.course.stepsCount} {Formatter.pluralize(Number(props.course.stepsCount), 'урок', 'урока', 'уроков')}</p>

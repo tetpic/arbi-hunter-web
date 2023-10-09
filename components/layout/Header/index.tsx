@@ -25,7 +25,6 @@ export default function Header(props: Props) {
 
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
-  const [dropdown, handleDropdown] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
@@ -95,7 +94,7 @@ export default function Header(props: Props) {
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> handleDropdown(!dropdown)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> setDropDownOpen(!isDropDownOpen)}/>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
@@ -103,11 +102,13 @@ export default function Header(props: Props) {
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
             <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> setDropDownOpen(!isDropDownOpen)}/>
           </>}
-          <UserDropdownMenu       
-          reference={(ref) => {dropdownRef.current = ref}}
-          className={classnames(styles.dropdown, isDropDownOpen&&styles.dropdown_active)} 
-          onClose={()=> setDropDownOpen(false)}
-          />
+          {userContext.currentProfile &&
+            <UserDropdownMenu       
+            reference={(ref) => {dropdownRef.current = ref}}
+            className={classnames(styles.dropdown, isDropDownOpen&&styles.dropdown_active)} 
+            onClose={()=> setDropDownOpen(false)}
+            />
+          }
       </div>
       </div>
     </div>

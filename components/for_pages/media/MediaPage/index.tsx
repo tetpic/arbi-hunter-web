@@ -1,5 +1,5 @@
 import MediaPageHeader from '../MediaHeader'
-import MediaSearch from '../MediaSearch'
+import MediaSearch from '../../../ui/MediaSearch'
 import styles from './index.module.scss'
 import { ICategory } from 'data/interfaces/Common'
 import MediaCategories from '../MediaCategories'

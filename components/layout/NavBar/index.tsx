@@ -1,9 +1,9 @@
-import styles from './index.module.scss'
 import HomeSvg from 'components/svg/HomeSvg'
 import MessageSvg from 'components/svg/MessageSvg'
 import NotificationSvg from 'components/svg/NotificationSvg'
 import WalletSvg from 'components/svg/WalletSvg'
 import Link from 'next/link'
+import styles from './index.module.scss'
 
 interface Props {
 }

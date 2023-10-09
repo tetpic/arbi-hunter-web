@@ -1,5 +1,14 @@
 import CoursesMain from 'components/for_pages/courses'
-import { CookiesType } from 'types/enums'
+import { ICategory } from 'data/interfaces/Common'
+import ICourse from 'data/interfaces/ICourse'
+import ArticlesRepository from 'data/repositories/ArticlesRepository'
+import CoursesRepository from 'data/repositories/CoursesRepository'
+import { CategoryType, CookiesType, Languages } from 'types/enums'
+
+interface Props {
+  categoryList: ICategory[]
+  courses: ICourse[]
+}
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
   const profileType = context.req.cookies[CookiesType.profileType]
@@ -10,12 +19,16 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
     }
   }
   else {
-    return {props: {}}
+    const categoryList = (await ArticlesRepository.getCategoryList(CategoryType.Course, 1, 5, token)).data
+    const courses = (await CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru)).data
+    return {props: {categoryList, courses}}
   }
 }) 
 
-export default function Courses() {
+
+
+export default function Courses(props: Props) {
   return (
-  <CoursesMain/>
+  <CoursesMain categoryList={props.categoryList} courses={props.courses}/>
   )
 }

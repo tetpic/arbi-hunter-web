@@ -10,7 +10,7 @@ import { useUserContext } from './user_state'
 interface IState {
   courses: ICourse[]
   currentCourse: ICourse
-  setCourses: (data: CoursesData) => void
+  setCourses: (data: CoursesData, courses: ICourse[]) => void
   setCurrentCourse: (id: number, course?: ICourse) => Promise<boolean>
 
   courseModules: Map<ICourseBlock, ICourseBlock[]>
@@ -29,42 +29,16 @@ interface IState {
   setFeedbacks: (courseId: number, page: number, limit: number)=>  Promise<boolean>
 
   categories: ICategory[]
-  setCoursesCategories: ()=>void
+  setCoursesCategories: (categoryList?: ICategory[])=>void
 
   courseStats: ICourseStats,
   getCourseFeedbackStats: (courseId: number) => void
 
 }
 
-const defaultValue: IState = {
-  courses: [],
-  currentCourse: null,
-  setCourses: () => null,
-  setCurrentCourse: (id: number) => null, 
+const defaultValue: Partial<IState> = {}
 
-  courseModules: null,
-  setCourseModules: ()=> null,
-  courseBlocks: new Map(),
-  setCourseBlocks: (courseId: number) => null,
-  setCourseSteps: (blockId: number) => null,
-  clearModules: ()=> null,
-
-  coursesNews: [],
-  setCoursesNews:(courseId: number, page: number) => null,
- 
-  setStepAnswer: (data: ICourseStepAnswer, blockId?: number) => null,
-
-  feedBacks: null,
-  setFeedbacks: ()=>null,
-
-  categories: null,
-  setCoursesCategories: () => null,
-
-  courseStats: null,
-  getCourseFeedbackStats: (courseId: number) => null
-}
-
-const CoursesContext = createContext<IState>(defaultValue)
+const CoursesContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
@@ -85,19 +59,27 @@ export function CoursesWrapper(props: Props) {
   const [courseStats, setCoursesStats] = useState<ICourseStats>()
   
 
-  const setCoursesCategories = () => {
+  const setCoursesCategories = (categoryList?: ICategory[]) => {
+    if(categoryList) {
+      setCategoriesState(categoryList)
+      return
+    }
     if(categories.length > 0) return
-    ArticlesRepository.getCategoryList(profileType, CategoryType.Course)
+    ArticlesRepository.getCategoryList(CategoryType.Course)
     .then(res=>{
       setCategoriesState(res.data)
     })
   }
 
-  const setCourses = (data: CoursesData) => {
-    CoursesRepository.getCourses(data, countryCode)
-    .then(res=>{
-      setCoursesState(res.data)
-    })
+  const setCourses = (data: CoursesData|null, courses: ICourse[]) => {
+    if(data === null && courses) {
+      setCoursesState(courses)
+    } else {
+      CoursesRepository.getCourses(data, countryCode)
+      .then(res=>{
+        setCoursesState(res.data)
+      })
+    }
   }
 
   const setCurrentCourse = async (id: number, course?: ICourse): Promise<boolean> => {
@@ -170,7 +152,6 @@ export function CoursesWrapper(props: Props) {
 
   const setCourseModules = async (courseId: number, modules?: ICourseBlock[]):Promise<boolean>  => {
     try {
-      
       const res = modules|| await CoursesRepository.getCourseModules(courseId, countryCode)
       setCourseModulesState(state => {
         state.clear()

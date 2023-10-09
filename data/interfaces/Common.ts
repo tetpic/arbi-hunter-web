@@ -141,6 +141,7 @@ export interface ICategory extends TimeStamp, CategoryTranslation {
   translations: CategoryTranslation[],
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,
+  coursesCount?: string|number
 }
 
 export interface UpdateCommunityForm {
