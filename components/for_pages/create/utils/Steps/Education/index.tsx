@@ -27,19 +27,31 @@ export default function Education(props: Props) {
 
 
   const [showDetails, setDetails] = useState<boolean>(false)
-  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv.educationInfo||[])
+  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv?.educationInfo||[])
   const [activeDetails, setActiveDetails] = useState<EducationInfo>(initialData)
-  const { setFieldValue } = useFormikContext()
+  const { setFieldValue, setFieldError } = useFormikContext()
+  // const [errorsHandlers, setErrorsHandlers] = useState<EducationInfo>(initialData)
 
   const saveModalHandler = (fl: EducationInfo) => {
-    setDetailsInfo(f=> [...f, {...fl}])
-    setDetails(false)
-    setActiveDetails(initialData)
+    if(!fl.institution || !fl.fromDate || !fl.speciality) {
+      // setErrorsHandlers(state=> {
+      //   state.institution = fl.institution?null:'error'
+      //   state.speciality = fl.speciality?null:'error'
+      //   state.fromDate = fl.fromDate?null:'error'
+      //   return state
+      // })
+    } else {
+      setDetailsInfo(f=> [...f, {...fl}])
+      setDetails(false)
+      // setErrorsHandlers(initialData)
+      setActiveDetails(initialData)
+    }
   }
 
   const closeModalHandler = () => {
     setDetails(false)
     setActiveDetails(initialData)
+    // setErrorsHandlers(initialData)
   }
 
   const removeItem = (e: EducationInfo) => {
@@ -103,7 +115,7 @@ export default function Education(props: Props) {
           yearDropdown: true,
           inputLabel: 'Начало обучения',
           dateName: 'set_fromDate',
-          dateValue: 'fromDate'
+          dateValue: 'fromDate',
         },
         {
           format: 'yyyy',
@@ -111,7 +123,7 @@ export default function Education(props: Props) {
           yearDropdown: true,
           inputLabel:'Окончание обучения',
           dateName: 'set_toDate',
-          dateValue: 'toDate'
+          dateValue: 'toDate',
         }
       ]
     }}

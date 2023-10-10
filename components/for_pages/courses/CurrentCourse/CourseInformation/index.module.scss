@@ -38,8 +38,6 @@
   .stat {
     padding: 16px;
     width: 32%;
-    // display: flex;
-    // flex-direction: column;
     border-radius: 12px;
     display: grid;
     row-gap: 8px;
@@ -85,6 +83,7 @@
   &_wrapper {
     display: grid;
     grid-template-areas: 'i n' 'i d';
+    grid-template-columns: auto 1fr;
     column-gap: 16px;
     row-gap: 8px;
     align-items: flex-start;

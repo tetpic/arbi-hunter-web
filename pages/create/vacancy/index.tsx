@@ -1,32 +1,49 @@
 import Vacancy from 'components/for_pages/create/Vacancy'
-import { useUserContext } from 'context/user_state'
-import { ProfileType } from 'data/interfaces/IRegistration'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import VacancyRepository from 'data/repositories/VacancyRepository'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { CookiesType } from 'types/enums'
+
+interface Query {
+  id?: string
+}
+interface Props extends Query {
+  vacancy: IVacancy
+}
+
+export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
+  const { id } = context.query  
+  const token = context.req.cookies[CookiesType.accessToken]
+  const profileType = context.req.cookies[CookiesType.profileType]
+  if(profileType && token && id) {
+    try {
+      const vacancy = await VacancyRepository.getVacancyById(Number(id), profileType, token).then(res=> res)
+      return {props: {vacancy, id}}
+    }
+    catch (err) {
+      return {redirect: {destination: '/create/vacancy', permanent: false} }
+    }
+  }
+  else if(profileType && token && !id) {
+    return {props: {}}
+  }
+  else {
+    return {
+      redirect: {destination: '/login', permanent: false}   
+    }
+  }
+}) 
 
 interface Props {
 }
-//todo: сделать доступ с проверкой isAuth
 export default function VacancyCreate(props: Props) {
-  const userContext = useUserContext()
-  const router = useRouter()
 
-  useEffect(()=>{
-    if(!userContext.currentProfile || userContext.currentProfile?.profileType !== ProfileType.Hirer) {
-      router.push('/')
-    }
-  }, [userContext.isLogged, userContext.userLoaded])
-
-  if(userContext.currentProfile?.profileType === ProfileType.Hirer) {
     return  (<>
       <Head>
         <title>{'Arbi Hunter|Редактирование Вакансии'}</title>
         <meta name='description' content={'Редактирование Вакансии'}/>
       </Head>
-        <Vacancy id={Number(router.query.id) as number}/>
+        <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
     </>)
-  } 
-  return null
 
 }

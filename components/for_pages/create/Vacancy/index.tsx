@@ -14,7 +14,7 @@ import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
 import ProgressBar from '../../../ui/ProgressBar'
 import WorkPlace from '../utils/Steps/WorkPlace'
-import {IVacancyCreate} from 'data/interfaces/IVacancy'
+import {IVacancy, IVacancyCreate} from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import Compensation from '../utils/Steps/Compensation'
 import VacancyName from '../utils/Steps/VacancyName'
@@ -24,6 +24,7 @@ import styles from './index.module.scss'
 
 interface Props {
   id?: number
+  vacancy?: IVacancy
 }
 
 enum VacancyNavigation {
@@ -40,6 +41,7 @@ enum VacancyNavigation {
 }
 
 export default function Vacancy(props: Props) {
+  
   const {isPhoneWidth} = useResize()
   const router = useRouter()
 
@@ -55,6 +57,7 @@ export default function Vacancy(props: Props) {
   const CVItemsCount = 7
 
   const submit = (data: IVacancyCreate) => {
+    debugger
     
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
@@ -95,29 +98,30 @@ export default function Vacancy(props: Props) {
     }
   }
 
+
   const initialValues: IVacancyCreate = {
-    name: creationContext?.currentVc?.name||'',
-    description: creationContext?.currentVc?.description||'',
-    experience: creationContext?.currentVc?.experience||WorkExperience.From1to3, 
-    contactName: creationContext?.currentVc?.contactName||userContext.currentProfile?.firstName, 
-    company: creationContext?.currentVc?.company||userContext.currentProfile?.company, 
-    isRemote: creationContext?.currentVc?.isRemote||false,
-    compensation: creationContext?.currentVc?.compensation||CompensationType.Salary,
-    phone: creationContext?.currentVc?.phone||userContext.currentProfile?.phone,
-    email: creationContext?.currentVc?.email||userContext.user?.profiles[0]?.email,
-    telegramNickname: creationContext?.currentVc?.telegramNickname||userContext.user?.profiles[0]?.telegramNickname, 
+    name: props.vacancy?.name||'',
+    description: props.vacancy?.description||'',
+    experience: props.vacancy?.experience||WorkExperience.From1to3, 
+    contactName: props.vacancy?.contactName||userContext.currentProfile?.firstName, 
+    company: props.vacancy?.company||userContext.currentProfile?.company, 
+    isRemote: props.vacancy?.isRemote||false,
+    compensation: props.vacancy?.compensation||CompensationType.Salary,
+    phone: props.vacancy?.phone||userContext.currentProfile?.phone,
+    email: props.vacancy?.email||userContext.currentProfile?.email,
+    telegramNickname: props.vacancy?.telegramNickname||userContext.currentProfile?.telegramNickname, 
     cityId: null,
     countryId: null,
-    commission: creationContext?.currentVc?.commission||null,
-    currency: creationContext?.currentVc?.currency|| Currency.RUB,
-    skillsIds: creationContext?.currentVc?.skillsIds|| [],
-    categoriesIds: creationContext?.currentVc?.categoriesIds||  null,
-    sourcesIds: creationContext?.currentVc?.sourcesIds|| null,
-    salary: creationContext?.currentVc?.salary|| null,
-    schedule: creationContext?.currentVc?.schedule|| ScheduleType.FullDay, 
-    employment: creationContext?.currentVc?.employment||EmploymentType.FullTime, 
-    languageKnowledges: creationContext?.currentVc?.languageKnowledges|| null, 
-    published: creationContext?.currentVc?.published||false,
+    commission: props.vacancy?.commission||null,
+    currency: props.vacancy?.currency|| Currency.RUB,
+    skillsIds: props.vacancy?.skillsIds|| [],
+    categoriesIds: props.vacancy?.categoriesIds||  null,
+    sourcesIds: props.vacancy?.sourcesIds|| null,
+    salary: props.vacancy?.salary|| null,
+    schedule: props.vacancy?.schedule|| ScheduleType.FullDay, 
+    employment: props.vacancy?.employment||EmploymentType.FullTime, 
+    languageKnowledges: props.vacancy?.languageKnowledges|| null, 
+    published: props.vacancy?.published||false,
   }
 
   const formik = useFormik({
@@ -127,7 +131,7 @@ export default function Vacancy(props: Props) {
 
   useEffect(()=>{
     if(props.id && !creationContext.currentVc) {
-      creationContext.getCurrentVc(props.id)
+      creationContext.getCurrentVc(props.id, props.vacancy)
     }  
   }, [])
 
@@ -135,7 +139,7 @@ export default function Vacancy(props: Props) {
     if(creationContext.currentVc) {
       formik.setValues(initialValues)
     }
-  }, [creationContext.currentVc])
+  }, [userContext.currentProfile])
 
   const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
     switch (progress) {

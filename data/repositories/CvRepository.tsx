@@ -25,10 +25,11 @@ export default class CvRepository {
     return res
   }
 
-  static async getById(data: number): Promise<any|null> {
+  static async getById(data: number, token?: string): Promise<ICV|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${data}`,
+      token
     })
     if(res.err) {
       return null

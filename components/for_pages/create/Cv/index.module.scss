@@ -3,6 +3,7 @@
 .root {
   margin-top: 48px;
   display: flex;
+  position: relative;
   @include mq($PhoneWidth, max) {
     height: calc(100vh - 74px);
     height: calc(100dvh - 74px);

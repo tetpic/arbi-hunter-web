@@ -34,7 +34,7 @@ export default function LangaugesModal(props: Props) {
   }, [])
 
   const onSaveHandler = () => {
-    debugger
+    
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||[]
     cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive}]})
     props.onClose()

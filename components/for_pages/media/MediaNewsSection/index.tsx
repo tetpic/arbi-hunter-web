@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
+import { Languages } from 'types/enums'
 
 interface Props {
   title: string
@@ -19,10 +20,14 @@ export default function MediaNewsSection(props: Props) {
   <p className={styles.title}>{props.title}</p>
   <div className={styles.content}>
     <div className={styles.mainItem}>
-      {/* <div className={styles.tags}>
-        <p className={classNames(styles.tag, styles.red)}>Разработка</p>
-        <p className={classNames(styles.tag, styles.purple)}>Веб-дизайн</p>
-      </div> */}
+      <div className={styles.tags}>
+        <p 
+        className={styles.tag}
+        style={{backgroundColor: `#${firstItem.articleCategory.color}`}}
+        >
+          {firstItem.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
+        </p>
+      </div>
       <div className={styles.textWrapper}>
         <p className={styles.itemTitle}>{firstItem.name}</p>
         {firstItem.shortDescription &&
@@ -47,10 +52,14 @@ export default function MediaNewsSection(props: Props) {
       {props.news && props.news.slice(1, 4).map(item => {
         return (
           <div className={styles.item} key={item.id}>
-            {/* <div className={styles.tags}>
-              <p className={classNames(styles.tag, styles.orange)}>Разработка</p>
-              <p className={classNames(styles.tag, styles.green)}>Веб-дизайн</p>
-            </div> */}
+            <div className={styles.tags}>
+              <p 
+              className={styles.tag} 
+              style={{backgroundColor: `#${item.articleCategory.color}`}}
+              >
+                {item.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
+              </p>
+            </div>
             <div className={styles.textWrapper}>
               <p className={styles.itemTitle}>{item.name}</p>
               {item.shortDescription &&

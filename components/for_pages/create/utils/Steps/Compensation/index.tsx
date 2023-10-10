@@ -1,6 +1,5 @@
 import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
-// import WithTransition from 'components/ui/WithTransition'
 import { useField } from 'formik'
 import { CompensationType, Currency } from 'types/enums'
 import { TranslateCurrency } from 'utils/enumsTranslations'
@@ -36,12 +35,32 @@ export default function Compensation(props: Props) {
 
       {(compensation.value === CompensationType.Salary || compensation.value == CompensationType.Gybrid )
         && 
-          <InputField className={styles.input} styleType={'default'} color={'default'} name={'salary'} label={'Оклад'} labelType={'top'} suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}/>
+        <InputField  
+        isNumbersOnly
+        maxLength={10} 
+        className={styles.input} 
+        styleType={'default'} 
+        color={'default'} 
+        name={'salary'} 
+        label={'Оклад'} 
+        labelType={'top'} 
+        suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
+        />
       }
 
       {(compensation.value === CompensationType.Gybrid || compensation.value === CompensationType.Commission)
         && 
-          <InputField className={styles.input} styleType={'default'} color={'default'} name={'commission'} label={'Комиссия'} labelType={'top'}  suffix={<span className={styles.suffix}>%</span>}/>
+        <InputField 
+        maxLength={10} 
+        isNumbersOnly 
+        className={styles.input} 
+        styleType={'default'} 
+        color={'default'} 
+        name={'commission'} 
+        label={'Комиссия'} 
+        labelType={'top'}  
+        suffix={<span className={styles.suffix}>%</span>}
+        />
       }
 
       {compensation.value !== CompensationType.Piecework &&

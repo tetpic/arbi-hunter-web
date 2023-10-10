@@ -1,23 +1,44 @@
 import Cv from 'components/for_pages/create/Cv'
-import { useUserContext } from 'context/user_state'
+import { ICV } from 'data/interfaces/ICV'
+import CvRepository from 'data/repositories/CvRepository'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { CookiesType } from 'types/enums'
 
-interface Props {
+interface Query {
+  id?: string
 }
-//todo: сделать доступ с проверкой isAuth
-export default function CvCreate(props: Props) {
-  const userContext = useUserContext()
-  const router = useRouter()
+interface Props extends Query {
+  cv: ICV
+}
 
+export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
+  const { id } = context.query  
+  const token = context.req.cookies[CookiesType.accessToken]
+  const profileType = context.req.cookies[CookiesType.profileType]
+  if(profileType && token && id) {
+    const cv = await CvRepository.getById(Number(id), token).then(res=> res)
+    return {props: {cv, id}}
+  }
+  else if(profileType && token && !id) {
+    return {props: {}}
+  }
+  else {
+    return {
+      redirect: {destination: '/login', permanent: false}   
+    }
+  }
+}) 
+
+
+export default function CvCreate(props: Props) {
+  
   return (
     <>
     <Head>
       <title>{'Arbi Hunter|Редактирование Резюме'}</title>
       <meta name='description' content={'Редактирование Резюме'}/>
     </Head>
-    {userContext.isLogged && userContext.userLoaded &&
-      <Cv id={Number(router.query.id) as number}/>
-    }</>
+    <Cv id={Number(props.id) as number} cv={props.cv}/>
+    </>
   )
 }

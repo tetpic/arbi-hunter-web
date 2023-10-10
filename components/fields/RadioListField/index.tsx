@@ -28,6 +28,7 @@ export default function RadioListField<T>(props: Props<T>) {
 
   const handleCheckboxChanged = (value: T) => {
     helpers.setValue(value)
+    setFieldValue(props.name, value)
   }
 
   return (

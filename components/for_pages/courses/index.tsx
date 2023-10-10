@@ -15,12 +15,16 @@ import Banner from './Banner'
 interface Props {
   categoryList: ICategory[]
   courses: ICourse[]
+  compilations: ICategory[]
+  popularCourses: ICourse[]
 }
 
 export default function CoursesMain(props: Props) {
   const coursesContext = useCoursesContext()
   const courses = props.courses||coursesContext.courses
+  const popularCourses = props.popularCourses
 
+  
   useEffect(()=>{
     coursesContext.setCoursesCategories(props.categoryList)
     coursesContext.setCourses(null, props.courses)
@@ -44,13 +48,11 @@ export default function CoursesMain(props: Props) {
 
     <MediaSearch className={styles.search}/>
     <Categories categoryList={props.categoryList}/>
-    <CoursesBlock title={'Популярные курсы'} courses={courses}/>
+    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
     <Benefits/>
-    <Banner/>
-    <CoursesBlock title={'Популярные курсы'} courses={courses}/>
-    <Banner/>
-
-
-   
+    
+    <Banner category={props.compilations[0]}/>
+    <CoursesBlock title={'Лучшие курсы'} courses={courses}/>
+    <Banner category={props.compilations[1]}/>
   </div>)
 }

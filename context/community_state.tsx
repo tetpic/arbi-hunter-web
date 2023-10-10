@@ -155,10 +155,12 @@ export function CommunityWrapper(props: Props) {
   }
 
   const setMyCommunity = useCallback(() =>{
-    CommunitiesRepository.myCommunity(profileType)
-    .then(res=> {
-      setMyCommunityState(res.data[0])
-    })
+    if(profileType) {
+      CommunitiesRepository.myCommunity(profileType)
+      .then(res=> {
+        setMyCommunityState(res.data[0])
+      })
+    }
   }, [myCommunity])
 
   const createNews = async (data: ICreateNews, id?: number): Promise<boolean> => {

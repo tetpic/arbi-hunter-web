@@ -31,11 +31,11 @@ const initialHelpObject: HelpObject = {
 interface IState {
   currentCv: ICVCreate,
   setCurrentCv: (v: ICVCreate) => void
-  getCurrentCv: (id: number) => void
+  getCurrentCv: (id: number, cv?: ICV) => void
 
   currentVc: IVacancy,
   setCurrentVc: (v: IVacancy) => void
-  getCurrentVc: (id: number) => void
+  getCurrentVc: (id: number, vacancy?: IVacancy) => void
 
   helpObjects: HelpObject
   setHelpObjects: (o: HelpObject)=> void
@@ -51,30 +51,9 @@ interface IState {
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
 }
 
-const defaultValue: IState = {
-  currentCv: null,
-  setCurrentCv: () => null,
-  getCurrentCv: (id: number) => null,
+const defaultValue: Partial<IState> = {}
 
-  currentVc: null,
-  setCurrentVc: (v: IVacancyCreate) => null,
-  getCurrentVc: (id: number) => null,
-
-  helpObjects: initialHelpObject,
-  setHelpObjects: ()=>null,
-
-  progress: 1,
-  setProgress: (p) => null,
-
-  categories: new Map(),
-  setCategories: () => null,
-  setSubCategories: () => null,
-  reset: ()=>null,
-
-  setEditedItem: () => null
-}
-
-const CreateVcCvContext = createContext<IState>(defaultValue)
+const CreateVcCvContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
@@ -102,7 +81,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setHelpObjects = (o: HelpObject) => {
-    debugger
+    
     setHelp(state=> {return {...state, ...o}})
   }
 
@@ -164,14 +143,22 @@ export function CreateVcCvWrapper(props: Props) {
     }
   }
 
-  const getCurrentVc = (id: number) => {
+  const getCurrentVc = (id: number, vacancy?: IVacancy) => {
+    if(vacancy) {
+      setEditedItem(vacancy, 'vc')
+      return
+    }
     VacancyRepository.getVacancyById(id, userContext.currentProfile?.profileType)
     .then(res=> {
       setEditedItem(res, 'vc')
     })
   }
 
-  const getCurrentCv = (id: number) => {
+  const getCurrentCv = (id: number, cv?: ICV) => {
+    if(cv) {
+      setEditedItem(cv, 'cv')
+      return
+    }
     CvRepository.getById(id)
     .then(res=> {
       setEditedItem(res, 'cv')

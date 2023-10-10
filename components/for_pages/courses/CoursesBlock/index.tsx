@@ -63,13 +63,13 @@ function BigCourseItem (props: {courseItem: ICourse}) {
 }
 
 export default function CoursesBlock(props: Props) {
-  const {isPhoneWidth} = useResize()
+  const {isTabletWidth} = useResize()
 
   const firstItem = props.courses[0]
 
   return (<div> <p className={styles.coursesTitle}>{props.title} <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/></p>
   <div className={styles.coursesWrapper}>
-    {isPhoneWidth &&
+    {isTabletWidth &&
       <CourseItem course={firstItem} />
       ||
       <BigCourseItem courseItem={firstItem} />
@@ -78,7 +78,7 @@ export default function CoursesBlock(props: Props) {
     {/* <div className={styles.right}> */}
       {props.courses.length > 0 &&
         props.courses.slice(1, 5).map(el => {
-          return <CourseItem course={el} key={el.id}  />
+          return <CourseItem className={styles.defaultItem} course={el} key={el.id}  />
         })
       }
     {/* </div> */}

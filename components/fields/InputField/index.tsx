@@ -1,4 +1,3 @@
-import styles from './index.module.scss'
 import { IField, InputStyleType } from 'types/types'
 import { useField } from 'formik'
 import { useIMask } from 'react-imask'
@@ -9,6 +8,7 @@ import { ChangeEvent, MouseEventHandler, ReactElement, useEffect, useState } fro
 import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
+import styles from './index.module.scss'
 
 type FormatType = 'phone'
 
@@ -31,7 +31,7 @@ interface Props extends IField<string> {
   autocompleteOff?: boolean
   error?: string
   minLength?: number
-  
+  maxLength?: number
 }
 
 export default function InputField(props: Props) {  
@@ -71,11 +71,12 @@ export default function InputField(props: Props) {
           type={props.type ?? 'text'}
           disabled={props.disabled}
           autoComplete={props.autocompleteOff?'off':''}
-          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') } : null}
+          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9\.\,]/g, '') } : null}
           onFocus={() => {
             setFocused(true)
           }}
           minLength={props.minLength}
+          maxLength={props.maxLength}
           onBlur={() => {
             setFocused(false)
           }}

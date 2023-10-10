@@ -42,7 +42,7 @@ export default function Experience(props: Props) {
     setDetailsInfo(state=> state.filter(el => el !==e))
   }
 
-  useEffect(()=>{    
+  useEffect(()=>{   
     formikContext.setFieldValue(props.name, [...detailsInfo])
     let currentCv = cvContext.currentCv
     cvContext.setCurrentCv({...currentCv, experienceInfo: [...detailsInfo]})

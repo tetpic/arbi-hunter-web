@@ -2,7 +2,7 @@ import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useEffect, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
-import { ICVCreate } from 'data/interfaces/ICV'
+import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
 import { CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
@@ -25,6 +25,7 @@ import classNames from 'classnames'
 
 interface Props {
   id?: number
+  cv?: ICV
 }
 
 enum CvNavigation {
@@ -106,32 +107,32 @@ export default function Cv(props: Props) {
     lastName: userContext.user?.profiles[0]?.lastName,
     patronymic: userContext.user?.profiles[0]?.patronymic||'unset',
     birthday: userContext.user?.profiles[0]?.birthday,
-    compensation: creationContext.currentCv?.compensation||CompensationType.Salary,
+    compensation: props.cv?.compensation||CompensationType.Salary,
     phone: userContext.user?.profiles[0]?.phone,
     email: userContext.user?.profiles[0]?.email,
     telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
     cityId: userContext.user?.profiles[0]?.cityId,
     countryId: userContext.user?.profiles[0]?.countryId,
-    currency: creationContext.currentCv?.currency||Currency.RUB,
-    experienceInfo: creationContext.currentCv?.experienceInfo||[],
-    educationInfo: creationContext.currentCv?.educationInfo||[],
-    coursesInfo: creationContext.currentCv?.coursesInfo||[],
-    bio: creationContext.currentCv?.bio||'',
-    skillsIds: creationContext.currentCv?.skillsIds||[],
-    commission: creationContext?.currentCv?.commission||null,
-    vacancyLookType: creationContext.currentCv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
-    workExperiencePresense: creationContext.currentCv?.workExperiencePresense||WorkExperiencePresense.Absent,
-    education: creationContext.currentCv?.education||EducationTypes.Secondary,
-    relocation: creationContext.currentCv?.relocation||null,
-    position: creationContext.currentCv?.position||'',
-    nativeLanguage: creationContext.currentCv?.nativeLanguage||userContext.user?.language||Languages.ru,
-    categoriesIds: creationContext.currentCv?.categoriesIds||null,
-    sourcesIds: creationContext.currentCv?.sourcesIds||null,
-    salary: creationContext.currentCv?.salary||null,
-    schedule: creationContext.currentCv?.schedule||ScheduleType.FullDay, 
-    employment: creationContext.currentCv?.employment||EmploymentType.FullTime, 
-    languageKnowledges: creationContext.currentCv?.languageKnowledges||null, 
-    published: creationContext.currentCv?.published||false,
+    currency: props.cv?.currency||Currency.RUB,
+    experienceInfo: props.cv?.experienceInfo||[],
+    educationInfo: props.cv?.educationInfo||[],
+    coursesInfo: props.cv?.coursesInfo||[],
+    bio: props.cv?.bio||'',
+    skillsIds: props.cv?.skillsIds||[],
+    commission: props.cv?.commission||null,
+    vacancyLookType: props.cv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
+    workExperiencePresense: props.cv?.workExperiencePresense||WorkExperiencePresense.Absent,
+    education: props.cv?.education||EducationTypes.Secondary,
+    relocation: props.cv?.relocation||null,
+    position: props.cv?.position||'',
+    nativeLanguage: props.cv?.nativeLanguage||userContext.user?.language||Languages.ru,
+    categoriesIds: props.cv?.categoriesIds||null,
+    sourcesIds: props.cv?.sourcesIds||null,
+    salary: props.cv?.salary||null,
+    schedule: props.cv?.schedule||ScheduleType.FullDay, 
+    employment: props.cv?.employment||EmploymentType.FullTime, 
+    languageKnowledges: props.cv?.languageKnowledges||null, 
+    published: props.cv?.published||false,
   }
 
   const formik = useFormik({
@@ -197,10 +198,8 @@ export default function Cv(props: Props) {
   }, [progress])
 
   useEffect(()=>{
-    if(creationContext.currentCv) {
       formik.setValues(initialValues)
-    }
-  }, [creationContext.currentCv])
+  }, [userContext.currentProfile, props.cv])
   
 
   return <div className={styles.root}>

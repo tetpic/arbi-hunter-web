@@ -49,11 +49,12 @@ export default class VacancyRepository {
     return res
   }
 
-  static async getVacancyById(id: number, profile: ProfileType): Promise<IVacancy|null> {
+  static async getVacancyById(id: number, profile: ProfileType, token?: string): Promise<IVacancy|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}`,
-      profile
+      profile,
+      token
     })
     if(res.err) {
       return null

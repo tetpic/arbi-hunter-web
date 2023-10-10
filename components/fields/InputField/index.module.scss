@@ -9,6 +9,9 @@
   font-weight: $medium;
   font-size: $mediumText;
   padding-inline: 16px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+	-webkit-appearance: textfield;
 
   &[type='password'] {
     font-weight: 900;
@@ -23,6 +26,15 @@
 .hidden {
   display: none;
 }
+
+.error {
+    border-color: $red !important;
+    color: $red !important;
+
+    &::placeholder {
+      color: $red !important;
+    }
+  }
 
 
 

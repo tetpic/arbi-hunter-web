@@ -8,10 +8,12 @@ import { useRouter } from 'next/router'
 import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
+import classNames from 'classnames'
 
 interface Props {
   image?: string
   course: ICourse
+  className?: string
 }
 
 
@@ -19,7 +21,7 @@ export default function CourseItem(props: Props) {
   const router = useRouter()
 
   return (
-    <div className={styles.item} onClick={()=> router.push('/courses/' + props.course.id)}>
+    <div className={classNames(styles.item, props.className)} onClick={()=> router.push('/courses/' + props.course.id)}>
       <div className={styles.top}>
         <div className={styles.imageWrapper}>
           { 

@@ -6,6 +6,8 @@ import { TimeLine } from 'data/interfaces/Common'
 import { ChangeEvent, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useFormikContext } from 'formik'
+import classNames from 'classnames'
 import styles from './index.module.scss'
 
 interface Props<T> {
@@ -13,6 +15,7 @@ interface Props<T> {
   onSave: (f: T) => void
   set: T
   title: string
+  errors?: T
   datePickerSettings?: {
     formatter?: Intl.DateTimeFormatOptions
     on: boolean,
@@ -23,16 +26,17 @@ interface Props<T> {
       monthDropdown?: boolean
       inputLabel?: string 
       dateName?: string
-      dateValue?: keyof T
+      dateValue?: keyof T,
+      error?: string
     }[]
   }
-  inputsSettings?: {value: keyof T, name: string, label: string, type?: 'input'|'textarea'}[]
+  inputsSettings?: {value: keyof T, name: string, label: string, type?: 'input'|'textarea', error?: string}[]
 }
 
 export default function DetailsField<T extends TimeLine>(props: Props<T>) {
 
-
   const [fields, setField] = useState<T>(props.set)
+  const {setFieldValue, setFieldTouched} = useFormikContext()
 
   const onChangeHelper = (v: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, name: keyof T) => {
     setField(s => {return {...s, [name]: v.target.value}})
@@ -62,7 +66,7 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
               name={el.dateName}
               value={fields[el.dateValue].toString() as string}
               customInput={
-                <InputField autocompleteOff={true} className={styles.input} value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
+                <InputField autocompleteOff={true} className={classNames(styles.input, el.error&&styles.error)}  value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
               }
               />
             )
@@ -74,7 +78,7 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
         if(el.type === 'textarea') {
           return <TextAreaField key={index} label={el.label} value={fields[el.value].toString()} onChange={(v)=> onChangeHelper(v, el.value)} name={el.name} autoSize={true}/>
         }
-        return <InputField key={index} autocompleteOff={true} className={styles.input} value={fields[el.value ]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
+        return <InputField error={el.error} key={index} autocompleteOff={true} className={classNames(styles.input, el.error&&styles.error)}  value={fields[el.value]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
       })}
 
       {/* <InputField className={styles.input} value={fields.institution} onChange={(v)=> onChangeHelper(v, 'institution')} labelType={'top'} styleType={'default'} color={'default'} name={'setInstitution'} label={'Заведение:'}/>
