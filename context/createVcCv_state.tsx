@@ -9,7 +9,7 @@ import { useUserContext } from './user_state'
 
 
 interface HelpObject {
-  skills?: ISource[],
+  skills?: Map<number, ISource>,
   languageKnowledges?: ILanguageKnowledge[],
   sources?: ISource[]
   activeSources?: Map<number, ISource>
@@ -19,8 +19,8 @@ interface HelpObject {
 }
 
 const initialHelpObject: HelpObject = {
-  activeSources: new Map(), 
-  skills: [], 
+  activeSources: new Map, 
+  skills: new Map, 
   languageKnowledges: [], 
   sources: [],
   cityId: null,
@@ -119,7 +119,7 @@ export function CreateVcCvWrapper(props: Props) {
         categoryIds: vcItem.categories,   
         cityId: vcItem.cityId,
         countryId: vcItem.countryId,
-        skills: vcItem.skills,
+        skills: new Map(vcItem.skills.map(el => [el.id, el])),
         languageKnowledges: vcItem.languageKnowledges,
         activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
       }})
@@ -133,7 +133,7 @@ export function CreateVcCvWrapper(props: Props) {
         categoryIds: cvItem.categories,   
         cityId: cvItem.cityId,
         countryId: cvItem.countryId,
-        skills: cvItem.skills,
+        skills: new Map(cvItem.skills.map(el=> [el.id, el])),
         languageKnowledges: cvItem.languageKnowledges,
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))
       }})

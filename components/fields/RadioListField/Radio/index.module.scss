@@ -39,6 +39,7 @@
 
 .active {
   .circle {
-    background-color: $blue;
+    border: unset;
+    background: $gradientAlt;
   }
 }

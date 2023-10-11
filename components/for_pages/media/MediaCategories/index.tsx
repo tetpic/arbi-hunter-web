@@ -41,15 +41,11 @@ export default function MediaCategories(props: Props) {
                 width={100} 
                 height={100}
                 style={{objectFit:'cover'}}
-                // sizes="100px"
-                // layout="fill"
-                // objectFit="cover"
-                // fill
                 className={styles.image}
                 />
               }
             </div>
-            <p className={styles.name}>{category.name}</p>
+            <p className={styles.name} title={category.name}>{category.name}</p>
             <Button className={styles.artCounter}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Button>
           </div>
         </SwiperSlide>

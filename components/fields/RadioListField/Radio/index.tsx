@@ -1,6 +1,7 @@
-import styles from './index.module.scss'
 import classNames from 'classnames'
 import CheckSvg from 'components/svg/CheckSvg'
+import styles from './index.module.scss'
+
 interface Props<T> {
   value: T,
   isActive: boolean
@@ -18,7 +19,7 @@ export default function Radio<T>(props: Props<T>) {
   }
   return (
     <div className={classNames(styles.root, props.isActive&&styles.active, props.className, props.isActive&&props.activeClassName)} onClick={handleClick}>
-      <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'black'}/>}</div>
+      <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'white'}/>}</div>
       {props.children && props.children.length ? props.children : <div className={classNames(styles.label, props.labelClassName)}>{props.label}</div>}
     </div>
   )

@@ -3,12 +3,14 @@ import Header from './Header'
 import styles from './index.module.scss'
 import NavBar from './NavBar'
 import { Sticky, StickyContainer } from 'react-sticky'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   children: ReactElement
 }
 
 export default function Layout(props: Props) {
+  const userContext = useUserContext()
 
   return ( 
   <div className={styles.root}>
@@ -18,7 +20,9 @@ export default function Layout(props: Props) {
           <Header distanceFromTop={distanceFromTop}  />
           </div>}
       </Sticky>
-      <NavBar/>
+      {userContext.isLogged &&
+        <NavBar/>
+      }
       <div className='contentWrapper'>
         {props.children}
       </div>

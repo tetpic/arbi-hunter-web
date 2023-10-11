@@ -2,8 +2,8 @@
 
 .root {
 
-  height: calc(100vh - 236px);
-  height: calc(100dvh - 236px);
+  height: calc(100vh - 238px);
+  height: calc(100dvh - 238px);
   @include mq($TabletWidth, max) {
     height: calc(100vh - 200px);
     height: calc(100dvh - 200px);

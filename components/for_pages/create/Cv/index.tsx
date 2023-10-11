@@ -69,7 +69,7 @@ export default function Cv(props: Props) {
     const sendData: ICVCreate = {
       ...data, 
       commission: Number(data.commission),
-      skillsIds: skills.map(el=>el.id), 
+      skillsIds: [...skills.keys()], 
       salary: Number(data.salary),
       languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],

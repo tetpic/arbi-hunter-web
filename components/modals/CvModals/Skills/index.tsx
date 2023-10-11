@@ -21,7 +21,7 @@ export default function SkillsModal(props: Props) {
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
 
-  const [skills, setSkills] = useState<ISource[]>(cvContext.helpObjects?.skills||[])
+  const [skills, setSkills] = useState<ISource[]>([...cvContext.helpObjects?.skills.values()]||[])
   const [choosenSkill, setChoosenSkill] = useState<ISource[]>([])
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=> {
@@ -43,8 +43,8 @@ export default function SkillsModal(props: Props) {
       return
     }
     
-    const helperSkills = cvContext.helpObjects?.skills||[]
-    cvContext.setHelpObjects({skills: [...helperSkills, ...choosenSkill]})
+    const helperSkills = cvContext.helpObjects?.skills||new Map
+    cvContext.setHelpObjects({skills: new Map([...helperSkills.values(), ...choosenSkill].map(el=>[el.id, el]))})
     setChoosenSkill([])
     props.onClose()
   }

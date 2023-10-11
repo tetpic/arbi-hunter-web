@@ -1,8 +1,8 @@
 import Radio from './Radio'
-import styles from './index.module.scss'
 import classNames from 'classnames'
 import {IField, IOption} from 'types/types'
 import { useField, useFormikContext } from 'formik'
+import styles from './index.module.scss'
 
 
 interface Props<T> extends IField<T> {

@@ -2,12 +2,8 @@
 
 .root {
   grid-area: content;
-  height: calc(140vh - 200px);
-  height: calc(140dvh - 200px);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  overflow: auto;
-  min-height: 550px;
 
   >div {
     height: 100%;
@@ -31,11 +27,11 @@
   display: grid;
   grid-template-areas: 'p n b' 'p d b';
   grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 25px auto;
   align-items: center;
   column-gap: 8px;
-  row-gap: 8px;
-  align-items: center;
+  // align-items: center;
+  align-items: flex-start;
   color: $white;
 
   .userPic {
@@ -44,7 +40,7 @@
 
   .communityName {
     grid-area: n;
-    align-self: flex-end;
+    // align-self: flex-end;
   }
 
   .published {

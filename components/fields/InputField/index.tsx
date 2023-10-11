@@ -58,6 +58,11 @@ export default function InputField(props: Props) {
     }
   }
 
+  const onClickHandler:MouseEventHandler<HTMLInputElement> = (e) => {
+    helpers.setTouched(false)
+    props.onClick&&props.onClick(e)
+  }
+
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
@@ -79,8 +84,9 @@ export default function InputField(props: Props) {
           maxLength={props.maxLength}
           onBlur={() => {
             setFocused(false)
+            helpers.setTouched(true)
           }}
-          onClick={props.onClick}
+          onClick={onClickHandler}
           className={classNames({
             [styles.input]: true,
             [styles.error]: showError,
@@ -102,5 +108,9 @@ export default function InputField(props: Props) {
       </div>
     </div>
   )
+}
+
+function setTouched(arg0: boolean) {
+  throw new Error('Function not implemented.')
 }
 

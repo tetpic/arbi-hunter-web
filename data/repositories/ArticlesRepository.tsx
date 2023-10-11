@@ -65,7 +65,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCategoryList(type?: CategoryType, page?: number, limit?: number, token?: string): Promise<IPagination<ICategory>|null> {
+  static async getCategoryList(type?: CategoryType, page?: number, limit?: number): Promise<IPagination<ICategory>|null> {
     const res = await request({
       method: 'get',
       url: `/api/article-category?${type?`categoryType=${type}`:''}${page?`&page=${page}`:''}&limit=${limit||40||LOAD_LIMIT}`,

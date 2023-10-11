@@ -29,29 +29,38 @@ export default function Education(props: Props) {
   const [showDetails, setDetails] = useState<boolean>(false)
   const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv?.educationInfo||[])
   const [activeDetails, setActiveDetails] = useState<EducationInfo>(initialData)
-  const { setFieldValue, setFieldError } = useFormikContext()
-  // const [errorsHandlers, setErrorsHandlers] = useState<EducationInfo>(initialData)
+  const { setFieldValue, setFieldError, setFieldTouched} = useFormikContext()
 
   const saveModalHandler = (fl: EducationInfo) => {
+    //TODO: какая-то дичь, надо будет подумать как переделать нормально
     if(!fl.institution || !fl.fromDate || !fl.speciality) {
-      // setErrorsHandlers(state=> {
-      //   state.institution = fl.institution?null:'error'
-      //   state.speciality = fl.speciality?null:'error'
-      //   state.fromDate = fl.fromDate?null:'error'
-      //   return state
-      // })
+      !fl.speciality&&setFieldError('setSpeciality', 'Введите специальность')
+      !fl.institution&&setFieldError('setInstitution', 'Введите название заведения')
+      !fl.fromDate&&setFieldError('set_fromDate', 'Введите дату начала обучения')
     } else {
       setDetailsInfo(f=> [...f, {...fl}])
       setDetails(false)
-      // setErrorsHandlers(initialData)
       setActiveDetails(initialData)
     }
   }
 
+  useEffect(()=>{
+    const values =  ['setSpeciality', 'setInstitution', 'set_fromDate']
+    if(!activeDetails) {
+     values.map(el=> {
+        setFieldTouched(el, false)
+      })
+    }
+    else {
+      values.map(el=> {
+        setFieldTouched(el, true)
+      })
+    }
+  }, [activeDetails])
+
   const closeModalHandler = () => {
     setDetails(false)
     setActiveDetails(initialData)
-    // setErrorsHandlers(initialData)
   }
 
   const removeItem = (e: EducationInfo) => {

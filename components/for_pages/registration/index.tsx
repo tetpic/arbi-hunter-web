@@ -34,6 +34,7 @@ export default function Registration() {
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
   const [loading, setLoading] = useState<boolean>(false)
+  const [disableButton, setDisableButton] = useState<boolean>(false)
   const router = useRouter()
 
   const initialValues: IRegistrationComplete = {
@@ -52,6 +53,7 @@ export default function Registration() {
       appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
     }
     else {
+      setDisableButton(true)
       data = {...data, 
         cityId, 
         countryId : country.geoname.geonameid,
@@ -64,7 +66,8 @@ export default function Registration() {
         router.push('/') 
       })
       .catch(err=> {
-        appContext.showSnackbar(err.toString(), SnackbarType.error)
+        setDisableButton(false)
+        appContext.showSnackbar('Такой email уже есть в системе', SnackbarType.error)
         return
       })
     }
@@ -206,7 +209,7 @@ export default function Registration() {
             />
 
           {/* <div className={styles.submitButton} onClick={()=> formik.submitForm()}>Зарегистрироваться</div> */}
-          <Button className={styles.submitButton} onClick={()=> formik.submitForm()} spinner={loading}>
+          <Button disabled={disableButton} className={styles.submitButton} onClick={()=> formik.submitForm()} spinner={loading}>
             Зарегистрироваться
           </Button>
           </Form>

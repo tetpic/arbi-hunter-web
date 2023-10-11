@@ -64,19 +64,20 @@
 }
 
 .buttonSave {
-  color: $black;
-  font-weight: $medium;
-  font-size: $mediumText;
-  background-color: $blue;
-  border-radius: 10px;
-  padding: 12px 24px;
+  // color: $black;
+  // font-weight: $medium;
+  // font-size: $mediumText;
+  // background-color: $blue;
+  // border-radius: 10px;
+  // padding: 12px 24px;
   margin-top: 24px;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hoverButtonYellow;
-  @include mq($PhoneWidth, max) {
-    margin-top: auto;
-  }
+  // cursor: pointer;
+  // @include transitionDefault;
+  // @include hoverButtonYellow;
+  // @include mq($PhoneWidth, max) {
+  //   margin-top: auto;
+  // }
+  @include buttonYellow;
 }
 
 .error {

@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import HeartSvg from 'components/svg/HeartSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
-import Spinner from 'components/ui/Spinner'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useCommunityContext } from 'context/community_state'
@@ -11,9 +10,6 @@ import { useAppContext } from 'context/state'
 import { IArticle } from 'data/interfaces/IArticle'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
@@ -28,27 +24,8 @@ export default function CommunityContent(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
   const communityContext = useCommunityContext()
-  const [loading, setLoading] = useState()
-  const [page, setPage] = useState<number>(1)
-  const [total, setTotal] = useState<number>()
-  const contentLength = useRef(communityContext.communityNews.size)
 
   const isAdmin = communityContext.currentCommunity?.id === communityContext.myCommunity?.id
-  
-  useEffect(()=>{
-    communityContext.getCommunityNews(page)
-    .then(res => {
-      if(res instanceof Object) {
-       setTotal(res.total)        
-      }
-    })
-  }, [page])
-
-  useEffect(()=>{
-    if(communityContext.communityNews) {
-      contentLength.current = communityContext.communityNews.size
-    }
-  }, [communityContext.communityNews])
 
   const likeHandler = async (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>, news: IArticle) => {
     e.stopPropagation()
@@ -74,18 +51,11 @@ export default function CommunityContent(props: Props) {
 
   return (
   <div className={styles.root}> 
-    <InfiniteScroll 
-    next={()=>setPage((p)=> p+1)} 
-    hasMore={communityContext.communityNews.size < total} 
-    loader={<Spinner size={24} color={colors.yellow}/>} 
-    dataLength={contentLength.current}
-    height={'100%'}
-    >
       <div className={styles.infinite}>
         {communityContext.myCommunity?.id === communityContext.currentCommunity.id && !isTabletWidth &&
           <CreateNewCommunityArticle/>
         }
-        {communityContext.communityNews&&contentLength.current > 0 && !loading &&
+        {communityContext.communityNews&&communityContext.communityNews.size > 0 && 
         [...communityContext.communityNews.values()].map(news=> {
           return (
               <div className={styles.item} key={news.id} onClick={()=>openNewsHandler(news)}>
@@ -111,12 +81,9 @@ export default function CommunityContent(props: Props) {
           )
         })
         ||
-        loading && <Spinner size={24} color={colors.yellow}/>
-        ||
         <p className={'empty'}>Нет новостей</p>
         }
       </div>
-    </InfiniteScroll>
   </div>
   )
 }

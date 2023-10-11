@@ -32,13 +32,17 @@
   background-color: $grey;
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  // @include hoverButtonBlack;
+  @include hover {
+    background-color: $greyLight;
+    color: $white;
+  }
   @include exeptLast {
     margin-bottom: 8px;
   }
   &_active {
     background-color: $blue;
-    color: $black;
+    color: $white;
   }
 }
 

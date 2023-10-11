@@ -107,7 +107,8 @@ export default function Login(props: Props) {
             {loginType === 'phone' &&
               <PhoneCountryField 
               styleType={'horizontal'} 
-              disabled={false} placeholder={'000 000 00 00'} 
+              disabled={false} 
+              placeholder={'000 000 00 00'} 
               name={'login'}  
               // inputClassName={styles.input} 
               className={styles.input} 

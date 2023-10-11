@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import HeartSvg from 'components/svg/HeartSvg'
-import IconButton from '../IconButton'
 import styles from './index.module.scss'
+import Button from '../Button'
 
 interface Props {
   className?: string
@@ -13,11 +13,11 @@ interface Props {
 export default function FavoritesButton(props: Props) {
 
   return (
-    <IconButton 
+    <Button 
     onClick={props.onClick} 
     className={classnames(styles.heartButton, props.isActive&&styles.heartButton_active, props.className)} 
-    bgColor={'transparent'}>
+    >
       <HeartSvg size={props.size||24} className={props.isActive&&styles.heartRed}/>
-    </IconButton>
+    </Button>
   )
 }

@@ -37,11 +37,11 @@ export default function Header(props: Props) {
   const loginPath = '/login'
 
   useEffect(()=>{
-    if(props.distanceFromTop > fromTop) {
+    if(props.distanceFromTop > fromTop && props.distanceFromTop <= 0) {
       setDirection('up')
       setFromTop(props.distanceFromTop)
     }
-    else if(props.distanceFromTop < fromTop) {
+    else if(props.distanceFromTop < fromTop && props.distanceFromTop <= 0) {
       setDirection('down')
       setDropDownOpen(false)
       setFromTop(props.distanceFromTop)

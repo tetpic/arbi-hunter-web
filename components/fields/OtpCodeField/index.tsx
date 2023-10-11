@@ -22,13 +22,13 @@ export default function OtpCodeField(props: Props) {
   const { value } = field
   const showError = meta.touched && !!meta.error
   const authContext = useAuthContext()
-  // const handleComplete = (value: string) => {
-  //   helpers.setValue(value)
-  //   setTimeout(() => {
-  //     props.onComplete(value)
-  //   }, 100)
+  const handleComplete = (value: string) => {
+    helpers.setValue(value)
+    setTimeout(() => {
+      props.onComplete(value)
+    }, 100)
 
-  // }
+  }
 
    return (
     <div className={classNames(styles.root, { [styles.error]: props.snackbar })}>
@@ -40,7 +40,7 @@ export default function OtpCodeField(props: Props) {
         onChange={(value, index) => helpers.setValue(value)}
         type="numeric"
         inputMode="number"
-        // onComplete={handleComplete}
+        onComplete={handleComplete}
         style={{}}
         inputStyle={{}}
         inputFocusStyle={{}}

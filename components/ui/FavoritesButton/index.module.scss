@@ -6,6 +6,11 @@
     @include transitionDefault;
   }
   @include hover {
+    .heartRed {
+      path {
+        fill: $greyLight;
+      }
+    }
     path {
       stroke: $red;      
     }
@@ -13,8 +18,8 @@
 
   &_active {
     path {
-      stroke: $red;
-      fill: $red;
+      stroke: $grey;
+      fill: $grey;
     }
     @include hover {
       path {
@@ -26,6 +31,6 @@
 
 .heartRed {
   path {
-    fill: $red;
+    fill: $white;
   }
 }

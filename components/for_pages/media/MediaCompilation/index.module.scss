@@ -1,0 +1,79 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  color: $white;
+  font-size: $text32;
+  font-weight: $semibold;
+  column-gap: 8px;
+}
+
+.content {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 16px;
+
+}
+
+.item {
+  width: 49%;
+  display: grid;
+  grid-template-areas: 'n i' 'b i';
+  border-radius: 24px;
+  padding-inline: 32px;
+  align-items: center;
+  justify-items: start;
+  height: 285px;
+  grid-template-columns: 1fr 1fr;
+
+  &_large {
+    width: 100%;
+    height: 338px;
+    .name {
+      font-size: $text36 !important;
+    }
+  }
+
+  .button {
+    grid-area: b;
+    @include buttonDefault;
+    background-color: $white;
+  }
+
+  .name {
+    grid-area: n;
+    color: $white;
+    font-size: $hugeText;
+    font-weight: $semibold;
+  }
+
+  .imageWrapper {
+    grid-area: i;
+    // width: 230px;
+    width: 100%;
+    height: 80%;
+    // height: 230px;
+
+    
+    display: flex;
+    align-items: center;
+
+  }
+}
+
+.watchAll {
+  @include watchAllButton;
+}
+

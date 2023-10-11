@@ -488,3 +488,16 @@
   }
 }
 
+@mixin watchAllButton {
+  @include buttonDefault;
+  background-color: #22222A;
+  color: $white;
+  padding: 16px 32px;
+  font-weight: $semibold;
+  font-size: $largeText;
+  margin-top: 24px;
+  @include hover {
+    background-color: $greyLight;
+  }
+}
+

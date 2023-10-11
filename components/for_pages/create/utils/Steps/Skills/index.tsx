@@ -28,7 +28,6 @@ interface Props {
 
 export default function Skills(props: Props) {
 
-
   const initialCoursesData: CoursesInfo = {
     date: '',
     location: '',
@@ -41,13 +40,36 @@ export default function Skills(props: Props) {
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
   const [activeDetails, setActiveDetails] = useState<CoursesInfo>(initialCoursesData)
-  const {setFieldValue} = useFormikContext()
+  const {setFieldValue, setFieldError, setFieldTouched} = useFormikContext()
 
   const closeModalHandler = (fl: CoursesInfo) => {
-    setDetailsCoursesInfo(f=> [...f, {...fl}])
-    setCoursesDetails(false)
-    setActiveDetails(initialCoursesData)
+    if(!fl.name || !fl.location || !fl.date) {
+      !fl.name && setFieldError('setName', 'Введите название курсов')
+      !fl.location && setFieldError('setLocation', 'Введите название учреждения')
+      !fl.date && setFieldError('setYear', 'Укажите год окончания курсов')
+    }
+    else {
+      setDetailsCoursesInfo(f=> [...f, {...fl}])
+      setCoursesDetails(false)
+      setActiveDetails(initialCoursesData)
+    }
   }
+
+  useEffect(()=>{
+    const values =  ['setName', 'setLocation', 'setYear']
+    if(!showCoursesDetails) {
+     values.map(el=> {
+        setFieldTouched(el, false)
+      })
+    }
+    else {
+      values.map(el=> {
+        setFieldTouched(el, true)
+      })
+    }
+  }, [showCoursesDetails])
+
+
 
   useEffect(()=>{    
     if(!props.fieldToHide?.courses) {
@@ -79,8 +101,8 @@ export default function Skills(props: Props) {
 
   const removeSkill = (s: ISource) => {
     const helperState = cvContext.helpObjects
-    const filteredSkills = helperState.skills.filter(e=> e.id !== s.id)
-    cvContext.setHelpObjects({...helperState, skills: filteredSkills})
+    const filteredSkills = [...helperState.skills.values()].filter(e=> e.id !== s.id)
+    cvContext.setHelpObjects({...helperState, skills: new Map(filteredSkills.map(el=> [el.id, el]))})
   }
 
   return ( <div className={styles.root}>
@@ -89,9 +111,9 @@ export default function Skills(props: Props) {
     onClick={()=>appContext.showModal(ModalType.SkillsModal)} 
     text={'Добавить навык'}
     />
-    {cvContext.helpObjects?.skills?.length > 0 &&
+    {cvContext.helpObjects?.skills?.size > 0 &&
       <div className={styles.itemsWrapper}>
-        {cvContext.helpObjects&&cvContext.helpObjects?.skills
+        {cvContext.helpObjects&&[...cvContext.helpObjects?.skills.values()]
         .map((el: ISource)=> <RemovableItem key={el.id} onClick={()=>removeSkill(el)} text={el.title}/>)
         }
       </div>
@@ -168,7 +190,9 @@ export default function Skills(props: Props) {
       title='Повышение квалификации и курсы'
       set={activeDetails}
       onSave={closeModalHandler}
-      onClose={()=> setCoursesDetails(false)}
+      onClose={()=> {
+        setCoursesDetails(false)
+      }}
       inputsSettings={[
         {label: 'Название учреждения:', name: 'setLocation', value: 'location'},
         {label: 'Название курсов:', name: 'setName', value: 'name'}

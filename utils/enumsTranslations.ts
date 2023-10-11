@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, LanguageKnowLevel, PatternTypes, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, LanguageKnowLevel, PatternTypes, WorkExperience } from 'types/enums'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
   return [...Object.values(k)]
@@ -150,6 +150,17 @@ export const TranslateLanguageKnowLevel = (l: LanguageKnowLevel) => {
       return 'Средний'
     case LanguageKnowLevel.Professional :
       return 'Профессионал'
+  }
+}
+
+export const TranslateProposalType = (p: ApplicationStatus) => {
+  switch(p) {
+    case ApplicationStatus.Accepted:
+      return 'Приглашение'
+    case ApplicationStatus.Applied:
+      return 'Не просмотрено'
+    case ApplicationStatus.Rejected:
+      return 'Отказ'
   }
 }
 

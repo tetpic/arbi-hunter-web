@@ -17,7 +17,7 @@ interface IState {
   currentCommunity: ICommunity,
   setCurrentCommunity: Dispatch<SetStateAction<ICommunity>>
   communityNews: Map<number, IArticle>
-  getCommunityNews: (id: number) => Promise<boolean|{total: number}>
+  getCommunityNews: (page: number) => Promise<boolean|{total: number}>
   setCommunityNews: Dispatch<SetStateAction<Map<number, IArticle>>>
   communityMembers: Map<number, IUserProfile>
   setCommunityMembers: (page: number) => Promise<boolean|{total: number}>
@@ -68,23 +68,26 @@ export function CommunityWrapper(props: Props) {
   }
 
   const getCommunityNews = useCallback(async (page: number) => {
-    return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
-    .then(res => {
-      setCommunityNews(state=> {
-        if(page === 1) {
-          state.clear()
-        }
-        res.data.forEach(r=> {
-          state.set(r.id, r)
+    if(currentCommunity) {
+
+      return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
+      .then(res => {
+        setCommunityNews(state=> {
+          if(page === 1) {
+            state.clear()
+          }
+          res.data.forEach(r=> {
+            state.set(r.id, r)
+          })
+          return new Map(state)
         })
-        return new Map(state)
+        return {total: res.total}
       })
-      return {total: res.total}
-    })
-    .catch(err=> {
-      return false
-    })
-  }, [currentCommunity?.id])
+      .catch(err=> {
+        return false
+      })
+    }
+  }, [currentCommunity])
 
   const setCommunities = async (p: number) => {
     const res = await CommunitiesRepository.getCommunities(p)

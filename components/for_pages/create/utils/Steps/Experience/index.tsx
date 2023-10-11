@@ -31,11 +31,19 @@ export default function Experience(props: Props) {
   const [activeDetails, setActiveDetails] = useState<ExperienceInfo>(initialData)
   const formikContext = useFormikContext()
   const values = formikContext.values as ICVCreate
+  const {setFieldTouched, setFieldError} = formikContext
 
   const closeModalHandler = (fl: ExperienceInfo) => {
-    setDetailsInfo(f=> [...f, {...fl}])
-    setDetails(false)
-    setActiveDetails(initialData)
+    if(!fl.company || !fl.fromDate || !fl.position) {
+      !fl.company && setFieldError('setCompany', 'Введите название компании')
+      !fl.fromDate && setFieldError('set_fromDate', 'Укажите дату начала работы')
+      !fl.position && setFieldError('setProfile', 'Введите название занимаемой должности')
+    }
+    else {
+      setDetailsInfo(f=> [...f, {...fl}])
+      setDetails(false)
+      setActiveDetails(initialData)
+    }
   }
 
   const removeExp = (e: ExperienceInfo) => {
@@ -47,6 +55,20 @@ export default function Experience(props: Props) {
     let currentCv = cvContext.currentCv
     cvContext.setCurrentCv({...currentCv, experienceInfo: [...detailsInfo]})
   }, [detailsInfo])
+
+  useEffect(()=>{
+    const values =  ['setCompany', 'set_fromDate', 'setProfile']
+    if(!showDetails) {
+     values.map(el=> {
+        setFieldTouched(el, false)
+      })
+    }
+    else {
+      values.map(el=> {
+        setFieldTouched(el, true)
+      })
+    }
+  }, [showDetails])
 
 
 

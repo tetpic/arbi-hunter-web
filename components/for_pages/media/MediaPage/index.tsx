@@ -9,12 +9,15 @@ import ICommunity from 'data/interfaces/ICommunity'
 import MediaCommunities from '../MediaCommunities'
 import MediaCrypto from '../MediaCrypto'
 import { IArticle } from 'data/interfaces/IArticle'
+import MediaCompilation from '../MediaCompilation'
 
 
 interface Props {
   categories: ICategory[]  
   communities: ICommunity[]
   news: IArticle[]
+  newsCompilations: ICategory[]
+
 }
 
 export default function MediaPage(props: Props) {
@@ -27,9 +30,10 @@ export default function MediaPage(props: Props) {
       }
       <MediaSearch/>
       <MediaCategories categories={props.categories.filter(el=>el.image)}/>
-      <MediaNewsSection title='Популярное' news={props.news.slice(4, 9)}/>
+      <MediaNewsSection title='Популярное' news={props.news.slice(0, 4)}/>
       <MediaCommunities communities={props.communities}/>
-      <MediaNewsSection title='Новости' news={props.news} link={'/news'}/>
+      <MediaCompilation newsCompilations={props.newsCompilations}/>
+      {/* <MediaNewsSection title='Новости' news={props.news} link={'/news'}/> */}
       <MediaCrypto/>
     </div>
   )

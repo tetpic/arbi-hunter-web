@@ -53,6 +53,7 @@ export default class Formatter {
 
   /** get formatted phone number +7 999 999 99 99, return +7 999 ***-**-99 */
   static hideSomePhoneNumbers(phone: string) {
+    if(!phone) {return}
     let phoneResult = phone.split('').map((e, index)=> {
       return (index > 6 && index < 10)||(index > 10 && index < 13) ? '*': e
     })

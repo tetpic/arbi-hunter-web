@@ -5,8 +5,9 @@ import UserPic from 'components/ui/UserPic'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IApplication } from 'data/interfaces/IApplication'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import { TranslatePatternType } from 'utils/enumsTranslations'
+import { TranslateProposalType } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
+import classNames from 'classnames'
 import styles from './index.module.scss'
 
 interface Props {
@@ -24,6 +25,8 @@ export default function VacancyItem({vc, application, refreshCallback}: Props) {
     :vacancyContext.saveVacancy(vc.id)
     refreshCallback&&refreshCallback()
   }
+
+  
   
 
   return (<div className={styles.root}> 
@@ -32,14 +35,13 @@ export default function VacancyItem({vc, application, refreshCallback}: Props) {
     <p className={styles.company}>{vc.company}</p>
     <p className={styles.city}>г. {vc.city?.locName}</p>
     <FavoritesButton className={styles.heartButton} onClick={heartHandler} isActive={vc.isSavedByCurrentProfile}/>
-    {/* <Button className={styles.heartButton} onClick={removeFromSaved}><HeartSvg /></Button> */}
   </div>
   <p className={styles.vcName}>{vc.name}</p>
   
   <SalaryItem vacancy={vc}/>
   
    {application &&
-    <p className={styles.status}>{TranslatePatternType(application.type)}</p>
+    <p className={classNames(styles.status, styles[application.status])}>{TranslateProposalType(application.status)}</p>
    }
   <div className={styles.bottom}>
     <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
