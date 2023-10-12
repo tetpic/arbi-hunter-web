@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { FILES } from 'types/constants'
 import { Languages } from 'types/enums'
 import LinkBlack from 'components/ui/LinkBlack'
+import TextNode from 'components/ui/TextNode'
 
 interface Props {
   title: string
@@ -12,8 +13,13 @@ interface Props {
   news?: IArticle[]
 }
 
+
+
 export default function MediaNewsSection(props: Props) {
   
+  
+
+
 
   const firstItem = props.news[0]
 
@@ -32,7 +38,9 @@ export default function MediaNewsSection(props: Props) {
       <div className={styles.textWrapper}>
         <p className={styles.itemTitle}>{firstItem.name}</p>
         {/* {firstItem.shortDescription && */}
-          <p className={styles.itemDesc} dangerouslySetInnerHTML={{__html: firstItem.blocks[0].body}}></p>
+          <p className={styles.itemDesc}>
+            <TextNode html={firstItem.blocks[0].body}/>
+          </p> 
         {/* } */}
       </div>
       <div className={styles.imageWrapper}>
@@ -62,18 +70,18 @@ export default function MediaNewsSection(props: Props) {
             </div>
             <div className={styles.textWrapper}>
               <p className={styles.itemTitle}>{item.name}</p>
-              {/* {item.shortDescription && */}
-                <p className={styles.itemDesc} dangerouslySetInnerHTML={{__html: item.blocks[0].body}}></p>
-              {/* } */}
+                <p className={styles.itemDesc} >
+                  <TextNode html={item.blocks[0].body}/>
+                </p>
             </div>
             <div className={styles.imageWrapper}>
               {item.image && 
                 <Image 
                 src={FILES + item.image.source} 
                 alt={item.name} 
-                width={115} 
-                height={137} 
-                style={{objectFit:'cover'}}
+                width={230} 
+                height={260} 
+                style={{objectFit:'cover', width: '100%', height: '100%'}}
                 />
               }
             </div>
