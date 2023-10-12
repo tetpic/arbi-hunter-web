@@ -2,19 +2,21 @@
 
 .root {
   @include buttonBlack;
-  padding: 4px 4px 4px 16px;
-  height: 62px;
+  padding: 8px 8px 8px 16px;
+  height: unset;
   display: flex;
   justify-content: space-between;
   column-gap: 16px;
   cursor: default;
+  max-width: 764px;
+  margin-inline: auto;
 
 
   .button {
     @include buttonYellow;
-    padding: 18px 38px;
     position: relative;
     z-index: 4;
+    height: 40px;
   }
 
   .input {

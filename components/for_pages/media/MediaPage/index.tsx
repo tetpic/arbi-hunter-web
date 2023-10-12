@@ -1,5 +1,4 @@
 import MediaPageHeader from '../MediaHeader'
-import MediaSearch from '../../../ui/MediaSearch'
 import styles from './index.module.scss'
 import { ICategory } from 'data/interfaces/Common'
 import MediaCategories from '../MediaCategories'
@@ -10,6 +9,7 @@ import MediaCommunities from '../MediaCommunities'
 import MediaCrypto from '../MediaCrypto'
 import { IArticle } from 'data/interfaces/IArticle'
 import MediaCompilation from '../MediaCompilation'
+import SearchBar from 'components/ui/SearchBar'
 
 
 interface Props {
@@ -28,12 +28,11 @@ export default function MediaPage(props: Props) {
       {!userContext.currentProfile &&
         <MediaPageHeader/>  
       }
-      <MediaSearch/>
-      <MediaCategories categories={props.categories.filter(el=>el.image)}/>
+      <SearchBar/>
+      <MediaCategories categories={props.categories}/>
       <MediaNewsSection title='Популярное' news={props.news.slice(0, 4)}/>
       <MediaCommunities communities={props.communities}/>
       <MediaCompilation newsCompilations={props.newsCompilations}/>
-      {/* <MediaNewsSection title='Новости' news={props.news} link={'/news'}/> */}
       <MediaCrypto/>
     </div>
   )

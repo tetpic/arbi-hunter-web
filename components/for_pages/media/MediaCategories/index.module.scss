@@ -61,12 +61,12 @@
 
 .buttonLeft {
   @extend .button;
-  left: -20px;
+  left: -40px;
 }
 
 .buttonRight {
   @extend .button;
-  right: -20px;
+  right: -40px;
 }
 
 .swiperNav {
@@ -120,8 +120,5 @@
 }
 
 .watchAll {
-  // @include buttonGray;
-  // margin-top: 24px;
-  // padding: 16px 32px;
   @include watchAllButton;
 }

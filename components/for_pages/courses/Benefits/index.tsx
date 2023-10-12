@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import styles from './index.module.scss'
 import wallet from 'images/wallet_gradient.png'
+import styles from './index.module.scss'
 
 interface Props {
 }
@@ -21,10 +21,10 @@ export default function Benefits(props: Props) {
       <Image src={wallet} alt={'benefit'} width={76} height={76}/>
        Обучение на основе государственной лицензии
     </p>
-    <p className={styles.item}>
+    {/* <p className={styles.item}>
       <Image src={wallet} alt={'benefit'} width={76} height={76}/>
        Обучение на основе государственной лицензии
-    </p>
+    </p> */}
 
   </div>)
 }

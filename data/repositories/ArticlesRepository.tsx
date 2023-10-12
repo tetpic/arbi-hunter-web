@@ -31,10 +31,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
-      url: '/api/article?articleType=news&isTop=true',
+      url: `/api/article?articleType=news&isTop=true${full?'&full=true':''}`,
     })
     if(res.err) {
       return null

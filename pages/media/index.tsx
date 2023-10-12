@@ -15,9 +15,9 @@ interface Props {
 }
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
-  const categories = await ArticlesRepository.getCategoryList(null, 1, 10 )
+  const categories = await ArticlesRepository.getCategoryList(CategoryType.News, 1, 10)
   const communities = await CommunitiesRepository.getCommunities(1)
-  const news = await ArticlesRepository.getNews()
+  const news = await ArticlesRepository.getNews(true)
   const newsCompilations = (await ArticlesRepository.getCategoryList(CategoryType.News, 1, 20)).data
   return {props: {categories: categories.data, communities: communities.data, news: news.data, newsCompilations}}
 }) 

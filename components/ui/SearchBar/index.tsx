@@ -7,7 +7,7 @@ interface Props {
   className?: string
 }
 
-export default function MediaSearch(props: Props) {
+export default function SearchBar(props: Props) {
 
   return (<div className={classNames(styles.root, props.className)}>
     <input className={styles.input} type="text" placeholder='Найти статью или сообщество' /> 

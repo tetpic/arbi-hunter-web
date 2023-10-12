@@ -1,24 +1,25 @@
 import Button from 'components/ui/Button'
-// import girl from 'images/girl.png'
 import Image from 'next/image'
-import styles from './index.module.scss'
 import { ICategory } from 'data/interfaces/Common'
 import Formatter from 'utils/formatter'
 import { FILES } from 'types/constants'
+import classNames from 'classnames'
+import styles from './index.module.scss'
 
 interface Props {
   category: ICategory
+  className?: string
 }
 
 export default function Banner(props: Props) {
 
-
   return (
-  <div className={styles.root}> 
+  <div className={classNames(styles.root, props.className)}> 
     <div className={styles.content}>
       <p className={styles.title}>{props.category.name}</p>
       <p className={styles.subTitle}>{props.category.description}</p>
       {/* <div className={styles.tags}>
+        {}
         <p className={styles.tag}>Разработка</p>
         <p className={styles.tag}>Дизайн</p>
         <p className={styles.tag}>Разработка</p>
@@ -34,6 +35,7 @@ export default function Banner(props: Props) {
       alt={'girl'} 
       width={336} 
       height={336} 
+      style={{width:'100%', height:'100%', objectFit: 'cover'}}
       />
     }
     </div>

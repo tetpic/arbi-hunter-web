@@ -2,7 +2,6 @@ import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useResize } from 'components/hooks/useResize'
 import BookMarkSvg from 'components/svg/BookMarkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
-import SmallStarPassiveSvg from 'components/svg/SmallStarPassiveSvg'
 import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import UserSvg from 'components/svg/UserSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -24,6 +23,7 @@ import CoursesInformation from './CourseInformation'
 import CourseModules from './CourseModules'
 import CourseNews from './CourseNews'
 import styles from './index.module.scss'
+import RatingLine from 'components/ui/RatingLine'
 
 interface Props {
   id: number
@@ -162,7 +162,7 @@ export default function CurrentCourse(props: Props) {
           <div className={styles.stats}>
             <div className={styles.statsLeft}>
               <p className={styles.rating}>{courseStats.raiting.raiting}</p>
-              <p className={styles.stars}>{Formatter.getMarks(courseStats.raiting.raiting).map(el=> el===true&&<SmallStarActiveSvg/>||Number(el)>0&&<SmallStarPassiveSvg className={styles.halfStar}/>||<SmallStarPassiveSvg/>)}</p>
+              <RatingLine rating={courseStats.raiting.raiting}/>
               <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, 'отзыв', 'отзыва', 'отзывов')}</p>
             </div>
             <div className={styles.statsRight}>

@@ -1,9 +1,10 @@
 import { ICategory } from 'data/interfaces/Common'
-import styles from './index.module.scss'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
+// import { FILES } from 'types/constants'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
+import bitcoin from 'images/big_bitcoin.png'
+import styles from './index.module.scss'
 
 interface Props {
   categoryList: ICategory[]
@@ -22,11 +23,12 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
       {props.item.image &&
         <Image 
         priority
-        src={FILES + props.item.image.source} 
+        // src={FILES + props.item.image.source} 
+        src={bitcoin}
         alt={props.item.name + ' image'} 
         width={props.size===50?222:147}
         height={props.size===50?222:147}
-        style={{objectFit:'cover', width: '100%', height: '100%',  display: 'block'}}
+        style={{objectFit:'cover', /* width: '100%', height: '100%',*/  display: 'block'}}
         />
       }
     </div>

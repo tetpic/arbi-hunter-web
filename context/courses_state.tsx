@@ -142,8 +142,8 @@ export function CoursesWrapper(props: Props) {
 
   const setFeedbacks = async (courseId: number, page: number, limit: number): Promise<boolean> => {
     try {
-      const res = await CoursesRepository.getFeedbacks(courseId, profileType, page, limit)
-      setFeedbacksState(res.data)
+      const res = await CoursesRepository.getFeedbacks(courseId, page, limit)
+      setFeedbacksState(res)
       return true
     } catch (err) {
       return false

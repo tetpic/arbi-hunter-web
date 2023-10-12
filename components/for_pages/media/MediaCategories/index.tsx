@@ -1,6 +1,6 @@
 import { ICategory } from 'data/interfaces/Common'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
+// import { FILES } from 'types/constants'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import {Autoplay} from 'swiper/modules'
 import Button from 'components/ui/Button'
@@ -9,6 +9,8 @@ import { useRef } from 'react'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import styles from './index.module.scss'
+import LinkBlack from 'components/ui/LinkBlack'
+import bigBitcoin from 'images/big_bitcoin.png'
 
 interface Props {
     categories: ICategory[]
@@ -34,16 +36,17 @@ export default function MediaCategories(props: Props) {
         <SwiperSlide className={styles.swiperSlide} key={category.id}>
           <div className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
-              {category.image &&
+              {/* {category.image && */}
                 <Image 
-                src={FILES+category.image.source} 
+                // src={FILES+category.image.source} 
+                src={bigBitcoin}
                 alt={category.name+ ' image'} 
                 width={100} 
                 height={100}
                 style={{objectFit:'cover'}}
                 className={styles.image}
                 />
-              }
+              {/* } */}
             </div>
             <p className={styles.name} title={category.name}>{category.name}</p>
             <Button className={styles.artCounter}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Button>
@@ -51,14 +54,10 @@ export default function MediaCategories(props: Props) {
         </SwiperSlide>
       )
     })}
-
-
     </Swiper>
-    {/* <div className={styles.swiperNav}> */}
-      <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
-      <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
-    {/* </div> */}
-    <Button className={styles.watchAll}>Смотреть все</Button>
+    <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
+    <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
+    <LinkBlack href={'/categories'}>Смотреть все</LinkBlack>
   </section>
   )
 }

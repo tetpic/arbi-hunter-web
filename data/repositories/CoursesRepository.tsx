@@ -49,11 +49,10 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getFeedbacks(courseId: number, profile: ProfileType, page: number, limit: number ): Promise<IPagination<ICourseFeedback>|null> {
+  static async getFeedbacks(courseId: number,  page: number, limit: number, lang?: Languages): Promise<ICourseFeedback[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/feedback?s={"courseId": ${courseId}}&sort=createdAt,DESC&page=${page}&limit=${limit}`,
-      profile
+      url: `/api/feedback?${courseId?`s={"courseId": ${courseId}`:''}&sort=createdAt,DESC&page=${page}&limit=${limit}${lang?'&lang='+lang:''}`,
     })
     if(res.err) {
       return null

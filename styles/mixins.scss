@@ -317,11 +317,15 @@
 
 @mixin buttonDefault {
   border-radius: 10px;
-  padding: 10px 24px 8px;
+  padding: 8px 24px;
   font-weight: $medium;
-  font-size: $largeText;
+  font-size: $mediumText;
   cursor: pointer;
   @include transitionDefault;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   span {
     @include transitionDefault;
   }
@@ -349,6 +353,8 @@
   position: relative;
   @include buttonDefault;
   @include hoverButtonBlack;
+  display: flex;
+  align-items: center;
   &:after {
     content: '';
     position: absolute;
@@ -389,7 +395,7 @@
 
 @mixin buttonGray {
   @include buttonDefault;
-  font-size: $largeText;
+  font-size: $mediumText;
   font-weight: $semibold;
   background-color: $grey;
   color: $white;
@@ -490,12 +496,15 @@
 
 @mixin watchAllButton {
   @include buttonDefault;
+  display: flex;
+  width: max-content;
   background-color: #22222A;
   color: $white;
   padding: 16px 32px;
   font-weight: $semibold;
-  font-size: $largeText;
+  font-size: $mediumText;
   margin-top: 24px;
+  margin-inline: auto;
   @include hover {
     background-color: $greyLight;
   }

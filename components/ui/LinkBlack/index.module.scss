@@ -1,0 +1,9 @@
+@import 'styles/index';
+
+.link {
+  // @include buttonBlack;
+  @include watchAllButton;
+  margin-inline: auto;
+  justify-self: center;
+  align-self: center;
+}

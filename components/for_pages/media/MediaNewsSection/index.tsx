@@ -1,10 +1,10 @@
-import Button from 'components/ui/Button'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
 import { Languages } from 'types/enums'
+import LinkBlack from 'components/ui/LinkBlack'
 
 interface Props {
   title: string
@@ -13,7 +13,8 @@ interface Props {
 }
 
 export default function MediaNewsSection(props: Props) {
-  const router = useRouter()
+  
+
   const firstItem = props.news[0]
 
   return (<section className={styles.root}> 
@@ -30,9 +31,9 @@ export default function MediaNewsSection(props: Props) {
       </div>
       <div className={styles.textWrapper}>
         <p className={styles.itemTitle}>{firstItem.name}</p>
-        {firstItem.shortDescription &&
-          <p className={styles.itemDesc}>{firstItem.shortDescription}</p>
-        }
+        {/* {firstItem.shortDescription && */}
+          <p className={styles.itemDesc} dangerouslySetInnerHTML={{__html: firstItem.blocks[0].body}}></p>
+        {/* } */}
       </div>
       <div className={styles.imageWrapper}>
         {firstItem.image &&  
@@ -45,7 +46,6 @@ export default function MediaNewsSection(props: Props) {
           height={345}
           />
         }
-
       </div>
     </div>
     <div className={styles.otherItems}>
@@ -62,9 +62,9 @@ export default function MediaNewsSection(props: Props) {
             </div>
             <div className={styles.textWrapper}>
               <p className={styles.itemTitle}>{item.name}</p>
-              {item.shortDescription &&
-                <p className={styles.itemDesc}>{item.shortDescription}</p>
-              }
+              {/* {item.shortDescription && */}
+                <p className={styles.itemDesc} dangerouslySetInnerHTML={{__html: item.blocks[0].body}}></p>
+              {/* } */}
             </div>
             <div className={styles.imageWrapper}>
               {item.image && 
@@ -76,7 +76,6 @@ export default function MediaNewsSection(props: Props) {
                 style={{objectFit:'cover'}}
                 />
               }
-
             </div>
           </div>
         )
@@ -85,7 +84,7 @@ export default function MediaNewsSection(props: Props) {
   </div>
 
   {props.link &&
-    <Button className={styles.watchAll} onClick={()=>router.push(props.link)}>Смотреть все</Button>
+    <LinkBlack href={props.link}>Смотреть все</LinkBlack>
   }
 
 

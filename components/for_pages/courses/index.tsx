@@ -4,24 +4,27 @@ import { useCoursesContext } from 'context/courses_state'
 import { useEffect } from 'react'
 import Formatter from 'utils/formatter'
 import { ICategory } from 'data/interfaces/Common'
-import MediaSearch from 'components/ui/MediaSearch'
 import Categories from './Categories'
-import ICourse from 'data/interfaces/ICourse'
+import ICourse, { ICourseFeedback } from 'data/interfaces/ICourse'
 import CoursesBlock from './CoursesBlock'
-import styles from './index.module.scss'
 import Benefits from './Benefits'
 import Banner from './Banner'
+import SearchBar from 'components/ui/SearchBar'
+import Feedbacks from './Feedbacks'
+import TitleDiamond from 'components/ui/TitleDiamond'
+import LinkBlack from 'components/ui/LinkBlack'
+import styles from './index.module.scss'
 
 interface Props {
   categoryList: ICategory[]
   courses: ICourse[]
   compilations: ICategory[]
   popularCourses: ICourse[]
+  feedbacks: ICourseFeedback[]
 }
 
 export default function CoursesMain(props: Props) {
   const coursesContext = useCoursesContext()
-  const courses = props.courses||coursesContext.courses
   const popularCourses = props.popularCourses
 
   
@@ -30,7 +33,7 @@ export default function CoursesMain(props: Props) {
     coursesContext.setCourses(null, props.courses)
   }, [])
 
-  return (<div className={styles.root}> 
+  return <div className={styles.root}> 
     <div className={styles.top}>
       <h1 className={styles.title}>Станьте<br/> востребованным<br/> специалистом</h1>
       <div className={styles.tagsWrapper}>
@@ -46,13 +49,19 @@ export default function CoursesMain(props: Props) {
       </div>
     </div>
 
-    <MediaSearch className={styles.search}/>
-    <Categories categoryList={props.categoryList}/>
-    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
+    <SearchBar className={styles.search}/>
     <Benefits/>
-    
-    <Banner category={props.compilations[0]}/>
-    <CoursesBlock title={'Лучшие курсы'} courses={courses}/>
-    <Banner category={props.compilations[1]}/>
-  </div>)
+    <Categories categoryList={props.categoryList}/>
+    <Feedbacks feedbacks={props.feedbacks}/>
+    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
+    <section className={styles.banners}>
+      <TitleDiamond title={'Подборки для вас'}/>
+      <div className={styles.bannersWrapper}>
+        <Banner className={styles.banner_small} category={props.compilations[0]}/>
+        <Banner className={styles.banner_small} category={props.compilations[1]}/>
+        <Banner className={styles.banner_large} category={props.compilations[2]}/>
+        <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+      </div>
+    </section>
+  </div>
 }

@@ -2,7 +2,6 @@
 
 .root {
   margin-top: 120px;
-
 }
 
 .title {
@@ -30,6 +29,20 @@
   border-radius: 35px;
   height: clamp(160px, 50vw, 260px);
   min-width: 350px;
+  position: relative;
+  overflow: hidden;
+  &:before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    top: -30%;
+    right: -50%;
+    border-radius: 50%;
+    height: 100%;
+    background: $gradientAlt;
+    opacity: .3;
+    filter: blur(100px);
+  }
   @include mq($MdDesktopWidth, max) {
     width: unset !important;
     grid-template-columns: auto;
@@ -44,12 +57,11 @@
     color: $white;
     font-size: $hugeText;
     font-weight: $semibold;
-
   }
 
   .counter {
     grid-area: c;
-    padding: clamp(8px, 2vw, 16px) clamp(12px, 4vw, 24px);
+    padding: clamp(8px, 2vw, 14px) clamp(12px, 4vw, 24px);
     background: $gradientAlt;
     color: $white;
     align-self: flex-end;
@@ -57,7 +69,6 @@
     border-radius: 30px;
     font-size: $text18;
     font-weight: $semibold;
-
   }
 
   .imageWrapper {
@@ -68,23 +79,32 @@
     justify-self: flex-end;
     align-self: flex-end;
     border-radius: 16px;
-    overflow: hidden;
-    width: Clamp(80px, 10vw, 114px);
-    height: Clamp(80px, 10vw, 114px);
+    position: absolute;
+    // top: -16px;
+    bottom: 0;
+    
+    right: -16px;
+    // position: relative;
+    // overflow: hidden;
+    
+    // width: Clamp(80px, 10vw, 114px);
+    // height: Clamp(80px, 10vw, 114px);
 }
 
   &_large {
     .imageWrapper {
       align-self: flex-end;
-      width: Clamp(80px, 14vw, 200px);
-      height: Clamp(80px, 14vw, 200px);
+      // width: Clamp(80px, 14vw, 200px);
+      // height: Clamp(80px, 14vw, 200px);
+      top: -16px;
+      bottom: unset;
     }
-    .name {
-      font-size: clamp(12px, 2.3vw, 32px);
-      @include mq($MdDesktopWidth, max) {
-        font-size: $hugeText;
-      }
-    }
+    // .name {
+      // font-size: clamp(12px, 2.3vw, 32px);
+      // @include mq($MdDesktopWidth, max) {
+        // font-size: $hugeText;
+      // }
+    // }
   }
 }
 

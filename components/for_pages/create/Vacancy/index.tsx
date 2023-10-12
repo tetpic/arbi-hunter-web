@@ -98,7 +98,6 @@ export default function Vacancy(props: Props) {
     }
   }
 
-
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
     description: props.vacancy?.description||'',

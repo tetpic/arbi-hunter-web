@@ -1,0 +1,13 @@
+@import 'styles/index';
+
+.title {
+  font-weight: $semibold;
+  font-size: 32px;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 16px;
+  margin-top: 90px;
+  text-align: center;
+}

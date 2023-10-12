@@ -1,0 +1,82 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 120px;
+}
+
+.swiperSlide {
+  width: 49%;
+  min-width: 510px;
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+.title {
+  color: $white;
+  font-size: $text32;
+  font-weight: $semibold;
+  text-align: center;
+}
+
+.item {
+  display: flex;
+  column-gap: 16px;
+  max-height: 218px;
+  color: $white;
+  background-color: $black;
+  border-radius: 24px;
+  margin-top: 50px;
+  padding-left: 16px;
+
+
+  .imageWrapper {
+    display: flex;
+    align-items: flex-end;
+    width: 35%;
+    flex-shrink: 0;
+    height: 140%;
+    align-self: flex-end;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    align-items: flex-start;
+    padding-block: 16px;
+    max-width: 60%;
+  }
+
+  .name {
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+
+  .star {
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .feedback {
+    font-size: $mediumText;
+    font-weight: $medium;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    @include lineClamp(3);
+  }
+
+  .link {
+    @include buttonGray;
+    margin-top: auto;
+    color: $blue;
+    padding-block: 8px;
+    span {
+      @include lineClamp(2);
+    }
+  }
+}

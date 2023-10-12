@@ -10,6 +10,7 @@ import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useRef } from 'react'
 import styles from './index.module.scss'
+import LinkBlack from 'components/ui/LinkBlack'
 
 interface Props {
   communities: ICommunity[]
@@ -82,7 +83,7 @@ export default function MediaCommunities(props: Props) {
       <ArrowRightSvg/>
     </Button>
   </div>
-  <Button onClick={()=>router.push('/communities')} className={styles.watchAll}><span>Смотреть все</span></Button>
+  <LinkBlack href={'/communities'} >Смотреть все</LinkBlack>
 
   </div>)
 }

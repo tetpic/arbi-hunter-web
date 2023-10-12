@@ -9,6 +9,7 @@ import StarSvg from 'components/svg/StarSvg'
 import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
+import TitleDiamond from 'components/ui/TitleDiamond'
 
 
 interface Props {
@@ -45,6 +46,7 @@ function BigCourseItem (props: {courseItem: ICourse}) {
       <div className={styles.bottom}>
         <p className={styles.lessonsCount}><PlayButtonSvg/>{firstItem.stepsCount} {Formatter.pluralize(Number(firstItem.stepsCount), 'урок', 'урока', 'уроков')}</p>
         <p className={styles.courseName} title={firstItem.name}>{firstItem.name}</p>
+        <p className={styles.shortDescription}>{firstItem.shortDescription}</p>
         <p className={styles.price}>от {Formatter.formatPrice(firstItem.price)}/месяц</p>
         <div className={styles.rating}>
           <span>
@@ -67,22 +69,21 @@ export default function CoursesBlock(props: Props) {
 
   const firstItem = props.courses[0]
 
-  return (<div> <p className={styles.coursesTitle}>{props.title} <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/></p>
-  <div className={styles.coursesWrapper}>
-    {isTabletWidth &&
-      <CourseItem course={firstItem} />
-      ||
-      <BigCourseItem courseItem={firstItem} />
-    }
-    
-    {/* <div className={styles.right}> */}
+  return (
+  <div> 
+    <TitleDiamond title={props.title}/>
+    <div className={styles.coursesWrapper}>
+      {isTabletWidth &&
+        <CourseItem course={firstItem} />
+        ||
+        <BigCourseItem courseItem={firstItem} />
+      }
       {props.courses.length > 0 &&
         props.courses.slice(1, 5).map(el => {
           return <CourseItem className={styles.defaultItem} course={el} key={el.id}  />
         })
       }
-    {/* </div> */}
-  </div>
+    </div>
   </div>
   )
 }

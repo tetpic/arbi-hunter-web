@@ -5,7 +5,7 @@
   justify-content: space-between;
   background-color: $grey;
   border-radius: 24px;
-  margin-top: 120px;
+  // margin-top: 120px;
   overflow: hidden;
   position: relative;
   @include mq($SmDesktopWidth, max) {
@@ -31,7 +31,6 @@
 .button {
   @include buttonYellow;
   margin-right: auto;
-  padding: 16px 32px;
   margin-top: auto;
 }
 
@@ -41,7 +40,7 @@
   row-gap: 16px;
   padding: 32px;
   color: $white;
-  max-width: 45%;
+  max-width: 50%;
   position: relative;
   z-index: 1;
   @include mq($SmDesktopWidth, max) {
@@ -78,7 +77,8 @@
 .imageWrapper  {
   position: relative;
   z-index: 1;
-  margin-right: 10%;
+  max-width: 40%;
+  margin-right: 16px;
   display: flex;
   align-items: flex-end;
   @include mq($PhoneWidth, max) {

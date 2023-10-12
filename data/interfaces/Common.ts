@@ -181,7 +181,7 @@ export interface IFileDownload {
 export interface IArticleBlock {
   id?: number,
   title?: string,
-  body?: string|{[key: string]: any},
+  body?: string,
   image?: Partial<IImage>
   images?: Partial<IImage>[],
   imageLarge?: Partial<IImage>,

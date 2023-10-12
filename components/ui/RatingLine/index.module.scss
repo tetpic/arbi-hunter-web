@@ -1,0 +1,13 @@
+@import 'styles/index';
+
+.stars {
+  display: flex;
+}
+
+.halfStar {
+  path{
+    fill: transparent; 
+  }
+  @include starPath;
+  background: linear-gradient(to right, $blue 50%, $grey 50%);
+}

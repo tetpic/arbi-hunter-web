@@ -86,6 +86,7 @@ font-size: $hugeText;
   color: $greyLight;
   font-size: $mediumText;
   font-weight: $medium;
+  @include lineClamp(3);
 }
 
 .textWrapper {
