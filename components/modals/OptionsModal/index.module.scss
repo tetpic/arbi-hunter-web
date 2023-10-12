@@ -5,7 +5,19 @@
 }
 
 .itemWrapper {
-  margin-top: 24px;
+  // margin-top: 24px;
+
+}
+
+.outer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateY(100%);
+  background-color: $grey;
+  border-radius: 16px;
+  z-index: 4;
+  // padding: 16px;
 }
 
 .item {
@@ -16,11 +28,15 @@
   font-size: $mediumText;
   font-weight: $medium;
   border-radius: 10px;
-  padding: 8px 16px;
+  padding: 16px 16px;
   cursor: pointer;
   @include transitionDefault;
   @include hover{
-    background-color: $grey;
+    color: $blue !important;
+    *{
+      color: $blue !important;
+
+    }
   }
 }
 

@@ -6,6 +6,30 @@
   background-color: $black;
 }
 
+.modalWrapper {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  right: 0;
+  transform: scale(0.6);
+  transform-origin: right;
+  @include transitionDefault;
+  z-index: 4;
+  // display: none;
+
+  &_active {
+    opacity: 1;
+    // display: block;
+    pointer-events: all;
+    transform: scale(1);
+  }
+  // height: 0%
+  // bottom
+
+}
+
 .button {
   @include buttonYellow;
 }
@@ -25,6 +49,7 @@
 }
 
 .top {
+  position: relative;
   display: grid;
   grid-template-areas: 'i p d' 'i r d';
   grid-template-columns: auto 1fr auto;

@@ -53,15 +53,15 @@ export default function CoursesMain(props: Props) {
     <Benefits/>
     <Categories categoryList={props.categoryList}/>
     <Feedbacks feedbacks={props.feedbacks}/>
-    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
     <section className={styles.banners}>
       <TitleDiamond title={'Подборки для вас'}/>
       <div className={styles.bannersWrapper}>
-        <Banner className={styles.banner_small} category={props.compilations[0]}/>
-        <Banner className={styles.banner_small} category={props.compilations[1]}/>
-        <Banner className={styles.banner_large} category={props.compilations[2]}/>
+        <Banner className={styles.banner_small} colorGradient={['#37BFAE', '#7D5CFF']} category={props.compilations[0]}/>
+        <Banner className={styles.banner_small} colorGradient={['#AD36C7', '#7D5CFF']} category={props.compilations[1]}/>
+        <Banner className={styles.banner_large} colorGradient={['#9365CA', '#4E5FBF']} category={props.compilations[2]}/>
         <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
       </div>
     </section>
+    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
   </div>
 }

@@ -9,12 +9,13 @@ import styles from './index.module.scss'
 interface Props {
   category: ICategory
   className?: string
+  colorGradient?: string[]
 }
 
 export default function Banner(props: Props) {
 
   return (
-  <div className={classNames(styles.root, props.className)}> 
+  <div className={classNames(styles.root, props.className)} style={{background: `linear-gradient( 241deg, ${props.colorGradient[0]} 30%, ${props.colorGradient[1]} 100%)`}}> 
     <div className={styles.content}>
       <p className={styles.title}>{props.category.name}</p>
       <p className={styles.subTitle}>{props.category.description}</p>
@@ -26,7 +27,7 @@ export default function Banner(props: Props) {
         <p className={styles.tag}>Дизайн</p>
         <p className={styles.tag}>Разработка</p>
       </div> */}
-      <Button className={styles.button}>Выбрать из {props.category.coursesCount} {Formatter.pluralize(+props.category.coursesCount,'курса', 'курса', 'курсов')}</Button>
+      <Button className={styles.button}> <span style={{color: `#${props.category.color}`}}>Выбрать из {props.category.coursesCount} {Formatter.pluralize(+props.category.coursesCount,'курса', 'курса', 'курсов')}</span></Button>
     </div>
     <div className={styles.imageWrapper}>
       {props.category.image &&
@@ -35,7 +36,7 @@ export default function Banner(props: Props) {
       alt={'girl'} 
       width={336} 
       height={336} 
-      style={{width:'100%', height:'100%', objectFit: 'cover'}}
+      style={{width:'100%', height:'100%', objectFit: 'contain'}}
       />
     }
     </div>

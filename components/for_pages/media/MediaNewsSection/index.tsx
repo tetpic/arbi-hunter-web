@@ -16,11 +16,6 @@ interface Props {
 
 
 export default function MediaNewsSection(props: Props) {
-  
-  
-
-
-
   const firstItem = props.news[0]
 
   return (<section className={styles.root}> 
@@ -37,11 +32,9 @@ export default function MediaNewsSection(props: Props) {
       </div>
       <div className={styles.textWrapper}>
         <p className={styles.itemTitle}>{firstItem.name}</p>
-        {/* {firstItem.shortDescription && */}
           <p className={styles.itemDesc}>
             <TextNode html={firstItem.blocks[0].body}/>
           </p> 
-        {/* } */}
       </div>
       <div className={styles.imageWrapper}>
         {firstItem.image &&  

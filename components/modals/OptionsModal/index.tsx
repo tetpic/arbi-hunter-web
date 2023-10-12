@@ -2,13 +2,13 @@ import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
-import ArchiveSvg from 'components/svg/ArchiveSvg'
-import CalendarSvg from 'components/svg/CalendarSvg'
-import DoubleSvg from 'components/svg/DoubleSvg'
-import EditSvg from 'components/svg/EditSvg'
-import ShareSvg from 'components/svg/ShareSvg'
-import StarPlusSvg from 'components/svg/StarPlusSvg'
-import TrashBasketSvg from 'components/svg/TrashBasketSvg'
+// import ArchiveSvg from 'components/svg/ArchiveSvg'
+// import CalendarSvg from 'components/svg/CalendarSvg'
+// import DoubleSvg from 'components/svg/DoubleSvg'
+// import EditSvg from 'components/svg/EditSvg'
+// import ShareSvg from 'components/svg/ShareSvg'
+// import StarPlusSvg from 'components/svg/StarPlusSvg'
+// import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import ClosingTitle from 'components/ui/ClosingTitle'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
@@ -16,17 +16,21 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { ICV } from 'data/interfaces/ICV'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ModalType } from 'types/enums'
+import { colors } from 'styles/variables'
 import styles from './index.module.scss'
+import { MutableRefObject } from 'react'
 
 interface Props {
   onClose: ()=>void
   isBottomSheet?: boolean
+  outerData?: {cv?: ICV, vc?: IVacancy} 
+  ref?: MutableRefObject<HTMLDivElement>
 }
 
 export default function CvVcOptionsModal(props: Props) {
   
   const appContext = useAppContext()
-  const {cv, vc} = appContext.modalArguments as {cv?: ICV, vc?: IVacancy}
+  const {cv, vc} =  props.outerData||appContext.modalArguments as {cv?: ICV, vc?: IVacancy}
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
 
@@ -74,15 +78,24 @@ export default function CvVcOptionsModal(props: Props) {
 
   const body = (
     <div className={styles.itemWrapper}>
-      <p className={styles.item} onClick={archiveHandler}><ArchiveSvg/>{cv?.published||vc?.published?'архивировать':'опубликовать'}</p>
-      <p className={styles.item}><DoubleSvg/> дублировать</p>
-      <p className={styles.item}><ShareSvg/> поделиться</p>
-      <p className={styles.item}><CalendarSvg/> продлить и поднять</p>
-      <p className={styles.item}><StarPlusSvg/> улучшить</p>
-      <p className={styles.item} onClick={editHandler}><EditSvg/> редактировать</p>
-      <p className={styles.item} onClick={removeHandler}><TrashBasketSvg/> удалить</p>
+      <p className={styles.item} onClick={archiveHandler}>{cv?.published||vc?.published?'Архивировать':'Опубликовать'}</p>
+      <p className={styles.item}>Дублировать</p>
+      <p className={styles.item}>Поделиться</p>
+      <p className={styles.item}>Продлить и Поднять</p>
+      <p className={styles.item}>Улучшить</p>
+      <p className={styles.item} onClick={editHandler}>Редактировать</p>
+      <p className={styles.item} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p>
     </div>
   )
+
+  if(props.outerData) {
+    return (
+      <div className={styles.outer} ref={props.ref}>
+        {/* {title} */}
+        {body}
+      </div>
+    )
+  }
 
   if (props.isBottomSheet) {
     return (

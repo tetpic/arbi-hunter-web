@@ -30,6 +30,8 @@
 
 .button {
   @include buttonYellow;
+  background: $white;
+  color: $black;
   margin-right: auto;
   margin-top: auto;
 }
@@ -43,6 +45,8 @@
   max-width: 50%;
   position: relative;
   z-index: 1;
+  height: 332px;
+  max-height: 338px;
   @include mq($SmDesktopWidth, max) {
     width: 100%;
     max-width: unset;

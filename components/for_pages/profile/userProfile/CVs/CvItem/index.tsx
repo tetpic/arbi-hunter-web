@@ -7,7 +7,11 @@ import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
+import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import { useRef } from 'react'
+import CvVcOptionsModal from 'components/modals/OptionsModal'
 import styles from './index.module.scss'
+import classNames from 'classnames'
 
 interface Props {
   cv: ICV
@@ -17,13 +21,16 @@ export default function CVItem({cv}: Props) {
 
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const openModal = () => {
     if(isTabletWidth) {
       appContext.showBottomSheet(ModalType.CvVcOptionsModal, {cv: cv})
     }
     else {
-      appContext.showModal(ModalType.CvVcOptionsModal, {cv: cv})
+      openDropDown(!dropDown)
+      // appContext.showModal(ModalType.CvVcOptionsModal, {cv: cv})
     }
   }
 
@@ -33,6 +40,11 @@ export default function CVItem({cv}: Props) {
       <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots} onClick={openModal}/>
+      {!isTabletWidth &&
+        <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
+          <CvVcOptionsModal  onClose={()=>openDropDown(false)} outerData={{cv: cv}}/>
+        </div>
+      }
     </div>
 
     <Statistics 

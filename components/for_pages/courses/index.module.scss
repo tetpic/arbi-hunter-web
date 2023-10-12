@@ -60,6 +60,7 @@
 .bannersWrapper {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   column-gap: 16px;
   row-gap: 16px;
   margin-top: 32px;
@@ -67,7 +68,7 @@
 
 .banner {
   &_small {
-    width: 49%;
+    width: calc(50% - 8px);
   }
 
   &_large {
