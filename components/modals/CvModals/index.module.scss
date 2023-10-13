@@ -37,9 +37,9 @@
     background-color: $greyLight;
     color: $white;
   }
-  @include exeptLast {
-    margin-bottom: 8px;
-  }
+  // @include exeptLast {
+  //   margin-bottom: 8px;
+  // }
   &_active {
     background-color: $blue;
     color: $white;
@@ -95,4 +95,14 @@
 .categoriesWrapper {
   height: 60vh;
   height: 60dvh;
+  >div {
+    height: 100%;
+  }
+}
+
+.categories {
+  display: flex;
+  column-gap: 8px;
+  row-gap: 8px;
+  flex-wrap: wrap;
 }

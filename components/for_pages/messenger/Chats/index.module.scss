@@ -24,3 +24,8 @@
   }
 }
 
+.chats {
+  height: calc(100% - 100px);
+  overflow: auto;
+}
+

@@ -1,9 +1,9 @@
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
 import {useState } from 'react'
-import styles from './index.module.scss'
 import { IChat } from 'data/interfaces/Common'
 import ChatItem from './ChatItem'
+import styles from './index.module.scss'
 
 interface Props {
   chats: IChat[]
@@ -16,8 +16,6 @@ enum ChatNav {
   HighSalary = 'highSalary',
   Remote = 'remote'
 }
-
-
 
 export default function Chats(props: Props) {
   const [page, pager] = useState<ChatNav>(ChatNav.AllChats)
@@ -33,19 +31,19 @@ export default function Chats(props: Props) {
     }
   })
 
-  
-
   return (
     <div className={styles.root} > 
       <ChatSearchBar/>
       <div className={styles.navWrapper}>
         <ItemNavigation bottomStringClass={styles.navBottom} pClassName={styles.navP} className={styles.nav}  activeItem={page} items={itemsNav} onClick={pager}/>
       </div>
-      {
-        props.chats.map(chat=> {
-          return <ChatItem current={props.currentChat.id === chat.id} chat={chat} onClick={props.onClick}/>
-        })
-      }
+      <div className={styles.chats}>
+        {
+          props.chats.map(chat=> {
+            return <ChatItem current={props.currentChat.id === chat.id} chat={chat} onClick={props.onClick}/>
+          })
+        }
+      </div>
     </div>
   )
 }

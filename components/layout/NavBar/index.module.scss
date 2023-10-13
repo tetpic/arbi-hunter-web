@@ -48,16 +48,15 @@
     margin-bottom: unset !important;
     background-color: unset;
   }
-
- 
-
-  @media (hover: hover ) {
-    &:hover {
-      animation: jello-vertical 0.9s ease 0s 1 normal both running;
-      background-color: $greyLight;
-    }
+  @include hover {
+    animation: jello-vertical 0.9s ease 0s 1 normal both running;
+    background-color: $greyLight;
   }
 }
 
+.active {
+  @include buttonYellow;
+  padding: 8px
+}
 @include animationJello;
 

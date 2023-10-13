@@ -253,5 +253,11 @@ export enum CoursesStepType {
   Question ='question'
 }
 
-
+export enum MessageType  {
+  Text = 'text',
+  Asset = 'asset',
+  Application = 'application',
+  Proposal = 'proposal',
+  Voice = 'voice'
+}
 

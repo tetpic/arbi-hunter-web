@@ -28,7 +28,7 @@ export default function Messages(props: Props) {
         <p className={styles.time}>В сети c {Formatter.formatDateRelative(current.profile.lastActivityAt)}</p>
         <ThreeDotsButton className={styles.dots}/>
       </div>
-      {userContext.currentProfile.profileType === ProfileType.Hirer &&
+      {userContext?.currentProfile?.profileType === ProfileType.Hirer &&
         <div className={styles.invite}>
           <p className={styles.invite__title}>Вас пригласили на вакансию</p>
           <p className={styles.invite__vacancy}>{current.proposal?.cv?.position}</p>

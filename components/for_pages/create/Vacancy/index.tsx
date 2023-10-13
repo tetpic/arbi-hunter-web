@@ -9,7 +9,6 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
-import Specialization from '../utils/Steps/Specialization'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
 import ProgressBar from '../../../ui/ProgressBar'
@@ -54,7 +53,7 @@ export default function Vacancy(props: Props) {
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
 
-  const CVItemsCount = 7
+  const CVItemsCount = 6
 
   const submit = (data: IVacancyCreate) => {
     
@@ -144,17 +143,17 @@ export default function Vacancy(props: Props) {
     switch (progress) {
       case 1:
         return [<VacancyName/>, VacancyNavigation.Name] 
+      // case 2: 
+      //   return [<Specialization/>, VacancyNavigation.Specialization]
       case 2: 
-        return [<Specialization/>, VacancyNavigation.Specialization]
-      case 3: 
         return [<WorkPlace/>, VacancyNavigation.WorkPlace]
-      case 4:
+      case 3:
         return [<VacancyExperience/>, VacancyNavigation.Experience]
-      case 5: 
+      case 4: 
         return [<Compensation/>, VacancyNavigation.Salary]
-      case 6: 
+      case 5: 
         return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
-      case 7:
+      case 6:
         return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true}}/>, VacancyNavigation.Skills]
     }
   }

@@ -11,7 +11,6 @@ import styles from './index.module.scss'
 
 const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 
-
 export default function Communities() {
   const communityContext = useCommunityContext()
   const userContext = useUserContext()

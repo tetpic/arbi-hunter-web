@@ -5,6 +5,7 @@ import { CookiesType } from 'types/enums'
 
 interface Props {
   chats: IChat[]
+  // contacts: any
 }
 
 export const getServerSideProps = (async (context: {/* query: Query, */ req: { cookies: { [x: string]: any } } }) => {
@@ -12,7 +13,8 @@ export const getServerSideProps = (async (context: {/* query: Query, */ req: { c
   const token = context.req.cookies[CookiesType.accessToken]
   if(profileType && token) {
     const chats = await ChatRepository.getChatList({}, profileType, token)
-    return {props: {chats: chats.data}}
+    // const contactList = await ChatRepository.getContactList(profileType, token)
+    return {props: {chats: chats.data, /* contacts: contactList */}}
   }
   else {
     return {redirect: {destination: '/login', permanent: false} }
@@ -24,6 +26,7 @@ export const getServerSideProps = (async (context: {/* query: Query, */ req: { c
 // }, [])
 
 export default function MessengerPage(props: Props) {
+  
   
 
   return <Messenger chats={props.chats}/>
