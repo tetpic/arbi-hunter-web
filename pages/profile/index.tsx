@@ -1,32 +1,33 @@
 import Profile from 'components/for_pages/profile'
-import { useUserContext } from 'context/user_state'
-import Head from 'next/head'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import ContentLayout from 'components/layout/ContentLayout'
+import { CookiesType } from 'types/enums'
 
-interface Props {
+interface Query {
+  page: string
 }
 
-export default function ProfilePage() {
-  const {currentProfile} = useUserContext()
-  const router = useRouter()
+interface Props extends Query {
 
-  useEffect(()=>{
-    if(!currentProfile) {
-      router.replace('/')
-    }
-  }, [])
+}
 
-  const searchParams = useSearchParams()
+export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
+  const {page} = context.query
+  const profileType = context.req.cookies[CookiesType.profileType]
+  const token = context.req.cookies[CookiesType.accessToken]
+  if(profileType && token) {
+    return {props: {page}}
+  }
+  else {
+    return {redirect: {destination: '/login', permanent: false} }
+  }
+}) 
 
-  return (<>
-    <Head>
-      <title>{'Arbi Hunter|Личный кабинет'}</title>
-      <meta name='description' content={'Личный кабинет'}/>
-    </Head>
-    {currentProfile &&
-      <Profile page={searchParams.get('page')}/>
-    }
-  </>
+export default function ProfilePage(props: Props) {
+
+  return (
+    <ContentLayout title='Личный кабинет'>
+      <Profile page={props.page}/>
+    </ContentLayout>
+ 
   )
 }

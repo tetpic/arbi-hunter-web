@@ -1,4 +1,5 @@
 import Login from 'components/for_pages/login'
+import ContentLayout from 'components/layout/ContentLayout'
 
 interface Props {
   isMobile: boolean
@@ -7,6 +8,8 @@ interface Props {
 export default function LoginPage(props: Props) { 
 
   return ( 
-    <Login/>
+    <ContentLayout>
+      <Login/>
+    </ContentLayout>
   )
 }

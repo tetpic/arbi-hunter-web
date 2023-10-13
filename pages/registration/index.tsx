@@ -1,23 +1,28 @@
 import Registration from 'components/for_pages/registration'
-import { useUserContext } from 'context/user_state'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import ContentLayout from 'components/layout/ContentLayout'
+import { CookiesType } from 'types/enums'
 
 interface Props {
 }
 
+export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
+  const profileType = context.req.cookies[CookiesType.profileType]
+  const token = context.req.cookies[CookiesType.accessToken]
+  if(profileType && token) {
+    return {
+      redirect: {destination: '/', permanent: false}   
+    }
+  }
+  else {
+    return {props: {}}
+  }
+}) 
+
 export default function RegistrationPage(props: Props) {
 
-  const userContext = useUserContext()
-  const router = useRouter()
-
-  useEffect(()=>{
-    if(userContext.isLogged && userContext.currentProfile) {
-      router.replace('/')
-    }
-  }, [])
-
   return ( 
-    <Registration/>
+    <ContentLayout title={'Регистрация'}>
+      <Registration/>
+    </ContentLayout>
   )
 }

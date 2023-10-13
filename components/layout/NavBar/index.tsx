@@ -15,11 +15,11 @@ export default function NavBar(props: Props) {
       <HomeSvg className={styles.linkSvg}/>
     </Link>
 
-    <Link aria-label='to chats'  className={styles.link} href={'/chats'}>
+    <Link aria-label='to chats'  className={styles.link} href={'/messenger'}>
       <MessageSvg className={styles.linkSvg}/>
     </Link>
 
-    <Link aria-label='to nitofications'  className={styles.link} href={'/notifications'}>
+    <Link aria-label='to notifications'  className={styles.link} href={'/notifications'}>
       <NotificationSvg className={styles.linkSvg}/>
     </Link>
 

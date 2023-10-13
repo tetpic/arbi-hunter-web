@@ -1,7 +1,7 @@
 import Cv from 'components/for_pages/create/Cv'
+import ContentLayout from 'components/layout/ContentLayout'
 import { ICV } from 'data/interfaces/ICV'
 import CvRepository from 'data/repositories/CvRepository'
-import Head from 'next/head'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -33,12 +33,9 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function CvCreate(props: Props) {
   
   return (
-    <>
-    <Head>
-      <title>{'Arbi Hunter|Редактирование Резюме'}</title>
-      <meta name='description' content={'Редактирование Резюме'}/>
-    </Head>
-    <Cv id={Number(props.id) as number} cv={props.cv}/>
-    </>
+    <ContentLayout title={'Редактирование Резюме'}>
+      <Cv id={Number(props.id) as number} cv={props.cv}/>
+    </ContentLayout>
+
   )
 }

@@ -1,0 +1,71 @@
+@import 'styles/index';
+
+.root {
+  border-top: 2px $grey solid;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  row-gap: 8px;
+  grid-template-areas: "i n t t"
+  "i m m c";
+  align-items: start;
+  justify-items: start;
+  padding: 16px;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    background-color: $grey;
+  }
+
+
+  .lastMessage {
+    grid-area: m;
+    @include lineClamp(2);
+    color: $greyLight;
+    font-size: $smallText;
+    font-weight: $medium;
+    width: 100%;
+  }
+
+
+  .name {
+    grid-area: n;
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+
+  .userPic {
+    grid-area: i;
+  }
+
+  .time {
+    grid-area: t;
+    font-size: $smallText;
+    font-weight: $regular;
+    color: $greyLight;
+  }
+
+  .counter {
+    grid-area: c;
+    border-radius: 50%;
+    background: $gradientAlt;
+    font-weight: $extrabold;
+    font-size: 10px;
+    color: $white;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    margin-left: 20px;
+
+
+  }
+}
+
+.active {
+  background-color: $grey;
+}

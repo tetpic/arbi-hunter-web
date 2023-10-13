@@ -7,9 +7,17 @@ interface Props<T> {
   items: {name: string, type: T}[]
   onClick: (n: T) => void
   className?: string
+  pClassName?: string 
   bottomStringClass?: string
 }
 
+/**
+ * @activeItem T
+ * @items {name: string, type: T}
+ * @onClick (n: T) => void
+ * @className : string
+ * @bottomStringClass : string
+ */
 export default function ItemNavigation<T extends string>(props: Props<T>) {
 
   const [transition, setTransition] = useState<number>(0)
@@ -31,7 +39,7 @@ export default function ItemNavigation<T extends string>(props: Props<T>) {
         .map((el, index)=> {
           return (
           <p 
-          className={classNames(styles.item, props.activeItem === el.type&&styles.item_active)} 
+          className={classNames(styles.item, props.pClassName, props.activeItem === el.type&&styles.item_active)} 
           ref={(r)=> itemsRef.current.set(el.type, r)} 
           onClick={()=> props.onClick(el.type)}
           key={index} 

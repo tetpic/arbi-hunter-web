@@ -1,0 +1,78 @@
+@import 'styles/index';
+
+.root {
+  overflow: hidden;
+  // display: flex;
+  // column-gap: 16px;
+  // align-items: center;
+  // padding: 16px 14px;
+
+}
+
+.rootWrapper {
+  display: flex;
+  column-gap: 16px;
+  align-items: center;
+  padding: 16px 14px;
+  min-width: 100%;
+}
+
+
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background-color: $grey;
+  border-radius: 10px;
+  padding: 4px 8px ;
+  column-gap: 8px;
+  height: 40px;  
+  width: -webkit-fill-available;
+  width: fill-available;
+  width: stretch;
+  @include transitionDefault;
+
+  &_active {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+    path{
+      fill: $greyLight;
+    }
+  }
+
+  input {
+    font-weight: $medium;
+    font-size: $smallText;
+    color: white;
+    width: 100%;
+
+    &:focus {
+      // width: 100%;
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+}
+
+.button {
+  @include buttonGray;
+  padding: 8px;
+  width: 40px;
+  flex-shrink: 0
+  
+}
+
+.filterButton {
+  @include buttonYellow;
+  padding: 8px;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+

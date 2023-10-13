@@ -23,9 +23,7 @@ export default function Layout(props: Props) {
       {userContext.isLogged &&
         <NavBar/>
       }
-      <div className='contentWrapper'>
-        {props.children}
-      </div>
+      {props.children}
     </StickyContainer>
   </div>
 

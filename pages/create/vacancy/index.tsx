@@ -1,7 +1,7 @@
 import Vacancy from 'components/for_pages/create/Vacancy'
+import ContentLayout from 'components/layout/ContentLayout'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
-import Head from 'next/head'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -38,12 +38,10 @@ interface Props {
 }
 export default function VacancyCreate(props: Props) {
 
-    return  (<>
-      <Head>
-        <title>{'Arbi Hunter|Редактирование Вакансии'}</title>
-        <meta name='description' content={'Редактирование Вакансии'}/>
-      </Head>
-        <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
-    </>)
+  return  (
+    <ContentLayout title={'Редактирование Вакансии'}>
+      <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
+    </ContentLayout>
+  )
 
 }

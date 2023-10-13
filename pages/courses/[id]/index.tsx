@@ -2,7 +2,7 @@ import CurrentCourse, { CurrentCoursesNav } from 'components/for_pages/courses/C
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { CookiesType} from 'types/enums'
 import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
-import Head from 'next/head'
+import ContentLayout from 'components/layout/ContentLayout'
 
 interface Query {
   id: string
@@ -39,13 +39,9 @@ interface Props {
 
 export default function Course(props: Props) {
   return (
-    <>
-      <Head>
-        <title>{'Arbi Hunter|Курсы|' + props.course?.name?.toString()}</title>
-        <meta name='description' content={props?.course?.fullDescription?.toString()}/>
-      </Head>
+    <ContentLayout title={`Курсы|${props.course.name}`}>
       <CurrentCourse course={props.course} page={props.page} modules={props.modules} id={Number(props.id)} blocks={props.blocks}/>
-    </>
+    </ContentLayout>
   )
 }
 

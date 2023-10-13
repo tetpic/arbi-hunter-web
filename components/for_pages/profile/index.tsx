@@ -36,7 +36,7 @@ export enum ProfilePages {
 
 
 export default function Profile(props: Props) {
-
+  
   const router = useRouter()
   const {currentProfile} = useUserContext()
   const {isTabletWidth} = useResize()

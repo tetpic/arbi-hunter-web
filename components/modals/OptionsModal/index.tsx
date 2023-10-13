@@ -101,7 +101,7 @@ export default function CvVcOptionsModal(props: Props) {
     return (
       <BottomSheetLayout>
         <BottomSheetBody>
-          {title}
+          {/* {title} */}
           {body}
         </BottomSheetBody>
       </BottomSheetLayout>

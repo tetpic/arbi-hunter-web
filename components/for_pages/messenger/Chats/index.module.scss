@@ -1,0 +1,26 @@
+@import 'styles/index';
+
+.root {
+  width: 30%;
+  border-right: 2px $grey solid;
+  overflow: auto;
+}
+
+.navWrapper {
+  padding-inline: 16px;
+
+  .nav {
+    margin-top: 0px;
+  }
+
+  .navP {
+    font-size: $mediumText !important;
+    font-weight: $medium !important;
+  }
+
+  .navBottom {
+    margin-top: 8px;
+    background-color: transparent !important;
+  }
+}
+

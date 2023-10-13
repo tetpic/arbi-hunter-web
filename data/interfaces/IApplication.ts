@@ -4,6 +4,7 @@ import { ICV } from './ICV'
 import { INotification } from './INotification'
 import { IUserProfile } from './IUser'
 import { IVacancy } from './IVacancy'
+import { IProposal } from './IProposal'
 
 export interface IApplication extends TimeStamp{
   id: number,
@@ -16,6 +17,7 @@ export interface IApplication extends TimeStamp{
   profile: IUserProfile,
   cv: ICV,
   proposals: [],
+  proposal?: IProposal
   chat: IChat[],
   notification: INotification
   type?: PatternTypes

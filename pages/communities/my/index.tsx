@@ -1,7 +1,7 @@
 import CommunityPage from 'components/for_pages/communities/Community'
+import ContentLayout from 'components/layout/ContentLayout'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
-import Head from 'next/head'
 import { CookiesType } from 'types/enums'
 
 interface Props {
@@ -27,13 +27,9 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 
 export default function MyCommunity(props: Props) {
 
-  return (<>
-    <Head>
-        <title>{'Arbi Hunter|' + props.community?.name?.toString()}</title>
-        <meta name='description' content={props?.community?.name?.toString()}/>
-    </Head>
-    <div> 
+  return (
+    <ContentLayout title={props.community.name.toString()}>
       <CommunityPage community={props.community} id={props.community.id}/>
-    </div>
-  </>)
+    </ContentLayout>
+  )
 }

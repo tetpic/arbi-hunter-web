@@ -1,10 +1,10 @@
 import MediaPage from 'components/for_pages/media/MediaPage'
+import ContentLayout from 'components/layout/ContentLayout'
 import { ICategory } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import ICommunity from 'data/interfaces/ICommunity'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
-import Head from 'next/head'
 import { CategoryType } from 'types/enums'
 
 interface Props {
@@ -25,12 +25,9 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 
 export default function Media(props: Props) {
 
-  return (<>
-  <Head>
-    <title>{'Arbi Hunter|Медиа'}</title>
-    <meta name='description' content={'Медиа'}/>
-  </Head>
-  <MediaPage categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
-  </>
+  return (
+    <ContentLayout title={'Медиа'}>
+      <MediaPage categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
+    </ContentLayout>
   )
 }

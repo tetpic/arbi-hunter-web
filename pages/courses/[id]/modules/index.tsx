@@ -1,7 +1,7 @@
 import ModulesPage from 'components/for_pages/courses/ModulesPage'
+import ContentLayout from 'components/layout/ContentLayout'
 import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import Head from 'next/head'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -43,11 +43,9 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function CourseModulesPage(props: Props) {
  
 
-  return (<>
-    <Head>
-      <title>{'Arbi Hunter|Курсы|'+props.course?.name.toString()}</title>
-      <meta name='description' content={props.course?.fullDescription.toString()}/>
-    </Head>
-    <ModulesPage course={props.course} modules={props.modules} initialStep={props.initialStep} id={props.id} blocks={props.blocks} initialBlock={props.initialBlock} module={props.module}/>
-  </>)
+  return (
+    <ContentLayout title={`|Прохождение курса|${+props.course?.name.toString()}`}>
+      <ModulesPage course={props.course} modules={props.modules} initialStep={props.initialStep} id={props.id} blocks={props.blocks} initialBlock={props.initialBlock} module={props.module}/>
+    </ContentLayout>
+ )
 }

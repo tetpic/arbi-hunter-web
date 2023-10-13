@@ -1,4 +1,6 @@
 import { CategoryType, Languages } from 'types/enums'
+import { IUserProfile } from './IUser'
+import { IApplication } from './IApplication'
 
 export interface TimeStamp {
   createdAt?: string,
@@ -82,9 +84,13 @@ export interface IChat extends  TimeStamp {
   name: string|null,
   isGroup: boolean,
   profileId: number,
+  profile: IUserProfile,
   participantId: number,
+  participant: IUserProfile,
   applicationId: number,
   proposalId: number|null,
+  proposal: IApplication
+  last: IApplication
   lastMessageAt: string,
 }
 
