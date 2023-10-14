@@ -3,7 +3,6 @@ import { ProposalModalPager } from 'components/modals/ProposalModal'
 import DotSvg from 'components/svg/DotSvg'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
-import { IChat } from 'data/interfaces/Common'
 import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { useRouter } from 'next/router'
@@ -14,6 +13,7 @@ import Button from '../Button'
 import FavoritesButton from '../FavoritesButton'
 import UserPic from '../UserPic'
 import styles from './index.module.scss'
+import IChat from 'data/interfaces/IChat'
 
 interface ItemProps {
   cv: ICV

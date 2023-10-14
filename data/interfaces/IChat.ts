@@ -1,4 +1,8 @@
 import { MessageType } from 'types/enums'
+import { IUser, IUserProfile } from './IUser'
+import { IPagination, Nullable } from 'types/types'
+import { IPaginationRequest, TimeStamp } from './Common'
+import { IProposal } from './IProposal'
 
 export interface MessageFilterOptions {
   vacanciesId?: number[];
@@ -11,14 +15,77 @@ export interface MessageFilterOptions {
   limit?: number;
 }
 
-export interface IMessage {
-  profileId: number,
-  chatId: number,
-  replyToId: number,
-  message: string,
-  sid: string,
-  imageIds: number[],
-  voiceId: number[],
-  type: MessageType
+export interface IMessage extends TimeStamp {
+  id?: number|string
+  profileId?: number, //required
+  profile?: IUserProfile,
+  chatId?: number, // required
+  replyToId?: number,
+  message?: string,
+  sid?: string, //required
+  imageIds?: number[],
+  voiceId?: number[],
+  type?: MessageType
+  pinned?: boolean
+  proposal?: IProposal
+  forwarded?: boolean|null
+  forwardedId?: number|null
+  userId?: number|null
 }
+
+
+export default interface IChat extends TimeStamp {
+  id: number
+  type: string
+  name: string
+  published: boolean
+  notifications: boolean
+  pinned: boolean
+  profileId: number
+  participantId: number
+  lastMessageAt: string
+  profile: IUserProfile
+  profiles: IUserProfile[]
+  participant: any // Participant
+  application: any // ApplicationModel
+  lastMessage: string
+  lastMessageType: string
+  totalUnread: number
+  last: IMessage
+  proposal: IProposal
+  isGroup: boolean;
+  users: IUser[]
+  firstReplyAt: string
+  messages?: IPagination<IMessage> //?
+}
+
+export interface IChatListRequest extends IPaginationRequest{
+  search?: Nullable<string>,
+  // receivingPointId?: Nullable<number>,
+  // dealId?: Nullable<number>,
+  userId?: Nullable<number>,
+}
+
+
+
+
+// export default interface IChatMessage {
+//   sid?: string | null
+//   id?: number
+//   type: ChatMessageType
+//   message?: string
+//   chatId?: number
+//   replyTo?: IChatMessage
+//   forwarded?: IChatMessage
+//   pinned?: boolean
+//   replyToId?: number
+//   forwardedId: number
+//   userId?: number | string
+//   userStates?: IChatMessageUser[]
+//   assets?: IFile[]
+//   createdAt: string
+//   dealId?: number
+//   saleRequestId?: number
+//   dealOfferId?: number
+// }
 

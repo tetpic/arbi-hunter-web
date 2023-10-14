@@ -1,11 +1,11 @@
-import { IChat } from 'data/interfaces/Common'
-import { IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
+import { AxiosRequestConfig } from 'axios'
+import IChat, { IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class ChatRepository {
-  static async getChatList(option: MessageFilterOptions, profile: ProfileType, token?: string): Promise<IPagination<IChat>|null> {
+  static async getChatList(option: MessageFilterOptions, profile: ProfileType, token?: string, config?: AxiosRequestConfig): Promise<IPagination<IChat>|null> {
     const res = await request({
       method: 'get',
       url: '/api/chat/dialog?sort=lastMessageAt,DESC' + 
@@ -21,7 +21,8 @@ export default class ChatRepository {
       (option.inactive  ? `&inactive=${option!.inactive}` : ''),
 
       profile,
-      token
+      token,
+      config
 
     })
     if(res.err) {
@@ -178,8 +179,19 @@ export default class ChatRepository {
     return res
   }
 
-
-
-
-  
+  static async getMessagesByChatId(profile: ProfileType, chatId: number,  lastCreatedAt: string | null = null, limit: number = 30): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/chat/${chatId}/messages`,
+      data: {
+        lastCreatedAt,
+        limit
+      },
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

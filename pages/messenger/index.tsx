@@ -1,5 +1,7 @@
 import Messenger from 'components/for_pages/messenger'
-import { IChat } from 'data/interfaces/Common'
+import { ChatSocketWrapper } from 'context/chat_socket_state'
+import { ChatWrapper } from 'context/chat_state'
+import IChat from 'data/interfaces/IChat'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { CookiesType } from 'types/enums'
 
@@ -21,13 +23,11 @@ export const getServerSideProps = (async (context: {/* query: Query, */ req: { c
   }
 }) 
 
-// useEffect(()=>{
-//   ChatRepository.getChatList({}, ProfileType.Hirer)
-// }, [])
 
 export default function MessengerPage(props: Props) {
-  
-  
-
-  return <Messenger chats={props.chats}/>
+  return <ChatSocketWrapper>
+    <ChatWrapper>
+      <Messenger chats={props.chats}/>
+    </ChatWrapper>
+  </ChatSocketWrapper>
 }

@@ -4,6 +4,7 @@ import {FieldConfig} from 'formik'
 import {SnackbarType} from 'types/enums'
 
 
+export type Nullable<T> = T | null;
 
 export class RequestError extends Error{
   message: string

@@ -1,6 +1,4 @@
 import { CategoryType, Languages } from 'types/enums'
-import { IUserProfile } from './IUser'
-import { IApplication } from './IApplication'
 
 export interface TimeStamp {
   createdAt?: string,
@@ -78,21 +76,21 @@ export interface IVideo extends TimeStamp {
   userId: number|null
 }
 
-export interface IChat extends  TimeStamp { 
-  id: number,
-  type: 'chat',
-  name: string|null,
-  isGroup: boolean,
-  profileId: number,
-  profile: IUserProfile,
-  participantId: number,
-  participant: IUserProfile,
-  applicationId: number,
-  proposalId: number|null,
-  proposal: IApplication
-  last: IApplication
-  lastMessageAt: string,
-}
+// export interface IChat extends  TimeStamp { 
+//   id: number,
+//   type: 'chat',
+//   name: string|null,
+//   isGroup: boolean,
+//   profileId: number,
+//   profile: IUserProfile,
+//   participantId: number,
+//   participant: IUserProfile,
+//   applicationId: number,
+//   proposalId: number|null,
+//   proposal: IApplication
+//   last: IApplication
+//   lastMessageAt: string,
+// }
 
 export interface ISpecializationCategory extends TimeStamp {
   id: number, 
@@ -203,4 +201,9 @@ export interface ICreateNews {
   image: {id: number},
   imageIds: number[],
   blocks: IArticleBlock[]
+}
+
+export interface IPaginationRequest {
+  page?: number;
+  limit?: number;
 }

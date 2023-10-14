@@ -1,0 +1,19 @@
+@import 'styles/index';
+
+  .leftMessage {
+    align-self: flex-start;
+    max-width: 50%;
+    background-color: $grey;
+    border-radius: 24px;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+  }
+
+  .rightMessage {
+    align-self: flex-end;
+    max-width: 50%;
+    background-color: #17233F;
+    padding: 8px 16px;
+    border-radius: 24px;
+    margin-bottom: 16px;
+  }

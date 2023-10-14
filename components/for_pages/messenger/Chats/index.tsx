@@ -1,14 +1,15 @@
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
 import {useState } from 'react'
-import { IChat } from 'data/interfaces/Common'
 import ChatItem from './ChatItem'
 import styles from './index.module.scss'
+import IChat from 'data/interfaces/IChat'
+import { useChatContext } from 'context/chat_state'
 
 interface Props {
   chats: IChat[]
-  onClick: (c: IChat) => void
-  currentChat: IChat
+  chatId: number | null
+  onSelect: (chat: IChat) => void
 }
 
 enum ChatNav {
@@ -19,6 +20,7 @@ enum ChatNav {
 
 export default function Chats(props: Props) {
   const [page, pager] = useState<ChatNav>(ChatNav.AllChats)
+  const chatContext = useChatContext()
 
   const itemsNav = Object.values(ChatNav).map(el=> {
     switch (el) {
@@ -31,7 +33,7 @@ export default function Chats(props: Props) {
     }
   })
 
-  return (
+  return (<>
     <div className={styles.root} > 
       <ChatSearchBar/>
       <div className={styles.navWrapper}>
@@ -39,11 +41,14 @@ export default function Chats(props: Props) {
       </div>
       <div className={styles.chats}>
         {
-          props.chats.map(chat=> {
-            return <ChatItem current={props.currentChat.id === chat.id} chat={chat} onClick={props.onClick}/>
+          props.chats.map((chat)=> {
+            return (
+              <ChatItem chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
+            )
           })
         }
       </div>
     </div>
-  )
+    
+  </>)
 }
