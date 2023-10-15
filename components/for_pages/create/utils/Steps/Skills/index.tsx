@@ -7,7 +7,7 @@ import { CoursesInfo, ISource } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
-import DetailsField from '../../DetailsField'
+import { DetailsFieldProps } from '../../DetailsField'
 import languages from '@cospired/i18n-iso-languages'
 import styles from './index.module.scss'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
@@ -52,6 +52,7 @@ export default function Skills(props: Props) {
       setDetailsCoursesInfo(f=> [...f, {...fl}])
       setCoursesDetails(false)
       setActiveDetails(initialCoursesData)
+      appContext.hideModal()
     }
   }
 
@@ -68,8 +69,6 @@ export default function Skills(props: Props) {
       })
     }
   }, [showCoursesDetails])
-
-
 
   useEffect(()=>{    
     if(!props.fieldToHide?.courses) {
@@ -104,6 +103,40 @@ export default function Skills(props: Props) {
     const filteredSkills = [...helperState.skills.values()].filter(e=> e.id !== s.id)
     cvContext.setHelpObjects({...helperState, skills: new Map(filteredSkills.map(el=> [el.id, el]))})
   }
+
+  const detailsFieldProps: DetailsFieldProps<CoursesInfo> = {
+    title:'Повышение квалификации и курсы',
+    set: activeDetails,
+    onSave: closeModalHandler,
+    onClose: ()=> {
+      setCoursesDetails(false)
+      appContext.hideModal()
+    },
+    inputsSettings: [
+      {label: 'Название учреждения:', name: 'setLocation', value: 'location'},
+      {label: 'Название курсов:', name: 'setName', value: 'name'}
+    ],
+    datePickerSettings:{
+        on: true,
+        formatter: {year: 'numeric'},
+        dates: [
+          {
+            format: 'yyyy',
+            pickerType: 'showYearPicker',
+            yearDropdown: true,
+            inputLabel: 'Год окончания:',
+            dateName: 'setYear',
+            dateValue: 'date'
+          }
+        ]
+      }
+  }
+
+  useEffect(()=>{
+    if(showCoursesDetails) {
+      appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
+    }
+  }, [showCoursesDetails])
 
   return ( <div className={styles.root}>
     <AddButton 
@@ -184,35 +217,5 @@ export default function Skills(props: Props) {
     {!props.fieldToHide?.portfolio  && 
       <AddButton className={styles.addButton} onClick={()=> {}} text={'Добавить порфтолио'} />
     }
-
-    {showCoursesDetails &&
-      <DetailsField
-      title='Повышение квалификации и курсы'
-      set={activeDetails}
-      onSave={closeModalHandler}
-      onClose={()=> {
-        setCoursesDetails(false)
-      }}
-      inputsSettings={[
-        {label: 'Название учреждения:', name: 'setLocation', value: 'location'},
-        {label: 'Название курсов:', name: 'setName', value: 'name'}
-      ]}
-      datePickerSettings={{
-        on: true,
-        formatter: {year: 'numeric'},
-        dates: [
-          {
-            format: 'yyyy',
-            pickerType: 'showYearPicker',
-            yearDropdown: true,
-            inputLabel: 'Год окончания:',
-            dateName: 'setYear',
-            dateValue: 'date'
-          }
-        ]
-      }}
-      />    
-    }
-  
   </div>)
 }

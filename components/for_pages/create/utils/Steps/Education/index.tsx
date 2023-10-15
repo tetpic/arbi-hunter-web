@@ -6,15 +6,20 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { EducationInfo } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
-import { EducationTypes } from 'types/enums'
-import DetailsField from '../../DetailsField'
+import { EducationTypes, ModalType } from 'types/enums'
+import { DetailsFieldProps } from '../../DetailsField'
 import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import { useAppContext } from 'context/state'
 
 interface Props {
   name: string
 }
 
 export default function Education(props: Props) {
+
+  const {isPhoneWidth} = useResize()
+  const appContext = useAppContext()
   const initialData:EducationInfo = {
     toDate: '', 
     fromDate: '', 
@@ -23,8 +28,6 @@ export default function Education(props: Props) {
   }
 
   const creationContext = useCreateVcCvContext()
-
-
 
   const [showDetails, setDetails] = useState<boolean>(false)
   const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv?.educationInfo||[])
@@ -41,6 +44,7 @@ export default function Education(props: Props) {
       setDetailsInfo(f=> [...f, {...fl}])
       setDetails(false)
       setActiveDetails(initialData)
+      appContext.hideModal()
     }
   }
 
@@ -61,6 +65,7 @@ export default function Education(props: Props) {
   const closeModalHandler = () => {
     setDetails(false)
     setActiveDetails(initialData)
+    appContext.hideModal()
   }
 
   const removeItem = (e: EducationInfo) => {
@@ -70,6 +75,45 @@ export default function Education(props: Props) {
   useEffect(()=>{
     setFieldValue(props.name, detailsInfo)
   }, [detailsInfo])
+
+  const detailProps: DetailsFieldProps<EducationInfo> = {
+    title: 'Место учёбы',
+    onSave: saveModalHandler,
+    onClose: closeModalHandler,
+    set: activeDetails,
+    inputsSettings: [
+      {value: 'institution', name: 'setInstitution', label: 'Заведение: '},
+      {value: 'speciality', name: 'setSpeciality', label: 'Специализация: '}
+    ],
+    datePickerSettings: {
+      on: true,
+      formatter: {year: 'numeric'},
+      dates: [
+        {
+          format: 'yyyy', 
+          pickerType: 'showYearPicker',
+          yearDropdown: true,
+          inputLabel: 'Начало обучения',
+          dateName: 'set_fromDate',
+          dateValue: 'fromDate',
+        },
+        {
+          format: 'yyyy',
+          pickerType: 'showYearPicker',
+          yearDropdown: true,
+          inputLabel:'Окончание обучения',
+          dateName: 'set_toDate',
+          dateValue: 'toDate',
+        }
+      ]
+    }
+  }
+
+  useEffect(()=>{
+    if(showDetails) {
+      appContext.showModal(ModalType.DetailsModal, detailProps)
+    }
+  }, [showDetails])
 
   return (<>
   <RadioListField 
@@ -104,40 +148,8 @@ export default function Education(props: Props) {
 
   <AddButton onClick={()=> setDetails(true)} text={'Добавить место учебы'}/>
 
-  {showDetails && 
-    <DetailsField 
-    title={'Место учёбы'}
-    onSave={saveModalHandler} 
-    onClose={closeModalHandler}
-    set={activeDetails}
-    inputsSettings={[
-      {value: 'institution', name: 'setInstitution', label: 'Заведение: '},
-      {value: 'speciality', name: 'setSpeciality', label: 'Специализация: '}
-    ]}
-    datePickerSettings={{
-      on: true,
-      formatter: {year: 'numeric'},
-      dates: [
-        {
-          format: 'yyyy', 
-          pickerType: 'showYearPicker',
-          yearDropdown: true,
-          inputLabel: 'Начало обучения',
-          dateName: 'set_fromDate',
-          dateValue: 'fromDate',
-        },
-        {
-          format: 'yyyy',
-          pickerType: 'showYearPicker',
-          yearDropdown: true,
-          inputLabel:'Окончание обучения',
-          dateName: 'set_toDate',
-          dateValue: 'toDate',
-        }
-      ]
-    }}
-      
-    />
-  }
+  {/* {showDetails && isPhoneWidth &&
+    <DetailsField  {...detailProps}/>
+  } */}
   </>)
 }

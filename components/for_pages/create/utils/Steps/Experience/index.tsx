@@ -7,14 +7,17 @@ import { ExperienceInfo } from 'data/interfaces/Common'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
-import DetailsField from '../../DetailsField'
+import { DetailsFieldProps } from '../../DetailsField'
 import styles from './index.module.scss'
+import { useAppContext } from 'context/state'
+import { ModalType } from 'types/enums'
 
 interface Props {
   name: string
 }
 
 export default function Experience(props: Props) {
+  const appContext = useAppContext()
 
   const initialData: ExperienceInfo = {
     company: '',
@@ -43,6 +46,7 @@ export default function Experience(props: Props) {
       setDetailsInfo(f=> [...f, {...fl}])
       setDetails(false)
       setActiveDetails(initialData)
+      appContext.hideModal()
     }
   }
 
@@ -67,6 +71,49 @@ export default function Experience(props: Props) {
       values.map(el=> {
         setFieldTouched(el, true)
       })
+    }
+  }, [showDetails])
+
+  const detailsFieldProps: DetailsFieldProps<ExperienceInfo> = {
+    title:'Место работы',
+    set: activeDetails,
+    onSave: closeModalHandler,
+    onClose:()=> {
+      setDetails(false)
+      appContext.hideModal()
+    },
+    inputsSettings:[
+      {label: 'Организация:', name: 'setCompany', value: 'company'},
+      {label: 'Должность:', name: 'setProfile', value: 'position'},
+      {label: 'Обязанности:', name: 'setDescription', value: 'description', type:'textarea'}
+    ],
+    datePickerSettings: {
+      on: true,
+      formatter: {month: '2-digit', year: 'numeric'},
+      dates: [
+        {
+          format: 'MM.yyyy',
+          pickerType: 'showMonthYearPicker',
+          monthDropdown: true,
+          inputLabel: 'Начало работы:',
+          dateName: 'set_fromDate',
+          dateValue: 'fromDate'
+        },
+        {
+          format: 'MM.yyyy',
+          pickerType: 'showMonthYearPicker',
+          monthDropdown: true,
+          inputLabel: 'Окончание работы:',
+          dateName: 'set_toDate',
+          dateValue: 'toDate'
+        }
+      ]
+    }
+  }
+
+  useEffect(()=>{
+    if(showDetails) {
+      appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
     }
   }, [showDetails])
 
@@ -107,42 +154,6 @@ export default function Experience(props: Props) {
 
       {values.workExperiencePresense === 'present' &&
         <AddButton onClick={()=> setDetails(true)} text='Добавить место работы'/>
-      }
-
-      {showDetails && 
-      <DetailsField
-        title='Место работы'
-        set={activeDetails}
-        onSave={closeModalHandler} 
-        onClose={()=> setDetails(false)}
-        inputsSettings={[
-          {label: 'Организация:', name: 'setCompany', value: 'company'},
-          {label: 'Должность:', name: 'setProfile', value: 'position'},
-          {label: 'Обязанности:', name: 'setDescription', value: 'description', type:'textarea'}
-        ]}
-        datePickerSettings={{
-          on: true,
-          formatter: {month: '2-digit', year: 'numeric'},
-          dates: [
-            {
-              format: 'MM.yyyy',
-              pickerType: 'showMonthYearPicker',
-              monthDropdown: true,
-              inputLabel: 'Начало работы:',
-              dateName: 'set_fromDate',
-              dateValue: 'fromDate'
-            },
-            {
-              format: 'MM.yyyy',
-              pickerType: 'showMonthYearPicker',
-              monthDropdown: true,
-              inputLabel: 'Окончание работы:',
-              dateName: 'set_toDate',
-              dateValue: 'toDate'
-            }
-          ]
-        }}
-      />
       }
     </div>
   )

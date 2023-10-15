@@ -1,23 +1,25 @@
 @import 'styles/index';
 
 .root {
-  position: absolute;
+  // position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 105%;
-  background: $backgroundBlack;
+  // background: $backgroundBlack;
   z-index: 4;
-  height: calc(100vh - 122px);
-  height: calc(100dvh - 122px);
+  // height: calc(100vh - 122px);
+  // height: calc(100dvh - 122px);
   overflow: auto;
   padding-bottom: 20px;
   @include mq($PhoneWidth, max) {
+    // position: absolute;
     padding: 16px 16px;
     height: 100vh;
     height: 100dvh;
     display: flex;
     flex-direction: column;
+    background-color: $black;
 
   }
 }

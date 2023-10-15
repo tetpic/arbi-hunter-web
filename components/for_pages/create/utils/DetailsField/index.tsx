@@ -8,8 +8,9 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import classNames from 'classnames'
 import styles from './index.module.scss'
+import { Form, FormikProvider, useFormik } from 'formik'
 
-interface Props<T> {
+export interface DetailsFieldProps<T> {
   onClose: ()=> void
   onSave: (f: T) => void
   set: T
@@ -31,7 +32,7 @@ interface Props<T> {
   inputsSettings?: {value: keyof T, name: string, label: string, type?: 'input'|'textarea', errorState?: string}[]
 }
 
-export default function DetailsField<T extends TimeLine>(props: Props<T>) {
+export default function DetailsField<T extends TimeLine>(props: DetailsFieldProps<T>) {
 
   const [fields, setField] = useState<T>(props.set)
 
@@ -46,28 +47,38 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
     setField(s=> {return {...s, [type]: formattedDate}}) 
   }
 
+  const formik = useFormik<any>({
+    initialValues: {...props.inputsSettings.map(el=>  {return {[el.name]: el.value}})},
+    onSubmit: ()=> null
+  })
+
   return (<div className={styles.root}>
     <BackTextButton onClick={props.onClose}/>
     <p className={styles.title}>{props.title}</p>
-    <div className={styles.inputsWrapper}>
+    {/* <div className={styles.inputsWrapper}> */}
+      <FormikProvider value={formik}>
+        <Form className={styles.inputsWrapper}>
       {props.datePickerSettings?.on&&
         <div className={styles.timeWrapper}>
-          {props.datePickerSettings?.dates?.map(el => {
-            return (
-              <DatePicker 
-              onChange={(date)=> {onChangeDate(date, el.dateValue)}} 
-              dateFormat={el.format} 
-              showYearDropdown={el.yearDropdown} 
-              showMonthDropdown={el.monthDropdown} 
-              {...{[el.pickerType]: true}}
-              name={el.dateName}
-              value={fields[el.dateValue].toString() as string}
-              customInput={
-                <InputField autocompleteOff={true} className={classNames(styles.input)}  value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
-              }
-              />
-            )
-          })}
+         
+            {props.datePickerSettings?.dates?.map(el => {
+              return (
+                <DatePicker 
+                onChange={(date)=> {onChangeDate(date, el.dateValue)}} 
+                dateFormat={el.format} 
+                showYearDropdown={el.yearDropdown} 
+                showMonthDropdown={el.monthDropdown} 
+                {...{[el.pickerType]: true}}
+                name={el.dateName}
+                value={fields[el.dateValue].toString() as string}
+                customInput={
+                  <InputField autocompleteOff={true} className={classNames(styles.input)}  value={fields[el.dateValue]} labelType={'top'} name={el.dateName} styleType={'default'} type="text" color={'default'} label={el.inputLabel} />
+                }
+                />
+                )
+              })
+            }
+           
         </div>
       }
 
@@ -77,11 +88,12 @@ export default function DetailsField<T extends TimeLine>(props: Props<T>) {
         }
         return <InputField  key={index} autocompleteOff={true} className={classNames(styles.input)}  value={fields[el.value]} onChange={(v)=> onChangeHelper(v, el.value)} labelType={'top'} styleType={'default'} color={'default'} name={el.name} label={el.label}/>
       })}
-
+      </Form>
+      </FormikProvider >
       {/* <InputField className={styles.input} value={fields.institution} onChange={(v)=> onChangeHelper(v, 'institution')} labelType={'top'} styleType={'default'} color={'default'} name={'setInstitution'} label={'Заведение:'}/>
       <InputField className={styles.input} value={fields.speciality} onChange={(v)=> onChangeHelper(v, 'speciality')} labelType={'top'} styleType={'default'} color={'default'} name={'setSpeciality'} label={'Специализация:'}/> */}
 
-    </div>
+    {/* </div> */}
     <Button className={styles.buttonSave} type={'button'} onClick={()=> props.onSave(fields)}>Сохранить</Button>
 
   </div>)
