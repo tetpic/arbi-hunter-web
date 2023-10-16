@@ -8,6 +8,7 @@ interface Props {
   color?: string
   secondaryColor?: string
   center?: boolean
+  className?: string
 }
 
 export default function Spinner(props: Props) {
@@ -15,7 +16,7 @@ export default function Spinner(props: Props) {
     <div className={classNames({
       [styles.root]: true,
       [styles.center]: props.center,
-    })}>
+    }, props.className)}>
       <SpinnerCircular
         size={props.size}
         color={props.color ?? colors.black}

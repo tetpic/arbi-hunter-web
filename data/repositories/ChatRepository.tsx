@@ -69,7 +69,7 @@ export default class ChatRepository {
     return res
   }
 
-  static async movechatFolder(profile: ProfileType, chatFolderId: number, chatsIds: number[]): Promise<any|null> {
+  static async moveChatFolder(profile: ProfileType, chatFolderId: number, chatsIds: number[]): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/chat/move',
@@ -179,7 +179,7 @@ export default class ChatRepository {
     return res
   }
 
-  static async getMessagesByChatId(profile: ProfileType, chatId: number,  lastCreatedAt: string | null = null, limit: number = 30): Promise<any|null> {
+  static async getMessagesByChatId(profile: ProfileType, chatId: number,  lastCreatedAt: string | null = null, limit: number = 30): Promise<IPagination<IMessage>|null> {
     const res = await request({
       method: 'get',
       url: `/api/chat/${chatId}/messages`,
@@ -193,5 +193,17 @@ export default class ChatRepository {
       return null
     }
     return res
+  }
+
+  static async setReadIds(profile: ProfileType ,ids: number[]): Promise<IChat | null> {
+    return request({
+      url: '/api/chat/messages/state',
+      method: 'post',
+      data: {
+        ids,
+        read: true
+      },
+      profile
+    })
   }
 }

@@ -32,7 +32,9 @@ export default function ChatItem(props: Props) {
       <p className={styles.name}>{chat.profile.company||chat.profile.firstName + ' ' + chat.profile.lastName}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat?.last?.message} </p>
-      <p className={styles.counter}>1</p>
+      {props.chat.totalUnread > 0&&
+        <p className={styles.counter}>{props.chat.totalUnread}</p>
+      }
     </div>
   )
 }

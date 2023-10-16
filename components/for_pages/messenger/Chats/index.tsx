@@ -14,22 +14,22 @@ interface Props {
 
 enum ChatNav {
   AllChats = 'allChats',
-  HighSalary = 'highSalary',
-  Remote = 'remote'
 }
 
 export default function Chats(props: Props) {
   const [page, pager] = useState<ChatNav>(ChatNav.AllChats)
   const chatContext = useChatContext()
 
+
+  //TODO: подгрузка папок пользователя
   const itemsNav = Object.values(ChatNav).map(el=> {
     switch (el) {
       case ChatNav.AllChats :
         return {name: 'Все чаты', type: el}
-      case ChatNav.HighSalary: 
-        return {name: 'Высокая зп', type: el}
-      case ChatNav.Remote:
-        return {name: 'Удалёнка', type: el}
+      // case ChatNav.HighSalary: 
+      //   return {name: 'Высокая зп', type: el}
+      // case ChatNav.Remote:
+      //   return {name: 'Удалёнка', type: el}
     }
   })
 

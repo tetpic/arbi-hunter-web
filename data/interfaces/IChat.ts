@@ -1,7 +1,7 @@
 import { MessageType } from 'types/enums'
 import { IUser, IUserProfile } from './IUser'
 import { IPagination, Nullable } from 'types/types'
-import { IPaginationRequest, TimeStamp } from './Common'
+import { IImage, IPaginationRequest, TimeStamp } from './Common'
 import { IProposal } from './IProposal'
 
 export interface MessageFilterOptions {
@@ -31,6 +31,11 @@ export interface IMessage extends TimeStamp {
   forwarded?: boolean|null
   forwardedId?: number|null
   userId?: number|null
+  assets?: IImage[]
+  assetsIds?: number[]
+  isRead?: boolean
+  pastedImages?: File[]
+  voiceMessage?: File
 }
 
 

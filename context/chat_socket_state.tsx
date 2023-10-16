@@ -17,8 +17,6 @@ interface IState {
   chatCreateState$: Subject<IChat>,
   join: (chatId: number) => void,
   leave: (chatId: number) => void,
-  // joinReceivingPointId: (receivingPointId: number) => void,
-  // leaveReceivingPointId: (receivingPointId: number) => void,
 }
 
 const reconnectState$ = new Subject<boolean>()
@@ -39,6 +37,22 @@ export function ChatSocketWrapper(props: Props) {
   const userContext = useUserContext()
   const reconnectCountRef = useRef<number>(0)
   const [socket, setSocket] = useState<Socket | null>(null)
+
+
+  const join = (chatId: number) => {
+    if(!chatIds.includes(chatId)) {
+      chatIds.push(chatId)
+    }
+    socket?.emit('chat:join', {chatId})
+  }
+
+  const leave = (chatId: number) => {
+    const index = chatIds.findIndex(i => i === chatId)
+    if(index >= 0) {
+      chatIds.splice(index, 1)
+    }
+    socket?.emit('chat:leave', {chatId})
+  }
 
 
   useEffect(() => {
@@ -90,6 +104,7 @@ export function ChatSocketWrapper(props: Props) {
       messageAllState$.next(message)
     }
     const onChatUpdated = (chat: IChat) => {
+      debugger
       chatUpdateState$.next(chat)
     }
     const onChatCreated = (chat: IChat) => {
@@ -114,20 +129,6 @@ export function ChatSocketWrapper(props: Props) {
     }
   }, [socket])
 
-  const join = (chatId: number) => {
-    if(!chatIds.includes(chatId)) {
-      chatIds.push(chatId)
-    }
-    socket?.emit('chat:join', {chatId})
-  }
-
-  const leave = (chatId: number) => {
-    const index = chatIds.findIndex(i => i === chatId)
-    if(index >= 0) {
-      chatIds.splice(index, 1)
-    }
-    socket?.emit('chat:leave', {chatId})
-  }
 
   const value: Partial<IState> = {
     join,

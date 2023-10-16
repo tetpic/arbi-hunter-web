@@ -8,9 +8,8 @@ import { useUserContext } from './user_state'
 import { IDialogState } from './chat_dialog_state'
 
 interface IChatFilter extends IChatListRequest{
-
-
 }
+
 interface IState {
   chats: IChat[]
   currentChatId: number | null,
@@ -23,9 +22,7 @@ interface IState {
   decreaseUnreadCount: (chatId: number, total: number) => void
   setCurrentChatId: (chatId: number | null) => void,
   scrollableTarget: RefObject<HTMLElement> | null
-  // currentDialogContext: Partial<IDialogState>
   currentDialogContext: MutableRefObject<Partial<IDialogState>>
-  // setCurrentDialogContext: Dispatch<SetStateAction<Partial<IDialogState>>>
 }
 
 
@@ -42,8 +39,6 @@ export function ChatWrapper(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.currentProfile.profileType
   const isLogged = userContext.isLogged
-  // const [currentDialogContext, setCurrentDialogContext] = useState<Partial<IDialogState>>({})
-  const currentDialogContext = useRef<Partial<IDialogState>>({})
 
   const chatSocket = useChatSocketContext()
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -57,7 +52,7 @@ export function ChatWrapper(props: Props) {
   const [loading, setLoading] = useState(true)
 
   const limit = 30
-  const [filter, setFilter] = useState<IChatFilter>({page: 1, limit: limit ?? 30})
+  const [filter, setFilterState] = useState<IChatFilter>({page: 1, limit: limit ?? 30})
   const filterRef = useRef<IChatFilter>(filter)
   const windowFocusInit = useRef(false)
 
@@ -67,12 +62,6 @@ export function ChatWrapper(props: Props) {
       ...(filterRef.current?.userId ? {receivingPointId: filterRef.current.userId}: {}),
     }
   }
-
-  const debouncedReconnect = debounce(async () => {
-    const data = await ChatRepository.getChatList({}, profileType)
-    setChats(data.data ?? [])
-    setTotalChats(data.total)
-  }, 1000)
 
   const init = async () => {
     await loadChats(1)
@@ -98,6 +87,30 @@ export function ChatWrapper(props: Props) {
     }
   }
 
+  const fetchMore = async () => {
+    await loadChats(page + 1)
+    setPage(page + 1)
+  }
+
+  const setFilter = (data: IChatFilter) => {
+    filterRef.current = data
+    setFilterState(data)
+    loadChats(1)
+  }
+
+  const decreaseUnreadCount = (chatId: number, total: number)=> {
+    setChats(i => i.map(i => i.id === chatId ? {
+      ...i,
+      totalUnread: i.totalUnread - total < 0 ? 0 : i.totalUnread - total
+    } : i))
+  }
+
+  const debouncedReconnect = debounce(async () => {
+    const data = await ChatRepository.getChatList({}, profileType)
+    setChats(data.data ?? [])
+    setTotalChats(data.total)
+  }, 1000)
+
   useEffect(() => {
     isLoggedRef.current = isLogged
   }, [isLogged])
@@ -106,11 +119,9 @@ export function ChatWrapper(props: Props) {
     filterRef.current = filter
   }, [filter])
 
-
   useEffect(() => {
     init()
   }, [])
-
 
   useEffect(() => {
     if(!currentChatId){
@@ -133,6 +144,7 @@ export function ChatWrapper(props: Props) {
     })
 
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((chat) => {
+      debugger
       if (chats.find(i => i.id === chat.id)) {
         setChats(i => i.map(i => i.id === chat.id ? {
           ...i,
@@ -165,12 +177,10 @@ export function ChatWrapper(props: Props) {
       windowFocusInit.current = true
       return
     }
+    if (windowFocused) {
+      debouncedReconnect()
+    }
   }, [windowFocused])
-
-  const fetchMore = async () => {
-    await loadChats(page + 1)
-    setPage(page + 1)
-  }
 
   const value: Partial<IState> = {
     ...defaultValue,
@@ -180,22 +190,10 @@ export function ChatWrapper(props: Props) {
     totalChats,
     loading,
     fetchMore,
-    currentDialogContext, 
-    // setCurrentDialogContext,
-    decreaseUnreadCount(chatId: number, total: number) {
-      setChats(i => i.map(i => i.id === chatId ? {
-        ...i,
-        totalUnread: i.totalUnread - total < 0 ? 0 : i.totalUnread - total
-      } : i))
-    },
+    decreaseUnreadCount,
     scrollableTarget,
     filter,
-    setFilter: (data) => {
-      filterRef.current = data
-      setFilter(data)
-      loadChats(1)
-    },
-
+    setFilter
   }
 
   return (
