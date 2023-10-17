@@ -51,7 +51,7 @@ export default interface IChat extends TimeStamp {
   lastMessageAt: string
   profile: IUserProfile
   profiles: IUserProfile[]
-  participant: any // Participant
+  participant: IUserProfile // Participant
   application: any // ApplicationModel
   lastMessage: string
   lastMessageType: string

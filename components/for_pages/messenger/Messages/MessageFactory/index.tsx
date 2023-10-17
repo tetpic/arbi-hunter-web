@@ -8,6 +8,7 @@ import MessageReadSvg from 'components/svg/MessageReadSvg'
 import styles from './index.module.scss'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
+import { useRef } from 'react'
 
 interface Props {
   profileId: number
@@ -16,8 +17,10 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
+
   const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
+  const audioRef = useRef<HTMLAudioElement>(null!)
 
   const stats = (
     <div className={styles.stats}>
@@ -28,7 +31,6 @@ export default function MessageFactory(props: Props) {
     </div>
   )
 
-  
   const textMessage = (
     <div className={side}>
       <p className={styles.message}>
@@ -76,7 +78,16 @@ export default function MessageFactory(props: Props) {
   </>)
 
   const voiceMessage = (
-    <>voice message</>
+    <div className={side}>
+      {msg.assets&&msg.assets.length > 0 &&
+      <audio ref={audioRef} controls src={FILES + msg.assets[0].source}/>
+      }
+      {msg.voiceMessage && 
+      <audio ref={audioRef} controls src={URL.createObjectURL(msg.voiceMessage)}/>
+      }
+      {stats}
+      {audioRef.current?.duration}
+    </div>
   )
 
 

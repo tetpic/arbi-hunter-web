@@ -17,6 +17,9 @@ export default function ChatItem(props: Props) {
   const router = useRouter()
   const chat = props.chat
 
+  const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
+
+
 
 
 
@@ -28,8 +31,8 @@ export default function ChatItem(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.isActive&&styles.active)} onClick={onClickHandler}> 
-      <UserPic size={56} className={styles.userPic} image={chat.profile.image&& FILES +chat.profile.image.source}/>
-      <p className={styles.name}>{chat.profile.company||chat.profile.firstName + ' ' + chat.profile.lastName}</p>
+      <UserPic size={56} className={styles.userPic} image={collocutor.image&& FILES +collocutor.image.source}/>
+      <p className={styles.name}>{/*chat.profile.company||*/collocutor.firstName + ' ' + collocutor.lastName}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat?.last?.message} </p>
       {props.chat.totalUnread > 0&&

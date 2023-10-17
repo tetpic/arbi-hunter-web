@@ -23,8 +23,11 @@ interface IState {
   setCurrentChatId: (chatId: number | null) => void,
   scrollableTarget: RefObject<HTMLElement> | null
   currentDialogContext: MutableRefObject<Partial<IDialogState>>
-}
+  foldersActive: boolean
+  setFoldersActive: ()=>void
+  folders: Map<number, any>
 
+}
 
 const defaultValue: Partial<IState> = {}
 
@@ -32,7 +35,8 @@ const ChatContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
-  receivingPointId?: number
+  chats?: IChat[]
+  folders?: any
 }
 
 export function ChatWrapper(props: Props) {
@@ -45,11 +49,13 @@ export function ChatWrapper(props: Props) {
   const windowFocused = useWindowFocus()
   const isLoggedRef = useRef<boolean>(isLogged)
   const scrollableTarget = useRef<HTMLElement | null>(null)
-  const [chats, setChats] = useState<IChat[]>([])
+  const [chats, setChats] = useState<IChat[]>(props.chats)
   const [currentChatId, setCurrentChatId] = useState<number | null>(0)
   const [totalChats, setTotalChats] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState(true)
+  const [foldersActive, setFoldersActiveState] = useState<boolean>(false)
+  const [folders, setFolders] = useState<Map<number, any>>(new Map)
 
   const limit = 30
   const [filter, setFilterState] = useState<IChatFilter>({page: 1, limit: limit ?? 30})
@@ -105,6 +111,10 @@ export function ChatWrapper(props: Props) {
     } : i))
   }
 
+  const setFoldersActive = () => {
+    setFoldersActiveState(!foldersActive)
+  }
+
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({}, profileType)
     setChats(data.data ?? [])
@@ -144,7 +154,7 @@ export function ChatWrapper(props: Props) {
     })
 
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((chat) => {
-      debugger
+      
       if (chats.find(i => i.id === chat.id)) {
         setChats(i => i.map(i => i.id === chat.id ? {
           ...i,
@@ -193,7 +203,10 @@ export function ChatWrapper(props: Props) {
     decreaseUnreadCount,
     scrollableTarget,
     filter,
-    setFilter
+    setFilter,
+
+    foldersActive,
+    setFoldersActive,
   }
 
   return (

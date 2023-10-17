@@ -11,9 +11,10 @@ import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import styles from './index.module.scss'
 import LinkBlack from 'components/ui/LinkBlack'
 import bigBitcoin from 'images/big_bitcoin.png'
+import Link from 'next/link'
 
 interface Props {
-    categories: ICategory[]
+  categories: ICategory[]
 }
 
 export default function MediaCategories(props: Props) {
@@ -36,9 +37,7 @@ export default function MediaCategories(props: Props) {
         <SwiperSlide className={styles.swiperSlide} key={category.id}>
           <div className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
-              {/* {category.image && */}
                 <Image 
-                // src={FILES+category.image.source} 
                 src={bigBitcoin}
                 alt={category.name+ ' image'} 
                 width={100} 
@@ -46,10 +45,9 @@ export default function MediaCategories(props: Props) {
                 style={{objectFit:'cover'}}
                 className={styles.image}
                 />
-              {/* } */}
             </div>
             <p className={styles.name} title={category.name}>{category.name}</p>
-            <Button className={styles.artCounter}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Button>
+            <Link  className={styles.artCounter} href={`media/category/${category.id}`}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Link>
           </div>
         </SwiperSlide>
       )

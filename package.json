@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@cospired/i18n-iso-languages": "^4.1.0",
+    "@ffmpeg/ffmpeg": "^0.12.7",
     "@react-cmpt/use-throttle": "^0.3.3",
     "@react-spring/web": "^9.7.3",
     "@tiptap/extension-image": "^2.1.11",
@@ -29,6 +30,7 @@
     "query-string": "^8.1.0",
     "rc-scrollbars": "^1.1.6",
     "react": "^18.2.0",
+    "react-audio-voice-recorder": "^2.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-cookie": "^5.0.0",
     "react-date-picker": "^10.5.0",
@@ -57,7 +59,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev": "next dev -H 127.0.0.1 -p 3088",
+    "dev": "next dev -H 127.0.0.1 -p 3088 & local-ssl-proxy --source 3080 --target 3088",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

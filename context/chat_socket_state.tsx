@@ -104,7 +104,7 @@ export function ChatSocketWrapper(props: Props) {
       messageAllState$.next(message)
     }
     const onChatUpdated = (chat: IChat) => {
-      debugger
+      
       chatUpdateState$.next(chat)
     }
     const onChatCreated = (chat: IChat) => {

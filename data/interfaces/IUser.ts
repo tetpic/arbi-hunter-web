@@ -34,6 +34,7 @@ export interface IUserProfile extends TimeStamp {
   city: IGeoName,
   activityStatus: ActivityStatus,
   countryCode: Languages
+  role?: 'admin'|'participant'
 }
 
 

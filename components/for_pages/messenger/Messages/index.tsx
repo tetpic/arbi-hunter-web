@@ -16,6 +16,8 @@ import Button from 'components/ui/Button'
 import {v4 as uuidv4} from 'uuid'
 import CloseTransparentSvg from 'components/svg/CloseTransparentSvg'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useAudioRecorder } from 'react-audio-voice-recorder'
+import RecordSvg from 'components/svg/RecordSvg'
 import styles from './index.module.scss'
 
 
@@ -26,11 +28,15 @@ export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
   const {messages, loading} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
+  const recorder = useAudioRecorder()
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
+  
 
-  const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const collocutor = dialog.chat.profiles[0].role === 'admin'?dialog.chat.participant:dialog.chat.profile
+
+  const sendMessage = (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedImages.size === 0) {
       return
     }
@@ -48,6 +54,7 @@ export default function Messages(props: Props) {
       })
     }
   }
+  
 
   const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
     //https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
@@ -57,7 +64,7 @@ export default function Messages(props: Props) {
       const fakeId = uuidv4()
       if (item.kind === 'file') {
         const blob = item.getAsFile()
-        if(blob.type === 'image/png' || blob.type === 'image.jpeg' || blob.type === 'image/jpg') {
+        if(blob.type === 'image/png' || blob.type === 'image/jpeg' || blob.type === 'image/jpg') {
           setPastedImages(state => new Map([...state.entries(), [fakeId, blob]]))
         }
       }
@@ -71,12 +78,26 @@ export default function Messages(props: Props) {
     })
   }
 
+  const record = () => {
+    if(recorder.isRecording) {
+      recorder.stopRecording()
+      const audio = recorder.recordingBlob
+      const file = new File([audio], 'audio_'+new Date().getTime().toString()+'.webm', {type: 'audio/webm;codecs=opus'})
+      if(file.size > 100) {
+        dialog.sendMessage({message:'', type: MessageType.Voice}, {voiceMessage: file} )
+      }
+    }
+    else {
+      recorder.startRecording()
+    }
+  }
+
   return (
     <div className={styles.root}> 
       <div className={styles.top}>
-        <UserPic size={48} className={styles.userPic} image={dialog.chat.profile?.image&& FILES + dialog?.chat.profile.image.source}/>
-        <p className={styles.name}>{dialog.chat?.profile.company||dialog.chat?.profile.firstName + ' ' + dialog.chat?.profile.lastName}</p>
-        <p className={styles.time}>В сети c {Formatter.formatDateRelative(dialog.chat?.profile.lastActivityAt)}</p>
+        <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
+        <p className={styles.name}>{/* dialog.chat?.participant.company||*/collocutor.firstName + ' ' + collocutor.lastName}</p>
+        <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor.lastActivityAt)}</p>
         <ThreeDotsButton className={styles.dots}/>
       </div>
       {userContext?.currentProfile?.profileType === ProfileType.Employee &&
@@ -99,14 +120,13 @@ export default function Messages(props: Props) {
       loader={<Spinner size={24} color={colors.yellow}/>}
       hasMore={dialog.totalMessages > dialog.messages.size}
       scrollThreshold={0.6}>
-          {
-            messages.size>0&&[...messages.values()].map(el=> {
-              return <MessageFactory profileId={userContext.currentProfile.id} message={el}/>
-            })
-            ||
-            !loading &&<p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
-          
-          }
+        {
+          messages.size>0&&[...messages.values()].map(el=> {
+            return <MessageFactory profileId={userContext.currentProfile.id} message={el}/>
+          })
+          ||
+          !loading &&<p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
+        }
       </InfiniteScroll>
       </div>
       <div className={styles.newMessage} onPaste={onPasteHandler}>
@@ -116,27 +136,18 @@ export default function Messages(props: Props) {
           })}
         </div>
         <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&sendMessage(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
-        <MicrophoneSvg/>
+        <div className={styles.microphoneWrapper} onClick={record}>
+          {recorder.isRecording &&
+            <>
+              <span>{Formatter.formatSecondtToTime(recorder.recordingTime)}</span>
+              <RecordSvg/>
+            </>
+            ||
+            <MicrophoneSvg/>
+          }
+        </div>
       </div>
     </div>
   )
 }
 
-// {!loading && !chatContext.disabled && <InfiniteScroll
-//   dataLength={chatContext.messages.length}
-//   next={chatContext.fetchMore}
-//   scrollableTarget={'chat-messages'}
-//   inverse
-//   style={{overflow: 'inherit'}}
-//   className={styles.list}
-//   loader={chatContext.totalMessages > 0 ? <ContentLoader style={'infiniteScroll'} isOpen={true}/> : null}
-//   hasMore={chatContext.totalMessages > chatContext.messages.length}
-//   scrollThreshold={0.6}>
-//   {chatContext.messages.map((i, index) => {
-//     const previous = index > 0 ? chatContext.messages[index - 1] : null
-//     return (<>
-//       {previous && previous.userId !== i.userId && <Spacer basis={10}/>}
-//       <ChatMessage key={i.sid ?? i.id} side={appContext.aboutMe?.id === i.userId ? 'my' : 'other'}
-//                    message={i}/></>)
-//   })}
-// </InfiniteScroll>}

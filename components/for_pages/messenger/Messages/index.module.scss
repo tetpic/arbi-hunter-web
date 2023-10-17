@@ -162,3 +162,14 @@
 .loader {
   margin-bottom: 24px;
 }
+
+.microphoneWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  span {
+    font-size: $smallText;
+    color: $greyLight;
+  }
+
+}

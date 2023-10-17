@@ -1,0 +1,84 @@
+@import 'styles/index';
+
+.root {
+  width: 70%;
+  height: 100%;
+}
+
+.backButton {
+  @include transitionDefault;
+  @include hover {
+    color: $blue;
+    svg {
+      path {
+        fill: $blue;
+      }
+    }
+  }
+
+  svg {
+    path {
+      @include transitionDefault;
+    }
+  }
+}
+
+.top {
+  padding: 16px;
+  border-bottom: 2px $grey solid;
+}
+
+.body {
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  .tip {
+    margin-top: 24px;
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $greyLight;
+    max-width: 530px;
+    text-align: center;
+  }
+}
+
+.folderWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 670px;
+  row-gap: 8px;
+  margin-top: 48px;
+
+  .folder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background-color: $grey;
+    border-radius: 12px;
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+}
+
+.createBtn {
+  margin-top: 32px;
+  @include buttonYellow;
+  p {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+  }
+}
+
+
+.folderTitle {
+  color: $greyLight;
+  font-size: $mediumText;
+  font-weight: $medium;
+}

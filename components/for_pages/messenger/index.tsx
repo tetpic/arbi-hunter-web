@@ -5,12 +5,15 @@ import styles from './index.module.scss'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { ChatDialogWrapper } from 'context/chat_dialog_state'
+import FolderManager from './FolderManager'
+import { useChatContext } from 'context/chat_state'
 
 interface Props {
-  chats: IChat[]
 }
 
 export default function Messenger(props: Props) {
+  const chatContext = useChatContext()
+  const chats = chatContext.chats
   const router = useRouter()
   const [chatId, setChatId] = useState<number | null>(router.query.chat ? parseInt(router.query.chat as string, 10) : null)
 
@@ -21,9 +24,13 @@ export default function Messenger(props: Props) {
 
   return (
     <div className={styles.root}> 
-      <Chats chats={props.chats} chatId={chatId} onSelect={handleSelectChat} />
-      <ChatDialogWrapper chatId={chatId||props.chats[0].id} chat={props.chats.find(c=> c.id === chatId)||props.chats[0]}>
-        <Messages/>
+      <Chats chats={chats} chatId={chatId} onSelect={handleSelectChat} />
+      <ChatDialogWrapper chatId={chatId||chats[0].id} chat={chats.find(c=> c.id === chatId)||chats[0]}>
+        {chatContext.foldersActive&&
+          <FolderManager/>
+          ||
+          <Messages/>
+        }
       </ChatDialogWrapper>
     </div>
   )

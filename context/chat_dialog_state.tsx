@@ -179,6 +179,7 @@ export function ChatDialogWrapper(props: Props) {
     setTotalMessages(i => i + 1)
     createDumbMessage(data, files, sid)
     
+    
     if(files && files?.pastedImages&&files?.pastedImages.length > 0) {
       try{
         const downloadedImages = await Promise.all(files.pastedImages?.map(el=> FileRepository.uploadFile(el)))
@@ -190,6 +191,8 @@ export function ChatDialogWrapper(props: Props) {
     }
 
     else if(files?.voiceMessage) {
+      console.log(files.voiceMessage)
+      
       try{
         const voiceId = await FileRepository.uploadFile(files.voiceMessage)
         data.assetsIds = [Number(voiceId.id)]
@@ -225,6 +228,7 @@ export function ChatDialogWrapper(props: Props) {
     }
     
     if (props.chatId||props.chat) {
+      setChat(props.chat)
       chatContext.setCurrentChatId(props.chatId||props.chat.id)
       chatSocket.join(props.chat.id||props.chatId)
     }
