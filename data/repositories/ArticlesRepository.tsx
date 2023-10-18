@@ -31,15 +31,15 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories: number}): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/article',
       data: {
-        ...data,
         isTop: true,
         articleType: 'news',
-        full: full
+        full: full,
+        ...data,
       }
     })
     if(res.err) {
@@ -60,10 +60,12 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCategoryById(id: number, lang: Languages, type: CategoryType): Promise<any|null> {
+  static async getCategoryById(id: number, data?: {lang?: Languages, categoryType?: CategoryType}): Promise<any|null> {
     const res = await request({
       method: 'get',
-      url: `'/api/article-category/${id}?lang=${lang}&categoryType=${type}'`,
+      url: `/api/article-category/${id}`,
+      data
+
     })
     if(res.err) {
       return null
@@ -71,10 +73,15 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCategoryList(type?: CategoryType, page?: number, limit?: number): Promise<IPagination<ICategory>|null> {
+  static async getCategoryList(data?: {categoryType?: CategoryType, page?: number, limit?: number}): Promise<IPagination<ICategory>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article-category?${type?`categoryType=${type}`:''}${page?`&page=${page}`:''}&limit=${limit||40||LOAD_LIMIT}`,
+      url: '/api/article-category',
+      data: {
+        limit: LOAD_LIMIT,
+        page: 1,
+        ...data, 
+      }
     })
     if(res.err) {
       return null

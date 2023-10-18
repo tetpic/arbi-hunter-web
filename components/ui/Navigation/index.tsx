@@ -34,14 +34,18 @@ export default function Navigation<T extends string>(props: Props<T>) {
     <nav className={styles.wrapper}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {
         return (
-          <p 
-          key={index} 
-          onClick={()=>onClickHandler(el.type)} 
-          className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>
-            {el.icon} {el.name}
-            {isTabletWidth&& <ArrowRightSvg className={styles.arrow}/>}
-          </p>
-
+          <div className={styles.item}>
+            <p 
+            key={index} 
+            onClick={()=>onClickHandler(el.type)} 
+            className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>
+              <span className={styles.icon}>{el.icon}</span> {el.name}
+              {isTabletWidth&& <ArrowRightSvg className={styles.arrow}/>}
+            </p>
+            <div className={classNames(styles.subSet, el.type === props.currentPage&&styles.subSet_active)}>
+              {el.subSet}
+            </div>
+          </div>
         )
       })}
     </nav>

@@ -16,7 +16,6 @@ import Button from 'components/ui/Button'
 import {v4 as uuidv4} from 'uuid'
 import CloseTransparentSvg from 'components/svg/CloseTransparentSvg'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useAudioRecorder } from 'react-audio-voice-recorder'
 import RecordSvg from 'components/svg/RecordSvg'
 import styles from './index.module.scss'
 
@@ -28,7 +27,6 @@ export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
   const {messages, loading} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
-  const recorder = useAudioRecorder()
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
@@ -77,20 +75,7 @@ export default function Messages(props: Props) {
       return new Map(state)
     })
   }
-
-  const record = () => {
-    if(recorder.isRecording) {
-      recorder.stopRecording()
-      const audio = recorder.recordingBlob
-      const file = new File([audio], 'audio_'+new Date().getTime().toString()+'.webm', {type: 'audio/webm;codecs=opus'})
-      if(file.size > 100) {
-        dialog.sendMessage({message:'', type: MessageType.Voice}, {voiceMessage: file} )
-      }
-    }
-    else {
-      recorder.startRecording()
-    }
-  }
+  
 
   return (
     <div className={styles.root}> 
@@ -124,8 +109,8 @@ export default function Messages(props: Props) {
           messages.size>0&&[...messages.values()].map(el=> {
             return <MessageFactory profileId={userContext.currentProfile.id} message={el}/>
           })
-          ||
-          !loading &&<p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
+          // ||
+          // <p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
         }
       </InfiniteScroll>
       </div>
@@ -136,10 +121,11 @@ export default function Messages(props: Props) {
           })}
         </div>
         <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&sendMessage(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
-        <div className={styles.microphoneWrapper} onClick={record}>
-          {recorder.isRecording &&
+        <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
+          {
+          dialog.recorder?.current?.state === 'recording' &&
             <>
-              <span>{Formatter.formatSecondtToTime(recorder.recordingTime)}</span>
+              <span>{Formatter.formatSecondtToTime(dialog.recordTime)}</span>
               <RecordSvg/>
             </>
             ||

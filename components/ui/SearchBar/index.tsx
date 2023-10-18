@@ -1,7 +1,8 @@
 import Button from 'components/ui/Button'
 import SettingsThreeSlidersSvg from 'components/svg/SettingsThreeSlidersSvg'
-import styles from './index.module.scss'
 import classNames from 'classnames'
+
+import styles from './index.module.scss'
 
 interface Props {
   className?: string

@@ -46,8 +46,6 @@ export default function MediaCommunities(props: Props) {
                   width={286} 
                   height={134} 
                   style={{objectFit:'cover'}}
-                  // layout="fill"
-                  // objectFit="cover"
                   />
                 }
               </div>
@@ -83,7 +81,7 @@ export default function MediaCommunities(props: Props) {
       <ArrowRightSvg/>
     </Button>
   </div>
-  <LinkBlack href={'/communities'} >Смотреть все</LinkBlack>
+  <LinkBlack href={'/media/page?page=communities'} >Смотреть все</LinkBlack>
 
   </div>)
 }

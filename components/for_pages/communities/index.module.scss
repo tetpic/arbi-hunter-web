@@ -26,3 +26,24 @@
     margin-top: unset;
   }
 }
+
+.subCategory {
+  padding: 8px;
+  color: $greyLight;
+  margin-top: 8px;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    color: $white;
+  }
+
+  &_active {
+    color: $blue;
+    pointer-events: none;
+  }
+
+}
+
+.searchBar {
+  margin-bottom: 24px;
+}

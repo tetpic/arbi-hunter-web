@@ -11,10 +11,11 @@
 }
 
 .wrapper {
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  padding: 0;
   border-radius: 16px;
+  row-gap: 8px;
   background-color: $black;
   overflow: hidden;
   @include mq($TabletWidth, max) {
@@ -23,7 +24,7 @@
 }
 
 .navItem {
-  padding: 8px 16px;
+  padding: 8px 8px;
   display: flex;
   align-items: center;
   column-gap: 8px;
@@ -32,6 +33,7 @@
   line-height: 32px;
   cursor: pointer;
   color: $white;
+  border-radius: 10px;
   @include transitionDefault;
   @include hoverButtonSmooth;
   @include mq($TabletWidth, max) {
@@ -39,12 +41,25 @@
       border-bottom: 1px $grey solid;
     }
   }
+  
+  .icon {
+    background: $grey;
+    padding: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
   &_active {
-    background-color: $grey;
+    // background-color: $grey;
+    background: $gradientFiltered;
+
     pointer-events: none;
     @include mq($TabletWidth, max) {
       pointer-events: all;
+    }
+
+    .icon {
+      background: $gradientAlt;
     }
   }
 
@@ -54,5 +69,16 @@
 
   svg {
     flex-shrink: 0;
+  }
+}
+
+.subSet {
+  height: auto;
+  max-height: 0px;
+  @include transitionDefault;
+  overflow: auto;
+  
+  &_active {
+    max-height: 60vh;
   }
 }

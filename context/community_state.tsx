@@ -136,7 +136,7 @@ export function CommunityWrapper(props: Props) {
   }
 
   const setCategories = () => {
-    ArticlesRepository.getCategoryList(CategoryType.News)
+    ArticlesRepository.getCategoryList({categoryType:CategoryType.News})
     .then(res=> {
       setCategoriesState(res.data)
     })

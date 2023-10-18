@@ -20,7 +20,7 @@ interface Props {
 
 }
 
-export default function MediaPage(props: Props) {
+export default function MediaLanding(props: Props) {
   const userContext = useUserContext()
 
   return (

@@ -70,5 +70,6 @@ export interface NavigationSet<T extends string> {
   name: string, 
   type: T, 
   icon?: JSX.Element
+  subSet?: JSX.Element|JSX.Element[]
 }
 

@@ -23,8 +23,8 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
     allCourses,
     feedBacks
   ] = await Promise.all([
-    ArticlesRepository.getCategoryList(CategoryType.Course, 1, 5), 
-    ArticlesRepository.getCategoryList(CategoryType.CourseCompilation, 1, 10),
+    ArticlesRepository.getCategoryList({categoryType: CategoryType.Course, page: 1, limit: 5}), 
+    ArticlesRepository.getCategoryList({categoryType: CategoryType.CourseCompilation, page: 1, limit: 10}),
     CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
     CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
     CoursesRepository.getFeedbacks(undefined,  1, 10, Languages.ru)

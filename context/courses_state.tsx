@@ -65,7 +65,7 @@ export function CoursesWrapper(props: Props) {
       return
     }
     if(categories.length > 0) return
-    ArticlesRepository.getCategoryList(CategoryType.Course)
+    ArticlesRepository.getCategoryList({categoryType: CategoryType.Course})
     .then(res=>{
       setCategoriesState(res.data)
     })

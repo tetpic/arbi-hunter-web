@@ -1,5 +1,5 @@
 import IChat, { IMessage } from 'data/interfaces/IChat'
-import { RefObject, createContext, useContext, useEffect, useRef, useState } from 'react'
+import { MutableRefObject, RefObject, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Nullable } from 'types/types'
 import { useUserContext } from './user_state'
 import { useChatContext } from './chat_state'
@@ -10,8 +10,10 @@ import { useChatSocketContext } from './chat_socket_state'
 import debounce from 'debounce'
 import FileRepository from 'data/repositories/FileRepository'
 import { useAppContext } from './state'
-import { SnackbarType } from 'types/enums'
+import { MessageType, SnackbarType } from 'types/enums'
 import useWindowFocus from 'use-window-focus'
+// import { useAudioRecorder } from 'react-audio-voice-recorder'
+// import { recorderControls } from 'react-audio-voice-recorder/dist/hooks/useAudioRecorder'
 
 const chatIds: number[] = []
 const markReadList: number[] = []
@@ -30,6 +32,10 @@ export interface IDialogState {
   isDisabledByOtherManager: boolean
   disabledType: Nullable<any>,
   disabled: boolean
+  // recorder: recorderControls
+  recorder: MutableRefObject<MediaRecorder>
+  recordVoice: () => void
+  recordTime: number
 }
 
 const defaultValue: Partial<IDialogState> = {}
@@ -47,6 +53,8 @@ export function ChatDialogWrapper(props: Props) {
   const userContext = useUserContext()
   const chatContext = useChatContext()
   const chatSocket = useChatSocketContext()
+  const recorder = useRef<MediaRecorder>(null!)
+
   
   const [chatId, setChatId] = useState<IChat | null>(props.chat ?? null)
   const [chat, setChat] = useState<IChat | null>(props.chat ?? null)
@@ -54,6 +62,8 @@ export function ChatDialogWrapper(props: Props) {
   const [totalMessages, setTotalMessages] = useState<number>(100000000)
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
+  const [chunks, setChunks] = useState<BlobPart[]>()
+  const [recordTime, setRecordTime] = useState<number>(0)
   
   const scrollableTarget = useRef<HTMLElement | null>(null)
   const chatIdRef = useRef<number | null>(null)
@@ -61,6 +71,7 @@ export function ChatDialogWrapper(props: Props) {
   const messagesRef = useRef<IMessage[]>([])
   const reconnectRef = useRef<boolean>(false)
   const windowFocusInit = useRef(false)
+  const starterInterval = useRef<number>()
   
   const profileType = userContext.currentProfile?.profileType
   const windowFocused = useWindowFocus()
@@ -77,6 +88,7 @@ export function ChatDialogWrapper(props: Props) {
     // }
     
     setMessages(state => {
+      
       data.forEach(el=> {
         state.set(el.id, el)
       })
@@ -179,7 +191,6 @@ export function ChatDialogWrapper(props: Props) {
     setTotalMessages(i => i + 1)
     createDumbMessage(data, files, sid)
     
-    
     if(files && files?.pastedImages&&files?.pastedImages.length > 0) {
       try{
         const downloadedImages = await Promise.all(files.pastedImages?.map(el=> FileRepository.uploadFile(el)))
@@ -215,6 +226,37 @@ export function ChatDialogWrapper(props: Props) {
     debouncedMarkRead()
   }
 
+
+  const recordVoice = async () => {
+
+    if(!recorder.current) {
+      const stream = await navigator.mediaDevices.getUserMedia({audio: true})
+      recorder.current = new MediaRecorder(stream)
+      recorder.current.audioBitsPerSecond
+      recorder.current.ondataavailable = (e) => {
+        setChunks([e.data])
+      }
+    }
+    if(recorder.current && recorder.current.state === 'recording') {
+      recorder.current.stop()
+      clearInterval(starterInterval.current)
+      setRecordTime(0)
+      return
+    }
+    recorder.current.start()
+    //@ts-ignore
+    starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+  }
+
+  //если появляется аудио дорожка - отправляем сообщение
+  useEffect(()=>{
+    if(chunks) {
+      const audioFile = new File(chunks, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
+      sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
+      setChunks(null)
+    }
+  }, [chunks])
+
   useEffect(() => {
     chatIdRef.current = props.chatId ?? null
     init()
@@ -238,7 +280,7 @@ export function ChatDialogWrapper(props: Props) {
         chatSocket.leave(props.chat.id||props.chatId)
       }
     }
-  }, [props.chatId, props.chat])
+  }, [props.chatId])
 
   useEffect(() => {
 
@@ -295,7 +337,10 @@ export function ChatDialogWrapper(props: Props) {
     loading,
     fetchMore,
     totalMessages,
-    scrollableTarget
+    scrollableTarget,
+    recordVoice,
+    recorder,
+    recordTime
   }
 
   return (
