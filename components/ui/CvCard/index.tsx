@@ -43,9 +43,7 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
   }
 
   const saveHandler = useCallback(() => {
-    currentCV
     if(currentCV.isSavedByCurrentProfile) {
-      
       cvContext.removeCvfromSaved(currentCV.id)
       .then(res=>{
         res===true &&
@@ -74,28 +72,28 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
     <div className={styles.itemWrapper}>
     <div className={styles.top}>
       <UserPic size={46} className={styles.userPic}/>
-      <p className={styles.position}>{currentCV.position||currentCV.categories[0].name||'Должность не указана'}</p>
-      <p className={styles.name}>{currentCV.firstName} {currentCV.lastName} <DotSvg/> {currentCV.age} {Formatter.pluralize(currentCV.age, 'год', 'года', 'лет')}</p>
-      <FavoritesButton className={styles.heartButton} isActive={currentCV.isSavedByCurrentProfile} onClick={saveHandler}/>
+      <p className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</p>
+      <p className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</p>
+      <FavoritesButton className={styles.heartButton} isActive={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
     </div>
     <div className={styles.middle}>
       <p className={styles.title}>Опыт работы</p>
       <p className={styles.data}>{experience}</p>
     </div>
-    {cv.lastExperienceInfo &&
+    {cv?.lastExperienceInfo &&
     <div className={styles.middle}>
       <p className={styles.title}>Последнее место работы</p>
-      <p className={styles.data}>{currentCV.lastExperienceInfo?.description&&currentCV.lastExperienceInfo?.description} {currentCV.lastExperienceInfo?.company&&('"' + currentCV.lastExperienceInfo?.company + '"')}</p>
+      <p className={styles.data}>{currentCV?.lastExperienceInfo?.description&&currentCV?.lastExperienceInfo?.description} {currentCV?.lastExperienceInfo?.company&&('"' + currentCV?.lastExperienceInfo?.company + '"')}</p>
     </div>
     }
     {
-      currentCV.proposalByCurrentUser&&
+      currentCV?.proposalByCurrentUser&&
       <div className={styles.middle}>
         <p className={styles.title}>Приглашение выслано</p>
       </div>
     }
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={inviteHandler}>{currentCV.proposalByCurrentUser?'Пригласить повторно':'Пригласить'}</Button>
+      <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser?'Пригласить повторно':'Пригласить'}</Button>
       {chat&& 
         <Button className={styles.buttonBlack} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }

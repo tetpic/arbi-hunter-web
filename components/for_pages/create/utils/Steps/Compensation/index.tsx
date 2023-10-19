@@ -23,13 +23,13 @@ export default function Compensation(props: Props) {
         {value: CompensationType.Salary, label: 'Оклад'},
         {value: CompensationType.Commission, label: 'Процент'},
         {value: CompensationType.Gybrid, label: 'Гибрид (оклад+процент)'},
-        {value: CompensationType.Contract, label: 'Сдельная'},
-        {value: CompensationType.Piecework, label: 'Договорная'}
+        {value: CompensationType.Piecework, label: 'Сдельная'},
+        {value: CompensationType.Contract, label: 'Договорная'}
       ]} 
       itemCircleClassname={styles.radio}
       />
 
-      {compensation.value !== CompensationType.Piecework &&
+      {compensation.value !== CompensationType.Contract &&
         <p className={styles.title}>Оплата</p>
       }
 
@@ -63,7 +63,7 @@ export default function Compensation(props: Props) {
         />
       }
 
-      {compensation.value !== CompensationType.Piecework &&
+      {compensation.value !== CompensationType.Contract &&
         <RadioListField 
         name={'currency'}
         itemCircleClassname={styles.circleCurrency}

@@ -13,7 +13,6 @@ import Layout from 'components/layout'
 import { AppWrapper } from 'context/state'
 import Snackbar from 'components/layout/Snackbar'
 import { UserWrapper } from 'context/user_state'
-import ModalContainer from 'components/layout/ModalContainer'
 import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
 import { CreateVcCvWrapper} from 'context/createVcCv_state'
@@ -21,12 +20,12 @@ import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
 import { VacancyWrapper } from 'context/vacancy_state'
-import { MediaWrapper } from 'context/media_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
 import { CoursesWrapper } from 'context/courses_state'
 import { CommunityWrapper } from 'context/community_state'
+import ModalContainer from 'components/layout/ModalContainer'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -56,7 +55,6 @@ function MyApp({Component, pageProps}: AppProps) {
           <CreateVcCvWrapper>
           <VacancyWrapper>
           <CvWrapper>
-          <MediaWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
           <CoursesWrapper>
@@ -83,7 +81,6 @@ function MyApp({Component, pageProps}: AppProps) {
           </CoursesWrapper>
           </FeedbacksWrapper>
           </PatternWrapper>
-          </MediaWrapper>
           </CvWrapper>
           </VacancyWrapper>
           </CreateVcCvWrapper>

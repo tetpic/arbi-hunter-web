@@ -32,7 +32,8 @@ export default function PasswordField(props: Props) {
   suffix={'icon'}
   suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
   onSuffixClick={passwordHandler}
-  validate={!props.notRequired&&Validator.required}
+  validate={!props.notRequired&&Validator.combine([Validator.required, Validator.minPasswordLength])}
+
   />
 
   )

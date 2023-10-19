@@ -48,23 +48,19 @@ export default function Login(props: Props) {
       router.push('/')
     })
     .catch(err=> {
-      
       appContext.showSnackbar(err.message.toString(), SnackbarType.error)
     })
   }
- 
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: submit
   })
 
-
   const changeLoginTypeHandler = (s: 'email'|'phone') => {
     setLoginType(s)
     formik.resetForm()
   }
-
 
   return ( 
     <div className={styles.root}>
@@ -128,7 +124,7 @@ export default function Login(props: Props) {
             suffix={'icon'}
             suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
             onSuffixClick={passwordHandler}
-            validate={Validator.required}
+            validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
 
             <p className={styles.subTitle}>Забыли пароль?</p>

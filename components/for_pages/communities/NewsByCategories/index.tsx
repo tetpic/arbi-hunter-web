@@ -14,65 +14,47 @@ import { colors } from 'styles/variables'
 import Spinner from 'components/ui/Spinner'
 
 import styles from './index.module.scss'
-import { useUserContext } from 'context/user_state'
 import classNames from 'classnames'
+import { useMediaContext } from 'context/media_state'
+import SortArrowsSvg from 'components/svg/SortArrowsSvg'
 
 interface Props {
   category: ICategory
 }
 
 export default function NewsByCategories(props: Props) {
-  const [news, setNews] = useState<Map<number, IArticle>>(new Map)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
-  const userContext = useUserContext()
+  const mediaContext = useMediaContext()
+  const news= mediaContext.currentNews
+
+
 
   const likeHandler = (a: IArticle)=> {
-    
-    const stateHandler = (add: boolean) => {
-      setNews(state=> {
-        const itemToEdit = state.get(a.id)
-        itemToEdit.isLikedByCurrentProfile = add
-        state.set(itemToEdit.id, itemToEdit)
-        return new Map(state)
-      })
-    }
-    
-    debugger
-    if(!a.isLikedByCurrentProfile) {
-      ArticlesRepository.addLikeToArticle(userContext.currentProfile.profileType, a.id)
-      .then(res=> {
-        stateHandler(true)
-      })
-    }
-    else {
-      ArticlesRepository.removeLikeFromArticle(userContext.currentProfile.profileType, a.id) 
-      .then(res=>{
-        stateHandler(false)
-      })
-    }
+    mediaContext.likeArticle(a).then(res=>
+      {/* TODO LIKES!!!! */}
+    )
   }
-
   useEffect(()=>{
     setPage(1)
     setTotal(null)
-    setNews(new Map())
+    mediaContext.setCurrentNews({clear: true})
   }, [props.category])
 
   useEffect(()=>{
     ArticlesRepository.getNews(true, {categories: props.category.id, isTop: false, page: page, limit: 10})
     .then(res => {
       setTotal(res.total)
-      setNews(state=> {
-        res.data.forEach(el=> {
-          state.set(el.id, el)
-        })
-        return new Map(state)
-      })
+      mediaContext.setCurrentNews({articles: res.data})
     })
   }, [page, props.category])
 
-  return (<div className={styles.root}> 
+  return (<>
+  <div className={styles.sort}>
+    <p className={styles.found}> Найдено {total||0} {Formatter.pluralize(total, 'статья', 'статьи', 'статей')}</p>
+    <p className={styles.sortBy}>Сортировать по <SortArrowsSvg/></p>
+  </div>
+  <div className={styles.root}> 
   <InfiniteScroll 
   next={()=>setPage(p => p+1)} 
   hasMore={news.size < total} 
@@ -100,12 +82,13 @@ export default function NewsByCategories(props: Props) {
             }}/>
           </div>
           <div className={styles.stats}>
-            <p className={styles.likes}  onClick={()=>likeHandler(el)}><HeartSvg className={classNames(el.isLikedByCurrentProfile&&styles.filledHeart)}/> {el.likesCount}</p>
+            <p className={styles.likes} onClick={(e)=> {e.stopPropagation(); likeHandler(el)}}><HeartSvg className={classNames(el.isLikedByCurrentProfile&&styles.filledHeart)}/> {el.likesCount}</p>
             <p className={styles.views}><OpenEyeSvg/> {el.totalViews}</p>
           </div>
         </div>
       </>)
     })}
     </InfiniteScroll>
-  </div>)
+  </div>
+  </>)
 }

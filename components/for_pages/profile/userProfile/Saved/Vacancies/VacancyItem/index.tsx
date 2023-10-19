@@ -26,9 +26,6 @@ export default function VacancyItem({vc, application, refreshCallback}: Props) {
     refreshCallback&&refreshCallback()
   }
 
-  
-  
-
   return (<div className={styles.root}> 
   <div className={styles.top}>
     <UserPic className={styles.userPic} size={44}/>

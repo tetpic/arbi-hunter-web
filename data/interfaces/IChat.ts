@@ -8,7 +8,7 @@ export interface MessageFilterOptions {
   vacanciesId?: number[];
   type?: any // UserCvOrVacancyStatus
   search?: string
-  folderId?: number ;
+  chatFolderId?: number ;
   onlyUnread?: boolean;
   inactive?: boolean;
   page?: number;
@@ -36,6 +36,15 @@ export interface IMessage extends TimeStamp {
   isRead?: boolean
   pastedImages?: File[]
   voiceMessage?: File
+}
+
+export interface IChatFolder extends TimeStamp {
+  id: number,
+  name: string,
+  notifications: boolean,
+  pinned: boolean
+  profile: IUserProfile,
+  totalUnread: string
 }
 
 

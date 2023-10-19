@@ -58,6 +58,12 @@ export default class Validator {
       : undefined
   }
 
+  static minPasswordLength(value: string): string|undefined {
+    return value && value.length < 8
+    ? 'Пароль должен быть не короче 8 символов'
+    :undefined
+  }
+
   static url = (value: string): string | undefined => {
     let url
     const errorText = 'Неверный формат ссылки'

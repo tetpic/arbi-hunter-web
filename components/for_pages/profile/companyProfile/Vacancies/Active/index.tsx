@@ -15,7 +15,6 @@ export default function VacanciesActive(props: Props) {
 
   const vacancyContext = useVacancyContext()
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
-  
 
   useEffect(()=>{
     vacancyContext.setActiveVacancies().then(res=>res&&setIsLoaded(res))

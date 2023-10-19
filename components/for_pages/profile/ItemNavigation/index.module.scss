@@ -2,7 +2,7 @@
 
 .root {
   margin-top: 24px;
-  width: 100%;
+  min-width: 100%;
 
 }
 
@@ -15,6 +15,7 @@
     font-size: $largeText;
     font-weight: $semibold;
     cursor: pointer;
+    white-space: nowrap;
     @include transitionDefault;
     @include hover {
       color: $white;

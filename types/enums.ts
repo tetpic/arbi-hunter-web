@@ -18,7 +18,8 @@ export enum ModalType {
   MediaItemActionsModal = 'mediaItemActionsModal',
   CreateCommunityArticleModal = 'createCommunityArticleModal',
   MembersModal = 'membersModal',
-  DetailsModal = 'detailsModal'
+  DetailsModal = 'detailsModal',
+  ChatsFolderModal = 'chatsFolderModal'
 }
 
 export enum SnackbarType {

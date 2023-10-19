@@ -38,7 +38,8 @@ export enum ProfilePages {
 export default function Profile(props: Props) {
   
   const router = useRouter()
-  const {currentProfile} = useUserContext()
+  const userContext = useUserContext()
+  const profileType = userContext?.currentProfile?.profileType||null
   const {isTabletWidth} = useResize()
   const [page, setPage] = useState<ProfilePages>(props.page as ProfilePages||ProfilePages.Saved)
   const [showNav, setShowNav] = useState<boolean>(isTabletWidth)
@@ -48,7 +49,7 @@ export default function Profile(props: Props) {
   }
 
   const availablePages = ((): ProfilePages[] => {
-    switch(currentProfile.profileType) {
+    switch(profileType) {
       case ProfileType.Employee: 
       return [
         ProfilePages.Saved,
@@ -119,10 +120,10 @@ export default function Profile(props: Props) {
   return ( 
     <div className={classNames(styles.root)}>
       {
-        currentProfile.profileType === ProfileType.Employee && !showNav &&
+        profileType === ProfileType.Employee && !showNav &&
         <UserProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
         ||
-        currentProfile.profileType === ProfileType.Hirer && !showNav &&
+        profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&

@@ -21,6 +21,7 @@ import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 import CreateCommunityArticleModal from 'components/modals/CreateCommunityArticleModal'
 import MembersModal from 'components/modals/MembersModal'
 import DetailsModal from 'components/modals/DetailsModal'
+import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -104,6 +105,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.DetailsModal:
         return <Modal isOpen {...commonSettings}>
           <DetailsModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ChatsFolderModal:
+        return <Modal isOpen {...commonSettings}>
+          <ChatsFolderModal onClose={commonSettings.onRequestClose}/>
         </Modal>
 
     }

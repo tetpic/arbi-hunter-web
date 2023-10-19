@@ -46,6 +46,7 @@ export default function LangaugesModal(props: Props) {
     onSave={onSaveHandler}  
     title={'Иностранные языки'} 
     withInput={false}
+    disabledButton={!langRadioActive || !levelRadioActive}
     >
       <>
       <div className={styles.wrapper}>

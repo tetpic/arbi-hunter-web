@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import IChat, { IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
+import IChat, { IChatFolder, IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
@@ -8,18 +8,11 @@ export default class ChatRepository {
   static async getChatList(option: MessageFilterOptions, profile: ProfileType, token?: string, config?: AxiosRequestConfig): Promise<IPagination<IChat>|null> {
     const res = await request({
       method: 'get',
-      url: '/api/chat/dialog?sort=lastMessageAt,DESC' + 
-      (option.page? `&chatFolderId=${option!.folderId!}`:'') +
-      (option.page  ? `&page=${option!.page!}` : '') +
-      (option.limit  ? `&limit=${option!.limit!}` : '') +
-      (option.vacanciesId  && option.vacanciesId
-          ? `&vacanciesIds=${option.vacanciesId.join(',')}`
-          : '') +
-      (option.search ? `&search=${option.search}` : '') +
-      (option.type  ? `&applicationStatus=${option!.type!.convertToString()}` : '') +
-      (option.onlyUnread  ? `&onlyUnread=${option!.onlyUnread}` : '') +
-      (option.inactive  ? `&inactive=${option!.inactive}` : ''),
-
+      url: '/api/chat/dialog',
+      data: {
+        ...option,
+        sort: 'lastMessageAt,DESC'
+      },
       profile,
       token,
       config
@@ -44,12 +37,27 @@ export default class ChatRepository {
     return res
   }
 
-  static async getChatFolders(profile: ProfileType, token?: string): Promise<any|null> {
+  static async getChatFolders(profile: ProfileType, token?: string): Promise<IPagination<IChatFolder>|null> {
     const res = await request({
       method: 'get',
       url: '/api/chat-folder?sort=pinned,DESC&sort=lastMessageAt,DESC',
       profile,
       token
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+
+  static async editChatFolderState(profile: ProfileType, data: {id: number, name?: string, notifications?: boolean, pinned?: boolean}): Promise<any|null> {
+    const {id, ...rest} = data
+    const res = await request({
+      method: 'patch',
+      url: `/api/chat-folder/${id}`,
+      data: rest, 
+      profile,
     })
     if(res.err) {
       return null
@@ -69,10 +77,12 @@ export default class ChatRepository {
     return res
   }
 
-  static async moveChatFolder(profile: ProfileType, chatFolderId: number, chatsIds: number[]): Promise<any|null> {
+  static async moveChatToFolder(profile: ProfileType, data: {chatFolderId: number, chatsIds: number[]}): Promise<any|null> {
+    
     const res = await request({
       method: 'post',
       url: '/api/chat/move',
+      data,
       profile
     })
     if(res.err) {

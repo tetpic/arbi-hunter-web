@@ -37,7 +37,6 @@ export default function Button(props: Props) {
     [styles.hover]: props.hover ?? hover,
     [styles.withIcon]: !!props.icon
   }, props.className)
-  // const darkSpinner = props.styleType.includes('outlined')
 
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.stopPropagation()

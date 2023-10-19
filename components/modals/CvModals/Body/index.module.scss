@@ -78,3 +78,9 @@
     right: 16px;
   }
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: .5;
+  filter: grayscale(1);
+}

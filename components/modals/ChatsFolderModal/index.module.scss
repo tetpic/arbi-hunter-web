@@ -1,0 +1,69 @@
+@import 'styles/index';
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $white;
+
+  .button {
+    font-size: $mediumText;
+    font-weight: $medium;
+    cursor: pointer;
+  }
+
+  .buttonBlue {
+    @extend .button;
+    color: $blue;
+  }
+
+  .title {
+    font-weight: $semibold;
+    font-size: $largeText;
+  }
+}
+
+.body {
+  max-height: 80vh;
+  max-height: 80dvh;
+  overflow: auto;
+
+  .item {
+    display: grid;
+    grid-template-areas: 'p n c' 'p v c';
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    align-items: center;
+    padding-block: 8px;
+    cursor: pointer;
+    @include transitionDefault;
+    @include exeptLast {
+      border-bottom: 2px $grey solid;
+    }
+    @include hover {
+      background-color: $greyAlt;
+    }
+  }
+
+  .name {
+    grid-area: n;
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+  }
+
+  .userPic {
+    grid-area: p;
+  }
+
+  .vacancy {
+    grid-area: v;
+    color: $greyLight;
+    font-size: $smallText;
+    font-weight: $medium;
+  }
+
+  .checkBox {
+    grid-area: c;
+  }
+}

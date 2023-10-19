@@ -52,7 +52,6 @@ export default function ChangePassword(props: Props) {
   return (
     <FormikProvider value={passwordFormik}>
       <Form className={styles.root}>
-      
         <InputField 
         label={'Новый пароль:'}
         className={styles.input} 
@@ -64,7 +63,7 @@ export default function ChangePassword(props: Props) {
         suffix={'icon'}
         suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
         onSuffixClick={passwordHandler}
-        validate={Validator.required}
+        validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <Button className={styles.button}>Сохранить</Button>
       </Form>

@@ -1,6 +1,6 @@
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
-import {useState } from 'react'
+import {useEffect, useState } from 'react'
 import ChatItem from './ChatItem'
 import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
@@ -12,26 +12,22 @@ interface Props {
   onSelect: (chat: IChat) => void
 }
 
-enum ChatNav {
-  AllChats = 'allChats',
-}
+
 
 export default function Chats(props: Props) {
-  const [page, pager] = useState<ChatNav>(ChatNav.AllChats)
+  const [page, pager] = useState<string>('__all__')
   const chatContext = useChatContext()
+  const folders = [...chatContext.folders.values()]
 
+  const itemsNav = [
+    //__all__ если кому-то взбредет назвать папку all
+    {name: 'Все чаты', type: '__all__'},
+    ...folders?.map(el=> {return {name: el.name, type: el.name}})
+  ]
 
-  //TODO: подгрузка папок пользователя
-  const itemsNav = Object.values(ChatNav).map(el=> {
-    switch (el) {
-      case ChatNav.AllChats :
-        return {name: 'Все чаты', type: el}
-      // case ChatNav.HighSalary: 
-      //   return {name: 'Высокая зп', type: el}
-      // case ChatNav.Remote:
-      //   return {name: 'Удалёнка', type: el}
-    }
-  })
+  useEffect(()=>{
+    chatContext.setChatsFromFolder(page)
+  }, [page])
 
   return (<>
     <div className={styles.root} > 

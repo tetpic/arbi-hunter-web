@@ -1,11 +1,12 @@
 import {createContext, MutableRefObject, RefObject, useContext, useEffect, useRef, useState} from 'react'
-import IChat, { IChatListRequest } from 'data/interfaces/IChat'
+import IChat, { IChatFolder, IChatListRequest } from 'data/interfaces/IChat'
 import ChatRepository from 'data/repositories/ChatRepository'
 import {debounce} from 'debounce'
 import {useChatSocketContext} from 'context/chat_socket_state'
 import useWindowFocus from 'use-window-focus'
 import { useUserContext } from './user_state'
 import { IDialogState } from './chat_dialog_state'
+import { useRouter } from 'next/router'
 
 interface IChatFilter extends IChatListRequest{
 }
@@ -25,7 +26,11 @@ interface IState {
   currentDialogContext: MutableRefObject<Partial<IDialogState>>
   foldersActive: boolean
   setFoldersActive: ()=>void
-  folders: Map<number, any>
+  folders: Map<number, IChatFolder>
+  createChatFolder: (name: string, chats: IChat[]) => Promise<boolean>
+  editChatFolder: (data: {chatFolderId: number, chatsIds: number[] }, name: string) => Promise<boolean>
+  removeChatFolder: (id: number) => Promise<boolean> 
+  setChatsFromFolder: (name: string) => void
 
 }
 
@@ -36,13 +41,14 @@ const ChatContext = createContext<Partial<IState>>(defaultValue)
 interface Props {
   children: React.ReactNode
   chats?: IChat[]
-  folders?: any
+  folders?: IChatFolder[]
 }
 
 export function ChatWrapper(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.currentProfile.profileType
   const isLogged = userContext.isLogged
+  const router = useRouter()
 
   const chatSocket = useChatSocketContext()
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -115,6 +121,53 @@ export function ChatWrapper(props: Props) {
     setFoldersActiveState(!foldersActive)
   }
 
+  const removeChatFolder = async (id: number): Promise<boolean> => {
+    await ChatRepository.deleteChatFolder(profileType, id)
+    setFolders(state => {
+      state.delete(id)
+      return new Map(state)
+    })
+    return true
+  }
+
+  const setChatsFromFolder = async (chatName: string) => {
+    const folderToSet = [...folders.values()].find(el => el.name === chatName)||null
+    if(folderToSet) {
+      const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id}, profileType)
+      setChats(chats.data)
+      router.replace({query: { ...router.query, chat: chats.data[0].id}}, undefined, {shallow: true})
+      setCurrentChatId(chats.data[0].id)
+    }
+    else {
+      setChats(props.chats)
+    }
+  }
+
+  const editChatFolder = async (data: {chatFolderId: number, chatsIds: number[] }, name: string): Promise<boolean> => {
+    await ChatRepository.moveChatToFolder(profileType, data)
+    const folder = await ChatRepository.editChatFolderState(profileType, {id: data.chatFolderId, name})
+    setFolders(state=> {
+      state.set(folder.id, folder)
+      return new Map(state)
+    })
+    return true
+  }
+ 
+  const createChatFolder = async (name: string, chats: IChat[]):Promise<boolean> => {
+    try{
+      const res = await ChatRepository.createChatFolder(profileType, { name })
+      await ChatRepository.moveChatToFolder(profileType, {chatFolderId: res.id, chatsIds: chats.map(c => c.id)})
+      const folders = await ChatRepository.getChatFolders(profileType)
+      setFolders(state=> {
+        return new Map(folders.data.map(el=> [el.id, el]))
+      })
+      return true
+    }
+    catch(err) {
+      console.warn(err)
+    }
+  }
+
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({}, profileType)
     setChats(data.data ?? [])
@@ -132,6 +185,13 @@ export function ChatWrapper(props: Props) {
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(()=>{
+    
+    setFolders(_=> {
+      return new Map(props.folders.map(f=> [f.id, f]))
+    })
+  }, [props.folders])
 
   useEffect(() => {
     if(!currentChatId){
@@ -207,6 +267,11 @@ export function ChatWrapper(props: Props) {
 
     foldersActive,
     setFoldersActive,
+    createChatFolder,
+    folders,
+    removeChatFolder,
+    editChatFolder,
+    setChatsFromFolder
   }
 
   return (

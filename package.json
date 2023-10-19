@@ -59,7 +59,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev": "next dev -H 127.0.0.1 -p 3088 & local-ssl-proxy --source 3080 --target 3088",
+    "dev": "next dev -H 127.0.0.1 -p 3088",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -37,7 +37,7 @@ export default function MediaCommunities(props: Props) {
       {props.communities&& props.communities.map(comm => {
         return (
           <SwiperSlide className={styles.slide} key={comm.id}>
-            <div className={styles.item} onClick={()=>{router.push(`/communities/${comm.id}`)}}>
+            <div className={styles.item} onClick={()=>{router.push(`media/community/${comm.id}`)}}>
               <div className={styles.imageWrapper}>
                 {comm.image&& 
                   <Image 

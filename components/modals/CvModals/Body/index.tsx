@@ -4,6 +4,7 @@ import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
 import { ChangeEvent, ReactElement } from 'react'
 import styles from './index.module.scss'
+import classNames from 'classnames'
 
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
@@ -13,6 +14,8 @@ interface Props {
   title: string
   placeholder?: string
   withInput?: boolean|undefined
+  disabledButton?: boolean|undefined
+
 }
 
 export default function Body(props: Props) {
@@ -39,7 +42,7 @@ export default function Body(props: Props) {
     {!isPhoneWidth && 
       <Button className={styles.buttonDefault} onClick={props.onClose} >Отменить</Button>
     }
-    <Button className={styles.buttonYellow} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
+    <Button className={classNames(styles.buttonYellow, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
   </div>
   </>)
 }

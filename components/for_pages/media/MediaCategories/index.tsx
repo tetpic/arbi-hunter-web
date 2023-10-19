@@ -47,7 +47,7 @@ export default function MediaCategories(props: Props) {
                 />
             </div>
             <p className={styles.name} title={category.name}>{category.name}</p>
-            <Link  className={styles.artCounter} href={`media/page?category=${category.id}`}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Link>
+            <Link  className={styles.artCounter} href={`media/page?page=categories&category=${category.id}`}><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></Link>
           </div>
         </SwiperSlide>
       )

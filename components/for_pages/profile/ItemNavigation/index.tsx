@@ -13,7 +13,7 @@ interface Props<T> {
 
 /**
  * @activeItem T
- * @items {name: string, type: T}
+ * @items {name: string, type: T}[]
  * @onClick (n: T) => void
  * @className : string
  * @bottomStringClass : string

@@ -1,6 +1,6 @@
 import Navigation from 'components/ui/Navigation'
 import TitleForSection from 'components/ui/TitleForSection'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NavigationSet } from 'types/types'
 import Communities from './Communities'
 import { useResize } from 'components/hooks/useResize'
@@ -16,6 +16,7 @@ import NewsByCategories from './NewsByCategories'
 import SearchBar from 'components/ui/SearchBar'
 
 import styles from './index.module.scss'
+import { MediaWrapper } from 'context/media_state'
 
 interface Props {
   category?: number
@@ -91,6 +92,10 @@ export default function CommunitiesPage(props: Props) {
     }
   })()
 
+  useEffect(()=>{
+      router.replace({query: { ...router.query, page: page, category: currentCategory.id}}, undefined, {shallow: true})
+  }, [page, currentCategory])
+
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
@@ -100,7 +105,11 @@ export default function CommunitiesPage(props: Props) {
       }
       <div className={styles.bodyWrapper}>
         <SearchBar className={styles.searchBar}/>
-        {body}
+
+        <MediaWrapper>
+          {body}
+        </MediaWrapper>
+        
       </div>
     </div>
     {!isTabletWidth && 

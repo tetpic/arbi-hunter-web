@@ -10,12 +10,15 @@ interface IState {
   likeArticle: (article: IArticle) => Promise<boolean>
   categories: Map<number, ICategory>
   setCategories: ()=>Promise<boolean>
+  currentNews: Map<number, IArticle>
+  setCurrentNews: (data: {articles?: IArticle[], clear?: boolean}) => void
 }
 
 const MediaContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  categories?: Map<number, ICategory>
 }
 
 export function MediaWrapper(props: Props) {
@@ -25,6 +28,19 @@ export function MediaWrapper(props: Props) {
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map)
   const [categories, setCategoriesState] = useState<Map<number, ICategory>>()
 
+  const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
+
+  const setCurrentNews = (data: {articles?: IArticle[], clear?: boolean}) => {
+    setCurrentNewsState(state=> {
+      if(data.clear) {
+        state.clear()
+      }
+      data.articles&& data.articles.forEach(a=> {
+        state.set(a.id, a)
+      })
+      return new Map(state)
+    })
+  }
 
   const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
     return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType, page)
@@ -51,25 +67,16 @@ export function MediaWrapper(props: Props) {
     return true
   }
 
-  
-
-  const likeArticle =(article: IArticle): Promise<boolean> => {
-    
+  const likeArticle =async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
+    /* TODO: LIKES */
     if(article.isLikedByCurrentProfile) {
-      return ArticlesRepository.removeLikeFromArticle(profileType, article.id)
-      .then(res=> {
-        
-        return true
-      })
+      await ArticlesRepository.removeLikeFromArticle(profileType, article.id)
+      return false
     }
     else if(!article.isLikedByCurrentProfile) {
-      return ArticlesRepository.addLikeToArticle(profileType, article.id)
-      .then(res=> {
-        
-        return true
-      })
+      await ArticlesRepository.addLikeToArticle(profileType, article.id)
+      return true
     }
-    
   }
 
   const value: IState = {
@@ -77,7 +84,9 @@ export function MediaWrapper(props: Props) {
     savedArticles,
     likeArticle,
     categories,
-    setCategories
+    setCategories,
+    currentNews,
+    setCurrentNews
   }
 
   return (

@@ -19,7 +19,7 @@ export const getServerSideProps = (async (context: {/* query: Query, */ req: { c
   if(profileType && token) {
     const chats = await ChatRepository.getChatList({}, profileType, token)
     const folders = await ChatRepository.getChatFolders(profileType, token)
-    return {props: {chats: chats.data, folders}}
+    return {props: {chats: chats.data, folders: folders.data}}
   }
   else {
     return {redirect: {destination: '/login', permanent: false} }
@@ -28,6 +28,7 @@ export const getServerSideProps = (async (context: {/* query: Query, */ req: { c
 
 
 export default function MessengerPage(props: Props) {
+  
   return <ChatSocketWrapper>
     <ChatWrapper chats={props.chats} folders={props.folders}>
       <Messenger/>

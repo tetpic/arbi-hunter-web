@@ -4,6 +4,7 @@ import SavedCourses from '../Courses'
 import SavedCVs from './Cvs'
 import styles from './index.module.scss'
 import SavedMedia from '../../Media'
+import { MediaWrapper } from 'context/media_state'
 
 interface Props {
 }
@@ -38,7 +39,10 @@ export default function Saved(props: Props) {
       ||
       activeItem===SavedNavigation.Courses&&<SavedCourses/>
       ||
-      activeItem===SavedNavigation.Media&&<SavedMedia/>
+      activeItem===SavedNavigation.Media&&
+      <MediaWrapper>
+        <SavedMedia/>
+      </MediaWrapper>
     }
   </div>)
 }

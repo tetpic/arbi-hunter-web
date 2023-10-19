@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import rightImage from 'images/media_right.png'
 import leftImage from 'images/media-left.png'
-import Button from 'components/ui/Button'
 import styles from './index.module.scss'
+import Link from 'next/link'
 
 
 
@@ -18,6 +18,6 @@ export default function MediaPageHeader(props: Props) {
       <h1 className={styles.title}>Присоединяйся к комьюнити <br /> <span>Arbi</span>Hunter</h1>
       <p className={styles.text}>Зарегистрируйся и получи доступ к подпискам на сообщества, сохраняйте статьи, подписывайтесь на новости</p>
     </div>
-    <Button className={styles.registerButton}><span>Зарегистрироваться</span></Button>
+    <Link className={styles.registerButton} href={'/registration'}><span>Зарегистрироваться</span></Link>
   </div>)
 }

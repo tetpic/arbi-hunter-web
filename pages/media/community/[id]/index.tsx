@@ -2,6 +2,7 @@ import CommunityPage from 'components/for_pages/communities/Community'
 import ContentLayout from 'components/layout/ContentLayout'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
+import { CookiesType } from 'types/enums'
 
 interface Props {
   community: ICommunity
@@ -14,7 +15,9 @@ interface Query {
 
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
   const id  = Number(context.query.id)
-  if(id) {
+  const token = context.req.cookies[CookiesType.accessToken]
+
+  if(id && token) {
     try{
       const community = await CommunitiesRepository.getCommunityById(id)
       return {props: {community, id}}
@@ -22,6 +25,10 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
     catch(err){
       return {props: {id}}
     }
+  }
+  else {
+    //task 730
+    return {redirect: {destination: '/login', permanent: false} }
   }
 }) 
 
