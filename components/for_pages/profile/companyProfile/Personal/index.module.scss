@@ -2,8 +2,12 @@
 
 .root {
   width: 100%;
+  @include mq($TabletWidth, max) {
+
+  }
 }
 
 .contentWrapper {
   margin-top: 24px;
 }
+

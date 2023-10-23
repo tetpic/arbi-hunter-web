@@ -56,6 +56,7 @@ export default function Skills(props: Props) {
     }
   }
 
+
   useEffect(()=>{
     const values =  ['setName', 'setLocation', 'setYear']
     if(!showCoursesDetails) {
@@ -83,6 +84,9 @@ export default function Skills(props: Props) {
   }, [cvContext.currentCv])
 
   useEffect(()=>{
+  }, [cvContext.helpObjects])
+
+  useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
   
@@ -94,7 +98,9 @@ export default function Skills(props: Props) {
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = cvContext.helpObjects
-    const filteredLangs = helperState.languageKnowledges.filter(e=> e.language !== l.language)
+    // const filteredLangs = helperState.languageKnowledges.filter(e=> e.language !== l.language)
+    const filteredLangs = helperState.languageKnowledges
+    filteredLangs.delete(l.language)
     cvContext.setHelpObjects({...helperState, languageKnowledges: filteredLangs})
   }
 
@@ -157,9 +163,9 @@ export default function Skills(props: Props) {
     onClick={()=>{appContext.showModal(ModalType.LanguageModal)}} 
     text={'Иностранные языки'}
     />
-    {cvContext.helpObjects?.languageKnowledges?.length > 0 &&
+    {cvContext.helpObjects?.languageKnowledges?.size > 0 &&
       <div className={styles.itemsWrapper}>
-        {cvContext.helpObjects&&cvContext.helpObjects?.languageKnowledges
+        {cvContext.helpObjects&& [...cvContext.helpObjects?.languageKnowledges.values()]
         .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={languages.getName(el.language, 'ru')} /> )
         }
       </div>

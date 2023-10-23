@@ -1,19 +1,11 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 24px;
-
+  // margin-top: 24px;
   height: calc(100dvh - 240px);
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-}
-
-
-.emptyMessage {
-  color: $white;
-  font-weight: $medium;
-  font-size: $smallText;
 }

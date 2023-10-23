@@ -1,7 +1,7 @@
+import styles from './index.module.scss'
 import { useState } from 'react'
 import ItemNavigation from '../../ItemNavigation'
 import ChangePassword from './Password'
-import styles from './index.module.scss'
 import PersonalInformation from './PersonalInformation'
 
 interface Props {
@@ -20,9 +20,6 @@ function translatePersonalNavigation(p: PersonalNavigation) {
       return 'Изменить пароль'
   }
 }
-
-
-
 
 export default function Personal(props: Props) {
 

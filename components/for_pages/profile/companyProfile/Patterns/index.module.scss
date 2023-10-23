@@ -5,21 +5,22 @@
   height: calc(100vh - 175px);
   height: calc(100dvh - 175px);
    @include mq($TabletWidth, max) {
-    height: calc(100vh - 175px);
-    height: calc(100dvh - 175px);
+    height: calc(100vh - 195px);
+    height: calc(100dvh - 195px);
   }
 }
 
 .createNew {
   @include buttonYellow;
   align-self: flex-end;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-
- 
 }
 

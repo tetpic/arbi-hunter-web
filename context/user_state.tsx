@@ -21,27 +21,16 @@ interface IState {
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
+  removeCurrentProfile: () => void
+  updateUser: (user?: IUser) => void
 }
 
 const loginState$ = new Subject<boolean>()
 const loginUserState$ = new Subject<IUser | null>()
 
-const defaultValue: IState = {
-  token: null,
-  setToken: async (token) => null,
-  isLogged: false,
-  isAuth: null,
-  logout: () => null,
-  userLoaded: false,
-  user: undefined,
-  currentProfile: null,
-  setCurrentProfile: (p: IUserProfile) => null,
-  profileType: ProfileType.Employee,
-  setProfileType: () => null,
-  editCurrentProfile: async()=>null,
-}
+const defaultValue: Partial<IState> = {}
 
-const UserContext = createContext<IState>(defaultValue)
+const UserContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
@@ -116,6 +105,8 @@ export function UserWrapper(props: Props) {
   const logout = () => {
     router.replace('/')
     Cookies.remove(CookiesType.accessToken)
+    Cookies.remove(CookiesType.profileType)
+    Cookies.remove(CookiesType.language)
     setUserToken(null)
     setIsLogged(false)
     setCurrentProfileState(null)
@@ -123,12 +114,21 @@ export function UserWrapper(props: Props) {
     loginState$.next(false)
   }
 
+  const removeCurrentProfile = () => {
+    if(confirm('Удалить существующий аккаунт?')) {
+      UserRepository.removeCurrentUserByType(currentProfile.profileType)
+      .then(_=>{
+        logout()
+        router.replace('/registration')
+      })
+    }
+  }
+
   useEffect(() => {
     userRef.current = user
   }, [user])
 
-  useEffect(() => {  
-    
+  useEffect(() => { 
     if (props.token && user && props.user?.isRegistrationCompleted) {    
       setIsLogged(true)
       setCurrentProfileState(props.user.profiles && props.user.profiles.find(u => user.id === u.userId))
@@ -169,6 +169,8 @@ export function UserWrapper(props: Props) {
    isAuth,
    logout,
    editCurrentProfile,
+   removeCurrentProfile,
+   updateUser
   }
 
   return (

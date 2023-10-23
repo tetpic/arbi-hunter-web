@@ -8,7 +8,7 @@ interface Props {
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
   const profileType = context.req.cookies[CookiesType.profileType]
   const token = context.req.cookies[CookiesType.accessToken]
-  if(profileType && token) {
+  if(profileType) {
     return {
       redirect: {destination: '/', permanent: false}   
     }

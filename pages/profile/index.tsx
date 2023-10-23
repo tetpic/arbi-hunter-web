@@ -11,7 +11,7 @@ interface Props extends Query {
 }
 
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
-  const {page} = context.query
+  const page = context.query.page||null
   const profileType = context.req.cookies[CookiesType.profileType]
   const token = context.req.cookies[CookiesType.accessToken]
   if(profileType && token) {

@@ -1,5 +1,6 @@
 import CommunityPage from 'components/for_pages/communities/Community'
 import ContentLayout from 'components/layout/ContentLayout'
+import { MediaWrapper } from 'context/media_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
 import { CookiesType } from 'types/enums'
@@ -36,7 +37,9 @@ export default function Community(props: Props) {
 
   return (
     <ContentLayout title={props.community.name.toString()}> 
-      <CommunityPage community={props.community} id={props.id}/>
+      <MediaWrapper>
+        <CommunityPage community={props.community} id={props.id}/>
+      </MediaWrapper>
     </ContentLayout>
    
   )

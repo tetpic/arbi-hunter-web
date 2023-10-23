@@ -82,10 +82,13 @@ export default function Button(props: Props) {
       disabled={props.disabled}
       className={classNames(cn)}
     >
-        <span className={classNames({
+        <span 
+        className={classNames({
           [styles.text]: true,
           [styles.textHidden]: props.spinner,
-        })}>{props.icon}{props.children}</span>
+        })}>
+          {props.icon}{props.children}
+        </span>
         {props.isProcess &&
         <div className={classNames({
           [styles.spinner]: true,

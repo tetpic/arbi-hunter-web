@@ -29,7 +29,7 @@ export default class VacancyRepository {
   static async getActiveVacancies(): Promise<IVacancy[]|null> {
     const res = await request({
       method: 'get',
-      url: '/api/vacancy/currentUser?s={"published": true}',
+      url: '/api/vacancy/currentUser?s={"published": true}&sort=updatedAt,DESC',
     })
     if(res.err) {
       return null

@@ -7,6 +7,7 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import classNames from 'classnames'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import { useFormikContext } from 'formik'
 
 interface Props<C> {
   onSetOption: (n: C) => void
@@ -21,12 +22,13 @@ interface Props<C> {
 }
 
 export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
-  const [inputValue, setInputValue] = useState<string>(props.value)
+  // const [inputValue, setInputValue] = useState<string>(props.value)
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
+  const {values, setFieldValue } = useFormikContext()
 
   const request = useThrottleFn((r: ISearchLocalyRequest) => {
     setLoading(true)
@@ -43,14 +45,16 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
   const optionClickHandler = (option: C) => {
     setDropDownOpen(false)
     props.onSetOption(option)
-    setInputValue(option.name)
+    setFieldValue(props.name, option.name)
+    // setInputValue(option.name)
   }
 
   const requestHandler = (pageNumber?: number, value?: string) => {
+    
     const options = {
       page: pageNumber?pageNumber:page,
       limit: 10,
-      search: value?value:inputValue, 
+      search: value?value:props.value, 
       lang: 'ru', //поменять на динмический
       country: props.country?props.country:'RU' //поменять на динамический
     }
@@ -60,7 +64,9 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
   const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setPage(1)
     const targetValue = e.target.value
-    setInputValue(targetValue)
+    // setInputValue(targetValue)
+    setFieldValue(props.name, targetValue)
+
     if(props.onChange) {props.onChange(targetValue)}
     if(targetValue.length <1) {
       setDropDownOpen(false)
@@ -91,7 +97,7 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
       color={'default'} 
       name={props.name} 
       onChange={onInputChangeHandler}
-      value={inputValue}
+      // value={inputValue}
       suffix={'icon'}
       suffixIcon={<ArrowDownSvg className={classNames(styles.arrow, isDropDownOpen&&styles.arrowTop)}/>}
       onClick={onClickHandler}

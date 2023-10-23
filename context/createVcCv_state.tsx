@@ -10,7 +10,7 @@ import { useUserContext } from './user_state'
 
 interface HelpObject {
   skills?: Map<number, ISource>,
-  languageKnowledges?: ILanguageKnowledge[],
+  languageKnowledges?: Map<string, ILanguageKnowledge>,
   sources?: ISource[]
   activeSources?: Map<number, ISource>
   cityId?: number
@@ -21,7 +21,7 @@ interface HelpObject {
 const initialHelpObject: HelpObject = {
   activeSources: new Map, 
   skills: new Map, 
-  languageKnowledges: [], 
+  languageKnowledges: new Map, 
   sources: [],
   cityId: null,
   countryId: null,
@@ -38,7 +38,7 @@ interface IState {
   getCurrentVc: (id: number, vacancy?: IVacancy) => void
 
   helpObjects: HelpObject
-  setHelpObjects: (o: HelpObject)=> void
+  setHelpObjects: (o?: HelpObject)=> void
 
   progress: number
   setProgress: (p: number) => void
@@ -80,8 +80,10 @@ export function CreateVcCvWrapper(props: Props) {
     handleProgress(p)
   }
 
-  const setHelpObjects = (o: HelpObject) => {
-    
+  const setHelpObjects = (o?: HelpObject) => {
+    if(!o) {
+      setHelp(initialHelpObject)
+    }
     setHelp(state=> {return {...state, ...o}})
   }
 
@@ -113,6 +115,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
+    
     if(type === 'vc') {
       const vcItem = item as IVacancy
       setHelp(state=>{return {...state, 
@@ -120,7 +123,7 @@ export function CreateVcCvWrapper(props: Props) {
         cityId: vcItem.cityId,
         countryId: vcItem.countryId,
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
-        languageKnowledges: vcItem.languageKnowledges,
+        languageKnowledges: new Map(vcItem?.languageKnowledges.map(el=>[el.language, el])),
         activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
       }})
       setVc(state=> {return {...state, ...item,
@@ -134,7 +137,7 @@ export function CreateVcCvWrapper(props: Props) {
         cityId: cvItem.cityId,
         countryId: cvItem.countryId,
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),
-        languageKnowledges: cvItem.languageKnowledges,
+        languageKnowledges: new Map(cvItem.languageKnowledges.map(el=> [el.language, el])),
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))
       }})
       setCv(state=> {return {...state, ...item,
@@ -145,6 +148,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   const getCurrentVc = (id: number, vacancy?: IVacancy) => {
     if(vacancy) {
+      
       setEditedItem(vacancy, 'vc')
       return
     }

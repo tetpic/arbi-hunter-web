@@ -63,7 +63,9 @@ const sameWidthWithOffset = {
 
 
 export default function CountrySelect(props: Props & FieldConfig) {
-  const { t, i18n } = useTranslation()
+  const [first, ...options] = props.options
+  const customOptions = [{label: 'Russia', value: 'RU'} as IOption, ...options]
+  const { t, i18n } = useTranslation() 
   const dropdownRef = useRef(null)
   const [referenceElement, setReferenceElement] = useState(null)
   const [popperElement, setPopperElement] = useState(null)
@@ -123,7 +125,7 @@ export default function CountrySelect(props: Props & FieldConfig) {
           renderTrackVertical={props => <div {...props} className={styles.track} />}
           renderView={props => <div {...props} className={styles.view} />}
           >
-            {props.options.map((item, index) =>
+            {customOptions.map((item, index) =>
               <div className={styles.option} onClick={() => handleChange(item)} key={index}>
                 <div className={styles.icon}>
                   <FlagComponent countryName={item.label} country={item.value}></FlagComponent>

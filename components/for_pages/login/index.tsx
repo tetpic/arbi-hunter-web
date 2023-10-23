@@ -1,11 +1,10 @@
-import classnames from 'classnames'
+import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { useResize } from 'components/hooks/useResize'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
-import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
@@ -17,20 +16,21 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
-import styles from './index.module.scss'
+import Modes from 'components/ui/Modes'
 
-interface Props {
+enum LoginType {
+  Phone= 'phone',
+  Email = 'email'
 }
 
-export default function Login(props: Props) {
+export default function Login() {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
 
   const {isTabletWidth} = useResize()
-  const [loginType, setLoginType] = useState<string>('phone')
+  const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
- 
 
   const passwordHandler = () => {
     setPasswordOpen(!passwordIsOpen)
@@ -45,10 +45,17 @@ export default function Login(props: Props) {
     UserRepository.loginByEmailOrPhone(data)
     .then(res=> {      
       userContext.setToken(res.accessToken)
-      router.push('/')
+      router.replace('/profile')
     })
     .catch(err=> {
-      appContext.showSnackbar(err.message.toString(), SnackbarType.error)
+      let errString: string
+      if(err.message === 'Wrong login or password') {
+        errString = 'Неправильный логин или пароль'
+      }
+      else if(err.message === 'Network Error') {
+        errString = 'Прервано соединение с интернетом'
+      }
+      appContext.showSnackbar(errString, SnackbarType.error)
     })
   }
 
@@ -57,7 +64,7 @@ export default function Login(props: Props) {
     onSubmit: submit
   })
 
-  const changeLoginTypeHandler = (s: 'email'|'phone') => {
+  const changeLoginTypeHandler = (s: LoginType) => {
     setLoginType(s)
     formik.resetForm()
   }
@@ -81,14 +88,20 @@ export default function Login(props: Props) {
         <FormikProvider value={formik}>
           <Form className={styles.form}>
 
-            <p className={styles.subTitle}>Войти через</p>            
+            <p className={styles.subTitle}>Войти через</p>  
 
-            <div className={styles.buttonsWrapper}>
-              <Button type='button' className={classnames(styles.button, loginType === 'phone'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('phone')}>Телефон</Button>
-              <Button type='button' className={classnames(styles.button, loginType === 'email'&&styles.button_active)} onClick={()=>changeLoginTypeHandler('email')}>E-mail</Button>
-            </div>
+            <Modes 
+            className={styles.modes}
+            buttonClassName={styles.modesButtons}
+            buttons={[
+              {name: 'Телефон', type: LoginType.Phone},
+              {name: 'Почта', type: LoginType.Email}
+            ]} 
+            activeButton={loginType} 
+            onSet={(type)=> changeLoginTypeHandler(type)}
+            />   
 
-            {loginType=== 'email' &&
+            {loginType=== LoginType.Email &&
               <InputField   
               label={'E-mail:'}
               className={styles.input} 
@@ -100,7 +113,7 @@ export default function Login(props: Props) {
               />
             }
 
-            {loginType === 'phone' &&
+            {loginType === LoginType.Phone &&
               <PhoneCountryField 
               styleType={'horizontal'} 
               disabled={false} 

@@ -17,6 +17,7 @@ import styles from './index.module.scss'
 import classNames from 'classnames'
 import { useMediaContext } from 'context/media_state'
 import SortArrowsSvg from 'components/svg/SortArrowsSvg'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   category: ICategory
@@ -27,14 +28,12 @@ export default function NewsByCategories(props: Props) {
   const [total, setTotal] = useState<number>()
   const mediaContext = useMediaContext()
   const news= mediaContext.currentNews
-
-
+  const userContext = useUserContext()
 
   const likeHandler = (a: IArticle)=> {
-    mediaContext.likeArticle(a).then(res=>
-      {/* TODO LIKES!!!! */}
-    )
+    mediaContext.likeArticle(a)
   }
+  
   useEffect(()=>{
     setPage(1)
     setTotal(null)
@@ -42,7 +41,7 @@ export default function NewsByCategories(props: Props) {
   }, [props.category])
 
   useEffect(()=>{
-    ArticlesRepository.getNews(true, {categories: props.category.id, isTop: false, page: page, limit: 10})
+    ArticlesRepository.getNews(true, {categories: props.category.id, isTop: false, page: page, limit: 10}, userContext?.currentProfile.profileType)
     .then(res => {
       setTotal(res.total)
       mediaContext.setCurrentNews({articles: res.data})

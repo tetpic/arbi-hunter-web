@@ -25,7 +25,6 @@ export default function CommunityPage({community, id}: Props) {
   const [total, setTotal] = useState<number>()
   const contentLength = useRef(communityContext.communityNews.size)
 
-
   const com = communityContext.currentCommunity||community
 
   useEffect(()=>{

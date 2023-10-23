@@ -14,8 +14,6 @@ import Manager from './ManagerItem'
 interface Props {
 }
 
-
-
 export default function Managers(props: Props) {
 
   const managerContext = useManagerContext()
@@ -46,13 +44,22 @@ export default function Managers(props: Props) {
       <InfiniteScroll 
       height={'100%'}
       next={()=>{managerContext.setManagers(managerContext.managersPage+1)}} 
-      hasMore={true} 
+      hasMore={managerContext.managers.size < managerContext.managersTotal} 
       loader={<Spinner size={24} color={colors.yellow}/>} 
       dataLength={0}>
          {managerContext.managers&& managerContext.managers.size > 0 && 
            [...managerContext.managers.values()].map((el, index)=> {
-             return <Manager key={index} onEdit={()=>setManagerToEdit(el)}  onRemove={()=>removeManagerHandler(el)}  manager={el}/>
+            return (
+              <Manager 
+              key={index} 
+              onEdit={()=>setManagerToEdit(el)}  
+              onRemove={()=>removeManagerHandler(el)}  
+              manager={el}/>
+            )
            })
+           ||
+           managerContext.managers.size === 0 && managerContext.managersTotal === 0 &&
+           <p className={'empty'}>Нет добавленных менеджеров</p>
          }
       </InfiniteScroll>
       {isTabletWidth && 

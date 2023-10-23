@@ -69,7 +69,6 @@ export function CommunityWrapper(props: Props) {
 
   const getCommunityNews = useCallback(async (page: number) => {
     if(currentCommunity) {
-
       return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
       .then(res => {
         setCommunityNews(state=> {

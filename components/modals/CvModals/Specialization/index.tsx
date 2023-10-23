@@ -3,12 +3,12 @@ import Radio from 'components/fields/RadioListField/Radio'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
-import CustomScrollbar from 'components/ui/CustomScrollbar'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISpecializationCategory } from 'data/interfaces/Common'
-import {  useEffect, useState } from 'react'
+import {  useEffect, useRef, useState } from 'react'
 import Body from '../Body'
 import styles from '../index.module.scss'
+import Scrollbars from 'react-custom-scrollbars-2'
 
 interface Props {
   onClose: ()=> void
@@ -20,15 +20,18 @@ export default function SpecializationModal(props: Props) {
 
   const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
   const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory>(null)
+  const scrollBar = useRef<Scrollbars>(null!)
 
   const setSpecHandler = () => {    
     const helperCv = cvContext.helpObjects
-    // const categories = helperCv.categoryIds||[]
     cvContext.setHelpObjects({...helperCv, categoryIds: [activeSubCategory]})
     props.onClose()
   }
 
-  const categoryClickHandler = (el: ISpecializationCategory) => {
+  const categoryClickHandler = (el: ISpecializationCategory, isLast?: boolean) => {
+    setTimeout(()=>{
+      isLast&&scrollBar.current.scrollToBottom()
+    }, 200)
     if(activeCategory === el) {
       setActiveCategory(null)
       return
@@ -49,14 +52,17 @@ export default function SpecializationModal(props: Props) {
     withInput={false}
     >
       <div className={styles.categoriesWrapper}>
-        <CustomScrollbar>
-        {cvContext.categories && Array.from(cvContext.categories.entries()).map(([category, subCategories])=> {
+        <Scrollbars ref={scrollBar} style={{height: '100%'}}   autoHide universal>
+        {cvContext.categories && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
           const isActive = activeCategory === category
           return (
             <div className={styles.category} key={category.id}>
               <p 
               className={classnames(styles.categoryTitle, isActive&&styles.categoryTitle_active)} 
-              onClick={()=>categoryClickHandler(category)} 
+              onClick={()=>{
+                let isLast:boolean = cvContext.categories.size === index+1
+                categoryClickHandler(category, isLast)
+              }} 
               >
                 {category.name} 
                 <ArrowDownSvg className={classnames(styles.arrow, isActive&&styles.arrow_active)}/>
@@ -78,7 +84,7 @@ export default function SpecializationModal(props: Props) {
             </div>
           )
         })}
-        </CustomScrollbar>
+        </Scrollbars>
       </div>    
     </Body>
   )

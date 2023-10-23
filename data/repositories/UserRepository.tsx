@@ -28,7 +28,7 @@ export default class UserRepository {
   static async passwordChangeConfirmation(data: {newPassword: string}): Promise<IToken|null> {
     const res = await request({
       method: 'post',
-      url: `/api/auth/passwordChangeConfirmation`,
+      url: '/api/auth/passwordChangeConfirmation',
       data
     })
     if(res.err) {
@@ -37,11 +37,22 @@ export default class UserRepository {
     return res
   }
 
-  static async editProfileByType(data: any, profileType: ProfileType): Promise<IUserProfile|null> {
+  static async editProfileByType(data: any, profile: ProfileType): Promise<IUserProfile|null> {
     const res = await request({
       method: 'post',
-      url: `/api/profile/${profileType}`,
+      url: `/api/profile/${profile}`,
       data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async removeCurrentUserByType(profile: ProfileType): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/profile/${profile}`,
     })
     if(res.err) {
       return null

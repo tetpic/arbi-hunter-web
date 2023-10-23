@@ -5,12 +5,9 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import styles from './index.module.scss'
 import MediaItem from './MediaItem'
 
-interface Props {
-}
 
 
-
-export default function SavedMedia(props: Props) {
+export default function SavedMedia() {
 
   const mediaContext = useMediaContext()
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -35,13 +32,13 @@ export default function SavedMedia(props: Props) {
     loader={<Spinner size={24}/>}
     height={'100%'} 
     dataLength={0}>
-     {loaded&&mediaContext.savedArticles && mediaContext.savedArticles.size > 0 &&
-      [...mediaContext.savedArticles.values()].map(el=> {
-        return <MediaItem media={el} key={el.id} type={el.articleType}/>
-      })
-      ||
-      loaded&&mediaContext.savedArticles.size === 0&&
-      <p className={'empty'}>Нет добавленных медиа</p>
+      {loaded&&mediaContext.savedArticles && mediaContext.savedArticles.size > 0 &&
+        [...mediaContext.savedArticles.values()].map(el=> {
+          return <MediaItem media={el} key={el.id} type={el.articleType}/>
+        })
+        ||
+        loaded&&mediaContext.savedArticles.size === 0&&
+        <p className={'empty'}>Нет добавленных медиа</p>
      }
     </InfiniteScroll>
   </div>)

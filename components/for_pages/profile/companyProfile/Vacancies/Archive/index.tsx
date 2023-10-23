@@ -24,7 +24,7 @@ export default function VacanciesArchive(props: Props) {
     })
     ||
     isLoaded&&vacancyContext.archiveVacancies.size === 0 &&
-    <p className={styles.emptyMessage}>Нет архивных вакансий</p>  
+    <p className={'empty'}>Нет архивных вакансий</p>  
     ||
     !isLoaded &&
     <Spinner color={colors.yellow} size={24}/>

@@ -30,7 +30,6 @@
   grid-template-rows: 25px auto;
   align-items: center;
   column-gap: 8px;
-  // align-items: center;
   align-items: flex-start;
   color: $white;
 
@@ -102,12 +101,21 @@
 
   .likes {
     cursor: pointer;
+    path {
+      @include transitionDefault;
+    }
+
+    @include hover {
+      path {
+        fill: $greyLight;
+      }
+    }
   }
 }
 
 .heartFilled {
   path {
-    fill: $red;
-    stroke: $red;
+    fill: $white;
+    // stroke: $red;
   }
 }

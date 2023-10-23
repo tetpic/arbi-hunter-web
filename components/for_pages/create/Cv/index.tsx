@@ -71,7 +71,7 @@ export default function Cv(props: Props) {
       commission: Number(data.commission),
       skillsIds: [...skills.keys()], 
       salary: Number(data.salary),
-      languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
+      languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=>el.id)
     }

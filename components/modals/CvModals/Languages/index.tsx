@@ -17,7 +17,6 @@ interface Props {
 
 export default function LangaugesModal(props: Props) {
   const cvContext = useCreateVcCvContext()
- 
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
@@ -34,9 +33,8 @@ export default function LangaugesModal(props: Props) {
   }, [])
 
   const onSaveHandler = () => {
-    
-    const lansgKnown = cvContext.helpObjects?.languageKnowledges||[]
-    cvContext.setHelpObjects({languageKnowledges: [...lansgKnown, {language: langRadioActive, level: levelRadioActive}]})
+    const lansgKnown = cvContext.helpObjects?.languageKnowledges||new Map
+    cvContext.setHelpObjects({languageKnowledges: new Map([...lansgKnown, [langRadioActive, {language: langRadioActive, level: levelRadioActive}]])})
     props.onClose()
   }
 

@@ -13,6 +13,7 @@
 }
 
 .modalBody {
+  padding-right: 8px;
   @include mq($PhoneWidth, max) {
     display: flex;
     flex-direction: column;
@@ -24,7 +25,6 @@
 
 .position {
   padding: 12px 16px;
-
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
@@ -32,14 +32,10 @@
   background-color: $grey;
   cursor: pointer;
   @include transitionDefault;
-  // @include hoverButtonBlack;
   @include hover {
     background-color: $greyLight;
     color: $white;
   }
-  // @include exeptLast {
-  //   margin-bottom: 8px;
-  // }
   &_active {
     background-color: $blue;
     color: $white;
@@ -105,4 +101,10 @@
   column-gap: 8px;
   row-gap: 8px;
   flex-wrap: wrap;
+  padding-bottom: 40px;
 }
+
+.category {
+  margin-right: 18px;
+}
+

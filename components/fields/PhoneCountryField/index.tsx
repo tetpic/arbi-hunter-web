@@ -35,35 +35,34 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
   const [focused, setFocus] = useState(false)
   const [country, setCountry] = useState<string | null>(null)
   const showError = meta.touched && !!meta.error && !focused
-const handleChange = (value: string) => {
 
-  helpers.setValue(value)
-  try{
-    const parsed = new AsYouType()
-    parsed.input(value)
-    const mapCodes: {[key: string]: string} = {
-      '1': 'US',//AG,AI,AS,BB,BM,BS,CA,DM,DO,GD,GU,JM...25total
-      '7': 'RU',//KZ
-      '39': 'IT', //VA
-      '44': 'GB',//GG,IM,JE
-      '47': 'NO',//SJ
-      '61': 'AU',//CC, CX
-      '212': 'MA',//EH
-      '262': 'RE', //YT
-      '290': 'SH',//TA
-      '358': 'FI',//AX
-      '599': 'CW',//BQ
-      '590': 'GP'//BL,MF
-    }
+  const handleChange = (value: string) => {
+    helpers.setValue(value)
+    try{
+      const parsed = new AsYouType()
+      parsed.input(value)
+      const mapCodes: {[key: string]: string} = {
+        '7': 'RU',//KZ
+        '1': 'US',//AG,AI,AS,BB,BM,BS,CA,DM,DO,GD,GU,JM...25total
+        '39': 'IT', //VA
+        '44': 'GB',//GG,IM,JE
+        '47': 'NO',//SJ
+        '61': 'AU',//CC, CX
+        '212': 'MA',//EH
+        '262': 'RE', //YT
+        '290': 'SH',//TA
+        '358': 'FI',//AX
+        '599': 'CW',//BQ
+        '590': 'GP'//BL,MF
+      }
       if(mapCodes[`${parsed.getCallingCode()}`]){
         setCountry(mapCodes[`${parsed.getCallingCode()}`])
       }else{
         setCountry(null)
       }
-
-  }catch (e) {
+    }catch (e) {
     // console.error(e)
-  }
+    }
 }
   return (
     <div className={classNames(styles.root, props.className)}>
@@ -81,11 +80,10 @@ const handleChange = (value: string) => {
               defaultCountry={props.defaultCountry as CountryCode}
               value={field.value}
               placeholder={props.placeholder}
-              international
               withCountryCallingCode
               useNationalFormatForDefaultCountryValue
               onChange={handleChange} 
-
+              limitMaxLength={true}
               className={classNames({
                 [styles.input]: true,
                 [styles.inputError]: showError,

@@ -8,10 +8,15 @@ import request from 'utils/request'
 
 export default class ArticlesRepository {
 
-  static async getSavedByCurrentUser(profileType: ProfileType, page: number, limit: number|string = LOAD_LIMIT,): Promise<IPagination<IArticle>|null> {
+  static async getSavedByCurrentUser(profileType: ProfileType, data?: {page?: number, limit?: number|string, full?: boolean}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article?savedByCurrentProfile=true&limit=${limit}&page=${page}`,
+      url: '/api/article',
+      data: {
+        ...data,
+        savedByCurrentProfile: true,
+        limit: LOAD_LIMIT
+      },
       profile: profileType
     })
     if(res.err) {
@@ -31,7 +36,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}, profile?: ProfileType): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/article',
@@ -40,7 +45,8 @@ export default class ArticlesRepository {
         articleType: 'news',
         full: full,
         ...data,
-      }
+      },
+      profile
     })
     if(res.err) {
       return null

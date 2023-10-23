@@ -48,7 +48,6 @@ export default function CommunityContent(props: Props) {
     appContext.showModal(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
   }
 
-
   return (
   <div className={styles.root}> 
       <div className={styles.infinite}>

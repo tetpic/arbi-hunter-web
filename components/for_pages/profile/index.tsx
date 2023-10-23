@@ -34,7 +34,6 @@ export enum ProfilePages {
 }
 
 
-
 export default function Profile(props: Props) {
   
   const router = useRouter()
@@ -104,11 +103,6 @@ export default function Profile(props: Props) {
     })
     return result
   } ), [page])
-
-  const navHandler = () => {
-
-  }
-
 
   useEffect(()=>{    
     pager(page)

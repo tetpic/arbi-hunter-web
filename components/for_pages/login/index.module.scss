@@ -64,6 +64,11 @@
 
 .form {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 24px;
+
   @include mq($TabletWidth, max) {
     display: flex;
     flex-wrap: wrap;
@@ -78,9 +83,9 @@
 
 .input {
   width: 100%;
-  @include exeptLast {
-    margin-bottom: 24px;
-  }
+  // @include exeptLast {
+  //   margin-bottom: 24px;
+  // }
   @include mq($TabletWidth, max) {
     width: 49%;
   }
@@ -92,7 +97,6 @@
 .submitButton {
   @include buttonBlack;
   padding: 10px 24px;
-  margin-top: 16px;
   display: inline-block;
   @include mq($PhoneWidth, max) {
     width: 100%;
@@ -123,6 +127,14 @@
     color: $black;
     pointer-events: none;
   }
+}
+
+.modes {
+  min-width: 300px;
+}
+
+.modesButtons {
+  width: 50%;
 }
 
 

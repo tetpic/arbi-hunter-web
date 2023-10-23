@@ -9,12 +9,10 @@
   border-top-right-radius: 16px;
   border-top-left-radius: 16px;
   overflow: auto;
-
   
   >div {
     height: 100%;
   }
-
 }
 
 
@@ -87,11 +85,7 @@
   }
 }
 
-.filledHeart {
-  path {
-    fill: $white;
-  }
-}
+
 
 .sort {
   display: flex;
@@ -103,11 +97,30 @@
   font-size: $largeText;
   font-weight: $regular;
 
-
-
   .sortBy {
     display: flex;
     align-items: center;
     column-gap: 10px;
+  }
+}
+
+.likes {
+  cursor: pointer;
+ 
+  path {
+    fill: transparent;
+    @include transitionDefault;
+  }
+
+  .filledHeart {
+    path {
+      fill: $white;
+    }
+  }
+
+  @include hover {
+    path {
+      fill: $greyLight;
+    }
   }
 }

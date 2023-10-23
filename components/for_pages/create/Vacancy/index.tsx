@@ -41,6 +41,7 @@ enum VacancyNavigation {
 
 export default function Vacancy(props: Props) {
   
+  
   const {isPhoneWidth} = useResize()
   const router = useRouter()
 
@@ -56,8 +57,6 @@ export default function Vacancy(props: Props) {
   const CVItemsCount = 6
 
   const submit = (data: IVacancyCreate) => {
-    
-    
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {
@@ -65,7 +64,7 @@ export default function Vacancy(props: Props) {
       commission: (data.commission&&Number(data.commission))||null,
       skillsIds: [...skills.keys()], 
       salary: Number(data.salary),
-      languageKnowledges: languageKnowledges.map(el=>{return {language: el.language, level: el.level}}),
+      languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       cityId,
       countryId,
@@ -119,7 +118,7 @@ export default function Vacancy(props: Props) {
     schedule: props.vacancy?.schedule|| ScheduleType.FullDay, 
     employment: props.vacancy?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.vacancy?.languageKnowledges|| null, 
-    published: props.vacancy?.published||false,
+    published: props.vacancy?.published||true,
   }
 
   const formik = useFormik({
@@ -128,9 +127,16 @@ export default function Vacancy(props: Props) {
   })
 
   useEffect(()=>{
-    if(props.id && !creationContext.currentVc) {
+    
+    if(props.id) {
       creationContext.getCurrentVc(props.id, props.vacancy)
     }  
+    return ()=> {
+      
+      formik.resetForm()
+      setProgress(1)
+      creationContext.setHelpObjects()
+    }
   }, [])
 
   useEffect(()=>{

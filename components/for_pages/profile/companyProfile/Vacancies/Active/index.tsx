@@ -9,8 +9,6 @@ import styles from './index.module.scss'
 interface Props {
 }
 
-
-
 export default function VacanciesActive(props: Props) {
 
   const vacancyContext = useVacancyContext()
@@ -30,7 +28,7 @@ export default function VacanciesActive(props: Props) {
           })  
           ||
           isLoaded&&vacancyContext.activeVacancies.size === 0 &&
-          <p className={styles.emptyMessage}>Нет активных вакансий</p>  
+          <p className={'empty'}>Нет активных вакансий</p>  
           ||
           !isLoaded &&
           <Spinner color={colors.yellow} size={24}/>

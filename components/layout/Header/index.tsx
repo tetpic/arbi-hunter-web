@@ -1,3 +1,4 @@
+import styles from './index.module.scss'
 import classnames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,27 +10,25 @@ import UserPic from 'components/ui/UserPic'
 import Spinner from 'components/ui/Spinner'
 import dynamic from 'next/dynamic'
 import { FILES } from 'types/constants'
-import styles from './index.module.scss'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import Modes from 'components/ui/Modes'
 
 const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
 interface Props {
   distanceFromTop: number
-  
 }
 
 export default function Header(props: Props) {
   const userContext = useUserContext()
-  const {profileType, setProfileType} = useUserContext()
+  const {profileType, setProfileType} = userContext
+
 
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
-  const usrBtn = useRef<HTMLButtonElement>(null!)
-  const cmpBtn = useRef<HTMLButtonElement>(null!)
 
   const router = useRouter()
 
@@ -37,11 +36,11 @@ export default function Header(props: Props) {
   const loginPath = '/login'
 
   useEffect(()=>{
-    if(props.distanceFromTop > fromTop && props.distanceFromTop <= 0) {
+    if(props.distanceFromTop > fromTop && props.distanceFromTop <= -40) {
       setDirection('up')
       setFromTop(props.distanceFromTop)
     }
-    else if(props.distanceFromTop < fromTop && props.distanceFromTop <= 0) {
+    else if(props.distanceFromTop < fromTop && props.distanceFromTop <= -40) {
       setDirection('down')
       setDropDownOpen(false)
       setFromTop(props.distanceFromTop)
@@ -49,34 +48,20 @@ export default function Header(props: Props) {
   
   }, [props.distanceFromTop])
 
+  ProfileType
+
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
       <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
-        <div className={styles.modeWrapper}>
-          <div 
-          className={classnames(styles.buttonBack, profileType ===ProfileType.Hirer&&styles.buttonBack_active)} 
-          style={{width: profileType ===ProfileType.Hirer?cmpBtn.current?.clientWidth: usrBtn?.current?.clientWidth}}
-          >
-          </div>
-
-          <button 
-          ref={usrBtn} 
-          className={classnames(styles.modeButton, profileType === ProfileType.Employee &&styles.modeButton_active)} 
-          onClick={()=>{setProfileType(ProfileType.Employee)}}
-          >
-            Соискатель
-          </button>
-
-          <button 
-          ref={cmpBtn} 
-          className={classnames(styles.modeButton, profileType === ProfileType.Hirer &&styles.modeButton_active)} 
-          onClick={()=>{setProfileType(ProfileType.Hirer)}}
-          >
-            Компания
-          </button>
-        </div>
+          <Modes 
+          buttons={[
+            {name: 'Соискатель', type: ProfileType.Employee},
+            {name: 'Компания', type: ProfileType.Hirer}
+          ]} 
+          activeButton={profileType} 
+          onSet={(type)=>setProfileType(type)}/>
         }
 
         <div className={styles.linksWrapper}>

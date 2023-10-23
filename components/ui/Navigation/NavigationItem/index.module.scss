@@ -1,0 +1,61 @@
+@import 'styles/index';
+
+.navItem {
+  padding: 8px 8px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  font-size: $mediumText;
+  font-weight: $medium;
+  line-height: 32px;
+  cursor: pointer;
+  color: $white;
+  border-radius: 10px;
+  @include transitionDefault;
+  @include hoverButtonSmooth;
+  @include mq($TabletWidth, max) {
+    @include exeptLast{
+      border-bottom: 1px $grey solid;
+    }
+  }
+  
+  .icon {
+    background: $grey;
+    padding: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  &_active {
+    // background-color: $grey;
+    background: $gradientFiltered;
+
+    // pointer-events: none;
+    @include mq($TabletWidth, max) {
+      pointer-events: all;
+    }
+
+    .icon {
+      background: $gradientAlt;
+    }
+  }
+
+  .arrow {
+    margin-left: auto;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.subSet {
+  height: auto;
+  max-height: 0px;
+  @include transitionDefault;
+  overflow: auto;
+  
+  &_active {
+    max-height: 60vh;
+  }
+}

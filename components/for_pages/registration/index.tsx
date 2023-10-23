@@ -20,13 +20,14 @@ import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
 import Button from 'components/ui/Button'
 import PasswordField from 'components/fields/PasswordField'
+import { useAuthContext } from 'context/auth_state'
 
 
 
 
 export default function Registration() {
-
   const userContext = useUserContext()
+  const authContext = useAuthContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
 
@@ -47,6 +48,9 @@ export default function Registration() {
     countryId: undefined,
     cityId: undefined,
   }
+  if(userContext.profileType === ProfileType.Hirer) {
+    initialValues.company = ''
+  }
 
   const submit = async (data: IRegistrationComplete) => {
     if(!cityId || !country) {
@@ -63,7 +67,10 @@ export default function Registration() {
       
       RegistrationRepository.completeRegistration(data)
       .then(res=> {
-        router.push('/') 
+        userContext.updateUser()
+        // authContext.
+        router.replace('/') 
+
       })
       .catch(err=> {
         setDisableButton(false)
@@ -71,11 +78,6 @@ export default function Registration() {
         return
       })
     }
-  }
-
-  
-  if(userContext.profileType === ProfileType.Hirer) {
-    initialValues.company = ''
   }
 
   const formik = useFormik({
@@ -86,6 +88,7 @@ export default function Registration() {
   const countryHandler = (obj: ISearchCountryResult) => {
     setCountry(obj)
     setCityNameValue('')
+    formik.setFieldValue('cityId', '')
   }
 
   const cityHandler = (obj: ISearchCityResult) =>  {
@@ -96,11 +99,14 @@ export default function Registration() {
     if(!userContext.isLogged) {
       appContext.showModal(ModalType.RegistrationModal)
     }
-    else {
-      // router.replace('/')
-    }
     return ()=> appContext.hideModal()
   }, [userContext.isLogged])
+
+  useEffect(()=>{
+    if(userContext.currentProfile) {
+      router.replace('/profile')
+    }
+  }, [userContext.currentProfile])
 
   return ( 
     <div className={styles.root}>
@@ -158,7 +164,7 @@ export default function Registration() {
             labelName={'Страна: '}
             requestFn={LocationRepository.searchCountry}
             className={styles.dropInput}
-            error={!country?'Выберите страну из списка':undefined}
+            // error={!country?'Выберите страну из списка':undefined}
             />
 
             <DropDownInput 
@@ -170,7 +176,7 @@ export default function Registration() {
             value={cityNameValue}
             onChange={(s: string) => {setCityNameValue(s)}}
             className={styles.dropInput}
-            error={!cityId?'Выберите город из списка':undefined}
+            // error={!cityId?'Выберите город из списка':undefined}
             />
             
             <InputField 
@@ -181,20 +187,6 @@ export default function Registration() {
             color={'default'} 
             name={'telegramNickname'} 
             />
-
-            {/* <InputField 
-            label={'Пароль:'}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'password'} 
-            type={passwordIsOpen?'text':'password'}
-            suffix={'icon'}
-            suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
-            onSuffixClick={passwordHandler}
-            validate={Validator.required}
-            /> */}
 
             <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />
 
@@ -208,7 +200,6 @@ export default function Registration() {
             validate={Validator.combine([Validator.required, Validator.email])}
             />
 
-          {/* <div className={styles.submitButton} onClick={()=> formik.submitForm()}>Зарегистрироваться</div> */}
           <Button disabled={disableButton} className={styles.submitButton} onClick={()=> formik.submitForm()} spinner={loading}>
             Зарегистрироваться
           </Button>

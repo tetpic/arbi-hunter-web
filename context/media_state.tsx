@@ -19,6 +19,7 @@ const MediaContext = createContext<Partial<IState>>({})
 interface Props {
   children: React.ReactNode
   categories?: Map<number, ICategory>
+  savedArticles?: IArticle[]
 }
 
 export function MediaWrapper(props: Props) {
@@ -43,7 +44,7 @@ export function MediaWrapper(props: Props) {
   }
 
   const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
-    return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType, page)
+    return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType, {page, full: true})
     .then(res=> {
       setSavedArticlesState(state=> {
         res.data.forEach(e=> {
@@ -67,16 +68,36 @@ export function MediaWrapper(props: Props) {
     return true
   }
 
-  const likeArticle =async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
-    /* TODO: LIKES */
+  const likeStateHandler = (state: Map<number, IArticle>, article: IArticle, isLiked: boolean, currentLikes: string): Map<number, IArticle> => {
+    const item = state.get(article.id)
+    if(isLiked) {
+      item.likesCount = (Number(currentLikes) - 1).toString()
+      item.isLikedByCurrentProfile = false
+    }
+    else if(!isLiked) {
+      item.likesCount = (Number(currentLikes) + 1).toString()
+      item.isLikedByCurrentProfile = true
+    }
+    state.set(item.id, item)
+    return state
+  }
+
+  const likeArticle = async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
+    const isLiked = article.isLikedByCurrentProfile
+    const currentLikes = article.likesCount
     if(article.isLikedByCurrentProfile) {
       await ArticlesRepository.removeLikeFromArticle(profileType, article.id)
-      return false
     }
     else if(!article.isLikedByCurrentProfile) {
       await ArticlesRepository.addLikeToArticle(profileType, article.id)
-      return true
     }
+    currentNews.size > 0 && setCurrentNewsState(state=> {
+      return new Map(likeStateHandler(state, article, isLiked, currentLikes))
+    })
+    savedArticles.size > 0 && setSavedArticlesState(state=> {
+      return new Map(likeStateHandler(state, article, isLiked, currentLikes))
+    })
+    return true
   }
 
   const value: IState = {

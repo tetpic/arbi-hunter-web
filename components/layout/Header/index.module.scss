@@ -24,7 +24,6 @@
 
   @include mq($TabletWidth, max) {
     display: none;
-   
   }
 }
 
@@ -48,58 +47,7 @@
   justify-content: space-between;
 }
 
-
-.modeWrapper  {
-  border: 2px $greyAlt solid;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  column-gap: 10px;
-  position: relative;
-  font-size: $mediumText;
-  font-weight: $medium;
-}
-
-.buttonBack {
-  display: block;
-  position: absolute;
-  top: 50%;
-  transform: translate(0%, -50% );
-  left: 0px;
-  background-color: $greyLightAlt;
-  width: 45%;
-  height: 100%;
-  border-radius: 10px;
-  transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-
-  &_active {
-    left: 100%;
-    transform: translate(-100%, -50%);
-  }
-}
-
-.modeButton {
-  color: $greayLightAlt2;
-  border-radius: 14px;
-  padding: 10px 16px;
-  transition: .2s linear;
-  position: relative;
-  z-index: 2;
-  user-select: none;
-  cursor: pointer;
-
-  &_active {
-    color: $white;
-  }
-
-}
-
 .link {
-  // color: $white;
-  // transition: .2s linear;
-  // font-size: $mediumText;
-  // font-weight: $medium;
-  // @include hoverLink;
   @include textGradientWithHover;
 }
 
@@ -112,24 +60,6 @@
 
 .userLink {
   @include buttonBlack;
-  // padding: 10px 24px 8px;
-  // border-radius: 10px;
-  // border: 2px $white solid;
-  // color: $white;
-  // font-size: $mediumText;
-  // font-weight: $medium;
-  // @include transitionDefault;
-  // @include hoverButtonBlack;
-  // &_active {
-  //   border: 2px $blue solid;
-  //   color: $blue;
-  //   pointer-events: none;
-  // }
-
-  // &_create {
-  //   border: 2px $blue solid;
-  //   color: $blue;
-  // }
 }
 
 .dropdown {
@@ -143,7 +73,6 @@
   &_active {
     transform: translateY(100%);
     opacity: 1;
-
   }
 }
 
@@ -154,7 +83,6 @@
       animation:  pulsate .8s ease-in-out infinite alternate;
     }
   }
-
 }
 
 @keyframes pulsate {

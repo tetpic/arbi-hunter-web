@@ -4,9 +4,43 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 220px);
+    height: calc(100dvh - 220px);
+  }
+
 }
 
 .button {
   align-self: flex-start;
   @include buttonYellow;
+  @include mq($TabletWidth, max) {
+    order: 3;
+    width: 100%;
+    margin-top: auto;
+  }
+}
+
+.deleteAccountButton {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $red;
+  font-size: $mediumText;
+  font-weight: $medium;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    color: $white;
+    path{
+      fill: $white
+    }
+  }
+  @include mq($TabletWidth, max) {
+    order: 2
+  }
+
+  path {
+    @include transitionDefault;
+  }
 }
