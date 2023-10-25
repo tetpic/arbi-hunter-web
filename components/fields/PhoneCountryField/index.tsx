@@ -81,6 +81,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
               value={field.value}
               placeholder={props.placeholder}
               withCountryCallingCode
+              international
               useNationalFormatForDefaultCountryValue
               onChange={handleChange} 
               limitMaxLength={true}
