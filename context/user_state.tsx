@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 
 interface IState {
   token: string,
-  setToken: (token: string) => void
+  setToken: (token: string) => Promise<boolean>
   isLogged: boolean
   isAuth: MutableRefObject<boolean>
   logout: () => void
@@ -56,28 +56,29 @@ export function UserWrapper(props: Props) {
     if (newUser) {
       setUser(newUser)
       return newUser
-    } else {
-      
+    } 
+    else {
       const data = await UserRepository.getCurrentUser()
       if (data) {
         setUser(data)
         setCurrentProfileState(data.profiles[0])
       }
       setUserLoaded(true)
+      return data
     }
   }
 
-  const setToken = (token: string) => {
+  const setToken = async (token: string):Promise<boolean> => {
     const newToken = token
     const oldToken = Cookies.get(CookiesType.accessToken) ?? null
     Cookies.set(CookiesType.accessToken, token, {
       expires: CookiesLifeTime.accessToken,
     })
-
+    
     setUserToken(newToken)
     if (!oldToken && newToken) {
       loginState$.next(true)
-      updateUser()
+      await updateUser()
       loginUserState$.next(user)
     }
     if (oldToken && !newToken) {
@@ -85,6 +86,7 @@ export function UserWrapper(props: Props) {
       loginUserState$.next(null)
     }
     setIsLogged(true)
+    return true
   }
 
   const setCurrentProfile = (p: IUserProfile) => {

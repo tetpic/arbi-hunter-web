@@ -5,7 +5,7 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISpecializationCategory } from 'data/interfaces/Common'
-import {  useEffect, useRef, useState } from 'react'
+import {  useEffect, useRef } from 'react'
 import Body from '../Body'
 import styles from '../index.module.scss'
 import Scrollbars from 'react-custom-scrollbars-2'
@@ -17,9 +17,8 @@ interface Props {
 export default function SpecializationModal(props: Props) {
 
   const cvContext = useCreateVcCvContext()
+  const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
 
-  const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
-  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory>(null)
   const scrollBar = useRef<Scrollbars>(null!)
 
   const setSpecHandler = () => {    

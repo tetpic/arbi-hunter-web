@@ -1,4 +1,4 @@
-import CommunityPage from 'components/for_pages/communities/Community'
+import CommunityPage from 'components/for_pages/media/MediaPage/Community'
 import ContentLayout from 'components/layout/ContentLayout'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
@@ -18,8 +18,11 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
       return {props: {community: myCommunity}}
     }
     catch(err) {
-      return {props: {}}
+      return {redirect: {destination: '/media/page'}}
     }
+  }
+  else {
+    return {redirect: {destination: '/media'}}
   }
 
 }) 

@@ -510,3 +510,48 @@
   }
 }
 
+@mixin textFormatter {
+  color: white;
+
+  *{
+    line-height: 140% !important;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 28px;
+  }
+
+  h4 {
+    font-size: 24px;
+  }
+
+  h5 {
+    font-size: 20px;
+  }
+
+  h6 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  ol {
+    padding-left: 16px;
+    list-style-type: decimal;
+    margin-bottom: 8px;
+  }
+
+  ul {
+    padding-left: 16px;
+    list-style-type: disc;
+    margin-bottom: 8px;
+  }
+  
+}
+

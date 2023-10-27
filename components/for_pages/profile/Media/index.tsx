@@ -32,8 +32,8 @@ export default function SavedMedia() {
     loader={<Spinner size={24}/>}
     height={'100%'} 
     dataLength={0}>
-      {loaded&&mediaContext.savedArticles && mediaContext.savedArticles.size > 0 &&
-        [...mediaContext.savedArticles.values()].map(el=> {
+      {loaded&&mediaContext?.savedArticles && mediaContext?.savedArticles?.size > 0 &&
+        [...mediaContext?.savedArticles?.values()].map(el=> {
           return <MediaItem media={el} key={el.id} type={el.articleType}/>
         })
         ||

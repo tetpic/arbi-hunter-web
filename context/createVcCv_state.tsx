@@ -4,7 +4,7 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
-import { createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
 
 
@@ -44,16 +44,21 @@ interface IState {
   setProgress: (p: number) => void
 
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
+  activeCategory: ISpecializationCategory
+  activeSubCategory: ISpecializationCategory
   setCategories: ()=> void
   setSubCategories: (v: ISpecializationCategory)=>void
+  setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
+  setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory>>
+  
   reset: ()=>void
 
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
+
 }
 
-const defaultValue: Partial<IState> = {}
 
-const CreateVcCvContext = createContext<Partial<IState>>(defaultValue)
+const CreateVcCvContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -67,6 +72,9 @@ export function CreateVcCvWrapper(props: Props) {
   const [progress, handleProgress] = useState<number>(1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
+  const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
+  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory>(null)
+
 
   const setCurrentCv = (v: ICVCreate) => {
     setCv(state=> {return {...state, ...v}})
@@ -178,7 +186,6 @@ export function CreateVcCvWrapper(props: Props) {
   
 
   const value: IState = {
-    ...defaultValue,
     currentCv,
     setCurrentCv,
     getCurrentCv,
@@ -186,7 +193,7 @@ export function CreateVcCvWrapper(props: Props) {
     currentVc,
     setCurrentVc,
     getCurrentVc,
-    
+
     helpObjects,
     setHelpObjects,
 
@@ -198,7 +205,11 @@ export function CreateVcCvWrapper(props: Props) {
     setSubCategories,
     reset,
 
-    setEditedItem
+    setEditedItem,
+    activeCategory,
+    activeSubCategory,
+    setActiveCategory,
+    setActiveSubcategory,
   }
 
   return (

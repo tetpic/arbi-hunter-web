@@ -52,15 +52,9 @@ export default function Cv(props: Props) {
   const router = useRouter()
   const {progress, setProgress} = creationContext
 
-  useEffect(()=>{
-    if(props.id && !creationContext.currentCv) {
-      creationContext.getCurrentCv(props.id)
-    }  
-  }, [])
-
   const submit = (data: ICVCreate) => {
-    
     const {activeSources, languageKnowledges, skills, categoryIds} = creationContext?.helpObjects
+
     if(!categoryIds||categoryIds?.length === 0) {
       setProgress(1)
       appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
@@ -81,18 +75,17 @@ export default function Cv(props: Props) {
       .then(res=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         creationContext.reset()
-        router.back()      
+        router.replace('/profile?page=cvs')      
       })
       .catch(err=>{        
         appContext.showSnackbar(err, SnackbarType.error)
       })
-
     }
     else {
       CvRepository.createCV(sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
-          router.push('/')      
+          router.replace('/profile?page=cvs')      
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
@@ -179,13 +172,32 @@ export default function Cv(props: Props) {
     }
   }
 
-  const titles = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
+  const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
 
-  const progressHandler = (p: number) => {
+  const nextPageValidator = (pageNumber?: number) => {
+    switch(progress) {
+      case 1:
+        creationContext.helpObjects.categoryIds.length > 0
+        ? setProgress(pageNumber||progress+1)
+        : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+      break
+      default :
+        setProgress(pageNumber||progress+1)
+    }
+  } 
+
+  const changeComponent = (p: number) => {
     const [element, type] = getComponent(p)
     setTitle(getTitle(type))   
     setPage(element)
   }
+
+
+  useEffect(()=>{
+    if(props.id && !creationContext.currentCv) {
+      creationContext.getCurrentCv(props.id)
+    }  
+  }, [])
 
   useEffect(()=>{
     if(progress < 1) {
@@ -193,8 +205,7 @@ export default function Cv(props: Props) {
       router.back()
       return
     }
-    progressHandler(progress)
-
+    changeComponent(progress)
   }, [progress])
 
   useEffect(()=>{
@@ -211,7 +222,7 @@ export default function Cv(props: Props) {
         }
         {title}
       </p>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={setProgress}/>
+      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 
@@ -221,7 +232,7 @@ export default function Cv(props: Props) {
               <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(progress+1)}>Продолжить</Button>
+              <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
               <Button spinner={loading} disabled={loading} className={classNames(styles.buttonYellow, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>

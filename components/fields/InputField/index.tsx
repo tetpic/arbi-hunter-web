@@ -18,6 +18,7 @@ interface Props extends IField<string> {
   success?: boolean
   styleType: InputStyleType
   suffix?: 'clear' | 'icon' | ReactElement
+  suffixClassName?: string
   color: 'default'|'white' | 'purple' | 'darkPurple'
   suffixIcon?: ReactElement
   onSuffixClick?: () => void
@@ -50,9 +51,9 @@ export default function InputField(props: Props) {
   const getSuffix = () => {
     switch (props.suffix) {
       case 'clear':
-        return <div className={styles.suffix} onClick={() => helpers.setValue('')}><CrossSvg color={'red'} /></div>
+        return <div className={classNames(styles.suffix, props.suffixClassName)} onClick={() => helpers.setValue('')}><CrossSvg color={'red'} /></div>
       case 'icon':
-        return <div className={styles.suffix} onClick={props.onSuffixClick}>{props.suffixIcon}</div>
+        return <div className={classNames(styles.suffix, props.suffixClassName)} onClick={props.onSuffixClick}>{props.suffixIcon}</div>
       default:
         return props.suffix
     }

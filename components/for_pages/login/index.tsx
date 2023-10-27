@@ -13,7 +13,7 @@ import UserRepository from 'data/repositories/UserRepository'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Modes from 'components/ui/Modes'
@@ -41,11 +41,10 @@ export default function Login() {
     password: ''
   }
 
-  const submit = (data : ILogin) => {    
+  const submit = (data : ILogin) => {  
     UserRepository.loginByEmailOrPhone(data)
-    .then(res=> {      
+    .then(res=> {   
       userContext.setToken(res.accessToken)
-      router.replace('/profile')
     })
     .catch(err=> {
       let errString: string
@@ -68,6 +67,12 @@ export default function Login() {
     setLoginType(s)
     formik.resetForm()
   }
+
+  useEffect(()=>{
+    if(userContext.currentProfile) {
+      router.replace('/profile')
+    }
+  }, [userContext.currentProfile])
 
   return ( 
     <div className={styles.root}>

@@ -63,7 +63,7 @@ export default function CommunityHeader({community}: Props) {
       <UserPic 
       className={styles.userPic} 
       image={community.logo&&FILES + community.logo.source} 
-      icon={community.profile.id === userContext.currentProfile?.id&&!community.logo&&camera} 
+      icon={community.profile?.id === userContext.currentProfile?.id&&!community.logo&&camera} 
       size={/*props.image?114:80*/ size}
       />
       <p className={styles.name}>{community.name}</p>

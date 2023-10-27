@@ -1,0 +1,41 @@
+@import 'styles/index';
+
+.root {
+  margin-bottom: 24px;
+}
+
+.swiperSlide {
+  width: 124px;
+  height: 174px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 2px $blue solid;
+  height: 100%;
+  padding: 4px;
+  position: relative;
+  
+  .imageWrapper {
+    width: 100%;
+    height: 100%;
+    background-color: $greyLight;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .description {
+    position: absolute;
+    bottom: 12px;
+    width: calc(100% - 32px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: $smallText;
+    font-weight: $medium;
+    color: $white;
+  }
+}

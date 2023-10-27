@@ -132,8 +132,9 @@ export default function RichTextToolbar(props: Props) {
   <ToolbarButton
   onClick={() => editor.chain().focus().toggleOrderedList().run()}
   isActive={editor.isActive('orderedList')}
-  >
-   <OrderListSvg className={styles.svg}/>
+  ><>
+    <OrderListSvg className={styles.svg}/>
+  </>
   </ToolbarButton>
 
   <ToolbarButton

@@ -32,7 +32,12 @@ export default function Navigation<T extends string>(props: Props<T>) {
     <nav className={styles.wrapper}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {
         return (
-          <NavigationItem key={index} size={isTabletWidth} item={el} onClick={(t)=> onClickHandler(t)} currentPage={props.currentPage}/>
+          <NavigationItem 
+          key={index} 
+          size={isTabletWidth} 
+          item={el} 
+          onClick={(t)=> onClickHandler(t)} 
+          currentPage={props.currentPage}/>
         )
       })}
     </nav>

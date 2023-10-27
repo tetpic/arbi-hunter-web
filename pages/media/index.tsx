@@ -5,7 +5,7 @@ import { IArticle } from 'data/interfaces/IArticle'
 import ICommunity from 'data/interfaces/ICommunity'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
-import { CategoryType } from 'types/enums'
+import { CategoryType, CookiesType } from 'types/enums'
 
 interface Props {
   categories: ICategory[]
@@ -15,6 +15,12 @@ interface Props {
 }
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
+  const token = context.req.cookies[CookiesType.accessToken]
+  const profile = context.req.cookies[CookiesType.profileType]
+  const isAuth = token&&profile
+  if(isAuth) {
+    return {redirect: {destination: '/media/page/', permanent: false}}
+  }
   const categories = await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit:10})
   const communities = await CommunitiesRepository.getCommunities(1)
   const news = await ArticlesRepository.getNews(true)

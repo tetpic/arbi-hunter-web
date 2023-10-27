@@ -51,10 +51,11 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
 
   const requestHandler = (pageNumber?: number, value?: string) => {
     
+    
     const options = {
       page: pageNumber?pageNumber:page,
       limit: 10,
-      search: value?value:props.value, 
+      search: value||props.value||'', 
       lang: 'ru', //поменять на динмический
       country: props.country?props.country:'RU' //поменять на динамический
     }
@@ -68,7 +69,7 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     setFieldValue(props.name, targetValue)
 
     if(props.onChange) {props.onChange(targetValue)}
-    if(targetValue.length <1) {
+    if(targetValue.length < 1) {
       setDropDownOpen(false)
       return
     }
@@ -97,6 +98,7 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
       color={'default'} 
       name={props.name} 
       onChange={onInputChangeHandler}
+      suffixClassName={styles.suffix}
       // value={inputValue}
       suffix={'icon'}
       suffixIcon={<ArrowDownSvg className={classNames(styles.arrow, isDropDownOpen&&styles.arrowTop)}/>}

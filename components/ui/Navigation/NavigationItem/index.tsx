@@ -2,7 +2,7 @@ import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import styles from './index.module.scss'
 import { NavigationSet } from 'types/types'
 import classnames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Props<T extends string> {
   onClick: (type: T) => void
@@ -19,6 +19,16 @@ export default function NavigationItem<T extends string>(props: Props<T>) {
     props.onClick(el.type)
     setOpenSubset(!isOpenSubset)
   }
+
+  useEffect(()=>{
+    if(props.currentPage === props.item.type) {
+      setOpenSubset(true)
+    }
+    else {
+      setOpenSubset(false)
+    }
+    
+  }, [props.currentPage])
 
   return (<div className={styles.item}>
     <p 

@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-// import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import ExitRedSvg from 'components/svg/ExitRedSvg'
 import FolderSvg from 'components/svg/FolderSvg'
 import HeartSvg from 'components/svg/HeartSvg'
@@ -9,7 +8,6 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { useEffect, useRef } from 'react'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
@@ -19,7 +17,6 @@ interface Props {
   className?: string
   onClose?: ()=> void
   reference?: (r: HTMLDivElement)=>void
-
 }
 
 interface UserData {
@@ -31,13 +28,6 @@ export default function UserDropdownMenu(props: Props) {
 
   const {currentProfile, user, logout} = useUserContext()
   const profileType = currentProfile?.profileType||null
-
-  // const wrapper = useRef()
-  // const [isActive, setIsActive] = useDetectOutsideClick(wrapper.current, true)
-
-  // useEffect(()=>{
-  //   !isActive&&props.onClose()  
-  // }, [isActive])  
 
   const getUserData = (): UserData =>  {
     switch (profileType) {

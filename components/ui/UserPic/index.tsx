@@ -17,6 +17,7 @@ export default function UserPic(props: Props) {
   const router = useRouter()
 
   const onClickHandler = () => {
+    
     props.link&&router.push(props.link)
     props.onClick&&props.onClick()
   }

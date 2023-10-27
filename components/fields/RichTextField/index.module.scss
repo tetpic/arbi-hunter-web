@@ -1,12 +1,6 @@
 @import 'styles/index';
 
 .root {
-
-  ol {
-    padding-left: 16px;
-    list-style-type: disc;
-  }
-
   *{
     outline: none !important;
   }
@@ -17,34 +11,5 @@
   border: 1px $grey solid;
   margin-top: 16px;
   padding: 10px;
-  color: $white;
-
-  *{
-    line-height: 140% !important;
-  }
-
-  h2 {
-    font-size: 32px;
-  }
-
-  h3 {
-    font-size: 28px;
-  }
-
-  h4 {
-    font-size: 24px;
-  }
-
-  h5 {
-    font-size: 20px;
-  }
-
-  h6 {
-    font-size: 16px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
+  @include textFormatter;
 }

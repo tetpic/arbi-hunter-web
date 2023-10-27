@@ -23,12 +23,20 @@ export default function Header(props: Props) {
   const userContext = useUserContext()
   const {profileType, setProfileType} = userContext
 
-
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
+  // const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
+
+  /*очень странный сайд эффект... 
+  что при смене профиля, 
+  когда появляется currentProfile, 
+  useState становится почему-то true */
+  useEffect(()=>{
+    setDropDownOpen(false)
+  }, [userContext.currentProfile])
 
   const router = useRouter()
 
@@ -45,10 +53,11 @@ export default function Header(props: Props) {
       setDropDownOpen(false)
       setFromTop(props.distanceFromTop)
     }
+    else {
+      setDirection('up')
+    }
   
   }, [props.distanceFromTop])
-
-  ProfileType
 
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
@@ -79,13 +88,13 @@ export default function Header(props: Props) {
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
           <>
             <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> setDropDownOpen(!isDropDownOpen)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>setDropDownOpen(state=> !state)}/>
           </>}
 
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=> setDropDownOpen(!isDropDownOpen)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>setDropDownOpen(state=> !state)}/>
           </>}
           {userContext.currentProfile &&
             <UserDropdownMenu       

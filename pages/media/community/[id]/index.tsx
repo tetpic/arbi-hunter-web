@@ -1,4 +1,4 @@
-import CommunityPage from 'components/for_pages/communities/Community'
+import CommunityPage from 'components/for_pages/media/MediaPage/Community'
 import ContentLayout from 'components/layout/ContentLayout'
 import { MediaWrapper } from 'context/media_state'
 import ICommunity from 'data/interfaces/ICommunity'

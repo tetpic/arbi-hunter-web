@@ -67,6 +67,7 @@ export default function RichTextField(props: Props) {
   //   }
   //     appContext.showModal(ModalType.richTextLink, data)
   // }
+  
 
   const editor = useEditor({
     extensions: [
@@ -96,8 +97,7 @@ export default function RichTextField(props: Props) {
       }),
     ],
     content: props.value||value,
-    onBlur: ({editor}) => {
-      
+    onUpdate: ({editor}) => {
       if(props.returnValueType) {
         switch(props.returnValueType){
           case 'html':
@@ -119,25 +119,23 @@ export default function RichTextField(props: Props) {
   })
 
   useEffect(()=>{
-    
     if(editor) {
       editor.commands.clearContent()
       editor.commands.insertContent(props.value)
-      // editor.commands.setContent(props.value)
     }
   }, [props.value, editor])
 
   const hasError = !!meta.error && meta.touched
 
-  return (<div className={styles.root}> 
-  <div className={styles.field}>
-
-    <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
-    <div className={styles.editor}>
-      <EditorContent editor={editor} />
+  return (
+    <div className={styles.root}> 
+      <div className={styles.field}>
+        <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
+        <div className={styles.editor}>
+          <EditorContent editor={editor} />
+        </div>
+      </div>
+      <FieldError showError={hasError}>{meta.error}</FieldError>
     </div>
-  </div>
-  <FieldError showError={hasError}>{meta.error}</FieldError>
-
-  </div>)
+  )
 }

@@ -145,7 +145,7 @@ export function CommunityWrapper(props: Props) {
     CommunitiesRepository.createCommunity(profileType, data)
     .then(res=> {
       appContext.hideModal()
-      router.push(`media/community/${res.id}`)
+      router.push('/media/community/my')
     })
   }
 
@@ -172,7 +172,7 @@ export function CommunityWrapper(props: Props) {
         state.set(id, res)
         return new Map(state)
       })
-      appContext.showSnackbar('Элемент удален', SnackbarType.success)
+      appContext.showSnackbar('Элемент успешно изменен', SnackbarType.success)
       return true
     }
     else {
@@ -181,7 +181,7 @@ export function CommunityWrapper(props: Props) {
         const oldState = [...state.entries()]
         return new Map([[res.id, res], ...oldState])
       })
-      appContext.showSnackbar('Элемент успешно изменен', SnackbarType.success)
+      appContext.showSnackbar('Элемент успешно создан', SnackbarType.success)
       return true
     }
   }

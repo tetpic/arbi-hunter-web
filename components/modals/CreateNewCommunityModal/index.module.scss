@@ -42,3 +42,9 @@
     border: 1px $blue solid;
   }
 }
+
+.disabled {
+  opacity: .4;
+  filter: grayscale(1);
+  pointer-events: none;
+}

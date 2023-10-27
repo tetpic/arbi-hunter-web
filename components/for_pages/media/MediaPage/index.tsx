@@ -2,7 +2,6 @@ import Navigation from 'components/ui/Navigation'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useCallback, useEffect, useState } from 'react'
 import { NavigationSet } from 'types/types'
-import Communities from './Communities'
 import { useResize } from 'components/hooks/useResize'
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useRouter } from 'next/router'
@@ -12,11 +11,13 @@ import TableSvg from 'components/svg/TableSvg'
 import AppsAddSvg from 'components/svg/AppsAddSvg'
 import UserDoubleSvg from 'components/svg/UserDoubleSvg'
 import classNames from 'classnames'
-import NewsByCategories from './NewsByCategories'
 import SearchBar from 'components/ui/SearchBar'
 
 import styles from './index.module.scss'
 import { MediaWrapper } from 'context/media_state'
+import MainMediaPage from './MainMediaPage'
+import Communities from './Communities'
+import NewsByCategories from './NewsByCategories'
 
 interface Props {
   category?: number
@@ -40,7 +41,7 @@ function SubCategories(props: {categories: ICategory[], currentCategory: ICatego
 }
 
 export default function CommunitiesPage(props: Props) {
-  const [page, pager] = useState<CommunitiesNav>(props.page === 'categories'?CommunitiesNav.Categories:CommunitiesNav.Communities)
+  const [page, pager] = useState<CommunitiesNav>(props.page === 'categories'?CommunitiesNav.Categories:CommunitiesNav.AllArticles)
   const {isTabletWidth} = useResize()
   const router = useRouter()
   const [currentCategory, setCurrentCategory] = useState<ICategory>(props.categories.find(el=> el.id === +props.category)||props.categories[0])
@@ -69,7 +70,7 @@ export default function CommunitiesPage(props: Props) {
   const body = (()=>{
     switch(page) {
       case CommunitiesNav.AllArticles:
-        return <>Раздел &quot;все статьи&quot; в разработке</>
+        return <MainMediaPage categories={props.categories}/>
       case CommunitiesNav.Subscriptions:
         return <>мои подписки</>
       case CommunitiesNav.Communities:

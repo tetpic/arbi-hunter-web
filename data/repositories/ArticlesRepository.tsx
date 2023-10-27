@@ -168,4 +168,16 @@ export default class ArticlesRepository {
     }
     return res
   }
+
+  static async getStories(data = {sort: 'publishedAt,DESC', /*forLastNumberOfDays: 7, */ isTop: false}): Promise<IPagination<IArticle>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/story',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

@@ -12,6 +12,8 @@ interface IState {
   setCategories: ()=>Promise<boolean>
   currentNews: Map<number, IArticle>
   setCurrentNews: (data: {articles?: IArticle[], clear?: boolean}) => void
+  stories: Map<number, IArticle> 
+  setStories: () => void
 }
 
 const MediaContext = createContext<Partial<IState>>({})
@@ -28,6 +30,7 @@ export function MediaWrapper(props: Props) {
 
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map)
   const [categories, setCategoriesState] = useState<Map<number, ICategory>>()
+  const [stories, setStoriesState] = useState<Map<number, IArticle>>(new Map)
 
   const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
 
@@ -100,6 +103,16 @@ export function MediaWrapper(props: Props) {
     return true
   }
 
+  const setStories = (stories?: IArticle[]) => {
+    if(stories) {
+      setStoriesState(new Map(stories.map(el=> [el.id, el]) ))
+    }
+    ArticlesRepository.getStories()
+    .then(res=> {
+      setStoriesState(new Map(res.data.map(el=> [el.id, el]) ))
+    })
+  }
+
   const value: IState = {
     setSavedArticles,
     savedArticles,
@@ -107,7 +120,9 @@ export function MediaWrapper(props: Props) {
     categories,
     setCategories,
     currentNews,
-    setCurrentNews
+    setCurrentNews,
+    stories,
+    setStories
   }
 
   return (

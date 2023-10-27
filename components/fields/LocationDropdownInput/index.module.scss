@@ -20,10 +20,11 @@
   transform: translateY(100%);
   z-index: 100;
   width: 100%;
-  padding: 16px;
+  // padding: 16px;
 }
 
 .option {
+  margin-top: 8px;
   color: $white;
   cursor: pointer;
   padding: 8px 16px;
@@ -33,5 +34,8 @@
   @include exeptLast {
     margin-bottom: 16px;
   }
+}
 
+.suffix {
+  pointer-events: none;
 }

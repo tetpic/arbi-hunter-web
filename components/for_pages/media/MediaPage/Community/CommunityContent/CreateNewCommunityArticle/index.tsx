@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import FileInput from 'components/fields/FileInput'
 import InputField from 'components/fields/InputField'
 import RichTextField from 'components/fields/RichTextField'
@@ -12,7 +14,7 @@ import { useState } from 'react'
 import { CategoryType } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
-import styles from './index.module.scss'
+import classNames from 'classnames'
 
 interface Props {
   article?: IArticle
@@ -68,19 +70,26 @@ export default function CreateNewCommunityArticle(props: Props) {
     },
     onSubmit: submit
   })
-  
 
   return (<div className={styles.root}> 
     <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||'Опубликуйте запись'}/>
-    
-    {/* <p className={styles.title}>{props.title||'Опубликуйте запись'}</p> */}
     <FormikProvider value={formik}>
       <Form className={styles.form}>
-        <InputField placeholder='Название' name={'title'} styleType={'default'} color={'default'} />
+        <InputField 
+        placeholder='Название' 
+        name={'title'} 
+        styleType={'default'} 
+        color={'default'} />
         {previewImage && 
           <img src={URL.createObjectURL(previewImage.image)}/>
         }
-        <RichTextField value={formik.values.body.toString()}  returnValueType={'html'}  placeholder='Введите текст' name={'body'} onAddImage={setImages} hideButtons={{helpers: true}}/>
+        <RichTextField 
+        value={formik.values.body.toString()}  
+        returnValueType={'html'}  
+        placeholder='Введите текст' 
+        name={'body'} 
+        onAddImage={setImages} 
+        hideButtons={{helpers: true}}/>
         {images &&images.length > 0 &&
         <div className={styles.imagesWrapper}>
           {images.map(i=> {
@@ -93,7 +102,7 @@ export default function CreateNewCommunityArticle(props: Props) {
             <FileInput setImages={setPreviewImage}/>
             <PhotoSvg/>
           </label>
-          <Button type="submit" className={styles.yellowButton}>Опубликовать</Button>
+          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body.length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
 
         </div>
       </Form>

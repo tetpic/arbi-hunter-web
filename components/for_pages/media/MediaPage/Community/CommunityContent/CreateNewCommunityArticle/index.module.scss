@@ -57,3 +57,9 @@
   @include buttonDefault;
   padding: 8px;
 }
+
+.disabled {
+  opacity: .3;
+  filter: grayscale(1);
+  pointer-events: none;
+}
