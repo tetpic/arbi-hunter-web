@@ -34,7 +34,7 @@ export default function CreateNewCommunityModal(props: Props) {
   const pageValidator = (pageNumber?: 2) => {
 
     formik.validateForm().then(res=> {
-      debugger
+      
       if(!res.name && pageNumber) {
         pager(pageNumber)
       }

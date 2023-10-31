@@ -35,7 +35,7 @@ export enum CommunitiesNav {
 function SubCategories(props: {categories: ICategory[], currentCategory: ICategory, setCurrent: (e: ICategory)=>void}) {
   return (
     props.categories.map(el=> {
-      return <p className={classNames(styles.subCategory, el.id === props.currentCategory?.id&&styles.subCategory_active)} onClick={()=> props.setCurrent(el)}>{el.name}</p>
+      return <p  key={el.id} className={classNames(styles.subCategory, el.id === props.currentCategory?.id&&styles.subCategory_active)} onClick={()=> props.setCurrent(el)}>{el.name}</p>
     })
   )
 }
@@ -94,9 +94,19 @@ export default function CommunitiesPage(props: Props) {
   })()
 
   useEffect(()=>{
-      router.replace({query: { ...router.query, page: page, category: currentCategory.id}}, undefined, {shallow: true})
+      router.replace({query: { ...router.query, page: page, category: currentCategory?.id}}, undefined, {shallow: true})
   }, [page, currentCategory])
 
+  useEffect(()=>{
+    const pageFromRouter = router.query.page as CommunitiesNav
+    const categoryId = router.query.category as string
+    if(page && pageFromRouter && page !== pageFromRouter) {
+      pager(pageFromRouter)
+    }
+    if(currentCategory && categoryId && currentCategory?.id !== Number(categoryId)) {
+      setCurrentCategory(props.categories.find(el=> el.id === Number(categoryId)))
+    }
+  }, [router])
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>

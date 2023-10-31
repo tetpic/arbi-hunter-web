@@ -37,17 +37,10 @@ export default function Experience(props: Props) {
   const {setFieldTouched, setFieldError} = formikContext
 
   const closeModalHandler = (fl: ExperienceInfo) => {
-    if(!fl.company || !fl.fromDate || !fl.position) {
-      !fl.company && setFieldError('setCompany', 'Введите название компании')
-      !fl.fromDate && setFieldError('set_fromDate', 'Укажите дату начала работы')
-      !fl.position && setFieldError('setProfile', 'Введите название занимаемой должности')
-    }
-    else {
-      setDetailsInfo(f=> [...f, {...fl}])
-      setDetails(false)
-      setActiveDetails(initialData)
-      appContext.hideModal()
-    }
+    setDetailsInfo(f=> [...f, {...fl}])
+    setDetails(false)
+    setActiveDetails(initialData)
+    appContext.hideModal()
   }
 
   const removeExp = (e: ExperienceInfo) => {
@@ -78,14 +71,33 @@ export default function Experience(props: Props) {
     title:'Место работы',
     set: activeDetails,
     onSave: closeModalHandler,
+    onEditValidator: (fields) => {
+      const today = new Date()
+      const fromDateSplitted = fields.fromDate&&fields.fromDate.split('.')
+      const fromDate = new Date(Number(fromDateSplitted[1]), Number(fromDateSplitted[0])-1)
+      const toDateSplitted = fields.toDate&&fields.toDate.split('.')
+      const toDate = new Date(Number(toDateSplitted[1]), Number(toDateSplitted[0])-1 )
+      if(fromDate > toDate ) {
+        return {error: 'Дата окончания не может быть раньше даты начала'}
+      }
+      if(toDate > today) {
+        return {error: 'Дата окончания не может быть в будущем'}
+      }
+      if(fromDate > today) {
+        return {error: 'Дата начала не может быть в будущем'}
+      }
+      else {
+        return true
+      }
+    },
     onClose:()=> {
       setDetails(false)
       appContext.hideModal()
     },
     inputsSettings:[
-      {label: 'Организация:', name: 'setCompany', value: 'company'},
-      {label: 'Должность:', name: 'setProfile', value: 'position'},
-      {label: 'Обязанности:', name: 'setDescription', value: 'description', type:'textarea'}
+      {label: 'Организация:', name: 'company', value: '', required: true, errorState:'Введите название компании'},
+      {label: 'Должность:', name: 'position', value: '', required: true, errorState: 'Введите название занимаемой должности'},
+      {label: 'Обязанности:', name: 'description', value: '', type:'textarea'}
     ],
     datePickerSettings: {
       on: true,
@@ -96,16 +108,18 @@ export default function Experience(props: Props) {
           pickerType: 'showMonthYearPicker',
           monthDropdown: true,
           inputLabel: 'Начало работы:',
-          dateName: 'set_fromDate',
-          dateValue: 'fromDate'
+          dateName: 'fromDate',
+          dateValue: '',
+          required: true,
+          errorState: 'Укажите дату начала работы'
         },
         {
           format: 'MM.yyyy',
           pickerType: 'showMonthYearPicker',
           monthDropdown: true,
           inputLabel: 'Окончание работы:',
-          dateName: 'set_toDate',
-          dateValue: 'toDate'
+          dateName: 'toDate',
+          dateValue: ''
         }
       ]
     }

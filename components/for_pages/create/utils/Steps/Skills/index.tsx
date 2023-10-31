@@ -43,17 +43,10 @@ export default function Skills(props: Props) {
   const {setFieldValue, setFieldError, setFieldTouched} = useFormikContext()
 
   const closeModalHandler = (fl: CoursesInfo) => {
-    if(!fl.name || !fl.location || !fl.date) {
-      !fl.name && setFieldError('setName', 'Введите название курсов')
-      !fl.location && setFieldError('setLocation', 'Введите название учреждения')
-      !fl.date && setFieldError('setYear', 'Укажите год окончания курсов')
-    }
-    else {
-      setDetailsCoursesInfo(f=> [...f, {...fl}])
-      setCoursesDetails(false)
-      setActiveDetails(initialCoursesData)
-      appContext.hideModal()
-    }
+    setDetailsCoursesInfo(f=> [...f, {...fl}])
+    setCoursesDetails(false)
+    setActiveDetails(initialCoursesData)
+    appContext.hideModal()
   }
 
 
@@ -114,13 +107,24 @@ export default function Skills(props: Props) {
     title:'Повышение квалификации и курсы',
     set: activeDetails,
     onSave: closeModalHandler,
+    onEditValidator: (fields) => {
+      
+      const today = new Date()
+      const fromDate = new Date(fields.date)
+      if(fromDate > today) {
+        return {error: 'Дата начала не может быть в будущем'}
+      }
+      else {
+        return true
+      }
+    },
     onClose: ()=> {
       setCoursesDetails(false)
       appContext.hideModal()
     },
     inputsSettings: [
-      {label: 'Название учреждения:', name: 'setLocation', value: 'location'},
-      {label: 'Название курсов:', name: 'setName', value: 'name'}
+      {label: 'Название учреждения:', name: 'location', value: '', required: true, errorState: 'Введите название учреждения'},
+      {label: 'Название курсов:', name: 'name', value: '', required: true, errorState: 'Введите название курсов' }
     ],
     datePickerSettings:{
         on: true,
@@ -131,8 +135,10 @@ export default function Skills(props: Props) {
             pickerType: 'showYearPicker',
             yearDropdown: true,
             inputLabel: 'Год окончания:',
-            dateName: 'setYear',
-            dateValue: 'date'
+            dateName: 'date',
+            dateValue: '',
+            required: true,
+            errorState: 'Укажите год окончания курсов'
           }
         ]
       }
@@ -182,8 +188,8 @@ export default function Skills(props: Props) {
         {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
           .map((el)=> 
             <RemovableItem key={el.date} text={el.name} onClick={()=>{
-              setActiveDetails(el)
-              setCoursesDetails(true)}
+              setDetailsCoursesInfo(state=> state.filter(f=> f.name !== el.name))
+              }
             }/>
           )}
         </div>

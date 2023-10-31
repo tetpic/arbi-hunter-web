@@ -4,16 +4,18 @@
   max-width: 340px;
 }
 
-
-
 .outer {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0px;
+  right: 0px;
   transform: translateY(100%);
   background-color: $grey;
   border-radius: 16px;
   z-index: 4;
+  &_last {
+    bottom: 180px;
+    right: 50px;
+  }
   // padding: 16px;
 }
 

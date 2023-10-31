@@ -17,6 +17,13 @@
     row-gap: 16px;
     align-items: start;
     width: 100%;
+    position: relative;
+  }
+
+  .city {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
   }
 
   .name {
@@ -39,6 +46,30 @@
   .dots {
     grid-area: d;
   }
+}
+
+.modalWrapper {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  right: 0;
+  transform: scale(0.6);
+  transform-origin: right;
+  @include transitionDefault;
+  z-index: 4;
+  // display: none;
+
+  &_active {
+    opacity: 1;
+    // display: block;
+    pointer-events: all;
+    transform: scale(1);
+  }
+  // height: 0%
+  // bottom
+
 }
 
 

@@ -40,14 +40,12 @@ enum VacancyNavigation {
 }
 
 export default function Vacancy(props: Props) {
-  
-  
-  const {isPhoneWidth} = useResize()
-  const router = useRouter()
-
   const appContext = useAppContext()
   const userContext = useUserContext()
   const creationContext = useCreateVcCvContext()
+
+  const {isPhoneWidth} = useResize()
+  const router = useRouter()
   const {progress, setProgress} = creationContext
   
   const [title, setTitle] = useState<string>('Специализация')
@@ -55,46 +53,8 @@ export default function Vacancy(props: Props) {
   const [loading, setLoading] = useState<boolean>(false)
 
   const CVItemsCount = 6
+  const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
 
-  const submit = (data: IVacancyCreate) => {
-    setLoading(true)
-    const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
-    const sendData: IVacancyCreate = {
-      ...data, 
-      commission: (data.commission&&Number(data.commission))||null,
-      skillsIds: [...skills.keys()], 
-      salary: Number(data.salary),
-      languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
-      sourcesIds: [...activeSources.keys()],
-      cityId,
-      countryId,
-      categoriesIds: categoryIds.map(el=> el.id)
-    }
-    if(props.id) {
-      VacancyRepository.editVacancyById(sendData, props.id)
-      .then(res=>{
-        appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
-        creationContext.reset()      
-        router.back()   
-      })
-      .catch(err=>{        
-        appContext.showSnackbar(err.toString(), SnackbarType.error)
-      })
-    }
-    else {
-      VacancyRepository.createVacancy(sendData)
-      .then(res => {
-        setLoading(false)
-        appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
-        setTimeout(()=> {
-          router.push('/')    
-        }, 2000)
-      })
-      .catch(err=>{
-        alert(err.toString())
-      })
-    }
-  }
 
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
@@ -121,29 +81,50 @@ export default function Vacancy(props: Props) {
     published: props.vacancy?.published||true,
   }
 
+  const submit = (data: IVacancyCreate) => {
+    setLoading(true)
+    const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
+    const sendData: IVacancyCreate = {
+      ...data, 
+      commission: (data.commission&&Number(data.commission))||null,
+      skillsIds: [...skills.keys()], 
+      salary: Number(data.salary),
+      languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
+      sourcesIds: [...activeSources.keys()],
+      cityId,
+      countryId,
+      categoriesIds: categoryIds.map(el=> el.id)
+    }
+    if(props.id) {
+      VacancyRepository.editVacancyById(sendData, props.id)
+      .then(res=>{
+        appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
+        creationContext.reset()   
+        router.replace('/profile?page=vacancies')  
+      })
+      .catch(err=>{        
+        appContext.showSnackbar(err.toString(), SnackbarType.error)
+      })
+    }
+    else {
+      VacancyRepository.createVacancy(sendData)
+      .then(res => {
+        setLoading(false)
+        appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
+        setTimeout(()=> {
+          router.push('/')    
+        }, 2000)
+      })
+      .catch(err=>{
+        alert(err.toString())
+      })
+    }
+  }
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: submit
   })
-
-  useEffect(()=>{
-    
-    if(props.id) {
-      creationContext.getCurrentVc(props.id, props.vacancy)
-    }  
-    return ()=> {
-      
-      formik.resetForm()
-      setProgress(1)
-      creationContext.setHelpObjects()
-    }
-  }, [])
-
-  useEffect(()=>{
-    if(creationContext.currentVc) {
-      formik.setValues(initialValues)
-    }
-  }, [userContext.currentProfile])
 
   const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
     switch (progress) {
@@ -187,23 +168,55 @@ export default function Vacancy(props: Props) {
     }
   }
 
-  const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
+  const nextPageValidator = (pageNumber?: number) => {
+    switch(progress) {
+      case 1:
+        formik.validateForm()
+        .then(res=> {
+          res.name && formik.setFieldTouched('name', true)
+          creationContext.helpObjects.categoryIds.length > 0
+          ? setProgress(pageNumber||progress+1)
+          : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+        })
+      break
+      default :
+        setProgress(pageNumber||progress+1)
+    }
+  } 
 
-
-  const progressHandler = (p: number) => {
+  const changeComponent = (p: number) => {
     const [element, type] = getComponent(p)
     setTitle(getTitle(type))   
     setPage(element)
   }
 
+
   useEffect(()=>{
     if(progress < 1) {
+      setProgress(1)
       router.back()
       return
     }
-    progressHandler(progress)
-
+    changeComponent(progress)
   }, [progress])
+
+  useEffect(()=>{
+    if(creationContext.currentVc) {
+      formik.setValues(initialValues)
+    }
+  }, [userContext.currentProfile])
+
+  useEffect(()=>{
+    if(props.id) {
+      creationContext.getCurrentVc(props.id, props.vacancy)
+    }  
+    return ()=> {
+      formik.resetForm()
+      setProgress(1)
+      creationContext.setHelpObjects()
+      creationContext.reset()
+    }
+  }, [])
   
 
   return <div className={styles.root}>
@@ -215,7 +228,7 @@ export default function Vacancy(props: Props) {
         }
         {title}
       </p>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={setProgress}/>
+      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 
@@ -225,10 +238,10 @@ export default function Vacancy(props: Props) {
               <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonYellow} type='button' onClick={()=>setProgress(progress+1)}>Продолжить</Button>
+              <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button spinner={loading} disabled={loading} className={styles.buttonYellow}  type='submit' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
+              <Button isProcess={loading} spinner={loading} disabled={loading} className={styles.buttonYellow}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
         </Form>

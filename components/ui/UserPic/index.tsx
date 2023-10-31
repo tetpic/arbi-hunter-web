@@ -16,7 +16,9 @@ export default function UserPic(props: Props) {
   
   const router = useRouter()
 
-  const onClickHandler = () => {
+  const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
     
     props.link&&router.push(props.link)
     props.onClick&&props.onClick()

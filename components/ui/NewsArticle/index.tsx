@@ -39,6 +39,7 @@ export default function NewsArticle(props: Props) {
       <p className={styles.content}>{article.name}</p>
       <Image src={FILES + article.image.source} alt={article.name} width={727} height={390} style={{
         width: '100%',
+        height: 'auto',
         objectFit: 'cover',
         borderRadius: 16
       }}/>

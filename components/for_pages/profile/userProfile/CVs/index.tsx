@@ -59,7 +59,8 @@ export default function CVs(props: Props) {
     <div className={styles.root}> 
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
       {
-      filteredCvs?.length > 0 && filteredCvs.map((el, index) => <CVItem cv={el} key={index}/>)
+      filteredCvs?.length > 0 && 
+      filteredCvs.map((el, index) => <CVItem isLast={index===filteredCvs.length -1} cv={el} key={index}/>)
       ||
       <p className={'empty'}>Нет созданных резюме</p>
       }

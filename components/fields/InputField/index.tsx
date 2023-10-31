@@ -71,9 +71,7 @@ export default function InputField(props: Props) {
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         <input
           {...field}
-          // {...(props.value&&{value:props.value})}
-          // value = {props.value||''}
-          // value={field.value}
+          value = {props.value||field.value}
           ref={props.format === 'phone' ? phoneRef as any : null}
           type={props.type ?? 'text'}
           disabled={props.disabled}
@@ -106,7 +104,7 @@ export default function InputField(props: Props) {
         />
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}
-        <FieldError className={props.errorClassName} showError={showError}>{meta.error}</FieldError>
+        <FieldError className={props.errorClassName} showError={showError}>{props.error||meta.error}</FieldError>
       </div>
     </div>
   )

@@ -17,10 +17,11 @@ interface Query {
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
   const id  = Number(context.query.id)
   const token = context.req.cookies[CookiesType.accessToken]
+  const profileType = context.req.cookies[CookiesType.profileType]
 
-  if(id && token) {
+  if(id && token && profileType) {
     try{
-      const community = await CommunitiesRepository.getCommunityById(id)
+      const community = await CommunitiesRepository.getCommunityById(id, profileType, token)
       return {props: {community, id}}
     }
     catch(err){

@@ -98,7 +98,7 @@ export default function SkillsModal(props: Props) {
         dataLength={skills.length}  
         >
           <div className={styles.categories}>
-            {skills&&skills.length > 0&&skills.map((el, index)=>{
+            {skills&&skills.length > 0&&skills.filter(s=> !cvContext.helpObjects.skills.has(s.id)).map((el, index)=>{
               return (<p key={index} className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
             })}
           </div>

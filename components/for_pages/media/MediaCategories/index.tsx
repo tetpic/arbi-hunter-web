@@ -41,7 +41,7 @@ export default function MediaCategories(props: Props) {
     {props.categories.length > 0 && props.categories.map(category=> {
       return (
         <SwiperSlide className={styles.swiperSlide} key={category.id}>
-          <Link href={`media/page?page=categories&category=${category.id}`} className={styles.categoryItem}>
+          <Link href={`/media/page?page=categories&category=${category.id}`} replace={true} className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
                 <Image 
                 src={bigBitcoin}
@@ -66,7 +66,7 @@ export default function MediaCategories(props: Props) {
       </>
     }
     {!props.hideNav &&
-      <LinkBlack href={'media/page?page=categories'}>Смотреть все</LinkBlack>
+      <LinkBlack href={'/media/page?page=categories'}>Смотреть все</LinkBlack>
     }
   </section>
   )

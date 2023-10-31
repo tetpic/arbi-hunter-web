@@ -65,7 +65,7 @@ export default function NewsByCategories(props: Props) {
   >
     {news.size > 0 && [...news.values()].map(el=> {
       return (
-        <NewsArticle article={el} titleName={props?.category?.name||el.community?.name||el.shortDescription}/>
+        <NewsArticle key={el.id} article={el} titleName={props?.category?.name||el.community?.name||el.shortDescription}/>
       )
     })}
     </InfiniteScroll>

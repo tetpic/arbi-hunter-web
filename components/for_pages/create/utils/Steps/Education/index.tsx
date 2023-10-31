@@ -11,6 +11,7 @@ import { DetailsFieldProps } from '../../DetailsField'
 import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
+import { ICVCreate } from 'data/interfaces/ICV'
 
 interface Props {
   name: string
@@ -28,24 +29,17 @@ export default function Education(props: Props) {
   }
 
   const creationContext = useCreateVcCvContext()
+  const {values, setFieldValue, setFieldError, setFieldTouched} = useFormikContext<ICVCreate>()
 
   const [showDetails, setDetails] = useState<boolean>(false)
-  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(creationContext.currentCv?.educationInfo||[])
+  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(values.educationInfo||creationContext.currentCv?.educationInfo||[])
   const [activeDetails, setActiveDetails] = useState<EducationInfo>(initialData)
-  const { setFieldValue, setFieldError, setFieldTouched} = useFormikContext()
 
   const saveModalHandler = (fl: EducationInfo) => {
-    //TODO: какая-то дичь, надо будет подумать как переделать нормально
-    if(!fl.institution || !fl.fromDate || !fl.speciality) {
-      !fl.speciality&&setFieldError('setSpeciality', 'Введите специальность')
-      !fl.institution&&setFieldError('setInstitution', 'Введите название заведения')
-      !fl.fromDate&&setFieldError('set_fromDate', 'Введите дату начала обучения')
-    } else {
-      setDetailsInfo(f=> [...f, {...fl}])
-      setDetails(false)
-      setActiveDetails(initialData)
-      appContext.hideModal()
-    }
+    setDetailsInfo(f=> [...f, {...fl}])
+    setDetails(false)
+    setActiveDetails(initialData)
+    appContext.hideModal()
   }
 
   useEffect(()=>{
@@ -80,10 +74,28 @@ export default function Education(props: Props) {
     title: 'Место учёбы',
     onSave: saveModalHandler,
     onClose: closeModalHandler,
+    onEditValidator: (fields) => {
+      const today = new Date()
+      const fromDate = new Date(fields.fromDate)
+      const toDate = new Date(fields.toDate)
+      
+      if(fromDate > toDate ) {
+        return {error: 'Дата окончания не может быть раньше даты начала'}
+      }
+      if(toDate > today) {
+        return {error: 'Дата окончания не может быть в будущем'}
+      }
+      if(fromDate > today) {
+        return {error: 'Дата начала не может быть в будущем'}
+      }
+      else {
+        return true
+      }
+    },
     set: activeDetails,
     inputsSettings: [
-      {value: 'institution', name: 'setInstitution', label: 'Заведение: '},
-      {value: 'speciality', name: 'setSpeciality', label: 'Специализация: '}
+      {value: '', name: 'institution', label: 'Заведение: ', required: true, errorState: 'Введите название заведения'},
+      {value: '', name: 'speciality', label: 'Специализация: ', required: true, errorState: 'Введите специальность'}
     ],
     datePickerSettings: {
       on: true,
@@ -94,16 +106,18 @@ export default function Education(props: Props) {
           pickerType: 'showYearPicker',
           yearDropdown: true,
           inputLabel: 'Начало обучения',
-          dateName: 'set_fromDate',
-          dateValue: 'fromDate',
+          dateName: 'fromDate',
+          dateValue: '',
+          required: true,
+          errorState: 'Введите дату начала обучения'
         },
         {
           format: 'yyyy',
           pickerType: 'showYearPicker',
           yearDropdown: true,
           inputLabel:'Окончание обучения',
-          dateName: 'set_toDate',
-          dateValue: 'toDate',
+          dateName: 'toDate',
+          dateValue: '',
         }
       ]
     }

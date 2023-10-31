@@ -15,9 +15,10 @@ import classNames from 'classnames'
 
 interface Props {
   cv: ICV
+  isLast?: boolean
 }
 
-export default function CVItem({cv}: Props) {
+export default function CVItem({cv, isLast}: Props) {
 
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
@@ -30,7 +31,6 @@ export default function CVItem({cv}: Props) {
     }
     else {
       openDropDown(!dropDown)
-      // appContext.showModal(ModalType.CvVcOptionsModal, {cv: cv})
     }
   }
 
@@ -42,7 +42,7 @@ export default function CVItem({cv}: Props) {
       <ThreeDotsButton className={styles.dots} onClick={openModal}/>
       {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <CvVcOptionsModal  onClose={()=>openDropDown(false)} outerData={{cv: cv}}/>
+          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{cv: cv}}/>
         </div>
       }
     </div>

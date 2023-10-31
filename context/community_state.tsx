@@ -10,6 +10,7 @@ import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { IPagination } from 'types/types'
 
 interface IState {
   communities: Map<number, ICommunity>
@@ -29,6 +30,7 @@ interface IState {
   createNews:(data: ICreateNews, id?: number)=> Promise<boolean>
   removeNews: (id: number) => Promise<boolean>
   saveArticle: (id: number)=> Promise<boolean>
+  searchCommunityMembers: (page: number, search: string)=> Promise<IPagination<IUserProfile>>
 }
 
 const CommunityContext = createContext<Partial<IState>>({})
@@ -53,9 +55,9 @@ export function CommunityWrapper(props: Props) {
 
   const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
     try {
-      const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, page)
+      const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, {page})
       setCommunityMembersState(state => {
-        state.clear()
+        // state.clear()
         res.data.forEach(r => {
           state.set(r.id, r)
         })
@@ -65,6 +67,11 @@ export function CommunityWrapper(props: Props) {
     } catch (err) {
       return false
     }
+  }
+
+  const searchCommunityMembers = async (page: number, search: string): Promise<IPagination<IUserProfile>> => {
+    const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, {page, search})
+    return res
   }
 
   const getCommunityNews = useCallback(async (page: number) => {
@@ -89,7 +96,7 @@ export function CommunityWrapper(props: Props) {
   }, [currentCommunity])
 
   const setCommunities = async (p: number) => {
-    const res = await CommunitiesRepository.getCommunities(p)
+    const res = await CommunitiesRepository.getCommunities(profileType, p)
     if (res) {
       setCommunitiesState(s => {
         res.data.forEach(e=> {
@@ -231,7 +238,8 @@ export function CommunityWrapper(props: Props) {
     myCommunity,
     createNews,
     removeNews,
-    saveArticle
+    saveArticle,
+    searchCommunityMembers
   }
 
   return (

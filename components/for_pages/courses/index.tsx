@@ -52,7 +52,6 @@ export default function CoursesMain(props: Props) {
     <SearchBar className={styles.search}/>
     <Benefits/>
     <Categories categoryList={props.categoryList}/>
-    <Feedbacks feedbacks={props.feedbacks}/>
     <section className={styles.banners}>
       <TitleDiamond title={'Подборки для вас'}/>
       <div className={styles.bannersWrapper}>
@@ -62,6 +61,7 @@ export default function CoursesMain(props: Props) {
         <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
       </div>
     </section>
+    <Feedbacks feedbacks={props.feedbacks}/>
     <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
   </div>
 }

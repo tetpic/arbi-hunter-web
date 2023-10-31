@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import Link from 'next/link'
 import Spinner from 'components/ui/Spinner'
@@ -58,8 +59,6 @@ export default function Button(props: Props) {
              [styles.text]: true,
              [styles.textHidden]: props.spinner,
            })}>  {props.icon}{props.children}</span>
-
-
         </a>
       </Link>
     )

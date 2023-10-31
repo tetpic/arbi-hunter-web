@@ -30,6 +30,8 @@ export default function Header(props: Props) {
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
 
+
+
   /*очень странный сайд эффект... 
   что при смене профиля, 
   когда появляется currentProfile, 
@@ -94,13 +96,13 @@ export default function Header(props: Props) {
           {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
           <>
             <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>setDropDownOpen(state=> !state)}/>
+            <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>{setDropDownOpen(state=> !state)}}/>
           </>}
           {userContext.currentProfile &&
             <UserDropdownMenu       
             reference={(ref) => {dropdownRef.current = ref}}
             className={classnames(styles.dropdown, isDropDownOpen&&styles.dropdown_active)} 
-            onClose={()=> setDropDownOpen(false)}
+            onClose={()=> {setDropDownOpen(false)}}
             />
           }
       </div>

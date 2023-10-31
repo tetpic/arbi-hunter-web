@@ -25,10 +25,12 @@ export default function NavigationItem<T extends string>(props: Props<T>) {
       setOpenSubset(true)
     }
     else {
-      setOpenSubset(false)
+      setTimeout(() => {
+        setOpenSubset(false)
+      }, 100)
     }
-    
   }, [props.currentPage])
+
 
   return (<div className={styles.item}>
     <p 

@@ -50,6 +50,11 @@
   flex-direction: column;
   row-gap: 16px;
   margin-top: 16px;
+  height: clamp(250px, 70vh, 500px);
+  // overflow: auto;
+  >div {
+    height: 100%;
+  }
 }
 
 .member {

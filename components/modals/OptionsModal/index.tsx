@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
@@ -17,14 +19,15 @@ import { ICV } from 'data/interfaces/ICV'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ModalType } from 'types/enums'
 import { colors } from 'styles/variables'
-import styles from './index.module.scss'
 import { MutableRefObject } from 'react'
+import classNames from 'classnames'
 
 interface Props {
   onClose: ()=>void
   isBottomSheet?: boolean
   outerData?: {cv?: ICV, vc?: IVacancy} 
   ref?: MutableRefObject<HTMLDivElement>
+  isLast?: boolean
 }
 
 export default function CvVcOptionsModal(props: Props) {
@@ -90,7 +93,7 @@ export default function CvVcOptionsModal(props: Props) {
 
   if(props.outerData) {
     return (
-      <div className={styles.outer} ref={props.ref}>
+      <div className={classNames(styles.outer, props.isLast&&styles.outer_last)} ref={props.ref}>
         {/* {title} */}
         {body}
       </div>

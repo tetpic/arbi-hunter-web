@@ -13,10 +13,11 @@ interface Response <T> {
 }
 
 export default class CommunitiesRepository {
-  static async getCommunities(page: number, token?: string): Promise<Response<ICommunity[]>|null> {
+  static async getCommunities(profile: ProfileType, page: number, token?: string): Promise<Response<ICommunity[]>|null> {
     const res = await request({
       method: 'get',
       url: `/api/community?limit=${20}&page=${page}`,
+      profile,
       token
     })
     if(res.err) {
@@ -51,10 +52,12 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityById(communityId: number): Promise<any|null> {
+  static async getCommunityById(communityId: number, profile?: ProfileType, token?: string): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}`,
+      profile,
+      token
     })
     if(res.err) {
       return null
@@ -62,10 +65,14 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityMembers(profile: ProfileType, communityId: number,  page: number,  search?: string): Promise<Response<IUserProfile[]>|null> {
+  static async getCommunityMembers(profile: ProfileType, communityId: number, data: {page?: number,  search?: string, limit?: number}  ): Promise<Response<IUserProfile[]>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/community/${communityId}/subscribers?limit=${LOAD_LIMIT}&page=${page}` +(search?`&search=${search}`:''),
+      url: `/api/community/${communityId}/subscribers`,
+      data: {
+        ...data,
+        limit: LOAD_LIMIT
+      },
       profile
     })
     if(res.err) {

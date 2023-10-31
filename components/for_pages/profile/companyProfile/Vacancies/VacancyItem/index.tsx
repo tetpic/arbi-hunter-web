@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
 import SalaryItem from 'components/ui/SalaryItem'
@@ -10,18 +12,25 @@ import { useRouter } from 'next/router'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 
-import styles from './index.module.scss'
+import CvVcOptionsModal from 'components/modals/OptionsModal'
+import { useRef } from 'react'
+import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import classNames from 'classnames'
 
 interface Props {
   vacancy: IVacancy
   isActive?: boolean
+  isLast?: boolean
 }
 
-export default function VacancyItem({vacancy, isActive}: Props) {
+export default function VacancyItem({vacancy, isActive, isLast}: Props) {
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+
 
   const setActiveHandler = () => {
     vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
@@ -33,7 +42,7 @@ export default function VacancyItem({vacancy, isActive}: Props) {
       appContext.showBottomSheet(ModalType.CvVcOptionsModal, {vc: vacancy})
     }
     else {
-      appContext.showModal(ModalType.CvVcOptionsModal, {vc: vacancy})
+      openDropDown(!dropDown)
     }
   }
   
@@ -41,8 +50,16 @@ export default function VacancyItem({vacancy, isActive}: Props) {
   return (<div className={styles.item}> 
       <div className={styles.top}>
         <p className={styles.name}>{vacancy.name}</p>
+        {vacancy.city && vacancy.city.locName &&
+          <p className={styles.city}>г. {vacancy.city?.locName}</p>
+        }
         <SalaryItem vacancy={vacancy}/>
         <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
+        {!isTabletWidth &&
+        <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
+          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{vc: vacancy}}/>
+        </div>
+      }
       </div>
 
       <Statistics 

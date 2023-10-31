@@ -131,7 +131,7 @@ export function CreateVcCvWrapper(props: Props) {
         cityId: vcItem.cityId,
         countryId: vcItem.countryId,
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
-        languageKnowledges: new Map(vcItem?.languageKnowledges.map(el=>[el.language, el])),
+        languageKnowledges: new Map(vcItem?.languageKnowledges?.map(el=>[el.language, el])),
         activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
       }})
       setVc(state=> {return {...state, ...item,
@@ -145,7 +145,7 @@ export function CreateVcCvWrapper(props: Props) {
         cityId: cvItem.cityId,
         countryId: cvItem.countryId,
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),
-        languageKnowledges: new Map(cvItem.languageKnowledges.map(el=> [el.language, el])),
+        languageKnowledges: new Map(cvItem.languageKnowledges?.map(el=> [el.language, el])),
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))
       }})
       setCv(state=> {return {...state, ...item,

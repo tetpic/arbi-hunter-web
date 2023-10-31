@@ -86,7 +86,7 @@ export default function UserDropdownMenu(props: Props) {
 
       <div className={styles.itemsWrapper}>
         {getUserMenu()?.map((el, index)=> {
-          return <Link key={index} onClick={props.onClose} href={el.link} className={styles.item}>{el.image}  {el.name}</Link>
+          return <Link key={index} onClick={()=> {props.onClose()}} href={el.link} className={styles.item}>{el.image}  {el.name}</Link>
         })}
       </div>
 

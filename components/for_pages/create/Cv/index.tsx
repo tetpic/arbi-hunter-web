@@ -85,7 +85,8 @@ export default function Cv(props: Props) {
       CvRepository.createCV(sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
-          router.replace('/profile?page=cvs')      
+        creationContext.reset()
+        router.replace('/profile?page=cvs')      
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
@@ -197,6 +198,11 @@ export default function Cv(props: Props) {
     if(props.id && !creationContext.currentCv) {
       creationContext.getCurrentCv(props.id)
     }  
+    return ()=> {
+      formik.resetForm()
+      setProgress(1)
+      creationContext.setHelpObjects()
+      creationContext.reset()    }
   }, [])
 
   useEffect(()=>{

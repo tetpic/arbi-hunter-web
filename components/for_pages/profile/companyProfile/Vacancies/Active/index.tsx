@@ -1,10 +1,11 @@
+import styles from './index.module.scss'
+
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import VacancyItem from '../VacancyItem'
-import styles from './index.module.scss'
 
 interface Props {
 }
@@ -24,7 +25,11 @@ export default function VacanciesActive(props: Props) {
       <div className={styles.wrapper}>
         {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
           [...vacancyContext.activeVacancies.values()].map((el, index)=> {
-            return <VacancyItem key={index} vacancy={el} isActive={true}/>
+            return <VacancyItem 
+            key={index} 
+            isLast={vacancyContext.activeVacancies.size > 2 && vacancyContext.activeVacancies.size-1 ===index} 
+            vacancy={el} 
+            isActive={true}/>
           })  
           ||
           isLoaded&&vacancyContext.activeVacancies.size === 0 &&

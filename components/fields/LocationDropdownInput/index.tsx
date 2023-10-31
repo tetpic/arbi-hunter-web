@@ -87,6 +87,12 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     requestHandler()
   }, [page])
 
+  useEffect(()=>{
+    if(props.value) {
+      setFieldValue(props.name, props.value)
+    }
+  }, [props.value])
+
   return ( 
     <div className={classNames(styles.root, props.className)}>
       
