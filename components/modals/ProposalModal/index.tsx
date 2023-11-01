@@ -46,13 +46,11 @@ export default function ProposalModal(props: Props) {
   const vacancyContext = useVacancyContext()
 
   const submit = (data: FormikState) => {
-    
     if(data.type === ApplicationBSSelectType.AnotherVacancy && page === ProposalModalPager.Invite) {
       setPage(ProposalModalPager.OtherVacancy)
     }
     else {
       appContext.showModal(ModalType.ProposalTextModal, {...data, application: modalArguments.application, cv: modalArguments.cv})
-      
     }
   }
 

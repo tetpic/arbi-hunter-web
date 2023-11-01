@@ -127,6 +127,7 @@ export default function Cv(props: Props) {
     employment: props.cv?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.cv?.languageKnowledges||null, 
     published: props.cv?.published||false,
+    portfolio: props.cv?.portfolio||''
   }
 
   const formik = useFormik({
@@ -195,14 +196,15 @@ export default function Cv(props: Props) {
 
 
   useEffect(()=>{
-    if(props.id && !creationContext.currentCv) {
-      creationContext.getCurrentCv(props.id)
+    if(props.id) {
+      creationContext.getCurrentCv(props.id, props.cv)
     }  
     return ()=> {
       formik.resetForm()
       setProgress(1)
-      creationContext.setHelpObjects()
-      creationContext.reset()    }
+      creationContext.setHelpObjects({})
+      creationContext.reset()    
+    }
   }, [])
 
   useEffect(()=>{
@@ -215,7 +217,7 @@ export default function Cv(props: Props) {
   }, [progress])
 
   useEffect(()=>{
-      formik.setValues(initialValues)
+    formik.setValues(initialValues)
   }, [userContext.currentProfile, props.cv])
   
 

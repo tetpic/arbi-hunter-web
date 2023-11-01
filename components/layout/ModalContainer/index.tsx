@@ -22,6 +22,8 @@ import CreateCommunityArticleModal from 'components/modals/CreateCommunityArticl
 import MembersModal from 'components/modals/MembersModal'
 import DetailsModal from 'components/modals/DetailsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
+import AddPortfolioModal from 'components/modals/AddPortfolioModal'
+import StoriesViewerModal from 'components/modals/StoriesViewerModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -110,6 +112,15 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings}>
           <ChatsFolderModal onClose={commonSettings.onRequestClose}/>
         </Modal>
+      case ModalType.AddPortfolioModal:
+        return <Modal isOpen {...commonSettings}>
+          <AddPortfolioModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.StoriesViewerModal:
+        return <Modal isOpen {...commonSettings}>
+          <StoriesViewerModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+
 
     }
   })()

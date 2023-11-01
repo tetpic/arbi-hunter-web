@@ -54,10 +54,10 @@ export interface IImage extends TimeStamp {
   id: number,
   published: boolean,
   name: string,
-  type: 'IMAGE',
-  mimeType: 'image/png',
+  type: 'IMAGE'|'VIDEO'|'BINARY',
+  mimeType: 'image/png'|'video/mp4',
   fileSize: number,
-  duration: string|number|null,
+  duration: number|null,
   source: string,
   focalPoint: IFocalPoint,
   userId: number|null

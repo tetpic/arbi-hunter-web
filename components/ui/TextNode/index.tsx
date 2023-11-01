@@ -11,7 +11,7 @@ export default function TextNode(props: Props) {
     const textNode = document.createElement('div')
     textNode.insertAdjacentHTML('afterbegin', props.html)
     setText(textNode.innerText.toString())
-  }, [])
+  }, [props.html])
 
   return (<>{text}</>)
 }

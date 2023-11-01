@@ -14,7 +14,7 @@ import { IPattern } from 'data/interfaces/IPattern'
 import { IProposal } from 'data/interfaces/IProposal'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ApplicationBSSelectType, PatternTypes, ProposalRequestType } from 'types/enums'
+import { ApplicationBSSelectType, PatternTypes, ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
 
@@ -37,7 +37,15 @@ export default function ProposalTextModal(props: Props) {
 
   const submit = (data: IProposal) => {
     proposalRepository.createProposal(data)
-    .then(res=>res&&props.onClose())
+    .then(res=>{
+      res&&props.onClose()
+      if(!res){
+        throw Error
+      }
+    })
+    .catch(err=>{
+      appContext.showSnackbar('Невозможно отправить приглашение', SnackbarType.error)
+    })
   }
 
   useEffect(()=>{
@@ -46,7 +54,7 @@ export default function ProposalTextModal(props: Props) {
 
   const initialValues = {
     type: modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview,
-    cvId: cv.id||application?.cvId,
+    cvId: cv?.id||application?.cvId,
     vacancyId: vcId||application?.vacancyId,
     coverLetter: pattern?pattern.template:'',
     applicationId: application?.id||null

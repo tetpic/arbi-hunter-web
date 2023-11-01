@@ -9,10 +9,8 @@ interface Props {
 }
 
 export default function Specialization(props: Props) {
-
   const appContext = useAppContext()
   const cvContext = useCreateVcCvContext()
-
 
   const openModalHandler = () => {
     appContext.showModal(ModalType.SpecializationModal)

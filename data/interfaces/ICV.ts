@@ -22,6 +22,7 @@ export interface ICVCreate extends IJob {
   educationInfo: EducationInfo[],
   coursesInfo: CoursesInfo[],
   commission?: number|null,
+  portfolio?: string
 }
 
 export interface ICVVC {

@@ -153,7 +153,12 @@ export function FeedbacksWrapper(props: Props) {
   const createProposal = async (p: IProposal):Promise<boolean> => {
     try {
       const res = await ProposalRepository.createProposal(p, userContext.currentProfile?.profileType)
-      return true
+      if (!res.errors) {
+        return true
+      }
+      else {
+        throw new Error
+      }
     } catch (e) {
       return false
     }

@@ -1,0 +1,145 @@
+@import 'styles/index';
+
+.progressRoot {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  width: 100%;
+  padding-inline: 16px;
+  z-index: 3;
+  column-gap: 4px;
+
+  .progressItem {
+    background-color: $greyLight;
+    border-radius: 4px;
+
+    .progress {
+      border-radius: 4px;
+      height: 4px;
+      width: 100%;
+    }
+
+    .progressActive {
+      width: 0%;
+      background-color: $white;
+      animation: progress linear;
+      animation-duration: 10s;
+    }
+  }
+
+}
+
+@keyframes progress {
+  100% {
+    width: 100%;
+  }
+}
+
+.block {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  video {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.navigation {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .prev, .next {
+    width: 50%;
+    height: 100%;
+  }
+}
+
+
+.modalLayout {
+  max-width: 500px;
+  max-height: 888px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.modalBody {
+  padding: 0px;
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  max-width: 500px;
+  max-height: 888px;
+
+  // max-height: 800px;
+}
+
+.imageBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: blur(30px);
+}
+
+.mainImage {
+  position: relative;
+  z-index: 3;
+}
+
+.description {
+  position: absolute;
+  bottom: 16px;
+  padding-inline: 16px;
+  display: grid;
+  width: 100%;
+  grid-template-areas: 'i t' 'i d';
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  z-index: 4;
+  column-gap: 8px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 200%;
+    top: -16px;
+    left: 0;
+    background-color: $black;
+    opacity: .3;
+    filter: blur(10px);
+  }
+  
+
+  .userPic {
+    grid-area: i;
+    position: relative;
+
+  }
+
+  .title {
+    grid-area: t;
+    color: $white;
+    position: relative;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+
+  .body {
+    grid-area: d;
+    position: relative;
+    color: $white;
+    font-weight: $regular;
+    font-size: $mediumText;
+    @include lineClamp(2)
+  }
+}

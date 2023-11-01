@@ -14,6 +14,9 @@
 
 .crossSvg {
   cursor: pointer;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
   g{
     path{
       @include transitionDefault;

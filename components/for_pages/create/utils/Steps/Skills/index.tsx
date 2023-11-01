@@ -11,6 +11,8 @@ import { DetailsFieldProps } from '../../DetailsField'
 import languages from '@cospired/i18n-iso-languages'
 import styles from './index.module.scss'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
+import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
+import { ICVCreate } from 'data/interfaces/ICV'
 
 
 type SkillsFields = {
@@ -40,7 +42,7 @@ export default function Skills(props: Props) {
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
   const [activeDetails, setActiveDetails] = useState<CoursesInfo>(initialCoursesData)
-  const {setFieldValue, setFieldError, setFieldTouched} = useFormikContext()
+  const {values, setFieldValue, setFieldError, setFieldTouched} = useFormikContext<ICVCreate>()
 
   const closeModalHandler = (fl: CoursesInfo) => {
     setDetailsCoursesInfo(f=> [...f, {...fl}])
@@ -91,7 +93,6 @@ export default function Skills(props: Props) {
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = cvContext.helpObjects
-    // const filteredLangs = helperState.languageKnowledges.filter(e=> e.language !== l.language)
     const filteredLangs = helperState.languageKnowledges
     filteredLangs.delete(l.language)
     cvContext.setHelpObjects({...helperState, languageKnowledges: filteredLangs})
@@ -108,7 +109,6 @@ export default function Skills(props: Props) {
     set: activeDetails,
     onSave: closeModalHandler,
     onEditValidator: (fields) => {
-      
       const today = new Date()
       const fromDate = new Date(fields.date)
       if(fromDate > today) {
@@ -226,8 +226,21 @@ export default function Skills(props: Props) {
       </div>
     }
 
-    {!props.fieldToHide?.portfolio  && 
-      <AddButton className={styles.addButton} onClick={()=> {}} text={'Добавить порфтолио'} />
-    }
+    {!props.fieldToHide?.portfolio  && <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=> appContext.showModal<IPortfolioModal>(ModalType.AddPortfolioModal, {
+        onSubmit: (data) => {
+          setFieldValue('portfolio', data.portfolio)
+        },
+        portfolio: values.portfolio
+      })} 
+      text={'Добавить порфтолио'} />
+      {values.portfolio &&
+        <div className={styles.itemsWrapper}>
+          <RemovableItem text={values.portfolio} onClick={()=>setFieldValue('portfolio', '')}/>
+        </div>
+      }
+    </>}
   </div>)
 }
