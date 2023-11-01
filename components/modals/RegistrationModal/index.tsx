@@ -1,5 +1,6 @@
-import ModalLayout from 'components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
+
+import ModalLayout from 'components/layout/Modal/ModalLayout'
 import background from '../../../images/regModalBack.webp'
 import Image from 'next/image'
 import ArbiLogoSvg from 'components/svg/ArbiLogoSvg'

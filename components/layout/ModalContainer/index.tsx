@@ -24,6 +24,7 @@ import DetailsModal from 'components/modals/DetailsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 import AddPortfolioModal from 'components/modals/AddPortfolioModal'
 import StoriesViewerModal from 'components/modals/StoriesViewerModal'
+import MediaCategoryModal from 'components/modals/MediaCategoryModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -119,6 +120,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.StoriesViewerModal:
         return <Modal isOpen {...commonSettings}>
           <StoriesViewerModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.MediaCategoryModal:
+        return <Modal isOpen {...commonSettings}>
+          <MediaCategoryModal onClose={commonSettings.onRequestClose}/>
         </Modal>
 
 

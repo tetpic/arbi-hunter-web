@@ -111,6 +111,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+  justify-content: center;
  
 
   .navButton{
@@ -130,8 +131,6 @@
       background-color: $blue;
       color: $black;
       @include hoverButtonYellow;
-
     }
-
   }
  }

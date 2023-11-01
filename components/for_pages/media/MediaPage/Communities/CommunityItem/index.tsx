@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import UserSvg from 'components/svg/UserSvg'
 import Button from 'components/ui/Button'
 import UserPic from 'components/ui/UserPic'
@@ -11,7 +13,6 @@ import { useResize } from 'components/hooks/useResize'
 import CheckSvg from 'components/svg/CheckSvg'
 import PlusSvg from 'components/svg/PlusSvg'
 import { colors } from 'styles/variables'
-import styles from './index.module.scss'
 
 interface Props {
   community: ICommunity

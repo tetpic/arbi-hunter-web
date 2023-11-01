@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
 import { ICategory } from 'data/interfaces/Common'
 
-interface IState {
+export interface IMediaContextState {
   savedArticles: Map<number, IArticle>
   setSavedArticles: (p: number)=>Promise<boolean|{total: number}>
   likeArticle: (article: IArticle) => Promise<boolean>
@@ -16,7 +16,7 @@ interface IState {
   setStories: () => void
 }
 
-const MediaContext = createContext<Partial<IState>>({})
+const MediaContext = createContext<Partial<IMediaContextState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -113,7 +113,7 @@ export function MediaWrapper(props: Props) {
     })
   }
 
-  const value: IState = {
+  const value: IMediaContextState = {
     setSavedArticles,
     savedArticles,
     likeArticle,

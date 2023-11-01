@@ -2,6 +2,10 @@
 
 .root {
   margin-bottom: 24px;
+  @include mq($TabletWidth, max) {
+    width: 100vw;
+    margin-left: -16px;
+  }
 }
 
 .swiperSlide {

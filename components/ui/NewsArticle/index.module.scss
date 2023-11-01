@@ -48,8 +48,10 @@
 
   .content {
     margin-bottom: 16px;
-    font-weight: $mediumText;
+    font-size: $mediumText;
     font-weight: $medium;
+    // word-break: normal;
+    overflow-wrap: break-word;
   }
 }
 

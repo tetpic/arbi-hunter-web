@@ -25,7 +25,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 export default function Communities(props: Props) {
   return (
     <ContentLayout>
-      <CommunitiesPage categories={props.categories} category={props.category} page={props.page}/>
+        <CommunitiesPage categories={props.categories} category={props.category} page={props.page}/>
     </ContentLayout>
   )
 }

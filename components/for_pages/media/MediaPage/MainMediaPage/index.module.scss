@@ -3,6 +3,9 @@
 .root {
   overflow: auto;
   width: 100%;
+  @include mq($TabletWidth, max) {
+    overflow: unset;
+  }
 }
 
 .title {

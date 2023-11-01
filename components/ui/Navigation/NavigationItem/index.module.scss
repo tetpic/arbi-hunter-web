@@ -27,10 +27,7 @@
   }
 
   &_active {
-    // background-color: $grey;
     background: $gradientFiltered;
-
-    // pointer-events: none;
     @include mq($TabletWidth, max) {
       pointer-events: all;
     }
@@ -54,6 +51,8 @@
   max-height: 0px;
   @include transitionDefault;
   overflow: auto;
+  width: calc(100% + 16px);
+  margin-left: -8px;
   
   &_active {
     max-height: 60vh;

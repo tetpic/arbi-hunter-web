@@ -46,6 +46,8 @@
 .buttonYellow {
   @include buttonBlack;
   padding: 4px;
+  height: 40px;
+  width: 40px;
 }
 
 .buttonBlack {

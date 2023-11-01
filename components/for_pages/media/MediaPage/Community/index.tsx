@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import ICommunity from 'data/interfaces/ICommunity'
 import { useEffect, useRef, useState } from 'react'
 import CommunityHeader from './CommunityHeader'
@@ -7,7 +9,8 @@ import { useResize } from 'components/hooks/useResize'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
-import styles from './index.module.scss'
+import BackTextButton from 'components/ui/BackTextButton'
+import { useRouter } from 'next/router'
 
 const CommunityContent = dynamic(()=> import('./CommunityContent'), {ssr: false})
 const CommunityMembers = dynamic(()=> import('./CommunityMembers'), {ssr: false})
@@ -24,6 +27,7 @@ export default function CommunityPage({community, id}: Props) {
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
   const contentLength = useRef(communityContext.communityNews.size)
+  const router = useRouter()
 
   const com = communityContext.currentCommunity||community
 
@@ -61,6 +65,7 @@ export default function CommunityPage({community, id}: Props) {
   }, [communityContext.currentCommunity])
 
   return (<div className={styles.root}> 
+  <BackTextButton className={styles.backButton} onClick={router.back}/>
   <InfiniteScroll 
   next={()=>setPage((p)=> p+1)} 
   hasMore={communityContext.communityNews.size < total} 

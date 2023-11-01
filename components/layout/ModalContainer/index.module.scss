@@ -4,7 +4,7 @@
   outline: none;
   max-height: 98vh;
   max-height: 98dvh;
-  @include mq($PhoneWidth, max) {
+  @include mq($TabletWidth, max) {
     max-height: 100vh;
     max-height: 100dvh;
   }

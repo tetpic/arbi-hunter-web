@@ -48,7 +48,7 @@ export default function MediaCategories(props: Props) {
                 alt={category.name+ ' image'} 
                 width={100} 
                 height={100}
-                style={{objectFit:'cover'}}
+                style={{objectFit:'cover', width: '100%', height: '100%'}}
                 className={styles.image}
                 />
             </div>
