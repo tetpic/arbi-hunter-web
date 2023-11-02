@@ -7,6 +7,7 @@ import ProposalModal from 'components/modals/ProposalModal'
 import CvVcOptionsModal from 'components/modals/OptionsModal'
 import VcResponsesFilterModal from 'components/modals/VcResponsesFilterModal'
 import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
+import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 
 
 interface Props { }
@@ -47,6 +48,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <MediaItemActionsModal isBottomSheet={true}  onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ChatsFolderModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[0.9]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <ChatsFolderModal isBottomSheet={true}  onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

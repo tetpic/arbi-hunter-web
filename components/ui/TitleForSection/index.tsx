@@ -12,6 +12,13 @@ interface Props {
   showButton?: boolean 
 }
 
+/**
+ * @title string
+ * @emoji JSX.Element
+ * @className string
+ * @onBackClick ()=>void
+ * @showButton boolean 
+ */
 export default function Title(props: Props) {
   const {isTabletWidth} = useResize()
 

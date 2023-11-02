@@ -1,54 +1,55 @@
-// import { useRouter } from 'next/router'
 import styles from './index.module.scss'
+
+// import { useRouter } from 'next/router'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
 import { Languages } from 'types/enums'
 import LinkBlack from 'components/ui/LinkBlack'
 import TextNode from 'components/ui/TextNode'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
-  title: string
   link?: string
   news?: IArticle[]
 }
 
-
-
 export default function MediaNewsSection(props: Props) {
   const firstItem = props.news[0]
+  const {isTabletWidth} = useResize()
 
   return (<section className={styles.root}> 
-  <p className={styles.title}>{props.title}</p>
   <div className={styles.content}>
-    <div className={styles.mainItem}>
-      <div className={styles.tags}>
-        <p 
-        className={styles.tag}
-        style={{backgroundColor: `#${firstItem.articleCategory.color}`}}
-        >
-          {firstItem.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
-        </p>
+    {!isTabletWidth &&
+      <div className={styles.mainItem}>
+        <div className={styles.tags}>
+          <p 
+          className={styles.tag}
+          style={{backgroundColor: `#${firstItem.articleCategory.color}`}}
+          >
+            {firstItem.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
+          </p>
+        </div>
+        <div className={styles.textWrapper}>
+          <p className={styles.itemTitle}>{firstItem.name}</p>
+            <p className={styles.itemDesc}>
+              <TextNode html={firstItem.blocks[0].body}/>
+            </p> 
+        </div>
+        <div className={styles.imageWrapper}>
+          {firstItem.image &&  
+            <Image 
+            priority 
+            src={FILES + firstItem.image.source} 
+            alt={firstItem.name} 
+            style={{objectFit:'cover', width: '100%'}}
+            width={664}
+            height={345}
+            />
+          }
+        </div>
       </div>
-      <div className={styles.textWrapper}>
-        <p className={styles.itemTitle}>{firstItem.name}</p>
-          <p className={styles.itemDesc}>
-            <TextNode html={firstItem.blocks[0].body}/>
-          </p> 
-      </div>
-      <div className={styles.imageWrapper}>
-        {firstItem.image &&  
-          <Image 
-          priority 
-          src={FILES + firstItem.image.source} 
-          alt={firstItem.name} 
-          style={{objectFit:'cover', width: '100%'}}
-          width={664}
-          height={345}
-          />
-        }
-      </div>
-    </div>
+    }
     <div className={styles.otherItems}>
       {props.news && props.news.slice(1, 4).map(item => {
         return (
@@ -83,11 +84,8 @@ export default function MediaNewsSection(props: Props) {
       })}
     </div>
   </div>
-
-  {props.link &&
+  {props.link && !isTabletWidth &&
     <LinkBlack href={props.link}>Смотреть все</LinkBlack>
   }
-
-
   </section>)
 }

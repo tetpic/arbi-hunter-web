@@ -26,11 +26,12 @@ export default function NewsByCategories(props: Props) {
   
   const news = mediaContext.currentNews
   const userContext = useUserContext()
+
   
   useEffect(()=>{
-      setPage(1)
-      setTotal(null)
-      mediaContext.setCurrentNews({clear: true})
+    setPage(1)
+    setTotal(null)
+    mediaContext.setCurrentNews({clear: true})
   }, [props.category])
 
   useEffect(()=>{
@@ -42,21 +43,12 @@ export default function NewsByCategories(props: Props) {
     if(props.category) {
       data.categories = props.category.id
     }
-    
     ArticlesRepository.getNews(true, data, userContext?.currentProfile?.profileType)
     .then(res => {
       setTotal(res.total)
       mediaContext.setCurrentNews({articles: res.data})
     })
   }, [page, props.category])
-
-  useEffect(()=>{
-    return (()=> {
-      setPage(1)
-      setTotal(null)
-      mediaContext.setCurrentNews({clear: true})
-    })
-  }, [])
 
   return (<>
   {!props.hideNav && 

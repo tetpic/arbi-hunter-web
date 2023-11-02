@@ -1,0 +1,55 @@
+@import 'styles/index';
+
+.root {
+  opacity: 0;
+  width: clamp(270px, 75vw, 350px);
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: $black;
+  transition: .3s ease-in-out;
+  
+  height: 100vh;
+  height: 100dvh;
+  z-index: 30;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  transform: translateX(100%);
+}
+
+
+
+.active {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+
+.backBtn {
+  align-self: unset !important;
+  margin-bottom: 24px;
+  svg {
+    rotate: 272deg;
+  }
+}
+
+.wrapper, .reg {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  width: 100%;
+}
+
+.reg {
+  border-bottom: 2px $white solid;
+  padding-bottom: 8px;
+}
+
+.link  {
+  width: 100%;
+  height: 40px;
+  @include buttonYellow;
+
+}

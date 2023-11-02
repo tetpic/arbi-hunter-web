@@ -12,6 +12,7 @@ interface Props {
   communities: ICommunity[]
   news: IArticle[]
   newsCompilations: ICategory[]
+  isMobile?: boolean
 }
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
@@ -30,10 +31,9 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 
 
 export default function Media(props: Props) {
-
   return (
     <ContentLayout title={'Медиа'}>
-      <MediaLanding categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
+      <MediaLanding isMobile={props.isMobile} categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
     </ContentLayout>
   )
 }

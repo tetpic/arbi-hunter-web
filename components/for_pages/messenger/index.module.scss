@@ -5,6 +5,9 @@
   display: flex;
   height: calc(100vh - 76px);
   overflow: auto;
+  @include mq($TabletWidth, max) {
+    padding-left: unset;
+  }
 
 
 }

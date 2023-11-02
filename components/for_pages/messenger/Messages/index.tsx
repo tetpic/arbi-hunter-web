@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
@@ -17,16 +19,19 @@ import {v4 as uuidv4} from 'uuid'
 import CloseTransparentSvg from 'components/svg/CloseTransparentSvg'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import RecordSvg from 'components/svg/RecordSvg'
-import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import BackBtn from 'components/ui/BackBtn'
 
 
 interface Props {
+  onBackClick: () => void
 }
 
 export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
   const {messages, loading} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
+  const {isTabletWidth} = useResize()
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
@@ -80,11 +85,17 @@ export default function Messages(props: Props) {
   return (
     <div className={styles.root}> 
       <div className={styles.top}>
+        {isTabletWidth &&
+          <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
+        }
         <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
         <p className={styles.name}>{/* dialog.chat?.participant.company||*/collocutor.firstName + ' ' + collocutor.lastName}</p>
         <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor.lastActivityAt)}</p>
-        <ThreeDotsButton className={styles.dots}/>
+        {!isTabletWidth &&
+          <ThreeDotsButton className={styles.dots}/>
+        }
       </div>
+
       {userContext?.currentProfile?.profileType === ProfileType.Employee &&
         <div className={styles.invite}>
           <p className={styles.invite__title}>Вас пригласили на вакансию</p>

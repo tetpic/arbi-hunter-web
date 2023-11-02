@@ -23,6 +23,7 @@ import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IMediaCategoryModal } from 'components/modals/MediaCategoryModal'
 import dynamic from 'next/dynamic'
+import { isMobile } from 'react-device-detect'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -31,7 +32,8 @@ const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 interface Props {
   category?: number
   categories?: ICategory[]
-  page?: 'communities'|'categories'
+  page?: MediaPageNav
+  isModile?: boolean
 }
 
 export enum MediaPageNav {
@@ -54,7 +56,7 @@ export default function CommunitiesPage(props: Props) {
   const appContext = useAppContext()
   const mediaContext = useMediaContext()
   const {isTabletWidth, width} = useResize()
-  const [page, pager] = useState<MediaPageNav>(props.page === 'categories'&&!isTabletWidth && width?MediaPageNav.Categories:MediaPageNav.AllArticles)
+  const [page, pager] = useState<MediaPageNav>(!isMobile&&props.page||props.page === MediaPageNav.Categories?MediaPageNav.AllArticles:props.page||MediaPageNav.AllArticles)
   const router = useRouter()
   const [currentCategory, setCurrentCategory] = useState<ICategory>(props.categories.find(el=> el.id === +props.category)||props.categories[0])
   const subCategories = <SubCategories categories={props.categories} currentCategory={currentCategory} setCurrent={(e: ICategory) => setCurrentCategory(e)} />
@@ -112,20 +114,21 @@ export default function CommunitiesPage(props: Props) {
   useEffect(()=>{
     const pageFromRouter = router.query.page as MediaPageNav
     const categoryId = router.query.category as string
+    const category = props.categories.find(el=> el.id === Number(categoryId))
     if(page && pageFromRouter && page !== pageFromRouter && width ) {
       pager(isTabletWidth&&pageFromRouter===MediaPageNav.Categories?MediaPageNav.AllArticles:pageFromRouter)
     }
     if(currentCategory && categoryId && currentCategory?.id !== Number(categoryId)) {
-      setCurrentCategory(props.categories.find(el=> el.id === Number(categoryId)))
+      setCurrentCategory(category)
     }
     if(pageFromRouter === MediaPageNav.Categories && width && isTabletWidth) {
       appContext.showModal<IMediaCategoryModal>(ModalType.MediaCategoryModal, {
-        context: mediaContext,
-        currentCategory: currentCategory,
-        title: currentCategory.name
+        currentCategory: category,
+        title: category.name
       })
     }
   }, [router])
+
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>

@@ -10,8 +10,6 @@ interface Props {
   className?: string,
   backgroundColor? : string
   mobileFullScreen?:boolean
-
-
 }
 
 export default function ModalLayout(props: Props) {

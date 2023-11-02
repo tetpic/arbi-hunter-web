@@ -135,8 +135,8 @@ export function ChatWrapper(props: Props) {
     if(folderToSet) {
       const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id}, profileType)
       setChats(chats.data)
-      router.replace({query: { ...router.query, chat: chats.data[0].id}}, undefined, {shallow: true})
-      setCurrentChatId(chats.data[0].id)
+      router.replace({query: { ...router.query, chat: chats.data[0]?.id}}, undefined, {shallow: true})
+      setCurrentChatId(chats.data[0]?.id)
     }
     else {
       setChats(props.chats)
@@ -164,7 +164,7 @@ export function ChatWrapper(props: Props) {
       return true
     }
     catch(err) {
-      console.warn(err)
+      console.error(err)
     }
   }
 

@@ -1,5 +1,5 @@
 import { CategoryType, CookiesType } from 'types/enums'
-import CommunitiesPage from 'components/for_pages/media/MediaPage'
+import CommunitiesPage, { MediaPageNav } from 'components/for_pages/media/MediaPage'
 import ContentLayout from 'components/layout/ContentLayout'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { ICategory } from 'data/interfaces/Common'
@@ -7,7 +7,8 @@ import { ICategory } from 'data/interfaces/Common'
 interface Query {
   category?: number
   categories? :ICategory[]
-  page?: 'communities'|'categories'
+  page?: MediaPageNav
+  isMobile?:boolean
 }
 
 interface Props extends Query{
@@ -25,7 +26,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 export default function Communities(props: Props) {
   return (
     <ContentLayout>
-        <CommunitiesPage categories={props.categories} category={props.category} page={props.page}/>
+        <CommunitiesPage categories={props.categories} isModile={props.isMobile} category={props.category} page={props.page}/>
     </ContentLayout>
   )
 }

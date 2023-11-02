@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import {Autoplay} from 'swiper/modules'
 import ICommunity from 'data/interfaces/ICommunity'
@@ -9,8 +11,8 @@ import Button from 'components/ui/Button'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useRef } from 'react'
-import styles from './index.module.scss'
 import LinkBlack from 'components/ui/LinkBlack'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
   communities: ICommunity[]
@@ -20,10 +22,10 @@ export default function MediaCommunities(props: Props) {
   
   const router = useRouter()
   const swiper = useRef<SwiperRef>(null!)
+  const {isTabletWidth} = useResize()
 
 
   return (<div className={styles.root}> 
-  <p className={styles.title}>Сообщества</p>
   <div className={styles.content}>
     <Swiper
     autoplay
@@ -61,27 +63,32 @@ export default function MediaCommunities(props: Props) {
         )
       })}
     </Swiper>
-    <Button 
-    className={styles.buttonLeft} 
-    title='previous slide'
-    onClick={(e)=>{
-      swiper.current.swiper.slidePrev()
-    }}
-    >
-      <ArrowLeftSvg/>
-    </Button>
+    {!isTabletWidth && <>
+      <Button 
+      className={styles.buttonLeft} 
+      title='previous slide'
+      onClick={(e)=>{
+        swiper.current.swiper.slidePrev()
+      }}
+      >
+        <ArrowLeftSvg/>
+      </Button>
 
-    <Button 
-    className={styles.buttonRight} 
-    title='next slide'
-    onClick={e=> {
-      swiper.current.swiper.slideNext()
-    }}
-    >
-      <ArrowRightSvg/>
-    </Button>
+      <Button 
+      className={styles.buttonRight} 
+      title='next slide'
+      onClick={e=> {
+        swiper.current.swiper.slideNext()
+      }}
+      >
+        <ArrowRightSvg/>
+      </Button>
+    </>}
   </div>
-  <LinkBlack href={'/media/page?page=communities'} >Смотреть все</LinkBlack>
+  
+  {!isTabletWidth &&
+    <LinkBlack href={'/media/page?page=communities'} >Смотреть все</LinkBlack>
+  }
 
   </div>)
 }

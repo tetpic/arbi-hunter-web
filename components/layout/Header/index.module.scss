@@ -21,10 +21,6 @@
       display: none;
     }
   }
-
-  @include mq($TabletWidth, max) {
-    display: none;
-  }
 }
 
 .contentWrapper {
@@ -39,12 +35,20 @@
     flex-wrap: wrap;
     margin-left: auto;
   }
+  @include mq($TabletWidth, max) {
+    padding: unset;
+    padding-left: 8px;
+  }
 }
 
 .linksWrapper {
   display: flex;
   width: Max(320px, 40%);
   justify-content: space-between;
+  @include mq($TabletWidth, max) {
+    display: none
+  }
+
 }
 
 .link {
@@ -56,6 +60,9 @@
   align-items: center;
   column-gap: 16px;
   position: relative;
+  @include mq($TabletWidth, max) {
+    display: none
+  }
 }
 
 .userLink {

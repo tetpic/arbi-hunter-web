@@ -1,8 +1,9 @@
+import styles from './index.module.scss'
+
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
 import {useEffect, useState } from 'react'
 import ChatItem from './ChatItem'
-import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
 import { useChatContext } from 'context/chat_state'
 
@@ -11,8 +12,6 @@ interface Props {
   chatId: number | null
   onSelect: (chat: IChat) => void
 }
-
-
 
 export default function Chats(props: Props) {
   const [page, pager] = useState<string>('__all__')
@@ -28,6 +27,7 @@ export default function Chats(props: Props) {
   useEffect(()=>{
     chatContext.setChatsFromFolder(page)
   }, [page])
+  
 
   return (<>
     <div className={styles.root} > 

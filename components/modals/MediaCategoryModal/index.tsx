@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
-import { IMediaContextState, MediaWrapper } from 'context/media_state'
+import { IMediaContextState, MediaWrapper, useMediaContext } from 'context/media_state'
 import NewsByCategories from 'components/for_pages/media/MediaPage/NewsByCategories'
 import { ICategory } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
@@ -20,12 +20,14 @@ export interface IMediaCategoryModal {
   title: string
 }
 
-export default function MediaCategoryModal(props: Props) {
+function MediaCategoryModalInner(props: Props) {
   const appContext = useAppContext()
+  const mediaContext = useMediaContext()
   const args = appContext.modalArguments as IMediaCategoryModal
 
   const onCloseHandler = () => {
     props.onClose()
+    mediaContext.setCurrentNews({clear: true})
   }
 
   const body = (<div className={styles.root}>
@@ -38,10 +40,16 @@ export default function MediaCategoryModal(props: Props) {
   return (
     <ModalLayout mobileFullScreen>
       <ModalBody>
-        <MediaWrapper>
           {body}
-        </MediaWrapper>
       </ModalBody>
     </ModalLayout>
+  )
+}
+
+export default function MediaCategoryModal(props: Props){
+  return (
+    <MediaWrapper>
+      <MediaCategoryModalInner {...props}/>
+    </MediaWrapper>
   )
 }

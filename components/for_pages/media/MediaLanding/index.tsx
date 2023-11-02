@@ -1,5 +1,6 @@
-import MediaPageHeader from '../MediaHeader'
 import styles from './index.module.scss'
+
+import MediaPageHeader from '../MediaHeader'
 import { ICategory } from 'data/interfaces/Common'
 import MediaCategories from '../MediaCategories'
 import MediaNewsSection from '../MediaNewsSection'
@@ -10,6 +11,10 @@ import MediaCrypto from '../MediaCrypto'
 import { IArticle } from 'data/interfaces/IArticle'
 import MediaCompilation from '../MediaCompilation'
 import SearchBar from 'components/ui/SearchBar'
+import { useResize } from 'components/hooks/useResize'
+import MediaTitle from 'components/ui/MediaTitle'
+import Image from 'next/image'
+
 
 
 interface Props {
@@ -17,21 +22,29 @@ interface Props {
   communities: ICommunity[]
   news: IArticle[]
   newsCompilations: ICategory[]
-
+  isMobile?: boolean
 }
 
 export default function MediaLanding(props: Props) {
   const userContext = useUserContext()
+  const {isTabletWidth} = useResize()
 
   return (
     <div className={styles.root}>
-      {!userContext.currentProfile &&
-        <MediaPageHeader/>  
-      }
-      <SearchBar/>
-      <MediaCategories categories={props.categories}/>
-      <MediaNewsSection title='Популярное' news={props.news.slice(0, 4)}/>
+      {props.isMobile && <SearchBar/>}
+      <MediaPageHeader isMobile={props.isMobile}/>  
+      {!props.isMobile && <SearchBar/>}
+
+      <MediaTitle title={isTabletWidth?'Категории':'Все категории'} link={'/media/page?page=categories'}/>
+      <MediaCategories categories={props.categories} title={isTabletWidth&&'Категории'}/>
+
+      <MediaTitle title={'Популярное'} link={''}/>
+      <MediaNewsSection news={props.news.slice(0, 4)}/>
+
+      <MediaTitle title={'Cообщества'} link={'/media/page?page=communities'}/>
       <MediaCommunities communities={props.communities}/>
+
+      <MediaTitle title={isTabletWidth?'Подборки':<>Подборки для вас <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/></>} link={'/compilations'}/>
       <MediaCompilation newsCompilations={props.newsCompilations}/>
       <MediaCrypto/>
     </div>

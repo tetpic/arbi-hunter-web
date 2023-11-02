@@ -3,6 +3,13 @@
 .root {
   width: 70%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include mq($TabletWidth, max) {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .backButton {
@@ -11,7 +18,7 @@
     color: $blue;
     svg {
       path {
-        fill: $blue;
+        stroke: $blue;
       }
     }
   }
@@ -26,7 +33,24 @@
 .top {
   padding: 16px;
   border-bottom: 2px $grey solid;
+  width: 100%;
+  @include mq($TabletWidth, max) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: unset;
+  }
+
+  .change {
+    font-weight: $medium;
+    font-size: $mediumText;
+    color: $blue;
+    min-width: 40px;
+    text-align: end;
+  }
 }
+
+
 
 .body {
   margin-top: 120px;
@@ -34,23 +58,38 @@
   flex-direction: column;
   align-items: center;
   align-items: center;
-  .tip {
+  @include mq($TabletWidth, max) {
     margin-top: 24px;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $greyLight;
-    max-width: 530px;
-    text-align: center;
+    height: 100%;
+  }
+
+
+}
+
+.tip {
+  margin-top: 24px;
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $greyLight;
+  max-width: 530px;
+  text-align: center;
+  width: 85vw;
+  @include mq($TabletWidth, max) {
+    font-size: $mediumText;
+    font-weight: $regular;
   }
 }
 
 .folderWrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 32px);
   max-width: 670px;
   row-gap: 8px;
   margin-top: 48px;
+  @include mq($TabletWidth, max) {
+    margin-top: 24px;
+  }
 
   .folder {
     display: flex;
@@ -63,6 +102,7 @@
     color: $white;
     font-size: $mediumText;
     font-weight: $medium;
+   
   }
 }
 
@@ -70,6 +110,7 @@
   margin-top: 32px;
   margin-inline: auto;
   @include buttonYellow;
+
   p {
     display: flex;
     column-gap: 8px;
@@ -88,6 +129,17 @@
   border-radius: 16px;
   background-color: $black;
   padding-inline: 16px;
+  overflow: hidden;
+  @include mq($TabletWidth, max) {
+    padding-inline: unset;
+  }
+
+  .itemWrapper {
+    overflow: auto;
+    @include exeptLast {
+      border-bottom: 2px $grey solid;
+    }
+  }
 
   .item {
     display: flex;
@@ -100,8 +152,16 @@
     padding-block: 8px;
     cursor: pointer;
     @include transitionDefault;
-    @include exeptLast {
+    @include mq($TabletWidth, max) {
+      min-height: 56px;
+      width: calc(100% + 120px);
+      padding-block: unset;
+      padding-left: 16px;
+    }
+
+    &_add {
       border-bottom: 2px $grey solid;
+
     }
   }
 
@@ -118,4 +178,27 @@
 .removeButton {
   cursor: pointer;
   margin-left: auto;
+  @include mq($TabletWidth, max) {
+    background-color: $red;
+    padding: 19px 22px;
+    span {
+      color: $white;
+    }
+  }
+}
+
+.imageWrapper {
+  margin-top: 120px;
+
+  @include mq($TabletWidth, max) {
+    margin-top: 24px;
+    width: 40vw;
+    height: 40vw;
+  }
+}
+
+.folderButton {
+  &_disabled {
+    pointer-events: none;
+  }
 }

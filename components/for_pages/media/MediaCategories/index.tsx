@@ -13,22 +13,22 @@ import LinkBlack from 'components/ui/LinkBlack'
 import bigBitcoin from 'images/big_bitcoin.png'
 import Link from 'next/link'
 import classNames from 'classnames'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
   categories: ICategory[]
   hideNav?: boolean
   className?: string
+  title?: string
 }
+
 
 export default function MediaCategories(props: Props) {
   const swiper= useRef<SwiperRef>(null!)
+  const {isTabletWidth} = useResize()
 
   return (
   <section className={classNames(styles.root, props.className)}> 
-  {!props.hideNav &&
-    <p className={styles.title}>Категории и рубрики</p>
-  }
-  
   <Swiper
   ref={swiper}
   freeMode={true}
@@ -59,13 +59,13 @@ export default function MediaCategories(props: Props) {
       )
     })}
     </Swiper>
-    {!props.hideNav &&
+    {!props.hideNav && !isTabletWidth &&
       <>
         <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
         <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
       </>
     }
-    {!props.hideNav &&
+    {!props.hideNav && !isTabletWidth &&
       <LinkBlack href={'/media/page?page=categories'}>Смотреть все</LinkBlack>
     }
   </section>

@@ -1,16 +1,31 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 32px);
+  margin-bottom: 32px;
+
+
+  .allLink {
+    display: flex;
+    align-items: center;
+    color: $white;
+    font-size: $smallText;
+  }
+}
+
 .title {
-  font-weight: $semibold;
-font-size: $hugeText;
+  font-size: $hugeText;
   color: $white;
+  font-weight: $semibold;
   text-align: center;
 }
 
@@ -18,6 +33,9 @@ font-size: $hugeText;
   display: flex;
   column-gap: 24px;
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }
 
 .mainItem{
@@ -55,6 +73,9 @@ font-size: $hugeText;
   width: calc(50% - 8px);
   display: flex;
   flex-direction: column;
+  @include mq($TabletWidth, max) {
+    width: unset;
+  }
 
   .imageWrapper {
     width: 115px;

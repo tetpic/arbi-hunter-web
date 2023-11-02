@@ -1,17 +1,22 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  @include mq($TabletWidth, max) {
+    width: 100vw;
+    margin-left: -16px;
+  }
 }
 
 .slide {
-  width: 25%;
-  max-width: 286px;
+  width: clamp(203px, 25%, 286px);
   padding-inline: 8px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 4px;
+  }
 }
 
 .title {
@@ -22,14 +27,13 @@
 }
 
 .content {
-  margin-top: 32px;
   position: relative;
   width: 100%;
 }
 
 .imageWrapper {
   width: 100%;
-  height: 134px;
+  height: Clamp(96px, 20vw, 134px);
   border-top-right-radius: 16px;
   border-top-left-radius: 16px;
   overflow: hidden;
@@ -47,8 +51,8 @@
   position: relative;
 
   .logo {
-    width: 74px;
-    height: 74px;
+    width: clamp(64px, 10vw, 74px);
+    height: clamp(64px, 10vw, 74px);
     border-radius: 16px;
     overflow: hidden;
     background-color: $black;
@@ -81,7 +85,7 @@
 }
 
 .name {
-  margin-top: 62px;
+  margin-top: clamp(48px, 10vw, 62px);
   color: $white;
   font-weight: $semibold;
   font-size: $text20;
@@ -91,7 +95,7 @@
 }
 
 .stats {
-  margin-top: 24px;
+  margin-top: clamp(16px, 3vw, 24px);
   color: $greyLight;
   font-size: $largeText;
   font-weight: $medium;
@@ -133,7 +137,5 @@
 }
 
 .watchAll {
-
   @include watchAllButton;
-  
 }

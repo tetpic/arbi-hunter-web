@@ -143,3 +143,11 @@
     @include lineClamp(2)
   }
 }
+
+.closeButton {
+  position: absolute;
+  top: 32px;
+  right: 16px;
+  z-index: 6;
+
+}

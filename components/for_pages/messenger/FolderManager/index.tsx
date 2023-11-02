@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import BackTextButton from 'components/ui/BackTextButton'
 import { useChatContext } from 'context/chat_state'
 import folderImage from 'images/folder.png'
@@ -19,17 +20,22 @@ import Validator from 'utils/Validator'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import { useUserContext } from 'context/user_state'
 import ChatRepository from 'data/repositories/ChatRepository'
+import BackBtn from 'components/ui/BackBtn'
+import Title from 'components/ui/TitleForSection'
+import classNames from 'classnames'
+import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 
 interface Props {
   onBack?: () => void
   folderToEdit?: IChatFolder
+  changeMode?: ()=>void
 }
 
 function FolderEditor(props: Props) {
   const chatContext = useChatContext()
   const appContext= useAppContext()
   const userContext = useUserContext()
-  const {isPhoneWidth} = useResize()
+  const {isTabletWidth} = useResize()
   const [choosenChats, setChoosenChats] = useState<Map<number, IChat>>(new Map)
 
   const saveHandler = (c: IChat[]) => {
@@ -42,7 +48,7 @@ function FolderEditor(props: Props) {
   }
 
   const addModalHandler = () => {
-    isPhoneWidth
+    isTabletWidth
     ?appContext.showBottomSheet(ModalType.ChatsFolderModal, {chats:chatContext.chats, onSave: saveHandler})
     :appContext.showModal(ModalType.ChatsFolderModal, {chats: chatContext.chats, onSave: saveHandler})
   }
@@ -53,14 +59,6 @@ function FolderEditor(props: Props) {
       return new Map(state)
     })
   }
-
-  useEffect(()=>{
-    if(!props.folderToEdit) {return}
-    ChatRepository.getChatList({chatFolderId: props.folderToEdit.id}, userContext.currentProfile.profileType)
-    .then(res=> {
-      setChoosenChats(new Map(res.data.map(r=>[r.id, r])))
-    })
-  }, [])
 
   const submit = (data: any) => {
     if(!props.folderToEdit) {
@@ -87,9 +85,33 @@ function FolderEditor(props: Props) {
     onSubmit: submit
   })
 
+  useEffect(()=>{
+    if(!props.folderToEdit) {return}
+    ChatRepository.getChatList({chatFolderId: props.folderToEdit.id}, userContext.currentProfile.profileType)
+    .then(res=> {
+      setChoosenChats(new Map(res.data.map(r=>[r.id, r])))
+    })
+  }, [])
 
 
-  return (
+  return (<>
+      <div className={styles.top}>
+        {isTabletWidth &&
+          <>
+            <BackBtn onClick={props.onBack} bgColor={'transparent'}/>
+            <Title title={'Настройки чата'}/>
+            <p className={styles.change} onClick={formik.submitForm}>{'Готово'}</p>
+          </>
+        ||
+        <BackTextButton onClick={props.onBack}/>
+        }
+      </div>
+      {!isTabletWidth && <>
+        <div className={styles.imageWrapper}>
+          <Image src={folderImage} alt={'folder image'} width={186} height={150} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+        </div>
+        <p className={styles.tip}>Вы можете создать папки с нужными чатами и переключаться между ними.</p>
+      </>}
     <FormikProvider value={formik}>
       <Form className={styles.folderWrapper}>
 
@@ -99,66 +121,100 @@ function FolderEditor(props: Props) {
 
         <p className={styles.folderTitle}>ВЫБРАТЬ ЧАТЫ</p>
         <div className={styles.chatsWrapper}>
-          <div className={styles.item} onClick={addModalHandler}><PlusSvg color={colors.yellow} /><span>Добавить чаты</span></div>
+          <div className={classNames(styles.item, choosenChats.size === 1&&styles.item_add)} onClick={addModalHandler}><PlusSvg color={colors.yellow} /><span>Добавить чаты</span></div>
           {[...choosenChats.values()].map(chat=> {
             const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
             return (
-              <div className={styles.item}>
-                <UserPic size={32}/>
-                <p className={styles.name}>{collocutor.firstName} {collocutor.lastName}</p>
-                <Button type='button' className={styles.removeButton} onClick={()=>removeChatFromlist(chat)}><TrashBasketSvg/></Button>
+              <div className={styles.itemWrapper}>
+                <div className={styles.item}>
+                  <UserPic size={32}/>
+                  <p className={styles.name}>{collocutor.firstName} {collocutor.lastName}</p>
+                  <Button type='button' className={styles.removeButton} onClick={()=>removeChatFromlist(chat)}>{isTabletWidth?'Удалить':<TrashBasketSvg/>}</Button>
+                </div>
               </div>
             )
           })}
         </div>
-        <Button className={styles.createBtn} type='button' onClick={formik.submitForm}>
-          {props.folderToEdit?'Сохранить': 'Создать папку'}
-        </Button>
+        {!isTabletWidth &&
+          <Button className={styles.createBtn} type='button' onClick={formik.submitForm}>
+            {props.folderToEdit?'Сохранить': 'Создать папку'}
+          </Button>
+        }
       </Form>
     </FormikProvider>
-  )
+  </>)
 }
 
 export default function FolderManager() {
   const chatContext = useChatContext()
+  const {isTabletWidth} = useResize()
   const [creationMode, setCreationMode] = useState<boolean>(false)
+  const [deleteFolderMode, setDeleteFolderMode] =useState(true)
   const [folderToEdit, setFolderToEdit] = useState<IChatFolder>()
 
+
   useEffect(()=>{
-    if(folderToEdit) {
-      setCreationMode(true)
+    if(isTabletWidth) {
+      setDeleteFolderMode(false)
     }
-  }, [folderToEdit])
-  
+  }, [isTabletWidth])
 
   return (<div className={styles.root}> 
-    <div className={styles.top}>
-      <BackTextButton className={styles.backButton} onClick={creationMode?()=>setCreationMode(false):chatContext.setFoldersActive}/>
-    </div>
-    <div className={styles.body}>
-      <Image src={folderImage} alt={'folder image'} width={186} height={150}/>
-      <p className={styles.tip}>Вы можете создать папки с нужными чатами и переключаться между ними.</p>
-      {chatContext.folders&& chatContext.folders.size>0 && !creationMode &&
-        <div className={styles.folderWrapper}>
-          <p className={styles.folderTitle}>ВСЕ ПАПКИ</p>
-          {[...chatContext.folders.values()].map(folder => {
-            return (
-              <div className={styles.folder} onClick={()=> setFolderToEdit(folder)}>
-                <p>{folder.name}</p>
-                <Button type='button' stopPropagation onClick={(e)=>{e.stopPropagation(); chatContext.removeChatFolder(folder.id)}}><TrashBasketSvg/></Button>
-              </div>
-            )
-          })}
-        </div>
-        ||
-        creationMode && <FolderEditor folderToEdit={folderToEdit} onBack={()=>setCreationMode(false)}/>
-      }
       {!creationMode &&
-        <Button className={styles.createBtn} onClick={()=>setCreationMode(true)}> 
-          <p><PlusSvg/><span>Создать новую папку</span></p>
-        </Button>
+        <div className={styles.top}>
+          {isTabletWidth &&
+          <>
+            <BackBtn onClick={creationMode?()=>setCreationMode(false):chatContext.setFoldersActive} bgColor={'transparent'}/>
+            <Title title={'Папки с чатами'}/>
+            <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?'Готово': 'Изм.'}</p>
+          </>
+            ||
+            <BackTextButton className={styles.backButton} onClick={creationMode?()=>setCreationMode(false):chatContext.setFoldersActive}/>
+          }
+        </div>
       }
-    </div>
-
+        {!creationMode && <>
+          <div className={styles.imageWrapper}>
+            <Image src={folderImage} alt={'folder image'} width={186} height={150} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+          </div>
+          <p className={styles.tip}>Вы можете создать папки с нужными чатами и переключаться между ними.</p>
+        </>}
+        {chatContext.folders&& chatContext.folders.size>0 && !creationMode &&
+          <div className={styles.folderWrapper}>
+            <p className={styles.folderTitle}>ВСЕ ПАПКИ</p>
+            {[...chatContext.folders.values()].map(folder => {
+              return (
+                <div 
+                className={styles.folder} 
+                onClick={()=> {
+                  setCreationMode(true)
+                  setFolderToEdit(folder)
+                }}
+                >
+                  <p>{folder.name}</p>
+                  <Button 
+                  type='button' 
+                  stopPropagation 
+                  className={classNames(styles.folderButton, !deleteFolderMode&&styles.folderButton_disabled)}
+                  onClick={(e)=>{
+                    if(deleteFolderMode) {
+                      e.stopPropagation()
+                      chatContext.removeChatFolder(folder.id)
+                    }
+                  }}>
+                    {deleteFolderMode?<TrashBasketSvg/>:<ArrowRightSvg/>}
+                  </Button>
+                </div>
+              )
+            })}
+          </div>
+          ||
+          creationMode && <FolderEditor folderToEdit={folderToEdit} onBack={()=>setCreationMode(false)}/>
+        }
+        {!creationMode && 
+          <Button className={styles.createBtn} onClick={()=>setCreationMode(true)}> 
+            <p><PlusSvg/><span>Создать новую папку</span></p>
+          </Button>
+        }
   </div>)
 }

@@ -88,7 +88,6 @@ export function ChatDialogWrapper(props: Props) {
     // }
     
     setMessages(state => {
-      
       data.forEach(el=> {
         state.set(el.id, el)
       })
@@ -98,9 +97,11 @@ export function ChatDialogWrapper(props: Props) {
 
   const loadMessages = async (lastCreatedAt?: string) => {
     setLoading(true)
-    const data = await ChatRepository.getMessagesByChatId(profileType, props.chatId, lastCreatedAt, limit )
+    if(props.chatId) {
+      const data = await ChatRepository.getMessagesByChatId(profileType, props.chatId, lastCreatedAt, limit )
+      processLoadedMessages(data.data, data.total)
+    }
     setLoading(false)
-    processLoadedMessages(data.data, data.total)
   }
 
   const init = async () => {
@@ -272,12 +273,12 @@ export function ChatDialogWrapper(props: Props) {
     if (props.chatId||props.chat) {
       setChat(props.chat)
       chatContext.setCurrentChatId(props.chatId||props.chat.id)
-      chatSocket.join(props.chat.id||props.chatId)
+      chatSocket.join(props.chat?.id||props.chatId)
     }
 
     return () => {
       if (props.chat||props.chatId) {
-        chatSocket.leave(props.chat.id||props.chatId)
+        chatSocket.leave(props.chat?.id||props.chatId)
       }
     }
   }, [props.chatId])

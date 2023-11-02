@@ -7,9 +7,12 @@ import IChat from 'data/interfaces/IChat'
 import UserPic from 'components/ui/UserPic'
 import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import { useState } from 'react'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 export default function ChatsFolderModal(props: Props) {
@@ -54,6 +57,17 @@ export default function ChatsFolderModal(props: Props) {
       })}
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {top}
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (
   <ModalLayout className={styles.layout}>

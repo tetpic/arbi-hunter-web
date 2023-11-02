@@ -22,7 +22,8 @@ export enum ModalType {
   ChatsFolderModal = 'chatsFolderModal',
   AddPortfolioModal='addPortfolioModal',
   StoriesViewerModal = 'storiesViewerModal',
-  MediaCategoryModal= 'mediaCategoryModal'
+  MediaCategoryModal= 'mediaCategoryModal',
+  MobileSideBarModal = 'mobileSideBarModal'
 }
 
 export enum SnackbarType {

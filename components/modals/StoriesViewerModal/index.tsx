@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { FILES } from 'types/constants'
 import UserPic from 'components/ui/UserPic'
 import TextNode from 'components/ui/TextNode'
+import Button from 'components/ui/Button'
+import CrossSvg from 'components/svg/CrossSvg'
 
 interface Props {
   onClose: ()=>void
@@ -102,6 +104,7 @@ export default function StoriesViewerModal(props: Props) {
 
   const body = (<>
     <StoriesProgress counter={currentStory.story.blocks.length-1} item={currentBlock.position} time={currentBlock.block.image?.duration||defaultStoryDuration}/>
+    <Button stopPropagation className={styles.closeButton} onClick={(e)=> {e.stopPropagation();props.onClose()}}><CrossSvg/></Button>
     <div className={styles.block}>
       {
       (currentBlock.block.image.type === 'IMAGE' || currentBlock.block.image.type === 'BINARY') &&
@@ -131,7 +134,7 @@ export default function StoriesViewerModal(props: Props) {
   </>)
 
   return (
-    <ModalLayout className={styles.modalLayout}>
+    <ModalLayout mobileFullScreen className={styles.modalLayout}>
       <ModalBody className={styles.modalBody}>
         {body}
       </ModalBody>

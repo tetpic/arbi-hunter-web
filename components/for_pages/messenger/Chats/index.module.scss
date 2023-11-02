@@ -4,6 +4,9 @@
   width: 30%;
   border-right: 2px $grey solid;
   overflow: auto;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .navWrapper {
@@ -28,5 +31,8 @@
 .chats {
   height: calc(100% - 100px);
   overflow: auto;
+  @include mq($TabletWidth, max) {
+    height: calc(100% - 155px);
+  }
 }
 

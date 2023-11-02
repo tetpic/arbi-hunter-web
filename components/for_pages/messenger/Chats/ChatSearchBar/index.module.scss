@@ -10,6 +10,12 @@
   align-items: center;
   padding: 16px 14px;
   min-width: 100%;
+  @include mq($TabletWidth, max) {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 16px;
+    column-gap: 8px;
+  }
 }
 
 .inputWrapper {
@@ -24,6 +30,10 @@
   width: fill-available;
   width: stretch;
   @include transitionDefault;
+  @include mq($TabletWidth, max) {
+    order: 3;
+    width: calc(100% - 48px);
+  }
 
   &_active {
     width: 100%;
@@ -68,8 +78,10 @@
   @include buttonGray;
   padding: 8px;
   width: 40px;
-  flex-shrink: 0
-  
+  flex-shrink: 0;
+  @include mq($TabletWidth, max) {
+    order: 2;
+  }
 }
 
 .filterButton {
@@ -77,6 +89,15 @@
   padding: 8px;
   width: 40px;
   flex-shrink: 0;
+  flex-shrink: 0;
+  @include mq($TabletWidth, max) {
+    order: 3;
+  }
+}
+
+.title {
+  order: 1;
+  width: 70%;
 }
 
 
