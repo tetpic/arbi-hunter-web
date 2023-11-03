@@ -112,3 +112,80 @@
   }  
 
 }
+
+.leftImages, .rightImages {
+  grid-area: il;
+  position: relative;
+  width: 225px;
+  height: 200px;
+  justify-self: flex-end;
+
+  div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: .3s linear;
+  }
+
+  div {
+    opacity: 0;
+    scale: .3;
+
+    &:nth-of-type(1) {
+      rotate: -30deg;
+      transition-delay: .02s;
+    }
+    &:nth-of-type(2) {
+      rotate: 30deg;
+      transition-delay: .04s;
+    }
+    &:nth-of-type(3) {
+      rotate: 30deg;
+      transition-delay: .06s;
+    }
+    &:nth-of-type(4) {
+      rotate: -30deg;
+      transition-delay: .08s;
+    }
+    &:nth-of-type(5) {
+      rotate: 30deg;
+      transition-delay: .1s;
+    }
+    &:nth-of-type(6) {
+      rotate: -30deg;
+      transition-delay: .12s;
+    }
+    &:nth-of-type(7) {
+      rotate: 30deg;
+      transition-delay: .14s;
+    }
+    &:nth-of-type(8) {
+      rotate: -30deg;
+      transition-delay: .16s;
+    }
+  }
+
+  &.active{
+    & div {
+      scale: 1;
+      rotate: 0deg;
+      opacity: 1;
+    }
+  }
+
+  &.noTransition {
+    & div {
+      transition: .1s ease;
+    }
+  }
+
+}
+
+.rightImages {
+  grid-area: ir;
+  width: 283px;
+  height: 287px;
+  justify-self: flex-start;
+}
+

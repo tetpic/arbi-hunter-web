@@ -34,8 +34,9 @@ const UserContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
-  token?: string
-  user?: IUser
+  token?: string,
+  user?: IUser,
+  profileType?: ProfileType
 }
 
 export function UserWrapper(props: Props) {
@@ -44,13 +45,18 @@ export function UserWrapper(props: Props) {
   const [userLoaded, setUserLoaded] = useState<boolean>(false)
   const router = useRouter()
 
-  const [profileType, setProfileType] = useState(ProfileType.Employee)
+  const [profileType, setProfileTypeState] = useState<ProfileType>(props.profileType||ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
 
   
   const userRef = useRef<IUser | null>(null)
   const isAuth = useRef<boolean>(false)
+
+  const setProfileType = (type: ProfileType) => {
+    Cookies.set(CookiesType.profileType, type)
+    setProfileTypeState(type)
+  }
 
   const updateUser = async (newUser?: IUser): Promise<IUser> => {
     if (newUser) {

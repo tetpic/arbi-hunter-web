@@ -10,10 +10,9 @@ interface Props {
 
 export default function MobileSideBarModal(props: Props) {
 
-  return (<ModalLayout mobileFullScreen className={styles.modalLayout}>
-    <ModalBody>
+  return (<ModalLayout className={styles.modalLayout}>
+    <ModalBody className={styles.modalBody}>
       <MobileSideBar onClose={props.onClose}/>
-
     </ModalBody>
   </ModalLayout>)
 }

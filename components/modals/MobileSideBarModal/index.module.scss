@@ -2,4 +2,11 @@
 
 .modalLayout {
   background-color: unset;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.modalBody {
+  padding: unset;
 }

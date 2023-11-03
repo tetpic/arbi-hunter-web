@@ -5,8 +5,8 @@
   display: flex;
   position: relative;
   @include mq($PhoneWidth, max) {
-    height: calc(100vh - 74px);
-    height: calc(100dvh - 74px);
+    height: calc(100vh - 148px);
+    height: calc(100dvh - 148px);
     margin-top: unset;
     padding-top: 8px;
   }

@@ -3,9 +3,9 @@
 .root {
   opacity: 0;
   width: clamp(270px, 75vw, 350px);
-  position: absolute;
-  top: 0;
-  right: 0;
+  // position: absolute;
+  // top: 0;
+  // right: 0;
   background: $black;
   transition: .3s ease-in-out;
   

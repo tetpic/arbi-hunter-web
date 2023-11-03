@@ -26,12 +26,14 @@ import { CvWrapper } from 'context/cv_state'
 import { CoursesWrapper } from 'context/courses_state'
 import { CommunityWrapper } from 'context/community_state'
 import ModalContainer from 'components/layout/ModalContainer'
+import { ProfileType } from 'data/interfaces/IRegistration'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
     token: string
     region: string
     user?: IUser
+    profileType?: ProfileType
   }
 }
 
@@ -50,7 +52,7 @@ function MyApp({Component, pageProps}: AppProps) {
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile}>
-        <UserWrapper token={pageProps.token} user={pageProps.user}>
+        <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
           <ManagerWrapper>
           <CreateVcCvWrapper>
           <VacancyWrapper>
@@ -114,6 +116,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   if (appContext.ctx.req) {
     if ((appContext.ctx?.req as any).cookies) {
       props.pageProps.token = (appContext.ctx as any).req.cookies[CookiesType.accessToken]
+      props.pageProps.profileType = (appContext.ctx as any).req.cookies[CookiesType.profileType]
       props.pageProps.user = await UserRepository.getCurrentUser(props.pageProps.token).catch(err => {
         return null
       })

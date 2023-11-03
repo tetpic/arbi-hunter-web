@@ -34,7 +34,6 @@ export default function Header(props: Props) {
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
-  // const [isDropDownOpen, setDropDownOpen] = useState<boolean>(false)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
 

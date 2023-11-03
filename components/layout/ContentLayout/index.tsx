@@ -6,6 +6,11 @@ interface Props {
   children: JSX.Element|JSX.Element[]
 }
 
+/**
+ * @title string
+ * @description string 
+ * @children JSX.Element|JSX.Element[]
+ */
 export default function ContentLayout(props: Props) {
 
   return (
