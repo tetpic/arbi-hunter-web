@@ -1,0 +1,11 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  color: white;
+  width: 210px;
+  white-space: wrap;
+  word-break: break-all;
+}

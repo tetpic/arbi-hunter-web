@@ -1,0 +1,25 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  
+  flex-wrap: wrap;
+  column-gap: 8px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  margin-top: 24px;
+  margin-left: 24px;
+
+  .btn {
+    @include buttonBlack;
+  }
+
+}
+

@@ -1,16 +1,17 @@
 import styles from './index.module.scss'
 
 import Image from 'next/image'
-import recriuitingTopImageEmp from 'images/recriuitingTopImageEmp.png'
-import usersTopEmployee from 'images/usersTopEmployee.png'
-import recruitingCatWallet from 'images/recruitingCatWallet.png'
-import recruitingCatPoint from 'images/recruitingCatPoint.png'
-import recruitingCatMessage from 'images/recruitingCatMessage.png'
-import recruitingCatCompanies from 'images/recruitingCatCompanies.png'
+import recriuitingTopImageEmp from 'images/recruiting/recriuitingTopImageEmp.png'
+import usersTopEmployee from 'images/recruiting/usersTopEmployee.png'
+import recruitingCatWallet from 'images/recruiting/recruitingCatWallet.png'
+import recruitingCatPoint from 'images/recruiting/recruitingCatPoint.png'
+import recruitingCatMessage from 'images/recruiting/recruitingCatMessage.png'
+import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
 import Link from 'next/link'
 import Title from 'components/ui/TitleForSection'
 import SearchBar from 'components/ui/SearchBar'
 import Button from 'components/ui/Button'
+import Possibilities from './Possibilities'
 
 interface Props {
 }
@@ -78,7 +79,7 @@ export default function RecruitingEmployee(props: Props) {
   </div>
   <Button className={styles.watchAll}>Смотреть все</Button>
 
-
-
+  <Possibilities/>
+  
   </div>)
 }
