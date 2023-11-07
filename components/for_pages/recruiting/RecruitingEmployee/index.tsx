@@ -12,6 +12,8 @@ import Title from 'components/ui/TitleForSection'
 import SearchBar from 'components/ui/SearchBar'
 import Button from 'components/ui/Button'
 import Possibilities from './Possibilities'
+import Vacancies from './Vacancies'
+
 
 interface Props {
 }
@@ -50,7 +52,6 @@ export default function RecruitingEmployee(props: Props) {
   </div>
 
   <Title title="Поиск по популярным категориям" className={styles.title}/>
-
   <div className={styles.categories}>
     <div className={styles.item}>
       <p className={styles.item__title}>Вакансия дня</p>
@@ -80,6 +81,12 @@ export default function RecruitingEmployee(props: Props) {
   <Button className={styles.watchAll}>Смотреть все</Button>
 
   <Possibilities/>
+
+  <Title title={'Вакансии дня'} className={styles.title}/>
+  <Vacancies/>
+  <Button className={styles.watchAll}>Смотреть все</Button>
+
+
   
   </div>)
 }

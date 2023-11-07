@@ -1,0 +1,80 @@
+@import 'styles/index';
+
+.vacancies {
+  display: flex;
+  column-gap: 16px;
+  margin-top: 40px;
+}
+
+
+.vacancy {
+  width: 32%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+  background-color: $grey;
+  border-radius: 10px;
+}
+
+.top {
+  display: grid;
+  grid-template-areas: 'i t h' 'i c h';
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+
+  .pic {
+    grid-area: i;
+  }
+
+  .title {
+    grid-area: t;
+    font-weight: $semibold;
+    font-size: $largeText;
+    color: $white;
+  }
+
+  .city {
+    grid-area: c;
+    font-weight: $medium;
+    font-size: $mediumText;
+    color: $greyLight;
+  }
+
+  .heartButton {
+    grid-area: h;
+    padding: 8px;
+    border-radius: 16px;
+    background-color: $grey;
+  }
+}
+
+.name {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.cost {
+  display: flex;
+  column-gap: 8px;
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .time {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
+  .button {
+    @include buttonYellow;
+  }
+}

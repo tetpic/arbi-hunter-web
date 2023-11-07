@@ -1,1 +1,76 @@
 @import 'styles/index';
+
+.root {
+  display: flex;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.imageWrapper {
+  width: 49%;
+}
+
+.body {
+  width: 49%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+
+  .title {
+    font-size: $text32;
+    font-weight: $semibold;
+    color: $white;
+  }
+
+  .card {
+    display: grid;
+    grid-template-areas: 'i t' 'i r';
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+
+    &_title {
+      grid-area: t;
+      font-size: $hugeText;
+      font-weight: $medium;
+      color: $white;
+
+    }
+
+    &_pic {
+      grid-area: i;
+    }
+
+    .rating {
+      grid-area: r;
+      display: flex;
+      align-items: center;
+      column-gap: 8px;
+
+      &_stats {
+        font-size: $smallText;
+        color: $white;
+      }
+
+      &_feeds {
+        font-size: $smallText;
+        font-weight: $mediumText;
+        color: $greyLight;
+      }
+    }
+  }
+
+  .button {
+    @include buttonGray;
+    align-self: flex-start;
+    padding: 18px 32px !important;
+    height: 52px !important;
+  }
+
+  .desc {
+    font-size: $largeText;
+    font-weight: $medium;
+    color: $greyLight;
+
+  }
+}
+
