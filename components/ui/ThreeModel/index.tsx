@@ -5,6 +5,7 @@ export interface IThreeModelProps {
     body?: number,
     bodyVariant?: number
     hair?: number
+    head?: number
     cap?: number
     chain?: number
     chainVariant?: number
@@ -20,15 +21,15 @@ export function ThreeModel(props: IThreeModelProps) {
         loader.setCrossOrigin('anonymous')
     }) as any
 
-    // console.log(nodes)
-
-    
-
     return (
         <group {...props} dispose={null}>
             {typeof props.body !== 'undefined' && props.body !== null && <mesh
                 geometry={nodes[`Body_${props.body}${props.bodyVariant?'_'+props.bodyVariant:'_0'}`].geometry}
                 material={materials[`Body_${props.body}`]}
+            />}
+            {typeof props.face !== 'undefined' && props.face !== null && <mesh
+                geometry={nodes[`Face_${props.face}`].geometry}
+                material={materials[`Face_${props.face}`]}
             />}
             {typeof props.hair !== 'undefined' && props.hair !== null && <mesh
                 geometry={nodes[`Hair_${props.hair}`].geometry}
@@ -46,11 +47,10 @@ export function ThreeModel(props: IThreeModelProps) {
                 geometry={nodes[`Chain_${props.chain}${props.chainVariant?'_'+props.chainVariant:'_0'}`].geometry}
                 material={materials[`Chain_${props.chain}`]}
             />}
-            {typeof props.face !== 'undefined' && props.face !== null && <mesh
-                geometry={nodes[`Face_${props.face}`].geometry}
-                material={materials[`Face_${props.face}`]}
+            {typeof props.head !== 'undefined' && props.head !== null && <mesh
+                geometry={nodes[`Head_${props.head}`].geometry}
+                material={materials[`Head_${props.head}`]}
             />}
-
             {typeof props.glasses !== 'undefined' && props.glasses !== null &&  <mesh
                 geometry={nodes[`Glasses_${props.glasses}`].geometry}
                 material={materials[`Glasses_${props.glasses}`]}

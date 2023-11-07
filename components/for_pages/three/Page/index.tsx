@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import ThreeModelVariant from '..'
 import { useEffect, useRef, useState } from 'react'
 import Button from 'components/ui/Button'
-// import { useGLTF } from '@react-three/drei'
 
 interface Props {
 }
@@ -15,10 +14,11 @@ function generateVariants(obj: {[key: string]: number[]}) {
     v.forEach((el: any)=> {
       combinations.push({
         model: 'man', 
+        face: 0,
         body: 0,
         head: 0,
         eye: 0, 
-        face: 0,
+        hair: 0,
         [k]: el, 
        })
     })
@@ -27,12 +27,13 @@ function generateVariants(obj: {[key: string]: number[]}) {
 } 
 
 const nodesVariants = {
-  hair: [0,1,2,3,4,5],
+  face: [0, 1],
   cap:[0,1,2,3],
   head: [0,1,2,3,4,5,6,7,8],
   glasses: [0,1,2,3],  
   chain: [0,1,2,3,4,5],
-  jacket: [0,1,2,3,4,5,6]
+  jacket: [0,1,2,3,4,5,6],
+  hair: [0, 1, 2, 3, 5],
 }
 
 export default function ThreePage(props: Props) {
@@ -71,7 +72,6 @@ export default function ThreePage(props: Props) {
     setCombinations(generatedRef.current.slice(page*10, (page*10)+10))
   }, [page])
 
-
   const variant4: IThreeModelProps = {
     model: 'woman',
     body: 0,
@@ -89,9 +89,9 @@ export default function ThreePage(props: Props) {
 
   return (<>
   <div className={styles.buttons}>
-  <Button className={styles.btn}  onClick={()=>page > 0&&setPage(page-1)}>Предыдущая страница</Button>
-  <p>страница {page}</p>
-  <Button className={styles.btn} onClick={()=>page+1 < ~~generatedRef.current.length/10&&setPage(page+1)}>Следующая страница</Button>
+    <Button className={styles.btn}  onClick={()=>page > 0&&setPage(page-1)}>Предыдущая страница</Button>
+    <p>страница {page}</p>
+    <Button className={styles.btn} onClick={()=>page+1 < (~~generatedRef.current.length/10)&&setPage(page+1)}>Следующая страница</Button>
   </div>
   <div className={styles.root}> 
   

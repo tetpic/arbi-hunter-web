@@ -20,10 +20,8 @@ const Camera = () => {
   const halfFovRadians = Math.atan((height / 2) / distance)
   const fov = 2 * halfFovRadians * (180 / Math.PI)
   useEffect(() => {
-    //   console.log('SetCamera', camera.current)
       set({camera: camera.current as any})
   }, [])
-//   console.log('Aspect', viewport.getCurrentViewport().factor, fov)
 
   return <PerspectiveCamera
       ref={camera}
