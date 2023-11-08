@@ -1,0 +1,52 @@
+@import 'styles/index';
+
+.root {
+  display: grid;
+  grid-template-areas: 't i' 'd i' 'b i';
+  align-items: center;
+  padding-inline: 50px;
+  justify-content: space-between;
+  border-radius: 24px;
+  background: linear-gradient(229deg, #6A56E7 -8.02%, #2898FF 100%);
+  margin-top: 120px;
+  margin-bottom: 100px;
+}
+
+.title {
+  grid-area: t;
+  font-size: $hugeText;
+  font-weight: $bold;
+  color: $white;
+  align-self: flex-end;
+}
+
+.desc {
+  grid-area: d;
+  color: $white;
+  font-size: $largeText;
+  font-weight: $medium;
+}
+
+.button {
+  @include buttonWhite;
+  grid-area: b;
+  align-self: flex-start;
+  justify-self: flex-start;
+  position: relative;
+  padding: 10px 20px 10px 4px;
+  margin-top: 20px;
+  span {
+    color: $blue;
+  }
+
+  img {
+    transform: translateY(-10px);
+  }
+
+}
+
+.image {
+  grid-area: i;
+}
+
+

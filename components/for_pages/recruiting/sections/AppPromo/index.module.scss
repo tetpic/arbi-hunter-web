@@ -1,0 +1,136 @@
+@import 'styles/index';
+
+.root {
+  display:  flex;
+  column-gap: 16px;
+  margin-top: 182px;
+}
+
+.left {
+  display: grid;
+  grid-template-areas: 't i' 'd i' 'b i';
+  width: 75%;
+  grid-template-columns: 60% 40%;
+  padding: 55px 40px 0px;
+  background-color: #22222A;
+  border-radius: 24px;
+
+  .title {
+    grid-area: t;
+    color: $white;
+    font-weight: $bold;
+    font-size: $hugeText;
+
+    span {
+      @include textGradientDefault;
+    }
+  }
+
+  .desc {
+    grid-area: d;
+    font-size: $largeText;
+    font-weight: $medium;
+    color: $white;
+    margin-top: 16px;
+  }
+
+  .buttonsWrapper {
+    grid-area: b;
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    margin-top: 48px;
+    margin-bottom: 55px;
+
+    .button {
+      @include buttonGray;
+      padding: 16px 20px;
+      height: 52px;
+      background-color: #282831;
+    }
+  }
+  
+  .mobile {
+    grid-area: i;
+    position: relative;
+
+    .back {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .cards {
+      position: absolute;
+      top: -64px;
+      left: 6px;
+      rotate: -6deg;
+
+      .img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: .2s ease-in-out;
+        transform: translateX(0px);
+        scale: .7;
+      }
+
+      .active {
+        opacity: 1;
+        scale: 1;
+      }
+    }
+  }
+
+  .buttons {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 245px;
+    justify-content: space-between;
+    display: flex;
+
+    .button {
+      border-radius: 50%;
+      padding: 16px;
+      cursor: pointer;
+      border: 2px $white solid;
+      @include transitionDefault;
+      backdrop-filter: blur(5px);
+      background-color: rgba(255, 255, 255, 0.282);
+      @include hover {
+        background-color: $greyLight;
+      }
+    }
+  }
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 24px;
+  background-color: #22222A;
+  max-width: 274px;
+  justify-content: space-between;
+
+  .title {
+    color: $white;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+  
+  .desc {
+    font-size: $smallText;
+    color: $white;
+  }
+
+  .imageWrapper {
+    padding: 22px 36px;
+    border-radius: 24px;
+    background-color: #30303D;
+
+
+  }
+}

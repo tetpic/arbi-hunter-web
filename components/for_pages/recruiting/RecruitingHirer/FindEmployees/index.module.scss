@@ -1,0 +1,34 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .step {
+    font-size: $text20;
+    font-weight: $semibold;
+    color: $greyLight;
+    margin-block: 24px;
+  }
+  
+  .title {
+    font-size: $text20;
+    font-weight: $semibold;
+    color: $white;
+  }
+
+  .desc {
+    font-size: $largeText;
+    color: $greyLight;
+    margin-top: 16px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,80 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 94px;
+
+}
+
+.left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    filter: blur(40px);
+    border-radius: 50%;
+    background: $gradientAlt;
+    z-index: 0;
+    opacity: .4;
+  }
+  
+  img {
+    position: relative;
+  }
+
+  .title {
+    font-size: $text32;
+    font-weight: $semibold;
+    color: $white;
+    padding-top: 26px;
+
+    &_purple {
+      @include textGradientDefault;
+    }
+  }
+}
+
+.right {
+  width: 54%;
+
+  .item {
+    display: grid;
+    grid-template-areas: 'i t' 'i d';
+    grid-template-columns: auto 1fr;
+    border-bottom: 2px $black solid;
+    column-gap: 16px;
+    row-gap: 16px;
+    align-items: center;
+    padding-block: 26px;
+  }
+
+  .title {
+    grid-area: t;
+    font-size: $text20;
+    font-weight: $semibold;
+    color: $white;
+  }
+
+  .desc {
+    grid-area: d;
+    font-size: $largeText;
+    color: $greyLight;
+    width: 70%;
+  }
+
+  .image {
+    grid-area: i;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: $black;
+  }
+}

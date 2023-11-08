@@ -1,0 +1,56 @@
+@import 'styles/index';
+
+.categories {
+  margin-top: 50px;
+  display: flex;
+  column-gap: 16px;
+
+  .item {
+    padding: 26px 32px;
+    position: relative;
+    border-radius: 24px;
+    background-color: $black;
+    width: 32%;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background-color: $blue;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .3;
+
+    }
+
+    &__image {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    &__bottom {
+      display: flex;
+      align-items: center;
+      color: $white;
+      column-gap: 16px;
+      font-size: $largeText;
+      font-weight: $semibold;
+      margin-top: 46px;
+    }
+
+    &__title {
+      color: $white;
+      font-size: $text20;
+      font-weight: $semibold;
+      max-width: 50%;
+      height: 52px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
