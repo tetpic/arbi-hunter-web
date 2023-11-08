@@ -78,7 +78,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
               disabled={props.disabled}
               countrySelectComponent={CountrySelect}
               defaultCountry={props.defaultCountry as CountryCode}
-              value={field.value}
+              value={value}
               placeholder={props.placeholder}
               withCountryCallingCode
               international

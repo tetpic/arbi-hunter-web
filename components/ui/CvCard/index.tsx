@@ -39,7 +39,7 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
   const cvContext = useCvContext()
 
   const chatbuttonClickHandler = () => {
-    router.push('/chat/' + chat.id + '/')
+    router.push('/messenger?chat=' + chat.id)
   }
 
   const saveHandler = useCallback(() => {

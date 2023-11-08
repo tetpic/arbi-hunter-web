@@ -16,6 +16,7 @@ export interface MessageFilterOptions {
 }
 
 export interface IMessage extends TimeStamp {
+  application?: IProposal
   id?: number|string
   profileId?: number, //required
   profile?: IUserProfile,

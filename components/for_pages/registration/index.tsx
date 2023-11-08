@@ -20,14 +20,12 @@ import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
 import Button from 'components/ui/Button'
 import PasswordField from 'components/fields/PasswordField'
-import { useAuthContext } from 'context/auth_state'
 
 
 
 
 export default function Registration() {
   const userContext = useUserContext()
-  const authContext = useAuthContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
 
@@ -68,9 +66,7 @@ export default function Registration() {
       RegistrationRepository.completeRegistration(data)
       .then(res=> {
         userContext.updateUser()
-        // authContext.
         router.replace('/') 
-
       })
       .catch(err=> {
         setDisableButton(false)
@@ -164,7 +160,6 @@ export default function Registration() {
             labelName={'Страна: '}
             requestFn={LocationRepository.searchCountry}
             className={styles.dropInput}
-            // error={!country?'Выберите страну из списка':undefined}
             />
 
             <DropDownInput 
@@ -176,7 +171,6 @@ export default function Registration() {
             value={cityNameValue}
             onChange={(s: string) => {setCityNameValue(s)}}
             className={styles.dropInput}
-            // error={!cityId?'Выберите город из списка':undefined}
             />
             
             <InputField 
@@ -186,6 +180,7 @@ export default function Registration() {
             styleType={'default'} 
             color={'default'} 
             name={'telegramNickname'} 
+            validate={Validator.required}
             />
 
             <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />

@@ -33,6 +33,7 @@ interface Props extends IField<string> {
   error?: string
   minLength?: number
   maxLength?: number
+  validateOnSubmit?: boolean
 }
 
 export default function InputField(props: Props) {  
@@ -76,7 +77,7 @@ export default function InputField(props: Props) {
           type={props.type ?? 'text'}
           disabled={props.disabled}
           autoComplete={props.autocompleteOff?'off':''}
-          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9\.\,]/g, '') } : null}
+          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') } : null}
           onFocus={() => {
             setFocused(true)
           }}
@@ -84,7 +85,7 @@ export default function InputField(props: Props) {
           maxLength={props.maxLength}
           onBlur={() => {
             setFocused(false)
-            helpers.setTouched(true)
+            !props.validateOnSubmit&&helpers.setTouched(true)
           }}
           onClick={onClickHandler}
           className={classNames({

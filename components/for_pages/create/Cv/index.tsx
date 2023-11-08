@@ -127,7 +127,8 @@ export default function Cv(props: Props) {
     employment: props.cv?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.cv?.languageKnowledges||null, 
     published: props.cv?.published||false,
-    portfolio: props.cv?.portfolio||''
+    portfolio: props.cv?.portfolio||'',
+    geosIds: []
   }
 
   const formik = useFormik({

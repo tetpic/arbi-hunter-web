@@ -17,16 +17,14 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
-
+  
   const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
 
   const stats = (
     <div className={styles.stats}>
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
-      {/* {msg.isRead&& */}
         <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
-      {/* } */}
     </div>
   )
 
@@ -64,7 +62,14 @@ export default function MessageFactory(props: Props) {
   )
 
   const applicationMessage = (
-    <>application message</>
+    <div className={side}>
+      <p className={styles.message}>Отклик на вакансию</p>
+      <p className={styles.message}>
+        {props.message.application.coverLetter}
+      </p>
+      {stats}
+  </div>
+    
   )
 
   const proposalMessage = (<>

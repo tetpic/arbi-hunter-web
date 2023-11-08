@@ -46,12 +46,11 @@ export default function RegistrationModal(props: Props) {
     .then(res=>{
       if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
-        setLoading(false)
       }
       else {
         appContext.hideModal()
-        setLoading(false)
       }
+      setLoading(false)
     })
     .catch(err=>{
       authContext.showOtpError(true, 'Введите правильный код')

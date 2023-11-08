@@ -12,7 +12,14 @@
   color: $white;
   border-radius: 10px;
   @include transitionDefault;
-  @include hoverButtonSmooth;
+  @include hover {
+    color: $blue;
+    .icon {
+      path {
+        stroke: $blue;
+      }
+    }
+  }
   @include mq($TabletWidth, max) {
     @include exeptLast{
       border-bottom: 1px $grey solid;
@@ -24,10 +31,21 @@
     padding: 8px;
     border-radius: 10px;
     overflow: hidden;
+    path {
+      @include transitionDefault;
+    }
   }
 
   &_active {
     background: $gradientFiltered;
+    @include hover {
+      color: $white;
+      .icon {
+        path {
+          stroke: $white;
+        }
+      }
+    }
     @include mq($TabletWidth, max) {
       pointer-events: all;
     }

@@ -1,6 +1,7 @@
 import RecruitingEmployee from 'components/for_pages/recruiting/RecruitingEmployee'
 import RecruitingHirer from 'components/for_pages/recruiting/RecruitingHirer'
 import ContentLayout from 'components/layout/ContentLayout'
+import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
 
@@ -16,9 +17,10 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 }) 
 
 export default function Recruiting(props: Props) {
+  const {profileType} = useUserContext()
 
   return (<ContentLayout>
-    {props.profileType === ProfileType.Employee &&
+    {((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
       <RecruitingEmployee/>
       ||
       <RecruitingHirer/>

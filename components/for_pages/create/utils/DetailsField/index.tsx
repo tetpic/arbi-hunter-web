@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import InputField from 'components/fields/InputField'
 import TextAreaField from 'components/fields/TextAreaField'
 import BackTextButton from 'components/ui/BackTextButton'
@@ -7,7 +9,6 @@ import { ChangeEvent, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import classNames from 'classnames'
-import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useAppContext } from 'context/state'
 import Validator from 'utils/Validator'
@@ -118,6 +119,7 @@ export default function DetailsField<T extends TimeLine>(props: DetailsFieldProp
                     color={'default'} 
                     label={el.inputLabel} 
                     error={el.errorState}
+                    validateOnSubmit
                     validate={el.required&&Validator.required}
                     />
                   }

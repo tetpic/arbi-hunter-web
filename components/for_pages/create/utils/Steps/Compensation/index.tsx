@@ -51,7 +51,7 @@ export default function Compensation(props: Props) {
       {(compensation.value === CompensationType.Gybrid || compensation.value === CompensationType.Commission)
         && 
         <InputField 
-        maxLength={10} 
+        maxLength={2} 
         isNumbersOnly 
         className={styles.input} 
         styleType={'default'} 
@@ -71,7 +71,6 @@ export default function Compensation(props: Props) {
         itemClassName={styles.currencyItem}
         wrapperClassName={styles.currencyRoot}
         itemLabelClassName={styles.currencyLabel}
-        
         options={[
           {value: Currency.USD, label: Currency.USD},
           {value: Currency.RUB, label: 'Рубль'},
