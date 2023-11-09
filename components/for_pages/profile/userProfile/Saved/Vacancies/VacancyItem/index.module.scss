@@ -10,6 +10,7 @@
 }
 
 .top {
+  position: relative;
   display: grid;
   grid-template-areas: 'i c h' 'i l h';
   column-gap: 16px;
@@ -113,4 +114,58 @@
   color: $greyLight;
   font-weight: $medium;
   font-size: $mediumText;
+}
+
+.modalWrapper {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  right: 0;
+  transform: scale(0.6);
+  transform-origin: right;
+  @include transitionDefault;
+  z-index: 4;
+
+  &_active {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+  }
+}
+
+.options {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 16px;
+
+
+  .option {
+    text-align: center;
+    width: 100%;
+    padding-block: 8px;
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hover {
+      color: $blue;
+    }
+    @include exeptLast {
+      border-bottom: 1px $greyLight solid;
+    }
+  }
+
+  .vacancyName {
+    color: $greyLight;
+    padding: 8px;
+    text-align: center;
+    font-weight: $semibold;
+    font-size: $smallText;
+  }
+
+  
 }

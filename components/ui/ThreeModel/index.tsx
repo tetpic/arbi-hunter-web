@@ -6,6 +6,7 @@ export interface IThreeModelProps {
     bodyVariant?: number
     hair?: number
     head?: number
+    headVariant?: number
     cap?: number
     chain?: number
     chainVariant?: number
@@ -48,7 +49,7 @@ export function ThreeModel(props: IThreeModelProps) {
                 material={materials[`Chain_${props.chain}`]}
             />}
             {typeof props.head !== 'undefined' && props.head !== null && <mesh
-                geometry={nodes[`Head_${props.head}`].geometry}
+                geometry={nodes[`Head_${props.head}${props.headVariant?'_'+props.headVariant:'_0'}`].geometry}
                 material={materials[`Head_${props.head}`]}
             />}
             {typeof props.glasses !== 'undefined' && props.glasses !== null &&  <mesh

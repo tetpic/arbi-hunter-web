@@ -12,10 +12,11 @@ import { useRouter } from 'next/router'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 
-import CvVcOptionsModal from 'components/modals/OptionsModal'
+import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
+import { colors } from 'styles/variables'
 
 interface Props {
   vacancy: IVacancy
@@ -37,14 +38,45 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
     .then(res=> res&&vacancyContext.setArchiveVacancies())
   }
 
+  const archiveHandler =()=> {
+    vacancyContext.editVacancy({...vacancy, published: !vacancy.published}, vacancy.id, vacancy.published?'active':'archive')
+  }
+
+  const editHandler =() => {
+    vacancyContext.editVcInEditor(vacancy)
+  }
+
+  const removeHandler =()=> {
+    appContext.showModal(ModalType.ConfirmModal, 
+      {text: 'Вы действительно хотите удалить вакансию?',
+      callback: ()=>{
+        vacancyContext.removeVacancy(vacancy.id, vacancy.published)
+      }
+    })
+  }
+
+  const options = (<>
+    <p className={styles.option} onClick={archiveHandler}>{vacancy?.published?'Архивировать':'Опубликовать'}</p>
+    <p className={styles.option}>Дублировать</p>
+    <p className={styles.option}>Поделиться</p>
+    <p className={styles.option}>Продлить и Поднять</p>
+    <p className={styles.option}>Улучшить</p>
+    <p className={styles.option} onClick={editHandler}>Редактировать</p>
+    <p className={styles.option} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p>
+   </>)
+
   const openModalHandler =()=> {
     if (isTabletWidth) {
-      appContext.showBottomSheet(ModalType.CvVcOptionsModal, {vc: vacancy})
+      appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vacancy, children: options})
     }
     else {
       openDropDown(!dropDown)
     }
   }
+
+
+
+
   
 
   return (<div className={styles.item}> 
@@ -57,7 +89,9 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
         <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{vc: vacancy}}/>
+          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{vc: vacancy}}>
+            {options}
+          </CvVcOptionsModal>
         </div>
       }
       </div>

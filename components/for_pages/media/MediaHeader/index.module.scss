@@ -1,6 +1,7 @@
 @import 'styles/index';
 
 .header {
+  @include container;
   margin-top: 42px;
   margin-bottom: 100px;
   display: grid;

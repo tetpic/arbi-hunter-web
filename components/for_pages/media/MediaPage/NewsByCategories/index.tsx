@@ -1,8 +1,8 @@
+import styles from './index.module.scss'
+
 import { ICategory } from 'data/interfaces/Common'
 import { useEffect, useState } from 'react'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import styles from './index.module.scss'
-
 import Formatter from 'utils/formatter'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
@@ -17,6 +17,7 @@ interface Props {
   category?: ICategory
   className?: string
   hideNav?: boolean
+  children?: JSX.Element|JSX.Element[]
 }
 
 export default function NewsByCategories(props: Props) {
@@ -57,6 +58,7 @@ export default function NewsByCategories(props: Props) {
       <p className={styles.sortBy}>Сортировать по <SortArrowsSvg/></p>
     </div>
   }
+
   <div className={classNames(styles.root, props.className)}> 
   <InfiniteScroll 
   next={()=>setPage(p => p+1)} 
@@ -65,11 +67,16 @@ export default function NewsByCategories(props: Props) {
   dataLength={news?.size}
   height={'100%'}
   >
-    {news?.size > 0 && [...news.values()].map(el=> {
+    <div className={styles.children}>
+      {props.children}
+    </div>
+    <div className='container'>
+      {news?.size > 0 && [...news.values()].map(el=> {
       return (
         <NewsArticle key={el.id} article={el} titleName={props?.category?.name||el.community?.name||el.shortDescription}/>
         )
       })}
+    </div>
     </InfiniteScroll>
   </div>
   </>)

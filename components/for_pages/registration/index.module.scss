@@ -1,6 +1,7 @@
 @import 'styles/index';
 
 .root {
+  @include container;
   margin-top: 48px;
   display: flex;
   padding-bottom: 24px;

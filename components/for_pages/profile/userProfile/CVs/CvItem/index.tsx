@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
 import Statistics from 'components/ui/Statistics'
@@ -9,9 +11,10 @@ import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
-import CvVcOptionsModal from 'components/modals/OptionsModal'
-import styles from './index.module.scss'
+import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
 import classNames from 'classnames'
+import { useCvContext } from 'context/cv_state'
+import { colors } from 'styles/variables'
 
 interface Props {
   cv: ICV
@@ -21,13 +24,43 @@ interface Props {
 export default function CVItem({cv, isLast}: Props) {
 
   const appContext = useAppContext()
+  const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
+
+
+  const archiveHandler =()=> {
+    cvContext.updateCv(cv.id, {...cv, published: !cv?.published})
+  }
+
+  const editHandler =() => {
+    cvContext.editCv(cv)
+  }
+
+  const removeHandler =()=> {
+    appContext.showModal(ModalType.ConfirmModal, 
+      {text: 'Вы действительно хотите удалить резюме?',
+      callback: ()=>{
+        cvContext.deleteCv(cv.id)
+      }
+    })
+  }
+
+  const options = (<>
+    <p className={styles.option} onClick={archiveHandler}>{cv?.published?'Архивировать':'Опубликовать'}</p>
+    <p className={styles.option}>Дублировать</p>
+    <p className={styles.option}>Поделиться</p>
+    <p className={styles.option}>Продлить и Поднять</p>
+    <p className={styles.option}>Улучшить</p>
+    <p className={styles.option} onClick={editHandler}>Редактировать</p>
+    <p className={styles.option} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p>
+   </>)
+
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet(ModalType.CvVcOptionsModal, {cv: cv})
+      appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {cv: cv, children: options})
     }
     else {
       openDropDown(!dropDown)
@@ -42,7 +75,9 @@ export default function CVItem({cv, isLast}: Props) {
       <ThreeDotsButton className={styles.dots} onClick={openModal}/>
       {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{cv: cv}}/>
+          <CvVcOptionsModal isLast={isLast} onClose={()=>openDropDown(false)} outerData={{cv: cv}}>
+            {options}
+          </CvVcOptionsModal>
         </div>
       }
     </div>

@@ -6,18 +6,24 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
 
 interface Props {
-  profileType: ProfileType
+  profileType?: ProfileType
 }
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
   // const token = context.req.cookies[CookiesType.accessToken]
   const profile = context.req.cookies[CookiesType.profileType]
+  if(profile) {
+    return {props: {profileType: profile}}
+  }
+  else {
+    return {props: {}}
+  }
   // const isAuth = token&&profile
-  return {props: {profileType: profile}}
 }) 
 
 export default function Recruiting(props: Props) {
-  const {profileType} = useUserContext()
+  const userContext = useUserContext()
+  const profileType = userContext.profileType
 
   return (<ContentLayout>
     {((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&

@@ -3,7 +3,7 @@
 .root {
   overflow: hidden;
   min-height: 100vh;
-  min-height: 130dvh;
+  min-height: 100dvh;
   @include mq($TabletWidth, max) {
     padding-bottom: 100px;
   }

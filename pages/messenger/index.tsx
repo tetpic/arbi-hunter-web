@@ -10,7 +10,6 @@ interface Props {
   chats: IChat[]
   user: IUser
   folders: any
-  // contacts: any
 }
 
 export const getServerSideProps = (async (context: {/* query: Query, */ req: { cookies: { [x: string]: any } } }) => {

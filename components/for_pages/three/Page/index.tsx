@@ -7,13 +7,13 @@ import Button from 'components/ui/Button'
 interface Props {
 }
 
-function generateVariants(obj: {[key: string]: number[]}) {
+function generateVariants(obj: {[key: string]: number[]|string[]}, type: 'man'|'woman') {
   const entries = Object.entries(obj)
   const combinations: any[] = []
   entries.forEach(([k, v]) => {
     v.forEach((el: any)=> {
       combinations.push({
-        model: 'man', 
+        model: type,
         face: 0,
         body: 0,
         head: 0,
@@ -30,18 +30,31 @@ function generateVariants(obj: {[key: string]: number[]}) {
 const nodesVariants = {
   face: [0, 1],
   cap:[0,1,2,3],
-  head: [0,1,2,3,4,5,6,7,8],
+  head: [0,1,2],
+  headVariant: [0,1,2,],
   glasses: [0,1,2,3],  
   chain: [0,1,2,3,4,5],
   jacket: [0,1,2,3,4,5,6],
   hair: [0, 1, 2, 3, 5],
 }
 
+const womanNodesVariants = {
+  head: [0,1],
+  headVariant: [0,1],
+  face: [0],
+  body: [0,1,2],
+  cap: [0,1,2],
+  chain: [0,1,2],
+  glasses: [0,1,2],
+  hair: [0,1,2],
+  jacket: [0,1,2,3,4]
+}
+
 export default function ThreePage(props: Props) {
 
   const [page, setPage] = useState<number>(0)
   const [combinations, setCombinations] = useState<any[]>([])
-  const generatedRef = useRef(generateVariants(nodesVariants))
+  const generatedRef = useRef([...generateVariants(nodesVariants, 'man'), ...generateVariants(womanNodesVariants, 'woman')])
 
 
 

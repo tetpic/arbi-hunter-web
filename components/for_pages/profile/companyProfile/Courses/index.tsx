@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import FolderSvg from 'components/svg/FolderSvg'
 import PlayButtonSvg from 'components/svg/PlayButtonSvg'
 import StarSvg from 'components/svg/StarSvg'
@@ -5,7 +7,6 @@ import UserSvg from 'components/svg/UserSvg'
 import FavoritesButton from 'components/ui/FavoritesButton'
 import Image from 'next/image'
 import Scrollbars from 'react-custom-scrollbars-2'
-import styles from './index.module.scss'
 
 interface Props {
 }

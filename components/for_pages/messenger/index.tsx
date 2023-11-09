@@ -8,6 +8,7 @@ import { useChatContext } from 'context/chat_state'
 import { useEffect, useState } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import dynamic from 'next/dynamic'
+import { useAppContext } from 'context/state'
 
 const FolderManager = dynamic(()=>import('./FolderManager'), {ssr: false})
 const Messages = dynamic(()=>import('./Messages'), {ssr: false})
@@ -22,11 +23,13 @@ enum ChatComponent {
 }
 
 export default function Messenger(props: Props) {
+  const appContext = useAppContext()
   const router = useRouter()
   const chatContext = useChatContext()
   const chats = chatContext.chats
   const {isTabletWidth} = useResize()
   const [component, setComponent] = useState<ChatComponent>(ChatComponent.Chat)
+
 
   const handleSelectChat = (chat: IChat) => {
     chatContext.setCurrentChatId(chat.id)
@@ -39,6 +42,15 @@ export default function Messenger(props: Props) {
     ? setComponent(ChatComponent.Dialog)
     : setComponent(ChatComponent.Chat)
   }, [chatContext.foldersActive])
+
+  useEffect(()=>{
+    if(isTabletWidth) {
+      appContext.setHideHeader(true)
+    }
+    return (()=> {
+      appContext.setHideHeader(false)
+    })
+  }, [isTabletWidth])
 
   return (
     <div className={styles.root}> 

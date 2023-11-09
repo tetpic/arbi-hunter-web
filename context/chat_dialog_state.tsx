@@ -254,7 +254,7 @@ export function ChatDialogWrapper(props: Props) {
   }, [chunks])
 
   useEffect(() => {
-    debugger
+    
     chatIdRef.current = props.chatId ?? null
     init()
 

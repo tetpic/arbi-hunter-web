@@ -18,24 +18,3 @@
   }
   // padding: 16px;
 }
-
-.item {
-  display: flex;
-  align-items: center;
-  column-gap: 8px;
-  color: $white;
-  font-size: $mediumText;
-  font-weight: $medium;
-  border-radius: 10px;
-  padding: 16px 16px;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hover{
-    color: $blue !important;
-    *{
-      color: $blue !important;
-
-    }
-  }
-}
-

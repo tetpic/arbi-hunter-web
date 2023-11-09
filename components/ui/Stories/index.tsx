@@ -1,5 +1,6 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
 import styles from './index.module.scss'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'

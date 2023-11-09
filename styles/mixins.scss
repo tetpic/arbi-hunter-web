@@ -510,6 +510,13 @@
   }
 }
 
+@mixin container {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+    width: 100%;
+  }
+}
+
 @mixin textFormatter {
   color: white;
 

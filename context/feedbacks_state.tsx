@@ -21,7 +21,7 @@ interface IState {
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
-  CVFeedbacks: Map<IApplication, IVacancy>
+  CVFeedbacks: Map<IProposal, IVacancy>
   createProposal: (p: IProposal)=> Promise<boolean>
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
@@ -75,7 +75,7 @@ export function FeedbacksWrapper(props: Props) {
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
   const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<IApplication, IVacancy>>(new Map())
+  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<IProposal, IVacancy>>(new Map())
   const [sorted, setSorted] = useState<IApplication[]|null>(null)
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [filterOptions, setFilterOptionsState] = useState<Map<FilterItem, FilterItem>>(new Map())

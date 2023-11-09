@@ -20,9 +20,8 @@ export default function MainMediaPage(props: Props) {
     }
   }, [])
 
-  return (<div className={styles.root}> 
-    
-    {mediaContext.stories.size > 0 &&
+  const body = (<>
+   {mediaContext.stories.size > 0 &&
       <>
         <p className={styles.title}>Истории</p>
         <Stories stories={[...mediaContext.stories.values()]} />
@@ -30,10 +29,11 @@ export default function MainMediaPage(props: Props) {
     } 
     <p className={styles.title}><span>Рубрики</span> <span>Все</span></p>
     <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav/>
+  </>)
 
-    <NewsByCategories hideNav className={styles.news}/>
-
-
-    
+  return (<div className={styles.root}> 
+    <NewsByCategories hideNav className={styles.news}>
+      {body}
+    </NewsByCategories>
   </div>)
 }

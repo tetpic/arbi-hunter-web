@@ -2,9 +2,6 @@
 
 .root {
   width: 100%;
-  @include mq($TabletWidth, max) {
-
-  }
 }
 
 .contentWrapper {

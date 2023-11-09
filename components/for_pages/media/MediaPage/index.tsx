@@ -132,12 +132,14 @@ export default function CommunitiesPage(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
-      <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
-      {isTabletWidth && 
-        <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
-      }
+      <div className='container'>
+        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
+        {isTabletWidth && 
+          <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
+        }
+      </div>
       <div className={styles.bodyWrapper}>
-        <SearchBar className={styles.searchBar}/>
+          <SearchBar className={styles.searchBar}/>
           <MediaWrapper>
           {body}
           </MediaWrapper>

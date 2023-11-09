@@ -1,6 +1,7 @@
 @import 'styles/index';
 
 .top {
+  @include container;
   display: flex;
   align-items: center;
   justify-content: center;

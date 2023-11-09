@@ -17,17 +17,12 @@
   transform-origin: right;
   @include transitionDefault;
   z-index: 4;
-  // display: none;
 
   &_active {
     opacity: 1;
-    // display: block;
     pointer-events: all;
     transform: scale(1);
   }
-  // height: 0%
-  // bottom
-
 }
 
 .button {
@@ -83,3 +78,24 @@
 .stats {
   margin-top: 24px;
 }
+
+.option {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  border-radius: 10px;
+  padding: 16px 16px;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover{
+    color: $blue !important;
+    *{
+      color: $blue !important;
+
+    }
+  }
+}
+

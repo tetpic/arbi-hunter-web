@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import InputField from 'components/fields/InputField'
 import { IRegistrationComplete, ProfileType } from 'data/interfaces/IRegistration'
 import { Form, FormikProvider, useFormik } from 'formik'

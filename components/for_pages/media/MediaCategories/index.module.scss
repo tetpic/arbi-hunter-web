@@ -6,10 +6,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  @include mq($TabletWidth, max) {
-    width: 100vw;
-    margin-left: -16px;
-  }
 }
 
 .imageWrapper {

@@ -9,6 +9,7 @@
 }
 
 .title {
+  @include container;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -23,7 +24,13 @@
 }
 
 .news {
-  margin-top: 24px;
-  height: 100vh !important;
-  height: 100dvh !important;
+  // margin-top: 24px;
+  overflow: unset;
+  height: calc(100vh - 248px) !important;
+  height: calc(100dvh - 248px) !important;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 148px) !important;
+    height: calc(100dvh - 148px) !important;
+  
+  }
 }

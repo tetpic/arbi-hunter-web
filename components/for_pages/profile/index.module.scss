@@ -6,6 +6,7 @@
   padding-top: 48px;
   align-items: flex-start;
   position: relative;
+  @include container;
   @include mq($TabletWidth, max) {
     padding-top: 8px;
   }

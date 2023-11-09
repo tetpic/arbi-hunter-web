@@ -89,8 +89,8 @@
   font-size: $smallText;
   font-weight: $regular;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 160px);
-    height: calc(100dvh - 160px);
+    height: calc(100vh - 266px);
+    height: calc(100dvh - 266px);
   }
 
   >div {

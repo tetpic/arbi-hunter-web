@@ -1,11 +1,11 @@
 import { useFeedbacksContext } from 'context/feedbacks_state'
-import { IApplication } from 'data/interfaces/IApplication'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useEffect, useState } from 'react'
 import { ApplicationStatus } from 'types/enums'
 import ItemNavigation from '../../ItemNavigation'
 import VacancyItem from '../Saved/Vacancies/VacancyItem'
 import styles from './index.module.scss'
+import { IProposal } from 'data/interfaces/IProposal'
 
 interface Props {
 }
@@ -34,7 +34,8 @@ export default function Feedbacks(props: Props) {
 
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
   const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
-  const [filtered, setFiltered] = useState<Map<IApplication, IVacancy>>(CVFeedbacks)
+  const [filtered, setFiltered] = useState<Map<IProposal, IVacancy>>(CVFeedbacks)
+
 
   useEffect(()=>{    
     switch(page) {
@@ -78,7 +79,7 @@ export default function Feedbacks(props: Props) {
       <div className={styles.wrapper}>
         {
           filtered.size > 0 && [...filtered.entries()].map(([app, vc])=> {
-            return (<VacancyItem vc={vc} application={app} refreshCallback={feedBackContext.setCVResponses}/>)
+            return (<VacancyItem vc={vc} proposal={app} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
           <p className={'empty'}>Нет откликов</p>

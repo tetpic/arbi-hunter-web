@@ -2,12 +2,13 @@
 
 .root {
   margin-top: 24px;
+  @include container;
   height: calc(100vh - 260px);
   height: calc(100dvh - 260px);
+
   @include mq($TabletWidth, max) {
-    padding-bottom: 20px;
-    height: calc(100vh - 208px);
-    height: calc(100dvh - 208px);
+    height: calc(100vh - 240px);
+    height: calc(100dvh - 280px);
   }
 }
 
@@ -28,6 +29,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
   }
+  
 }
 
 .top {

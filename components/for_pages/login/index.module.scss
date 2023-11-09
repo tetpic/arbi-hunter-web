@@ -3,6 +3,7 @@
 .root {
   margin-top: 48px;
   display: flex;
+  @include container;
   @include mq($PhoneWidth, max) {
     margin-top: 8px;
   }
@@ -97,9 +98,9 @@
 .submitButton {
   @include buttonBlack;
   padding: 10px 24px;
-  display: inline-block;
+  // display: inline-block;
   @include mq($PhoneWidth, max) {
-    width: 100%;
+    // width: 100%;
     margin-top: auto;
   }
 }

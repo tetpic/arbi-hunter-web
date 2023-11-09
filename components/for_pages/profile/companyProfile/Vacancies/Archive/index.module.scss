@@ -2,4 +2,10 @@
 
 .root {
   margin-top: 24px;
+  height: calc(100vh - 240px);
+  height: calc(100dvh - 240px);
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 280px);
+    height: calc(100dvh - 280px);
+  }
 }
