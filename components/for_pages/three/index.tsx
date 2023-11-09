@@ -1,5 +1,5 @@
 import {Canvas, useThree} from '@react-three/fiber'
-import {Bounds, Environment, PerspectiveCamera} from '@react-three/drei'
+import {Bounds, Environment, OrthographicCamera, PerspectiveCamera} from '@react-three/drei'
 import { useEffect, useRef} from 'react'
 import { IThreeModelProps, ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
@@ -52,11 +52,13 @@ export default function ThreeModelVariant (props: IThreeModelProps) {
 //   }, [])
   return (<div className={styles.root}>
     {props &&
-      <Canvas camera={{fov: 50, near: 0.1, far: 1000, position: [0, 0, 7]}} style={{width: '100%', height: '300px'}}>
-            <Bounds fit clip observe damping={0} margin={1}>
+      <Canvas  style={{width: '100%', height: '300px'}}>
+        <OrthographicCamera makeDefault position={[0, 0, 7]} zoom={100} />
+
+        <Bounds fit clip observe damping={0} margin={1}>
               <ThreeModel {...props as any}/>
           </Bounds>
-          <Environment files="/models/texture.hdr"/>
+          <Environment files="/models/courtyard.exr"/>
       </Canvas>
     }
       <code>{JSON.stringify(props)}</code>
