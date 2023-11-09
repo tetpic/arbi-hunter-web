@@ -7,6 +7,9 @@
   overflow: auto;
   @include mq($TabletWidth, max) {
     padding-left: unset;
+    height: unset;
+    // height: calc(100vh - 146px);
+    // height: calc(100dvh - 146px);
   }
 
 

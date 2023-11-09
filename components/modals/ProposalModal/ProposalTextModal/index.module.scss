@@ -29,8 +29,6 @@
   flex-wrap: wrap;
   column-gap: 8px;
   row-gap: 8px;
- 
-
 }
 
 .choosePattern {
@@ -41,6 +39,6 @@
   font-size: $smallText;
   font-weight: $medium;
   cursor: pointer;
-   @include transitionDefault;
+  @include transitionDefault;
   @include hoverButtonSmooth;
 }

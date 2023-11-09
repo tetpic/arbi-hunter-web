@@ -29,7 +29,7 @@ interface Props {
 
 export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
-  const {messages, loading} = dialog
+  const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
   const {isTabletWidth} = useResize()
 
@@ -58,7 +58,6 @@ export default function Messages(props: Props) {
     }
   }
   
-
   const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
     //https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
     const items = e.clipboardData.items
@@ -80,7 +79,8 @@ export default function Messages(props: Props) {
       return new Map(state)
     })
   }
-  
+
+  const isHirer = userContext.currentProfile.profileType === ProfileType.Hirer
 
   return (
     <div className={styles.root}> 
@@ -95,14 +95,11 @@ export default function Messages(props: Props) {
           <ThreeDotsButton className={styles.dots}/>
         }
       </div>
-
-      {userContext?.currentProfile?.profileType === ProfileType.Employee &&
-        <div className={styles.invite}>
-          <p className={styles.invite__title}>Вас пригласили на вакансию</p>
-          <p className={styles.invite__vacancy}>{dialog.chat?.application?.cv?.position}</p>
-          <InformationSvg className={styles.invite__info}/>
-        </div>
-      }
+      <div className={styles.invite}>
+        <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
+        <p className={styles.invite__vacancy}>{isHirer?dialog.chat?.application?.vacancy?.name:dialog.chat?.application?.cv?.name.position}</p>
+        <InformationSvg className={styles.invite__info}/>
+      </div>
       <div className={styles.messagesWrapper} id={'chat-messages'}
       ref={dialog.scrollableTarget as RefObject<HTMLDivElement>}
       >
@@ -116,21 +113,25 @@ export default function Messages(props: Props) {
       loader={<Spinner size={24} color={colors.yellow}/>}
       hasMore={dialog.totalMessages > dialog.messages.size}
       scrollThreshold={0.6}>
-        {
-          messages.size>0&&[...messages.values()].map(el=> {
-            return <MessageFactory profileId={userContext.currentProfile.id} message={el}/>
-          })
-          // ||
-          // <p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
-        }
+        {/* <div className={styles.messagesItems}> */}
+          {
+            messages.size>0&&[...messages.values()].map(el=> {
+              return <MessageFactory profileId={userContext.currentProfile.id} message={el} application={chat.application} />
+            })
+            // ||
+            // <p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
+          }
+        {/* </div> */}
       </InfiniteScroll>
       </div>
       <div className={styles.newMessage} onPaste={onPasteHandler}>
+        {pastedImages.size>0 && 
         <div className={styles.imagesWrapper}>
-          {pastedImages.size>0 && [...pastedImages.entries()].map(([key, el]) => {
+          {[...pastedImages.entries()].map(([key, el]) => {
             return <div className={styles.image}><img src={URL.createObjectURL(el)}/> <Button onClick={()=>removeHandler(key)} className={styles.removeImage}><CloseTransparentSvg/></Button> </div>
           })}
         </div>
+        }
         <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&sendMessage(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
         <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
           {

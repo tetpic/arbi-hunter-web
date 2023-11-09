@@ -12,6 +12,13 @@ interface Props {
   mobileFullScreen?:boolean
 }
 
+/**
+  * @fixed boolean
+  * @children ReactElement | ReactElement[]
+  * @className string,
+  * @backgroundColor string
+  * @mobileFullScreen boolean
+ */
 export default function ModalLayout(props: Props) {
   const context = useAppContext()
 

@@ -1,22 +1,33 @@
+import styles from './index.module.scss'
+
 import { IMessage } from 'data/interfaces/IChat'
-import { MessageType } from 'types/enums'
+import { ApplicationBSSelectType, ApplicationStatus, MessageType, ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
-import styles from './index.module.scss'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import AudioNode from './AudioNode'
+import { useResize } from 'components/hooks/useResize'
+import Button from 'components/ui/Button'
+import { useAppContext } from 'context/state'
+import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
+import { IApplication } from 'data/interfaces/IApplication'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
   profileId: number
   message: IMessage
+  application: IApplication
 }
 
 
 export default function MessageFactory(props: Props) {
+  const {isPhoneWidth} = useResize()
+  const appContext = useAppContext()
+
   
   const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
@@ -61,20 +72,44 @@ export default function MessageFactory(props: Props) {
     </div>
   )
 
-  const applicationMessage = (
+  const applicationMessage = (<>
+    {props.application.status !== ApplicationStatus.Rejected && props.application.status !== ApplicationStatus.Accepted &&
+      <div className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
+        <Button 
+        onClick={()=>{
+          appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.ThisVacancy, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
+        }} 
+        className={styles.button}
+        >
+          Пригласить
+        </Button>
+      
+        <Button 
+        onClick={()=>{
+          appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.Reject, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
+        }} 
+        className={styles.button}
+        >
+          Отказать
+        </Button>
+      </div>
+    }
     <div className={side}>
-      <p className={styles.message}>Отклик на вакансию</p>
-      <p className={styles.message}>
-        {props.message.application.coverLetter}
-      </p>
-      {stats}
-  </div>
-    
+        <p className={styles.message}>Отклик на вакансию</p>
+        <Spacer basis={8} />
+        <p className={styles.message}>
+          {props.application.coverLetter}
+        </p>
+        {stats}
+    </div>
+  </>
   )
 
   const proposalMessage = (<>
     {msg?.proposal?.coverLetter &&
       <div className={side}>
+        <p className={styles.message}>Отклик на резюме</p>
+        <Spacer basis={8} />
         <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
         {stats}
       </div>
@@ -83,7 +118,9 @@ export default function MessageFactory(props: Props) {
 
   const voiceMessage = (
     <div className={side}>
-      <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(FILES + msg?.assets[0]?.source):(URL.createObjectURL(msg?.voiceMessage))}/>
+      {msg?.assets?.length > 0 &&
+        <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(FILES + msg?.assets[0]?.source):(URL.createObjectURL(msg?.voiceMessage))}/>
+      }
       {stats}
     </div>
   )

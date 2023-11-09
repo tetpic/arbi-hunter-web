@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import RichTextField from 'components/fields/RichTextField'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
@@ -16,16 +18,22 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { ApplicationBSSelectType, PatternTypes, ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
-import styles from './index.module.scss'
 
 interface Props {
   onClose: () => void
   isBottomSheet?: boolean
 }
 
+export interface IProposalTextModalProps {
+  type: ApplicationBSSelectType, 
+  vcId?: number, 
+  application: IApplication, 
+  cv: ICV
+}
+
 export default function ProposalTextModal(props: Props) {
   const appContext = useAppContext()
-  const modalArguments = appContext.modalArguments as {type: ApplicationBSSelectType, vcId?: number, application: IApplication, cv: ICV}
+  const modalArguments = appContext.modalArguments as IProposalTextModalProps
   const patternContext = usePatternContext()
   const proposalRepository = useFeedbacksContext()
   const {application, cv, vcId} = modalArguments
@@ -40,11 +48,11 @@ export default function ProposalTextModal(props: Props) {
     .then(res=>{
       res&&props.onClose()
       if(!res){
-        throw Error
+        throw Error()
       }
     })
     .catch(err=>{
-      appContext.showSnackbar('Невозможно отправить приглашение', SnackbarType.error)
+      appContext.showSnackbar(`Невозможно отправить ${modalArguments.type === ApplicationBSSelectType.Reject?'отказ': 'приглашение'}. Вакансия или резюме удалено`, SnackbarType.error)
     })
   }
 
@@ -93,7 +101,7 @@ export default function ProposalTextModal(props: Props) {
   }
 
   return (
-    <ModalLayout className={styles.layout}>
+    <ModalLayout mobileFullScreen className={styles.layout}>
       <ModalBody>
         <Title className={styles.title} title={modalArguments.type === ApplicationBSSelectType.Reject?'Отказ': 'Приглашение'} showButton onBackClick={props.onClose} />
         {body}

@@ -78,9 +78,7 @@ export function ChatDialogWrapper(props: Props) {
   const limit = 30
 
   const processLoadedMessages = (data: IMessage[], total: number | null) => {
-    if (total === 0) {
-      setTotalMessages(messages.size)
-    }
+      setTotalMessages(total)
     // const readIds: number[] = (data ?? []).filter(i => i.id && i.userStates?.some(i => !i.read)).map(i => i.id!)
     // if (readIds.length > 0) {
     //   chatContext.decreaseUnreadCount(props.chatId!, readIds.length)
@@ -203,8 +201,6 @@ export function ChatDialogWrapper(props: Props) {
     }
 
     else if(files?.voiceMessage) {
-      console.log(files.voiceMessage)
-      
       try{
         const voiceId = await FileRepository.uploadFile(files.voiceMessage)
         data.assetsIds = [Number(voiceId.id)]
@@ -229,7 +225,6 @@ export function ChatDialogWrapper(props: Props) {
 
 
   const recordVoice = async () => {
-
     if(!recorder.current) {
       const stream = await navigator.mediaDevices.getUserMedia({audio: true})
       recorder.current = new MediaRecorder(stream)
@@ -259,6 +254,7 @@ export function ChatDialogWrapper(props: Props) {
   }, [chunks])
 
   useEffect(() => {
+    debugger
     chatIdRef.current = props.chatId ?? null
     init()
 
@@ -267,7 +263,7 @@ export function ChatDialogWrapper(props: Props) {
         state.clear()
         return new Map(state)
       })
-      setTotalMessages(1000000)
+      // setTotalMessages(1000000)
     }
     
     if (props.chatId||props.chat) {

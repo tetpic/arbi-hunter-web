@@ -7,6 +7,12 @@ interface Props {
   basis?: number
 }
 
+/**
+ * @flex number
+ * @mobileOnly boolean 
+ * @desktopOnly boolean
+ * @basis number  
+ */
 export default function Spacer(props: Props) {
   const appContext = useAppContext()
 

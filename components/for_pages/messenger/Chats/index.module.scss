@@ -32,7 +32,8 @@
   height: calc(100% - 100px);
   overflow: auto;
   @include mq($TabletWidth, max) {
-    height: calc(100% - 155px);
+    // height: calc(100% - 155px);
+    height: unset;
   }
 }
 
