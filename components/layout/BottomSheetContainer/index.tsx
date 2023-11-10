@@ -28,7 +28,7 @@ export default function BottomSheetContainer(props: Props) {
         <Sheet
           isOpen={appContext.bottomSheet == ModalType.CvVcOptionsModal}
           onClose={appContext.hideBottomSheet}
-          snapPoints={[400]}
+          snapPoints={[appContext.snapPoints||400]}
           disableDrag={appContext.modalNonSkippable}
         >
           <CvVcOptionsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>

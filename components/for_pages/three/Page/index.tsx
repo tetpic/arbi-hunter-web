@@ -27,15 +27,17 @@ function generateVariants(obj: {[key: string]: number[]|string[]}, type: 'man'|'
   return combinations
 } 
 
+
+// cap меняют почему-то расположение моделей относительно камеры
 const nodesVariants = {
   face: [0, 1],
-  cap:[0,1,2,3],
   head: [0,1,2],
   headVariant: [0,1,2,],
   glasses: [0,1,2,3],  
   chain: [0,1,2,3,4,5],
   jacket: [0,1,2,3,4,5,6],
-  hair: [0, 1, 2, 3, 5],
+  hair: [0,1,2,3,5],
+  cap:[0,1,2],
 }
 
 const womanNodesVariants = {
@@ -43,11 +45,11 @@ const womanNodesVariants = {
   headVariant: [0,1],
   face: [0],
   body: [0,1,2],
-  cap: [0,1,2],
-  chain: [0,1,2],
-  glasses: [0,1,2],
-  hair: [0,1,2],
-  jacket: [0,1,2,3,4]
+  cap: [0,1,2,3],
+  chain: [0,1,2,3,4],
+  glasses: [0,1,2,3],
+  hair: [0,1,2,3,4],
+  jacket: [0,1,2,3,4,5]
 }
 
 export default function ThreePage(props: Props) {

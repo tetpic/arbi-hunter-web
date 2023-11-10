@@ -49,16 +49,28 @@ export default function ThreeModelVariant (props: IThreeModelProps) {
 //       return () => {
 //           (window as any).fromFlutter = null
 //       }
+
+
 //   }, [])
   return (<div className={styles.root}>
     {props &&
       <Canvas  style={{width: '100%', height: '300px'}}>
-        <OrthographicCamera makeDefault position={[0, 0, 7]} zoom={100} />
+        <OrthographicCamera view={{
+          enabled: true,
+          fullHeight: 300,
+          fullWidth: 300,
+          offsetX: -50,
+          offsetY: -120,
+          width: 400,
+          height: 400
+        }} 
+        makeDefault 
+        position={[0, 0, 7]} zoom={100} />
 
         <Bounds fit clip observe damping={0} margin={1}>
-              <ThreeModel {...props as any}/>
-          </Bounds>
-          <Environment files="/models/courtyard.exr"/>
+          <ThreeModel {...props as any}/>
+        </Bounds>
+          <Environment files="/models/skidpan.hdr"/>
       </Canvas>
     }
       <code>{JSON.stringify(props)}</code>

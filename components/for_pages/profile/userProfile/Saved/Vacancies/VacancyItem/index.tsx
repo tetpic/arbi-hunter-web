@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import Button from 'components/ui/Button'
-// import FavoritesButton from 'components/ui/FavoritesButton'
 import SalaryItem from 'components/ui/SalaryItem'
 import UserPic from 'components/ui/UserPic'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -18,6 +17,7 @@ import { ApplicationStatus, ModalType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
+import { useRouter } from 'next/router'
 
 interface Props {
   vc: IVacancy
@@ -28,6 +28,7 @@ interface Props {
 export default function VacancyItem({vc, proposal, refreshCallback}: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
+  const router = useRouter()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
@@ -42,13 +43,13 @@ export default function VacancyItem({vc, proposal, refreshCallback}: Props) {
     <p className={styles.option}>Удалить</p>
     <p className={styles.option} onClick={rejectHandler}>Отказаться</p>
     {isTabletWidth &&
-      <p className={styles.option}>Отмена</p>
+      <p className={classNames(styles.option, styles.back)}>Отмена</p>
     }
   </div>)
 
 const openModalHandler =()=> {
   if (isTabletWidth) {
-    appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vc, children: options})
+    appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vc, children: options}, 250)
   }
   else {
     openDropDown(!dropDown)
@@ -77,7 +78,7 @@ const openModalHandler =()=> {
   <div className={styles.bottom}>
     <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
     {proposal &&
-    <Button className={styles.button}>Перейти в чат</Button>
+    <Button className={styles.button} onClick={()=> {proposal.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
     ||
     <Button className={styles.button}>Откликнуться</Button>
     }

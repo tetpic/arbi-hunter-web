@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function Chats(props: Props) {
+  
   const [page, pager] = useState<string>('__all__')
   const chatContext = useChatContext()
   const folders = [...chatContext.folders.values()]

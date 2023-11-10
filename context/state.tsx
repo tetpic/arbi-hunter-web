@@ -15,9 +15,10 @@ interface IState {
   showModal: <T>(type: ModalType, args?: T) => void
   hideModal: () => void
   modalNonSkippable: boolean,
+  snapPoints: number
 
   bottomSheet: ModalType | null
-  showBottomSheet: <T,>(type: ModalType, args?: T) => void
+  showBottomSheet: <T,>(type: ModalType, args?: T, snapPoints?: number) => void
   hideBottomSheet: () => void
   hideHeader: boolean
   setHideHeader: Dispatch<SetStateAction<boolean>>
@@ -78,6 +79,7 @@ export function AppWrapper(props: Props) {
   const [isOverlayShown, setIsOverlayShown] = useState<boolean>(false)
   const [modalNonSkippable, setModalNonSkippable] = useState<boolean>(false)
   const [hideHeader, setHideHeader] = useState<boolean>(false)
+  const [snapPoints, setSnapPoints] = useState<number>(null)
 
 
 
@@ -111,7 +113,8 @@ export function AppWrapper(props: Props) {
     setModalArguments(null)
   }
 
-  const showBottomSheet = (type: ModalType, props?: any) => {
+  const showBottomSheet = <T extends unknown>(type: ModalType, props?: T, snapPoints?: number) => {
+    setSnapPoints(snapPoints||null)
     ReactModal.setAppElement('body')
     setModalArguments(props)
     setBottomSheet(type)
@@ -139,6 +142,7 @@ export function AppWrapper(props: Props) {
     bottomSheet,
     showBottomSheet,
     hideBottomSheet,
+    snapPoints,
 
     hideHeader,
     setHideHeader,

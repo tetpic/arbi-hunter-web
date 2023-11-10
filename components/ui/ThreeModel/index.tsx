@@ -22,6 +22,9 @@ export function ThreeModel(props: IThreeModelProps) {
         loader.setCrossOrigin('anonymous')
     }) as any
 
+    // eslint-disable-next-line no-console
+    console.log(nodes)
+
     return (
         <group {...props} dispose={null}>
             {typeof props.body !== 'undefined' && props.body !== null && <mesh

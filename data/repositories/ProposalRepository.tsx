@@ -43,4 +43,16 @@ export default class ProposalRepository {
     }
     return res
   }
+
+  static async deleteProposal(profile: ProfileType, proposalId: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/proposal/${proposalId}`,
+      profile
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

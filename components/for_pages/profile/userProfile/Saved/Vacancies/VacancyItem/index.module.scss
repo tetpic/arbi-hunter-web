@@ -140,6 +140,10 @@
   display: flex;
   flex-direction: column;
   padding-inline: 16px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    align-items: center;
+  }
 
 
   .option {
@@ -157,6 +161,9 @@
     @include exeptLast {
       border-bottom: 1px $greyLight solid;
     }
+    @include mq($TabletWidth, max) {
+      border-bottom: unset !important;
+    }
   }
 
   .vacancyName {
@@ -167,5 +174,7 @@
     font-size: $smallText;
   }
 
-  
+  .back {
+    margin-top: 40px;
+  }
 }
