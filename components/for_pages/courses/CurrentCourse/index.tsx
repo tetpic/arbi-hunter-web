@@ -24,6 +24,10 @@ import CourseModules from './CourseModules'
 import CourseNews from './CourseNews'
 import styles from './index.module.scss'
 import RatingLine from 'components/ui/RatingLine'
+import InformationSmallSvg from 'components/svg/InformationSmallSvg'
+import ModulesSvg from 'components/svg/ModulesSvg'
+import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
+import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 
 interface Props {
   id: number
@@ -73,16 +77,16 @@ export default function CurrentCourse(props: Props) {
     result = Object.values(availablePages).map(page => {
       switch(page) {
         case CurrentCoursesNav.Information:
-        return {name: 'Информация', type: page}
+        return {name: 'Информация', type: page, icon: <InformationSmallSvg/>}
 
         case CurrentCoursesNav.Modules:
-        return {name: 'Модули', type: page}
+        return {name: 'Модули', type: page, icon: <ModulesSvg/>}
 
         case CurrentCoursesNav.Feedbacks:
-        return {name: 'Отзывы', type: page}
+        return {name: 'Отзывы', type: page, icon: <MessageDoubleSvg/>}
 
         case CurrentCoursesNav.News:
-        return {name: 'Новости', type: page,}
+        return {name: 'Новости', type: page, icon: <NewsPaperSvg/>}
       }
     })
     return result

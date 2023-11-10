@@ -73,9 +73,9 @@ export default function Header(props: Props) {
 
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
-      <div onClick={()=>router.push('/')}>
+      <Link href={'/'}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
-      </div>
+      </Link>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
           <Modes 

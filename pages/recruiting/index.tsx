@@ -25,7 +25,7 @@ export default function Recruiting(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.profileType
 
-  return (<ContentLayout>
+  return (<ContentLayout withFooter>
     {((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
       <RecruitingEmployee/>
       ||

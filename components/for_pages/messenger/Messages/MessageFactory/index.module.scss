@@ -6,19 +6,21 @@
     margin-block: 8px;
     display: flex;
     flex-direction: column;
+    max-width: 50%;
+    @include mq($TabletWidth, max) {
+      max-width: 80%;
+    }
   }
 
   .leftMessage {
     @extend .side;
     align-self: flex-start;
-    max-width: 80%;
     background-color: $grey;
   }
 
   .rightMessage {
     @extend .side;
     align-self: flex-end;
-    max-width: 80%;
     background-color: #17233F;
   }
 
@@ -30,6 +32,11 @@
 
   .message {
     width: 100%;
+    span {
+      font-size: $smallText;
+      color: $greyLight;
+      font-weight: $medium;
+    }
   }
 
   .stats {
@@ -84,5 +91,16 @@
       @include buttonGray;
       font-size: $smallText;
       color: $blue;
+    }
+  }
+
+  .cover {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    color: $blue;
+    svg {
+      width: 16px;
+      height: 16px;
     }
   }

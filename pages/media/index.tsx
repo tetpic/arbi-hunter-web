@@ -32,7 +32,7 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 
 export default function Media(props: Props) {
   return (
-    <ContentLayout title={'Медиа'}>
+    <ContentLayout withFooter title={'Медиа'}>
       <MediaLanding isMobile={props.isMobile} categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
     </ContentLayout>
   )

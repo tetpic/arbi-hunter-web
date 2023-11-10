@@ -1,10 +1,10 @@
 import Title from 'components/ui/TitleForSection'
-import { ProfilePages } from '..'
 import Saved from './Saved'
 import styles from './index.module.scss'
 import Feedbacks from './Feedbacks'
 import CVs from './CVs'
 import { NavigationSet } from 'types/types'
+import { ProfilePages } from 'context/profile_page_state'
 
 interface Props {
   currentPage: ProfilePages 

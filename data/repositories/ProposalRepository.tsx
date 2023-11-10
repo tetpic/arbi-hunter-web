@@ -29,14 +29,12 @@ export default class ProposalRepository {
     return res
   }
 
-  static async changeProposalStatusByEmployee(profile: ProfileType, proposalId: number, status: ApplicationStatus): Promise<any|null> {
+  static async changeProposalStatusByEmployee(profile: ProfileType, proposalId: number, data: {status: ApplicationStatus, deletedByEmployee?: boolean}): Promise<any|null> {
     const res = await request({
       method: 'patch',
       url: `/api/proposal/${proposalId}`,
       profile,
-      data: {
-        status
-      }
+      data
     })
     if(res.err) {
       return null

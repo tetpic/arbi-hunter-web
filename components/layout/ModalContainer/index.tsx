@@ -26,6 +26,7 @@ import AddPortfolioModal from 'components/modals/AddPortfolioModal'
 import StoriesViewerModal from 'components/modals/StoriesViewerModal'
 import MediaCategoryModal from 'components/modals/MediaCategoryModal'
 import MobileSideBarModal from 'components/modals/MobileSideBarModal'
+import ResponseModal from 'components/modals/ResponseModal'
 // import SpecializationModal from 'components/modals/CvModal'
 // import CvModal from 'components/modals/CvModal'
 
@@ -129,6 +130,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.MobileSideBarModal:
         return <Modal isOpen {...commonSettings}>
           <MobileSideBarModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ResponseModal:
+        return <Modal isOpen {...commonSettings}>
+          <ResponseModal onClose={commonSettings.onRequestClose}/>
         </Modal>
 
 

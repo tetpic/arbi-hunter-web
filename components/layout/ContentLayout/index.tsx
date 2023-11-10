@@ -1,15 +1,18 @@
 import Head from 'next/head'
+import Footer from '../Footer'
 
 interface Props {
   title?: string,
   description?: string 
   children: JSX.Element|JSX.Element[]
+  withFooter?: boolean
 }
 
 /**
  * @title string
  * @description string 
  * @children JSX.Element|JSX.Element[]
+ * @withFooter boolean
  */
 export default function ContentLayout(props: Props) {
 
@@ -25,6 +28,9 @@ export default function ContentLayout(props: Props) {
     <div className='contentWrapper'> 
       {props.children}
     </div>
+    {props.withFooter &&
+      <Footer/>
+    }
   </>
   )
 }

@@ -1,5 +1,4 @@
 import { useFeedbacksContext } from 'context/feedbacks_state'
-import { IVacancy } from 'data/interfaces/IVacancy'
 import { useEffect, useState } from 'react'
 import { ApplicationStatus } from 'types/enums'
 import ItemNavigation from '../../ItemNavigation'
@@ -13,6 +12,7 @@ interface Props {
 enum ReviewsNavigation {
   Any = 'any',
   Invite = 'invite',
+  Wait = 'wait',
   Reject = 'reject',
 }
 
@@ -22,8 +22,11 @@ function translate (n: ReviewsNavigation) {
       return 'Любые отклики'
     case ReviewsNavigation.Invite:
       return 'Приглашение'
+    case ReviewsNavigation.Wait:
+      return 'Ожидание'
     case ReviewsNavigation.Reject:
       return 'Отказ'
+  
   }
 }
 
@@ -34,7 +37,11 @@ export default function Feedbacks(props: Props) {
 
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
   const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
-  const [filtered, setFiltered] = useState<Map<IProposal, IVacancy>>(CVFeedbacks)
+  const [filtered, setFiltered] = useState<Map<number, IProposal>>(CVFeedbacks)
+
+  const onRemove = () => {
+    feedBackContext.setCVResponses()
+  }
 
 
   useEffect(()=>{    
@@ -47,17 +54,28 @@ export default function Feedbacks(props: Props) {
       case ReviewsNavigation.Invite: 
         setFiltered(state=> {
             state.clear();
-            [...CVFeedbacks.entries()].filter(([key, value])=> key.status === ApplicationStatus.Applied)
+            [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Accepted)
             .map(([app, vc])=>{
               state.set(app, vc)
             })
             return new Map(state)
         })
       break
+      case ReviewsNavigation.Wait:
+        setFiltered(state=> {
+          state.clear();
+          [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Applied)
+          .map(([app, vc])=>{
+            state.set(app, vc)
+          })
+          return new Map(state)
+
+        })
+      break
       case ReviewsNavigation.Reject:
         setFiltered(state=> {
           state.clear();
-          [...CVFeedbacks.entries()].filter(([key, value])=> key.status === ApplicationStatus.Rejected)
+          [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Rejected)
           .map(([app, vc])=> {
             state.set(app, vc)
           })
@@ -78,8 +96,9 @@ export default function Feedbacks(props: Props) {
       <ItemNavigation activeItem={page} items={items} onClick={(n)=>setPage(n)} className={styles.navigation}/>
       <div className={styles.wrapper}>
         {
-          filtered.size > 0 && [...filtered.entries()].map(([app, vc])=> {
-            return (<VacancyItem vc={vc} proposal={app} refreshCallback={feedBackContext.setCVResponses}/>)
+          filtered.size > 0 && [...filtered.entries()].map(([id, proposal])=> {
+            if(proposal.chat.length === 0) return null
+            return (<VacancyItem  onRemove={onRemove} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
           <p className={'empty'}>Нет откликов</p>

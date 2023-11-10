@@ -47,6 +47,7 @@ export function PatternWrapper(props: Props) {
         }
       })
       .catch(err=>{
+        debugger
         setPatternsNotExistState(state=> {
           state.add(el)
           return new Set(state)

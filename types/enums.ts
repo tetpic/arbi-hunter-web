@@ -23,7 +23,8 @@ export enum ModalType {
   AddPortfolioModal='addPortfolioModal',
   StoriesViewerModal = 'storiesViewerModal',
   MediaCategoryModal= 'mediaCategoryModal',
-  MobileSideBarModal = 'mobileSideBarModal'
+  MobileSideBarModal = 'mobileSideBarModal',
+  ResponseModal= 'responseModal'
 }
 
 export enum SnackbarType {

@@ -25,8 +25,8 @@ export default function ChatItem(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.isActive&&styles.active)} onClick={onClickHandler}> 
-      <UserPic size={56} className={styles.userPic} image={collocutor?.image&& FILES +collocutor?.image?.source}/>
-      <p className={styles.name}>{/*chat.profile.company||*/collocutor?.firstName + ' ' + collocutor?.lastName}</p>
+      <UserPic size={56} className={styles.userPic}  image={collocutor?.image&& FILES +collocutor?.image?.source}/>
+      <p className={styles.name}>{/*chat.profile.company||*/collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat?.last?.message} </p>
       {props.chat.totalUnread > 0&&

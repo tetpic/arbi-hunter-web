@@ -41,7 +41,8 @@ export interface ICV extends ICVCreate, IUserProfile{
   moderationRejectReason: string|null,
   published: boolean,
   totalViews: string|null,
-  totalProposals: number|string|null,
+  totalProposals: string|null,
+  totalApplications: string|null
   isTop: boolean,
   topPurchasedAt: string|null,
   hash: string,

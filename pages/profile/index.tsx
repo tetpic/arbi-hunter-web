@@ -1,5 +1,6 @@
 import Profile from 'components/for_pages/profile'
 import ContentLayout from 'components/layout/ContentLayout'
+import { ProfilePageWrapper } from 'context/profile_page_state'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -26,7 +27,9 @@ export default function ProfilePage(props: Props) {
 
   return (
     <ContentLayout title='Личный кабинет'>
-      <Profile page={props.page}/>
+      <ProfilePageWrapper page={props.page}>
+        <Profile/>
+      </ProfilePageWrapper>
     </ContentLayout>
  
   )

@@ -42,6 +42,7 @@ interface Props {
   children: React.ReactNode
   chats?: IChat[]
   folders?: IChatFolder[]
+  initialChat?: number
 }
 
 export function ChatWrapper(props: Props) {
@@ -56,7 +57,7 @@ export function ChatWrapper(props: Props) {
   const isLoggedRef = useRef<boolean>(isLogged)
   const scrollableTarget = useRef<HTMLElement | null>(null)
   const [chats, setChats] = useState<IChat[]>(props.chats)
-  const [currentChatId, setCurrentChatId] = useState<number | null>(0)
+  const [currentChatId, setCurrentChatId] = useState<number | null>(props.initialChat)
   const [totalChats, setTotalChats] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState(true)

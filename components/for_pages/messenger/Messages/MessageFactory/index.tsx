@@ -16,6 +16,10 @@ import { useAppContext } from 'context/state'
 import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
 import { IApplication } from 'data/interfaces/IApplication'
 import Spacer from 'components/ui/Spacer'
+import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import PlusSvg from 'components/svg/PlusSvg'
+import { IResponseModalProps } from 'components/modals/ResponseModal'
 
 interface Props {
   profileId: number
@@ -27,6 +31,8 @@ interface Props {
 export default function MessageFactory(props: Props) {
   const {isPhoneWidth} = useResize()
   const appContext = useAppContext()
+  const userContext = useUserContext()
+  const profileType = userContext.currentProfile.profileType
 
   
   const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage
@@ -73,7 +79,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const applicationMessage = (<>
-    {props.application.status !== ApplicationStatus.Rejected && props.application.status !== ApplicationStatus.Accepted &&
+    {props.application?.status !== ApplicationStatus.Rejected && profileType === ProfileType.Hirer && props.application?.status !== ApplicationStatus.Accepted &&
       <div className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
         <Button 
         onClick={()=>{
@@ -98,8 +104,19 @@ export default function MessageFactory(props: Props) {
         <p className={styles.message}>Отклик на вакансию</p>
         <Spacer basis={8} />
         <p className={styles.message}>
-          {props.application.coverLetter}
+          {props.application?.coverLetter}
+          {!props.application?.coverLetter&&profileType === ProfileType.Employee&&
+            <span>Без сопроводительного письма</span>
+          }
         </p>
+        {!props.application?.coverLetter &&
+          <p className={styles.cover} onClick={()=> {
+            appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application})
+          }}>
+            <PlusSvg/>
+            Сопроводительное письмо
+          </p>
+        }
         {stats}
     </div>
   </>

@@ -40,7 +40,7 @@ export default function Courses(props: Props) {
   
   
   return (
-    <ContentLayout title={'Курсы'}>
+    <ContentLayout withFooter title={'Курсы'}>
       <CoursesMain 
       categoryList={props.categoryList} 
       courses={props.courses} 

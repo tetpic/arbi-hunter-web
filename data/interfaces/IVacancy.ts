@@ -21,7 +21,7 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   schedulePublishAt: null,
   isRemote: boolean,
   published: boolean,
-  totalApplications: '0',
+  totalApplications: string,
   skills: ISource[],
   sources: ISource[]
   applicationByCurrentUser: IApplication

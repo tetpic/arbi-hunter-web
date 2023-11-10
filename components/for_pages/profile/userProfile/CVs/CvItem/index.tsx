@@ -15,6 +15,8 @@ import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/Opti
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
+import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 
 interface Props {
   cv: ICV
@@ -24,12 +26,12 @@ interface Props {
 export default function CVItem({cv, isLast}: Props) {
 
   const appContext = useAppContext()
+  const profilePageContext = useProfilePageContext()
+  const feedBackContext = useFeedbacksContext()
   const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
-
-
 
   const archiveHandler =()=> {
     cvContext.updateCv(cv.id, {...cv, published: !cv?.published})
@@ -67,6 +69,15 @@ export default function CVItem({cv, isLast}: Props) {
     }
   }
 
+  const showFeedbacksForVacancy = () => {
+    feedBackContext.setCVResponses()
+    profilePageContext.pager(ProfilePages.FeedBacks)
+    
+
+  }
+
+  const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)
+
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic}/>
@@ -93,7 +104,13 @@ export default function CVItem({cv, isLast}: Props) {
     
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button}>Поднять в поиске</Button>
-      <Button className={styles.buttonBlack}>456 вакансий</Button>
+      <Button 
+      className={styles.buttonBlack} 
+      onClick={showFeedbacksForVacancy}
+
+      >
+        {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+      </Button>
     </div>
   </div>)
 }

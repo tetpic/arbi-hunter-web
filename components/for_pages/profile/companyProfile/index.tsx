@@ -1,5 +1,4 @@
 import Title from 'components/ui/TitleForSection'
-import { ProfilePages } from '..'
 import Managers from './Managers'
 import Patterns from './Patterns'
 import Personal from './Personal'
@@ -8,6 +7,7 @@ import Shop from './Shop'
 import Vacancies from './Vacancies'
 import styles from './index.module.scss'
 import { NavigationSet } from 'types/types'
+import { ProfilePages } from 'context/profile_page_state'
 
 
 interface Props {

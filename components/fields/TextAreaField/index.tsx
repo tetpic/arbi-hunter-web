@@ -24,6 +24,13 @@ interface Props extends IField<string> {
   value?: string
 }
 
+/**
+ * @autoSize  boolean
+ * @color 'white' | 'purple'
+ * @areaClassname string
+ * @onChange (e: ChangeEvent<HTMLTextAreaElement>) => void
+ * @value string
+ */
 export default function TextAreaField(props: Props) {
   const [ref, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)

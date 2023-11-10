@@ -28,7 +28,7 @@
   @include transitionDefault;
   // @include hoverButtonBlack;
   @include hover {
-    background-color: $greayLightAlt2;
+    color: $blue;
     .stat {
       background-color: $greyAlt;
     }
@@ -50,7 +50,6 @@
   border-radius: 10px;
   background-color: $grey;
   font-size: $smallText;
-  padding-top: 2px;
-  padding-inline: 3px;
+  padding-inline: 4px 3px;
   @include transitionDefault;
 }

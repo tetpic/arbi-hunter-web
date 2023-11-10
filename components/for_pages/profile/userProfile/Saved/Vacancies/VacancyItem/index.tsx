@@ -13,7 +13,7 @@ import { useRef } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
-import { ApplicationStatus, ModalType } from 'types/enums'
+import { ApplicationStatus, ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
@@ -23,9 +23,10 @@ interface Props {
   vc: IVacancy
   proposal?: IProposal
   refreshCallback?: Function
+  onRemove?: Function
 }
 
-export default function VacancyItem({vc, proposal, refreshCallback}: Props) {
+export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const router = useRouter()
@@ -33,15 +34,23 @@ export default function VacancyItem({vc, proposal, refreshCallback}: Props) {
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
-  const rejectHandler = () => {
-    ProposalRepository.changeProposalStatusByEmployee(userContext.currentProfile.profileType, proposal.application?.id, ApplicationStatus.Rejected)
+  const rejectHandler = async(deletedByEmployee?: boolean) => {
+    if(!proposal.id) {
+      appContext.showSnackbar('Отклик некорректен. Действия невозможны', SnackbarType.error)
+      openDropDown(false)
+      return
+    }
+    await ProposalRepository.changeProposalStatusByEmployee(userContext.currentProfile.profileType, proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+    onRemove()
     openDropDown(false)
   }
 
   const options = (<div className={styles.options}>
     <p className={styles.vacancyName}>{vc.name}</p>
-    <p className={styles.option}>Удалить</p>
-    <p className={styles.option} onClick={rejectHandler}>Отказаться</p>
+    <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
+    {proposal.status === ApplicationStatus.Accepted &&
+      <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
+    }
     {isTabletWidth &&
       <p className={classNames(styles.option, styles.back)}>Отмена</p>
     }

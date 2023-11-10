@@ -89,7 +89,7 @@ export default function Messages(props: Props) {
           <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
         }
         <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
-        <p className={styles.name}>{/* dialog.chat?.participant.company||*/collocutor?.firstName + ' ' + collocutor?.lastName}</p>
+        <p className={styles.name}>{/* dialog.chat?.participant.company||*/collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
         <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
         {!isTabletWidth &&
           <ThreeDotsButton className={styles.dots}/>
@@ -97,7 +97,7 @@ export default function Messages(props: Props) {
       </div>
       <div className={styles.invite}>
         <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
-        <p className={styles.invite__vacancy}>{isHirer?dialog.chat?.application?.vacancy?.name:dialog.chat?.application?.cv?.position}</p>
+        <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
         <InformationSvg className={styles.invite__info}/>
       </div>
       <div className={styles.messagesWrapper} id={'chat-messages'}

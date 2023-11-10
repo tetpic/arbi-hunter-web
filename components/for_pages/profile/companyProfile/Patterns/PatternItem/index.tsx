@@ -69,7 +69,7 @@ export default function PatternItem(props: Props) {
           }
           />
         }
-          <RichTextField name={'template'}/>
+          <RichTextField value={formik.values.template} name={'template'}/>
           <Button className={styles.button}>Сохранить</Button>
         </Form>
       </FormikProvider>

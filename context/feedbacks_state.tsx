@@ -5,7 +5,6 @@ import { IProposal, IStat } from 'data/interfaces/IProposal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import ProposalRepository from 'data/repositories/ProposalRepository'
-import VacancyRepository from 'data/repositories/VacancyRepository'
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
 import { EducationTypes, Genders, ProposalRequestType, WorkExperience } from 'types/enums'
 import { arrayFromEnum, TranslateEducationType, TranslateGenderType, TranslateWorkExperience } from 'utils/enumsTranslations'
@@ -21,7 +20,7 @@ interface IState {
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
-  CVFeedbacks: Map<IProposal, IVacancy>
+  CVFeedbacks: Map<number, IProposal>
   createProposal: (p: IProposal)=> Promise<boolean>
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
@@ -34,7 +33,6 @@ interface IState {
   sorted:IApplication[],
   setSorted: Dispatch<SetStateAction<IApplication[]>>,
   getFilterItems : (p: FilterItems)=> FilterItem
-
 }
 
 const defaultValue: IState = {
@@ -75,7 +73,7 @@ export function FeedbacksWrapper(props: Props) {
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
   const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<IProposal, IVacancy>>(new Map())
+  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<number, IProposal>>(new Map())
   const [sorted, setSorted] = useState<IApplication[]|null>(null)
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [filterOptions, setFilterOptionsState] = useState<Map<FilterItem, FilterItem>>(new Map())
@@ -99,25 +97,41 @@ export function FeedbacksWrapper(props: Props) {
   }
 
   const setCVResponses = async(): Promise<boolean> => {
-    return ProposalRepository.getProposalByProfileType(userContext?.currentProfile?.profileType)
-    .then(proposal=> {
-
-      const vacancies = Promise.all(proposal.map(el=> VacancyRepository.getVacancyById(el.vacancyId, userContext?.currentProfile?.profileType)))
-      return vacancies.then(res=> {
-        setCurrentCVResponsesState(new Map())
-        res.forEach((vc, index)=>{
-          setCurrentCVResponsesState(state=> {
-            state.set(proposal[index], vc)
+    try{
+      setCurrentCVResponsesState(new Map)
+      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(userContext.currentProfile.profileType), ProposalRepository.getProposalByProfileType(userContext?.currentProfile?.profileType)])
+      allProposals.forEach(async(proposal) => {
+        proposal.forEach((p, index) => {
+          setCurrentCVResponsesState(state => {
+            state.set(p.id, p)
             return new Map(state)
           })
         })
-        return true
       })
-      
-    })
-    .catch(err=>{
+      return true
+    }
+    catch(err) {
       return false
-    })
+    }
+    
+    // return ProposalRepository.getProposalByProfileType(userContext?.currentProfile?.profileType)
+    // .then(async proposal=> {
+
+    //   const vacancies = Promise.all(proposal.map(el=> VacancyRepository.getVacancyById(el.vacancyId, userContext?.currentProfile?.profileType)))
+    //   const res = await vacancies
+    //   setCurrentCVResponsesState(new Map())
+    //   res.forEach((vc, index) => {
+    //     setCurrentCVResponsesState(state => {
+    //       state.set(proposal[index], vc)
+    //       return new Map(state)
+    //     })
+    //   })
+    //   return true
+      
+    // })
+    // .catch(err=>{
+    //   return false
+    // })
   }
 
   const setFilterOptions =(value?: FilterItem, index?: number)=> {

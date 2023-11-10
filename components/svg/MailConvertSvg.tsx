@@ -1,0 +1,13 @@
+interface Props {
+  color?: string
+  className?: string
+}
+
+export default function MailConvertSvg(props: Props) {
+  return (
+    <svg className={props.className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.5 6C22.5 4.9 21.6 4 20.5 4H4.5C3.4 4 2.5 4.9 2.5 6V18C2.5 19.1 3.4 20 4.5 20H20.5C21.6 20 22.5 19.1 22.5 18V6ZM20.5 6L12.5 11L4.5 6H20.5ZM20.5 18H4.5V8L12.5 13L20.5 8V18Z" fill="white"/>
+    </svg>
+  )
+}
+
