@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import FolderSvg from 'components/svg/FolderSvg'
 import PlayButtonSvg from 'components/svg/PlayButtonSvg'
 import StarSvg from 'components/svg/StarSvg'
@@ -7,7 +9,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
-import styles from './index.module.scss'
 import classNames from 'classnames'
 
 interface Props {

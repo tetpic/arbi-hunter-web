@@ -91,6 +91,10 @@
 .categoriesWrapper {
   height: 60vh;
   height: 60dvh;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 160px);
+    height: calc(100dvh - 160px);
+  }
   >div {
     height: 100%;
   }

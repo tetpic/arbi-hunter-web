@@ -19,36 +19,64 @@
 }
 
 .module {
-  &_active {
-    background-color: $grey;
+  // &_active {
+  //   // background-color: $grey;
     
-    .title {
-      pointer-events: none;
-    }
-  }
+  //   .title {
+  //     pointer-events: none;
+  //   }
+  // }
 
   .title {
     color: $white;
     font-size: $mediumText;
     font-weight: $medium;
-    padding: 16px;
+    padding: 8px;
     cursor: pointer;
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    border-radius: 14px;
     @include transitionDefault;
     @include hoverButtonBlack;
+
+    span {
+      @include buttonYellow;
+      padding: 8px;
+      width: unset;
+      height: 32px;
+      width: 32px;
+      font-weight: $bold;
+      font-size: $largeText;
+    }
   }
 
   .item {
     color: $greyLight;
     font-size: $mediumText;
     font-weight: $medium;
-    padding: 16px;
+    padding: 16px 0px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
     @include transitionDefault;
     @include hoverButtonYellow;
+    .side {
+      width: 2px;
+      height: 18px;
+      flex-shrink: 0;
+      background-color: transparent;
+      margin-right: 16px;
+    }
 
     &_active {
       color: $blue;
       pointer-events: none;
+      .side {
+        background-color: $blue;
+      }
     }
 
   }

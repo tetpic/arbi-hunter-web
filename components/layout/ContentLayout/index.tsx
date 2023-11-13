@@ -1,11 +1,15 @@
 import Head from 'next/head'
 import Footer from '../Footer'
+import { useAppContext } from 'context/state'
+import { useResize } from 'components/hooks/useResize'
+import { useEffect } from 'react'
 
 interface Props {
   title?: string,
   description?: string 
   children: JSX.Element|JSX.Element[]
   withFooter?: boolean
+  hideMobileHeader?: boolean
 }
 
 /**
@@ -13,8 +17,23 @@ interface Props {
  * @description string 
  * @children JSX.Element|JSX.Element[]
  * @withFooter boolean
+ * @hideMobileHeader boolean
  */
 export default function ContentLayout(props: Props) {
+  const appContext = useAppContext()
+  const {isTabletWidth} = useResize()
+
+  useEffect(()=>{
+    if(isTabletWidth&&props.hideMobileHeader) {
+      appContext.setHideHeader(true)
+    }
+    else {
+      return (()=> {
+        appContext.setHideHeader(false)
+      })
+    }
+  
+  }, [isTabletWidth])
 
   return (
   <>

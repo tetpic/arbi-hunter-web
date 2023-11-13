@@ -16,12 +16,18 @@
     @extend .side;
     align-self: flex-start;
     background-color: $grey;
+    @include mq($TabletWidth, max) {
+      margin-left: 16px;
+    }
   }
 
   .rightMessage {
     @extend .side;
     align-self: flex-end;
     background-color: #17233F;
+    @include mq($TabletWidth, max) {
+      margin-right: 16px;
+    }
   }
 
   .time {
@@ -102,5 +108,24 @@
     svg {
       width: 16px;
       height: 16px;
+    }
+  }
+
+  .single {
+    padding: unset;
+    position: relative;
+
+    .stats {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background-color: rgba(116, 116, 116, 0.248);
+      width: unset;
+      border-radius: 20px;
+      padding: 2px 4px;
+    }
+
+    .imagesWrapper {
+      margin-bottom: unset;
     }
   }

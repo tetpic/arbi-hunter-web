@@ -27,8 +27,8 @@ import StoriesViewerModal from 'components/modals/StoriesViewerModal'
 import MediaCategoryModal from 'components/modals/MediaCategoryModal'
 import MobileSideBarModal from 'components/modals/MobileSideBarModal'
 import ResponseModal from 'components/modals/ResponseModal'
-// import SpecializationModal from 'components/modals/CvModal'
-// import CvModal from 'components/modals/CvModal'
+import ImageViewerModal from 'components/modals/ImageViewerModal'
+import ChatFilterModal from 'components/modals/ChatFilterModal'
 
 
 interface Props { }
@@ -135,6 +135,14 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings}>
           <ResponseModal onClose={commonSettings.onRequestClose}/>
         </Modal>
+      case ModalType.ImageViewerModal:
+        return <Modal isOpen {...commonSettings}>
+          <ImageViewerModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.ChatFilterModal:
+        return <Modal isOpen {...commonSettings}>
+          <ChatFilterModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
 
 
     }
@@ -143,43 +151,7 @@ export default function ModalContainer(props: Props) {
   return (
     <RemoveScroll enabled={!!appContext.modal}>
       <div aria-hidden="true">
-        {/* <Modal isOpen={appContext.modal === ModalType.RegistrationModal} {...commonSettings}>
-          {appContext.modal === ModalType.RegistrationModal && <RegistrationModal/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.SpecializationModal} {...commonSettings}>
-          {appContext.modal === ModalType.SpecializationModal && <SpecializationModal onClose={commonSettings.onRequestClose}/>}
-        </Modal> */}
         {currentModal}
-        {/* <Modal isOpen={appContext.modal === ModalType.SkillsModal} {...commonSettings}>
-          {appContext.modal === ModalType.SkillsModal && <SkillsModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.LanguageModal} {...commonSettings}>
-          {appContext.modal === ModalType.LanguageModal && <LangaugesModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.SourcesModal} {...commonSettings}>
-          {appContext.modal === ModalType.SourcesModal && <SoursesModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.CvVcOptionsModal} {...commonSettings}>
-          {appContext.modal === ModalType.CvVcOptionsModal && <CvVcOptionsModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.ProposalModal} {...commonSettings}>
-          {appContext.modal === ModalType.ProposalModal && <ProposalModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.ProposalTextModal} {...commonSettings}>
-          {appContext.modal === ModalType.ProposalTextModal && <ProposalTextModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.ConfirmModal} {...commonSettings}>
-          {appContext.modal === ModalType.ConfirmModal && <ConfirmModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.CongratulationsModal} {...commonSettings}>
-          {appContext.modal === ModalType.CongratulationsModal && <CongratulationsModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.CreateNewCommunityModal} {...commonSettings}>
-          {appContext.modal === ModalType.CreateNewCommunityModal && <CreateNewCommunityModal onClose={commonSettings.onRequestClose}/>}
-        </Modal>
-        <Modal isOpen={appContext.modal === ModalType.EditCommunityModal} {...commonSettings}>
-          {appContext.modal === ModalType.EditCommunityModal && <EditCommunityModal onClose={commonSettings.onRequestClose}/>}
-        </Modal> */}
       </div>
     </RemoveScroll>
   )

@@ -19,6 +19,12 @@ interface Props {
   type?: CategoryType
 }
 
+
+/**
+ * @media IArticle
+ * @showContent boolean
+ * @type CategoryType
+ */
 export default function MediaItem({media, showContent, type}: Props) {
 
   const mediaContext = useMediaContext()

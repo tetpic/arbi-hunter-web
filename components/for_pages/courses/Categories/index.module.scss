@@ -1,7 +1,8 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 120px;
+  margin-top: 32px;
+  @include container;
 }
 
 .title {
@@ -45,11 +46,12 @@
   }
   @include mq($MdDesktopWidth, max) {
     width: unset !important;
-    grid-template-columns: auto;
+    grid-template-columns: 60% 40%; 
     min-width: unset;
   }
   @include mq($PhoneWidth, max) {
     width: 100% !important;
+    border-radius: 16px;
   }
 
   .name {
@@ -89,6 +91,12 @@
     
     // width: Clamp(80px, 10vw, 114px);
     // height: Clamp(80px, 10vw, 114px);
+    @include mq($TabletWidth, max) {
+      img {
+        width: 100%;
+        height: unset;
+      }
+    }
 }
 
   &_large {

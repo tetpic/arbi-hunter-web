@@ -1,5 +1,5 @@
 import {createContext, MutableRefObject, RefObject, useContext, useEffect, useRef, useState} from 'react'
-import IChat, { IChatFolder, IChatListRequest } from 'data/interfaces/IChat'
+import IChat, { IChatFolder, IChatsFilter, MessageFilterOptions } from 'data/interfaces/IChat'
 import ChatRepository from 'data/repositories/ChatRepository'
 import {debounce} from 'debounce'
 import {useChatSocketContext} from 'context/chat_socket_state'
@@ -8,8 +8,8 @@ import { useUserContext } from './user_state'
 import { IDialogState } from './chat_dialog_state'
 import { useRouter } from 'next/router'
 
-interface IChatFilter extends IChatListRequest{
-}
+// interface IChatFilter extends IChatListRequest{
+// }
 
 interface IState {
   chats: IChat[]
@@ -17,9 +17,9 @@ interface IState {
   totalChats: number
   fetchMore: () => void
   loading: boolean
-  filter: IChatFilter
+  filter: IChatsFilter
   filterIsEmpty: boolean,
-  setFilter: (filter: IChatFilter) => void,
+  setFilter: (filter?: IChatsFilter) => void,
   decreaseUnreadCount: (chatId: number, total: number) => void
   setCurrentChatId: (chatId: number | null) => void,
   scrollableTarget: RefObject<HTMLElement> | null
@@ -31,6 +31,7 @@ interface IState {
   editChatFolder: (data: {chatFolderId: number, chatsIds: number[] }, name: string) => Promise<boolean>
   removeChatFolder: (id: number) => Promise<boolean> 
   setChatsFromFolder: (name: string) => void
+  chatsRef: MutableRefObject<IChat[]>
 
 }
 
@@ -65,29 +66,29 @@ export function ChatWrapper(props: Props) {
   const [folders, setFolders] = useState<Map<number, any>>(new Map)
 
   const limit = 30
-  const [filter, setFilterState] = useState<IChatFilter>({page: 1, limit: limit ?? 30})
-  const filterRef = useRef<IChatFilter>(filter)
+  const [filter, setFilterState] = useState<IChatsFilter>(null)
+  const chatsRef = useRef<IChat[]>(props.chats)
   const windowFocusInit = useRef(false)
 
-  const getFilterChatListRequest = (): IChatListRequest => {
-    return {
-      ...(filterRef.current?.search ? {search: filterRef.current.search} : {}),
-      ...(filterRef.current?.userId ? {receivingPointId: filterRef.current.userId}: {}),
-    }
-  }
+  // const getFilterChatListRequest = (): IChatListRequest => {
+  //   return {
+  //     ...(filterRef.current?.search ? {search: filterRef.current.search} : {}),
+  //     ...(filterRef.current?.userId ? {receivingPointId: filterRef.current.userId}: {}),
+  //   }
+  // }
 
   const init = async () => {
     await loadChats(1)
     setLoading(false)
   }
 
-  const loadChats = async (page: number) => {
+  const loadChats = async (page: number, filters?: MessageFilterOptions) => {
     if (abortControllerRef.current) {
       abortControllerRef.current?.abort()
     }
     abortControllerRef.current = new AbortController()
     try {
-      const data = await ChatRepository.getChatList({}, profileType, null, {signal: abortControllerRef.current?.signal!})
+      const data = await ChatRepository.getChatList(filters, profileType, null, {signal: abortControllerRef.current?.signal!})
       abortControllerRef.current = null
       if (page === 1) {
         setChats(data.data)
@@ -105,10 +106,19 @@ export function ChatWrapper(props: Props) {
     setPage(page + 1)
   }
 
-  const setFilter = (data: IChatFilter) => {
-    filterRef.current = data
+  const setFilter = (data?: IChatsFilter) => {
+    if(!data) {
+      setChats(chatsRef.current)
+      return
+    }
+    let filterData:MessageFilterOptions = {}
+    data.status !== 'all'&&data.status&&(filterData.applicationStatus = data.status)
+    data.vacanciesIds.length > 0&&(filterData.vacanciesIds = data.vacanciesIds.join(','))
+    data.inactive&&(filterData.inactive = data.inactive)
+    data.unreaded&& (filterData.onlyUnread = data.unreaded)
+
     setFilterState(data)
-    loadChats(1)
+    loadChats(1, filterData)
   }
 
   const decreaseUnreadCount = (chatId: number, total: number)=> {
@@ -179,9 +189,10 @@ export function ChatWrapper(props: Props) {
     isLoggedRef.current = isLogged
   }, [isLogged])
 
-  useEffect(() => {
-    filterRef.current = filter
-  }, [filter])
+  // useEffect(() => {
+  //   console.log(filter)
+  //   filterRef.current = filter
+  // }, [filter])
 
   useEffect(() => {
     init()
@@ -272,7 +283,8 @@ export function ChatWrapper(props: Props) {
     folders,
     removeChatFolder,
     editChatFolder,
-    setChatsFromFolder
+    setChatsFromFolder,
+    chatsRef
   }
 
   return (

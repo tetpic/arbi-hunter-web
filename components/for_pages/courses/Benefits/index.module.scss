@@ -13,6 +13,13 @@
   // @include mq($PhoneWidth, max) {
   //   grid-template-columns: 1fr;
   // }
+  @include mq($TabletWidth, max) {
+    row-gap: 16px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
 }
 
@@ -22,12 +29,13 @@
   grid-column: 1/span 3;
   align-self: center;
   color: $white;
-  font-weight: $bold;
-  font-size: $text36;
+  font-weight: $semibold;
+  font-size: $text32;
   line-height: 130%;
+  max-width: 436px;
 
   p {
-    font-size: clamp(20px, 10vw, 40px);
+    display: inline;
   }
 
   span {

@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import UserRegImage from 'components/ui/UserRegImage'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useEffect, useState } from 'react'
@@ -11,7 +13,6 @@ import CvRepository from 'data/repositories/CvRepository'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
-import styles from './index.module.scss'
 import Specialization from '../utils/Steps/Specialization'
 import Compensation from '../utils/Steps/Compensation'
 import Experience from '../utils/Steps/Experience'

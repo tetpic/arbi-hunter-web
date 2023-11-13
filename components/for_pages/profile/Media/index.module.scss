@@ -1,11 +1,14 @@
 @import 'styles/index';
 
 .root {
-  @include container;
   margin-top: 24px;
   display: flex;
   height: calc(100dvh - 280px);
   overflow: auto;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 202px);
+    height: calc(100dvh - 202px);
+  }
 
   >div {
     width: 100%;

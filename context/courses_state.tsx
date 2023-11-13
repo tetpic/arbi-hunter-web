@@ -177,7 +177,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCoursesNews = (courseId: number, page: number) => {
     const limit = 10
-    CoursesRepository.getCoursesNews(profileType, countryCode, courseId, limit, page)
+    CoursesRepository.getCoursesNews(profileType, {courseId, limit, page, lang: countryCode, full: true})
     .then(res=> {
       setCoursesNewsState(res)
 

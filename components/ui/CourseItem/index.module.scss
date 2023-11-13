@@ -70,6 +70,9 @@
     font-weight: $semibold;
     font-size: $largeText;
     @include lineClamp(2);
+    @include mq($TabletWidth, max) {
+      height: 35px;
+    }
   }
 
   .price {
@@ -91,7 +94,6 @@
     font-size: $mediumText;
     font-weight: $medium;
   }
- 
 }
 
 .imageWrapper {

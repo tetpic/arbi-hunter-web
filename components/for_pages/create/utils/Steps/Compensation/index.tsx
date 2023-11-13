@@ -51,7 +51,7 @@ export default function Compensation(props: Props) {
       {(compensation.value === CompensationType.Gybrid || compensation.value === CompensationType.Commission)
         && 
         <InputField 
-        maxLength={2} 
+        maxLength={3} 
         isNumbersOnly 
         className={styles.input} 
         styleType={'default'} 

@@ -4,6 +4,20 @@
   padding-bottom: 90px;
 }
 
+.sectionTitle {
+  margin-top: 120px;
+  justify-content: center;
+  @include container;
+  @include mq($TabletWidth, max) {
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+
+  &_noLink {
+    justify-content: center;
+  }
+}
+
 .top {
   display: grid;
   align-items: center;
@@ -11,14 +25,26 @@
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 50% 50%;
   row-gap: 48px;
+  @include container;
+  @include mq($TabletWidth, max) {
+    grid-template-areas: 'image' 'title' 'tags';
+    grid-template-rows: unset;
+    grid-template-columns: unset;
+  }
 }
 
 .title {
   grid-area: title;
-  font-size: 40px;
+  font-size: $text40;
   font-weight: 700;
   color: $white;
   align-self: end;
+  @include mq($TabletWidth, max) {
+    text-align: center;
+    br {
+      display: none;
+    }
+  }
 
   span {
     color: $blue;
@@ -30,6 +56,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  @include mq($TabletWidth, max) {
+    img {
+      width: 100%;
+      height: unset;
+
+    }
+  }
 }
 
 .tagsWrapper {
@@ -39,12 +72,18 @@
   row-gap: 16px;
   flex-wrap: wrap;
   align-self: start;
+  @include mq($TabletWidth, max) {
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding-bottom: 10px;
+  }
   .tag {
     @include tag;
     padding: 16px 24px;
     border-radius: 30px;
     font-size: $mediumText;
     font-weight: $regular;
+    white-space: nowrap;
   }
 }
 
@@ -52,9 +91,8 @@
   margin-top: 32px;
 }
 
-
 .banners {
-  margin-top: 120px;
+  margin-top: 32px;
 }
 
 .bannersWrapper {

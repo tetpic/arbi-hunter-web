@@ -4,6 +4,7 @@
   margin-top: 48px;
   display: flex;
   position: relative;
+  @include container;
   @include mq($PhoneWidth, max) {
     height: calc(100vh - 74px);
     height: calc(100dvh - 74px);
@@ -21,14 +22,18 @@
     margin-left: unset;
     display: flex;
     flex-direction: column;
+    padding-bottom: unset;
   }
 }
 
 .form {
   @include mq($PhoneWidth, max) {
-    height: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 76px);
+    overflow: auto;
+    padding-bottom: 70px;
   }
 }
 
@@ -105,6 +110,6 @@
 
 .regImage  {
   @include mq($SmDesktopWidth, max) {
-    display: none;
+    display: none !important;
   }
 }

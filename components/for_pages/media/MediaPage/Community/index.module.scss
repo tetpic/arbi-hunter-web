@@ -7,6 +7,10 @@
   >div {
     height: 100%;
   }
+
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }
 
 .contentWrapper {

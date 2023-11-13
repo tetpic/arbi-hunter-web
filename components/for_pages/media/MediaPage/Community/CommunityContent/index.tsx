@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import HeartSvg from 'components/svg/HeartSvg'
@@ -13,7 +15,6 @@ import Image from 'next/image'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
-import styles from './index.module.scss'
 
 const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {

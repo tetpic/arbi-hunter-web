@@ -1,10 +1,13 @@
+import styles from './index.module.scss'
+
 import { ICategory } from 'data/interfaces/Common'
 import Image from 'next/image'
 // import { FILES } from 'types/constants'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import bitcoin from 'images/big_bitcoin.png'
-import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 interface Props {
   categoryList: ICategory[]
@@ -23,12 +26,11 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
       {props.item.image &&
         <Image 
         priority
-        // src={FILES + props.item.image.source} 
         src={bitcoin}
         alt={props.item.name + ' image'} 
         width={props.size===50?222:147}
         height={props.size===50?222:147}
-        style={{objectFit:'cover', /* width: '100%', height: '100%',*/  display: 'block'}}
+        style={{objectFit:'cover', display: 'block'}}
         />
       }
     </div>
@@ -37,16 +39,31 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
 }
 
 export default function Categories(props: Props) {
+  const {isTabletWidth} = useResize()
 
   return (
     <div className={styles.root}>
-      <h3 className={styles.title}>Категории</h3>
       <div className={styles.content}>
       {props.categoryList.length > 0 
-      && 
+      && !isTabletWidth &&
         props.categoryList.map((item, index)=> {
           return <CategoryItem key={item.id} size={index>1?33:50} item={item}/>
         })
+      }
+      {isTabletWidth &&
+        <Swiper 
+        spaceBetween={16}
+        >
+          {  
+            props.categoryList.map((item, index)=> {
+              return (
+                <SwiperSlide>
+                  <CategoryItem key={item.id} size={33} item={item}/>
+                </SwiperSlide>
+              ) 
+            })
+          }
+        </Swiper>
       }
     </div>
       

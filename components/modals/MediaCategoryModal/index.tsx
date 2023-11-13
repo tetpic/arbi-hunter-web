@@ -32,14 +32,14 @@ function MediaCategoryModalInner(props: Props) {
 
   const body = (<div className={styles.root}>
     <BackBtn className={styles.backBtn} onClick={onCloseHandler} bgColor={'transparent'}/>
-    <Title title={args.title} />
+    <Title className={styles.title} title={args.title} />
     <SearchBar/>
     <NewsByCategories category={args.currentCategory}/>
   </div>)
 
   return (
     <ModalLayout mobileFullScreen>
-      <ModalBody>
+      <ModalBody className={styles.body}>
           {body}
       </ModalBody>
     </ModalLayout>

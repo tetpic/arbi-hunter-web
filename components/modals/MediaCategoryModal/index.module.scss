@@ -8,5 +8,15 @@
 
   .backBtn {
     align-self: unset;
+    margin-left: 16px;
   }
+}
+
+.body {
+  padding: 16px 0px;
+  background-color: $backgroundBlack;
+}
+
+.title {
+  @include container;
 }

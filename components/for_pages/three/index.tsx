@@ -70,7 +70,7 @@ export default function ThreeModelVariant (props: IThreeModelProps) {
         <Bounds fit clip observe damping={0} margin={1}>
           <ThreeModel {...props as any}/>
         </Bounds>
-          <Environment files="/models/poly_heaven.hdr"/>
+          <Environment files="/models/music_hall.hdr"/>
       </Canvas>
     }
       <code>{JSON.stringify(props)}</code>

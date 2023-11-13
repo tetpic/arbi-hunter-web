@@ -28,6 +28,7 @@
   color: $white;
   font-size: $largeText;
   font-weight: $regular;
+  @include container;
 
   .sortBy {
     display: flex;

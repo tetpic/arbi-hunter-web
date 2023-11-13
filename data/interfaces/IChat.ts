@@ -1,12 +1,12 @@
-import { MessageType } from 'types/enums'
+import { ApplicationStatus, MessageType } from 'types/enums'
 import { IUser, IUserProfile } from './IUser'
 import { IPagination, Nullable } from 'types/types'
 import { IImage, IPaginationRequest, TimeStamp } from './Common'
 import { IProposal } from './IProposal'
 
 export interface MessageFilterOptions {
-  vacanciesId?: number[];
-  type?: any // UserCvOrVacancyStatus
+  vacanciesIds?: string;
+  applicationStatus?: ApplicationStatus // UserCvOrVacancyStatus
   search?: string
   chatFolderId?: number ;
   onlyUnread?: boolean;
@@ -80,6 +80,14 @@ export interface IChatListRequest extends IPaginationRequest{
   // dealId?: Nullable<number>,
   userId?: Nullable<number>,
 }
+
+export interface IChatsFilter {
+  vacanciesIds: number[],
+  status: 'all' | ApplicationStatus,
+  unreaded: boolean
+  inactive: boolean
+}
+
 
 
 

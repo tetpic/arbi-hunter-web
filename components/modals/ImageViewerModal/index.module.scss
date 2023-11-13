@@ -1,0 +1,17 @@
+@import 'styles/index';
+
+.layout {
+  width: unset;
+  max-width: 767px;
+
+  @include mq($TabletWidth, max) {
+    max-width: 100vw;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    min-height: unset !important;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

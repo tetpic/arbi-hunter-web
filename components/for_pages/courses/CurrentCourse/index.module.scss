@@ -43,7 +43,6 @@
     margin-top: unset;
     width: 100vw;
     height: 70vw;
-    margin-left: -16px;
     border-radius: unset;
     overflow: hidden;
     padding: 16px 16px 0px;
@@ -129,25 +128,6 @@
     font-weight: $extrabold;
   }
 
-  .buttonsWrapper {
-    display: flex;
-    column-gap: 16px;
-  }
-
-  .buttonYellow {
-    @include buttonYellow;
-    font-size: $largeText;
-    font-weight: $semibold;
-    padding: 16px 32px;
-  }
-
-  .buttonWhite {
-    @include buttonWhite;
-    font-size: $largeText;
-    font-weight: $semibold;
-    padding: 16px 32px;
-  }
-
   .courseImage {
     object-fit: cover;
     border-radius: 16px;
@@ -221,6 +201,39 @@
   }
 }
 
+.buttonsWrapper {
+  display: flex;
+  column-gap: 16px;
+  @include container;
+  @include mq($TabletWidth, max) {
+    position: fixed;
+    background-color: $black;
+    padding-top: 8px;
+    padding-bottom: 82px;
+    left: 0;
+    bottom: 0;
+    flex-direction: column;
+    row-gap: 8px;
+    width: 100%;
+  }
+}
+
+.buttonYellow {
+  @include buttonYellow;
+  font-size: $largeText;
+  font-weight: $semibold;
+  padding: 16px 32px;
+  height: 52px;
+}
+
+.buttonWhite {
+  @include buttonWhite;
+  font-size: $largeText;
+  font-weight: $semibold;
+  padding: 16px 32px;
+  height: 52px;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-between;
@@ -228,12 +241,14 @@
   @include mq($TabletWidth, max) {
     flex-direction: column-reverse;
     row-gap: 16px;
+    padding-bottom: 120px;
   }
   
 }
 
 .mainContent {
   width: 69%;
+  @include container;
   @include mq($TabletWidth, max) {
     width: 100%;
   }

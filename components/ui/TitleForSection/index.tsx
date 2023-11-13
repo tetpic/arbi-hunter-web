@@ -4,21 +4,25 @@ import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import Button from '../Button'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import Link from 'next/link'
+import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 
 interface Props {
-  title: string
+  title: string|JSX.Element
   emoji?: JSX.Element
   className?: string
   onBackClick?: ()=>void
   showButton?: boolean 
+  link?: string
 }
 
 /**
- * @title string
+ * @title string|JSX.Element
  * @emoji JSX.Element
  * @className string
  * @onBackClick ()=>void
  * @showButton boolean 
+ * @link string
  */
 export default function Title(props: Props) {
   const {isTabletWidth} = useResize()
@@ -33,6 +37,9 @@ export default function Title(props: Props) {
       {props.title} {props.emoji}
       {((isTabletWidth&&props.onBackClick)||props.showButton)&&
         <div className={styles.filler}></div>
+      }
+      {isTabletWidth && props.link &&
+        <Link className={styles.link} href={props.link}>Все <ArrowRightSvg/></Link>
       }
     </div>
   )

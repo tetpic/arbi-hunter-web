@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import RadioListField from 'components/fields/RadioListField'
 import AddButton from 'components/ui/AddButton'
 import RemovableItem from 'components/ui/RemovableItem'
@@ -9,7 +11,6 @@ import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
 import { DetailsFieldProps } from '../../DetailsField'
 import languages from '@cospired/i18n-iso-languages'
-import styles from './index.module.scss'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
 import { ICVCreate } from 'data/interfaces/ICV'

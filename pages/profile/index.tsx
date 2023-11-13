@@ -26,7 +26,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 export default function ProfilePage(props: Props) {
 
   return (
-    <ContentLayout title='Личный кабинет'>
+    <ContentLayout hideMobileHeader title='Личный кабинет'>
       <ProfilePageWrapper page={props.page}>
         <Profile/>
       </ProfilePageWrapper>

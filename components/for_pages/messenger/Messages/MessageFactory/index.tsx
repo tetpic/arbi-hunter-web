@@ -20,6 +20,7 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import PlusSvg from 'components/svg/PlusSvg'
 import { IResponseModalProps } from 'components/modals/ResponseModal'
+import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
 
 interface Props {
   profileId: number
@@ -55,19 +56,19 @@ export default function MessageFactory(props: Props) {
   )
 
   const assetMessage = (
-    <div className={classNames(side, styles.asset)}>
+    <div className={classNames(side, styles.asset, msg.assets.length === 1&&!msg.message&&styles.single)}>
       <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{
             return <div className={classNames(styles.image, msg.pastedImages.length>1&&styles.image_half)}>
-              <img src={URL.createObjectURL(el)} />
+              <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} />
               <Spinner className={styles.spinner} size={44} color={colors.yellow}/>
             </div>
           })
         }
       {msg.assets&&msg.assets.length>0&&msg.assets.map(image=> {
         return <div className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
-          <Image src={FILES+ image.source} alt={'asset'} width={msg.assets.length>1?200:400} height={msg.assets.length>1?200:400} style={{width: '100%', objectFit: 'cover'}} />
+          <Image onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: FILES+ image.source})} src={FILES+ image.source} alt={'asset'} width={msg.assets.length>1?200:400} height={msg.assets.length>1?200:400} style={{width: '100%', objectFit: 'cover'}} />
         </div>
       })}
       </div>

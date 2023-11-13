@@ -37,7 +37,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function Community(props: Props) {
 
   return (
-    <ContentLayout title={props.community.name.toString()}> 
+    <ContentLayout hideMobileHeader title={props.community.name.toString()}> 
       <MediaWrapper>
         <CommunityPage community={props.community} id={props.id}/>
       </MediaWrapper>

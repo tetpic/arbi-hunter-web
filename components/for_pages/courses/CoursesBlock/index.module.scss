@@ -1,17 +1,21 @@
 @import 'styles/index';
 
 .coursesWrapper {
-  margin-top: 48px;
+  margin-top: 32px;
   display: grid;
   column-gap: 16px;
   grid-template-columns: repeat( auto-fill, clamp(250px, 33% - 16px, 372px) );
   justify-content: space-between;
   justify-content: center;
+  @include container;
   @include mq($MdDesktopWidth, max) {
     grid-template-columns: repeat( auto-fill, clamp(250px, 50% - 8px, 372px) );
   }
   @include mq($TabletWidth, max) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
+    margin-top: 16px;
+    width: 100%;
+    
   }
 
   .left {
@@ -142,4 +146,8 @@
     font-weight: $medium;
   }
  
+}
+
+.swiper {
+  width: 100%;
 }

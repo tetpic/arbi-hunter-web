@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import Image from 'next/image'
 import courseImage from '../../../images/courses-main.webp'
 import { useCoursesContext } from 'context/courses_state'
@@ -11,9 +13,11 @@ import Benefits from './Benefits'
 import Banner from './Banner'
 import SearchBar from 'components/ui/SearchBar'
 import Feedbacks from './Feedbacks'
-import TitleDiamond from 'components/ui/TitleDiamond'
 import LinkBlack from 'components/ui/LinkBlack'
-import styles from './index.module.scss'
+import { useResize } from 'components/hooks/useResize'
+import Title from 'components/ui/TitleForSection'
+import classnames from 'classnames'
+
 
 interface Props {
   categoryList: ICategory[]
@@ -26,6 +30,7 @@ interface Props {
 export default function CoursesMain(props: Props) {
   const coursesContext = useCoursesContext()
   const popularCourses = props.popularCourses
+  const {isTabletWidth} = useResize()
 
   
   useEffect(()=>{
@@ -34,6 +39,9 @@ export default function CoursesMain(props: Props) {
   }, [])
 
   return <div className={styles.root}> 
+     {isTabletWidth &&
+      <SearchBar className={styles.search}/>
+    }
     <div className={styles.top}>
       <h1 className={styles.title}>Станьте<br/> востребованным<br/> специалистом</h1>
       <div className={styles.tagsWrapper}>
@@ -48,20 +56,50 @@ export default function CoursesMain(props: Props) {
         <Image className={styles.coursesImage} src={courseImage} alt={'courses image'}/>
       </div>
     </div>
+    {!isTabletWidth &&
+      <SearchBar className={styles.search}/>
+    }
 
-    <SearchBar className={styles.search}/>
     <Benefits/>
+
+    <Title className={classnames(styles.sectionTitle, styles.sectionTitle_noLink)} title={'Категории'}/>
     <Categories categoryList={props.categoryList}/>
+    {!isTabletWidth &&
+    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    }
+
+    <Title 
+    className={styles.sectionTitle} 
+    title={isTabletWidth?'Подборки':'Подборки для вас'} 
+    link='/categories'
+    emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
+    />
     <section className={styles.banners}>
-      <TitleDiamond title={'Подборки для вас'}/>
       <div className={styles.bannersWrapper}>
         <Banner className={styles.banner_small} colorGradient={['#37BFAE', '#7D5CFF']} category={props.compilations[0]}/>
         <Banner className={styles.banner_small} colorGradient={['#AD36C7', '#7D5CFF']} category={props.compilations[1]}/>
         <Banner className={styles.banner_large} colorGradient={['#9365CA', '#4E5FBF']} category={props.compilations[2]}/>
-        <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
       </div>
     </section>
+    {!isTabletWidth &&
+    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    }
+
+    <Title className={styles.sectionTitle} title={isTabletWidth?'Отзывы':'Отзывы учеников'} link='/feedbacks'/>
     <Feedbacks feedbacks={props.feedbacks}/>
-    <CoursesBlock title={'Популярные курсы'} courses={popularCourses}/>
+    {!isTabletWidth &&
+      <LinkBlack href={'/feedbacks'}>Смотреть все</LinkBlack>
+    }
+
+    <Title 
+    title={isTabletWidth?'Популярное':'Популярные курсы'}
+    link='/courses'
+    className={styles.sectionTitle} 
+    emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
+    />
+    <CoursesBlock courses={popularCourses}/>
+    {!isTabletWidth &&
+    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    }
   </div>
 }

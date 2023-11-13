@@ -140,10 +140,15 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCoursesNews(profile: ProfileType, lang: Languages, courseId: number, limit: number, page: number): Promise<IArticle[]|null> {
+  static async getCoursesNews(profile: ProfileType, data: {lang: Languages, courseId: number, limit: number, page: number, full: boolean}): Promise<IArticle[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article?categoryType=news&sort=createdAt,DESC&limit=${limit}&page=${page}&courseId=${courseId}&language=${lang}`,
+      url: '/api/article',
+      data: {
+        categoryType: 'news',
+        sort: 'createdAt,DESC',
+        ...data
+      },
       profile
     })
     if(res.err) {

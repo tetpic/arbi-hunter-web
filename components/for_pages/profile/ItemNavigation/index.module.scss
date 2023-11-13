@@ -20,6 +20,9 @@
     @include hover {
       color: $white;
     }
+    @include mq($PhoneWidth, max) {
+      font-size: $smallText;
+    }
 
     &_active{
       color: $blue;

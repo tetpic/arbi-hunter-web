@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { ICourseFeedback } from 'data/interfaces/ICourse'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import RatingLine from 'components/ui/RatingLine'
@@ -5,17 +7,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
 import dollasMan from 'images/dollarS_man.png'
-import styles from './index.module.scss'
-import LinkBlack from 'components/ui/LinkBlack'
+import { useResize } from 'components/hooks/useResize'
 
 interface Props {
   feedbacks: ICourseFeedback[]
 }
 
 export default function Feedbacks(props: Props) {
+  const {isTabletWidth} = useResize()
 
   return (<div className={styles.root}> 
-    <p className={styles.title}>Отзывы учеников</p>
     <Swiper
     className={styles.swiper}
     autoplay={true}
@@ -59,7 +60,6 @@ export default function Feedbacks(props: Props) {
           )
       })}
     </Swiper>
-    <LinkBlack href={'/feedbacks'}>Смотреть все</LinkBlack>
 
   </div>)
 }

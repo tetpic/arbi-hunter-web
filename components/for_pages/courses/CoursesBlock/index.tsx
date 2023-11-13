@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import Image from 'next/image'
 import CourseItem from 'components/ui/CourseItem'
 import ICourse from 'data/interfaces/ICourse'
@@ -8,12 +10,10 @@ import UserSvg from 'components/svg/UserSvg'
 import StarSvg from 'components/svg/StarSvg'
 import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/router'
-import styles from './index.module.scss'
-import TitleDiamond from 'components/ui/TitleDiamond'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 
 interface Props {
-  title: string
   courses: ICourse[]
 }
 
@@ -70,20 +70,27 @@ export default function CoursesBlock(props: Props) {
   const firstItem = props.courses[0]
 
   return (
-  <div> 
-    <TitleDiamond title={props.title}/>
     <div className={styles.coursesWrapper}>
-      {isTabletWidth &&
-        <CourseItem course={firstItem} />
-        ||
-        <BigCourseItem courseItem={firstItem} />
-      }
-      {props.courses.length > 0 &&
+      {!isTabletWidth && <BigCourseItem courseItem={firstItem} />}
+      {!isTabletWidth&&props.courses.length > 0 &&
         props.courses.slice(1, 5).map(el => {
           return <CourseItem className={styles.defaultItem} course={el} key={el.id}  />
         })
       }
+      {isTabletWidth &&
+        <Swiper
+        className={styles.swiper}
+        spaceBetween={16}
+        >
+          {props.courses.map(el => {
+            return (
+              <SwiperSlide>
+                <CourseItem className={styles.defaultItem} course={el} key={el.id}/>
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
+      }
     </div>
-  </div>
   )
 }

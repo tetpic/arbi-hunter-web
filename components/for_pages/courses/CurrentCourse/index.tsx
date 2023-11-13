@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useResize } from 'components/hooks/useResize'
 import BookMarkSvg from 'components/svg/BookMarkSvg'
@@ -22,12 +24,12 @@ import CourseFeedbacks from './CourseFeedbacks'
 import CoursesInformation from './CourseInformation'
 import CourseModules from './CourseModules'
 import CourseNews from './CourseNews'
-import styles from './index.module.scss'
 import RatingLine from 'components/ui/RatingLine'
 import InformationSmallSvg from 'components/svg/InformationSmallSvg'
 import ModulesSvg from 'components/svg/ModulesSvg'
 import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
 import NewsPaperSvg from 'components/svg/NewsPaperSvg'
+import { useAppContext } from 'context/state'
 
 interface Props {
   id: number
@@ -48,6 +50,7 @@ export default function CurrentCourse(props: Props) {
   const {isTabletWidth} = useResize()
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
+  const appContext = useAppContext()
   const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const course = props.course || currentCourse
@@ -111,6 +114,15 @@ export default function CurrentCourse(props: Props) {
     }
   }, [])
 
+  useEffect(()=>{
+    if(isTabletWidth) {
+      appContext.setHideHeader(true)
+    }
+    return (()=> {
+      appContext.setHideHeader(false)
+    })
+  }, [isTabletWidth])
+
   return (<div className={styles.root}> 
     <div className={styles.header}>
       {course && 
@@ -118,7 +130,11 @@ export default function CurrentCourse(props: Props) {
         <div className={styles.content}>
           <p className={styles.title}>{course.name}</p>
           {isTabletWidth && 
-            <p className={styles.titleStats}><SmallStarActiveSvg/> <span className={styles.yellow}>{(course.rating||0) + ' из 5'}</span> <UserSvg/> {course.completedCount} </p>
+            <p className={styles.titleStats}><SmallStarActiveSvg/> 
+              <span className={styles.yellow}>{(course.rating||0) + ' из 5'}</span> 
+              <UserSvg/> 
+              {course.completedCount} 
+            </p>
           }
           {!isTabletWidth && <>
             <p className={styles.description}>{course.shortDescription}</p>
@@ -131,11 +147,17 @@ export default function CurrentCourse(props: Props) {
               <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
             </div>
           </>}
+
           {isTabletWidth && 
-            <ItemNavigation bottomStringClass={styles.bottomString} className={styles.mobileNavigation} activeItem={page} items={navSet()} onClick={pager}/>
-          }
+      <ItemNavigation 
+      bottomStringClass={styles.bottomString} 
+      className={styles.mobileNavigation} 
+      activeItem={page} items={navSet()} onClick={pager}/>
+    }
+         
          
         </div>
+    
         <Image className={styles.courseImage} src={FILES + course.image.source} alt={course.name} fill/>
           <div className={styles.iconButtonsWrapper}>
             <IconButton className={styles.iconButton} bgColor={'transparent'}>
@@ -154,6 +176,7 @@ export default function CurrentCourse(props: Props) {
       <Spinner size={36} color={colors.yellow}/>
       }
     </div>
+
     <div className={styles.wrapper}>
       <div className={styles.mainContent}>
         {course&&body||<Spinner size={32}/>}
@@ -185,5 +208,12 @@ export default function CurrentCourse(props: Props) {
         }
       </div>
     </div>
+
+    {isTabletWidth &&
+      <div className={styles.buttonsWrapper}>
+        <Button className={styles.buttonYellow}>Купить курс</Button>
+        <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
+      </div>
+    }
   </div>)
 }

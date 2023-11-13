@@ -48,7 +48,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   const options = (<div className={styles.options}>
     <p className={styles.vacancyName}>{vc.name}</p>
     <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
-    {proposal.status === ApplicationStatus.Accepted &&
+    {proposal?.status === ApplicationStatus.Accepted &&
       <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
     }
     {isTabletWidth &&
@@ -58,7 +58,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
 
 const openModalHandler =()=> {
   if (isTabletWidth) {
-    appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vc, children: options}, 250)
+    appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vc, children: options}, 200)
   }
   else {
     openDropDown(!dropDown)
@@ -82,12 +82,12 @@ const openModalHandler =()=> {
   <SalaryItem vacancy={vc}/>
   
    {proposal &&
-    <p className={classNames(styles.status, styles[proposal.status])}>{TranslateProposalType(proposal.status)}</p>
+    <p className={classNames(styles.status, styles[proposal?.status])}>{TranslateProposalType(proposal.status)}</p>
    }
   <div className={styles.bottom}>
     <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
     {proposal &&
-    <Button className={styles.button} onClick={()=> {proposal.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
+    <Button className={styles.button} onClick={()=> {proposal?.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
     ||
     <Button className={styles.button}>Откликнуться</Button>
     }

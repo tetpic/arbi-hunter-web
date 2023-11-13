@@ -65,7 +65,9 @@ export default function CommunityPage({community, id}: Props) {
   }, [communityContext.currentCommunity])
 
   return (<div className={styles.root}> 
-  <BackTextButton className={styles.backButton} onClick={router.back}/>
+  {!isTabletWidth &&
+    <BackTextButton className={styles.backButton} onClick={router.back}/>
+  }
   <InfiniteScroll 
   next={()=>setPage((p)=> p+1)} 
   hasMore={communityContext.communityNews.size < total} 

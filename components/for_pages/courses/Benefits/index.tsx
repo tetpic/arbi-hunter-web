@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import Image from 'next/image'
 import wallet from 'images/wallet_gradient.png'
-import styles from './index.module.scss'
 
 interface Props {
 }

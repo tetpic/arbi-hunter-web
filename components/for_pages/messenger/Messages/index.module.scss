@@ -91,6 +91,7 @@
   @include mq($TabletWidth, max) {
     height: calc(100vh - 266px);
     height: calc(100dvh - 266px);
+    padding: unset;
   }
 
   >div {

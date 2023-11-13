@@ -26,3 +26,13 @@
   width: 24px;
 }
 
+.link {
+  display: flex;
+  align-items: center;
+  font-size: $mediumText;
+  column-gap: 2px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}

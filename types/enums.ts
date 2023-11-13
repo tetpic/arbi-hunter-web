@@ -24,7 +24,10 @@ export enum ModalType {
   StoriesViewerModal = 'storiesViewerModal',
   MediaCategoryModal= 'mediaCategoryModal',
   MobileSideBarModal = 'mobileSideBarModal',
-  ResponseModal= 'responseModal'
+  ResponseModal= 'responseModal',
+  ImageViewerModal = 'imageViewerModal',
+  ChatFilterModal = 'chatFilterModal'
+
 }
 
 export enum SnackbarType {

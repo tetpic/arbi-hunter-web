@@ -4,6 +4,7 @@
   padding-top: 48px;
   display: flex;
   position: relative;
+  @include container;
   @include mq($PhoneWidth, max) {
     height: calc(100vh - 148px);
     height: calc(100dvh - 148px);
@@ -92,6 +93,6 @@
 
 .regImage  {
   @include mq($SmDesktopWidth, max) {
-    display: none;
+    display: none !important;
   }
 }

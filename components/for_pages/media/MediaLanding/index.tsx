@@ -12,8 +12,8 @@ import { IArticle } from 'data/interfaces/IArticle'
 import MediaCompilation from '../MediaCompilation'
 import SearchBar from 'components/ui/SearchBar'
 import { useResize } from 'components/hooks/useResize'
-import MediaTitle from 'components/ui/MediaTitle'
 import Image from 'next/image'
+import Title from 'components/ui/TitleForSection'
 
 
 
@@ -35,16 +35,32 @@ export default function MediaLanding(props: Props) {
       <MediaPageHeader isMobile={props.isMobile}/>  
       {!props.isMobile && <SearchBar/>}
 
-      <MediaTitle title={isTabletWidth?'Категории':'Все категории'} link={'/media/page?page=categories'}/>
+      <Title 
+      className={styles.title}
+      title={isTabletWidth?'Категории':'Все категории'} 
+      link={'/media/page?page=categories'}
+      />
       <MediaCategories categories={props.categories} title={isTabletWidth&&'Категории'}/>
 
-      <MediaTitle title={'Популярное'} link={''}/>
+      <Title 
+      className={styles.title}
+      title={'Популярное'} 
+      link={'/'}
+      />
       <MediaNewsSection news={props.news.slice(0, 4)}/>
 
-      <MediaTitle title={'Cообщества'} link={'/media/page?page=communities'}/>
+      <Title 
+      className={styles.title}
+      title={'Cообщества'} 
+      link={'/media/page?page=communities'}/>
       <MediaCommunities communities={props.communities}/>
 
-      <MediaTitle title={isTabletWidth?'Подборки':<>Подборки для вас <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/></>} link={'/compilations'}/>
+      <Title 
+      className={styles.title}
+      emoji={!isTabletWidth && <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/>}
+      title={isTabletWidth?'Подборки':'Подборки для вас'} 
+      link={'/compilations'}
+      />
       <MediaCompilation newsCompilations={props.newsCompilations}/>
       <MediaCrypto/>
     </div>

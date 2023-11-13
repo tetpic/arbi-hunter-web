@@ -39,7 +39,7 @@ interface Props {
 export default function VacancyCreate(props: Props) {
 
   return  (
-    <ContentLayout title={'Редактирование Вакансии'}>
+    <ContentLayout hideMobileHeader title={'Редактирование Вакансии'}>
       <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
     </ContentLayout>
   )
