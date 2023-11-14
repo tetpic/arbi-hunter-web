@@ -15,9 +15,14 @@ interface Props {
   isBottomSheet?: boolean
 }
 
+export interface IChatsFolderModalProps {
+  chats: IChat[], 
+  onSave: (a: IChat[])=>void
+}
+
 export default function ChatsFolderModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as {chats: IChat[], onSave: (a: IChat[])=>void}
+  const args = appContext.modalArguments as IChatsFolderModalProps
   const [chats, setChats] = useState<Map<IChat, boolean>>(new Map(args.chats.map(el=> [el, false])))
 
   const onSaveHandler = () => {
@@ -25,7 +30,6 @@ export default function ChatsFolderModal(props: Props) {
     args.onSave([...choosen.keys()])
     props.onClose()
   }
-
 
   const top = (
     <div className={styles.top}>

@@ -26,7 +26,6 @@ export interface ICvVcOptionsModalProps {
   children: JSX.Element|JSX.Element[]
 } 
 
-
 /**
  * @onClose ()=>void
  * @isBottomSheet boolean
@@ -49,50 +48,9 @@ export default function CvVcOptionsModal(props: Props) {
     : appContext.hideModal()
   }
 
-  // const archiveHandler =()=> {
-  //   if(cv) {
-  //     cvContext.updateCv(cv.id, {...cv, published: !cv?.published})
-  //   }
-  //   else {
-  //     vacancyContext.editVacancy({...vc, published: !vc.published}, vc.id, vc.published?'active':'archive')
-  //   }
-  //   hideModal()
-  // }
-
-  // const editHandler =() => {
-  //   if(cv) {
-  //     cvContext.editCv(cv)
-  //   }
-  //   else {
-  //     vacancyContext.editVcInEditor(vc)
-  //   }
-  //   hideModal()
-  // }
-
-  // const removeHandler =()=> {
-  //   appContext.showModal(ModalType.ConfirmModal, 
-  //     {text: vc?'Вы действительно хотите удалить вакансию?':'Вы действительно хотите удалить резюме?',
-  //     callback: ()=>{
-  //       if(cv) {
-  //         cvContext.deleteCv(cv.id)
-  //       }
-  //       else {
-  //         vacancyContext.removeVacancy(vc.id, vc.published)
-  //       }
-  //     }
-  //   })
-  // }
-
   const body = (
     <div className={styles.itemWrapper} onClick={hideModal}>
       {children}
-      {/* <p className={styles.item} onClick={archiveHandler}>{cv?.published||vc?.published?'Архивировать':'Опубликовать'}</p>
-      <p className={styles.item}>Дублировать</p>
-      <p className={styles.item}>Поделиться</p>
-      <p className={styles.item}>Продлить и Поднять</p>
-      <p className={styles.item}>Улучшить</p>
-      <p className={styles.item} onClick={editHandler}>Редактировать</p>
-      <p className={styles.item} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p> */}
     </div>
   )
 

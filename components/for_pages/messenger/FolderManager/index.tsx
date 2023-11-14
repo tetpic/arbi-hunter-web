@@ -24,6 +24,7 @@ import BackBtn from 'components/ui/BackBtn'
 import Title from 'components/ui/TitleForSection'
 import classNames from 'classnames'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
+import { IChatsFolderModalProps } from 'components/modals/ChatsFolderModal'
 
 interface Props {
   onBack?: () => void
@@ -49,8 +50,8 @@ function FolderEditor(props: Props) {
 
   const addModalHandler = () => {
     isTabletWidth
-    ?appContext.showBottomSheet(ModalType.ChatsFolderModal, {chats:chatContext.chats, onSave: saveHandler})
-    :appContext.showModal(ModalType.ChatsFolderModal, {chats: chatContext.chats, onSave: saveHandler})
+    ?appContext.showBottomSheet<IChatsFolderModalProps>(ModalType.ChatsFolderModal, {chats: [...chatContext.chats.values()], onSave: saveHandler})
+    :appContext.showModal<IChatsFolderModalProps>(ModalType.ChatsFolderModal, {chats: [...chatContext.chats.values()], onSave: saveHandler})
   }
 
   const removeChatFromlist = (c: IChat) => {

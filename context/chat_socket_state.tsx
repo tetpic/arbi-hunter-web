@@ -102,19 +102,18 @@ export function ChatSocketWrapper(props: Props) {
       })
     }
     const onChatMessage = ({message}: {message: IMessage}) => {
-      
       messageState$.next(message)
     }
+
     const onChatMessageAll = ({message}: {message: IMessage}) => {
-      
       messageAllState$.next(message)
     }
+
     const onChatUpdated = (chat: IChat) => {
-      
       chatUpdateState$.next(chat)
     }
+
     const onChatCreated = (chat: IChat) => {
-      
       chatCreateState$.next(chat)
     }
 
@@ -125,15 +124,15 @@ export function ChatSocketWrapper(props: Props) {
     socket.on('chat:message:all' , onChatMessageAll)
     socket.on('chat:updated' , onChatUpdated)
     socket.on('chat:created' , onChatCreated)
-    // return () => {
-    //   socket.off('connect', onConnect)
-    //   socket.off('reconnect', onRecConnect)
-    //   socket.off('disconnect', onDisConnect)
-    //   socket.off('chat:message', onChatMessage)
-    //   socket.off('chat:message:all', onChatMessageAll)
-    //   socket.off('chat:updated' , onChatUpdated)
-    //   socket.off('chat:created' , onChatCreated)
-    // }
+    return () => {
+      socket.off('connect', onConnect)
+      socket.off('reconnect', onRecConnect)
+      socket.off('disconnect', onDisConnect)
+      socket.off('chat:message', onChatMessage)
+      socket.off('chat:message:all', onChatMessageAll)
+      socket.off('chat:updated' , onChatUpdated)
+      socket.off('chat:created' , onChatCreated)
+    }
   }, [socket])
 
 

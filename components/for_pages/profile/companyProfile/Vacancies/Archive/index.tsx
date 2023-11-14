@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
 import VacancyItem from '../VacancyItem'
-import styles from './index.module.scss'
 
 interface Props {
 }

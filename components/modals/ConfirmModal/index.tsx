@@ -8,6 +8,11 @@ interface Props {
   onClose: ()=>void
 }
 
+export interface IConfirmModalProps {
+  text: string, 
+  callback: Function
+}
+
 export default function ConfirmModal(props: Props) {
 
   const appContext = useAppContext()

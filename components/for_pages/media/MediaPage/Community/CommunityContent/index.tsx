@@ -2,6 +2,7 @@ import styles from './index.module.scss'
 
 import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
+import { CommunityNewsViewModalProps } from 'components/modals/CommunityNewsViewModal'
 import HeartSvg from 'components/svg/HeartSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
@@ -46,7 +47,7 @@ export default function CommunityContent(props: Props) {
   }
 
   const openNewsHandler = (news: IArticle) => {
-    appContext.showModal(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
+    appContext.showModal<CommunityNewsViewModalProps>(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
   }
 
   return (

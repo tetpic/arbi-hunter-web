@@ -28,7 +28,7 @@ export default function ChatItem(props: Props) {
       <UserPic size={56} className={styles.userPic}  image={collocutor?.image&& FILES +collocutor?.image?.source}/>
       <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
-      <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat?.last?.message} </p>
+      <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
       {props.chat.totalUnread > 0&&
         <p className={styles.counter}>{props.chat.totalUnread}</p>
       }

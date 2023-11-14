@@ -18,9 +18,11 @@ interface Props {
   onClose: ()=> void
 }
 
+export type CommunityNewsViewModalProps = [IArticle, ICommunity, boolean]
+
 export default function CommunityNewsViewModal(props: Props) {
   const appContext = useAppContext()
-  const [item, community, isAdmin] = appContext.modalArguments as [IArticle, ICommunity, boolean]
+  const [item, community, isAdmin] = appContext.modalArguments as CommunityNewsViewModalProps
   const [article, setArticle] = useState<IArticle>()
   const [isLoading, setLoading] = useState<boolean>(true)
 

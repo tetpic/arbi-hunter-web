@@ -16,10 +16,14 @@ interface Props {
   onClose: ()=>void
 }
 
+export interface ICreateNewCommunityModal {
+  submit: (data: UpdateCommunityForm)=> void, categories: ICategory[]
+}
+
 
 export default function CreateNewCommunityModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as {submit: (data: UpdateCommunityForm)=> void, categories: ICategory[]}
+  const args = appContext.modalArguments as ICreateNewCommunityModal
 
   const [page, pager] = useState<number>(1)
 

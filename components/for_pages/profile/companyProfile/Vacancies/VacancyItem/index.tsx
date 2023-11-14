@@ -17,6 +17,7 @@ import { useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
 import { colors } from 'styles/variables'
+import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 
 interface Props {
   vacancy: IVacancy
@@ -39,7 +40,7 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
   }
 
   const archiveHandler =()=> {
-    vacancyContext.editVacancy({...vacancy, published: !vacancy.published}, vacancy.id, vacancy.published?'active':'archive')
+    vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salary: Number(vacancy.salary)}, vacancy.id, vacancy.published?'active':'archive')
   }
 
   const editHandler =() => {
@@ -47,7 +48,7 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
   }
 
   const removeHandler =()=> {
-    appContext.showModal(ModalType.ConfirmModal, 
+    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
       {text: 'Вы действительно хотите удалить вакансию?',
       callback: ()=>{
         vacancyContext.removeVacancy(vacancy.id, vacancy.published)

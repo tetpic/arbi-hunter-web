@@ -8,8 +8,6 @@ import { useUserContext } from './user_state'
 import { IDialogState } from './chat_dialog_state'
 import { useRouter } from 'next/router'
 
-// interface IChatFilter extends IChatListRequest{
-// }
 
 interface IState {
   chats: Map<number, IChat>
@@ -35,9 +33,8 @@ interface IState {
 
 }
 
-const defaultValue: Partial<IState> = {}
 
-const ChatContext = createContext<Partial<IState>>(defaultValue)
+const ChatContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -75,6 +72,7 @@ export function ChatWrapper(props: Props) {
       const data = await ChatRepository.getChatList(filters, {signal: abortControllerRef.current?.signal!})
       abortControllerRef.current = null
       setChats(state=> {
+        state.clear()
         data.data.forEach(el=> {
           state.set(el.id, el)
         })
@@ -105,6 +103,7 @@ export function ChatWrapper(props: Props) {
   }
 
   const setFilter = (data?: IChatsFilter) => {
+    debugger
     if(!data) {
       setChats(chatsRef.current)
       setFilterState(null)
@@ -190,21 +189,9 @@ export function ChatWrapper(props: Props) {
     isLoggedRef.current = isLogged
   }, [isLogged])
 
-  // useEffect(() => {
-  //   console.log(filter)
-  //   filterRef.current = filter
-  // }, [filter])
-
   useEffect(() => {
     init()
   }, [])
-
-  // useEffect(()=>{
-    
-  //   setFolders(_=> {
-  //     return new Map(props.folders.map(f=> [f.id, f]))
-  //   })
-  // }, [props.folders])
 
   useEffect(() => {
     if(!currentChatId){
@@ -216,7 +203,7 @@ export function ChatWrapper(props: Props) {
           const newState = [...state.values()].map(i => i.id === message.chatId ? {
             ...i,
             lastMessageAt: message.createdAt,
-            lastMessage: message.message ?? '',
+            lastMessage: message.message||'',
             totalUnread: message.chatId === currentChatId ? i.totalUnread : i.totalUnread + 1
           } : i)
           .sort(
@@ -229,10 +216,7 @@ export function ChatWrapper(props: Props) {
       }
     })
 
-
-
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((chat) => {
-      
       if (chats.has(chat.id)) {
         setChats(state => {
           const newState =[...state.values()].map(i => i.id === chat.id ? {
@@ -257,6 +241,10 @@ export function ChatWrapper(props: Props) {
 
   useEffect(() => {
     const subscription = chatSocket.reconnectState$.subscribe(async (val) => {
+      debouncedReconnect()
+    });
+    [...chats.keys()].map(el=> {
+      chatSocket.join(el)
     })
     return () => {
       subscription.unsubscribe()
@@ -273,8 +261,9 @@ export function ChatWrapper(props: Props) {
     }
   }, [windowFocused])
 
+
+
   const value: Partial<IState> = {
-    ...defaultValue,
     currentChatId,
     setCurrentChatId,
     chats,
