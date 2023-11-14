@@ -29,17 +29,19 @@ export default function ChatSearchBar(props: Props) {
     if(isTabletWidth) {
       appContext.showBottomSheet<IChatFilterModalProps>(ModalType.ChatFilterModal, 
         {
-          vacancies: chatContext.chatsRef.current.map(el=> el.application?.vacancy&&el.application?.vacancy),
+          vacancies: [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy),
           onSubmit: (data) => chatContext.setFilter(data),
-          onClear: () => chatContext.setFilter(null)
+          onClear: () => chatContext.setFilter(null),
+          filters: chatContext.filter
         }, 400)
     }
     else {
       appContext.showModal<IChatFilterModalProps>(ModalType.ChatFilterModal, 
         {
-          vacancies: chatContext.chatsRef.current.map(el=> el.application?.vacancy&&el.application?.vacancy),
+          vacancies: [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy),
           onSubmit: (data) => chatContext.setFilter(data),
-          onClear: () => chatContext.setFilter(null)
+          onClear: () => chatContext.setFilter(null),
+          filters: chatContext.filter
         }
       )
     }

@@ -6,6 +6,8 @@ import {useEffect, useState } from 'react'
 import ChatItem from './ChatItem'
 import IChat from 'data/interfaces/IChat'
 import { useChatContext } from 'context/chat_state'
+import Spinner from 'components/ui/Spinner'
+import { colors } from 'styles/variables'
 
 interface Props {
   chats: IChat[]
@@ -38,11 +40,16 @@ export default function Chats(props: Props) {
       </div>
       <div className={styles.chats}>
         {
-          props.chats.map((chat)=> {
+          !chatContext.loading && props.chats.length > 0&& props.chats.map((chat)=> {
             return (
               <ChatItem chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
             )
           })
+          ||
+          props.chats.length === 0 && chatContext.filter &&
+          <p className='empty'>Чатов не найдено</p>
+          ||
+          <Spinner size={32} color={colors.yellow}/>
         }
       </div>
     </div>

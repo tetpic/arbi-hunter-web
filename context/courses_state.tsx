@@ -99,7 +99,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCourseSteps = async (blockId: number): Promise<boolean> => {
     try {
-      const res = await CoursesRepository.getCourseSteps(profileType, countryCode, blockId)
+      const res = await CoursesRepository.getCourseSteps(countryCode, blockId)
       if (res.data.length > 0) {
         setBlocksState(state => {
           const key = [...state.keys()].find(k => k.id === blockId)
@@ -123,7 +123,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCourseBlocks = async (courseId: number, blocks?: ICourseBlock[]): Promise<boolean> => {
     try {
-      const res = blocks||await CoursesRepository.getCourseBlock(profileType, countryCode, courseId).then(r=> r.data)
+      const res = blocks||await CoursesRepository.getCourseBlock(countryCode, courseId).then(r=> r.data)
       if (res) {
         setBlocksState(state => {
           state.clear()
@@ -168,7 +168,7 @@ export function CoursesWrapper(props: Props) {
 
   const setStepAnswer = async (data: ICourseStepAnswer, blockId?: number) => {
     
-    const res = await CoursesRepository.setStepAnswer(profileType, data)
+    const res = await CoursesRepository.setStepAnswer(data)
     if(blockId && res) {
       setCourseSteps(blockId)
     }
@@ -177,7 +177,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCoursesNews = (courseId: number, page: number) => {
     const limit = 10
-    CoursesRepository.getCoursesNews(profileType, {courseId, limit, page, lang: countryCode, full: true})
+    CoursesRepository.getCoursesNews({courseId, limit, page, lang: countryCode, full: true})
     .then(res=> {
       setCoursesNewsState(res)
 

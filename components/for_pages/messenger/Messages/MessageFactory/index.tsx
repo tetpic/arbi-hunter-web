@@ -33,7 +33,7 @@ export default function MessageFactory(props: Props) {
   const {isPhoneWidth} = useResize()
   const appContext = useAppContext()
   const userContext = useUserContext()
-  const profileType = userContext.currentProfile.profileType
+  const profileType = userContext?.currentProfile?.profileType
 
   
   const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage

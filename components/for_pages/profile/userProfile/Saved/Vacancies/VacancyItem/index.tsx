@@ -40,7 +40,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
       openDropDown(false)
       return
     }
-    await ProposalRepository.changeProposalStatusByEmployee(userContext.currentProfile.profileType, proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+    await ProposalRepository.changeProposalStatusByEmployee(proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
     onRemove()
     openDropDown(false)
   }

@@ -1,7 +1,6 @@
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import ManagerRepository from 'data/repositories/ManagerRepository'
 import { createContext, useContext, useState } from 'react'
-import { useUserContext } from './user_state'
 
 interface IState {  
   managers: Map<number, IManager>
@@ -20,7 +19,6 @@ interface Props {
 }
 
 export function ManagerWrapper(props: Props) {
-  const userContext = useUserContext()
   const [managers, setManagersState] = useState<Map<number, IManager>>(new Map())
   const [managersPage, setManagersPageState] = useState<number>(null)
   const [managersTotal, setManagersTotal] = useState<number>(null)
@@ -42,7 +40,7 @@ export function ManagerWrapper(props: Props) {
   } 
 
   const addNewManager = async(m: IManagerCreate): Promise<boolean> => {
-    return ManagerRepository.createNewManager(m, userContext.currentProfile?.profileType)
+    return ManagerRepository.createNewManager(m)
     .then(res=> {
       setManagersState(state=> {
         state.set(res.id, res)

@@ -82,7 +82,7 @@ export function FeedbacksWrapper(props: Props) {
 
   const setVCResponses = async (id?:number): Promise<boolean> => {
     try {
-      const res = await ApplicationRepository.getVacancyApplication(id = currentVacancy?.id || id, userContext?.currentProfile?.profileType)
+      const res = await ApplicationRepository.getVacancyApplication(id = currentVacancy?.id || id)
       setVCResponsesState(state => {
         state.clear()
         res.forEach(el => {
@@ -99,7 +99,7 @@ export function FeedbacksWrapper(props: Props) {
   const setCVResponses = async(): Promise<boolean> => {
     try{
       setCurrentCVResponsesState(new Map)
-      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(userContext.currentProfile.profileType), ProposalRepository.getProposalByProfileType(userContext?.currentProfile?.profileType)])
+      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType()])
       allProposals.forEach(async(proposal) => {
         proposal.forEach((p, index) => {
           setCurrentCVResponsesState(state => {
@@ -156,7 +156,7 @@ export function FeedbacksWrapper(props: Props) {
   }
 
   const setResponsesByStat = async (v: ProposalRequestType): Promise<IApplication[]> => {
-    const res = await ApplicationRepository.getVacanciesByStat(v, userContext?.currentProfile?.profileType)
+    const res = await ApplicationRepository.getVacanciesByStat(v)
     return res
   }
 
@@ -166,7 +166,7 @@ export function FeedbacksWrapper(props: Props) {
 
   const createProposal = async (p: IProposal):Promise<boolean> => {
     try {
-      const res = await ProposalRepository.createProposal(p, userContext.currentProfile?.profileType)
+      const res = await ProposalRepository.createProposal(p)
       if (!res.errors) {
         return true
       }
@@ -199,7 +199,7 @@ export function FeedbacksWrapper(props: Props) {
 
   const setStats = async (vcId: number):Promise<boolean> => {
     try {
-      const res = await ApplicationRepository.getStatsCountByVacancy(vcId, userContext.currentProfile?.profileType)
+      const res = await ApplicationRepository.getStatsCountByVacancy(vcId)
       setStatsState(res)
       return true
     } catch (e) {

@@ -3,7 +3,6 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { MediaWrapper } from 'context/media_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
-import { CookiesType } from 'types/enums'
 
 interface Props {
   community: ICommunity
@@ -16,22 +15,13 @@ interface Query {
 
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
   const id  = Number(context.query.id)
-  const token = context.req.cookies[CookiesType.accessToken]
-  const profileType = context.req.cookies[CookiesType.profileType]
-
-  if(id && token && profileType) {
     try{
-      const community = await CommunitiesRepository.getCommunityById(id, profileType, token)
+      const community = await CommunitiesRepository.getCommunityById(id)
       return {props: {community, id}}
     }
     catch(err){
       return {props: {id}}
     }
-  }
-  else {
-    //task 730
-    return {redirect: {destination: '/login', permanent: false} }
-  }
 }) 
 
 export default function Community(props: Props) {
@@ -42,6 +32,5 @@ export default function Community(props: Props) {
         <CommunityPage community={props.community} id={props.id}/>
       </MediaWrapper>
     </ContentLayout>
-   
   )
 }

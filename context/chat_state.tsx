@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 // }
 
 interface IState {
-  chats: IChat[]
+  chats: Map<number, IChat>
   currentChatId: number | null,
   totalChats: number
   fetchMore: () => void
@@ -20,7 +20,7 @@ interface IState {
   filter: IChatsFilter
   filterIsEmpty: boolean,
   setFilter: (filter?: IChatsFilter) => void,
-  decreaseUnreadCount: (chatId: number, total: number) => void
+  decreaseUnreadCount: (chatId: number) => void
   setCurrentChatId: (chatId: number | null) => void,
   scrollableTarget: RefObject<HTMLElement> | null
   currentDialogContext: MutableRefObject<Partial<IDialogState>>
@@ -31,7 +31,7 @@ interface IState {
   editChatFolder: (data: {chatFolderId: number, chatsIds: number[] }, name: string) => Promise<boolean>
   removeChatFolder: (id: number) => Promise<boolean> 
   setChatsFromFolder: (name: string) => void
-  chatsRef: MutableRefObject<IChat[]>
+  chatsRef:  MutableRefObject<Map<number, IChat>>
 
 }
 
@@ -41,14 +41,11 @@ const ChatContext = createContext<Partial<IState>>(defaultValue)
 
 interface Props {
   children: React.ReactNode
-  chats?: IChat[]
-  folders?: IChatFolder[]
   initialChat?: number
 }
 
 export function ChatWrapper(props: Props) {
   const userContext = useUserContext()
-  const profileType = userContext.currentProfile.profileType
   const isLogged = userContext.isLogged
   const router = useRouter()
 
@@ -57,7 +54,7 @@ export function ChatWrapper(props: Props) {
   const windowFocused = useWindowFocus()
   const isLoggedRef = useRef<boolean>(isLogged)
   const scrollableTarget = useRef<HTMLElement | null>(null)
-  const [chats, setChats] = useState<IChat[]>(props.chats)
+  const [chats, setChats] = useState<Map<number, IChat>>(new Map)
   const [currentChatId, setCurrentChatId] = useState<number | null>(props.initialChat)
   const [totalChats, setTotalChats] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
@@ -65,22 +62,9 @@ export function ChatWrapper(props: Props) {
   const [foldersActive, setFoldersActiveState] = useState<boolean>(false)
   const [folders, setFolders] = useState<Map<number, any>>(new Map)
 
-  const limit = 30
   const [filter, setFilterState] = useState<IChatsFilter>(null)
-  const chatsRef = useRef<IChat[]>(props.chats)
+  const chatsRef = useRef<Map<number, IChat>>(new Map)
   const windowFocusInit = useRef(false)
-
-  // const getFilterChatListRequest = (): IChatListRequest => {
-  //   return {
-  //     ...(filterRef.current?.search ? {search: filterRef.current.search} : {}),
-  //     ...(filterRef.current?.userId ? {receivingPointId: filterRef.current.userId}: {}),
-  //   }
-  // }
-
-  const init = async () => {
-    await loadChats(1)
-    setLoading(false)
-  }
 
   const loadChats = async (page: number, filters?: MessageFilterOptions) => {
     if (abortControllerRef.current) {
@@ -88,17 +72,31 @@ export function ChatWrapper(props: Props) {
     }
     abortControllerRef.current = new AbortController()
     try {
-      const data = await ChatRepository.getChatList(filters, profileType, null, {signal: abortControllerRef.current?.signal!})
+      const data = await ChatRepository.getChatList(filters, {signal: abortControllerRef.current?.signal!})
       abortControllerRef.current = null
-      if (page === 1) {
-        setChats(data.data)
-      } else {
-        setChats(i => [...i, ...data.data])
-      }
+      setChats(state=> {
+        data.data.forEach(el=> {
+          state.set(el.id, el)
+        })
+        return new Map(state)
+      })
+      chatsRef.current.size === 0&&(chatsRef.current = new Map(data.data.map(el=> [el.id, el])))
       setTotalChats(data.total)
     } catch (e) {
       return
     }
+  }
+
+  const setFoldersFromInit = async():Promise<boolean> => {
+    const folders = await ChatRepository.getChatFolders()
+    setFolders(_=> new Map(folders.data.map(el=> [el.id, el])))
+    return true
+  }
+
+  const init = async () => {
+    await loadChats(1)
+    await setFoldersFromInit()
+    setLoading(false)
   }
 
   const fetchMore = async () => {
@@ -109,6 +107,7 @@ export function ChatWrapper(props: Props) {
   const setFilter = (data?: IChatsFilter) => {
     if(!data) {
       setChats(chatsRef.current)
+      setFilterState(null)
       return
     }
     let filterData:MessageFilterOptions = {}
@@ -121,11 +120,13 @@ export function ChatWrapper(props: Props) {
     loadChats(1, filterData)
   }
 
-  const decreaseUnreadCount = (chatId: number, total: number)=> {
-    setChats(i => i.map(i => i.id === chatId ? {
-      ...i,
-      totalUnread: i.totalUnread - total < 0 ? 0 : i.totalUnread - total
-    } : i))
+  const decreaseUnreadCount = (chatId: number)=> {
+    if(chats.size === 0) return
+    setChats(state=> {
+      const chatNeeded = state.get(chatId)
+      chatNeeded.totalUnread = 0
+      return new Map(state)
+    })
   }
 
   const setFoldersActive = () => {
@@ -133,7 +134,7 @@ export function ChatWrapper(props: Props) {
   }
 
   const removeChatFolder = async (id: number): Promise<boolean> => {
-    await ChatRepository.deleteChatFolder(profileType, id)
+    await ChatRepository.deleteChatFolder(id)
     setFolders(state => {
       state.delete(id)
       return new Map(state)
@@ -144,19 +145,19 @@ export function ChatWrapper(props: Props) {
   const setChatsFromFolder = async (chatName: string) => {
     const folderToSet = [...folders.values()].find(el => el.name === chatName)||null
     if(folderToSet) {
-      const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id}, profileType)
-      setChats(chats.data)
+      const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id})
+      setChats(new Map(chats.data.map(el=> [el.id, el])))
       router.replace({query: { ...router.query, chat: chats.data[0]?.id}}, undefined, {shallow: true})
       setCurrentChatId(chats.data[0]?.id)
     }
     else {
-      setChats(props.chats)
+      setChats(chatsRef.current)
     }
   }
 
   const editChatFolder = async (data: {chatFolderId: number, chatsIds: number[] }, name: string): Promise<boolean> => {
-    await ChatRepository.moveChatToFolder(profileType, data)
-    const folder = await ChatRepository.editChatFolderState(profileType, {id: data.chatFolderId, name})
+    await ChatRepository.moveChatToFolder(data)
+    const folder = await ChatRepository.editChatFolderState({id: data.chatFolderId, name})
     setFolders(state=> {
       state.set(folder.id, folder)
       return new Map(state)
@@ -166,9 +167,9 @@ export function ChatWrapper(props: Props) {
  
   const createChatFolder = async (name: string, chats: IChat[]):Promise<boolean> => {
     try{
-      const res = await ChatRepository.createChatFolder(profileType, { name })
-      await ChatRepository.moveChatToFolder(profileType, {chatFolderId: res.id, chatsIds: chats.map(c => c.id)})
-      const folders = await ChatRepository.getChatFolders(profileType)
+      const res = await ChatRepository.createChatFolder({ name })
+      await ChatRepository.moveChatToFolder( {chatFolderId: res.id, chatsIds: chats.map(c => c.id)})
+      const folders = await ChatRepository.getChatFolders()
       setFolders(state=> {
         return new Map(folders.data.map(el=> [el.id, el]))
       })
@@ -180,8 +181,8 @@ export function ChatWrapper(props: Props) {
   }
 
   const debouncedReconnect = debounce(async () => {
-    const data = await ChatRepository.getChatList({}, profileType)
-    setChats(data.data ?? [])
+    const data = await ChatRepository.getChatList({})
+    setChats(new Map(data.data.map(el=> [el.id, el])) ?? new Map)
     setTotalChats(data.total)
   }, 1000)
 
@@ -198,43 +199,51 @@ export function ChatWrapper(props: Props) {
     init()
   }, [])
 
-  useEffect(()=>{
+  // useEffect(()=>{
     
-    setFolders(_=> {
-      return new Map(props.folders.map(f=> [f.id, f]))
-    })
-  }, [props.folders])
+  //   setFolders(_=> {
+  //     return new Map(props.folders.map(f=> [f.id, f]))
+  //   })
+  // }, [props.folders])
 
   useEffect(() => {
     if(!currentChatId){
         return
     }
-    const subscription = chatSocket.messageAllState$.subscribe((message) => {
-      if (chats.find(i => i.id === message.chatId)) {
-        setChats(i => i.map(i => i.id === message.chatId ? {
-          ...i,
-          lastMessageAt: message.createdAt,
-          lastMessage: message.message ?? '',
-          totalUnread: message.chatId === currentChatId ? i.totalUnread : i.totalUnread + 1
-        } : i)
+    const subscription = chatSocket.messageState$.subscribe((message) => {
+      if (chats.has(message.chatId)) {
+        setChats(state => {
+          const newState = [...state.values()].map(i => i.id === message.chatId ? {
+            ...i,
+            lastMessageAt: message.createdAt,
+            lastMessage: message.message ?? '',
+            totalUnread: message.chatId === currentChatId ? i.totalUnread : i.totalUnread + 1
+          } : i)
           .sort(
             (objA, objB) => (new Date(objB.lastMessageAt)).getTime() - (new Date(objA.lastMessageAt)).getTime(),
-          ))
+          )
+          return new Map(newState.map(el=> [el.id, el]))
+        })
       } else if (page === 1) {
         loadChats(1)
       }
     })
 
+
+
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((chat) => {
       
-      if (chats.find(i => i.id === chat.id)) {
-        setChats(i => i.map(i => i.id === chat.id ? {
-          ...i,
-         ...chat
-        } : i)
+      if (chats.has(chat.id)) {
+        setChats(state => {
+          const newState =[...state.values()].map(i => i.id === chat.id ? {
+            ...i,
+           ...chat
+          } : i)
           .sort(
             (objA, objB) => (new Date(objB.lastMessageAt)).getTime() - (new Date(objA.lastMessageAt)).getTime(),
-          ))
+          )
+          return new Map(newState.map(el=> [el.id, el]))
+        })
       } else if (page === 1) {
         loadChats(1)
       }

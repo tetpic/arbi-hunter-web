@@ -42,7 +42,7 @@ export function CvWrapper(props: Props) {
   const setSavedCvs = async():Promise<boolean> => {
     
     if(currentProfile.profileType === ProfileType.Hirer){
-      return CvRepository.getSavedByCurrentUser(currentProfile.profileType)
+      return CvRepository.getSavedByCurrentUser()
       .then(res=> {
         setSavedCvsState(res)
         return true
@@ -65,7 +65,7 @@ export function CvWrapper(props: Props) {
   
   const saveCv = async (id: number) => {
     try {
-      const res = await CvRepository.addCvToSaved(id, currentProfile.profileType)
+      const res = await CvRepository.addCvToSaved(id)
       setSavedCvs()
       return true
     } catch (e) {
@@ -75,7 +75,7 @@ export function CvWrapper(props: Props) {
 
   const removeCvfromSaved = async (id: number) => {
     try {
-      await CvRepository.removeCvFromSaved(id, currentProfile.profileType)
+      await CvRepository.removeCvFromSaved(id)
       setSavedCvsState(state => state.filter(el => el.id !== id))
       return true
     } catch (e) {

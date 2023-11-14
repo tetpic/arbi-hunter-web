@@ -54,9 +54,7 @@ export function ChatDialogWrapper(props: Props) {
   const chatContext = useChatContext()
   const chatSocket = useChatSocketContext()
   const recorder = useRef<MediaRecorder>(null!)
-
   
-  const [chatId, setChatId] = useState<IChat | null>(props.chat ?? null)
   const [chat, setChat] = useState<IChat | null>(props.chat ?? null)
   const [page, setPage] = useState<number>(1)
   const [totalMessages, setTotalMessages] = useState<number>(100000000)
@@ -73,30 +71,37 @@ export function ChatDialogWrapper(props: Props) {
   const windowFocusInit = useRef(false)
   const starterInterval = useRef<number>()
   
-  const profileType = userContext.currentProfile?.profileType
   const windowFocused = useWindowFocus()
   const limit = 30
 
   const processLoadedMessages = (data: IMessage[], total: number | null) => {
-      setTotalMessages(total)
-    // const readIds: number[] = (data ?? []).filter(i => i.id && i.userStates?.some(i => !i.read)).map(i => i.id!)
-    // if (readIds.length > 0) {
-    //   chatContext.decreaseUnreadCount(props.chatId!, readIds.length)
-    //   markReadMulti(readIds)
-    // }
-    
+    setTotalMessages(total)
     setMessages(state => {
       data.forEach(el=> {
         state.set(el.id, el)
       })
       return new Map(state)
     })
+    chatContext.decreaseUnreadCount(props.chatId!)
   }
+
+  // const processLoadedMessages = (data: IChatMessage[], total: number | null, fromInit: boolean = false) => {
+  //   console.log('processLoadedMessages', total)
+  //   if (total === 0) {
+  //     setTotalMessages(messages.length)
+  //   }
+  //   const readIds: number[] = (data ?? []).filter(i => i.id && i.userStates?.some(i => !i.read)).map(i => i.id!)
+  //   if (readIds.length > 0) {
+  //     chatContext.decreaseUnreadCount(props.chatId!, readIds.length)
+  //     markReadMulti(readIds)
+  //   }
+  //   setMessages(i => fromInit ? data : [...i, ...data])
+  // }
 
   const loadMessages = async (lastCreatedAt?: string) => {
     setLoading(true)
     if(props.chatId) {
-      const data = await ChatRepository.getMessagesByChatId(profileType, props.chatId, lastCreatedAt, limit )
+      const data = await ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
       processLoadedMessages(data.data, data.total)
     }
     setLoading(false)
@@ -119,15 +124,12 @@ export function ChatDialogWrapper(props: Props) {
     if (!reconnectRef.current) {
       return
     }
-    // if(receivingPointIdRef.current){
-    //   chatSocket.joinReceivingPointId(receivingPointIdRef.current!)
-    // }
     if(chatIdRef.current){
       chatSocket.join(chatIdRef.current!)
     }
 
     if(chatIdRef.current){
-      const data = await ChatRepository.getMessagesByChatId(profileType, props.chatId!, null, limit)
+      const data = await ChatRepository.getMessagesByChatId(props.chatId!, null, limit)
 
       if (!reconnectRef.current) {
         return
@@ -157,7 +159,7 @@ export function ChatDialogWrapper(props: Props) {
 
   const debouncedMarkRead = debounce(async () => {
       try {
-        await ChatRepository.setReadIds(profileType, markReadList)
+        await ChatRepository.setReadIds(markReadList)
         markReadList.length = 0
       } catch (e) {
         console.error('ErrorMarkRead', e)
@@ -210,7 +212,7 @@ export function ChatDialogWrapper(props: Props) {
       }
     }
  
-    const createdMessage = await ChatRepository.createMessage(profileType, {...data, chatId: chat.id, sid, profileId: userContext.currentProfile.id})
+    const createdMessage = await ChatRepository.createMessage({...data, chatId: chat.id, sid, profileId: userContext.currentProfile.id})
     setMessages(state=> {
       state.delete(sid)
       return new Map([[createdMessage.id, createdMessage], ...state.entries()])
@@ -254,7 +256,6 @@ export function ChatDialogWrapper(props: Props) {
   }, [chunks])
 
   useEffect(() => {
-    
     chatIdRef.current = props.chatId ?? null
     init()
 
@@ -263,21 +264,24 @@ export function ChatDialogWrapper(props: Props) {
         state.clear()
         return new Map(state)
       })
-      // setTotalMessages(1000000)
     }
     
     if (props.chatId||props.chat) {
-      setChat(props.chat)
       chatContext.setCurrentChatId(props.chatId||props.chat.id)
       chatSocket.join(props.chat?.id||props.chatId)
     }
-
     return () => {
       if (props.chat||props.chatId) {
         chatSocket.leave(props.chat?.id||props.chatId)
       }
     }
   }, [props.chatId])
+
+  useEffect(()=>{
+    if(props.chat) {
+      setChat(props.chat)
+    }
+  }, [props.chat])
 
   useEffect(() => {
 

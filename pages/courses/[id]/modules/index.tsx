@@ -29,8 +29,8 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   if(profileType && language) {
     try {
       const course = await CoursesRepository.getCourseById(Number(id), token).then(res=> res)
-      const blocks = await CoursesRepository.getCourseBlock(profileType, language, course.id, token).then(res=>res.data)
-      const modules = await CoursesRepository.getCourseModules(Number(id), language, token)
+      const blocks = await CoursesRepository.getCourseBlock(language, course.id).then(res=>res.data)
+      const modules = await CoursesRepository.getCourseModules(Number(id), language)
       return {props: {course, id, modules, blocks, initialBlock, initialStep, module, block}}
     }
     catch(err) {

@@ -49,7 +49,12 @@ export default class VacancyRepository {
     return res
   }
 
-  static async getVacancyById(id: number, profile: ProfileType, token?: string): Promise<IVacancy|null> {
+
+  /*
+  передаю токен и профайл для удобного редактирования вакансии - 
+  поля сразу заполнены, пользователь не видит пустых полей, если вакансия еще не загрузилась
+  */
+  static async getVacancyById(id: number, profile?: ProfileType, token?: string): Promise<IVacancy|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}`,
@@ -62,11 +67,10 @@ export default class VacancyRepository {
     return res
   }
 
-  static async getSavedFromCurrentProfile(profile: ProfileType): Promise<IVacancy[]|null> {
+  static async getSavedFromCurrentProfile(): Promise<IVacancy[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/vacancy?savedByCurrentProfile=true',
-      profile
     })
     if(res.err) {
       return null
@@ -74,11 +78,10 @@ export default class VacancyRepository {
     return res
   }
 
-  static async addVcToSaved(id: any, profile: ProfileType): Promise<any|null> {
+  static async addVcToSaved(id: any): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}/save`,
-      profile
     })
     if(res.err) {
       return null
@@ -86,11 +89,10 @@ export default class VacancyRepository {
     return res
   }
 
-  static async removeVcFromSaved(id:number, profile: ProfileType): Promise<any|null> {
+  static async removeVcFromSaved(id:number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}/removeFromSaved`,
-      profile
     })
     if(res.err) {
       return null

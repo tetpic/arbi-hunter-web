@@ -1,6 +1,7 @@
 import { ISpecializationCategory, IPosition, ISource } from 'data/interfaces/Common'
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { Languages } from 'types/enums'
 import request from 'utils/request'
 
 export default class CvRepository {
@@ -25,10 +26,16 @@ export default class CvRepository {
     return res
   }
 
-  static async getById(data: number, token?: string): Promise<ICV|null> {
+
+  /*
+  передаю токен и профайл для удобного редактирования резюме - 
+  поля сразу заполнены, пользователь не видит пустых полей, если вакансия еще не загрузилась
+  */
+  static async getById(data: number, profile?: ProfileType, token?: string): Promise<ICV|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${data}`,
+      profile,
       token
     })
     if(res.err) {
@@ -86,8 +93,10 @@ export default class CvRepository {
   static async getCategories(): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
-      //TODO: язык должен добавляться динамически
-      url: '/api/service-category?lang=ru',
+      url: '/api/service-category',
+      data: {
+        lang: Languages.ru
+      }
     })
     if(res.err) {
       return null
@@ -95,10 +104,14 @@ export default class CvRepository {
     return res
   }
 
-  static async getCategoryById(id: number): Promise<any|null> {
+  static async getSubCategories(id: number): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/service-categorylang=ru&categoryId=${id}`,
+      url: '/api/service-category',
+      data: {
+        lang: Languages.ru,
+        categoryId: id
+      }
     })
     if(res.err) {
       return null
@@ -106,10 +119,13 @@ export default class CvRepository {
     return res
   }
 
-  static async getSubCategories(data: number): Promise<ISpecializationCategory[]|null> {
+  static async getSavedByCurrentUser(): Promise<ICV[]|null> {
     const res = await request({
       method: 'get',
-      url: `/api/service-category?lang=ru&categoryId=${data}`,
+      url: '/api/cv',
+      data: {
+        savedByCurrentProfile:true
+      }
     })
     if(res.err) {
       return null
@@ -117,23 +133,10 @@ export default class CvRepository {
     return res
   }
 
-  static async getSavedByCurrentUser(profileType?: ProfileType): Promise<ICV[]|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/cv?savedByCurrentProfile=true',
-      profile: profileType
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async removeCvFromSaved(id: number, profile: ProfileType): Promise<any|null> {
+  static async removeCvFromSaved(id: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/removeFromSaved`,
-      profile
     })
     if(res.err) {
       return null
@@ -141,11 +144,10 @@ export default class CvRepository {
     return res
   }
 
-  static async addCvToSaved(id: number, profile: ProfileType): Promise<any|null> {
+  static async addCvToSaved(id: number, ): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/save`,
-      profile
     })
     if(res.err) {
       return null

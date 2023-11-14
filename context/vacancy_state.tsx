@@ -83,20 +83,20 @@ export function VacancyWrapper(props: Props) {
   
 
   const setSavedVacancies = () => {
-    VacancyRepository.getSavedFromCurrentProfile(userContext.currentProfile?.profileType)
+    VacancyRepository.getSavedFromCurrentProfile()
     .then(res=> setSavedVCState(res))
     .catch(err=> false)
   }
 
   const saveVacancy = (id: number) => {
-    VacancyRepository.addVcToSaved(id, userContext.currentProfile?.profileType)
+    VacancyRepository.addVcToSaved(id)
     .then(res=> {
       setSavedVacancies()
     })
   }
 
   const removeVacancyFromSaved = (id: number) => {
-    VacancyRepository.removeVcFromSaved(id, userContext.currentProfile?.profileType)
+    VacancyRepository.removeVcFromSaved(id)
     .then(res=> {
       setSavedVacancies()
     })

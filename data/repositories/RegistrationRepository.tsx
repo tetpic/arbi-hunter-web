@@ -6,7 +6,6 @@ import { ICodeResponse, IRegistrationComplete, IRegistrationPhone, IToken } from
 
 export default class RegistrationRepository {
   static async completeRegistration(data: IRegistrationComplete, config?: AxiosRequestConfig): Promise<IToken> {
-    
     const res = await request<IToken>({
       method: 'post',
       url: '/api/auth/completeRegistration',
@@ -17,7 +16,6 @@ export default class RegistrationRepository {
   }
 
   static async sendSmsCode(data: IRegistrationPhone): Promise<ICodeResponse> {
-    
     const res = await request<any>({
       method: 'post',
       url: '/api/auth/sendSMSCode',
@@ -27,7 +25,6 @@ export default class RegistrationRepository {
   }
 
   static async phoneConfirmation(data: IRegistrationPhone): Promise<IToken>{
-    
     const res = await request<any>({
       method: 'post',
       url: '/api/auth/phoneConfirmation',
@@ -37,7 +34,6 @@ export default class RegistrationRepository {
   }
 
   static async login(data: any): Promise<any> {
-    
     const res = await request<any>({
       method: 'post',
       url: '/api/auth/login',

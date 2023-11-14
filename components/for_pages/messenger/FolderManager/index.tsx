@@ -87,7 +87,7 @@ function FolderEditor(props: Props) {
 
   useEffect(()=>{
     if(!props.folderToEdit) {return}
-    ChatRepository.getChatList({chatFolderId: props.folderToEdit.id}, userContext.currentProfile.profileType)
+    ChatRepository.getChatList({chatFolderId: props.folderToEdit.id})
     .then(res=> {
       setChoosenChats(new Map(res.data.map(r=>[r.id, r])))
     })

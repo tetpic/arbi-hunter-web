@@ -27,7 +27,7 @@ async function request<T = any>(options: string | Options): Promise<T> {
   const { HOST, CACHE_TIME_HOURS } = runtimeConfig
   const optionsIsString = typeof options === 'string'
   const accessToken = (!optionsIsString && options.token) ? options.token : Cookies.get(CookiesType.accessToken)
-  const profile = (!optionsIsString && options.profile)? options.profile : ''
+  const profile = (!optionsIsString && options.profile)? options.profile : Cookies.get(CookiesType.profileType)
   const sessionId = (!optionsIsString && options.sessionId) ? options.sessionId : Cookies.get(CookiesType.sessionId)
   let url = ''
   let method = 'get'

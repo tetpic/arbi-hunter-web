@@ -12,7 +12,7 @@ import IconButton from 'components/ui/IconButton'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
-import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
+import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -34,8 +34,8 @@ import { useAppContext } from 'context/state'
 interface Props {
   id: number
   course: ICourse
-  modules: ICourseBlock[]
-  blocks: ICourseBlock[]
+  // modules: ICourseBlock[]
+  // blocks: ICourseBlock[]
   page?: CurrentCoursesNav
 }
 
@@ -51,7 +51,7 @@ export default function CurrentCourse(props: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(true)
   const appContext = useAppContext()
-  const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks} = useCoursesContext()
+  const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks, courseModules} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const course = props.course || currentCourse
   
@@ -62,7 +62,7 @@ export default function CurrentCourse(props: Props) {
       case CurrentCoursesNav.Feedbacks:
         return <CourseFeedbacks id={props.id}/>
         case CurrentCoursesNav.Modules:
-          return <CourseModules course={course} modules={props.modules}/>
+          return <CourseModules course={course} modules={[...courseModules.keys()]}/>
           case CurrentCoursesNav.News:
         return <CourseNews id={props.id}/>
       }
@@ -103,8 +103,8 @@ export default function CurrentCourse(props: Props) {
   }, [page])
 
   useEffect(()=>{
-    setCourseModules(props.id, props.modules)
-    setCourseBlocks(props.id, props.blocks)
+    setCourseModules(props.id)
+    setCourseBlocks(props.id)
     setCurrentCourse(props.id, props.course)
     .then(()=> 
       setLoading(false)
@@ -149,13 +149,11 @@ export default function CurrentCourse(props: Props) {
           </>}
 
           {isTabletWidth && 
-      <ItemNavigation 
-      bottomStringClass={styles.bottomString} 
-      className={styles.mobileNavigation} 
-      activeItem={page} items={navSet()} onClick={pager}/>
-    }
-         
-         
+            <ItemNavigation 
+            bottomStringClass={styles.bottomString} 
+            className={styles.mobileNavigation} 
+            activeItem={page} items={navSet()} onClick={pager}/>
+          }
         </div>
     
         <Image className={styles.courseImage} src={FILES + course.image.source} alt={course.name} fill/>

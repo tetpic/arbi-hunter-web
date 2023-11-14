@@ -1,30 +1,19 @@
 import Messenger from 'components/for_pages/messenger'
 import { ChatSocketWrapper } from 'context/chat_socket_state'
 import { ChatWrapper } from 'context/chat_state'
-import IChat from 'data/interfaces/IChat'
-import { IUser } from 'data/interfaces/IUser'
-import ChatRepository from 'data/repositories/ChatRepository'
 import { CookiesType } from 'types/enums'
 
 interface Query {
   chat: string|null
 }
 
-interface Props extends Query {
-  chats: IChat[]
-  user: IUser
-  folders: any
-}
 
  
 
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
-  const profileType = context.req.cookies[CookiesType.profileType]
   const token = context.req.cookies[CookiesType.accessToken]
-  if(profileType && token) {
-    const chats = await ChatRepository.getChatList({}, profileType, token)
-    const folders = await ChatRepository.getChatFolders(profileType, token)
-    return {props: {chats: chats.data, folders: folders.data, chat: context?.query?.chat||null}}
+  if(token) {
+    return {props: {chat: context?.query?.chat||null}}
   }
   else {
     return {redirect: {destination: '/login', permanent: false} }
@@ -32,10 +21,10 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 }) 
 
 
-export default function MessengerPage(props: Props) {
+export default function MessengerPage(props: Query) {
   
   return <ChatSocketWrapper>
-    <ChatWrapper chats={props.chats} initialChat={Number(props.chat)}  folders={props.folders}>
+    <ChatWrapper initialChat={Number(props.chat)}>
       <Messenger/>
     </ChatWrapper>
   </ChatSocketWrapper>

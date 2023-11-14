@@ -33,14 +33,15 @@ export default function Communities() {
   }, [page])
 
   useEffect(()=>{
-   if(communityContext.communities.size > total) {
-    communityContext.setCommunities(page).then(res=> {
-      if(typeof res === 'object') {
-        setIsLoaded(true) 
-        setTotal(res.total)
-      }
-    })
-   }
+    communityContext.setMyCommunity()
+    if(communityContext.communities.size > total) {
+     communityContext.setCommunities(page).then(res=> {
+       if(typeof res === 'object') {
+         setIsLoaded(true) 
+         setTotal(res.total)
+       }
+     })
+    }
   }, [])
 
   const isMyCommunityExist = !!communityContext.myCommunity

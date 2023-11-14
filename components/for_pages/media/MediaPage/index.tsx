@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import Navigation from 'components/ui/Navigation'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useEffect, useState } from 'react'
-// import { NavigationSet } from 'types/types'
 import { useResize } from 'components/hooks/useResize'
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useRouter } from 'next/router'
@@ -14,7 +13,7 @@ import AppsAddSvg from 'components/svg/AppsAddSvg'
 import UserDoubleSvg from 'components/svg/UserDoubleSvg'
 import classNames from 'classnames'
 import SearchBar from 'components/ui/SearchBar'
-import { MediaWrapper, useMediaContext } from 'context/media_state'
+import { MediaWrapper } from 'context/media_state'
 import MainMediaPage from './MainMediaPage'
 import Communities from './Communities'
 import AppSvg from 'components/svg/AppSvg'
@@ -52,9 +51,10 @@ function SubCategories(props: {categories: ICategory[], currentCategory: ICatego
   )
 }
 
+
+
 export default function CommunitiesPage(props: Props) {
   const appContext = useAppContext()
-  const mediaContext = useMediaContext()
   const {isTabletWidth, width} = useResize()
   const [page, pager] = useState<MediaPageNav>(!isMobile&&props.page||props.page === MediaPageNav.Categories?MediaPageNav.AllArticles:props.page||MediaPageNav.AllArticles)
   const router = useRouter()
@@ -128,7 +128,6 @@ export default function CommunitiesPage(props: Props) {
       })
     }
   }, [router])
-
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>

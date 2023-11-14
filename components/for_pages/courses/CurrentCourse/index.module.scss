@@ -62,9 +62,11 @@
 
   .mobileNavigation {
     overflow: auto;
+    
     .bottomString {
       margin-top: 8px;
     }
+
     *{
       font-size: $smallText;
     }
@@ -95,9 +97,6 @@
     max-width: 50%;
     position: relative;
     z-index: 3;
-    * {
-      z-index: 2;
-    }
     &:after {
       content: '';
       display: block;
@@ -111,11 +110,14 @@
       border-radius: 50px;
       filter: blur(40px);
     }
-
     @include mq($TabletWidth, max) {
       width: 100%;
       max-width: unset;
       align-items: center;
+    }
+
+    * {
+      z-index: 2;
     }
   }
 
@@ -166,7 +168,6 @@
       width: calc(100% - 32px);
       right: unset;
       top: 16px;
-      // padding-inline: 16px;
       justify-content: space-between;
       flex-direction: row-reverse;
       &::after {
@@ -188,11 +189,9 @@
     @include hover {
       background-color: $black;
     }
-
     @include mq($TabletWidth, max) {
       background-color: #1b1b22bd;
       border: unset;
-      // padding: 4px;
       svg {
         width: Clamp(20px, 5vw, 30px);
         height: Clamp(20px, 5vw, 30px);
@@ -243,7 +242,6 @@
     row-gap: 16px;
     padding-bottom: 120px;
   }
-  
 }
 
 .mainContent {
@@ -259,11 +257,10 @@
   @include mq($TabletWidth, max) {
     width: 100%;
   }
-
 }
 
 .navigation {
-  width: 100%;
+  width: 100% !important;
 }
 
 .stats {
@@ -275,7 +272,6 @@
   @include mq($TabletWidth, max) {
     align-items: center;
   }
-
 }
 
 .statsLeft {
@@ -283,10 +279,7 @@
   flex-direction: column;
   align-items: center;
   row-gap: 10px;
-
 }
-
-
 
 .rating {
   color: $white;
@@ -329,10 +322,3 @@
     background-color: $blue;
   }
 }
-
-
-
-
-
-
-

@@ -44,7 +44,7 @@ export default function NewsByCategories(props: Props) {
     if(props.category) {
       data.categories = props.category.id
     }
-    ArticlesRepository.getNews(true, data, userContext?.currentProfile?.profileType)
+    ArticlesRepository.getNews(true, data)
     .then(res => {
       setTotal(res.total)
       mediaContext.setCurrentNews({articles: res.data})

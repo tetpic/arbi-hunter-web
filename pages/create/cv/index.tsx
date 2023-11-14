@@ -16,7 +16,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const token = context.req.cookies[CookiesType.accessToken]
   const profileType = context.req.cookies[CookiesType.profileType]
   if(profileType && token && id) {
-    const cv = await CvRepository.getById(Number(id), token).then(res=> res)
+    const cv = await CvRepository.getById(Number(id), profileType, token).then(res=> res)
     return {props: {cv, id}}
   }
   else if(profileType && token && !id) {
@@ -36,6 +36,5 @@ export default function CvCreate(props: Props) {
     <ContentLayout hideMobileHeader title={'Редактирование Резюме'}>
       <Cv id={Number(props.id) as number} cv={props.cv}/>
     </ContentLayout>
-
   )
 }

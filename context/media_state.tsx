@@ -1,7 +1,6 @@
 import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { createContext, useContext, useState } from 'react'
-import { useUserContext } from './user_state'
 import { ICategory } from 'data/interfaces/Common'
 
 export interface IMediaContextState {
@@ -25,13 +24,9 @@ interface Props {
 }
 
 export function MediaWrapper(props: Props) {
-  const userContext = useUserContext()
-  const profileType = userContext?.currentProfile?.profileType||null
-
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map)
   const [categories, setCategoriesState] = useState<Map<number, ICategory>>()
   const [stories, setStoriesState] = useState<Map<number, IArticle>>(new Map)
-
   const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
 
   const setCurrentNews = (data: {articles?: IArticle[], clear?: boolean}) => {
@@ -47,7 +42,7 @@ export function MediaWrapper(props: Props) {
   }
 
   const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
-    return ArticlesRepository.getSavedByCurrentUser(userContext.currentProfile.profileType, {page, full: true})
+    return ArticlesRepository.getSavedByCurrentUser({page, full: true})
     .then(res=> {
       setSavedArticlesState(state=> {
         res.data.forEach(e=> {
@@ -89,10 +84,10 @@ export function MediaWrapper(props: Props) {
     const isLiked = article.isLikedByCurrentProfile
     const currentLikes = article.likesCount
     if(article.isLikedByCurrentProfile) {
-      await ArticlesRepository.removeLikeFromArticle(profileType, article.id)
+      await ArticlesRepository.removeLikeFromArticle(article.id)
     }
     else if(!article.isLikedByCurrentProfile) {
-      await ArticlesRepository.addLikeToArticle(profileType, article.id)
+      await ArticlesRepository.addLikeToArticle(article.id)
     }
     currentNews.size > 0 && setCurrentNewsState(state=> {
       return new Map(likeStateHandler(state, article, isLiked, currentLikes))

@@ -5,7 +5,6 @@ import PhoneCountryField from 'components/fields/PhoneCountryField'
 import RadioListField from 'components/fields/RadioListField'
 import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
-import { useUserContext } from 'context/user_state'
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import ManagerRepository from 'data/repositories/ManagerRepository'
 import { Form, FormikProvider, useFormik } from 'formik'
@@ -20,11 +19,7 @@ interface Props {
 }
 
 export default function AddManager(props: Props) {
-
-  const {currentProfile} = useUserContext()
-
   const managerToEdit = props.managerToEdit
-
   const submit = (data: IManagerCreate) => {
     
     if(managerToEdit) {
@@ -32,14 +27,14 @@ export default function AddManager(props: Props) {
         delete data.password
       }
       
-      ManagerRepository.editManagerById(data, managerToEdit?.id, currentProfile.profileType)
+      ManagerRepository.editManagerById(data, managerToEdit?.id)
       .then(res=> {
         props.onClose()
       })
       .catch(err=> {})
     }
     else {
-      ManagerRepository.createNewManager(data, currentProfile.profileType)
+      ManagerRepository.createNewManager(data)
       .then(res=> {
         props.onClose()
       })
@@ -145,7 +140,5 @@ export default function AddManager(props: Props) {
 
       </Form>
     </FormikProvider>
-  
-
   </div>)
 }

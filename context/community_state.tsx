@@ -9,7 +9,6 @@ import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEf
 import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import { IPagination } from 'types/types'
 
 interface IState {
@@ -31,6 +30,7 @@ interface IState {
   removeNews: (id: number) => Promise<boolean>
   saveArticle: (id: number)=> Promise<boolean>
   searchCommunityMembers: (page: number, search: string)=> Promise<IPagination<IUserProfile>>
+  setMyCommunity: ()=>void
 }
 
 const CommunityContext = createContext<Partial<IState>>({})
@@ -45,38 +45,57 @@ export function CommunityWrapper(props: Props) {
   const profileType = userContext?.currentProfile?.profileType||null
   const router = useRouter()
 
-
   const [communities, setCommunitiesState] = useState<Map<number, ICommunity>>(new Map)
   const [communityNews, setCommunityNews] = useState<Map<number, IArticle>>(new Map())
   const [currentCommunity, setCurrentCommunity] = useState<ICommunity>()
   const [communityMembers, setCommunityMembersState] = useState<Map<number, IUserProfile>>(new Map)
   const [categories, setCategoriesState] = useState<ICategory[]>([])
-  const [myCommunity, setMyCommunityState] = useState<ICommunity>()
+  const [myCommunity, setMyCommunityState] = useState<ICommunity|null>(null)
 
-  const setCommunityMembers =  async (page: number): Promise<boolean|{total: number}> => {
-    try {
-      const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, {page})
-      setCommunityMembersState(state => {
-        // state.clear()
-        res.data.forEach(r => {
-          state.set(r.id, r)
+  const setCommunityMembers = (page: number): Promise<boolean|{total: number}> => {
+    // try {
+    //   const res = await CommunitiesRepository.getCommunityMembers(currentCommunity.id, {page})
+    //   
+    //   if(res) {
+    //     setCommunityMembersState(state => {
+    //       // state.clear()
+    //       res.data.forEach(r => {
+    //         state.set(r.id, r)
+    //       })
+    //       return new Map(state)
+    //     })
+    //     return { total: res.total }
+    //   }
+    // } catch (err) {
+    //   return false
+    // }
+    return CommunitiesRepository.getCommunityMembers(currentCommunity.id, {page})
+    .then(res=> {
+      if(res) {
+        setCommunityMembersState(state => {
+          // state.clear()
+          res.data.forEach(r => {
+            state.set(r.id, r)
+          })
+          return new Map(state)
         })
-        return new Map(state)
-      })
-      return { total: res.total }
-    } catch (err) {
+        return { total: res.total }
+      }
+    })
+    .catch(err => {
+      
       return false
-    }
+    })
   }
 
   const searchCommunityMembers = async (page: number, search: string): Promise<IPagination<IUserProfile>> => {
-    const res = await CommunitiesRepository.getCommunityMembers(profileType, currentCommunity.id, {page, search})
+    const res = await CommunitiesRepository.getCommunityMembers(currentCommunity.id, {page, search})
     return res
   }
 
   const getCommunityNews = useCallback(async (page: number) => {
     if(currentCommunity) {
-      return ArticlesRepository.getCommunityNewsList(profileType, currentCommunity.id, page)
+      return ArticlesRepository.getCommunityNewsList(currentCommunity.id, page)
       .then(res => {
         setCommunityNews(state=> {
           if(page === 1) {
@@ -96,7 +115,7 @@ export function CommunityWrapper(props: Props) {
   }, [currentCommunity])
 
   const setCommunities = async (p: number) => {
-    const res = await CommunitiesRepository.getCommunities(profileType, p)
+    const res = await CommunitiesRepository.getCommunities(p)
     if (res) {
       setCommunitiesState(s => {
         res.data.forEach(e=> {
@@ -130,12 +149,12 @@ export function CommunityWrapper(props: Props) {
     }
 
     if(isSubsribed) {
-      await CommunitiesRepository.unsubscribeCommunity(profileType, id)
+      await CommunitiesRepository.unsubscribeCommunity(id)
       changeState(!isSubsribed)
       return true
     }
     else {
-      await CommunitiesRepository.subscribeCommunity(profileType, id)
+      await CommunitiesRepository.subscribeCommunity(id)
       changeState(!isSubsribed)
       return true
     }
@@ -149,7 +168,7 @@ export function CommunityWrapper(props: Props) {
   }
 
   const createCommunity = (data: UpdateCommunityForm) => {
-    CommunitiesRepository.createCommunity(profileType, data)
+    CommunitiesRepository.createCommunity(data)
     .then(res=> {
       appContext.hideModal()
       router.push('/media/community/my')
@@ -157,15 +176,16 @@ export function CommunityWrapper(props: Props) {
   }
 
   const updateCommunity = async (data: UpdateCommunityForm):Promise<boolean> => {
-    const res = await CommunitiesRepository.updateCommunity(profileType, currentCommunity.id, data)
+    const res = await CommunitiesRepository.updateCommunity(currentCommunity.id, data)
     appContext.hideModal()
     setCurrentCommunity(res)
     return true
   }
 
   const setMyCommunity = useCallback(() =>{
+    if(myCommunity !== null) {return}
     if(profileType) {
-      CommunitiesRepository.myCommunity(profileType)
+      CommunitiesRepository.myCommunity()
       .then(res=> {
         setMyCommunityState(res.data[0])
       })
@@ -174,7 +194,7 @@ export function CommunityWrapper(props: Props) {
 
   const createNews = async (data: ICreateNews, id?: number): Promise<boolean> => {
     if(id) {
-      const res = await ArticlesRepository.editCommunityNews(profileType, data, id)
+      const res = await ArticlesRepository.editCommunityNews(data, id)
       setCommunityNews(state=> {
         state.set(id, res)
         return new Map(state)
@@ -183,7 +203,7 @@ export function CommunityWrapper(props: Props) {
       return true
     }
     else {
-      const res = await ArticlesRepository.createNews(profileType, data)
+      const res = await ArticlesRepository.createNews(data)
       setCommunityNews(state=> {
         const oldState = [...state.entries()]
         return new Map([[res.id, res], ...oldState])
@@ -204,7 +224,7 @@ export function CommunityWrapper(props: Props) {
   }
 
   const saveArticle = async (id: number): Promise<boolean> => {
-    await ArticlesRepository.addArticleToSaved(profileType, id)
+    await ArticlesRepository.addArticleToSaved(id)
     setCommunityNews(state=> {
       const item = state.get(id)
       item.isSavedByCurrentProfile = !item.isSavedByCurrentProfile
@@ -217,13 +237,14 @@ export function CommunityWrapper(props: Props) {
   useEffect(()=>{
     if(categories.length === 0 && userContext.currentProfile) {
       setCategories()
-      userContext.currentProfile.profileType === ProfileType.Hirer&&setMyCommunity()
+      // userContext.currentProfile.profileType === ProfileType.Hirer&&setMyCommunity()
     }
   }, [userContext.currentProfile])
 
   const value: IState = {
     communities,
     setCommunities,
+    setMyCommunity, 
     currentCommunity,
     setCurrentCommunity,
     communityNews,

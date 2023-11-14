@@ -3,7 +3,6 @@ import PatternRepository from 'data/repositories/PatternRepository'
 import { createContext, useContext, useState } from 'react'
 import { PatternTypes, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
-import { useUserContext } from './user_state'
 
 interface IState {
   patterns: Map<number,IPattern>
@@ -13,31 +12,21 @@ interface IState {
   editPattern: (p: IPatternBase, id: number)=>void
 }
 
-const defaultValue: IState = {
-  patterns: new Map(),
-  patternsNotExist: new Set(),
-  setPatterns: ()=>null,
-  createPattern: ()=> null,
-  editPattern: (p: IPatternBase, id: number)=>null,
-}
 
-const PatternContext = createContext<IState>(defaultValue)
+const PatternContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
 }
 
 export function PatternWrapper(props: Props) {
-
   const appContext = useAppContext()
-  const {currentProfile} = useUserContext()
-
   const [patterns, setPatternsState] = useState<Map<number, IPattern>>(new Map())
   const [patternsNotExist, setPatternsNotExistState] = useState<Set<PatternTypes>>(new Set())
 
   const setPatterns = () => {
     Object.values(PatternTypes).forEach(el=> {
-      PatternRepository.getPatternByType(el, currentProfile.profileType)
+      PatternRepository.getPatternByType(el)
       .then(res=>{        
         if(res) {
           setPatternsState(state=> {
@@ -47,19 +36,17 @@ export function PatternWrapper(props: Props) {
         }
       })
       .catch(err=>{
-        debugger
         setPatternsNotExistState(state=> {
           state.add(el)
           return new Set(state)
         })
-        // console.warn(err)
       })
     })
 
   }
 
   const createPattern = (p: IPatternBase) => {
-    PatternRepository.createPatternText(p, currentProfile.profileType)
+    PatternRepository.createPatternText(p)
     .then(res=> {
       appContext.showSnackbar('Шаблон успешно создан', SnackbarType.success)
       setPatterns()
@@ -67,29 +54,22 @@ export function PatternWrapper(props: Props) {
   }
 
   const editPattern = (p: IPatternBase, id: number) => {
-    PatternRepository.editPatternById(p, id, currentProfile.profileType)
-    .then(res=> {
+    PatternRepository.editPatternById(p, id)
+    .then(_=> {
       appContext.showSnackbar('Шаблон успешно сохранён', SnackbarType.success)
       setPatterns()
     })
-    .catch(res=> {
+    .catch(_=> {
       appContext.showSnackbar('Не удалось сохранить шаблон', SnackbarType.error)
     })
   }
 
-
-
-
-
-
   const value: IState = {
-    ...defaultValue,
     patterns,
     patternsNotExist,
     setPatterns,
     createPattern,
     editPattern
-
   }
 
   return (

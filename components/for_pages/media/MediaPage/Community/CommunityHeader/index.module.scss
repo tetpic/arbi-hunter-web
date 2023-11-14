@@ -94,6 +94,7 @@
   display: grid;
   grid-template-areas: 'p n b' 'p m b';
   grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr 1fr;
   column-gap: 16px;
   align-items: flex-end;
   color: $white;

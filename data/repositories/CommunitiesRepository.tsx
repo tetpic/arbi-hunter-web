@@ -1,24 +1,19 @@
 import { UpdateCommunityForm } from 'data/interfaces/Common'
 import ICommunity from 'data/interfaces/ICommunity'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { LOAD_LIMIT } from 'types/constants'
+import { IPagination } from 'types/types'
 import request from 'utils/request'
 
-interface Response <T> {
-  total: number,
-  data: T,
-  count?: number,
-  pageCount?: number
-}
-
 export default class CommunitiesRepository {
-  static async getCommunities(profile: ProfileType, page: number, token?: string): Promise<Response<ICommunity[]>|null> {
+  static async getCommunities(page: number): Promise<IPagination<ICommunity>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/community?limit=${20}&page=${page}`,
-      profile,
-      token
+      url: '/api/community',
+      data: {
+        limit: 20,
+        page
+      }
     })
     if(res.err) {
       return null
@@ -26,12 +21,11 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async createCommunity(profile: ProfileType,  data: UpdateCommunityForm): Promise<ICommunity|null> {
+  static async createCommunity(data: UpdateCommunityForm): Promise<ICommunity|null> {
     const res = await request({
       method: 'post',
       url: '/api/community',
       data,
-      profile
     })
     if(res.err) {
       return null
@@ -39,12 +33,10 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async myCommunity(profile: ProfileType, token?: string): Promise<Response<ICommunity[]>|null> {
+  static async myCommunity(): Promise<IPagination<ICommunity>|null> {
     const res = await request({
       method: 'get',
       url: '/api/community/my',
-      profile,
-      token
     })
     if(res.err) {
       return null
@@ -52,12 +44,10 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityById(communityId: number, profile?: ProfileType, token?: string): Promise<any|null> {
+  static async getCommunityById(communityId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}`,
-      profile,
-      token
     })
     if(res.err) {
       return null
@@ -65,7 +55,8 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityMembers(profile: ProfileType, communityId: number, data: {page?: number,  search?: string, limit?: number}  ): Promise<Response<IUserProfile[]>|null> {
+  static async getCommunityMembers(communityId: number, data: {page?: number,  search?: string, limit?: number}  ): Promise<IPagination<IUserProfile>|null> {
+    
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}/subscribers`,
@@ -73,20 +64,20 @@ export default class CommunitiesRepository {
         ...data,
         limit: LOAD_LIMIT
       },
-      profile
     })
+    alert(res)
     if(res.err) {
+      
       return null
     }
     return res
   }
   
-  static async updateCommunity(profile: ProfileType, communityId: number, data: UpdateCommunityForm): Promise<ICommunity|null> {
+  static async updateCommunity(communityId: number, data: UpdateCommunityForm): Promise<ICommunity|null> {
     const res = await request({
       method: 'patch',
       url: `/api/community/${communityId}`,
       data,
-      profile
     })
     if(res.err) {
       return null
@@ -94,11 +85,10 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async subscribeCommunity(profile: ProfileType, communityId: number): Promise<any|null> {
+  static async subscribeCommunity(communityId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}/subscribe`,
-      profile
     })
     if(res.err) {
       return null
@@ -106,11 +96,10 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async unsubscribeCommunity(profile: ProfileType, communityId: number): Promise<any|null> {
+  static async unsubscribeCommunity(communityId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}/unsubscribe`,
-      profile
     })
     if(res.err) {
       return null

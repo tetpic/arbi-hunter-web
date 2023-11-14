@@ -33,7 +33,7 @@ export default function ResponseModal(props: Props) {
   const [currentCv, setCurrentCv] = useState<ICV>(null)
 
   const submit = (data: {coverLetter: string}) => {
-    ApplicationRepository.patchApplicationRespond(userContext.currentProfile.profileType, args.application.id, data)
+    ApplicationRepository.patchApplicationRespond(args.application.id, data)
     .then(res=> {
       appContext.showSnackbar('Сопроводительное письмо успешно отправлено', SnackbarType.success)
       props.onClose()

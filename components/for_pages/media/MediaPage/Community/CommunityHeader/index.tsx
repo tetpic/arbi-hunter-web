@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import EditSvg from 'components/svg/EditSvg'
 import PhotoCameraSvg from 'components/svg/PhotoCameraSvg'
@@ -16,14 +18,12 @@ import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SettingSvg from 'components/svg/SettingSvg'
-import styles from './index.module.scss'
 
 interface Props {
   community: ICommunity
 }
 
 export default function CommunityHeader({community}: Props) {
-  
   const communityContext = useCommunityContext()
   const userContext = useUserContext()
   const appContext = useAppContext()
@@ -38,7 +38,6 @@ export default function CommunityHeader({community}: Props) {
   }
 
   const size = 114
-
   const isAdmin = community.profile?.id === userContext.currentProfile?.id
 
   const camera = (
@@ -67,17 +66,21 @@ export default function CommunityHeader({community}: Props) {
       size={/*props.image?114:80*/ size}
       />
       <p className={styles.name}>{community.name}</p>
-      <p className={styles.members} onClick={()=>appContext.showModal(ModalType.MembersModal, [...communityContext.communityMembers.values()])}>
-        <UsersSvg/>
-        {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
-      </p>
       {
-        isAdmin && !isTabletWidth &&
+        userContext.currentProfile &&
+        <p className={styles.members} onClick={()=>appContext.showModal(ModalType.MembersModal, [...communityContext.communityMembers.values()])}>
+          <UsersSvg/>
+          {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
+        </p>
+      }
+      {
+        isAdmin && !isTabletWidth && 
         <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}>Настройки сообщества</Button>
         ||
         isAdmin && isTabletWidth &&
         <Button className={styles.createButton} onClick={()=>appContext.showModal(ModalType.CreateCommunityArticleModal)}><span>Создать запись</span></Button>
         ||
+        userContext.currentProfile &&
         <Button 
         isProcess={isLoading}
         disabled={isLoading}

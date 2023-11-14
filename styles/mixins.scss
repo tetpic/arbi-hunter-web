@@ -291,7 +291,7 @@
 
 @mixin hoverButtonYellow {
   @include hover {
-    background-position: -100%;
+    background-position: 100%;
     // color: $black;
   }
 }
@@ -323,8 +323,6 @@
   cursor: pointer;
   @include transitionDefault;
   height: 40px;
-
-
   display: flex;
   align-items: center;
   justify-content: center;

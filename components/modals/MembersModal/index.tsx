@@ -5,7 +5,6 @@ import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import BackBtn from 'components/ui/BackBtn'
 import UserPic from 'components/ui/UserPic'
-import { useAppContext } from 'context/state'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { useEffect, useState } from 'react'
 import { FILES } from 'types/constants'
@@ -20,7 +19,6 @@ interface Props {
 }
 
 export default function MembersModal(props: Props) {
-  const appContext = useAppContext()
   const communityContext = useCommunityContext()
 
   const [filtered, setFiltered] = useState<IUserProfile[]>([...communityContext.communityMembers.values()])
@@ -44,11 +42,15 @@ export default function MembersModal(props: Props) {
   useEffect(()=>{
     communityContext.setCommunityMembers(page)
     .then(res=> {
+      
       res instanceof Object && setTotal(res.total)
       setFiltered([...communityContext.communityMembers.values()])
       setLength(communityContext.communityMembers.size)
     })
-  }, [page])
+    .catch(err=> {
+      
+    })
+  }, [page, ])
 
 
   const top = (<div className={styles.top}>

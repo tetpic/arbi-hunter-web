@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import dynamic from 'next/dynamic'
 import { useAppContext } from 'context/state'
+import Spinner from 'components/ui/Spinner'
+import { colors } from 'styles/variables'
 
 const FolderManager = dynamic(()=>import('./FolderManager'), {ssr: false})
 const Messages = dynamic(()=>import('./Messages'), {ssr: false})
@@ -54,15 +56,18 @@ export default function Messenger(props: Props) {
 
   return (
     <div className={styles.root}> 
-      {((isTabletWidth && component === ChatComponent.Chat) || !isTabletWidth) &&
-        <Chats chats={chats} chatId={chatContext.currentChatId} onSelect={handleSelectChat} />
+      {((isTabletWidth && component === ChatComponent.Chat) || !isTabletWidth) && 
+        <Chats chats={[...chats.values()]} chatId={chatContext.currentChatId} onSelect={handleSelectChat} />
       }
-      <ChatDialogWrapper chatId={chatContext.currentChatId||chats[0]?.id} chat={chats.find(c=> c.id === chatContext.currentChatId)||chats[0]}>
-        {chatContext.foldersActive&& ((isTabletWidth && component === ChatComponent.Dialog) || !isTabletWidth) &&
+      <ChatDialogWrapper chatId={chatContext.currentChatId||[...chats.values()][0]?.id} chat={chats.get(chatContext.currentChatId)||[...chats.values()][0]}>
+        {chatContext.foldersActive&& ((isTabletWidth && component === ChatComponent.Dialog) || !isTabletWidth) && !chatContext.loading &&
           <FolderManager/>
           ||
-        !chatContext.foldersActive && ((isTabletWidth && component === ChatComponent.Dialog) || !isTabletWidth) &&
+        !chatContext.foldersActive && ((isTabletWidth && component === ChatComponent.Dialog) || !isTabletWidth) && !chatContext.loading && chatContext.chats.size > 0 &&
           <Messages onBackClick={()=>setComponent(ChatComponent.Chat)}/>
+          ||
+        chatContext.loading &&
+          <Spinner size={32} color={colors.yellow}/>
         }
       </ChatDialogWrapper>
     </div>

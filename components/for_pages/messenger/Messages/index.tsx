@@ -9,7 +9,7 @@ import MicrophoneSvg from 'components/svg/MicrophoneSvg'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
-import { RefObject, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
 import { MessageType } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
@@ -21,6 +21,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import RecordSvg from 'components/svg/RecordSvg'
 import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
+import { IUserProfile } from 'data/interfaces/IUser'
 
 
 interface Props {
@@ -32,12 +33,10 @@ export default function Messages(props: Props) {
   const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
   const {isTabletWidth} = useResize()
+  const [collocutor, setCollocutor] = useState<IUserProfile|null>(null)
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
-  
-
-  const collocutor = dialog.chat.profiles[0].role === 'admin'?dialog.chat.participant:dialog.chat.profile
 
   const sendMessage = (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedImages.size === 0) {
@@ -80,19 +79,29 @@ export default function Messages(props: Props) {
     })
   }
 
-  const isHirer = userContext.currentProfile.profileType === ProfileType.Hirer
+  const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
+
+  useEffect(()=>{
+    setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
+  }, [dialog.chat])
 
   return (
     <div className={styles.root}> 
       <div className={styles.top}>
-        {isTabletWidth &&
-          <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
-        }
-        <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
-        <p className={styles.name}>{/* dialog.chat?.participant.company||*/collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
-        <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
-        {!isTabletWidth &&
-          <ThreeDotsButton className={styles.dots}/>
+        {!loading && dialog.chat &&
+        <>
+          {isTabletWidth &&
+            <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
+          }
+          <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
+          <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
+          <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
+          {!isTabletWidth &&
+            <ThreeDotsButton className={styles.dots}/>
+          }
+        </>
+        ||
+        <Spinner size={48} color={colors.yellow}/>
         }
       </div>
       <div className={styles.invite}>
@@ -113,15 +122,11 @@ export default function Messages(props: Props) {
       loader={<Spinner size={24} color={colors.yellow}/>}
       hasMore={dialog.totalMessages > dialog.messages.size}
       scrollThreshold={0.6}>
-        {/* <div className={styles.messagesItems}> */}
-          {
-            messages.size>0&&[...messages.values()].map(el=> {
-              return <MessageFactory profileId={userContext.currentProfile.id} message={el} application={chat.application} />
-            })
-            // ||
-            // <p className={'empty'} style={{marginBottom: 24}}>Нет сообщений</p>
-          }
-        {/* </div> */}
+        {
+          messages.size>0&&[...messages.values()].map(el=> {
+            return <MessageFactory profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
+          })
+        }
       </InfiniteScroll>
       </div>
       <div className={styles.newMessage} onPaste={onPasteHandler}>

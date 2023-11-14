@@ -35,6 +35,7 @@ enum Pages {
 
 export interface IChatFilterModalProps {
   vacancies: (IVacancy|null)[],
+  filters?: IChatsFilter
   onSubmit?: (data: IChatsFilter)=> void,
   onClear?: () => void
 }
@@ -53,10 +54,10 @@ export default function ChatFilterModal(props: Props) {
 
   const formik = useFormik<IChatsFilter>({
     initialValues: {
-      vacanciesIds: [],
-      status: 'all',
-      unreaded: false,
-      inactive: false
+      vacanciesIds: args.filters?.vacanciesIds||[],
+      status: args.filters?.status||'all',
+      unreaded: args.filters?.unreaded||false,
+      inactive: args.filters?.inactive||false
     },
     onSubmit: submit
   })
@@ -165,7 +166,7 @@ export default function ChatFilterModal(props: Props) {
     )
   }
 
-  return (<ModalLayout>
+  return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>
       {body}
     </ModalBody>

@@ -8,7 +8,7 @@ import request from 'utils/request'
 
 export default class ArticlesRepository {
 
-  static async getSavedByCurrentUser(profileType: ProfileType, data?: {page?: number, limit?: number|string, full?: boolean}): Promise<IPagination<IArticle>|null> {
+  static async getSavedByCurrentUser(data?: {page?: number, limit?: number|string, full?: boolean}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/article',
@@ -17,7 +17,6 @@ export default class ArticlesRepository {
         savedByCurrentProfile: true,
         limit: LOAD_LIMIT
       },
-      profile: profileType
     })
     if(res.err) {
       return null
@@ -36,7 +35,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}, profile?: ProfileType): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/article',
@@ -46,7 +45,6 @@ export default class ArticlesRepository {
         full: full,
         ...data,
       },
-      profile
     })
     if(res.err) {
       return null
@@ -58,7 +56,6 @@ export default class ArticlesRepository {
     const res = await request({
       method: 'delete',
       url: `/api/article-community/${id}`,
-      profile
     })
     if(res.err) {
       return null
@@ -71,7 +68,6 @@ export default class ArticlesRepository {
       method: 'get',
       url: `/api/article-category/${id}`,
       data
-
     })
     if(res.err) {
       return null
@@ -95,11 +91,17 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getCommunityNewsList(profile: ProfileType, communityId: number, page: number): Promise<IPagination<IArticle>|null> {
+  static async getCommunityNewsList(communityId: number, page: number): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article?sort=createdAt,DESC&articleType=news&limit=${LOAD_LIMIT}&page=${page}&communities=${communityId}`,
-      profile
+      url: '/api/article',
+      data: {
+        sort: 'createdAt,DESC',
+        articleType: CategoryType.News,
+        limit: LOAD_LIMIT,
+        page,
+        communities: communityId
+      }
     })
     if(res.err) {
       return null
@@ -107,11 +109,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async addLikeToArticle(profile: ProfileType, articleId: number ): Promise<any|null> {
+  static async addLikeToArticle(articleId: number ): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}/like`,
-      profile
     })
     if(res.err) {
       return null
@@ -119,11 +120,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async removeLikeFromArticle(profile: ProfileType, articleId: number): Promise<any|null> {
+  static async removeLikeFromArticle(articleId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}/unlike`,
-      profile
     })
     if(res.err) {
       return null
@@ -131,11 +131,10 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async addArticleToSaved(profile: ProfileType, id: number): Promise<any|null> {
+  static async addArticleToSaved(id: number): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${id}/save`,
-      profile
     })
     if(res.err) {
       return null
@@ -143,12 +142,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async createNews(profile: ProfileType, data: ICreateNews): Promise<IArticle|null> {
+  static async createNews(data: ICreateNews): Promise<IArticle|null> {
     const res = await request({
       method: 'post',
       url: '/api/article-community',
       data, 
-      profile
     })
     if(res.err) {
       return null
@@ -156,12 +154,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async editCommunityNews(profile: ProfileType, data: ICreateNews, articleId: number): Promise<IArticle|null> {
+  static async editCommunityNews(data: ICreateNews, articleId: number): Promise<IArticle|null> {
     const res = await request({
       method: 'patch',
       url: `/api/article-community/${articleId}`,
       data,
-      profile
     })
     if(res.err) {
       return null
@@ -169,7 +166,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getStories(data = {sort: 'publishedAt,DESC', /*forLastNumberOfDays: 7, */ isTop: false}): Promise<IPagination<IArticle>|null> {
+  static async getStories(data = {sort: 'publishedAt,DESC', isTop: false}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/story',

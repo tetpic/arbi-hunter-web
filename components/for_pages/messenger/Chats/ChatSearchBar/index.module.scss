@@ -26,8 +26,8 @@
   padding: 4px 8px ;
   column-gap: 8px;
   height: 40px;  
-  width: -webkit-fill-available;
-  width: fill-available;
+  // width: -webkit-fill-available;
+  // width: fill-available;
   width: stretch;
   @include transitionDefault;
   @include mq($TabletWidth, max) {

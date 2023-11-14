@@ -10,11 +10,10 @@ interface Props {
 
 export const getServerSideProps = (async (context: {req: { cookies: { [x: string]: any } } }) => {
   const profileType = context.req.cookies[CookiesType.profileType]
-
   const token = context.req.cookies[CookiesType.accessToken]
   if(profileType && token) {
     try {
-      const myCommunity = await CommunitiesRepository.myCommunity(profileType, token).then(res=> res.data[0])
+      const myCommunity = await CommunitiesRepository.myCommunity().then(res=> res.data[0])
       return {props: {community: myCommunity}}
     }
     catch(err) {
@@ -24,7 +23,6 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
   else {
     return {redirect: {destination: '/media'}}
   }
-
 }) 
 
 

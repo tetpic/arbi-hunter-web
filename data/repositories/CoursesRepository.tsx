@@ -7,11 +7,10 @@ import request from 'utils/request'
 
 export default class CoursesRepository {
 
-  static async getCourseModules(courseId: number, lang: Languages, token?: string): Promise<ICourseBlock[]|null> {
+  static async getCourseModules(courseId: number, lang: Languages): Promise<ICourseBlock[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-module?sort=order,ASC&s={"courseId": ${courseId}}&language=${lang}`,
-      token
     })
     if(res.err) {
       return null
@@ -19,10 +18,13 @@ export default class CoursesRepository {
     return res.data
   }
 
-  static async getCourseById(id: number, token?: string): Promise<ICourse|null> {
+
+  //передаем токен и профиль при запросе с сервера, для красивого заголовка страницы
+  static async getCourseById(id: number, profile?: ProfileType, token?: string): Promise<ICourse|null> {
     const res = await request({
       method: 'get',
       url: `/api/course/${id}`,
+      profile,
       token
     })
     if(res.err) {
@@ -89,11 +91,15 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getStepsByBlockId(profile: ProfileType, lang: Languages, blockId: number): Promise<any|null> {
+  static async getStepsByBlockId(lang: Languages, blockId: number): Promise<any|null> {
     const res = await request({
       method: 'get',
-      url: `/api/course-block-step?sort=order,ASC&s={"courseBlockId":${blockId}}&lang=${lang}`,
-      profile
+      url: '/api/course-block-step',
+      data: {
+        sort:'order,ASC',
+        s: `{"courseBlockId":${blockId}}`,
+        lang
+      }
     })
     if(res.err) {
       return null
@@ -101,12 +107,10 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseBlock(profile: ProfileType, lang: Languages, courseId: number, token?: string): Promise<IPagination<ICourseBlock>|null> {
+  static async getCourseBlock(lang: Languages, courseId: number): Promise<IPagination<ICourseBlock>|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block?sort=order,ASC&s={"courseId":${courseId}}&language=${lang}`,
-      profile,
-      token
     })
     if(res.err) {
       return null
@@ -114,11 +118,10 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCourseSteps(profile: ProfileType, lang: Languages, courseId: number): Promise<IPagination<ICourseStep>|null> {
+  static async getCourseSteps(lang: Languages, courseId: number): Promise<IPagination<ICourseStep>|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-block-step/?sort=order,ASC&s={"courseBlockId":${courseId}}&language=${lang}`,
-      profile
     })
     if(res.err) {
       return null
@@ -126,12 +129,11 @@ export default class CoursesRepository {
     return res
   }
 
-  static async setStepAnswer(profile: ProfileType, data: ICourseStepAnswer ): Promise<any|null> {
+  static async setStepAnswer(data: ICourseStepAnswer ): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/course-block-step-answer',
       data,
-      profile
 
     })
     if(res.err) {
@@ -140,7 +142,7 @@ export default class CoursesRepository {
     return res
   }
 
-  static async getCoursesNews(profile: ProfileType, data: {lang: Languages, courseId: number, limit: number, page: number, full: boolean}): Promise<IArticle[]|null> {
+  static async getCoursesNews(data: {lang: Languages, courseId: number, limit: number, page: number, full: boolean}): Promise<IArticle[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/article',
@@ -149,7 +151,6 @@ export default class CoursesRepository {
         sort: 'createdAt,DESC',
         ...data
       },
-      profile
     })
     if(res.err) {
       return null

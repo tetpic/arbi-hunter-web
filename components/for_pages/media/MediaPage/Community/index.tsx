@@ -11,6 +11,7 @@ import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import BackTextButton from 'components/ui/BackTextButton'
 import { useRouter } from 'next/router'
+import { useUserContext } from 'context/user_state'
 
 const CommunityContent = dynamic(()=> import('./CommunityContent'), {ssr: false})
 const CommunityMembers = dynamic(()=> import('./CommunityMembers'), {ssr: false})
@@ -22,13 +23,13 @@ interface Props {
 
 export default function CommunityPage({community, id}: Props) {
   const communityContext = useCommunityContext()
+  const userContext = useUserContext()
   const {isTabletWidth} = useResize()
   const [loading, setLoad] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
   const contentLength = useRef(communityContext.communityNews.size)
   const router = useRouter()
-
   const com = communityContext.currentCommunity||community
 
   useEffect(()=>{
@@ -54,6 +55,8 @@ export default function CommunityPage({community, id}: Props) {
          setTotal(res.total)        
         }
       })
+    }
+    if(userContext.currentProfile) {
       communityContext.setCommunityMembers(1)
       .then(_=> {
         setLoad(false)

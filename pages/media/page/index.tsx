@@ -1,4 +1,4 @@
-import { CategoryType, CookiesType } from 'types/enums'
+import { CategoryType } from 'types/enums'
 import CommunitiesPage, { MediaPageNav } from 'components/for_pages/media/MediaPage'
 import ContentLayout from 'components/layout/ContentLayout'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
@@ -17,8 +17,6 @@ interface Props extends Query{
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
     const category = context.query?.category||null
     const page = context.query?.page||null
-    const profileType = context.req.cookies[CookiesType.profileType]
-    const token = context.req.cookies[CookiesType.accessToken]
     const categories = await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit: 20})
     return {props: {category: category, categories: categories.data, page: page,}}
   }) 

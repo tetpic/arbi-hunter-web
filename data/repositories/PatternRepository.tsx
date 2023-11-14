@@ -1,14 +1,12 @@
 import { IPattern, IPatternBase, IPatternRequest, IPatternResponce } from 'data/interfaces/IPattern'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import { PatternTypes } from 'types/enums'
 import request from 'utils/request'
 
 export default class PatternRepository {
-  static async getPatternByType(data: PatternTypes, profile: ProfileType): Promise<IPattern|null> {
+  static async getPatternByType(data: PatternTypes): Promise<IPattern|null> {
     const res = await request({
       method: 'get',
       url: `/api/cover-letter?type=${data}`,
-      profile
     })
     if(res.err) {
       return null
@@ -16,12 +14,11 @@ export default class PatternRepository {
     return res
   }
 
-  static async getPatternText(data: IPatternRequest, profile: ProfileType): Promise<IPatternResponce|null> {
+  static async getPatternText(data: IPatternRequest): Promise<IPatternResponce|null> {
     const res = await request({
       method: 'get',
       url: '/api/cover-letter/',
       data,
-      profile
     })
     if(res.err) {
       return null
@@ -29,12 +26,11 @@ export default class PatternRepository {
     return res
   }
 
-  static async createPatternText(data: IPatternBase, profile: ProfileType): Promise<any|null> {
+  static async createPatternText(data: IPatternBase): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/cover-letter',
       data,
-      profile
     })
     if(res.err) {
       return null
@@ -42,12 +38,11 @@ export default class PatternRepository {
     return res
   }
 
-  static async editPatternById(data: IPatternBase, id: number, profile: ProfileType): Promise<any|null> {
+  static async editPatternById(data: IPatternBase, id: number): Promise<any|null> {
     const res = await request({
       method: 'patch',
       url: `/api/cover-letter/${id}`,
       data,
-      profile
     })
     if(res.err) {
       return null

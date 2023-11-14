@@ -2,7 +2,6 @@ import Button from 'components/ui/Button'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useManagerContext } from 'context/manager_state'
-import { useUserContext } from 'context/user_state'
 import { IManager, IManagerCreate } from 'data/interfaces/IManager'
 import ManagerRepository from 'data/repositories/ManagerRepository'
 import { useState } from 'react'
@@ -19,8 +18,6 @@ interface ManagerProps {
 }
 
 export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
-  
-  const {currentProfile} = useUserContext()
   const managerContext = useManagerContext()
   const [loading, setIsLoading] = useState<boolean>(false)
   const [dropdownActive, setDropDown] = useState<boolean>()
@@ -39,7 +36,7 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
       phone: manager.phone
     }
     setIsLoading(true)
-    ManagerRepository.editManagerById(data, manager.id, currentProfile.profileType)
+    ManagerRepository.editManagerById(data, manager.id)
     .then(res=>{
       setIsLoading(false)
       managerContext.setManagers()
