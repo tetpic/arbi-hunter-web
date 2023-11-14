@@ -3,18 +3,16 @@ import {useGLTF} from '@react-three/drei'
 export interface IThreeModelProps {
     model: 'man' | 'woman'
     body?: number,
-    bodyVariant?: number
     hair?: number
     head?: number
     headVariant?: number
     cap?: number
     chain?: number
-    chainVariant?: number
     face?: number
     glasses?: number
     jacket?: number
-    jacketVariant?: number
     eye?: number
+    size?: number
 }
 
 export function ThreeModel(props: IThreeModelProps) {
@@ -28,8 +26,8 @@ export function ThreeModel(props: IThreeModelProps) {
     return (
         <group {...props} dispose={null}>
             {typeof props.body !== 'undefined' && props.body !== null && <mesh
-                geometry={nodes[`Body_${props.body}${props.bodyVariant?'_'+props.bodyVariant:'_0'}`].geometry}
-                material={materials[`Body_${props.body}`]}
+                geometry={nodes[`Body_${props.body}${props.body?'_'+props.body:'_0'}`].geometry}
+                material={materials['Body_0']}
             />}
             {typeof props.face !== 'undefined' && props.face !== null && <mesh
                 geometry={nodes[`Face_${props.face}`].geometry}
@@ -48,19 +46,19 @@ export function ThreeModel(props: IThreeModelProps) {
                 material={materials[`Cap_${props.cap}`]}
             />}
             {typeof props.chain !== 'undefined' && props.chain !== null && <mesh
-                geometry={nodes[`Chain_${props.chain}${props.chainVariant?'_'+props.chainVariant:'_0'}`].geometry}
+                geometry={nodes[`Chain_${props.chain}${props.size?'_'+props.size:'_0'}`].geometry}
                 material={materials[`Chain_${props.chain}`]}
             />}
             {typeof props.head !== 'undefined' && props.head !== null && <mesh
-                geometry={nodes[`Head_${props.head}${props.headVariant?'_'+props.headVariant:'_0'}`].geometry}
-                material={materials[`Head_${props.head}`]}
+                geometry={nodes[`Head_${props.head}${props.size?'_'+props.size:'_0'}`].geometry}
+                material={materials['Head_0']}
             />}
             {typeof props.glasses !== 'undefined' && props.glasses !== null &&  <mesh
                 geometry={nodes[`Glasses_${props.glasses}`].geometry}
                 material={materials[`Glasses_${props.glasses}`]}
             />}
             {typeof props.jacket !== 'undefined' && props.jacket !== null &&  <mesh
-                geometry={nodes[`Jacket_${props.jacket}${props.jacketVariant?'_'+props.jacketVariant:'_0'}`].geometry}
+                geometry={nodes[`Jacket_${props.jacket}${props.size?'_'+props.size:'_0'}`].geometry}
                 material={materials[`Jacket_${props.jacket}`]}
             />}
         </group>

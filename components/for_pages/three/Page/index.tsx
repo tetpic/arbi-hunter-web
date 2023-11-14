@@ -7,21 +7,25 @@ import Button from 'components/ui/Button'
 interface Props {
 }
 
-function generateVariants(obj: {[key: string]: number[]|string[]}, type: 'man'|'woman') {
+function generateVariants(obj: {[key: string]: number[]}, type: 'man'|'woman') {
   const entries = Object.entries(obj)
   const combinations: any[] = []
-  entries.forEach(([k, v]) => {
-    v.forEach((el: any)=> {
-      combinations.push({
-        model: type,
-        face: 0,
-        body: 0,
-        head: 0,
-        eye: 0, 
-        hair: 0,
-        jacket: 0,
-        [k]: el, 
-       })
+  const [size, ...params] = entries
+  size[1].forEach(s=> {
+    params.forEach(([k, v]) => {
+      v.forEach((el: any)=> {
+        combinations.push({
+          model: type,
+          face: 0,
+          body: s,
+          head: 0,
+          eye: 0, 
+          hair: 0,
+          jacket: 0,
+          size: s,
+          [k]: el, 
+        })
+      })
     })
   })
   return combinations
@@ -30,9 +34,10 @@ function generateVariants(obj: {[key: string]: number[]|string[]}, type: 'man'|'
 
 // cap меняют почему-то расположение моделей относительно камеры
 const nodesVariants = {
-  face: [0, 1],
+  size: [0,1,2],
+  // body: [0],
+  face: [0,1],
   head: [0,1,2],
-  headVariant: [0,1,2,],
   glasses: [0,1,2,3],  
   chain: [0,1,2,3,4,5],
   jacket: [0,1,2,3,4,5,6],
@@ -41,15 +46,15 @@ const nodesVariants = {
 }
 
 const womanNodesVariants = {
+  size: [0,1,2],
+  // body: [0],
   head: [0,1],
-  headVariant: [0,1],
   face: [0],
-  body: [0,1,2],
   cap: [0,1,2,3],
   chain: [0,1,2,3,4],
   glasses: [0,1,2,3],
   hair: [0,1,2,3,4],
-  jacket: [0,1,2,3,4,5]
+  jacket: [0,1,2,3,4,5],
 }
 
 export default function ThreePage(props: Props) {
@@ -91,17 +96,17 @@ export default function ThreePage(props: Props) {
   const variant4: IThreeModelProps = {
     model: 'woman',
     body: 0,
-    bodyVariant: 0,
+    size: 0,
     hair: 0,
     cap: 0,
     chain: 0,
-    chainVariant: 0,
     face: 0,
     glasses: 0, 
     jacket: 0,
-    jacketVariant: 0,
     eye: 0
   }
+
+  console.log(combinations)
 
   return (<>
   <div className={styles.buttons}>
@@ -112,6 +117,7 @@ export default function ThreePage(props: Props) {
   <div className={styles.root}> 
   
     {combinations&&combinations.map(el=> {
+
       return (<ThreeModelVariant {...el}/>)
     })}
     
