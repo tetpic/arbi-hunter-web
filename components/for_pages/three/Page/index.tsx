@@ -106,7 +106,6 @@ export default function ThreePage(props: Props) {
     eye: 0
   }
 
-  console.log(combinations)
 
   return (<>
   <div className={styles.buttons}>
