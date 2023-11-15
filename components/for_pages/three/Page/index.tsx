@@ -20,7 +20,7 @@ function generateVariants(obj: {[key: string]: number[]}, type: 'man'|'woman') {
           body: s,
           head: 0,
           eye: 0, 
-          hair: 0,
+          hair: k==='cap'?0:1,
           jacket: 0,
           size: s,
           [k]: el, 
@@ -42,7 +42,7 @@ const nodesVariants = {
   chain: [0,1,2,3,4,5],
   jacket: [0,1,2,3,4,5,6],
   hair: [0,1,2,3,5],
-  cap:[0,1,2],
+  cap:[0,1,2,3],
 }
 
 const womanNodesVariants = {
@@ -50,10 +50,10 @@ const womanNodesVariants = {
   // body: [0],
   head: [0,1],
   face: [0],
-  cap: [0,1,2,3],
+  // cap: [0,1,2,3],
   chain: [0,1,2,3,4],
   glasses: [0,1,2,3],
-  hair: [0,1,2,3,4],
+  hair: [0,1,2,3,4,5,6,7,8],
   jacket: [0,1,2,3,4,5],
 }
 

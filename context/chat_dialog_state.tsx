@@ -21,7 +21,7 @@ const markReadList: number[] = []
 export interface IDialogState {
   chat: IChat | null,
   messages: Map<number|string, IMessage>
-
+  
   totalMessages: number
   fetchMore: () => void
   loading: boolean

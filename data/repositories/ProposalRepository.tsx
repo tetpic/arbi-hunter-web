@@ -15,10 +15,13 @@ export default class ProposalRepository {
     return res
   }
 
-  static async getProposalByProfileType(): Promise<IProposal[]|null> {
+  static async getProposalByProfileType(data?: {s: {cvId?: number, vacancyId?: number}}): Promise<IProposal[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/proposal',
+      data: {
+        s: JSON.stringify(data.s)
+      }
     })
     if(res.err) {
       return null

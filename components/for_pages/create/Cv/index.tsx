@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -118,7 +118,7 @@ export default function Cv(props: Props) {
     vacancyLookType: props.cv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
     workExperiencePresense: props.cv?.workExperiencePresense||WorkExperiencePresense.Absent,
     education: props.cv?.education||EducationTypes.Secondary,
-    relocation: props.cv?.relocation||null,
+    relocation: props.cv?.relocation||Answer.No,
     position: props.cv?.position||'',
     nativeLanguage: props.cv?.nativeLanguage||userContext.user?.language||Languages.ru,
     categoriesIds: props.cv?.categoriesIds||null,
@@ -179,12 +179,50 @@ export default function Cv(props: Props) {
   const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
 
   const nextPageValidator = (pageNumber?: number) => {
+    const setErr = (val: string, err?: string) => {
+      formik.setFieldTouched(val, true).then(_=>{
+        formik.setFieldError(val, err||' ')
+      })
+    }
+
     switch(progress) {
       case 1:
-        creationContext.helpObjects.categoryIds.length > 0
-        ? setProgress(pageNumber||progress+1)
+        creationContext.helpObjects.categoryIds.length > 0 ? 
+        setProgress(pageNumber||progress+1)
         : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       break
+      case 2: 
+        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
+          setErr('salary')
+          return
+        }
+        else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
+          setErr('commission')
+          return
+        }
+        else if(formik.values.compensation === CompensationType.Gybrid) {
+          if(!formik.values.commission||formik.values.commission < 1) {
+            setErr('commission')
+          }
+          if(!formik.values.salary||formik.values.salary < 1) {
+            setErr('salary')
+          }
+          if(formik.values.commission > 0 && formik.values.salary > 0) {
+            setProgress(pageNumber||progress+1)
+          }
+        }
+        else {
+          setProgress(pageNumber||progress+1)
+        }
+      break
+      case 5: 
+        if(formik.values.bio.trim().length < 1) {
+          setErr('bio', 'Напишите подробнее о себе')
+        } else {
+          setProgress(pageNumber||progress+1)
+        }
+      break
+
       default :
         setProgress(pageNumber||progress+1)
     }
@@ -245,7 +283,7 @@ export default function Cv(props: Props) {
               <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button spinner={loading} disabled={loading} className={classNames(styles.buttonYellow, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+              <Button isProcess={loading} spinner={loading} disabled={loading} className={classNames(styles.buttonYellow, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
             }
           </div>
         </Form>

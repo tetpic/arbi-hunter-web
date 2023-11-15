@@ -7,6 +7,7 @@ import { ISearchCityResult, ISearchCountryResult } from 'data/interfaces/ILocati
 import { useState } from 'react'
 import { useFormikContext } from 'formik'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   id?: number
@@ -14,6 +15,7 @@ interface Props {
 
 export default function WorkPlace(props: Props) {
   const cvContext = useCreateVcCvContext()
+  const userContext = useUserContext()
 
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
 
@@ -25,6 +27,7 @@ export default function WorkPlace(props: Props) {
   }
 
   const countryHandler = (c: ISearchCountryResult) => {
+    
     setCurrentCountryCode(c.country_code)
     const cvHelpers = cvContext.helpObjects
     cvContext.setHelpObjects({...cvHelpers, countryId: c.geoname.geonameid})
@@ -45,7 +48,7 @@ export default function WorkPlace(props: Props) {
       <DropDownInput
       onSetOption={countryHandler} 
       name={'countryName'} 
-      value = {cvContext?.currentVc?.country?.locName||''}
+      value = {cvContext?.currentVc?.country?.locName||userContext.currentProfile.country.locName}
       labelName={'Страна где находится офис:'}
       requestFn={LocationRepository.searchCountry} 
       />
@@ -54,7 +57,7 @@ export default function WorkPlace(props: Props) {
       onSetOption={cityHandler} 
       name={'cityName'} 
       country={currentCountryCode}
-      value = {cvContext?.currentVc?.city?.locName||''}
+      value = {cvContext?.currentVc?.city?.locName||userContext.currentProfile.city.locName}
       labelName={'Город где находится офис:'}
       requestFn={LocationRepository.searchCity} 
       />

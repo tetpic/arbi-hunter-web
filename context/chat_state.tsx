@@ -30,7 +30,6 @@ interface IState {
   removeChatFolder: (id: number) => Promise<boolean> 
   setChatsFromFolder: (name: string) => void
   chatsRef:  MutableRefObject<Map<number, IChat>>
-
 }
 
 
@@ -94,7 +93,7 @@ export function ChatWrapper(props: Props) {
   const init = async () => {
     await loadChats(1)
     await setFoldersFromInit()
-    setLoading(false)
+    setTimeout(()=>setLoading(false), 300)
   }
 
   const fetchMore = async () => {
@@ -103,7 +102,7 @@ export function ChatWrapper(props: Props) {
   }
 
   const setFilter = (data?: IChatsFilter) => {
-    debugger
+    
     if(!data) {
       setChats(chatsRef.current)
       setFilterState(null)
@@ -260,7 +259,6 @@ export function ChatWrapper(props: Props) {
       debouncedReconnect()
     }
   }, [windowFocused])
-
 
 
   const value: Partial<IState> = {

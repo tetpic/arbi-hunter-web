@@ -80,8 +80,6 @@ export function VacancyWrapper(props: Props) {
     .catch(err=> false)
   }
 
-  
-
   const setSavedVacancies = () => {
     VacancyRepository.getSavedFromCurrentProfile()
     .then(res=> setSavedVCState(res))
@@ -111,7 +109,7 @@ export function VacancyWrapper(props: Props) {
 
   const editVacancy = async(v: IVacancyCreate, id: number, published?: 'archive'|'active'): Promise<boolean> => {
     return VacancyRepository.editVacancyById(v, id)
-    .then(res=>{
+    .then(_=>{
       if(published !==undefined) {
         published==='active'?setActiveVacancies():setArchiveVacancies()
       }

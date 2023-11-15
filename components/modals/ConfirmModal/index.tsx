@@ -14,9 +14,8 @@ export interface IConfirmModalProps {
 }
 
 export default function ConfirmModal(props: Props) {
-
   const appContext = useAppContext()
-  const modalArguments = appContext.modalArguments as {text: string, callback: Function} 
+  const modalArguments = appContext.modalArguments as IConfirmModalProps 
 
   const onTrueClickHandler = () => {
     modalArguments.callback()

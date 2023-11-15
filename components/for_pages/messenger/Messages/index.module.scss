@@ -85,7 +85,7 @@
   flex-direction: column;
   overflow: auto;
   color: $white;
-  padding-inline: 26px;
+  // padding-inline: 26px;
   font-size: $smallText;
   font-weight: $regular;
   @include mq($TabletWidth, max) {
@@ -112,6 +112,7 @@
 .newMessage {
   border-top: 2px $grey solid;
   display: flex;
+  row-gap: 8px;
   align-items: center;
   padding: 12px 24px;
   justify-content: space-between;
@@ -120,13 +121,17 @@
     font-size: $mediumText;
     font-weight: $medium;
     color: $white;
-    width: calc(100% - 40px);
+    width: calc(100% - 76px);
     &:focus {
       &::placeholder {
         color: transparent;
       }
     }
   }
+}
+
+.paperClip {
+  cursor: pointer;
 }
 
 .imagesWrapper {
@@ -175,6 +180,9 @@
   display: flex;
   align-items: center;
   column-gap: 8px;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 4px;
   span {
     font-size: $smallText;
     color: $greyLight;

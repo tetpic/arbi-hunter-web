@@ -18,15 +18,7 @@ interface HelpObject {
   categoryIds?: ISpecializationCategory[]
 }
 
-const initialHelpObject: HelpObject = {
-  activeSources: new Map, 
-  skills: new Map, 
-  languageKnowledges: new Map, 
-  sources: [],
-  cityId: null,
-  countryId: null,
-  categoryIds: []
-}
+
 
 interface IState {
   currentCv: ICVCreate,
@@ -66,6 +58,16 @@ interface Props {
 
 export function CreateVcCvWrapper(props: Props) {
   const userContext = useUserContext()
+
+  const initialHelpObject: HelpObject = {
+    activeSources: new Map, 
+    skills: new Map, 
+    languageKnowledges: new Map, 
+    sources: [],
+    cityId: userContext.currentProfile?.cityId,
+    countryId: userContext.currentProfile?.countryId,
+    categoryIds: []
+  }
 
   const [currentCv, setCv] = useState<ICVCreate>()
   const [currentVc, setVc] = useState<IVacancy>()
@@ -123,7 +125,6 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
-    
     if(type === 'vc') {
       const vcItem = item as IVacancy
       setHelp(state=>{return {...state, 
@@ -156,7 +157,6 @@ export function CreateVcCvWrapper(props: Props) {
 
   const getCurrentVc = (id: number, vacancy?: IVacancy) => {
     if(vacancy) {
-      
       setEditedItem(vacancy, 'vc')
       return
     }

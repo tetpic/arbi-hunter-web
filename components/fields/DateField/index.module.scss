@@ -15,9 +15,9 @@
   }
 }
 
-.withLabel{
-  top: 69%
-}
+// .withLabel{
+//   top: 69%
+// }
 
 .input {
   color: #454C68;
@@ -169,4 +169,9 @@
     pointer-events: none;
     left: 51px;
   }
+}
+
+.input {
+  background-color: $grey;
+  border-radius: 10px;
 }

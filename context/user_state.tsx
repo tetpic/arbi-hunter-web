@@ -2,11 +2,12 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUser, IUserProfile } from 'data/interfaces/IUser'
 import {createContext, MutableRefObject, useContext, useEffect, useRef, useState} from 'react'
 import Cookies from 'js-cookie'
-import { CookiesType } from 'types/enums'
+import { CookiesType, SnackbarType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
 import { useRouter } from 'next/router'
+import { useAppContext } from './state'
 
 interface IState {
   token: string,
@@ -43,6 +44,7 @@ export function UserWrapper(props: Props) {
   const [token, setUserToken] = useState<string | null>(props.token ?? null)
   const [user, setUser] = useState<IUser | null>(props.user)
   const [userLoaded, setUserLoaded] = useState<boolean>(false)
+  const appContext = useAppContext()
   const router = useRouter()
 
   const [profileType, setProfileTypeState] = useState<ProfileType>(props.profileType||ProfileType.Employee)
@@ -68,6 +70,10 @@ export function UserWrapper(props: Props) {
       if (data) {
         setUser(data)
         setCurrentProfileState(data.profiles[0])
+        if(data.profiles.length === 0) {
+          appContext.showSnackbar('Аккаунт не существует', SnackbarType.error)
+          router.push('/registration')
+        }
       }
       setUserLoaded(true)
       return data

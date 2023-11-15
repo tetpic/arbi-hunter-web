@@ -32,7 +32,6 @@ export default function Messenger(props: Props) {
   const {isTabletWidth} = useResize()
   const [component, setComponent] = useState<ChatComponent>(ChatComponent.Chat)
 
-
   const handleSelectChat = (chat: IChat) => {
     chatContext.setCurrentChatId(chat.id)
     setComponent(ChatComponent.Dialog)

@@ -90,12 +90,12 @@ export function AppWrapper(props: Props) {
     }, 2000)
   }
 
-  const showModal = <T extends unknown>(type: ModalType, args?: T) => {    
+  const showModal = <T extends unknown>(type: ModalType, args?: T) => { 
+    
     if (props.isMobile && ModalsBottomSheet.includes(type)) {
       showBottomSheet(type, args)
       return
     }
-
     ReactModal.setAppElement('body')
     setModalArguments(args)
     setModal(type)

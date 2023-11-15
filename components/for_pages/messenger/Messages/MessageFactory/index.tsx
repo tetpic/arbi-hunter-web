@@ -42,7 +42,7 @@ export default function MessageFactory(props: Props) {
   const stats = (
     <div className={styles.stats}>
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
-        <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
+      <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
     </div>
   )
 
@@ -56,7 +56,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const assetMessage = (
-    <div className={classNames(side, styles.asset, msg.assets.length === 1&&!msg.message&&styles.single)}>
+    <div className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
       <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{

@@ -13,7 +13,7 @@ export default function VacancyExperience(props: Props) {
     name={'experience'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {value: null, label: 'Без опыта'},
+      {value: WorkExperience.NoExperience, label: 'Без опыта'},
       {value: WorkExperience.From1to3, label: '1-3 года'},
       {value: WorkExperience.From3to6, label: '3-6 лет'},
       {value: WorkExperience.From6, label: 'От 6 лет'}

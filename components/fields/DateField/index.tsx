@@ -11,6 +11,8 @@ import { format } from 'date-fns'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
 import FieldLabel from 'components/ui/FieldLabel'
+import InputField from '../InputField'
+import CalendarSvg from 'components/svg/CalendarSvg'
 
 interface Props extends IField<string> {
   styleType: InputStyleType
@@ -39,7 +41,7 @@ export default function DateField(props: Props) {
             [styles.error]: showError,
             [styles.withIcon]: props.iconName,
             [styles.press]: press,
-          }, styles[props.styleType])}
+          }, /*styles[props.styleType]*/)}
           locale={ru}
           dateFormat="dd/MM/yyyy"
           placeholderText={props.placeholder}
@@ -49,6 +51,20 @@ export default function DateField(props: Props) {
           showMonthDropdown={props.visibleYearSelector}
           dropdownMode="select"
           maxDate={props.maxDate}
+          customInput={
+            <InputField 
+            autocompleteOff={true} 
+            className={classNames(styles.input)}  
+            value={field.value} 
+            labelType={'top'} 
+            name={field.name} 
+            styleType={'default'} 
+            type="text" 
+            color={'default'} 
+            error={meta.error}
+            suffix={<CalendarSvg className={classNames([styles.icon, styles[props.styleType], {[styles.withLabel]: props.label}])}/>}
+            />
+          }
           minDate={props.minDate}
           excludeDates={props.excludeDates}
           onChange={(date) => {

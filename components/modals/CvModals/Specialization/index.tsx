@@ -41,6 +41,10 @@ export default function SpecializationModal(props: Props) {
 
   useEffect(()=>{
     cvContext.setCategories()
+    return ()=>{
+      cvContext.setActiveCategory(null)
+      cvContext.setActiveSubcategory(null)
+    }
   }, [])
 
   const body = (

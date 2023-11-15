@@ -24,8 +24,6 @@ export default function CongratulationsModal(props: Props) {
     </div>
   )
 
-
-
   return (
     <ModalLayout mobileFullScreen className={styles.modalLayout}>
       <ModalBody className={styles.modalBody}>

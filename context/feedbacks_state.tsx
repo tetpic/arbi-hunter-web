@@ -16,7 +16,7 @@ interface IState {
   filteredVcResponses: IApplication[],
   setFilteredVcResponses: (a: IApplication[])=> void
   setVCResponses: (id?:number)=>Promise<boolean>
-  setCVResponses: ()=>Promise<boolean>
+  setCVResponses: (cvId?: number)=>Promise<boolean>
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
@@ -24,7 +24,10 @@ interface IState {
   createProposal: (p: IProposal)=> Promise<boolean>
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
-  
+  setCurrentCvResponsesState: Dispatch<SetStateAction<{
+    cvId?: number;
+    vacancyId?: number;
+  }>>
   filters:Map<FilterItems, FilterItem>
   setFilters: Dispatch<SetStateAction<Map<FilterItems, FilterItem>>>
   filterOptions: Map<FilterItem, FilterItem>
@@ -35,32 +38,9 @@ interface IState {
   getFilterItems : (p: FilterItems)=> FilterItem
 }
 
-const defaultValue: IState = {
-  currentVacancy: null,
-  VCFeedbacks: new Map(),
-  filteredVcResponses: null,
-  setFilteredVcResponses: ()=>null,
-  setVCResponses: ()=>null,
-  setCVResponses: ()=>null,
-  setCurrentVacancy: ()=>null,
-  setResponsesByStat: (v: ProposalRequestType)=> null,
-  currentCV: null,
-  CVFeedbacks: new Map(),
-  createProposal: async()=> null,
-  stats: [],
-  setStats: (vcId: number)=>null,
-  
-  filters: null,
-  setFilters: ()=> null,
-  filterOptions: new Map(),
-  withFilter: ()=>null,
-  setFilterOptions: ()=>null,
-  sorted: [],
-  setSorted: ()=>null,
-  getFilterItems: ()=>null
-}
 
-const FeedbacksContext = createContext<IState>(defaultValue)
+
+const FeedbacksContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -68,6 +48,8 @@ interface Props {
 
 export function FeedbacksWrapper(props: Props) {
   const userContext = useUserContext()
+
+  const [currentCvResponses, setCurrentCvResponsesState] = useState<{cvId?: number, vacancyId?: number}>({})
 
   const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
@@ -96,10 +78,11 @@ export function FeedbacksWrapper(props: Props) {
     }
   }
 
-  const setCVResponses = async(): Promise<boolean> => {
+  const setCVResponses = async(cvId?: number): Promise<boolean> => {
+    
     try{
       setCurrentCVResponsesState(new Map)
-      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType()])
+      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
       allProposals.forEach(async(proposal) => {
         proposal.forEach((p, index) => {
           setCurrentCVResponsesState(state => {
@@ -245,7 +228,6 @@ export function FeedbacksWrapper(props: Props) {
   }, [sorted])
 
   const value: IState = {
-    ...defaultValue,
     currentVacancy,
     VCFeedbacks,
     CVFeedbacks,
@@ -253,10 +235,12 @@ export function FeedbacksWrapper(props: Props) {
     setFilteredVcResponses,
     setVCResponses,
     setCVResponses,
+    currentCV,
+    sorted,
     setCurrentVacancy,
     setResponsesByStat,
     createProposal,
-
+    setCurrentCvResponsesState,
     filters,
     setFilters,
     filterOptions,

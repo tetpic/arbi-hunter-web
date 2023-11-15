@@ -12,7 +12,6 @@ import SoursesModal from 'components/modals/CvModals/Sourses'
 import ProposalModal from 'components/modals/ProposalModal'
 import ProposalTextModal from 'components/modals/ProposalModal/ProposalTextModal'
 import CvVcOptionsModal from 'components/modals/OptionsModal'
-import ConfirmModal from 'components/modals/ConfirmModal'
 import CongratulationsModal from 'components/modals/CongratulationsModal'
 import CreateNewCommunityModal from 'components/modals/CreateNewCommunityModal'
 import EditCommunityModal from 'components/modals/EditCommunityModal'
@@ -29,6 +28,7 @@ import MobileSideBarModal from 'components/modals/MobileSideBarModal'
 import ResponseModal from 'components/modals/ResponseModal'
 import ImageViewerModal from 'components/modals/ImageViewerModal'
 import ChatFilterModal from 'components/modals/ChatFilterModal'
+import ConfirmModal from 'components/modals/ConfirmModal'
 
 
 interface Props { }
@@ -143,8 +143,6 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings}>
           <ChatFilterModal onClose={commonSettings.onRequestClose}/>
         </Modal>
-
-
     }
   })()
 

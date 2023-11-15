@@ -89,6 +89,9 @@ export default function Feedbacks(props: Props) {
 
   useEffect(()=>{
     feedBackContext.setCVResponses()
+    return ()=>{
+      feedBackContext.setCurrentCvResponsesState({})
+    }
   }, [])
 
   return (

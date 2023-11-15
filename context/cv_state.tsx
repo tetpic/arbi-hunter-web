@@ -16,17 +16,7 @@ interface IState {
   editCv: (cv: ICV) => void
 }
 
-const defaultValue: IState = {
-  savedCvs: null,
-  setSavedCvs: async()=> null,
-  saveCv: () => null,
-  removeCvfromSaved: () => null,
-  deleteCv: ()=>null,
-  updateCv: ()=> null,
-  editCv: (cv: ICV)=> null
-}
-
-const CvContext = createContext<IState>(defaultValue)
+const CvContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -40,7 +30,6 @@ export function CvWrapper(props: Props) {
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
 
   const setSavedCvs = async():Promise<boolean> => {
-    
     if(currentProfile.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser()
       .then(res=> {
@@ -85,17 +74,14 @@ export function CvWrapper(props: Props) {
 
   const deleteCv = (id: number) => {
     CvRepository.deleteCV(id)
-    .then(res=> {
-      
+    .then(_=> {
       setSavedCvsState(state=> state.filter(el=> el.id !== id))
     })
   }
 
   const updateCv = (id: number, cv: ICV) => {
-    
     CvRepository.updateCV(id, cv)
-    .then(res=> {
-      
+    .then(_=> {
       setSavedCvs()
     })
   }
@@ -106,7 +92,6 @@ export function CvWrapper(props: Props) {
   }
 
   const value: IState = {
-    ...defaultValue,
     savedCvs,
     setSavedCvs,
     saveCv,

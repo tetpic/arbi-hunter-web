@@ -17,6 +17,7 @@ import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 
 interface Props {
   cv: ICV
@@ -24,7 +25,6 @@ interface Props {
 }
 
 export default function CVItem({cv, isLast}: Props) {
-
   const appContext = useAppContext()
   const profilePageContext = useProfilePageContext()
   const feedBackContext = useFeedbacksContext()
@@ -34,7 +34,7 @@ export default function CVItem({cv, isLast}: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const archiveHandler =()=> {
-    cvContext.updateCv(cv.id, {...cv, published: !cv?.published})
+    cvContext.updateCv(cv.id, {...cv, published: !cv?.published, salary: Number(cv.salary)})
   }
 
   const editHandler =() => {
@@ -42,12 +42,13 @@ export default function CVItem({cv, isLast}: Props) {
   }
 
   const removeHandler =()=> {
-    appContext.showModal(ModalType.ConfirmModal, 
+    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
       {text: 'Вы действительно хотите удалить резюме?',
       callback: ()=>{
         cvContext.deleteCv(cv.id)
       }
-    })
+      }
+    )
   }
 
   const options = (<>
@@ -57,7 +58,7 @@ export default function CVItem({cv, isLast}: Props) {
     <p className={styles.option}>Продлить и Поднять</p>
     <p className={styles.option}>Улучшить</p>
     <p className={styles.option} onClick={editHandler}>Редактировать</p>
-    <p className={styles.option} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p>
+    <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
    </>)
 
   const openModal = () => {
@@ -70,10 +71,9 @@ export default function CVItem({cv, isLast}: Props) {
   }
 
   const showFeedbacksForVacancy = () => {
-    feedBackContext.setCVResponses()
+    // feedBackContext.setCVResponses(cv.id)
+    feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
     profilePageContext.pager(ProfilePages.FeedBacks)
-    
-
   }
 
   const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)

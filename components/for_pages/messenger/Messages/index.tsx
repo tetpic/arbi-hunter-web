@@ -5,7 +5,6 @@ import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import InformationSvg from 'components/svg/InformationSvg'
-import MicrophoneSvg from 'components/svg/MicrophoneSvg'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
@@ -24,6 +23,7 @@ import BackBtn from 'components/ui/BackBtn'
 import { IUserProfile } from 'data/interfaces/IUser'
 
 
+
 interface Props {
   onBackClick: () => void
 }
@@ -33,27 +33,31 @@ export default function Messages(props: Props) {
   const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
   const {isTabletWidth} = useResize()
-  const [collocutor, setCollocutor] = useState<IUserProfile|null>(null)
+  const [collocutor, setCollocutor] = useState<IUserProfile|any>(false)
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
 
-  const sendMessage = (e?: React.KeyboardEvent<HTMLInputElement>) => {
+  const sendMessage = () => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedImages.size === 0) {
       return
     }
+    if(pastedImages.size === 0) {
+      dialog.sendMessage({message:value, type: MessageType.Text})
+    }
+    else {
+      dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: [...pastedImages.values()]})
+    }
+    setValue('')
+    setPastedImages(state=> {
+      state.clear()
+      return new Map(state)
+    })
+  }
+
+  const enterPressHandler = (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key === 'Enter') {
-      if(pastedImages.size === 0) {
-        dialog.sendMessage({message:value, type: MessageType.Text})
-      }
-      else {
-        dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: [...pastedImages.values()]})
-      }
-      setValue('')
-      setPastedImages(state=> {
-        state.clear()
-        return new Map(state)
-      })
+      sendMessage()
     }
   }
   
@@ -82,13 +86,15 @@ export default function Messages(props: Props) {
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
   useEffect(()=>{
-    setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
+    if(dialog.chat) {
+      setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
+    }
   }, [dialog.chat])
 
   return (
     <div className={styles.root}> 
       <div className={styles.top}>
-        {!loading && dialog.chat &&
+        {dialog.chat &&
         <>
           {isTabletWidth &&
             <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
@@ -130,6 +136,7 @@ export default function Messages(props: Props) {
       </InfiniteScroll>
       </div>
       <div className={styles.newMessage} onPaste={onPasteHandler}>
+        <img src={'/icons/paperclip.svg'} alt='paperclip' className={styles.paperClip}/>
         {pastedImages.size>0 && 
         <div className={styles.imagesWrapper}>
           {[...pastedImages.entries()].map(([key, el]) => {
@@ -137,7 +144,7 @@ export default function Messages(props: Props) {
           })}
         </div>
         }
-        <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&sendMessage(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
+        <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
         <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
           {
           dialog.recorder?.current?.state === 'recording' &&
@@ -146,7 +153,10 @@ export default function Messages(props: Props) {
               <RecordSvg/>
             </>
             ||
-            <MicrophoneSvg/>
+            (value.length > 0 || pastedImages.size > 0) &&
+            <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
+            ||
+            <img src={'/icons/microphone.svg'} alt='microphone icon'/>
           }
         </div>
       </div>

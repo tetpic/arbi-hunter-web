@@ -63,7 +63,7 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
     <p className={styles.option}>Продлить и Поднять</p>
     <p className={styles.option}>Улучшить</p>
     <p className={styles.option} onClick={editHandler}>Редактировать</p>
-    <p className={styles.option} onClick={removeHandler}  style={{color: colors.red}}>Удалить</p>
+    <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
    </>)
 
   const openModalHandler =()=> {
@@ -75,16 +75,14 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
     }
   }
 
-
-
-
-  
-
   return (<div className={styles.item}> 
       <div className={styles.top}>
         <p className={styles.name}>{vacancy.name}</p>
         {vacancy.city && vacancy.city.locName &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
+        }
+        {vacancy.isRemote &&
+          <p className={styles.city}>Удаленно</p>
         }
         <SalaryItem vacancy={vacancy}/>
         <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>

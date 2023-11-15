@@ -67,8 +67,8 @@ export default function Vacancy(props: Props) {
     phone: props.vacancy?.phone||userContext.currentProfile?.phone,
     email: props.vacancy?.email||userContext.currentProfile?.email,
     telegramNickname: props.vacancy?.telegramNickname||userContext.currentProfile?.telegramNickname, 
-    cityId: null,
-    countryId: null,
+    cityId: props.vacancy?.cityId||userContext.currentProfile.cityId,
+    countryId: props.vacancy?.countryId||userContext.currentProfile.countryId,
     commission: props.vacancy?.commission||null,
     currency: props.vacancy?.currency|| Currency.RUB,
     skillsIds: props.vacancy?.skillsIds|| [],
@@ -94,6 +94,10 @@ export default function Vacancy(props: Props) {
       cityId,
       countryId,
       categoriesIds: categoryIds.map(el=> el.id)
+    }
+    if(data.isRemote) {
+      sendData.cityId = null
+      sendData.countryId = null
     }
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
@@ -169,6 +173,12 @@ export default function Vacancy(props: Props) {
   }
 
   const nextPageValidator = (pageNumber?: number) => {
+    const setErr = (val: string, err?: string) => {
+      formik.setFieldTouched(val, true).then(_=>{
+        formik.setFieldError(val, err||' ')
+      })
+    }
+
     switch(progress) {
       case 1:
         formik.validateForm()
@@ -179,6 +189,38 @@ export default function Vacancy(props: Props) {
           : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
         })
       break
+      case 4: 
+      if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
+        setErr('salary')
+        return
+      }
+      else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
+        setErr('commission')
+        return
+      }
+      else if(formik.values.compensation === CompensationType.Gybrid) {
+        if(!formik.values.commission||formik.values.commission < 1) {
+          setErr('commission')
+        }
+        if(!formik.values.salary||formik.values.salary < 1) {
+          setErr('salary')
+        }
+        if(formik.values.commission > 0 && formik.values.salary > 0) {
+          setProgress(pageNumber||progress+1)
+        }
+      }
+      else {
+        setProgress(pageNumber||progress+1)
+      }
+    break
+    case 5: 
+      if(formik.values.description.trim().length < 1) {
+        setErr('description', 'Напишите подробнее о вакансии')
+      } else {
+        setProgress(pageNumber||progress+1)
+      }
+    break
+
       default :
         setProgress(pageNumber||progress+1)
     }
