@@ -26,7 +26,8 @@ export enum ModalType {
   MobileSideBarModal = 'mobileSideBarModal',
   ResponseModal= 'responseModal',
   ImageViewerModal = 'imageViewerModal',
-  ChatFilterModal = 'chatFilterModal'
+  ChatFilterModal = 'chatFilterModal',
+  CourseFeedbackModal = 'courseFeedbackModal' 
 
 }
 

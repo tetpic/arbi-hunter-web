@@ -3,6 +3,7 @@ import CoursesRepository from 'data/repositories/CoursesRepository'
 import { CookiesType} from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CoursesWrapper } from 'context/courses_state'
 
 interface Query {
   id: string
@@ -34,7 +35,9 @@ interface Props {
 export default function Course(props: Props) {
   return (
     <ContentLayout title={`Курсы|${props.course.name}`}>
-      <CurrentCourse course={props.course} page={props.page} id={Number(props.id)}/>
+      <CoursesWrapper>
+        <CurrentCourse course={props.course} page={props.page} id={Number(props.id)}/>
+      </CoursesWrapper>
     </ContentLayout>
   )
 }

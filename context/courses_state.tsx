@@ -3,7 +3,7 @@ import { IArticle } from 'data/interfaces/IArticle'
 import ICourse, { CoursesData, ICourseBlock, ICourseFeedback, ICourseStats, ICourseStep, ICourseStepAnswer } from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { CategoryType } from 'types/enums'
 import { useUserContext } from './user_state'
 
@@ -19,6 +19,19 @@ interface IState {
   setCourseBlocks: (courseId: number, blocks?: ICourseBlock[]) => Promise<boolean>
   setCourseSteps: (blockId: number) => Promise<boolean>
   clearModules: ()=> void
+  activeBlock: ICourseBlock
+  setActiveBlock: Dispatch<SetStateAction<ICourseBlock>>
+  activeStep: ICourseStep
+  setActiveStep: Dispatch<SetStateAction<ICourseStep>>
+  allStepsRef: MutableRefObject<ICourseStep[]>
+  allBlocksRef: MutableRefObject<ICourseBlock[]>
+  allModulesRef: MutableRefObject<ICourseBlock[]>
+
+
+  courseInit: () => Promise<boolean>
+  loading: boolean
+
+  
 
   coursesNews: IArticle[]
   setCoursesNews: (courseId: number, page: number)=>void
@@ -36,12 +49,16 @@ interface IState {
 
 }
 
-const defaultValue: Partial<IState> = {}
 
-const CoursesContext = createContext<Partial<IState>>(defaultValue)
+const CoursesContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  course?: ICourse,
+  id?: number, 
+  block?: number
+  module?: number
+  step?: number
 }
 
 export function CoursesWrapper(props: Props) {
@@ -57,7 +74,13 @@ export function CoursesWrapper(props: Props) {
   const [feedBacks, setFeedbacksState] = useState<ICourseFeedback[]>([])
   const [coursesNews, setCoursesNewsState] = useState<IArticle[]>([])
   const [courseStats, setCoursesStats] = useState<ICourseStats>()
-  
+  const [activeBlock, setActiveBlock] = useState<ICourseBlock>()
+  const [activeStep, setActiveStep] = useState<ICourseStep>()
+  const [loading, setLoading] = useState<boolean>(true)
+
+  const allStepsRef = useRef<ICourseStep[]>([])
+  const allBlocksRef = useRef<ICourseBlock[]>([])
+  const allModulesRef = useRef<ICourseBlock[]>([])
 
   const setCoursesCategories = (categoryList?: ICategory[]) => {
     if(categoryList) {
@@ -113,14 +136,6 @@ export function CoursesWrapper(props: Props) {
     }
   }
 
-  const clearModules = () => {
-    setBlocksState(state=> {
-      state.clear()
-      return state
-    })
-    setFeedbacksState([])
-  }
-
   const setCourseBlocks = async (courseId: number, blocks?: ICourseBlock[]): Promise<boolean> => {
     try {
       const res = blocks||await CoursesRepository.getCourseBlock(countryCode, courseId).then(r=> r.data)
@@ -132,19 +147,9 @@ export function CoursesWrapper(props: Props) {
           })
           return new Map(state)
         })
-        Promise.all(res.map(el=> setCourseSteps(el.id)))
+        await Promise.all(res.map(el=> setCourseSteps(el.id)))
+        return true
       }
-      return true
-    } catch (err) {
-      return false
-    }
-  }
-
-  const setFeedbacks = async (courseId: number, page: number, limit: number): Promise<boolean> => {
-    try {
-      const res = await CoursesRepository.getFeedbacks(courseId, page, limit)
-      setFeedbacksState(res)
-      return true
     } catch (err) {
       return false
     }
@@ -152,7 +157,7 @@ export function CoursesWrapper(props: Props) {
 
   const setCourseModules = async (courseId: number, modules?: ICourseBlock[]):Promise<boolean>  => {
     try {
-      const res = modules|| await CoursesRepository.getCourseModules(courseId, countryCode)
+      const res = modules|| await CoursesRepository.getCourseModules(countryCode, courseId)
       setCourseModulesState(state => {
         state.clear()
         res.forEach(e => {
@@ -166,11 +171,75 @@ export function CoursesWrapper(props: Props) {
     }
   }
 
+  const courseInit = async():Promise<boolean> => {
+    if(!props.course || !props.block || !props.module || !props.step) {
+      return  false
+    }
+    setCurrentCourseState(props.course)
+    const modules = await CoursesRepository.getCourseModules(countryCode, props.course.id)
+    const blocks = await CoursesRepository.getCourseBlock(countryCode, props.course.id).then(r=> r.data)
+    const steps = await Promise.all(blocks.map(block=> CoursesRepository.getCourseSteps(countryCode, block.id).then(d=> d.data)))
+    let allSteps: ICourseStep[] = []
+    steps.forEach(el=> allSteps.push(...el))
+    
+    allBlocksRef.current = blocks
+    allModulesRef.current = modules
+
+    setCourseModulesState(state => {
+      state.clear()
+      modules.forEach(e => {
+        state.set(e, blocks.filter(el=> el.courseModuleId === e.id))
+      })
+      return new Map(state)
+    })
+
+    setBlocksState(state => {
+      state.clear()
+      blocks.forEach(block => {
+        state.set(block, allSteps.filter(step=> step.courseBlockId === block.id))
+      })
+      return new Map(state)
+    })
+
+    /* set initial Block */
+    const initialBlockIndex = blocks.findIndex(f=> f.courseModuleId === modules[Number(props.module)-1].id)
+    const activeBlock = blocks[initialBlockIndex+(Number(props.block)-1)]||blocks[0]
+    setActiveBlock(activeBlock)
+
+    /* set initial step */
+    const initialStep = allSteps.filter(step=> step.courseBlockId === activeBlock.id)[0]
+    setActiveStep(initialStep)
+
+
+    setLoading(false)
+    return true
+  }
+
+  const clearModules = () => {
+    setBlocksState(state=> {
+      state.clear()
+      return state
+    })
+    setFeedbacksState([])
+  }
+
+
+
+  const setFeedbacks = async (courseId: number, page: number, limit: number): Promise<boolean> => {
+    try {
+      const res = await CoursesRepository.getFeedbacks(courseId, page, limit)
+      setFeedbacksState(res)
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
   const setStepAnswer = async (data: ICourseStepAnswer, blockId?: number) => {
     
     const res = await CoursesRepository.setStepAnswer(data)
     if(blockId && res) {
-      setCourseSteps(blockId)
+      // setCourseSteps(blockId)
     }
     return true
   }
@@ -192,23 +261,25 @@ export function CoursesWrapper(props: Props) {
   }
 
   useEffect(()=>{
+    const allSteps:ICourseStep[] = []
+    for(let block of courseBlocks.values()){allSteps.push(...block)}
+    allStepsRef.current = allSteps
+
     if(courseBlocks.size>0 && courseModules.size > 0) {
-      
       setCourseModulesState(state=> {
-        const moduleKeys = [...courseModules.keys()]
-        moduleKeys.forEach(el=> {
-          state.set(el, [...courseBlocks.keys()].filter(b=> b.courseModuleId === el.id))
-        })
+        for(let m of courseModules.keys()) {
+          const blocksKeys:ICourseBlock[] = []
+          courseBlocks.forEach((v, k)=> k.courseModuleId === m.id&&blocksKeys.push(k))
+          state.set(m, blocksKeys)
+        }
         return new Map(state)
       })
     }
-  
   }, [courseBlocks])
 
 
 
   const value: IState = {
-    ...defaultValue,
     courses,
     setCourses,
     currentCourse,
@@ -220,17 +291,26 @@ export function CoursesWrapper(props: Props) {
     setCourseBlocks,
     setCourseSteps,
     clearModules,
+    activeBlock,
+    activeStep,
+    setActiveBlock,
+    setActiveStep,
+    allStepsRef,
+    allBlocksRef,
+    allModulesRef,
 
     coursesNews,
     setCoursesNews,
 
     setStepAnswer,
+    loading,
 
     feedBacks,
     setFeedbacks,
 
     setCoursesCategories,
     categories,
+    courseInit,
 
     courseStats,
     getCourseFeedbackStats

@@ -1,25 +1,45 @@
+import styles from './index.module.scss'
+
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import Image from 'next/image'
 import prise from '/images/superprice.webp'
-import styles from './index.module.scss'
+import { useAppContext } from 'context/state'
+import ICourse from 'data/interfaces/ICourse'
+import { FILES } from 'types/constants'
+import Link from 'next/link'
+import CrossSvg from 'components/svg/CrossSvg'
+import { ModalType } from 'types/enums'
 
 interface Props {
   onClose: ()=>void
 }
 
+export interface ICongratulationsModalProps {
+  course: ICourse
+}
+
 export default function CongratulationsModal(props: Props) {
+
+  const appContext = useAppContext()
+  const args = appContext.modalArguments as ICongratulationsModalProps
+
+  const openFeedbacks = () => {
+    appContext.showModal(ModalType.CourseFeedbackModal)
+  }
+
 
   const body = (
     <div className={styles.root}>
+      <Button className={styles.closeModal} onClick={props.onClose}><CrossSvg/></Button>
       <Image src={prise} alt={'prise'} width={222} height={222}/>
-      <p className={styles.title}>Поздравляем вас, вы прошли курс!</p>
+      <p className={styles.title}>Поздравляем вас, <br/> вы прошли курс!</p>
       <p className={styles.info}>Скачайте сертификат о прохождении курса</p>
       
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.buttonYellow}>Скачать сертификат</Button>
-        <Button className={styles.buttonBlack} onClick={props.onClose}>Назад</Button>
+        <Link target='_blank'  download rel="noopener noreferrer" href={FILES + args.course.certificate.source} className={styles.buttonYellow}>Скачать сертификат</Link>
+        <Button className={styles.buttonBlack} onClick={openFeedbacks} >Оставить отзыв</Button>
       </div>
     </div>
   )

@@ -28,6 +28,10 @@ export interface IStepVariant extends IStepVariantTranslation {
   translations: IStepVariantTranslation[]
 }
 
+export interface ICertificate extends IImage {
+
+}
+
 export default interface ICourse extends CategoryTranslation {
   price: number,
   currency: string,
@@ -50,7 +54,8 @@ export default interface ICourse extends CategoryTranslation {
   categoriesIds: number[],
   categories?: ICategory[]
   benefits: string,
-  translations: CategoryTranslation[]
+  translations: CategoryTranslation[],
+  certificate: ICertificate
 }
 
 export interface ICourseBlockTranslation extends TimeStamp {

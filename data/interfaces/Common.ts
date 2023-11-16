@@ -55,7 +55,7 @@ export interface IImage extends TimeStamp {
   published: boolean,
   name: string,
   type: 'IMAGE'|'VIDEO'|'BINARY',
-  mimeType: 'image/png'|'video/mp4',
+  mimeType: 'image/png'|'video/mp4'|'application/pdf',
   fileSize: number,
   duration: number|null,
   source: string,

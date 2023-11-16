@@ -8,14 +8,20 @@ import LoupeSvg from 'components/svg/LoupeSvg'
 
 interface Props {
   className?: string
+  fullWidth?: boolean
 }
+
+/**
+ * @className ? string 
+ * @fullWidth ? boolean
+ */
 
 export default function SearchBar(props: Props) {
   const {isTabletWidth} = useResize()
 
   return (
     <div className={styles.container}>
-      <div className={classNames(styles.root, props.className)}>
+      <div className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
         <input className={styles.input} type="text" placeholder='Найти статью или сообщество' /> 
         {!isTabletWidth && <>
           <Button title='filter button' className={styles.filterButton}><SettingsThreeSlidersSvg/> </Button>

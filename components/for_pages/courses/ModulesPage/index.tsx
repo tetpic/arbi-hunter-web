@@ -3,7 +3,7 @@ import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
 import ProgressBar from 'components/ui/ProgressBar'
 import { useCoursesContext } from 'context/courses_state'
-import ICourse, { ICourseBlock, ICourseStep } from 'data/interfaces/ICourse'
+import { ICourseBlock, ICourseStep } from 'data/interfaces/ICourse'
 import { useRouter} from 'next/router'
 import { useEffect, useState } from 'react'
 import { CoursesStepType, ModalType } from 'types/enums'
@@ -13,44 +13,33 @@ import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
 import { useAppContext } from 'context/state'
+import Spinner from 'components/ui/Spinner'
+import { colors } from 'styles/variables'
+import { ICongratulationsModalProps } from 'components/modals/CongratulationsModal'
 
-interface Props {
-  course?: ICourse,
-  modules?: ICourseBlock[]
-  blocks?: ICourseBlock[] 
-  id: string
-  initialBlock?: string
-  initialStep?: string
-  module?: string
-}
 
-export default function ModulesPage(props: Props) {  
+
+export default function ModulesPage() {  
   const router = useRouter()
   const appContext = useAppContext()
 
   const courseContext = useCoursesContext()
-  const [page, pager] = useState<number>(1)
+  const [progress, setProgress] = useState<number>(1)
   const {isTabletWidth} = useResize()
-  const initialBlockIndex = props.blocks.findIndex(f=> f.courseModuleId === props.modules[Number(props.module)-1].id)
-  const [activeBlock, setActiveBlock] = useState<ICourseBlock>(props.blocks[initialBlockIndex+(Number(props.initialBlock)-1)]||props.blocks[0])
-
-  
-  const [activeStep, setActiveStep] = useState<ICourseStep>()
   const [progressLimit, setProgressLimit] = useState<number>()
-  const [loading, setLoading] = useState<boolean>(true)
   const [endOfCourse, setIsEnd] = useState<boolean>(false)
 
   const progressHandler = (p: number) => {
     if (p > 0 && p <= progressLimit) {
-      pager(p)
-      setActiveStep(courseContext.courseBlocks?.get(activeBlock)[p - 1])
+      setProgress(p)
+      courseContext.setActiveStep(courseContext.courseBlocks?.get(courseContext.activeBlock)[p - 1])
     }
     else {
       const blocksArr = [...courseContext.courseBlocks.keys()]
-      const activeIndex = blocksArr.findIndex((el) => {return el===activeBlock})
+      const activeIndex = blocksArr.findIndex((el) => {return el===courseContext.activeBlock})
       if(activeIndex > -1 && activeIndex < blocksArr.length -1) {
         setIsEnd(false)
-        setActiveBlock(blocksArr[activeIndex+1])
+        courseContext.setActiveBlock(blocksArr[activeIndex+1])
       }
       else if(activeIndex === blocksArr.length-1) {
         !endOfCourse&&setIsEnd(true)
@@ -59,78 +48,89 @@ export default function ModulesPage(props: Props) {
     }
   }  
 
-  useEffect(()=>{
-    const steps = courseContext?.courseBlocks?.get(activeBlock)
-    activeBlock&&setProgressLimit(steps?.length)
-    if(steps && steps.length > 0) {      
-      setActiveStep(steps[0])
-    }
-  }, [activeBlock])
+  const activeBlockHandler = (b: ICourseBlock) => {
+    setProgress(1)
+    courseContext.setActiveBlock(b)
+    const steps = courseContext.courseBlocks.get(b)
+    courseContext.setActiveStep(steps[0])
+    const blockNumber = [...courseContext.courseBlocks.keys()].findIndex(block => b.id === block.id)
+    const moduleNumber = [...courseContext.courseModules.keys()].findIndex(m => m.id === b.courseModuleId)
+    router.replace({query: { ...router.query, step: 1, block:  blockNumber+1, module: moduleNumber+1}}, undefined, {shallow: true})
+  }
 
-  useEffect(()=>{    
-    const stepNumber = courseContext.courseBlocks?.get(activeBlock)?.findIndex(el=> el?.id === activeStep?.id)+1
-    if(activeStep && stepNumber > 0) {
-      activeStep&&pager(stepNumber)  
-      const blockNumber = [...courseContext.courseBlocks.keys()].indexOf(activeBlock)
-      router.replace({query: { ...router.query, step: stepNumber, block:  blockNumber+1}}, undefined, {shallow: true});
-      ((activeStep.stepType === CoursesStepType.Info && activeStep.answers.length === 0)||(activeStep.stepType === CoursesStepType.Question))
-      && courseContext.setStepAnswer({courseBlockStepId: activeStep.id})
-    }
-  }, [activeStep])
+  const activeStepHandler = (s: ICourseStep) => {
+    courseContext.setActiveStep(s)
+    const stepIndex = courseContext.courseBlocks.get(courseContext.activeBlock).findIndex(step=>step.id === s.id)
+    setProgress(stepIndex+1)
+    router.replace({query: { ...router.query, step: stepIndex+1,}}, undefined, {shallow: true})
+  }
 
-  useEffect(()=>{   
-     
-    const steps = courseContext.courseBlocks.get(activeBlock)
+  const nextButtonHandler = () => {
+    const currentStepIndex = courseContext.allStepsRef.current.findIndex(el => el.id === courseContext.activeStep.id)
+    const currentBlockIndex = [...courseContext.courseBlocks.keys()].findIndex(b=> b===courseContext.activeBlock)
+    if(courseContext.allStepsRef.current.length-1 === currentStepIndex+1 ) {
+      setIsEnd(true)
+    }
+    if(courseContext.allStepsRef.current.length === currentStepIndex+1) {
+      appContext.showModal<ICongratulationsModalProps>(ModalType.CongratulationsModal, {course: courseContext.currentCourse})
+      return
+    }
+    courseContext.allStepsRef.current.length > currentStepIndex+1 
+    && activeStepHandler(courseContext.allStepsRef.current[currentStepIndex+1])
+    progress === progressLimit 
+    && activeBlockHandler(courseContext.allBlocksRef.current[currentBlockIndex+1])
+
+  }
+
+  useEffect(()=>{  
+    const steps = courseContext.courseBlocks.get([...courseContext.courseBlocks.keys()].find(el=> el.id === courseContext.activeBlock?.id))
     if(steps && steps.length > 0) {
-      const stepNumber = courseContext.courseBlocks?.get(activeBlock)?.findIndex(el=> el?.id === activeStep?.id)
-      setProgressLimit(courseContext.courseBlocks.get(activeBlock).length)
-      setActiveStep(steps[stepNumber>=0?stepNumber:(Number(props.initialStep) - 1)])
+      const stepNumber = courseContext.courseBlocks?.get(courseContext.activeBlock)?.findIndex(el=> el?.id === courseContext.activeStep?.id)
+      setProgressLimit(courseContext.courseBlocks.get(courseContext.activeBlock)?.length)
+      courseContext.setActiveStep(steps[stepNumber])
     }
-  }, [courseContext.courseBlocks])
+  }, [courseContext.courseBlocks, courseContext.activeBlock])
 
   useEffect(()=>{
-    const courseId = Number(props.id)   
-    Promise.all([
-      courseContext.setCurrentCourse(courseId, props.course),
-      courseContext.setCourseModules(courseId, props.modules),
-      courseContext.setCourseBlocks(courseId, props.blocks),
-    ])
-    .then(res=>{
-      setLoading(false)
-    })
+    courseContext.courseInit() 
   }, [])
 
   return (
   <div className={styles.root}> 
     <div className={styles.body}>
-      {isTabletWidth&&
-        <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${props.id}?page=modules`)} bgColor={'transparent'}/>
+     {!courseContext.loading && 
+     <> {isTabletWidth&&
+        <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)} bgColor={'transparent'}/>
         ||
-        <BackTextButton onClick={()=>router.push(`/courses/${props.id}?page=modules`)}/>
+        <BackTextButton onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)}/>
       }
       <div className={styles.titleWrapper}>
-        <h2 className={styles.title}>{activeBlock?.translations[0]?.title}</h2>
-        {progressLimit > 1 && !loading && 
-          <ProgressBar itemClassName={styles.progressItem} progress={page} pointsCount={progressLimit} onClick={progressHandler}/>
+        <h2 className={styles.title}>{courseContext.activeBlock?.translations[0]?.title}</h2>
+        {progressLimit > 1 && !courseContext.loading && 
+          <ProgressBar itemClassName={styles.progressItem} progress={progress} pointsCount={progressLimit} onClick={progressHandler}/>
         }
       </div>
       <div className={styles.textContent}>
-        <p className={styles.stepTitle}>{activeStep?.title}</p>
-        {activeStep?.stepType === CoursesStepType.Info &&
-          <div className={styles.text} dangerouslySetInnerHTML={{__html: activeStep?.body}}></div>
+        <p className={styles.stepTitle}>{courseContext.activeStep?.title}</p>
+        {courseContext.activeStep?.stepType === CoursesStepType.Info &&
+          <div className={styles.text} dangerouslySetInnerHTML={{__html: courseContext.activeStep?.body}}></div>
         }
       </div>
-      {activeStep?.stepType === CoursesStepType.Question &&
-        <Questions activeStep={activeStep}/>
+      {courseContext.activeStep?.stepType === CoursesStepType.Question &&
+        <Questions activeStep={courseContext.activeStep}/>
       }
-      <Button className={styles.button} onClick={()=> progressHandler(page+1)} >{endOfCourse?'Завершить курс': 'Продолжить'}</Button>
+      <Button className={styles.button} onClick={nextButtonHandler} >{endOfCourse?'Завершить курс':'Продолжить'}</Button>
+      </>
+      ||
+      <Spinner size={34} color={colors.yellow}/>
+      }
     </div>
-    {!isTabletWidth &&
+    {!isTabletWidth && !courseContext.loading &&
       <ModulesNavigation 
-      activeBlock={activeBlock} 
-      activeStep={activeStep}
-      changeBlock={(b: ICourseBlock)=>setActiveBlock(b)} 
-      changeStep={(s: ICourseStep)=> setActiveStep(s)} 
+      activeBlock={courseContext.activeBlock} 
+      activeStep={courseContext.activeStep}
+      changeBlock={activeBlockHandler} 
+      changeStep={activeStepHandler} 
       />
     }
     

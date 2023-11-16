@@ -1,5 +1,6 @@
 import CoursesMain from 'components/for_pages/courses'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CoursesWrapper } from 'context/courses_state'
 import { ICategory } from 'data/interfaces/Common'
 import ICourse, { ICourseFeedback } from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
@@ -41,13 +42,15 @@ export default function Courses(props: Props) {
   
   return (
     <ContentLayout withFooter title={'Курсы'}>
-      <CoursesMain 
-      categoryList={props.categoryList} 
-      courses={props.courses} 
-      popularCourses={props.popularCourses} 
-      compilations={props.compilations}
-      feedbacks={props.feedbacks}
-      />
+      <CoursesWrapper>
+        <CoursesMain 
+        categoryList={props.categoryList} 
+        courses={props.courses} 
+        popularCourses={props.popularCourses} 
+        compilations={props.compilations}
+        feedbacks={props.feedbacks}
+        />
+      </CoursesWrapper>
     </ContentLayout>
   )
 }

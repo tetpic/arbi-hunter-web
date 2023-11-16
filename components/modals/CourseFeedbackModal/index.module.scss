@@ -1,0 +1,42 @@
+@import 'styles/index';
+
+.sendButton {
+  @include buttonYellow;
+}
+
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  color: $white;
+  margin-bottom: 28px;
+  font-weight: $semibold;
+  font-size: $largeText;
+}
+
+.textarea {
+  min-height: 160px;
+
+}
+
+.modalLayout {
+  max-width: 500px;
+}
+
+.starWrapper {
+  display: flex;
+  justify-content: center;
+  column-gap: 4px;
+  margin-bottom: 24px;
+}
+
+.sendButton {
+  margin-top: 24px;
+  width: 100%;
+}

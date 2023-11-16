@@ -29,6 +29,7 @@ import ResponseModal from 'components/modals/ResponseModal'
 import ImageViewerModal from 'components/modals/ImageViewerModal'
 import ChatFilterModal from 'components/modals/ChatFilterModal'
 import ConfirmModal from 'components/modals/ConfirmModal'
+import CourseFeedbackModal from 'components/modals/CourseFeedbackModal'
 
 
 interface Props { }
@@ -142,6 +143,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.ChatFilterModal:
         return <Modal isOpen {...commonSettings}>
           <ChatFilterModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.CourseFeedbackModal:
+        return <Modal isOpen {...commonSettings}>
+          <CourseFeedbackModal onClose={commonSettings.onRequestClose}/>
         </Modal>
     }
   })()

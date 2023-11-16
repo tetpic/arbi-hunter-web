@@ -1,8 +1,12 @@
 @import 'styles/index';
 
 .modalBody {
-  height: 100vh;
-  height: 100dvh;
+  // height: 100vh;
+  // height: 100dvh;
+}
+
+.modalLayout {
+  max-width: 500px;
 }
 
 .root {
@@ -20,7 +24,7 @@
 }
 
 .title {
-  font-size: $text32;
+  font-size: $hugeText;
   max-width: 65%;
   text-align: center;
   font-weight: $semibold;
@@ -37,8 +41,9 @@
   margin-top: auto; 
   display: flex;
   flex-direction: column;
-  width: 50%;
+  // width: 50%;
   min-width: 300px;
+  width: 100%;
   row-gap: 16px;
 
   .buttonYellow {
@@ -50,6 +55,11 @@
     width: 100%;
     @include buttonBlack;
   }
+}
 
- 
+.closeModal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
 }

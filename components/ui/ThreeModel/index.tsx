@@ -13,6 +13,7 @@ export interface IThreeModelProps {
     jacket?: number
     eye?: number
     size?: number
+    color?: number
 }
 
 export function ThreeModel(props: IThreeModelProps) {
@@ -21,13 +22,13 @@ export function ThreeModel(props: IThreeModelProps) {
     }) as any
 
     // eslint-disable-next-line no-console
-    console.log(nodes)
+    console.log(nodes, materials)
 
     return (
         <group {...props} dispose={null}>
             {typeof props.body !== 'undefined' && props.body !== null && <mesh
                 geometry={nodes[`Body_${props.body}${props.body?'_'+props.body:'_0'}`].geometry}
-                material={materials['Body_0']}
+                material={materials[`Body_${props.color?props.color:'0'}`]}
             />}
             {typeof props.face !== 'undefined' && props.face !== null && <mesh
                 geometry={nodes[`Face_${props.face}`].geometry}
@@ -50,8 +51,8 @@ export function ThreeModel(props: IThreeModelProps) {
                 material={materials[`Chain_${props.chain}`]}
             />}
             {typeof props.head !== 'undefined' && props.head !== null && <mesh
-                geometry={nodes[`Head_${props.head}${props.size?'_'+props.size:'_0'}`].geometry}
-                material={materials['Head_0']}
+                geometry={nodes[`Head_${props.head}${props.head?'_'+props.head:'_0'}`].geometry}
+                material={materials[`Head_${props.color?props.color:'0'}`]}
             />}
             {typeof props.glasses !== 'undefined' && props.glasses !== null &&  <mesh
                 geometry={nodes[`Glasses_${props.glasses}`].geometry}

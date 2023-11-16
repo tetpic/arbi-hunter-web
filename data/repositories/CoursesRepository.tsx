@@ -7,7 +7,7 @@ import request from 'utils/request'
 
 export default class CoursesRepository {
 
-  static async getCourseModules(courseId: number, lang: Languages): Promise<ICourseBlock[]|null> {
+  static async getCourseModules(lang: Languages, courseId: number ): Promise<ICourseBlock[]|null> {
     const res = await request({
       method: 'get',
       url: `/api/course-module?sort=order,ASC&s={"courseId": ${courseId}}&language=${lang}`,

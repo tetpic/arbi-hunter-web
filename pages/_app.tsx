@@ -23,7 +23,6 @@ import { VacancyWrapper } from 'context/vacancy_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
-import { CoursesWrapper } from 'context/courses_state'
 import { CommunityWrapper } from 'context/community_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -59,7 +58,6 @@ function MyApp({Component, pageProps}: AppProps) {
           <CvWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
-          <CoursesWrapper>
           <CommunityWrapper>
           <AuthWrapper>
             
@@ -80,7 +78,6 @@ function MyApp({Component, pageProps}: AppProps) {
             
           </AuthWrapper>
           </CommunityWrapper>
-          </CoursesWrapper>
           </FeedbacksWrapper>
           </PatternWrapper>
           </CvWrapper>

@@ -94,16 +94,18 @@ export default function ThreePage(props: Props) {
   }, [page])
 
   const variant4: IThreeModelProps = {
-    model: 'woman',
-    body: 0,
-    size: 0,
-    hair: 0,
-    cap: 0,
-    chain: 0,
+    model: 'man',
+    body: 1,
+    size: 1,
+    hair: 1,
+    // cap: 0,
+    chain: 1,
     face: 0,
-    glasses: 0, 
-    jacket: 0,
-    eye: 0
+    glasses: 1, 
+    jacket: 1,
+    eye: 0,
+    head: 0,
+    color: 1,
   }
 
 
@@ -117,8 +119,10 @@ export default function ThreePage(props: Props) {
   
     {combinations&&combinations.map(el=> {
 
-      return (<ThreeModelVariant {...el}/>)
-    })}
+      return (
+        <ThreeModelVariant {...variant4}/>
+        )
+    })} 
     
   </div>
     </>

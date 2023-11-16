@@ -54,3 +54,8 @@
   width: 100%;
   @include container;
 }
+
+.fullWidth {
+  width: 100%;
+  max-width: unset;
+}
