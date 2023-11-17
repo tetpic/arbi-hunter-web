@@ -118,10 +118,9 @@ export default function ThreePage(props: Props) {
   <div className={styles.root}> 
   
     {combinations&&combinations.map(el=> {
-
       return (
-        <ThreeModelVariant {...variant4}/>
-        )
+        <ThreeModelVariant {...el}/>
+      )
     })} 
     
   </div>

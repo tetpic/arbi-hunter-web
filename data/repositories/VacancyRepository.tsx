@@ -1,5 +1,5 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate, IVacancySearchParams } from 'data/interfaces/IVacancy'
 import request from 'utils/request'
 
 export default class VacancyRepository {
@@ -104,6 +104,18 @@ export default class VacancyRepository {
     const res = await request({
       method: 'delete',
       url: `/api/vacancy/${id}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async searcVacancies(data: IVacancySearchParams): Promise<IVacancy[]|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/vacancy',
+      data
     })
     if(res.err) {
       return null

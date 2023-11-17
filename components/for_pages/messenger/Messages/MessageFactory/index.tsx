@@ -35,8 +35,7 @@ export default function MessageFactory(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext?.currentProfile?.profileType
 
-  
-  const side:string = props.profileId===props.message.profileId?styles.rightMessage:styles.leftMessage
+  const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
 
   const stats = (
@@ -106,11 +105,11 @@ export default function MessageFactory(props: Props) {
         <Spacer basis={8} />
         <p className={styles.message}>
           {props.application?.coverLetter}
-          {!props.application?.coverLetter&&profileType === ProfileType.Employee&&
+          {!props.application?.coverLetter&&profileType === ProfileType.Hirer&&
             <span>Без сопроводительного письма</span>
           }
         </p>
-        {!props.application?.coverLetter &&
+        {!props.application?.coverLetter && 
           <p className={styles.cover} onClick={()=> {
             appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application})
           }}>

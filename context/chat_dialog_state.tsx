@@ -57,7 +57,7 @@ export function ChatDialogWrapper(props: Props) {
   
   const [chat, setChat] = useState<IChat | null>(props.chat ?? null)
   const [page, setPage] = useState<number>(1)
-  const [totalMessages, setTotalMessages] = useState<number>(100000000)
+  const [totalMessages, setTotalMessages] = useState<number>()
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
   const [chunks, setChunks] = useState<BlobPart[]>()
@@ -75,7 +75,7 @@ export function ChatDialogWrapper(props: Props) {
   const limit = 30
 
   const processLoadedMessages = (data: IMessage[], total: number | null) => {
-    setTotalMessages(total)
+    setTotalMessages(state=> state>0?state:total)
     setMessages(state => {
       data.forEach(el=> {
         state.set(el.id, el)
@@ -115,6 +115,7 @@ export function ChatDialogWrapper(props: Props) {
     if (!props.chatId) {
       return
     }
+    console.log([...messages.values()][messages.size - 1]?.createdAt)
     await loadMessages([...messages.values()][messages.size - 1]?.createdAt)
     setPage(page + 1)
   }
@@ -257,6 +258,7 @@ export function ChatDialogWrapper(props: Props) {
 
   useEffect(() => {
     chatIdRef.current = props.chatId ?? null
+    setTotalMessages(null)
     init()
 
     if(messages.size > 0) {

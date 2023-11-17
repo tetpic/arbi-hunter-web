@@ -1,0 +1,76 @@
+@import 'styles/index';
+
+.buttonsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.button {
+  @include buttonYellow;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+}
+
+.item {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background-color: $black;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: flex-start;
+  position: relative;
+
+  .top {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    align-items: start;
+    width: 100%;
+    position: relative;
+  }
+
+  .city {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
+  .name {
+    grid: n;
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+  }
+  
+  .price {
+    grid-area: p;
+    color: $blue;
+    font-size: $largeText;
+    font-weight: $semibold;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+  }
+
+  .dots {
+    grid-area: d;
+  }
+}
+
+.time {
+  color: $greyLight;
+  font-weight: $medium;
+  font-size: $mediumText;
+} 
+
+.image {
+  position: absolute;
+  bottom: 0;
+  right: 16px;
+}

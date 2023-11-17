@@ -1,9 +1,8 @@
-import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate, IVacancySearchParams } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
-import { useUserContext } from './user_state'
 
 interface IState {
   archiveVacancies: Map<number, IVacancy>
@@ -17,37 +16,25 @@ interface IState {
   removeVacancyFromSaved: (id: number) => void
   removeVacancy: (id: number, published: boolean) => void
   editVcInEditor: (vc: IVacancy)=> void
-  
-
+  foundVacancies: IVacancy[]
+  findVacancies: (data?: IVacancySearchParams) => Promise<boolean>
 }
 
-const defaultValue: IState = {
-  archiveVacancies: null,
-  setArchiveVacancies: async()=>null,
-  activeVacancies: null,
-  setActiveVacancies: ()=>null,
-  editVacancy: ()=>null,
-  savedVCs: null,
-  setSavedVacancies: ()=>null,
-  saveVacancy: () => null,
-  removeVacancyFromSaved: () => null,
-  removeVacancy: (id: number, published: boolean) =>null,
-  editVcInEditor: () => null
-}
 
-const VacancyContext = createContext<IState>(defaultValue)
+
+const VacancyContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
 }
 
 export function VacancyWrapper(props: Props) {
-  const userContext = useUserContext()
   const router = useRouter()
   const createVcCvContext = useCreateVcCvContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>([])
+  const [foundVacancies, setFoundVacancies] = useState<IVacancy[]>([])
 
   const setArchiveVacancies = async(): Promise<boolean> => {
     return VacancyRepository.getArchiveVacancies()
@@ -123,11 +110,20 @@ export function VacancyWrapper(props: Props) {
     router.push(`/create/vacancy?id=${vc.id}`)
   }
 
+  const findVacancies = async (data?: IVacancySearchParams):Promise<boolean> => {
+    const res = await VacancyRepository.searcVacancies(data)
+    if(typeof res === 'object') {
+      setFoundVacancies(res)
+    }
+    return true
+  }
+
 
 
   const value: IState = {
-    ...defaultValue,
     archiveVacancies,
+    foundVacancies,
+    findVacancies,
     setArchiveVacancies,
     activeVacancies,
     setActiveVacancies,

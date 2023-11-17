@@ -25,10 +25,10 @@ export default function CheckboxListField<T>(props: Props<T>) {
   const [field, meta, helpers] = useField<T[]>(props as any)
   const {value} = field
   const handleCheckboxChanged = (val: T) => {
-    if(!value.includes(val)){
+    if(value && !value.includes(val)){
       helpers.setValue([...value, val])
     }else{
-      helpers.setValue(value.filter(i => i !== val))
+      helpers.setValue(value?.filter(i => i !== val))
     }
 
   }
@@ -50,7 +50,7 @@ export default function CheckboxListField<T>(props: Props<T>) {
             className={classNames(props.itemClassName, item.className, [...(!props.grid ? [styles.radioNoGrid] : [])])}
             labelClassName={props.itemLabelClassName}
             activeClassName={props.activeClassName}
-            value={item.value} isActive={value.includes(item.value)} label={item.label}
+            value={item.value} isActive={value?.includes(item.value)} label={item.label}
             onChange={() => handleCheckboxChanged(item.value)}
           />
         ))}

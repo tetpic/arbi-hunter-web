@@ -78,7 +78,7 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
   return (<div className={styles.item}> 
       <div className={styles.top}>
         <p className={styles.name}>{vacancy.name}</p>
-        {vacancy.city && vacancy.city.locName &&
+        {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }
         {vacancy.isRemote &&

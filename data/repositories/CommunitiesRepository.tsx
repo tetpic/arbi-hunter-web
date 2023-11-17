@@ -65,9 +65,7 @@ export default class CommunitiesRepository {
         limit: LOAD_LIMIT
       },
     })
-    alert(res)
     if(res.err) {
-      
       return null
     }
     return res

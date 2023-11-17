@@ -11,6 +11,7 @@ import { FILES } from 'types/constants'
 import Link from 'next/link'
 import CrossSvg from 'components/svg/CrossSvg'
 import { ModalType } from 'types/enums'
+import { ICourseFeedbackModalProps } from '../CourseFeedbackModal'
 
 interface Props {
   onClose: ()=>void
@@ -26,7 +27,7 @@ export default function CongratulationsModal(props: Props) {
   const args = appContext.modalArguments as ICongratulationsModalProps
 
   const openFeedbacks = () => {
-    appContext.showModal(ModalType.CourseFeedbackModal)
+    appContext.showModal<ICourseFeedbackModalProps>(ModalType.CourseFeedbackModal, {courseId: args.course.id})
   }
 
 

@@ -14,10 +14,6 @@ interface Query {
 
 interface Props extends Query {
   course?: ICourse
-  // modules?: ICourseBlock[]
-  // blocks?: ICourseBlock[]
-  // initialBlock?: string
-  // initialStep?: string
 }
 
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
@@ -27,8 +23,6 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const token = context.req.cookies[CookiesType.accessToken]
   if(profileType && language) {
       const course = await CoursesRepository.getCourseById(Number(id), profileType, token).then(res=> res)
-      // const blocks = await CoursesRepository.getCourseBlock(language, course.id).then(res=>res.data)
-      // const modules = await CoursesRepository.getCourseModules(Number(id), language)
       return {props: {id, module, block, step, course}}
   }
   else {

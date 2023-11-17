@@ -10,18 +10,39 @@ import StarFilledSvg from 'components/svg/StarFilledSvg'
 import { useCallback, useEffect, useState } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { colors } from 'styles/variables'
+import { useAppContext } from 'context/state'
+import CoursesRepository from 'data/repositories/CoursesRepository'
+import { SnackbarType } from 'types/enums'
 
 interface Props {
   onClose: () => void
+}
+
+export interface ICourseFeedbackModalProps {
+  courseId: number
 }
 
 export default function CourseFeedbackModal(props: Props) {
   const {isPhoneWidth} = useResize()
   const [rate, setRate] = useState<number>(0)
   const [colorsArray, setColors] = useState<string[]>([])
+  const appContext = useAppContext()
+  const args = appContext.modalArguments as {courseId: number}
 
  
-  const submit = (data: {feedback: string}) => {
+  const submit = async(data: {content: string}) => {
+    if(rate === 0) {
+      appContext.showSnackbar('Укажите, насколько вам понравился курс', SnackbarType.error)
+      return
+    }
+    const dataToSend = {
+      ...data,
+      mark: rate,
+      courseId: args.courseId
+    }
+    await CoursesRepository.sendCourseFeedback(dataToSend)
+    appContext.showSnackbar('Спасибо за отзыв', SnackbarType.success)
+    appContext.hideModal()
   }
 
   const goldColor = colors.yellow
@@ -31,11 +52,11 @@ export default function CourseFeedbackModal(props: Props) {
   const starsHandler = (choosen?: number): string[] => {
     let items: string[] = []
     for(let i = 0; i < 5; i++) {
-      if(choosen>=0 && i <= choosen) {
-        items.push(goldColor+ '90')
-      } 
-      else if(rate > choosen && i <= rate) {
+      if(choosen>0 && i < choosen) {
         items.push(goldColor)
+      } 
+      else if(rate > choosen && i < rate) {
+        items.push(goldColor+'90')
       }
       else {
         items.push(greyColor)
@@ -44,9 +65,9 @@ export default function CourseFeedbackModal(props: Props) {
     return items   
   }
 
-  const formik = useFormik<{feedback: string}>({
+  const formik = useFormik<{content: string}>({
     initialValues: {
-      feedback: ''
+      content: null
     },
     onSubmit: submit
   })
@@ -69,8 +90,8 @@ export default function CourseFeedbackModal(props: Props) {
       <div className={styles.starWrapper} onMouseLeave={()=>{mouseEnterHandler(0)}}>
           {colorsArray.map((color, index) => 
             <div className={styles.svgStarWrapper}  
-            onClick={()=> setRate(index)} 
-            onMouseEnter={()=>{mouseEnterHandler(index)}}
+            onClick={()=> setRate(index+1)} 
+            onMouseEnter={()=>{mouseEnterHandler(index+1)}}
             >
               <StarFilledSvg color={color} className={styles.starSvg}/>
             </div>)
@@ -79,14 +100,14 @@ export default function CourseFeedbackModal(props: Props) {
       <FormikProvider value={formik}>
         <Form>
           <TextAreaField 
-          onChange={(e)=>formik.setValues({feedback: e.target.value})} 
+          onChange={(e)=>formik.setValues({content: e.target.value})} 
           placeholder='Введите текст' 
           areaClassname={styles.textarea} 
           autoSize={true}
-          name={'feedback'}/>
+          name={'content'}/>
         </Form>
       </FormikProvider>
-      <Button className={styles.sendButton}>Отправить</Button>
+      <Button onClick={formik.submitForm} className={styles.sendButton}>Отправить</Button>
     </div>
   )
 

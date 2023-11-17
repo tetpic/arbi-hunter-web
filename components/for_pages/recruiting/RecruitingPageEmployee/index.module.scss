@@ -20,7 +20,6 @@
     background: linear-gradient(241deg, #7C5BFF 7.14%, rgba(57, 225, 195, 0.85) 100%);
     display: flex;
     justify-content: flex-end;
-    
   }
 
   .title  {
@@ -45,4 +44,33 @@
 
 .searchBar {
   margin-top: -30px;
+}
+
+.content {
+  display: flex;
+  column-gap: 16px;
+}
+
+.filters {
+  max-width: 330px;
+  flex-shrink: 0;
+  width: 30%;
+  height: 100vh;
+  height: 100dvh;
+  background-color: red;
+  position: sticky;
+  top: 0px;
+  left: 0;
+  
+  .filter {
+   
+
+  }
+}
+
+.vacancies {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
 }

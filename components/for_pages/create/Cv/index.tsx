@@ -54,6 +54,7 @@ export default function Cv(props: Props) {
   const {progress, setProgress} = creationContext
 
   const submit = (data: ICVCreate) => {
+    setLoading(true)
     const {activeSources, languageKnowledges, skills, categoryIds} = creationContext?.helpObjects
 
     if(!categoryIds||categoryIds?.length === 0) {
@@ -87,10 +88,11 @@ export default function Cv(props: Props) {
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         creationContext.reset()
-        router.replace('/profile?page=cvs')      
+        router.replace('/profile?page=cvs')  
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
+        setLoading(false)
       })
     }
   }
@@ -98,16 +100,16 @@ export default function Cv(props: Props) {
   const CVItemsCount = 7
 
   const initialValues:ICVCreate  = {
-    firstName: userContext.user?.profiles[0]?.firstName,
-    lastName: userContext.user?.profiles[0]?.lastName,
-    patronymic: userContext.user?.profiles[0]?.patronymic||'unset',
-    birthday: userContext.user?.profiles[0]?.birthday,
+    firstName: userContext.currentProfile?.firstName,
+    lastName: userContext.currentProfile?.lastName,
+    patronymic: userContext.currentProfile?.patronymic||'unset',
+    birthday: userContext.currentProfile?.birthday,
     compensation: props.cv?.compensation||CompensationType.Salary,
-    phone: userContext.user?.profiles[0]?.phone,
-    email: userContext.user?.profiles[0]?.email,
-    telegramNickname: userContext.user?.profiles[0]?.telegramNickname, 
-    cityId: userContext.user?.profiles[0]?.cityId,
-    countryId: userContext.user?.profiles[0]?.countryId,
+    phone: userContext.currentProfile?.phone,
+    email: userContext.currentProfile?.email,
+    telegramNickname: userContext.currentProfile?.telegramNickname, 
+    cityId: userContext.currentProfile?.cityId,
+    countryId: userContext.currentProfile?.countryId,
     currency: props.cv?.currency||Currency.RUB,
     experienceInfo: props.cv?.experienceInfo||[],
     educationInfo: props.cv?.educationInfo||[],
@@ -115,7 +117,7 @@ export default function Cv(props: Props) {
     bio: props.cv?.bio||'',
     skillsIds: props.cv?.skillsIds||[],
     commission: props.cv?.commission||null,
-    vacancyLookType: props.cv?.vacancyLookType||userContext.user?.profiles[0].vacancyLookType||VacancyLookType.NotLooking,
+    vacancyLookType: props.cv?.vacancyLookType||userContext.currentProfile?.vacancyLookType||VacancyLookType.NotLooking,
     workExperiencePresense: props.cv?.workExperiencePresense||WorkExperiencePresense.Absent,
     education: props.cv?.education||EducationTypes.Secondary,
     relocation: props.cv?.relocation||Answer.No,

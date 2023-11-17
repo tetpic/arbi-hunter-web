@@ -115,7 +115,10 @@ export default function Messages(props: Props) {
         <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
         <InformationSvg className={styles.invite__info}/>
       </div>
-      <div className={styles.messagesWrapper} id={'chat-messages'}
+      <p>{dialog.totalMessages} {dialog.messages.size}</p>
+      <div 
+      className={styles.messagesWrapper} 
+      id={'chat-messages'}
       ref={dialog.scrollableTarget as RefObject<HTMLDivElement>}
       >
       <InfiniteScroll

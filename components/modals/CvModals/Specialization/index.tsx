@@ -9,6 +9,8 @@ import {  useEffect, useRef } from 'react'
 import Body from '../Body'
 import styles from '../index.module.scss'
 import Scrollbars from 'react-custom-scrollbars-2'
+import { useAppContext } from 'context/state'
+import { SnackbarType } from 'types/enums'
 
 interface Props {
   onClose: ()=> void
@@ -18,10 +20,15 @@ export default function SpecializationModal(props: Props) {
 
   const cvContext = useCreateVcCvContext()
   const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
+  const appContext = useAppContext()
 
   const scrollBar = useRef<Scrollbars>(null!)
 
-  const setSpecHandler = () => {    
+  const setSpecHandler = () => {   
+    if(!activeSubCategory) {
+      appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+      return
+    }
     const helperCv = cvContext.helpObjects
     cvContext.setHelpObjects({...helperCv, categoryIds: [activeSubCategory]})
     props.onClose()

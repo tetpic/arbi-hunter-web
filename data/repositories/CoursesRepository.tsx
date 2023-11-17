@@ -169,4 +169,16 @@ export default class CoursesRepository {
     }
     return res
   }
+
+  static async sendCourseFeedback(data: {courseId: number, mark: number, content?: string}): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/feedback',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

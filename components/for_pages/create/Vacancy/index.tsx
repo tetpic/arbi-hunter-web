@@ -67,8 +67,8 @@ export default function Vacancy(props: Props) {
     phone: props.vacancy?.phone||userContext.currentProfile?.phone,
     email: props.vacancy?.email||userContext.currentProfile?.email,
     telegramNickname: props.vacancy?.telegramNickname||userContext.currentProfile?.telegramNickname, 
-    cityId: props.vacancy?.cityId||userContext.currentProfile.cityId,
-    countryId: props.vacancy?.countryId||userContext.currentProfile.countryId,
+    cityId: props.vacancy?.cityId||userContext.currentProfile?.cityId,
+    countryId: props.vacancy?.countryId||userContext.currentProfile?.countryId,
     commission: props.vacancy?.commission||null,
     currency: props.vacancy?.currency|| Currency.RUB,
     skillsIds: props.vacancy?.skillsIds|| [],
@@ -116,7 +116,7 @@ export default function Vacancy(props: Props) {
         setLoading(false)
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
-          router.push('/')    
+          router.replace('/profile?page=vacancies')  
         }, 2000)
       })
       .catch(err=>{

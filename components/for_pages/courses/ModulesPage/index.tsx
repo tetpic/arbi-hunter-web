@@ -5,7 +5,7 @@ import ProgressBar from 'components/ui/ProgressBar'
 import { useCoursesContext } from 'context/courses_state'
 import { ICourseBlock, ICourseStep } from 'data/interfaces/ICourse'
 import { useRouter} from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CoursesStepType, ModalType } from 'types/enums'
 import ModulesNavigation from './ModulesNavigation'
 import Questions from './Questions'
@@ -20,14 +20,17 @@ import { ICongratulationsModalProps } from 'components/modals/CongratulationsMod
 
 
 export default function ModulesPage() {  
-  const router = useRouter()
   const appContext = useAppContext()
-
   const courseContext = useCoursesContext()
+  const router = useRouter()
+
   const [progress, setProgress] = useState<number>(1)
-  const {isTabletWidth} = useResize()
   const [progressLimit, setProgressLimit] = useState<number>()
   const [endOfCourse, setIsEnd] = useState<boolean>(false)
+
+  const currentStepIndex = useRef<number>()
+  const currentBlockIndex = useRef<number>()
+  const {isTabletWidth} = useResize()
 
   const progressHandler = (p: number) => {
     if (p > 0 && p <= progressLimit) {
@@ -48,6 +51,21 @@ export default function ModulesPage() {
     }
   }  
 
+  const checkIsEnd =(buttonPushed?: boolean)=> {
+    currentStepIndex.current = courseContext.allStepsRef.current.findIndex(el => el.id === courseContext.activeStep.id)
+    currentBlockIndex.current = [...courseContext.courseBlocks.keys()].findIndex(b=> b===courseContext.activeBlock)
+ 
+    if(courseContext.allStepsRef.current.length === currentStepIndex.current+1 && buttonPushed) {
+      appContext.showModal<ICongratulationsModalProps>(ModalType.CongratulationsModal, {course: courseContext.currentCourse})
+      return
+    }
+    if(courseContext.allStepsRef.current.length === currentStepIndex.current+1 ) {
+      setIsEnd(true)
+      return
+    }
+    setIsEnd(false)
+  }
+
   const activeBlockHandler = (b: ICourseBlock) => {
     setProgress(1)
     courseContext.setActiveBlock(b)
@@ -66,21 +84,20 @@ export default function ModulesPage() {
   }
 
   const nextButtonHandler = () => {
-    const currentStepIndex = courseContext.allStepsRef.current.findIndex(el => el.id === courseContext.activeStep.id)
-    const currentBlockIndex = [...courseContext.courseBlocks.keys()].findIndex(b=> b===courseContext.activeBlock)
-    if(courseContext.allStepsRef.current.length-1 === currentStepIndex+1 ) {
-      setIsEnd(true)
+    if(!endOfCourse) {
+      courseContext.allStepsRef.current.length > currentStepIndex.current+1 
+      && activeStepHandler(courseContext.allStepsRef.current[currentStepIndex.current+1])
+      progress === progressLimit 
+      && activeBlockHandler(courseContext.allBlocksRef.current[currentBlockIndex.current+1])
     }
-    if(courseContext.allStepsRef.current.length === currentStepIndex+1) {
-      appContext.showModal<ICongratulationsModalProps>(ModalType.CongratulationsModal, {course: courseContext.currentCourse})
-      return
+    else {
+      checkIsEnd(true)
     }
-    courseContext.allStepsRef.current.length > currentStepIndex+1 
-    && activeStepHandler(courseContext.allStepsRef.current[currentStepIndex+1])
-    progress === progressLimit 
-    && activeBlockHandler(courseContext.allBlocksRef.current[currentBlockIndex+1])
-
   }
+
+  useEffect(()=>{
+    checkIsEnd()
+  }, [courseContext.activeStep])
 
   useEffect(()=>{  
     const steps = courseContext.courseBlocks.get([...courseContext.courseBlocks.keys()].find(el=> el.id === courseContext.activeBlock?.id))

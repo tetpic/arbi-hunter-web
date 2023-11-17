@@ -17,6 +17,10 @@
     background-color: $black;
 
   }
+
+  :global .react-datepicker__tab-loop {
+    z-index: 10;
+  }
 }
 
 .title {
@@ -52,7 +56,6 @@
 
   :global .react-datepicker__year-text {
     font-size: $largeText;
-
   }
 
   :global .react-datepicker {

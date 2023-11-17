@@ -106,6 +106,7 @@ export default function DetailsField<T extends TimeLine>(props: DetailsFieldProp
                   showMonthDropdown={el.monthDropdown} 
                   {...{[el.pickerType]: true}}
                   name={el.dateName.toString()}
+                  maxDate={new Date()}
                   value={fields[el.dateName].toString() as string}
                   customInput={
                     <InputField 

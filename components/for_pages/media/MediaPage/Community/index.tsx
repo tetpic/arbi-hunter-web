@@ -56,7 +56,7 @@ export default function CommunityPage({community, id}: Props) {
         }
       })
     }
-    if(userContext.currentProfile) {
+    if(userContext.currentProfile && communityContext.currentCommunity) {
       communityContext.setCommunityMembers(1)
       .then(_=> {
         setLoad(false)
