@@ -21,7 +21,7 @@ export default function RecruitingPageEmployee(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
 
   const onFilterChange =(data: IVacancySearchParams) => {
-    console.log(data)
+    // console.log(data)
   }
 
   useEffect(()=>{
