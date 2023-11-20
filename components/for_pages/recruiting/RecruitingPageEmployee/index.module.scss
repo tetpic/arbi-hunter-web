@@ -8,7 +8,6 @@
   flex-direction: column;
   row-gap: 16px;
 
-
   .back {
     position: absolute;
     top: 0;
@@ -57,15 +56,9 @@
   width: 30%;
   height: 100vh;
   height: 100dvh;
-  background-color: red;
   position: sticky;
-  top: 0px;
+  top: 16px;
   left: 0;
-  
-  .filter {
-   
-
-  }
 }
 
 .vacancies {
@@ -74,3 +67,12 @@
   row-gap: 16px;
   width: 100%;
 }
+
+.found {
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  margin-top: 42px;
+  margin-bottom: 16px;
+}
+

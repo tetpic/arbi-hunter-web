@@ -7,7 +7,7 @@
   align-items: center;
   &.active{
     .circle{
-      background: $blue;
+      background: $gradientAlt;
     }
   }
 }
@@ -24,7 +24,7 @@
   width: 24px;
   height: 24px;
   border-radius: 8px;
-  border: 1px $grey solid;
+  border: 1px $greyLight solid;
   // border: 1px solid $grey5;
   display: flex;
   align-items: center;

@@ -1,8 +1,9 @@
+import styles from './index.module.scss'
+
 import Radio from './Radio'
 import classNames from 'classnames'
 import {IField, IOption} from 'types/types'
 import { useField, useFormikContext } from 'formik'
-import styles from './index.module.scss'
 
 
 interface Props<T> extends IField<T> {
@@ -20,6 +21,20 @@ interface Props<T> extends IField<T> {
   rootClass?: string
 }
 
+/**
+ * @options IOption<T>[],
+ * @restrictedValues  T[],
+ * @grid  number
+ * @label  string
+ * @itemClassName  string
+ * @activeItemClassName  string
+ * @itemLabelClassName  string
+ * @labelClassName  string
+ * @wrapperClassName : string
+ * @itemCircleClassname  string
+ * @flex  boolean
+ * @rootClass  string
+ */
 export default function RadioListField<T>(props: Props<T>) {
   const { restrictedValues, options, label, type, ...rest } = props
   const [field, meta, helpers] = useField(props as any)
@@ -34,7 +49,7 @@ export default function RadioListField<T>(props: Props<T>) {
   return (
     <div className={classNames(styles.root, props.rootClass)}>
       {label && <div className={classNames(styles.label, props.labelClassName)}>{label}</div>}
-      <div className={props.wrapperClassName} >
+      <div className={classNames(styles.wrapper , props.wrapperClassName)} >
         {options.filter(item => restrictedValues.indexOf(item.value) === -1).map((item, index) => (
          
             <Radio<T>

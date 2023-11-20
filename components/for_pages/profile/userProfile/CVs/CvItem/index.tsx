@@ -103,6 +103,9 @@ export default function CVItem({cv, isLast}: Props) {
     />
     
     <div className={styles.buttonsWrapper}>
+      {cv.moderationStatus !== 'approved' &&
+        <p className={styles.refreshed}>На модерации</p>
+      }
       <Button className={styles.button}>Поднять в поиске</Button>
       <Button 
       className={styles.buttonBlack} 

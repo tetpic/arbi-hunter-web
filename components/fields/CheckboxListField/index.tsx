@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import {IField, IOption} from 'types/types'
 import {useField} from 'formik'
@@ -20,6 +21,21 @@ interface Props<T> extends IField<T> {
   wrapperClassName? : string
 }
 
+
+/**
+ * @options IOption<T>[],
+ * @restrictedValues  T[],
+ * @grid  number
+ * @label  string
+ * @itemClassName  string
+ * @activeClassName  string
+ * @itemLabelClassName  string
+ * @circleClassName  string
+ * @labelClassName  string
+ * @flex  boolean
+ * @rootClass  string,
+ * @wrapperClassName : string
+ */
 export default function CheckboxListField<T>(props: Props<T>) {
   const {restrictedValues, options, label, type, ...rest} = props
   const [field, meta, helpers] = useField<T[]>(props as any)

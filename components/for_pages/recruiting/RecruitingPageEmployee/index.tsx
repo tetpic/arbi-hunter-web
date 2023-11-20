@@ -12,16 +12,30 @@ import Formatter from 'utils/formatter'
 import VacancyItem from './VacancyItem'
 import Filters from './Filters'
 import { IVacancySearchParams } from 'data/interfaces/IVacancy'
+import Spacer from 'components/ui/Spacer'
+import { useThrottleFn } from '@react-cmpt/use-throttle'
+import { useCvContext } from 'context/cv_state'
 
 interface Props {
 }
 
 export default function RecruitingPageEmployee(props: Props) {
   const vacancyContext = useVacancyContext()
+  const cvContext = useCvContext()
   const [loading, setLoading] = useState<boolean>(true)
+  const [currentFilters, setCurrentFilters] = useState<IVacancySearchParams>({})
+
+  const findVacancies = (data: IVacancySearchParams):void => {
+    vacancyContext.findVacancies(data)
+    .then(_=>setLoading(false))
+  }
+
+  const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
   const onFilterChange =(data: IVacancySearchParams) => {
-    // console.log(data)
+    setLoading(true)
+    setCurrentFilters(data)
+    findVacanciesThrottle.callback(data)
   }
 
   useEffect(()=>{
@@ -29,11 +43,13 @@ export default function RecruitingPageEmployee(props: Props) {
     .then(_=>{
       setLoading(false)
     })
+    cvContext.setSavedCvs()
+
   }, [])
 
 
   return (<div className={styles.root}> 
-  <p style={{color: 'white'}}>RECRUITING PAGE HIRER /в разработке/</p>
+  <p style={{color: 'white'}}>RECRUITING PAGE Employee /в разработке/</p>
   <div className={styles.top}>
     <div className={styles.back}>
       <Image className={styles.image} src={recEmpImage} alt={'rec image'} width={814} height={249}/>
@@ -44,9 +60,11 @@ export default function RecruitingPageEmployee(props: Props) {
     </p>
     <Link className={styles.createLink} href={'/create/cv'}>Создать резюме</Link>
   </div>
-  <SearchBar fullWidth className={styles.searchBar}/>
+  <SearchBar fullWidth className={styles.searchBar} onChange={(s)=>onFilterChange({...currentFilters, search: s})}/>
   {!loading &&
-    <p>Найдено {vacancyContext.foundVacancies.length} {Formatter.pluralize(vacancyContext.foundVacancies.length, 'вакансия', 'вакансии', 'вакансий')}</p>
+    <p className={styles.found}>Найдено {vacancyContext.foundVacancies.length} {Formatter.pluralize(vacancyContext.foundVacancies.length, 'вакансия', 'вакансии', 'вакансий')}</p>
+    ||
+    <Spacer basis={88}/>
   }
 
   <div className={styles.content}>
@@ -63,9 +81,9 @@ export default function RecruitingPageEmployee(props: Props) {
         !loading && vacancyContext.foundVacancies?.length > 0 && vacancyContext.foundVacancies?.map(vacancy=> {
           return <VacancyItem vacancy={vacancy}/>
         })
+        ||
+        <p className='empty'>Нет найденных вакансий</p>
       }
-      
-
     </div>
   </div>
   </div>)

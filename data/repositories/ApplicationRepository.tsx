@@ -61,5 +61,18 @@ export default class ApplicationRepository {
     return res
   }
 
+  static async sendApplication(data: IApplication): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/application',
+      data
+      
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
 
 }

@@ -9,6 +9,7 @@ import LoupeSvg from 'components/svg/LoupeSvg'
 interface Props {
   className?: string
   fullWidth?: boolean
+  onChange?: (s: string)=>void
 }
 
 /**
@@ -22,9 +23,9 @@ export default function SearchBar(props: Props) {
   return (
     <div className={styles.container}>
       <div className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
-        <input className={styles.input} type="text" placeholder='Найти статью или сообщество' /> 
+        <input className={styles.input} onChange={(e)=> props.onChange(e.target.value)} type="text" placeholder='Найти статью или сообщество' /> 
         {!isTabletWidth && <>
-          <Button title='filter button' className={styles.filterButton}><SettingsThreeSlidersSvg/> </Button>
+          <Button title='filter button' className={styles.filterButton}><SettingsThreeSlidersSvg/></Button>
           <Button title='search button' className={styles.button}>Найти</Button>
         </>
         ||

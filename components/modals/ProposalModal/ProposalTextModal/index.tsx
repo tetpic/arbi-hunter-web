@@ -43,7 +43,9 @@ export default function ProposalTextModal(props: Props) {
   })
   const [pattern, setPattern] = useState<IPattern>(initialPattern)
 
-  const submit = (data: IProposal) => {
+  const submit = async(data: IProposal) => {
+    debugger
+   
     proposalRepository.createProposal(data)
     .then(res=>{
       res&&props.onClose()

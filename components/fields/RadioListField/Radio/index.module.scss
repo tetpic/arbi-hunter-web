@@ -5,17 +5,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  // &.active{
-  //   // .circle{
-  //   //   // background: $green;
-  //   // }
-  // }
-  // &.white{
 
-  // }
-  // &.grey{
-
-  // }
 }
 
 .label {
@@ -25,11 +15,10 @@
   color: #E0E0E0;
 }
 .circle{
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px $greyLight solid;
-  // border: 1px solid $grey5;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px $greyLight solid;
   display: flex;
   align-items: center;
   justify-content: center;

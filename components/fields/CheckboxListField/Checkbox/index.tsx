@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import CheckSvg from 'components/svg/CheckSvg'
 interface Props<T> {
@@ -18,7 +19,7 @@ export default function Checkbox<T>(props: Props<T>) {
   }
   return (
     <div className={classNames(styles.root, {[styles.active]: props.isActive}, props.className, {[props.activeClassName]: props.isActive})} onClick={handleClick}>
-      <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'black'}/>}</div>
+      <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'white'}/>}</div>
       {props.children && props.children.length ? props.children : <div className={classNames(styles.label, props.labelClassName)}>{props.label}</div>}
 
     </div>

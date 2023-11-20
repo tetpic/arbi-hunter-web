@@ -1,1 +1,49 @@
 @import 'styles/index';
+
+.root {
+  background-color: $black;
+  padding: 24px;
+  border-radius: 16px;
+  overflow: auto;
+  height: calc(100vh - 32px);
+  height: calc(100dvh - 32px);
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $grey;
+  font-size: $hugeText;
+  margin-bottom: 24px;
+}
+
+.resetButton {
+  @include buttonGray;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.fieldTitle {
+  margin-bottom: 16px;
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.addButton {
+  margin-top: unset !important;
+  margin-bottom: 24px !important;
+}
+
+.itemsWrapper {
+  display: flex;
+  row-gap: 8px;
+  column-gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.radioField {
+  margin-bottom: 24px;
+}

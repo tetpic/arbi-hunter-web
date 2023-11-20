@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import CheckSvg from 'components/svg/CheckSvg'
-import styles from './index.module.scss'
 
 interface Props<T> {
   value: T,

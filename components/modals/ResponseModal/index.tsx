@@ -22,8 +22,8 @@ interface Props {
 }
 
 export interface IResponseModalProps {
-  cv: ICV
-  application: IApplication
+  cv?: ICV
+  application: IApplication,
 }
 
 export default function ResponseModal(props: Props) {

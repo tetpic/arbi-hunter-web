@@ -42,13 +42,13 @@ export default function CVs(props: Props) {
   useEffect(()=>{
     switch(activeItem) {
       case CVNavigation.Active :
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === true))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === true && el.moderationStatus === 'approved'))
         break
       case CVNavigation.Archive: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false && el.moderationStatus === 'approved'))
         break
       case CVNavigation.Drafts: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false && el.moderationStatus !== 'approved'))
         break
     }
   }, [activeItem, cvContext.savedCvs])

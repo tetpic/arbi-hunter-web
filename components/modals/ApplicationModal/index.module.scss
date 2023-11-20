@@ -1,0 +1,28 @@
+@import 'styles/index';
+
+.addCover {
+  color: $blue;
+  display: flex;
+  align-items: center;
+  font-size: $largeText;
+  font-weight: $semibold;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.nextButton {
+  @include buttonYellow;
+  margin-top: 16px;
+}
+
+.textArea {
+  margin-top: 16px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  cursor: pointer;
+}

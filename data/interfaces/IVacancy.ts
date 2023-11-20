@@ -29,25 +29,26 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
 
 export interface IVacancySearchParams {
   search?: string,
-  categories?: string|number[] // "1,2,3"
-  cities?: string|number[] // '1,2,3'
+  categories?: number[] // "1,2,3"
+  cities?: number[] // '1,2,3'
   employment?: EmploymentType[],
   schedule?: ScheduleType[],
-  experience?: WorkExperience,
+  experience?: WorkExperience[],
   currency?: Currency,
   salaryMin?: number,
+  salaryMax?: number,
   commissionMin?: number,
   commissionMax?: number,
   gybridCommissionMin?: number,
   gybridCommissionMax?: number,
-  salaryMax?: number,
-  skills?: string|number[] // '1,2,3'
+  skills?: number[] // '1,2,3'
   isRemote?: boolean,
   savedByCurrentProfile?: boolean,
-  ids?: string|number[], // '1,2,3' по списку идентификаторов
-  countries?: string|number[],
+  ids?: number[], // '1,2,3' по списку идентификаторов
+  countries?: number[],
   sort?: 'createdAt,DESC',
   compensation?: CompensationType,
-  languageKnowledges?: string|ILanguageKnowledge[],
-  withCharacter?: boolean
+  languageKnowledges?: ILanguageKnowledge[],
+  withCharacter?: boolean,
+  forLastNumberOfDays?: 1|7|30|365, 
 }

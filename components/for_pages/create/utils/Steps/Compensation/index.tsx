@@ -1,7 +1,7 @@
 import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import { useField } from 'formik'
-import { CompensationType, Currency } from 'types/enums'
+import { CompensationType, CompensationTypeTranslated, Currency } from 'types/enums'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
 
@@ -19,13 +19,7 @@ export default function Compensation(props: Props) {
       <RadioListField 
       name={'compensation'}
       itemClassName = {styles.radioItem}
-      options={[
-        {value: CompensationType.Salary, label: 'Оклад'},
-        {value: CompensationType.Commission, label: 'Процент'},
-        {value: CompensationType.Gybrid, label: 'Гибрид (оклад+процент)'},
-        {value: CompensationType.Piecework, label: 'Сдельная'},
-        {value: CompensationType.Contract, label: 'Договорная'}
-      ]} 
+      options={CompensationTypeTranslated.map(el=> {return {value: el[0], label: el[1]}})} 
       itemCircleClassname={styles.radio}
       />
 

@@ -79,7 +79,6 @@ export function FeedbacksWrapper(props: Props) {
   }
 
   const setCVResponses = async(cvId?: number): Promise<boolean> => {
-    
     try{
       setCurrentCVResponsesState(new Map)
       const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
@@ -150,6 +149,20 @@ export function FeedbacksWrapper(props: Props) {
   const createProposal = async (p: IProposal):Promise<boolean> => {
     try {
       const res = await ProposalRepository.createProposal(p)
+      if (!res.errors) {
+        return true
+      }
+      else {
+        throw new Error
+      }
+    } catch (e) {
+      return false
+    }
+  }
+
+  const createApplication = async (a: IApplication): Promise<boolean> => {
+    try {
+      const res = await ApplicationRepository.sendApplication(a)
       if (!res.errors) {
         return true
       }

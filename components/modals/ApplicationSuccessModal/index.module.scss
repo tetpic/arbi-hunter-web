@@ -1,0 +1,43 @@
+@import 'styles/index';
+
+.blueLink {
+  @include buttonYellow;
+}
+
+.grayLink {
+  @include buttonGray;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+}
+
+.title {
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  text-align: center;
+
+}
+
+.description {
+  color: $greyLight;
+  font-size: $mediumText;
+  font-weight: $medium;
+  text-align: center;
+}
+
+.modalLayout {
+  max-width: 420px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-
+import translateEnum from './translations'
 
 export enum ModalType {
   RegistrationModal = 'registrationModal',
@@ -27,7 +27,10 @@ export enum ModalType {
   ResponseModal= 'responseModal',
   ImageViewerModal = 'imageViewerModal',
   ChatFilterModal = 'chatFilterModal',
-  CourseFeedbackModal = 'courseFeedbackModal' 
+  CourseFeedbackModal = 'courseFeedbackModal',
+  ApplicationModal = 'applicationModal',
+  ApplicationSuccessModal = 'applicationSuccessModal'
+
 
 }
 
@@ -104,6 +107,8 @@ export enum CompensationType {
   Piecework = 'piecework',
   Contract = 'contract'
 }
+
+export const CompensationTypeTranslated = translateEnum(CompensationType, ['Оклад', 'Комиссия', 'Гибрид(оклад + процент)', 'Сдельная', 'Договорная'])
 
 export enum Currency {
   RUB = 'RUB',
@@ -195,6 +200,8 @@ export enum WorkExperience {
   From3to6 = 'from3to6',
   From6 = 'from6',
 }
+
+export const WorkExperienceTranslate = translateEnum(WorkExperience, ['Без опыта', '1-3 года', '3-6 лет', 'от 6 лет'])
 
 
 export enum HirerRolePermission {

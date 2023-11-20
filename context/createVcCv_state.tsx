@@ -37,11 +37,11 @@ interface IState {
 
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
   activeCategory: ISpecializationCategory
-  activeSubCategory: ISpecializationCategory
+  activeSubCategory: ISpecializationCategory|ISpecializationCategory[]
   setCategories: ()=> void
   setSubCategories: (v: ISpecializationCategory)=>void
   setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
-  setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory>>
+  setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory|ISpecializationCategory[]>>
   
   reset: ()=>void
 
@@ -75,7 +75,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
   const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
-  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory>(null)
+  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory|ISpecializationCategory[]>(null)
 
 
   const setCurrentCv = (v: ICVCreate) => {
