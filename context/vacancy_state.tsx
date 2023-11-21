@@ -1,8 +1,9 @@
-import { IVacancy, IVacancyCreate, IVacancySearchParams } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface IState {
   archiveVacancies: Map<number, IVacancy>
@@ -17,7 +18,7 @@ interface IState {
   removeVacancy: (id: number, published: boolean) => void
   editVcInEditor: (vc: IVacancy)=> void
   foundVacancies: IVacancy[]
-  findVacancies: (data?: IVacancySearchParams) => Promise<boolean>
+  findVacancies: (data?: IVacancyCvSearchParams) => Promise<boolean>
 }
 
 
@@ -110,8 +111,8 @@ export function VacancyWrapper(props: Props) {
     router.push(`/create/vacancy?id=${vc.id}`)
   }
 
-  const findVacancies = async (data?: IVacancySearchParams):Promise<boolean> => {
-    const res = await VacancyRepository.searcVacancies(data)
+  const findVacancies = async (data?: IVacancyCvSearchParams):Promise<boolean> => {
+    const res = await VacancyRepository.searchVacancies(data)
     if(typeof res === 'object') {
       setFoundVacancies(res)
     }

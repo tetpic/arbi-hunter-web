@@ -13,6 +13,18 @@ interface Props<T> {
   onChange: (value: T) => void
   labelClassName?: string
 }
+
+/**
+ * @value T,
+ * @isActive boolean
+ * @label  string,
+ * @className  string
+ * @activeClassName  string
+ * @circleClassName  string
+ * @children  any
+ * @onChange (value: T) => void
+ * @labelClassName  string
+ */
 export default function Checkbox<T>(props: Props<T>) {
   const handleClick = () => {
     props.onChange(props.value)

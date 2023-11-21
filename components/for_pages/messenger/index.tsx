@@ -15,16 +15,12 @@ import { colors } from 'styles/variables'
 const FolderManager = dynamic(()=>import('./FolderManager'), {ssr: false})
 const Messages = dynamic(()=>import('./Messages'), {ssr: false})
 
-
-interface Props {
-}
-
 enum ChatComponent {
   Dialog,
   Chat
 }
 
-export default function Messenger(props: Props) {
+export default function Messenger() {
   const appContext = useAppContext()
   const router = useRouter()
   const chatContext = useChatContext()

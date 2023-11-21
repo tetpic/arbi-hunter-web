@@ -1,1 +1,78 @@
 @import 'styles/index';
+
+.top {
+  position: relative;
+  padding-top: 48px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  .back {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(calc(-50% + 44px));
+    width: calc(100vw - 88px);
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(241deg, #7C5BFF 7.14%, rgba(57, 225, 195, 0.85) 100%);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .title  {
+    color: $white;
+    font-size: $hugeText;
+    font-weight: $bold;
+  }
+
+  .description {
+    color: $white;
+    font-size: $largeText;
+  }
+  
+  .createLink {
+    @include buttonWhite;
+    max-width: 224px;
+    margin-top: 4px;
+  }
+
+
+}
+
+.searchBar {
+  margin-top: -30px;
+}
+
+.content {
+  display: flex;
+  column-gap: 16px;
+}
+
+.filters {
+  max-width: 330px;
+  flex-shrink: 0;
+  width: 30%;
+  height: 100vh;
+  height: 100dvh;
+  position: sticky;
+  top: 16px;
+  left: 0;
+}
+
+.vacancies {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.found {
+  color: $white;
+  font-size: $hugeText;
+  font-weight: $semibold;
+  margin-top: 42px;
+  margin-bottom: 16px;
+}
+

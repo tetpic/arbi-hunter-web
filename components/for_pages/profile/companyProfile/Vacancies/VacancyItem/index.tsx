@@ -18,6 +18,7 @@ import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
 import { colors } from 'styles/variables'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
+import Link from 'next/link'
 
 interface Props {
   vacancy: IVacancy
@@ -108,7 +109,7 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
         {!isActive && 
           <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
         ||
-          <Button  className={styles.button}>Пригласить подходящих</Button>
+          <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Пригласить подходящих</span></Link>
         }
         {vacancy.totalApplications &&+vacancy.totalApplications > 0 &&
           <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>

@@ -27,7 +27,7 @@ export default function VacanciesActive(props: Props) {
           [...vacancyContext.activeVacancies.values()].map((el, index)=> {
             return <VacancyItem 
             key={index} 
-            isLast={vacancyContext.activeVacancies.size > 2 && vacancyContext.activeVacancies.size-1 ===index} 
+            isLast={vacancyContext.activeVacancies.size > 1 && vacancyContext.activeVacancies.size-1 ===index} 
             vacancy={el} 
             isActive={true}/>
           })  

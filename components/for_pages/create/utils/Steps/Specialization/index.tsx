@@ -3,6 +3,8 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import { ModalType } from 'types/enums'
 import styles from './index.module.scss'
+import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
+import { ISpecializationCategory } from 'data/interfaces/Common'
 
 
 interface Props {
@@ -12,8 +14,13 @@ export default function Specialization(props: Props) {
   const appContext = useAppContext()
   const cvContext = useCreateVcCvContext()
 
+  const onModalSubmit = (data: ISpecializationCategory | ISpecializationCategory[]) => {
+    const helperCv = cvContext.helpObjects
+    cvContext.setHelpObjects({...helperCv, categoryIds: [!Array.isArray(data)&&data]})
+  }
+
   const openModalHandler = () => {
-    appContext.showModal(ModalType.SpecializationModal)
+    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {onSubmit: onModalSubmit, manyItems: false})
   }
 
   return ( 

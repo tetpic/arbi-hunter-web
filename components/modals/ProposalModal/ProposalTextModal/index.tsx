@@ -5,6 +5,7 @@ import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
+import { IApplicationSuccessModalProps } from 'components/modals/ApplicationSuccessModal'
 import Button from 'components/ui/Button'
 import Title from 'components/ui/TitleForSection'
 import { useFeedbacksContext } from 'context/feedbacks_state'
@@ -16,7 +17,7 @@ import { IPattern } from 'data/interfaces/IPattern'
 import { IProposal } from 'data/interfaces/IProposal'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ApplicationBSSelectType, PatternTypes, ProposalRequestType, SnackbarType } from 'types/enums'
+import { ApplicationBSSelectType, ModalType, PatternTypes, ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 
 interface Props {
@@ -28,27 +29,26 @@ export interface IProposalTextModalProps {
   type: ApplicationBSSelectType, 
   vcId?: number, 
   application: IApplication, 
-  cv: ICV
+  cv: ICV,
+  onSubmit?: () => void
 }
 
 export default function ProposalTextModal(props: Props) {
   const appContext = useAppContext()
   const modalArguments = appContext.modalArguments as IProposalTextModalProps
+  const {application, cv, vcId} = modalArguments
   const patternContext = usePatternContext()
   const proposalRepository = useFeedbacksContext()
-  const {application, cv, vcId} = modalArguments
-
-  const initialPattern = [...patternContext.patterns.values()].find(el=> {
-    return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?PatternTypes.Rejection:PatternTypes.Interview)
-  })
-  const [pattern, setPattern] = useState<IPattern>(initialPattern)
+  const [pattern, setPattern] = useState<IPattern>(null)
 
   const submit = async(data: IProposal) => {
-    debugger
-   
     proposalRepository.createProposal(data)
     .then(res=>{
-      res&&props.onClose()
+      res
+      if(typeof res === 'object' && modalArguments.onSubmit) {
+        modalArguments.onSubmit()
+      }
+      res&&appContext.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'vc', id: vcId})
       if(!res){
         throw Error()
       }
@@ -59,7 +59,16 @@ export default function ProposalTextModal(props: Props) {
   }
 
   useEffect(()=>{
-    setPattern(pattern)
+    if(patternContext.patterns) {
+      const initialPattern = [...patternContext.patterns.values()].find(el=> {
+        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?PatternTypes.Rejection:PatternTypes.Interview)
+      })
+      setPattern(initialPattern)
+    }
+  }, [patternContext.patterns])
+
+  useEffect(()=>{
+    patternContext.setPatterns()
   }, [])
 
   const initialValues = {

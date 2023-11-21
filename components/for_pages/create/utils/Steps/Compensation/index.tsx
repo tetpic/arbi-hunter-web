@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import { useField } from 'formik'
 import { CompensationType, CompensationTypeTranslated, Currency } from 'types/enums'
 import { TranslateCurrency } from 'utils/enumsTranslations'
-import styles from './index.module.scss'
 
 interface Props {
 }

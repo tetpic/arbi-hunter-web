@@ -1,5 +1,6 @@
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { IVacancy, IVacancyCreate, IVacancySearchParams } from 'data/interfaces/IVacancy'
+import { IVacancy, IVacancyCreate} from 'data/interfaces/IVacancy'
 import request from 'utils/request'
 
 export default class VacancyRepository {
@@ -111,7 +112,7 @@ export default class VacancyRepository {
     return res
   }
 
-  static async searcVacancies(data: IVacancySearchParams): Promise<IVacancy[]|null> {
+  static async searchVacancies(data: IVacancyCvSearchParams): Promise<IVacancy[]|null> {
     const dataToSend:any = {...data}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))

@@ -15,7 +15,7 @@ import { ICV } from 'data/interfaces/ICV'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
-import { ApplicationBSSelectType, ModalType } from 'types/enums'
+import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
 import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
 
@@ -35,17 +35,27 @@ export enum ProposalModalPager {
   OtherVacancy
 }
 
+export interface IProposalModalProps {
+  application?:IApplication, 
+  cv?: ICV, 
+  page?: ProposalModalPager
+}
+
 export default function ProposalModal(props: Props) {
   const patternContext = usePatternContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
-  const modalArguments = appContext.modalArguments as {application?:IApplication, cv?: ICV, page?: ProposalModalPager}
+  const modalArguments = appContext.modalArguments as IProposalModalProps
   const [page, setPage] = useState<ProposalModalPager>(modalArguments.page||ProposalModalPager.Invite)
   const [loading, setIsLoading] = useState<boolean>(false)
 
   const vacancyContext = useVacancyContext()
 
   const submit = (data: FormikState) => {
+    if(!data.vcId) {
+      appContext.showSnackbar('Выберите вакансию', SnackbarType.error)
+      return
+    }
     if(data.type === ApplicationBSSelectType.AnotherVacancy && page === ProposalModalPager.Invite) {
       setPage(ProposalModalPager.OtherVacancy)
     }
@@ -94,7 +104,7 @@ export default function ProposalModal(props: Props) {
           <RadioListField 
           wrapperClassName={styles.radioWrapper} 
           name={'vcId'} 
-          options={[...vacancyContext.activeVacancies.values()]
+          options={[...vacancyContext.activeVacancies.values()].filter(el=> modalArguments.cv.proposalByCurrentUser?.vacancyId !== el.id)
           .map(el => {
             return {value: el.id, label: el.name}
           })}/>          

@@ -30,7 +30,7 @@
     flex-direction: column;
     row-gap: 16px;
     align-items: start;
-    width: 100%;
+    width: calc(100% - 180px);
     position: relative;
   }
 

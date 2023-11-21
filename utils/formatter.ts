@@ -129,8 +129,7 @@ export default class Formatter {
   /** get arr like [['02.2022', '03.2023'], ['02.1992', '03.1993']], return for example '2 года 2 месяца' */
   static fullTimeLine = (arr: string[][]) => {
     let allMonths = arr.map((el) => {
-
-      let oldString = el[0].split('.')
+      let oldString = el[0]?.split('.')||[new Date().getMonth().toString(), new Date().getFullYear().toString()]
       let oldDate = new Date(+oldString[1], +oldString[0] - 1)
       let newString = el[1]?el[1]?.split('.'):[new Date().getMonth, new Date().getFullYear()]
       let newDate = new Date(+newString[1], +newString[0] - 1)

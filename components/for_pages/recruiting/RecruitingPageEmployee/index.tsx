@@ -10,11 +10,11 @@ import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
 import VacancyItem from './VacancyItem'
-import Filters from './Filters'
-import { IVacancySearchParams } from 'data/interfaces/IVacancy'
+import Filters from '../Filters'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface Props {
 }
@@ -23,16 +23,16 @@ export default function RecruitingPageEmployee(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const [currentFilters, setCurrentFilters] = useState<IVacancySearchParams>({})
+  const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>({})
 
-  const findVacancies = (data: IVacancySearchParams):void => {
+  const findVacancies = (data: IVacancyCvSearchParams):void => {
     vacancyContext.findVacancies(data)
     .then(_=>setLoading(false))
   }
 
   const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
-  const onFilterChange =(data: IVacancySearchParams) => {
+  const onFilterChange =(data: IVacancyCvSearchParams) => {
     setLoading(true)
     setCurrentFilters(data)
     findVacanciesThrottle.callback(data)
@@ -44,12 +44,10 @@ export default function RecruitingPageEmployee(props: Props) {
       setLoading(false)
     })
     cvContext.setSavedCvs()
-
   }, [])
 
 
   return (<div className={styles.root}> 
-  <p style={{color: 'white'}}>RECRUITING PAGE Employee /в разработке/</p>
   <div className={styles.top}>
     <div className={styles.back}>
       <Image className={styles.image} src={recEmpImage} alt={'rec image'} width={814} height={249}/>

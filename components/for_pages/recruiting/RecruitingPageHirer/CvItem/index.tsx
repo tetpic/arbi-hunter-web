@@ -1,0 +1,75 @@
+import styles from './index.module.scss'
+
+import { ICV } from 'data/interfaces/ICV'
+import { useAppContext } from 'context/state'
+import Image from 'next/image'
+import defaultImage from 'images/recruiting/cv_user_default.png'
+import SalaryItem from 'components/ui/SalaryItem'
+import Formatter from 'utils/formatter'
+import Button from 'components/ui/Button'
+import { ActivityStatus, ApplicationBSSelectType, ApplicationStatus, ModalType, VacancyLookType } from 'types/enums'
+import classNames from 'classnames'
+import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
+
+interface Props {
+  cv: ICV
+  initialVacancy?: IVacancy
+  onChangeItem?: () => void
+}
+
+export default function CvItem({cv, ...props}: Props) {
+
+  const appContext = useAppContext()
+
+  const respondHandler = () => {
+    if(props.initialVacancy) {
+      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {application: null, type: ApplicationBSSelectType.ThisVacancy, vcId: props.initialVacancy.id, cv, onSubmit: props.onChangeItem})
+      return
+    }
+    appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, {cv, page: ProposalModalPager.OtherVacancy})
+  }
+
+  return (<div className={styles.item}> 
+    <Image className={styles.image} src={defaultImage} alt={'def image'} width={225} height={290}/>
+    <div className={styles.top}>
+      {cv.categories.length > 0 &&
+      <p className={styles.name}>{cv.categories[0].name} {cv.position&&`/${cv.position}`}</p>
+      }
+      <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
+
+      {cv.city && cv.city.locName && !cv.isRemote &&
+        <p className={styles.sub}>г. {cv.city?.locName}</p>
+      }
+      {cv.isRemote &&
+        <p className={styles.sub}>Удаленно</p>
+      }
+      <SalaryItem cv={cv}/>
+      {cv?.profile?.activityStatus &&
+        <p className={styles.activityStatus}>
+          <span className={classNames(styles.dot, cv.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>
+          {cv.profile.activityStatus === ActivityStatus.Online?'В сети':`Был в сети ${Formatter.formatDateRelative(cv.profile.lastActivityAt)}`}
+        </p>
+      }
+      {cv.vacancyLookType &&
+      <p className={classNames(styles.lookType, cv.vacancyLookType === VacancyLookType.NotLooking?styles.lookType_red:styles.lookType_green)}>
+        {cv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
+      </p>
+      }
+      {cv.experienceInfo && cv.experienceInfo.length > 0 &&
+        <p className={styles.sub}>Опыт работы <span className={styles.sub_white}>{Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}</span></p>
+      }
+      {cv.lastExperienceInfo &&
+      <p className={styles.sub}>Последнее место работы <span className={styles.sub_white}>{cv.lastExperienceInfo.company}</span></p>
+      }
+    </div>
+    <div className={styles.buttonsWrapper}>
+      {(!cv.proposalByCurrentUser || cv.proposalByCurrentUser.status === ApplicationStatus.Rejected || cv.proposalByCurrentUser.vacancyId !== props.initialVacancy?.id) &&
+      <Button className={styles.button} onClick={respondHandler}>Пригласить</Button>
+      ||
+      <Button className={styles.buttonDisabled}>Приглашение выслано</Button>
+      }
+    </div>
+  </div>)
+}

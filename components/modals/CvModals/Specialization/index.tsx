@@ -1,3 +1,5 @@
+import styles from '../index.module.scss'
+
 import classnames from 'classnames'
 // import Radio from 'components/fields/RadioListField/Radio'
 import ModalBody from 'components/layout/Modal/ModalBody'
@@ -5,9 +7,8 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISpecializationCategory } from 'data/interfaces/Common'
-import {  useEffect, useRef } from 'react'
+import {  useEffect, useRef, useState } from 'react'
 import Body from '../Body'
-import styles from '../index.module.scss'
 import Scrollbars from 'react-custom-scrollbars-2'
 import { useAppContext } from 'context/state'
 // import { SnackbarType } from 'types/enums'
@@ -15,6 +16,8 @@ import { useAppContext } from 'context/state'
 import { Form, FormikProvider, useFormik } from 'formik'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import RadioListField from 'components/fields/RadioListField'
+import { SnackbarType } from 'types/enums'
+import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 
 interface Props {
   onClose: ()=> void
@@ -22,6 +25,7 @@ interface Props {
 
 export interface ISpecializationModalProps {
   manyItems?: boolean
+  onSubmit?: (specialization: ISpecializationCategory|ISpecializationCategory[])=>void
 }
 
 
@@ -32,28 +36,25 @@ export default function SpecializationModal(props: Props) {
   const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
   const appContext = useAppContext()
   const args = appContext.modalArguments as ISpecializationModalProps
+  const [chooseAll, setChooseAll] = useState<boolean>(false)
 
 
   const scrollBar = useRef<Scrollbars>(null!)
 
-  // const setSpecHandler = () => {   
-  //   if(!activeSubCategory) {
-  //     appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
-  //     return
-  //   }
-  //   const helperCv = cvContext.helpObjects
-  //   cvContext.setHelpObjects({...helperCv, categoryIds: [activeSubCategory]})
-  //   props.onClose()
-  // }
-
   const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
+    if(!data.specialization) {
+      appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+      return
+    }
     cvContext.setActiveSubcategory(data.specialization )
+    cvContext.setActiveCategory(null)
+    args.onSubmit&&args?.onSubmit(data.specialization)
     props.onClose()
   } 
 
   const formik = useFormik<{specialization: ISpecializationCategory|ISpecializationCategory[]}>({
     initialValues: {
-      specialization: [],
+      specialization: args.manyItems?[]:undefined,
     },
     onSubmit: submit
   })
@@ -70,12 +71,20 @@ export default function SpecializationModal(props: Props) {
     setActiveCategory(el)
   }
 
+  const chooseAllHandler = (subCategories: ISpecializationCategory[]) => {
+    if(!chooseAll) {
+      formik.setFieldValue('specialization', subCategories)
+      setChooseAll(true)
+    }
+    else {
+      formik.setFieldValue('specialization', Array.isArray(formik.values.specialization)&&formik.values.specialization.filter(f=> !subCategories.includes(f)))
+      setChooseAll(false)
+    }
+  }
+
+
   useEffect(()=>{
     cvContext.setCategories()
-    // return ()=>{
-    //   cvContext.setActiveCategory(null)
-    //   cvContext.setActiveSubcategory(null)
-    // }
   }, [])
 
 
@@ -89,7 +98,7 @@ export default function SpecializationModal(props: Props) {
       <FormikProvider value={formik}>
         <Form>
         <div className={styles.categoriesWrapper}>
-        <Scrollbars ref={scrollBar} style={{height: '100%'}}   autoHide universal>
+        <Scrollbars ref={scrollBar} style={{height: '100%'}} autoHide universal>
         {cvContext.categories && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
           const isActive = activeCategory === category
           return (
@@ -106,45 +115,32 @@ export default function SpecializationModal(props: Props) {
               </p>
               <div className={classnames(styles.subCategoryWrapper, isActive&&styles.subCategoryWrapper_active)}>             
                 {subCategories && args?.manyItems &&
-                  <CheckboxListField name={'specialization'} options={subCategories.map(el=> {
-                    return {value: el, label: el.name}
-                  })}/>
+                  <>
+                    {subCategories.length > 1 &&
+                      <Checkbox className={styles.chooseAll} value={undefined} isActive={chooseAll} onChange={()=>chooseAllHandler(subCategories)} label='Выбрать все'/>
+                    }
+                    <div onClick={()=>setChooseAll(false)}>
+                      {subCategories.length > 0 &&
+                        <CheckboxListField rootClass={styles.radiosField} name={'specialization'} options={subCategories.map(el=> {
+                          return {value: el, label: el.name}
+                        })}/>
+                      }
+                    </div>
+                  </>
                   ||
                   subCategories && !args?.manyItems &&
-                  <RadioListField name={'specialization'} options={subCategories.map(el=> {
+                  <RadioListField rootClass={styles.radiosField} name={'specialization'} options={subCategories.map(el=> {
                     return {value: el, label: el.name}
                   })}/>
                 }
-                {/* {subCategories && subCategories.map(el=> {
-                  return args?.manyItems?
-                    <Checkbox
-                    key={el.id}
-                    label={el.name}
-                    className={styles.subCategoryItem} 
-                    value={el.id} 
-                    isActive={activeSubCategory === el} 
-                    onChange={()=> setActiveSubcategory(el)}
-                    />
-                    :
-                    <Radio 
-                    key={el.id}
-                    label={el.name}
-                    className={styles.subCategoryItem} 
-                    value={el.id} 
-                    isActive={activeSubCategory === el} 
-                    onChange={()=> setActiveSubcategory(el)}
-                    />
-                })} */}
               </div>
             </div>
           )
         })}
         </Scrollbars>
       </div>  
-
         </Form>
       </FormikProvider>
-       
     </Body>
   )
 

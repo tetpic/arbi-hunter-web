@@ -5,6 +5,8 @@ import ItemNavigation from '../../ItemNavigation'
 import VacancyItem from '../Saved/Vacancies/VacancyItem'
 import styles from './index.module.scss'
 import { IProposal } from 'data/interfaces/IProposal'
+import Spinner from 'components/ui/Spinner'
+import { colors } from 'styles/variables'
 
 interface Props {
 }
@@ -38,11 +40,13 @@ export default function Feedbacks(props: Props) {
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
   const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filtered, setFiltered] = useState<Map<number, IProposal>>(CVFeedbacks)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const onRemove = () => {
+    setLoading(true)
     feedBackContext.setCVResponses()
+    .then(_=>setLoading(false))
   }
-
 
   useEffect(()=>{    
     switch(page) {
@@ -86,9 +90,9 @@ export default function Feedbacks(props: Props) {
   
   }, [page, CVFeedbacks])
 
-
   useEffect(()=>{
     feedBackContext.setCVResponses()
+    .then(_=>setLoading(false))
     return ()=>{
       feedBackContext.setCurrentCvResponsesState({})
     }
@@ -99,10 +103,13 @@ export default function Feedbacks(props: Props) {
       <ItemNavigation activeItem={page} items={items} onClick={(n)=>setPage(n)} className={styles.navigation}/>
       <div className={styles.wrapper}>
         {
-          filtered.size > 0 && [...filtered.entries()].map(([id, proposal])=> {
+          filtered.size > 0 && !loading && [...filtered.entries()].map(([id, proposal])=> {
             if(proposal.chat.length === 0) return null
             return (<VacancyItem  onRemove={onRemove} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
           })
+          ||
+          loading &&
+          <Spinner size={24} color={colors.yellow}/>
           ||
           <p className={'empty'}>Нет откликов</p>
         }

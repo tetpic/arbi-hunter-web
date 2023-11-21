@@ -46,9 +46,9 @@ export default function Chats(props: Props) {
             )
           })
           ||
-          props.chats.length === 0 && !chatContext.loading&&
-          <p className='empty'>Чатов не найдено</p>
-          ||
+          // props.chats.length === 0 && !chatContext.loading &&
+          // <p className='empty'>Чатов не найдено</p>
+          // ||
           <Spinner size={32} color={colors.yellow}/>
         }
       </div>

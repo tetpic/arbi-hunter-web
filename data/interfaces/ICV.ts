@@ -53,4 +53,5 @@ export interface ICV extends ICVCreate, IUserProfile{
   lastExperienceInfo: ExperienceInfo,
   skills?: ISource[],
   sources?: ISource[]
+  isRemote?:boolean
 }

@@ -7,16 +7,22 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
 
-interface Props {
+interface Query {
+  vcId?: number
+  cvId?: number
+}
+interface Props extends Query {
   profileType?: ProfileType
   auth?: boolean
 }
-
-export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
+//export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
+export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
   const token = context.req.cookies[CookiesType.accessToken]
   const profile = context.req.cookies[CookiesType.profileType]
+  const vcId = context.query?.vcId||null
+  const cvId = context.query?.cvId||null
   if(profile) {
-    return {props: {profileType: profile, auth: token}}
+    return {props: {profileType: profile, auth: token, vcId, cvId}}
   }
   else {
     return {props: {}}
@@ -37,9 +43,9 @@ export default function Recruiting(props: Props) {
     }
     {
       props.auth && props.profileType=== ProfileType.Employee &&
-      <RecruitingPageEmployee/>
+      <RecruitingPageEmployee />
       ||
-      <RecruitingPageHirer/>
+      <RecruitingPageHirer vcId={Number(props.vcId)} />
     }
   </ContentLayout>)
 }

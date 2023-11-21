@@ -21,7 +21,7 @@ interface IState {
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
   CVFeedbacks: Map<number, IProposal>
-  createProposal: (p: IProposal)=> Promise<boolean>
+  createProposal: (p: IProposal)=> Promise<boolean|IProposal>
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
   setCurrentCvResponsesState: Dispatch<SetStateAction<{
@@ -55,7 +55,7 @@ export function FeedbacksWrapper(props: Props) {
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
   const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVFeedbacks, setCurrentCVResponsesState] = useState<Map<number, IProposal>>(new Map())
+  const [CVFeedbacks, setAllCVResponsesState] = useState<Map<number, IProposal>>(new Map())
   const [sorted, setSorted] = useState<IApplication[]|null>(null)
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [filterOptions, setFilterOptionsState] = useState<Map<FilterItem, FilterItem>>(new Map())
@@ -80,14 +80,15 @@ export function FeedbacksWrapper(props: Props) {
 
   const setCVResponses = async(cvId?: number): Promise<boolean> => {
     try{
-      setCurrentCVResponsesState(new Map)
+      setAllCVResponsesState(new Map)
       const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
       allProposals.forEach(async(proposal) => {
-        proposal.forEach((p, index) => {
-          setCurrentCVResponsesState(state => {
+        setAllCVResponsesState(state => {
+          state.clear()
+          proposal.forEach((p, index) => {
             state.set(p.id, p)
-            return new Map(state)
           })
+          return new Map(state)
         })
       })
       return true
@@ -146,11 +147,11 @@ export function FeedbacksWrapper(props: Props) {
     setFilteredVcResponsesState(a)
   }
 
-  const createProposal = async (p: IProposal):Promise<boolean> => {
+  const createProposal = async (p: IProposal):Promise<boolean|IProposal> => {
     try {
       const res = await ProposalRepository.createProposal(p)
-      if (!res.errors) {
-        return true
+      if (res) {
+        return res
       }
       else {
         throw new Error

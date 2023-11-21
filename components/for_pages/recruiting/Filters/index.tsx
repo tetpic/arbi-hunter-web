@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import { IVacancySearchParams } from 'data/interfaces/IVacancy'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
@@ -15,23 +14,22 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface Props {
-  onFilterChange: (data: IVacancySearchParams) => void
+  onFilterChange: (data: IVacancyCvSearchParams) => void
 }
 
 export default function Filters(props: Props) {
   const appContext = useAppContext()
   const creationContext = useCreateVcCvContext()
 
-  const formik = useFormik<IVacancySearchParams>({
+  const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
       employment: [],
       schedule: [],
       compensation: undefined,
       forLastNumberOfDays: undefined,
-      // categories: [],
-      // cities: [],
       languageKnowledges: [],
       experience: []
     },

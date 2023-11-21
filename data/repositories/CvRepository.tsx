@@ -1,4 +1,4 @@
-import { ISpecializationCategory, IPosition, ISource } from 'data/interfaces/Common'
+import { ISpecializationCategory, IPosition, ISource, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { Languages } from 'types/enums'
@@ -148,6 +148,26 @@ export default class CvRepository {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/save`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async findCvs(data: IVacancyCvSearchParams): Promise<ICV[]|null> {
+    const dataToSend:any = {...data}
+    data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
+    data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
+    data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
+    data?.experience&&data.experience.length>0&&(dataToSend.experience = data.experience.join(','))
+    data?.cities&&data.cities.length>0&&(dataToSend.cities = data.cities.join(','))
+    data?.schedule&&data.schedule.length>0&&(dataToSend.schedule = data.schedule.join(','))
+    data?.languageKnowledges&&data.languageKnowledges.length > 0&&(dataToSend.languageKnowledges = JSON.stringify(data.languageKnowledges.map(el=> {return {language: el.language, levels: [el.level]}} )))
+    const res = await request({
+      method: 'get',
+      url: '/api/cv',
+      data: dataToSend
     })
     if(res.err) {
       return null

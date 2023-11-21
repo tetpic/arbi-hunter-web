@@ -1,8 +1,8 @@
-import { CompensationType, Currency, EmploymentType, ScheduleType, WorkExperience } from 'types/enums'
+import { WorkExperience } from 'types/enums'
 import { ISource } from './Common'
 import { IApplication } from './IApplication'
 import { ICV,} from './ICV'
-import { IJob, ILanguageKnowledge } from './IJob'
+import { IJob} from './IJob'
 import { IUserProfile } from './IUser'
 
 export interface IVacancyCreate extends IJob {
@@ -27,28 +27,4 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   applicationByCurrentUser: IApplication
 }
 
-export interface IVacancySearchParams {
-  search?: string,
-  categories?: number[] // "1,2,3"
-  cities?: number[] // '1,2,3'
-  employment?: EmploymentType[],
-  schedule?: ScheduleType[],
-  experience?: WorkExperience[],
-  currency?: Currency,
-  salaryMin?: number,
-  salaryMax?: number,
-  commissionMin?: number,
-  commissionMax?: number,
-  gybridCommissionMin?: number,
-  gybridCommissionMax?: number,
-  skills?: number[] // '1,2,3'
-  isRemote?: boolean,
-  savedByCurrentProfile?: boolean,
-  ids?: number[], // '1,2,3' по списку идентификаторов
-  countries?: number[],
-  sort?: 'createdAt,DESC',
-  compensation?: CompensationType,
-  languageKnowledges?: ILanguageKnowledge[],
-  withCharacter?: boolean,
-  forLastNumberOfDays?: 1|7|30|365, 
-}
+

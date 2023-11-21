@@ -5,15 +5,18 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface IState {
   savedCvs: ICV[],
+  foundCvs: ICV[]
   setSavedCvs: ()=>Promise<boolean>
   saveCv: (id: number)=> Promise<boolean>
   removeCvfromSaved: (id: number) => Promise<boolean>
   deleteCv: (id: number) => void
   updateCv: (id: number, cv: ICV) =>void
   editCv: (cv: ICV) => void
+  findCvs: (data?: IVacancyCvSearchParams) => Promise<boolean>
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -26,7 +29,7 @@ export function CvWrapper(props: Props) {
   const router = useRouter()
   const {currentProfile} = useUserContext()
   const createVcCvContext = useCreateVcCvContext()
-
+  const [foundCvs, setFoundCvsState] = useState<ICV[]>([])
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
 
   const setSavedCvs = async():Promise<boolean> => {
@@ -86,6 +89,14 @@ export function CvWrapper(props: Props) {
     })
   }
 
+  const findCvs = async(data?: IVacancyCvSearchParams) => {
+    const res = await CvRepository.findCvs(data)
+    if(typeof res === 'object') {
+      setFoundCvsState(res)
+    }
+    return true
+  }
+
   const editCv = (cv: ICV) => {
     createVcCvContext.setEditedItem(cv, 'cv')
     router.push(`/create/cv?id=${cv.id}`)
@@ -93,12 +104,14 @@ export function CvWrapper(props: Props) {
 
   const value: IState = {
     savedCvs,
+    foundCvs,
     setSavedCvs,
     saveCv,
     removeCvfromSaved,
     deleteCv,
     updateCv,
-    editCv
+    editCv,
+    findCvs,
   }
 
   return (

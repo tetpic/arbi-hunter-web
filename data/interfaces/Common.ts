@@ -1,4 +1,5 @@
-import { CategoryType, Languages } from 'types/enums'
+import { CategoryType, CompensationType, Currency, EmploymentType, Languages, ScheduleType, WorkExperience } from 'types/enums'
+import { ILanguageKnowledge } from './IJob'
 
 export interface TimeStamp {
   createdAt?: string,
@@ -206,4 +207,30 @@ export interface ICreateNews {
 export interface IPaginationRequest {
   page?: number;
   limit?: number;
+}
+
+export interface IVacancyCvSearchParams {
+  search?: string,
+  categories?: number[] // "1,2,3"
+  cities?: number[] // '1,2,3'
+  employment?: EmploymentType[],
+  schedule?: ScheduleType[],
+  experience?: WorkExperience[],
+  currency?: Currency,
+  salaryMin?: number,
+  salaryMax?: number,
+  commissionMin?: number,
+  commissionMax?: number,
+  gybridCommissionMin?: number,
+  gybridCommissionMax?: number,
+  skills?: number[] // '1,2,3'
+  isRemote?: boolean,
+  savedByCurrentProfile?: boolean,
+  ids?: number[], // '1,2,3' по списку идентификаторов
+  countries?: number[],
+  sort?: 'createdAt,DESC',
+  compensation?: CompensationType,
+  languageKnowledges?: ILanguageKnowledge[],
+  withCharacter?: boolean,
+  forLastNumberOfDays?: 1|7|30|365, 
 }

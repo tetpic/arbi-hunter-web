@@ -3,7 +3,7 @@ import { ApplicationStatus } from 'types/enums'
 import request from 'utils/request'
 
 export default class ProposalRepository {
-  static async createProposal(data: IProposal): Promise<any|null> {
+  static async createProposal(data: IProposal): Promise<IProposal|null> {
     const res = await request({
       method: 'post',
       url: '/api/proposal',

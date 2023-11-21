@@ -71,7 +71,6 @@ export default function CVItem({cv, isLast}: Props) {
   }
 
   const showFeedbacksForVacancy = () => {
-    // feedBackContext.setCVResponses(cv.id)
     feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
     profilePageContext.pager(ProfilePages.FeedBacks)
   }
@@ -110,7 +109,6 @@ export default function CVItem({cv, isLast}: Props) {
       <Button 
       className={styles.buttonBlack} 
       onClick={showFeedbacksForVacancy}
-
       >
         {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
       </Button>
