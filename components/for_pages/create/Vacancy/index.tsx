@@ -20,6 +20,7 @@ import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
 import styles from './index.module.scss'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
   id?: number
@@ -82,6 +83,9 @@ export default function Vacancy(props: Props) {
   }
 
   const submit = (data: IVacancyCreate) => {
+    const isValid = nextPageValidator()
+    if(!isValid) {return}
+
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {
@@ -91,13 +95,16 @@ export default function Vacancy(props: Props) {
       salary: Number(data.salary),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
-      cityId,
-      countryId,
       categoriesIds: categoryIds.map(el=> el.id)
     }
+
     if(data.isRemote) {
       sendData.cityId = null
       sendData.countryId = null
+    }
+    else if (cityId || countryId) {
+      cityId&&(sendData.cityId = cityId)
+      countryId&&(sendData.countryId = countryId)
     }
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
@@ -172,57 +179,82 @@ export default function Vacancy(props: Props) {
     }
   }
 
-  const nextPageValidator = (pageNumber?: number) => {
+  const nextPageValidator = (pageNumber?: number):boolean => {
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
         formik.setFieldError(val, err||' ')
       })
     }
+    
 
     switch(progress) {
       case 1:
-        formik.validateForm()
-        .then(res=> {
-          res.name && formik.setFieldTouched('name', true)
-          creationContext.helpObjects.categoryIds.length > 0
-          ? setProgress(pageNumber||progress+1)
-          : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
-        })
-      break
+        if(formik.values.name.trim().length < 1) {
+          setErr('name', 'Укажите название вакансии')
+          return false
+        }
+        if(creationContext.helpObjects.categoryIds.length === 0) {
+          appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+          return false
+        }
+        setProgress(pageNumber||progress+1)
+        return false
+
+
+        // formik.validateForm()
+        // .then(res=> {
+        //   
+        //   if(res.name) {
+        //     formik.setFieldTouched('name', true)
+        //     return false
+        //   }
+        //   creationContext.helpObjects.categoryIds.length > 0
+        //   ? setProgress(pageNumber||progress+1)
+        //   : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+        //   return false
+        // })
       case 4: 
       if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
         setErr('salary')
-        return
+        return false
       }
       else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
         setErr('commission')
-        return
+        return false
       }
       else if(formik.values.compensation === CompensationType.Gybrid) {
         if(!formik.values.commission||formik.values.commission < 1) {
           setErr('commission')
+          return false
         }
         if(!formik.values.salary||formik.values.salary < 1) {
           setErr('salary')
+          return false
         }
         if(formik.values.commission > 0 && formik.values.salary > 0) {
           setProgress(pageNumber||progress+1)
+          return true
         }
       }
       else {
         setProgress(pageNumber||progress+1)
+        return false
       }
     break
     case 5: 
       if(formik.values.description.trim().length < 1) {
         setErr('description', 'Напишите подробнее о вакансии')
+        return false
       } else {
         setProgress(pageNumber||progress+1)
+        return false
       }
+    case 6:
+      return true
     break
-
       default :
         setProgress(pageNumber||progress+1)
+        return true
     }
   } 
 
@@ -231,7 +263,6 @@ export default function Vacancy(props: Props) {
     setTitle(getTitle(type))   
     setPage(element)
   }
-
 
   useEffect(()=>{
     if(progress < 1) {
@@ -274,6 +305,8 @@ export default function Vacancy(props: Props) {
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 
+
+          <Spacer basis={16}/>
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&

@@ -3,7 +3,7 @@
 .root {
   display: flex;
   flex-direction: column;
-  row-gap: 32px;
+  row-gap: clamp(16px, 4vw, 32px);
   align-items: flex-start;
   margin-top: 32px;
 }

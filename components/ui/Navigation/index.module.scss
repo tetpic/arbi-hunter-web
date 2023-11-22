@@ -4,6 +4,7 @@
   max-width: 372px;
   width: 30%;
   flex-shrink: 0;
+  padding-bottom: 20px;
   @include mq($TabletWidth, max) {
     width: 100%;
     max-width: unset;

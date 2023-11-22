@@ -35,7 +35,7 @@ export default function CvItem({cv, ...props}: Props) {
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={225} height={290}/>
     <div className={styles.top}>
       {cv.categories.length > 0 &&
-      <p className={styles.name}>{cv.categories[0].name} {cv.position&&`/${cv.position}`}</p>
+      <p className={styles.name}>{cv.categories[0].name} {/*cv.position&&`/${cv.position}`*/}</p>
       }
       <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
 

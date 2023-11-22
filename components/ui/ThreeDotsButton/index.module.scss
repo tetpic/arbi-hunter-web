@@ -1,11 +1,13 @@
 @import 'styles/index';
 
 .threeDots {
-  padding: 6px;
   background-color: transparent;
   border-radius: 10px;
   cursor: pointer;
+  height: 30px;
+  width: 30px;
   @include transitionDefault;
+
 
   svg {
     width: 24px;

@@ -24,6 +24,24 @@ export default class ArticlesRepository {
     return res
   }
 
+  static async getSubscriptions(page?: number): Promise<IPagination<IArticle>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/article',
+      data: {
+        sort: 'createdAt,DESC',
+        subscriptions: true,
+        full: true,
+        page,
+        limit: 10
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getById(articleId: number, lang: Languages): Promise<IArticle|null> {
     const res = await request({
       method: 'get',

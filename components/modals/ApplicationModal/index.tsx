@@ -35,7 +35,7 @@ export default function ApplicationModal(props: Props) {
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
     ApplicationRepository.sendApplication(data as IApplication)
     .then(res=> {
-      debugger
+      
       appContex.showModal(ModalType.ApplicationSuccessModal)
     })
 

@@ -12,6 +12,14 @@ interface Props {
   icon?: JSX.Element
 }
 
+/**
+ * @image  string|StaticImageData
+ * @link  string
+ * @onClick  ()=> void
+ * @className  string
+ * @size  number
+ * @icon  JSX.Element
+ */
 export default function UserPic(props: Props) {
   
   const router = useRouter()

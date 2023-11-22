@@ -129,7 +129,7 @@ export default function Cv(props: Props) {
     schedule: props.cv?.schedule||ScheduleType.FullDay, 
     employment: props.cv?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.cv?.languageKnowledges||null, 
-    published: props.cv?.published||false,
+    published: props.cv?.published||true,
     portfolio: props.cv?.portfolio||'',
     geosIds: []
   }

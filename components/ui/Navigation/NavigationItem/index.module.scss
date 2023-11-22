@@ -20,11 +20,11 @@
       }
     }
   }
-  @include mq($TabletWidth, max) {
-    @include exeptLast{
-      border-bottom: 1px $grey solid;
-    }
-  }
+  // @include mq($TabletWidth, max) {
+  //   @include exeptLast{
+  //     border-bottom: 1px $grey solid;
+  //   }
+  // }
   
   .icon {
     background: $grey;
@@ -73,6 +73,6 @@
   margin-left: -8px;
   
   &_active {
-    max-height: 60vh;
+    max-height: 40vh;
   }
 }

@@ -21,7 +21,7 @@ function generateVariants(obj: {[key: string]: number[]}, type: 'man'|'woman') {
           head: 0,
           eye: 0, 
           hair: k==='cap'?0:1,
-          jacket: 0,
+          // jacket: 5,
           size: s,
           [k]: el, 
         })

@@ -1,0 +1,23 @@
+@import 'styles/index';
+
+.tag {
+  border-radius: 30px;
+  cursor: pointer;
+  padding: 8px 12px;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  background-color: transparent;
+  display: inline-block;
+  border: 1px $greyAlt2 solid;
+  @include transitionDefault;
+  @include hover {
+    background-color: $greyAlt2;
+  }
+
+  @include mq($TabletWidth, max) {
+    background-color: $black;
+      border: 1px $black solid;
+
+  }
+}

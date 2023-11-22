@@ -41,7 +41,7 @@ export default function Courses(props: Props) {
   
   
   return (
-    <ContentLayout withFooter title={'Курсы'}>
+    <ContentLayout withFooter title={'Онлайн обучение'}>
       <CoursesWrapper>
         <CoursesMain 
         categoryList={props.categoryList} 

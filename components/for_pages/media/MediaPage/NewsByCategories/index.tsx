@@ -18,6 +18,7 @@ interface Props {
   className?: string
   hideNav?: boolean
   children?: JSX.Element|JSX.Element[]
+  scrollableTarget?: string
 }
 
 export default function NewsByCategories(props: Props) {
@@ -65,7 +66,8 @@ export default function NewsByCategories(props: Props) {
   hasMore={news?.size < total} 
   loader={<Spinner size={24} color={colors.yellow}/>} 
   dataLength={news?.size}
-  height={'100%'}
+  scrollableTarget={props.scrollableTarget}
+  // height={'100%'}
   >
     <div className={styles.children}>
       {props.children}

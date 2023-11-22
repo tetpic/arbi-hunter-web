@@ -7,7 +7,7 @@
   grid-area: header;
   position: relative;
   @include mq($TabletWidth, max) {
-    width: 100vw;
+    width: 100%;
     height: Clamp(350px, 100vw, 450px);
     border-radius: unset;
     border-bottom-left-radius: 16px;

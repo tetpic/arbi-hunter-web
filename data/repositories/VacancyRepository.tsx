@@ -130,4 +130,16 @@ export default class VacancyRepository {
     }
     return res
   }
+
+  static async suggestPosition(data: {search: string}): Promise<{name: string}[]|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/vacancy/suggest',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

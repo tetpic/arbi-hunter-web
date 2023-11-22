@@ -1,5 +1,6 @@
 import { UpdateCommunityForm } from 'data/interfaces/Common'
 import ICommunity from 'data/interfaces/ICommunity'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { LOAD_LIMIT } from 'types/constants'
 import { IPagination } from 'types/types'
@@ -44,10 +45,12 @@ export default class CommunitiesRepository {
     return res
   }
 
-  static async getCommunityById(communityId: number): Promise<any|null> {
+  static async getCommunityById(communityId: number, profile?: ProfileType, token?: string): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/community/${communityId}`,
+      profile,
+      token
     })
     if(res.err) {
       return null

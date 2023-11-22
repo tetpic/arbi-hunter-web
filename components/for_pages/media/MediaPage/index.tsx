@@ -22,7 +22,7 @@ import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IMediaCategoryModal } from 'components/modals/MediaCategoryModal'
 import dynamic from 'next/dynamic'
-import { isMobile } from 'react-device-detect'
+import Subscriptions from './Subscriptions'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -32,7 +32,7 @@ interface Props {
   category?: number
   categories?: ICategory[]
   page?: MediaPageNav
-  isModile?: boolean
+  isMobile?: boolean
 }
 
 export enum MediaPageNav {
@@ -53,10 +53,11 @@ function SubCategories(props: {categories: ICategory[], currentCategory: ICatego
 
 
 
-export default function CommunitiesPage(props: Props) {
+export default function MediaPage(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth, width} = useResize()
-  const [page, pager] = useState<MediaPageNav>(!isMobile&&props.page||props.page === MediaPageNav.Categories?MediaPageNav.AllArticles:props.page||MediaPageNav.AllArticles)
+
+  const [page, pager] = useState<MediaPageNav>((!props.isMobile&&props.page)||(props.page === MediaPageNav.Categories?MediaPageNav.AllArticles:props.page)||MediaPageNav.AllArticles)
   const router = useRouter()
   const [currentCategory, setCurrentCategory] = useState<ICategory>(props.categories.find(el=> el.id === +props.category)||props.categories[0])
   const subCategories = <SubCategories categories={props.categories} currentCategory={currentCategory} setCurrent={(e: ICategory) => setCurrentCategory(e)} />
@@ -84,11 +85,11 @@ export default function CommunitiesPage(props: Props) {
       case MediaPageNav.AllArticles:
         return <MainMediaPage categories={props.categories}/>
       case MediaPageNav.Subscriptions:
-        return <>мои подписки</>
+        return <Subscriptions/>
       case MediaPageNav.Communities:
         return <Communities/>
       case MediaPageNav.Categories:
-        return isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories category={currentCategory}/>
+        return isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories category={currentCategory} scrollableTarget='scrollable'/>
     }
   })()
 
@@ -112,16 +113,10 @@ export default function CommunitiesPage(props: Props) {
   }, [page, currentCategory, width])
 
   useEffect(()=>{
-    const pageFromRouter = router.query.page as MediaPageNav
-    const categoryId = router.query.category as string
-    const category = props.categories.find(el=> el.id === Number(categoryId))
-    if(page && pageFromRouter && page !== pageFromRouter && width ) {
-      pager(isTabletWidth&&pageFromRouter===MediaPageNav.Categories?MediaPageNav.AllArticles:pageFromRouter)
-    }
-    if(currentCategory && categoryId && currentCategory?.id !== Number(categoryId)) {
-      setCurrentCategory(category)
-    }
-    if(pageFromRouter === MediaPageNav.Categories && width && isTabletWidth) {
+    if(props.isMobile && router.query.page === MediaPageNav.Categories) {
+      pager(MediaPageNav.AllArticles)
+      const categoryId = router.query.category as string
+      const category = props.categories.find(el=> el.id === Number(categoryId))
       appContext.showModal<IMediaCategoryModal>(ModalType.MediaCategoryModal, {
         currentCategory: category,
         title: category.name
@@ -129,7 +124,7 @@ export default function CommunitiesPage(props: Props) {
     }
   }, [router])
 
-  return (<div className={styles.root}> 
+  return (<div className={styles.root} > 
     <div className={styles.contentWrapper}>
       <div className='container'>
         <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
@@ -137,7 +132,7 @@ export default function CommunitiesPage(props: Props) {
           <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
         }
       </div>
-      <div className={styles.bodyWrapper}>
+      <div className={styles.bodyWrapper} id={'scrollable'}>
           <SearchBar className={styles.searchBar}/>
           <MediaWrapper>
           {body}

@@ -6,7 +6,7 @@
   height: calc(100dvh - 240px);
   overflow: auto;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 280px);
-    height: calc(100dvh - 280px);
+    height: calc(100vh - 202px);
+    height: calc(100dvh - 202px);
   }
 }

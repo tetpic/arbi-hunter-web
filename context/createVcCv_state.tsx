@@ -127,10 +127,11 @@ export function CreateVcCvWrapper(props: Props) {
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
     if(type === 'vc') {
       const vcItem = item as IVacancy
+      
       setHelp(state=>{return {...state, 
         categoryIds: vcItem.categories,   
-        cityId: vcItem.cityId,
-        countryId: vcItem.countryId,
+        // cityId: vcItem.cityId,
+        // countryId: vcItem.countryId,
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
         languageKnowledges: new Map(vcItem?.languageKnowledges?.map(el=>[el.language, el])),
         activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
@@ -143,8 +144,8 @@ export function CreateVcCvWrapper(props: Props) {
       const cvItem = item as ICV
       setHelp(state=>{return {...state, 
         categoryIds: cvItem.categories,   
-        cityId: cvItem.cityId,
-        countryId: cvItem.countryId,
+        // cityId: cvItem.cityId,
+        // countryId: cvItem.countryId,
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),
         languageKnowledges: new Map(cvItem.languageKnowledges?.map(el=> [el.language, el])),
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))

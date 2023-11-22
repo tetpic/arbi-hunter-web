@@ -24,34 +24,19 @@ const Camera = () => {
   }, [])
 
   return <PerspectiveCamera
-      ref={camera}
-      aspect={viewport.getCurrentViewport().factor}
-      fov={fov}
-      near={0.1}
-      far={100}
-      position={[0, 0, cameraDistance]}
-      onUpdate={self => self.updateProjectionMatrix()}
+    ref={camera}
+    aspect={viewport.getCurrentViewport().factor}
+    fov={fov}
+    near={0.1}
+    far={100}
+    position={[0, 0, cameraDistance]}
+    onUpdate={self => self.updateProjectionMatrix()}
   />
 }
 
 export default function ThreeModelVariant (props: IThreeModelProps) {
 
 
-//   const [variant, setVariant] = useState(/*(window as any)?.personParams ?? */props)
-
-
-//   useEffect(() => {
-//       const handleMessage = (data: any) => {
-//           setVariant(JSON.parse(data))
-//       }
-//       (window as any).fromFlutter = handleMessage
-
-//       return () => {
-//           (window as any).fromFlutter = null
-//       }
-
-
-//   }, [])
   return (<div className={styles.root}>
     {props &&
       <Canvas  style={{width: '100%', height: '300px'}}>

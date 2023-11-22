@@ -1,5 +1,5 @@
 import { CategoryType } from 'types/enums'
-import CommunitiesPage, { MediaPageNav } from 'components/for_pages/media/MediaPage'
+import MediaPage, { MediaPageNav } from 'components/for_pages/media/MediaPage'
 import ContentLayout from 'components/layout/ContentLayout'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { ICategory } from 'data/interfaces/Common'
@@ -23,8 +23,8 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 
 export default function Communities(props: Props) {
   return (
-    <ContentLayout hideMobileHeader>
-        <CommunitiesPage categories={props.categories} isModile={props.isMobile} category={props.category} page={props.page}/>
+    <ContentLayout hideMobileHeader title='Медиа'>
+        <MediaPage categories={props.categories} isMobile={props.isMobile} category={props.category} page={props.page}/>
     </ContentLayout>
   )
 }

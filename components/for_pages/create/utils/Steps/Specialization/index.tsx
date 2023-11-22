@@ -1,8 +1,9 @@
+import styles from './index.module.scss'
+
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import { ModalType } from 'types/enums'
-import styles from './index.module.scss'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISpecializationCategory } from 'data/interfaces/Common'
 

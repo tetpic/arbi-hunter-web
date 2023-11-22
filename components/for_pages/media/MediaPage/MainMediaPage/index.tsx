@@ -32,8 +32,9 @@ export default function MainMediaPage(props: Props) {
   </>)
 
   return (<div className={styles.root}> 
-    <NewsByCategories hideNav className={styles.news}>
-      {body}
-    </NewsByCategories>
+    {body}
+    <NewsByCategories hideNav className={styles.news} scrollableTarget='scrollable'/>
+      {/* {body}
+    </NewsByCategories> */}
   </div>)
 }

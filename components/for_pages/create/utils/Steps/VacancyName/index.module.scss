@@ -13,3 +13,11 @@
 .input {
   margin-top: 16px;
 }
+
+.tags {
+  margin-top: 16px;
+  display: flex;
+  column-gap: 8px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+}
