@@ -18,6 +18,8 @@ import CheckboxListField from 'components/fields/CheckboxListField'
 import RadioListField from 'components/fields/RadioListField'
 import { SnackbarType } from 'types/enums'
 import Checkbox from 'components/fields/CheckboxListField/Checkbox'
+import Spinner from 'components/ui/Spinner'
+import { colors } from 'styles/variables'
 
 interface Props {
   onClose: ()=> void
@@ -37,6 +39,7 @@ export default function SpecializationModal(props: Props) {
   const appContext = useAppContext()
   const args = appContext.modalArguments as ISpecializationModalProps
   const [chooseAll, setChooseAll] = useState<boolean>(false)
+  const [load, setLoad] = useState<boolean>(false)
 
 
   const scrollBar = useRef<Scrollbars>(null!)
@@ -85,6 +88,7 @@ export default function SpecializationModal(props: Props) {
 
   useEffect(()=>{
     cvContext.setCategories()
+    .then(_=>setLoad(true))
   }, [])
 
 
@@ -99,7 +103,7 @@ export default function SpecializationModal(props: Props) {
         <Form>
         <div className={styles.categoriesWrapper}>
         <Scrollbars ref={scrollBar} style={{height: '100%'}} autoHide universal>
-        {cvContext.categories && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
+        {cvContext.categories && load && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
           const isActive = activeCategory === category
           return (
             <div className={styles.category} key={category.id}>
@@ -136,7 +140,10 @@ export default function SpecializationModal(props: Props) {
               </div>
             </div>
           )
-        })}
+        })
+        ||
+        <Spinner size={32} color={colors.yellow}/>
+        }
         </Scrollbars>
       </div>  
         </Form>

@@ -38,7 +38,7 @@ interface IState {
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
   activeCategory: ISpecializationCategory
   activeSubCategory: ISpecializationCategory|ISpecializationCategory[]
-  setCategories: ()=> void
+  setCategories: ()=> Promise<boolean>
   setSubCategories: (v: ISpecializationCategory)=>void
   setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
   setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory|ISpecializationCategory[]>>
@@ -97,9 +97,9 @@ export function CreateVcCvWrapper(props: Props) {
     setHelp(state=> {return {...state, ...o}})
   }
 
-  const setCategories =() => {
+  const setCategories =():Promise<boolean> => {
     if(categories?.size < 1) {
-      CvRepository.getCategories()
+      return CvRepository.getCategories()
       .then(res => {
         setCategoriesState(()=> {
           let map = new Map()
@@ -108,6 +108,7 @@ export function CreateVcCvWrapper(props: Props) {
           })
           return map
         })
+        return true
       })
     }
   }

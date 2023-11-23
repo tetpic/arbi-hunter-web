@@ -1,0 +1,84 @@
+@import 'styles/index';
+
+.root {
+  display: grid;
+  grid-template-areas: 's m' 's v';
+  grid-template-rows: auto 1fr;
+  margin-top: 32px;
+}
+
+.model {
+  grid-area: m;
+  width: 504px;
+  height: 504px;
+  background-color: $black;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.settings {
+  grid-area: s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+  height: calc(100vh - 180px);
+  overflow: auto;
+  padding-bottom: 16px;
+  width: 120px;
+
+  .set {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 8px;
+    cursor: pointer;
+    padding: 10px;
+    // width: 100px;
+
+
+    * {
+      pointer-events: none;
+    }
+
+    p {
+      color: $white;
+      font-size: $mediumText;
+      font-weight: $medium;
+      display: block;
+    }
+
+    &_active {
+      p {
+        color: $blue;
+      }
+    }
+  }
+  
+
+}
+
+.variants {
+  margin-top: 20px;
+  grid-area: v;
+  display: flex;
+  column-gap: 8px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 504px;
+  align-content: flex-start;
+  row-gap: 8px;
+}
+
+.variant {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: $greyAlt;
+  align-self: flex-start;
+}

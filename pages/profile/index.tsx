@@ -1,5 +1,6 @@
 import Profile from 'components/for_pages/profile'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CharacterWrapper } from 'context/character_state'
 import { ProfilePageWrapper } from 'context/profile_page_state'
 import { CookiesType } from 'types/enums'
 
@@ -28,7 +29,9 @@ export default function ProfilePage(props: Props) {
   return (
     <ContentLayout hideMobileHeader title='Личный кабинет'>
       <ProfilePageWrapper page={props.page}>
-        <Profile/>
+        <CharacterWrapper>
+          <Profile/>
+        </CharacterWrapper>
       </ProfilePageWrapper>
     </ContentLayout>
  

@@ -5,6 +5,7 @@ import Feedbacks from './Feedbacks'
 import CVs from './CVs'
 import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
+import UserEditor from './UserEditor'
 
 interface Props {
   currentPage: ProfilePages 
@@ -19,18 +20,19 @@ export default function UserProfile(props: Props) {
   const title = (
     <Title title={choosenNav?.name} onBackClick={props.onBackClick}/>
   )
-  
 
   const body = (()=>{
     switch(props.currentPage) {
+      case ProfilePages.Edit:
+        return <UserEditor/>
       // case ProfilePages.Personal:
       // return <Personal/>
       case ProfilePages.FeedBacks:
-      return <Feedbacks/>
+        return <Feedbacks/>
       case ProfilePages.Saved:
-      return <Saved/>
+        return <Saved/>
       case ProfilePages.Cvs:
-      return <CVs/>
+        return <CVs/>
       // case ProfilePages.Shop:
       // return <Shop/>
       // case ProfilePages.Patterns:

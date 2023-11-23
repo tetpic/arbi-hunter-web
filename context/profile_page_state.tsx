@@ -22,7 +22,8 @@ export enum ProfilePages {
   Shop = 'shop',
   FeedBacks = 'feedbacks',
   Managers = 'managers',
-  Patterns = 'patterns'
+  Patterns = 'patterns',
+  UserEditor = 'editor'
 }
 
 interface Props {
@@ -65,10 +66,12 @@ export function ProfilePageWrapper(props: Props) {
     switch(profileType) {
       case ProfileType.Employee: 
       return [
+        ProfilePages.Edit,
         ProfilePages.Saved,
         ProfilePages.Cvs,
         ProfilePages.Shop,
-        ProfilePages.FeedBacks
+        ProfilePages.FeedBacks,
+
       ]
       case ProfileType.Hirer: 
       return [

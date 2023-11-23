@@ -29,7 +29,7 @@ export default function NewsArticle(props: Props) {
   const mediaContext = useMediaContext()
 
   const likeHandler = (a: IArticle)=> {
-    debugger
+    
     mediaContext.likeArticle(a)
   }
 

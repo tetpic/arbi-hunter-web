@@ -113,3 +113,11 @@
     display: none !important;
   }
 }
+
+.rive {
+  flex-shrink: 0;
+  width: 566px;
+  height: 566px;
+  border-radius: 16px;
+  overflow: hidden;
+}

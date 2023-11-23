@@ -115,7 +115,6 @@ export function ChatDialogWrapper(props: Props) {
     if (!props.chatId) {
       return
     }
-    console.log([...messages.values()][messages.size - 1]?.createdAt)
     await loadMessages([...messages.values()][messages.size - 1]?.createdAt)
     setPage(page + 1)
   }

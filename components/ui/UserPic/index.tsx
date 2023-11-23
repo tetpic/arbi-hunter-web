@@ -9,7 +9,8 @@ interface Props {
   onClick?: ()=> void
   className?: string
   size?: number
-  icon?: JSX.Element
+  icon?: JSX.Element,
+  active?: boolean
 }
 
 /**
@@ -25,6 +26,7 @@ export default function UserPic(props: Props) {
   const router = useRouter()
 
   const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    
     e.stopPropagation()
     e.preventDefault()
     
@@ -33,7 +35,7 @@ export default function UserPic(props: Props) {
   }
 
   return ( 
-    <div className={classNames(styles.imageWrapper, props.className)} onClick={onClickHandler}>
+    <div className={classNames(styles.imageWrapper, props.className, props.active&&styles.active)} onClick={onClickHandler}>
       {
       props.icon !== null && props.icon 
       ||

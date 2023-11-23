@@ -1,7 +1,7 @@
 import {Canvas, useThree} from '@react-three/fiber'
 import {Bounds, Environment, OrthographicCamera, PerspectiveCamera} from '@react-three/drei'
 import { useEffect, useRef} from 'react'
-import { IThreeModelProps, ThreeModel } from 'components/ui/ThreeModel'
+import { ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
 
 
@@ -34,23 +34,23 @@ const Camera = () => {
   />
 }
 
-export default function ThreeModelVariant (props: IThreeModelProps) {
+export default function ThreeModelVariant (props: {[key: string]: string|number}) {
 
 
   return (<div className={styles.root}>
     {props &&
-      <Canvas  style={{width: '100%', height: '300px'}}>
+      <Canvas  style={{width: '100%', height: '100%'}}>
         <OrthographicCamera view={{
           enabled: true,
-          fullHeight: 300,
-          fullWidth: 300,
-          offsetX: -50,
-          offsetY: -140,
-          width: 400,
-          height: 400
+          fullHeight: 500,
+          fullWidth: 500,
+          offsetX: 0,
+          offsetY: -90,
+          width: 500,
+          height: 500
         }} 
         makeDefault 
-        position={[0, 0, 7]} zoom={100} />
+        position={[Number(props.r)||0, 1, 7]} zoom={100} />
 
         <Bounds fit clip observe damping={0} margin={1}>
           <ThreeModel {...props as any}/>
@@ -58,7 +58,6 @@ export default function ThreeModelVariant (props: IThreeModelProps) {
           <Environment files="/models/skidpan.hdr"/>
       </Canvas>
     }
-      <code>{JSON.stringify(props)}</code>
   </div>
 
   )

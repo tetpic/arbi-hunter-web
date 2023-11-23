@@ -1,7 +1,5 @@
 import styles from './index.module.scss'
 
-import UserRegImage from 'components/ui/UserRegImage'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import { useEffect, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
@@ -23,6 +21,8 @@ import Busyness from '../utils/Steps/Busyness'
 import ProgressBar from '../../../ui/ProgressBar'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
+import Rive from '@rive-app/react-canvas'
+
 
 interface Props {
   id?: number
@@ -264,7 +264,7 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-    <UserRegImage type={ProfileType.Employee} className={styles.regImage}/>
+    <Rive src={'/rive/nomoney.riv'}  className={styles.rive}/>
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth && 

@@ -11,7 +11,8 @@ interface Props<T extends string> {
   currentPage: T
   navSet?: NavigationSet<T>[]
   onClickHandler?: ()=>void
-  rootClassName?: string
+  rootClassName?: string,
+  bottomItem?: JSX.Element
 }
 
 export default function Navigation<T extends string>(props: Props<T>) {
@@ -41,6 +42,11 @@ export default function Navigation<T extends string>(props: Props<T>) {
         )
       })}
     </nav>
+    {props.bottomItem &&
+      <div className={styles.bottom}>
+        {props.bottomItem}
+      </div>
+    }
   </div>
   )
 }

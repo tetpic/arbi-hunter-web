@@ -12,3 +12,8 @@
   }
 }
 
+.saveCharButton {
+  @include buttonYellow;
+  width: 100%;
+}
+

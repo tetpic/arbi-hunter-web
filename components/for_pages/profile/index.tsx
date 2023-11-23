@@ -1,17 +1,30 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CompanyProfile from './companyProfile'
 import Navigation from '../../ui/Navigation'
 import UserProfile from './userProfile'
-import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
-import { useProfilePageContext } from 'context/profile_page_state'
+import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
+import Button from 'components/ui/Button'
+import { IThreeModelProps } from 'components/ui/ThreeModel'
 
 
 export default function Profile() {
   const {isTabletWidth} = useResize()
   const profilePageContext = useProfilePageContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
+
+  const onButtonClick = ((data: IThreeModelProps) => {
+    
+  })
+
+  const saveCharButton = (<>
+  <Button  className={styles.saveCharButton}>Сохранить</Button>
+  </>)
+
+
 
   return ( 
     <div className={classNames(styles.root)}>
@@ -23,7 +36,7 @@ export default function Profile() {
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&
-        <Navigation currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
+        <Navigation bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
       }
     </div>
   )

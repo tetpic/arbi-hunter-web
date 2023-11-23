@@ -1,4 +1,4 @@
-import { IThreeModelProps } from 'components/ui/ThreeModel'
+// import { IThreeModelProps } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
 import ThreeModelVariant from '..'
 import { useEffect, useRef, useState } from 'react'
@@ -93,20 +93,20 @@ export default function ThreePage(props: Props) {
     setCombinations(generatedRef.current.slice(page*10, (page*10)+10))
   }, [page])
 
-  const variant4: IThreeModelProps = {
-    model: 'man',
-    body: 1,
-    size: 1,
-    hair: 1,
-    // cap: 0,
-    chain: 1,
-    face: 0,
-    glasses: 1, 
-    jacket: 1,
-    eye: 0,
-    head: 0,
-    color: 1,
-  }
+  // const variant4: IThreeModelProps = {
+  //   model: 'man',
+  //   body: 1,
+  //   size: 1,
+  //   hair: 1,
+  //   // cap: 0,
+  //   chain: 1,
+  //   face: 0,
+  //   glasses: 1, 
+  //   jacket: 1,
+  //   eye: 0,
+  //   head: 0,
+  //   color: 1,
+  // }
 
 
   return (<>
