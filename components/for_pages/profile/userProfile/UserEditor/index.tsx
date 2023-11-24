@@ -5,7 +5,6 @@ import UserPic from 'components/ui/UserPic'
 import { useEffect } from 'react'
 import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
 
@@ -33,17 +32,17 @@ export default function UserEditor(props: Props) {
       </div>
 
       <div className={styles.model}> 
-        {!load &&
+        {!load && variant &&
           <ThreeModelVariant {...variant} r={4}/>
           ||
-          <Spinner size={32} color={colors.yellow}/>
+          <Spinner size={32} />
         }
       </div>
 
       <div className={styles.variants}>
        {activeSet[1] && activeSet[1].map(item=> {
         return (
-          <UserPic size={80} onClick={()=> {setVariant(item); setActiveItem(item)}} active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} image={item.image&&FILES + item.image.source}/>
+          <UserPic size={80} onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} image={item.image&&FILES + item.image.source}/>
         )
        })}
       </div>

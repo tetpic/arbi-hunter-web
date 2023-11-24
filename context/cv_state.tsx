@@ -31,11 +31,14 @@ export function CvWrapper(props: Props) {
   const createVcCvContext = useCreateVcCvContext()
   const [foundCvs, setFoundCvsState] = useState<ICV[]>([])
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
+  
 
   const setSavedCvs = async():Promise<boolean> => {
     if(currentProfile.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser()
       .then(res=> {
+        //потому что с бэка, в отличие от вакансий такие данные мне не приходят...
+        res = res.map(el=> {return {...el, isSavedByCurrentProfile: true}})
         setSavedCvsState(res)
         return true
       })

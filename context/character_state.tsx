@@ -81,7 +81,16 @@ export function CharacterWrapper(props: Props) {
       setVariantState({...defaultVariant, model: data.animationKey as 'man'|'woman'} )
     }
     else {
-      setVariantState(state=> {return {...state, [data.category?.key]: data.animationKey}})
+      
+      setVariantState(state=> {
+        if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses')) {
+          delete state[data.category?.key]
+          return state
+        } 
+        else {
+          return {...state, [data.category?.key]: data.animationKey}}
+        }
+      )
     }
   }
 

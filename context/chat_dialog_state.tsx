@@ -99,6 +99,7 @@ export function ChatDialogWrapper(props: Props) {
   // }
 
   const loadMessages = async (lastCreatedAt?: string) => {
+    
     setLoading(true)
     if(props.chatId) {
       const data = await ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
@@ -285,12 +286,10 @@ export function ChatDialogWrapper(props: Props) {
   }, [props.chat])
 
   useEffect(() => {
-
     const subscription = chatSocket.messageState$.subscribe((message) => {
       if (chat && message.chatId === chat.id && !messages.has(message.id)) {
         markRead(Number(message.id))
         if (message.sid && messages.has(message.sid)) {
-          // setMessages(state => i.map(i => i.sid === message.sid ? {...i, ...message} : i))
         } else {
           setMessages(state => new Map([[message.id, message], ...state.entries()]))
           setTotalMessages(i => i + 1)

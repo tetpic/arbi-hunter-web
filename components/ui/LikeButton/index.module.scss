@@ -1,0 +1,22 @@
+@import 'styles/index';
+
+.heart {
+  cursor: pointer;
+  svg{
+    fill: transparent;
+    @include transitionDefault;
+  }
+
+  &_active {
+    svg {
+      fill: $white;
+    }
+  }
+ 
+  @include hover {
+    svg {
+      fill: $greyLight !important;
+    }
+  }
+  
+}

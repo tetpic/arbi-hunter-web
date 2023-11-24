@@ -10,12 +10,15 @@ import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { useCvContext } from 'context/cv_state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
+import LikeButton from '../LikeButton'
+import VacancyRepository from 'data/repositories/VacancyRepository'
 
 interface Props {
   vacancy?: IVacancy
+  onChangeItem?: () => void
 }
 
-export default function VacancyItem({vacancy}: Props) {
+export default function VacancyItem({vacancy, onChangeItem}: Props) {
   const appContext = useAppContext()
   const cvContext = useCvContext()
 
@@ -23,7 +26,23 @@ export default function VacancyItem({vacancy}: Props) {
     appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs, vacancyId: vacancy.id})
   }
 
+  const likeHandler = () => {
+    if(!vacancy.isSavedByCurrentProfile) {
+      VacancyRepository.addVcToSaved(vacancy.id)
+      .then(_=> {
+        onChangeItem&&onChangeItem()
+      })
+    }
+    else {
+      VacancyRepository.removeVcFromSaved(vacancy.id)
+      .then(_=> {
+        onChangeItem&&onChangeItem()
+      })
+    }
+  }
+
   return (<div className={styles.item}> 
+    <LikeButton className={styles.heartButton} active={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={244} height={220}/>
     <div className={styles.top}>
       <p className={styles.name}>{vacancy.company}</p>

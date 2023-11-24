@@ -7,14 +7,13 @@ import Image from 'next/image'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
-import VacancyItem from './VacancyItem'
 import Filters from '../Filters'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import VacancyItem from 'components/ui/VacancyItem'
 
 interface Props {
 }
@@ -74,10 +73,10 @@ export default function RecruitingPageEmployee(props: Props) {
 
     <div className={styles.vacancies}>
       {loading &&
-        <Spinner size={24} color={colors.yellow} />
+        <Spinner size={24} />
         ||
         !loading && vacancyContext.foundVacancies?.length > 0 && vacancyContext.foundVacancies?.map(vacancy=> {
-          return <VacancyItem vacancy={vacancy}/>
+          return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies(currentFilters)}/>
         })
         ||
         <p className='empty'>Нет найденных вакансий</p>

@@ -3,7 +3,7 @@
 .root {
   padding-left: 90px;
   display: flex;
-  height: calc(100vh - 76px);
+  height: calc(100vh - 78px);
   overflow: auto;
   @include mq($TabletWidth, max) {
     padding-left: unset;

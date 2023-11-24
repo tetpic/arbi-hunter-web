@@ -22,6 +22,8 @@ export interface IApplication extends TimeStamp{
   chat: IChat[],
   notification: INotification
   type?: PatternTypes
+  cvDeletedOrHidden?: boolean
+
 }
 
 

@@ -3,7 +3,6 @@ import CvCard from 'components/ui/CvCard'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { colors } from 'styles/variables'
 import { ApplicationStatus, ModalType} from 'types/enums'
 import ResponsesFilter from './Filter'
 import ResponsesNavigation from '../Navigation'
@@ -134,7 +133,7 @@ export default function VCFeedbacks(props: Props) {
           return <CvCard cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||
-        loading && <Spinner size={24} color={colors.yellow}/>
+        loading && <Spinner size={24} />
         ||
         <p className={'empty'}>Нет откликов</p>
       }

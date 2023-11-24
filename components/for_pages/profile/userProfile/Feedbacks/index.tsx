@@ -6,7 +6,6 @@ import VacancyItem from '../Saved/Vacancies/VacancyItem'
 import styles from './index.module.scss'
 import { IProposal } from 'data/interfaces/IProposal'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 
 interface Props {
 }
@@ -109,7 +108,7 @@ export default function Feedbacks(props: Props) {
           })
           ||
           loading &&
-          <Spinner size={24} color={colors.yellow}/>
+          <Spinner size={24}/>
           ||
           <p className={'empty'}>Нет откликов</p>
         }

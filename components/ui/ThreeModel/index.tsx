@@ -1,5 +1,4 @@
 import {useAnimations, useGLTF} from '@react-three/drei'
-// import { useFrame } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
 
 export interface IThreeModelProps {
@@ -20,28 +19,59 @@ export interface IThreeModelProps {
 }
 
 export function ThreeModel(props: IThreeModelProps) {
+  const mesh = useRef()
     const  {nodes, materials, animations} = useGLTF(`/models/model_${props.model}.glb`, true, true, (loader) => {
         loader.setCrossOrigin('anonymous')
     }) as any
-
-
-    const mesh = useRef(null!)
-
+    
     const { actions } = useAnimations(animations, mesh)
-
-    // useFrame(({ clock }) => {
-    //     mesh.current.rotation.y = clock.getElapsedTime()
-    // })
-
     useEffect(()=>{
+        actions.Action_test_2.play()
+    }, [])
 
-        actions.Action_test.play()
-    }, [actions])
 
 
     return (
         <group {...props} ref={mesh} dispose={null}>
-            {typeof props.body !== 'undefined' && props.body !== null && <mesh 
+          <group name="Scene">
+            <group name="Арматура">
+              <primitive object={nodes.Spine} />
+              <primitive object={nodes.neutral_bone} />
+              <skinnedMesh 
+              name={`Body_${props.body||'0'}${props.body||'_0'}`} 
+              geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} 
+              material={materials[`Body_${props.color||'0'}`]} 
+              skeleton={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].skeleton} />
+              {props.cap && 
+                <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
+              }
+              {props.chain &&
+              <skinnedMesh name={`Chain_${props.chain}_${props.body}`} geometry={nodes[`Chain_${props.chain}_${props.body}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body}`].skeleton} />
+              }
+              <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
+              <skinnedMesh name={`Face_${props.face||'0'}`} geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} skeleton={nodes[`Face_${props.face||'0'}`].skeleton} />
+              {props.glasses &&
+                <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
+              }
+              {props.hair && 
+                <skinnedMesh name={`Hair_${!props.cap&&props.hair||'0'}`} geometry={nodes[`Hair_${!props.cap&&props.hair||'0'}`].geometry} material={materials[`Hair_${!props.cap&&props.hair||'0'}`]} skeleton={nodes[`Hair_${!props.cap&&props.hair||'0'}`].skeleton} />
+              }
+              <skinnedMesh name={`Head_${props.emotion||'0'}_${props.emotion||'0'}`} geometry={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
+              <skinnedMesh name={`Jacket_${props.jacket||'0'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'0'}`]} skeleton={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].skeleton} />
+            </group>
+          </group>         
+        </group>
+    )
+}
+
+useGLTF.preload('/models/model_man.glb', true, true, (loader) => {
+    loader.setCrossOrigin('anonymous')
+})
+useGLTF.preload('/models/model_woman.glb', true, true, (loader) => {
+    loader.setCrossOrigin('anonymous')
+})
+
+   {/* {typeof props.body !== 'undefined' && props.body !== null && <mesh 
                 geometry={nodes[`Body_${props.body}${props.body?'_'+props.body:'_0'}`].geometry}
                 material={materials[`Body_${props.color?props.color:'0'}`]}
             />}
@@ -77,24 +107,5 @@ export function ThreeModel(props: IThreeModelProps) {
                 geometry={nodes[`Jacket_${props.jacket}${props.body?'_'+props.body:'_0'}`].geometry}
                 material={materials[`Jacket_${props.jacket}`]}
             />}
-            <bone name={'Spine'} position={nodes['Spine'].position} quaternion={nodes['Spine'].quaternion} scale={nodes['Spine'].scale}/>
-            <bone name={'Spine_1'} position={nodes['Spine_1'].position} quaternion={nodes['Spine_1'].quaternion} scale={nodes['Spine_1'].scale}/>
-            <bone name={'Neck'} position={nodes['Neck'].position}/>
-            <bone name={'Head'}  position={nodes['Head'].position}/>
-            <bone name={'Shoulder_L'}  position={nodes['Shoulder_L'].position}/>
-            <bone name={'Shoulder_R'}  position={nodes['Shoulder_R'].position}/>
-            <bone name={'Upper_arm_L'}  position={nodes['Upper_arm_L'].position}/>
-            <bone name={'Upper_arm_R'}  position={nodes['Upper_arm_R'].position}/>
-            <bone name={'Forearm_L'}  position={nodes['Forearm_L'].position}/>
-            <bone name={'Forearm_R'}  position={nodes['Forearm_R'].position}/>
-
-        </group>
-    )
-}
-
-useGLTF.preload('/models/model_man.glb', true, true, (loader) => {
-    loader.setCrossOrigin('anonymous')
-})
-useGLTF.preload('/models/model_woman.glb', true, true, (loader) => {
-    loader.setCrossOrigin('anonymous')
-})
+            <bone 
+            name={'Spine'} position={nodes['Spine'].position} quaternion={nodes['Spine'].quaternion} scale={nodes['Spine'].scale}/>             */}

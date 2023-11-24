@@ -66,6 +66,7 @@ export function ProfilePageWrapper(props: Props) {
     switch(profileType) {
       case ProfileType.Employee: 
       return [
+        ProfilePages.Personal,
         ProfilePages.Edit,
         ProfilePages.Saved,
         ProfilePages.Cvs,

@@ -12,7 +12,6 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCommunityContext } from 'context/community_state'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 
 interface Props {
   onClose: ()=> void
@@ -66,7 +65,7 @@ export default function MembersModal(props: Props) {
     next={()=>setPage(p=> p+1)} 
     hasMore={dataLength < total} 
     height={'100%'}
-    loader={<Spinner size={24} color={colors.yellow}/>} 
+    loader={<Spinner size={24}/>} 
     dataLength={dataLength}
     >
     {filtered.length > 0 &&filtered.map(member=> {

@@ -14,7 +14,6 @@ import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { colors } from 'styles/variables'
 import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
 import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
@@ -109,7 +108,7 @@ export default function ProposalModal(props: Props) {
             return {value: el.id, label: el.name}
           })}/>          
         ||
-        loading && <Spinner size={24} color={colors.yellow}/>
+        loading && <Spinner size={24}/>
         }
         <Button type='button' onClick={formik.submitForm} className={styles.buttonYellow}>Продолжить</Button>
       </Form>

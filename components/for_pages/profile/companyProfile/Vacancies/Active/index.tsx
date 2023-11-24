@@ -4,7 +4,6 @@ import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
-import { colors } from 'styles/variables'
 import VacancyItem from '../VacancyItem'
 
 interface Props {
@@ -36,7 +35,7 @@ export default function VacanciesActive(props: Props) {
           <p className={'empty'}>Нет активных вакансий</p>  
           ||
           !isLoaded &&
-          <Spinner color={colors.yellow} size={24}/>
+          <Spinner  size={24}/>
         } 
       </div>
     </Scrollbars>

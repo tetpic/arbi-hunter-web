@@ -9,10 +9,9 @@ import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
 import Spacer from 'components/ui/Spacer'
 import Filters from '../Filters'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
-import CvItem from './CvItem'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import CvItem from 'components/ui/CvItem'
 
 interface Props {
   vcId: number
@@ -76,7 +75,7 @@ export default function RecruitingPageHirer(props: Props) {
   
       <div className={styles.vacancies}>
         {loading &&
-          <Spinner size={24} color={colors.yellow} />
+          <Spinner size={24} />
           ||
           !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.map(cv=> {
             return <CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs(currentFilters)}/>

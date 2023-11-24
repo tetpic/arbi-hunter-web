@@ -12,6 +12,8 @@ import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
+import LikeButton from '../LikeButton'
+import CvRepository from 'data/repositories/CvRepository'
 
 interface Props {
   cv: ICV
@@ -20,22 +22,50 @@ interface Props {
 }
 
 export default function CvItem({cv, ...props}: Props) {
-
+  
   const appContext = useAppContext()
 
   const respondHandler = () => {
     if(props.initialVacancy) {
-      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {application: null, type: ApplicationBSSelectType.ThisVacancy, vcId: props.initialVacancy.id, cv, onSubmit: props.onChangeItem})
+      appContext.showModal<IProposalTextModalProps>
+      (ModalType.ProposalTextModal, 
+        {application: null, 
+          type: ApplicationBSSelectType.ThisVacancy, 
+          vcId: props.initialVacancy.id, 
+          cv, 
+          onSubmit: props.onChangeItem
+        })
       return
     }
-    appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, {cv, page: ProposalModalPager.OtherVacancy})
+    appContext.showModal<IProposalModalProps>(
+      ModalType.ProposalModal, 
+      { cv, 
+        page: ProposalModalPager.OtherVacancy
+      }
+    )
+  }
+
+  const likeHandler = () => {
+    if(!cv.isSavedByCurrentProfile) {
+      CvRepository.addCvToSaved(cv.id)
+      .then(res=> {
+        props.onChangeItem()      
+      })
+    }
+    else {
+      CvRepository.removeCvFromSaved(cv.id)
+      .then(_=> {
+        props.onChangeItem()
+      })
+    }
   }
 
   return (<div className={styles.item}> 
+    <LikeButton  className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={225} height={290}/>
     <div className={styles.top}>
       {cv.categories.length > 0 &&
-      <p className={styles.name}>{cv.categories[0].name} {/*cv.position&&`/${cv.position}`*/}</p>
+      <p className={styles.name}>{cv.categories[0].name}</p>
       }
       <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
 

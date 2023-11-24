@@ -6,6 +6,7 @@ import CVs from './CVs'
 import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import UserEditor from './UserEditor'
+import Personal from '../companyProfile/Personal'
 
 interface Props {
   currentPage: ProfilePages 
@@ -25,8 +26,8 @@ export default function UserProfile(props: Props) {
     switch(props.currentPage) {
       case ProfilePages.Edit:
         return <UserEditor/>
-      // case ProfilePages.Personal:
-      // return <Personal/>
+      case ProfilePages.Personal:
+      return <Personal/>
       case ProfilePages.FeedBacks:
         return <Feedbacks/>
       case ProfilePages.Saved:

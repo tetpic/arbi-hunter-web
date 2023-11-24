@@ -11,7 +11,6 @@ import { SnackbarType } from 'types/enums'
 import Body from '../Body'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 import styles from '../index.module.scss'
 
 interface Props {
@@ -94,7 +93,7 @@ export default function SkillsModal(props: Props) {
         height={'100%'}
         next={()=>setPage(p => p+1)}
         hasMore={skills.length < total}
-        loader={<Spinner size={24} color={colors.yellow} />}  
+        loader={<Spinner size={24} />}  
         dataLength={skills.length}  
         >
           <div className={styles.categories}>

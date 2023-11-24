@@ -12,7 +12,7 @@ interface IState {
   setActiveVacancies: ()=>Promise<boolean>,
   editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
   savedVCs: IVacancy[],
-  setSavedVacancies: ()=>void
+  setSavedVacancies: ()=>Promise<boolean>
   saveVacancy: (id: number) => void
   removeVacancyFromSaved: (id: number) => void
   removeVacancy: (id: number, published: boolean) => void
@@ -68,10 +68,13 @@ export function VacancyWrapper(props: Props) {
     .catch(err=> false)
   }
 
-  const setSavedVacancies = () => {
-    VacancyRepository.getSavedFromCurrentProfile()
-    .then(res=> setSavedVCState(res))
-    .catch(err=> false)
+  const setSavedVacancies = ():Promise<boolean> => {
+    return VacancyRepository.getSavedFromCurrentProfile()
+    .then(res=> {
+      setSavedVCState(res)
+      return true
+    })
+    .catch(_=> false)
   }
 
   const saveVacancy = (id: number) => {

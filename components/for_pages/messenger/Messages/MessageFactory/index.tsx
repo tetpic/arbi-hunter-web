@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationBSSelectType, ApplicationStatus, MessageType, ModalType } from 'types/enums'
+import { ApplicationBSSelectType, ApplicationStatus, MessageType, ModalType, SnackbarType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import Image from 'next/image'
@@ -111,6 +111,10 @@ export default function MessageFactory(props: Props) {
         </p>
         {!props.application?.coverLetter && 
           <p className={styles.cover} onClick={()=> {
+            if(props.application.cvDeletedOrHidden) {
+              appContext.showSnackbar('Резюме было скрыто или удалено', SnackbarType.error)
+              return
+            }
             appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application})
           }}>
             <PlusSvg/>

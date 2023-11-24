@@ -21,6 +21,7 @@ import RecordSvg from 'components/svg/RecordSvg'
 import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
 import { IUserProfile } from 'data/interfaces/IUser'
+import classNames from 'classnames'
 
 
 
@@ -134,6 +135,10 @@ export default function Messages(props: Props) {
           messages.size>0&&[...messages.values()].map(el=> {
             return <MessageFactory profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
           })
+          ||
+          loading && messages.size===0 && <Spinner size={24} color={colors.yellow}/>
+          ||
+          <p className={classNames(styles.empty, 'empty')}>Нет сообщений</p>
         }
       </InfiniteScroll>
       </div>

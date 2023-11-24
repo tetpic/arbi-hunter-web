@@ -69,7 +69,8 @@ const openModalHandler =()=> {
   <div className={styles.top}>
     <UserPic className={styles.userPic} size={44}/>
     <p className={styles.company}>{vc.company}</p>
-    <p className={styles.city}>г. {vc.city?.locName}</p>
+    
+    <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
     <ThreeDotsButton onClick={openModalHandler} className={styles.heartButton}/>
     <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
       <CvVcOptionsModal onClose={()=>openDropDown(false)} outerData={{vc: vc}} >

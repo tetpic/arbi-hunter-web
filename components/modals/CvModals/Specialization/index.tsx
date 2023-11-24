@@ -19,7 +19,6 @@ import RadioListField from 'components/fields/RadioListField'
 import { SnackbarType } from 'types/enums'
 import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 
 interface Props {
   onClose: ()=> void
@@ -142,7 +141,7 @@ export default function SpecializationModal(props: Props) {
           )
         })
         ||
-        <Spinner size={32} color={colors.yellow}/>
+        <Spinner size={32} />
         }
         </Scrollbars>
       </div>  

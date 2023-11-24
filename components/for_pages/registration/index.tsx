@@ -37,6 +37,7 @@ export default function Registration() {
   const [disableButton, setDisableButton] = useState<boolean>(false)
   const router = useRouter()
 
+
   const initialValues: IRegistrationComplete = {
     firstName: '',
     lastName: '',
@@ -54,6 +55,7 @@ export default function Registration() {
   const submit = async (data: IRegistrationComplete) => {
     if(!cityId || !country) {
       appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
+      return
     }
     else {
       setDisableButton(true)

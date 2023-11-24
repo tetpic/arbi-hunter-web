@@ -7,7 +7,6 @@ import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { CategoryType } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
 import classNames from 'classnames'
 import { useMediaContext } from 'context/media_state'
@@ -59,7 +58,7 @@ export default function MediaItem({media, showContent, type}: Props) {
         </>)
       })
       ||
-      (showContent && <Spinner size={32} color={colors.yellow}/>)
+      (showContent && <Spinner size={32} />)
     }
     <div className={styles.stats}>
       <p className={styles.like} onClick={likeHandler}><HeartSvg className={classNames(media.isLikedByCurrentProfile&&styles.heartFilled)} size={24}/> {media.likesCount||'0'}</p>
