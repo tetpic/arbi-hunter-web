@@ -55,10 +55,11 @@ export default function Communities() {
     }
     <div className={styles.root}> 
         <InfiniteScroll
-        height={'100%'}
+        // height={'100%'}
         next={()=>setPage(p => p+1)}
         hasMore={communityContext.communities.size < total}
         loader={<Spinner size={24} color={colors.yellow} />}  
+        scrollableTarget={'scrollable'}
         dataLength={communityContext.communities.size}  
         >
           <div className={styles.infinite}>

@@ -120,4 +120,12 @@
   height: 566px;
   border-radius: 16px;
   overflow: hidden;
+  background: url('/rive/Back.jpg') center;
+  background-size: contain;
+  display: none;
+
+  
 }
+ .active {
+  display: block;
+ }

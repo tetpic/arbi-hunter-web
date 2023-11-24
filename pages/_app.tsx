@@ -26,6 +26,8 @@ import { CvWrapper } from 'context/cv_state'
 import { CommunityWrapper } from 'context/community_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import Router from 'next/router'
+import Spinner from 'components/ui/Spinner'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -38,6 +40,7 @@ export interface AppProps extends NextAppProps {
 
 function MyApp({Component, pageProps}: AppProps) {
   const [clientVisible, setClientVisible] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
       setClientVisible(true)
@@ -47,6 +50,15 @@ function MyApp({Component, pageProps}: AppProps) {
       }
     },
   [])
+
+  useEffect(()=>{
+    Router.events.on('routeChangeStart', ()=> {
+      setLoading(true)
+    })
+    Router.events.on('routeChangeComplete', ()=> {
+      setLoading(false)
+    })  
+  }, [])
 
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
@@ -60,16 +72,21 @@ function MyApp({Component, pageProps}: AppProps) {
           <FeedbacksWrapper>
           <CommunityWrapper>
           <AuthWrapper>
-            
             <Head>
               <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
+              {loading &&
+                <Spinner className='mainSpinner' size={32}/>        
+              }
 
-            <Layout>           
+            <Layout> 
+              <>
+              
               <Component {...pageProps} />
+              </>
             </Layout>
 
             {clientVisible && <ModalContainer/>}

@@ -21,7 +21,7 @@ import Busyness from '../utils/Steps/Busyness'
 import ProgressBar from '../../../ui/ProgressBar'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
-import Rive from '@rive-app/react-canvas'
+import Rive, { useRive } from '@rive-app/react-canvas'
 
 
 interface Props {
@@ -52,6 +52,12 @@ export default function Cv(props: Props) {
   const creationContext = useCreateVcCvContext()
   const router = useRouter()
   const {progress, setProgress} = creationContext
+
+  const { rive, RiveComponent } = useRive({
+    src: '/rive/cv_nomoney.riv',
+    stateMachines: 'bumpy',
+    autoplay: true,
+  })
 
   const submit = (data: ICVCreate) => {
     setLoading(true)
@@ -236,6 +242,17 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
+  const getImage = ():string => {
+    switch (progress) {
+      case 1:
+        return '/rive/cv_nomoney.riv'
+      case 2: 
+        return '/rive/cv_onwork.riv'
+      default:
+        return '/rive/cv_onwork.riv'
+    }
+  }
+
 
   useEffect(()=>{
     if(props.id) {
@@ -247,7 +264,14 @@ export default function Cv(props: Props) {
       creationContext.setHelpObjects({})
       creationContext.reset()    
     }
+   
   }, [])
+
+  useEffect(()=>{
+    if(rive) {
+      rive.play()
+    }
+  }, [rive])
 
   useEffect(()=>{
     if(progress < 1) {
@@ -264,7 +288,11 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-    <Rive src={'/rive/nomoney.riv'}  className={styles.rive}/>
+   
+    <Rive src={'/rive/cv_nomoney.riv'} className={classNames(styles.rive, progress === 1&&styles.active)}/>
+    <Rive src={'/rive/cv_onwork.riv'} className={classNames(styles.rive, progress === 2&&styles.active)}/>
+    <Rive src={'/rive/cv_onwork.riv'} className={classNames(styles.rive, progress > 2&&styles.active)}/>
+   
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth && 

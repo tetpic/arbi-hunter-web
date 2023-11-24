@@ -289,7 +289,7 @@ select:-webkit-autofill:focus {
   font-size: $mediumText;
   font-weight: $medium;
   margin-top: 24px;
-  padding-inline: 16px;
+  // padding-inline: 16px;
 } 
 
 svg {
@@ -298,6 +298,13 @@ svg {
 
 .react-modal-sheet-container {
   background-color: $black !important;
+}
+
+.mainSpinner {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
 }
 
 

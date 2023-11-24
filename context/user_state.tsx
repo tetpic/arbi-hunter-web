@@ -68,7 +68,7 @@ export function UserWrapper(props: Props) {
     else {
       const data = await UserRepository.getCurrentUser()
       if (data) {
-        debugger
+        
         setUser(data)
         setCurrentProfileState(data.profiles[0])
         if(data.profiles.length === 0 && data.isRegistrationCompleted) {
