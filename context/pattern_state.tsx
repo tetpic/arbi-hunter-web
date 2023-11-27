@@ -25,9 +25,11 @@ export function PatternWrapper(props: Props) {
   const [patternsNotExist, setPatternsNotExistState] = useState<Set<PatternTypes>>(new Set())
 
   const setPatterns = () => {
+    setPatternsNotExistState(new Set)
     Object.values(PatternTypes).forEach(el=> {
       PatternRepository.getPatternByType(el)
-      .then(res=>{        
+      .then(res=>{   
+        debugger
         if(res) {
           setPatternsState(state=> {
             state.set(res.id, res)
@@ -35,7 +37,8 @@ export function PatternWrapper(props: Props) {
           })
         }
       })
-      .catch(err=>{
+      .catch(_=>{
+        debugger
         setPatternsNotExistState(state=> {
           state.add(el)
           return new Set(state)

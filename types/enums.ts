@@ -250,6 +250,8 @@ export enum ProposalRequestType {
   InfoRequest = 'infoRequest',
 }
 
+
+
 export enum ApplicationBSSelectType {
   ThisVacancy= 'thisVacancy',
   AnotherVacancy = 'anotherVacancy',

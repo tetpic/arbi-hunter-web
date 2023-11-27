@@ -4,10 +4,13 @@ import { ProposalRequestType } from 'types/enums'
 import request from 'utils/request'
 
 export default class ApplicationRepository {
-  static async getAllApplications(): Promise<IProposal[]|null> {
+  static async getAllApplications(data?: {cvId?: number, vacancyId?: number}): Promise<IProposal[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/application',
+      data: {
+        s: JSON.stringify(data)
+      }
     })
     if(res.err) {
       return null

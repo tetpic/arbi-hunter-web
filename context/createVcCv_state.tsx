@@ -98,7 +98,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setCategories =():Promise<boolean> => {
-    if(categories?.size < 1) {
+    // if(categories?.size < 1) {
       return CvRepository.getCategories()
       .then(res => {
         setCategoriesState(()=> {
@@ -110,7 +110,7 @@ export function CreateVcCvWrapper(props: Props) {
         })
         return true
       })
-    }
+    // }
   }
 
   const setSubCategories = (s: ISpecializationCategory) => {

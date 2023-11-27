@@ -53,7 +53,7 @@ export default function RadioListField<T>(props: Props<T>) {
         {options.filter(item => restrictedValues.indexOf(item.value) === -1).map((item, index) => (
          
             <Radio<T>
-              key={index}
+              key={item.id||index}
               className={classNames(props.itemClassName, item.className, [...(!props.grid ? [styles.radioNoGrid] : [])])}
               activeClassName={props.activeItemClassName}
               labelClassName={props.itemLabelClassName}

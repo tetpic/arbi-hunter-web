@@ -25,11 +25,9 @@ export function ThreeModel(props: IThreeModelProps) {
     }) as any
     
     const { actions } = useAnimations(animations, mesh)
-    useEffect(()=>{
-        actions.Action_test_2.play()
+    useEffect(()=>{        
+        // actions.Action_test_2.play()
     }, [])
-
-
 
     return (
         <group {...props} ref={mesh} dispose={null}>
@@ -56,7 +54,7 @@ export function ThreeModel(props: IThreeModelProps) {
               {props.hair && 
                 <skinnedMesh name={`Hair_${!props.cap&&props.hair||'0'}`} geometry={nodes[`Hair_${!props.cap&&props.hair||'0'}`].geometry} material={materials[`Hair_${!props.cap&&props.hair||'0'}`]} skeleton={nodes[`Hair_${!props.cap&&props.hair||'0'}`].skeleton} />
               }
-              <skinnedMesh name={`Head_${props.emotion||'0'}_${props.emotion||'0'}`} geometry={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
+              <skinnedMesh name={`Head_${props.emotion||'0'}_${props.emotion||'0'}`} geometry={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${Number(props.emotion) === 2?(Number(props.color) + 6):props.color}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
               <skinnedMesh name={`Jacket_${props.jacket||'0'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'0'}`]} skeleton={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].skeleton} />
             </group>
           </group>         

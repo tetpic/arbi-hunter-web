@@ -111,9 +111,9 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
         ||
           <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Пригласить подходящих</span></Link>
         }
-        {vacancy.totalApplications &&+vacancy.totalApplications > 0 &&
+       
           <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>
-        }
+      
     </div>
 
   </div>)

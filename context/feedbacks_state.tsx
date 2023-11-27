@@ -81,10 +81,9 @@ export function FeedbacksWrapper(props: Props) {
   const setCVResponses = async(cvId?: number): Promise<boolean> => {
     try{
       setAllCVResponsesState(new Map)
-      const allProposals = await Promise.all([ApplicationRepository.getAllApplications(), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
+      const allProposals = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
       allProposals.forEach(async(proposal) => {
         setAllCVResponsesState(state => {
-          state.clear()
           proposal.forEach((p, index) => {
             state.set(p.id, p)
           })

@@ -72,14 +72,14 @@ export default function ProposalModal(props: Props) {
     }
   }, [page])
 
-  useEffect(()=>{
-    patternContext.setPatterns()
-  }, [])
+  // useEffect(()=>{
+  //   patternContext.setPatterns()
+  // }, [])
 
   const formik = useFormik<FormikState>({
     initialValues: {
       type: modalArguments.application?ApplicationBSSelectType.ThisVacancy:ApplicationBSSelectType.AnotherVacancy,
-      vcId: null,
+      vcId: modalArguments.application?.vacancyId||null,
     },
     onSubmit: submit
   })

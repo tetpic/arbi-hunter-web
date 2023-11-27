@@ -30,8 +30,12 @@
     flex-direction: column;
     row-gap: 16px;
     align-items: start;
-    width: calc(100% - 180px);
+    max-width: calc(100% - 180px);
     position: relative;
+    @include mq($TabletWidth, max) {
+      max-width: 70%;
+      row-gap: 8px;
+    }
   }
 
   .city {
@@ -41,10 +45,11 @@
   }
 
   .name {
-    grid: n;
+    grid-area: n;
     font-size: $largeText;
     font-weight: $semibold;
     color: $white;
+    @include lineClamp(2);
   }
   
   .price {
@@ -66,12 +71,33 @@
   color: $greyLight;
   font-weight: $medium;
   font-size: $mediumText;
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+  svg {
+    path {
+      stroke: $greyLight;
+    }
+  }
 } 
+
+// .image {
+//   position: absolute;
+//   bottom: 0;
+//   right: 16px;
+// }
 
 .image {
   position: absolute;
   bottom: 0;
   right: 16px;
+  pointer-events: none;
+  object-fit: contain;
+  height: auto;
+  @include mq($TabletWidth, max) {
+    width: Clamp(170px, 33%, 200px);
+    bottom: 60px;
+  }
 }
 
 .heartButton {
@@ -79,4 +105,27 @@
   top: 16px;
   right: 16px;
   z-index: 3;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &_red {
+    background-color: $red;
+  }
+
+  &_green {
+    background-color: $green;
+  }
+}
+
+.activityStatus {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $greyLight;
+  font-size: $smallText;
 }

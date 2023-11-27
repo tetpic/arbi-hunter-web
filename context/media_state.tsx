@@ -52,7 +52,7 @@ export function MediaWrapper(props: Props) {
       })
       return {total: res.total}
     })
-    .catch(err=>false)
+    .catch(_=>false)
   }
 
   const setCategories = async ():Promise<boolean> => {

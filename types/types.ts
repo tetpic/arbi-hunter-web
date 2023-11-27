@@ -48,6 +48,7 @@ export interface IOption<T> {
   disabled?: boolean
   description?: string
   className?: string
+  id?: any
 }
 
 

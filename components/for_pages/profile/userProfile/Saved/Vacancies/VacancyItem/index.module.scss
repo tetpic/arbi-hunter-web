@@ -96,9 +96,13 @@
 .rejected {
   color: $red;
   border: $red 2px solid;
-
-  // background-color: #E7605650;
 }
+
+.interview {
+  color: $green;
+  border: $green 2px solid;
+}
+
 
 .bottom {
   display: flex;

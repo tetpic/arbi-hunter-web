@@ -4,7 +4,7 @@ import Button from 'components/ui/Button'
 import SalaryItem from 'components/ui/SalaryItem'
 import UserPic from 'components/ui/UserPic'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import { TranslateProposalType } from 'utils/enumsTranslations'
+import { TranslateProposalRequestType, TranslateProposalType } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
@@ -13,8 +13,7 @@ import { useRef } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
-import { ApplicationStatus, ModalType, SnackbarType } from 'types/enums'
-import { useUserContext } from 'context/user_state'
+import { ApplicationStatus, ModalType, ProposalRequestType, SnackbarType } from 'types/enums'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
@@ -28,7 +27,6 @@ interface Props {
 
 export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: Props) {
   const appContext = useAppContext()
-  const userContext = useUserContext()
   const router = useRouter()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
@@ -46,9 +44,8 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   }
 
   const options = (<div className={styles.options}>
-    <p className={styles.vacancyName}>{vc.name}</p>
     <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
-    {proposal?.status === ApplicationStatus.Accepted &&
+    {(proposal?.status === ApplicationStatus.Accepted||proposal.type === ProposalRequestType.Interview) && 
       <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
     }
     {isTabletWidth &&
@@ -68,7 +65,7 @@ const openModalHandler =()=> {
   return (<div className={styles.root}> 
   <div className={styles.top}>
     <UserPic className={styles.userPic} size={44}/>
-    <p className={styles.company}>{vc.company}</p>
+    <p className={styles.company}>{vc.company||vc.contactName}</p>
     
     <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
     <ThreeDotsButton onClick={openModalHandler} className={styles.heartButton}/>
@@ -83,7 +80,10 @@ const openModalHandler =()=> {
   <SalaryItem vacancy={vc}/>
   
    {proposal &&
-    <p className={classNames(styles.status, styles[proposal?.status])}>{TranslateProposalType(proposal.status)}</p>
+    <p className={classNames(styles.status, styles[
+      proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status    ])}>
+      {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
+      </p>
    }
   <div className={styles.bottom}>
     <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>

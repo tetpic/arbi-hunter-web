@@ -66,7 +66,7 @@
 
 .radio {
   border-radius: 8px;
-  padding: 4px;
+  padding: 8px 16px;
   font-size: $smallText;
   font-weight: $regular;
   border: 1px $grey solid;
@@ -75,7 +75,7 @@
 }
 
 .radioActive {
-  background-color: $greyAlt;
+  background-color: $blue;
   pointer-events: none;
 }
 

@@ -12,6 +12,8 @@ export interface IProposal extends TimeStamp {
   cvId?: number,
   vacancyId?: number,
   vacancy?: IVacancy
+  cvDeletedOrHidden?: boolean
+  vacancyDeletedOrHidden?: boolean
   type?: ProposalRequestType,
   coverLetter? : string,
   chat?: IChat[],

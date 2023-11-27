@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import InputField from 'components/fields/InputField'
 import DropDown from 'components/ui/InfiniteDropDown'
 import { ISearchLocalyRequest } from 'data/interfaces/ILocation'
@@ -57,7 +58,7 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
       limit: 10,
       search: value||props.value||'', 
       lang: 'ru', //поменять на динмический
-      country: props.country?props.country:'RU' //поменять на динамический
+      country: props.country
     }
     request.callback(options)
   }

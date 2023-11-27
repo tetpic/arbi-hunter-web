@@ -3,14 +3,7 @@
 .navigationWrapper {
   width: 100%;
   height: 70px;
-
-  // .navigation{  
-  //   min-width: 500px;   
-  // } 
-
 }
-
-
 
 .wrapper {
   display: flex;
@@ -28,4 +21,32 @@
   background-color: $black;
   border-radius: 16px;
   padding: 16px;
+}
+
+.itemsCounter {
+  color: $blue;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.unavailable {
+  padding: 16px;
+  background-color: $black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  
+  .counter {
+    color: $white;
+    font-weight: $semibold;
+    font-size: $largeText;
+  }
+
+  .descriptions {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+
 }

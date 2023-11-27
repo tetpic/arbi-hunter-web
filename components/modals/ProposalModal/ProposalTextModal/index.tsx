@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import styles from './index.module.scss'
 
 import RichTextField from 'components/fields/RichTextField'
@@ -88,7 +89,7 @@ export default function ProposalTextModal(props: Props) {
     <>
       <div className={styles.patterns}>
       {[...patternContext.patterns.values()].map(el=> {
-        return <p key={el.id} className={styles.choosePattern} onClick={()=>setPattern(el)}>{TranslatePatternType(el.type)}</p>
+        return <p key={el.id} className={classNames(styles.choosePattern, pattern?.id === el.id&&styles.choosePattern_active)} onClick={()=>setPattern(el)}>{TranslatePatternType(el.type)}</p>
       })}
       </div>
       <FormikProvider value={formik} >

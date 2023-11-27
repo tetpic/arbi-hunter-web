@@ -1,11 +1,13 @@
+import styles from './index.module.scss'
+
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { ApplicationStatus } from 'types/enums'
+import { ApplicationStatus, ProposalRequestType } from 'types/enums'
 import ItemNavigation from '../../ItemNavigation'
 import VacancyItem from '../Saved/Vacancies/VacancyItem'
-import styles from './index.module.scss'
 import { IProposal } from 'data/interfaces/IProposal'
 import Spinner from 'components/ui/Spinner'
+import Formatter from 'utils/formatter'
 
 interface Props {
 }
@@ -27,7 +29,6 @@ function translate (n: ReviewsNavigation) {
       return 'Ожидание'
     case ReviewsNavigation.Reject:
       return 'Отказ'
-  
   }
 }
 
@@ -40,6 +41,7 @@ export default function Feedbacks(props: Props) {
   const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filtered, setFiltered] = useState<Map<number, IProposal>>(CVFeedbacks)
   const [loading, setLoading] = useState<boolean>(true)
+  const [itemsHidden, setItemsHidden] = useState<Map<number, IProposal>>(new Map)
 
   const onRemove = () => {
     setLoading(true)
@@ -47,46 +49,80 @@ export default function Feedbacks(props: Props) {
     .then(_=>setLoading(false))
   }
 
-  useEffect(()=>{    
+
+  //надо отрефакторить, а то я долго соображал как их фильтровать... и пока что это рабочий вариант
+  useEffect(()=>{ 
+    const cvEntries:[number, IProposal][] = [...CVFeedbacks.entries()]
+    const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.cvDeletedOrHidden&&!value.vacancyDeletedOrHidden)
+    const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
+
     switch(page) {
       case ReviewsNavigation.Any :
-        setFiltered(state=> {
-          return new Map(CVFeedbacks)
+        setFiltered(_=> {
+          return new Map(itemsActiveFilter)
         })
-      break
+        setItemsHidden(_ => {
+          return new Map(itemsHiddenFilter)
+        })
+        break
+
       case ReviewsNavigation.Invite: 
         setFiltered(state=> {
-            state.clear();
-            [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Accepted)
-            .map(([app, vc])=>{
-              state.set(app, vc)
-            })
-            return new Map(state)
-        })
-      break
-      case ReviewsNavigation.Wait:
-        setFiltered(state=> {
-          state.clear();
-          [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Applied)
+          state.clear()
+          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Accepted)
           .map(([app, vc])=>{
             state.set(app, vc)
           })
           return new Map(state)
-
         })
-      break
-      case ReviewsNavigation.Reject:
+        setItemsHidden(state=> {
+          state.clear()
+          itemsHiddenFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Accepted)
+          .map(([app, vc])=>{
+            state.set(app, vc)
+          })
+          return new Map(state)
+        })       
+        break
+
+      case ReviewsNavigation.Wait:
         setFiltered(state=> {
-          state.clear();
-          [...CVFeedbacks.entries()].filter(([key, value])=> value.status === ApplicationStatus.Rejected)
-          .map(([app, vc])=> {
+          state.clear()
+          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.InfoRequest):value.status === ApplicationStatus.Applied)
+          .map(([app, vc])=>{
             state.set(app, vc)
           })
           return new Map(state)
         })
-      break
+        setItemsHidden(state=> {
+          state.clear()
+          itemsHiddenFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.InfoRequest):value.status === ApplicationStatus.Applied)
+          .map(([app, vc])=>{
+            state.set(app, vc)
+          })
+          return new Map(state)
+        })
+        break
+
+      case ReviewsNavigation.Reject:
+        setFiltered(state=> {
+          state.clear()
+          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Rejected && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Rejected)
+          .map(([app, vc])=>{
+            state.set(app, vc)
+          })
+          return new Map(state)
+        })
+        setItemsHidden(state=> {
+          state.clear()
+          itemsHiddenFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Rejected && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Rejected)
+          .map(([app, vc])=>{
+            state.set(app, vc)
+          })
+          return new Map(state)
+        })
+        break
     }
-  
   }, [page, CVFeedbacks])
 
   useEffect(()=>{
@@ -101,9 +137,17 @@ export default function Feedbacks(props: Props) {
     <div className={styles.root}>
       <ItemNavigation activeItem={page} items={items} onClick={(n)=>setPage(n)} className={styles.navigation}/>
       <div className={styles.wrapper}>
+        {filtered.size + itemsHidden.size > 0 &&
+        <p className={styles.itemsCounter}>{filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')}</p>
+        }
+        {itemsHidden.size > 0 &&
+          <div className={styles.unavailable}>
+            <p className={styles.counter}>{itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')} недоступно</p>
+            <p className={styles.descriptions}>Соискатель скрыл или удалил свое резюме</p>
+          </div>
+        }
         {
           filtered.size > 0 && !loading && [...filtered.entries()].map(([id, proposal])=> {
-            if(proposal.chat.length === 0) return null
             return (<VacancyItem  onRemove={onRemove} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||

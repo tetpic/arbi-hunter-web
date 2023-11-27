@@ -14,6 +14,7 @@
 .createNew {
   @include buttonYellow;
   align-self: flex-end;
+
   @include mq($TabletWidth, max) {
     width: 100%;
   }
@@ -23,5 +24,6 @@
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  margin-bottom: 16px;
 }
 

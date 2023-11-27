@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Accordeon from 'components/ui/Accordeon'

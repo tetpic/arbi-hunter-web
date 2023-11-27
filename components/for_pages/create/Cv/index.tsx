@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
@@ -41,23 +41,27 @@ enum CvNavigation {
 }
 
 export default function Cv(props: Props) {
+  const userContext = useUserContext()
+  const appContext = useAppContext()
+  const creationContext = useCreateVcCvContext()
   const {isPhoneWidth} = useResize()
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
-
-  const userContext = useUserContext()
-  const appContext = useAppContext()
-  const creationContext = useCreateVcCvContext()
-  const router = useRouter()
-  const {progress, setProgress} = creationContext
+  const riveRef = useRef()
 
   const { rive, RiveComponent } = useRive({
     src: '/rive/cv_nomoney.riv',
     stateMachines: 'bumpy',
     autoplay: true,
+    // animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']
   })
+
+
+  const router = useRouter()
+  const {progress, setProgress} = creationContext
+  const CVItemsCount = 7
 
   const submit = (data: ICVCreate) => {
     setLoading(true)
@@ -103,7 +107,7 @@ export default function Cv(props: Props) {
     }
   }
 
-  const CVItemsCount = 7
+  
 
   const initialValues:ICVCreate  = {
     firstName: userContext.currentProfile?.firstName,
@@ -242,14 +246,14 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
-  const getImage = ():string => {
+  const getImage = ():{src: string, animations: string[]} => {
     switch (progress) {
       case 1:
-        return '/rive/cv_nomoney.riv'
+        return {src: '/rive/cv_nomoney.riv', animations: ['Hands', 'Flow']}
       case 2: 
-        return '/rive/cv_onwork.riv'
+        return {src: '/rive/cv_onwork.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
       default:
-        return '/rive/cv_onwork.riv'
+        return {src: '/rive/cv_onwork.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
     }
   }
 
@@ -268,12 +272,6 @@ export default function Cv(props: Props) {
   }, [])
 
   useEffect(()=>{
-    if(rive) {
-      rive.play()
-    }
-  }, [rive])
-
-  useEffect(()=>{
     if(progress < 1) {
       setProgress(1)
       router.back()
@@ -288,11 +286,8 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-   
-    <Rive src={'/rive/cv_nomoney.riv'} className={classNames(styles.rive, progress === 1&&styles.active)}/>
-    <Rive src={'/rive/cv_onwork.riv'} className={classNames(styles.rive, progress === 2&&styles.active)}/>
-    <Rive src={'/rive/cv_onwork.riv'} className={classNames(styles.rive, progress > 2&&styles.active)}/>
-   
+    {/* <RiveComponent className={styles.rive}/> */}
+    <Rive src={getImage().src} animations={getImage().animations}  key={progress} className={styles.rive}/>
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth && 
