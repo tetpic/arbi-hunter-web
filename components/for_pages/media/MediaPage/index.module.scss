@@ -27,6 +27,8 @@
 
   @include mq($TabletWidth, max) {
     margin-top: unset;
+    margin-right: unset;
+    padding-right: unset;
   }
 }
 

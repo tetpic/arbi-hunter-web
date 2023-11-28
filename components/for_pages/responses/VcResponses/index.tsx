@@ -19,14 +19,28 @@ interface Props {
 
 export enum VCNaviagation {
   All= 'all',
+  Applied = 'applied',
   Interview = 'interview',
-  Rejection = 'rejection'
+  Rejection = 'rejection',
 }
 
 export interface NavSet {
   name: string, 
   type: VCNaviagation, 
   count?: number
+}
+
+const TranslateVCNavigation = (v: VCNaviagation) =>{
+  switch(v) {
+    case VCNaviagation.All: 
+    return 'Все отклики'
+    case VCNaviagation.Interview: 
+    return 'Приглашение'
+    case VCNaviagation.Applied:
+    return 'Неразобранные'
+    case VCNaviagation.Rejection:
+    return 'Отказ'
+  }
 }
 
 export default function VCFeedbacks(props: Props) {  
@@ -41,52 +55,43 @@ export default function VCFeedbacks(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [navSet, setNavSet] = useState<NavSet[]>([])
 
-  const TranslateVCNavigation = (v: VCNaviagation) =>{
-    switch(v) {
-      case VCNaviagation.All: 
-      return 'Все отклики'
-      case VCNaviagation.Interview: 
-      return 'Приглашение'
-      case VCNaviagation.Rejection:
-      return 'Отказ'
-    }
-  }
-
   const navigationSet = (stats: IStat[]) => {
-    let res = Object.values(VCNaviagation).map(el=> {
-      const count = stats.find(s=> s.status === (el===VCNaviagation.Rejection?ApplicationStatus.Rejected:ApplicationStatus.Applied))
-      return {name: TranslateVCNavigation(el), type: el, count: count?count.count:0}
+    let res = Object.values(VCNaviagation).map((el)=> {
+      const count = stats.find(s=> s.status === (el===VCNaviagation.Rejection?ApplicationStatus.Rejected:el===VCNaviagation.Applied?ApplicationStatus.Applied:ApplicationStatus.Accepted))
+      return {name: TranslateVCNavigation(el), type: el, count: el !== VCNaviagation.All?count?.count:responsesContext.VCFeedbacks.size}
     })
     setNavSet(res)
+    setLoading(false)
   }
 
   useEffect(()=>{
-    navigationSet(stats)
-  }, [stats])
+    if(responsesContext.VCFeedbacks.size && stats) {      
+      navigationSet(stats)
+    }
+  }, [stats, responsesContext.VCFeedbacks])
 
   
   useEffect(()=>{    
-    
-    setLoading(true)
     const feedbacks = [...responsesContext.VCFeedbacks.values()]
     let arr: any
     switch(currentPage) {
       case VCNaviagation.All:
         responsesContext.setFilteredVcResponses(feedbacks)
         responsesContext.setSorted(null)
-      
-        setLoading(false)
         break
       case VCNaviagation.Interview:
-        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Accepted)
         responsesContext.setSorted(arr)     
-        setLoading(false)
         break
       case VCNaviagation.Rejection: 
         arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Rejected)||[]
         responsesContext.setSorted(arr)
-        setLoading(false)
         break
+      case VCNaviagation.Applied:
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)||[]
+        responsesContext.setSorted(arr)
+        break
+
     }
   }, [currentPage, responsesContext.VCFeedbacks])
 
@@ -101,17 +106,18 @@ export default function VCFeedbacks(props: Props) {
     }
   }
 
-  useEffect(()=>{
+  const init = () => {
+    debugger
     setStats(props.id)
     responsesContext.setVCResponses(props.id)
-    .then(res=> {
+    .then(_=> {
       setLoading(false)
     })
-  }, [])
+  }
 
   useEffect(()=>{
-    
-  }, [currentPage])
+    init()
+  }, [])
 
   return (<div className={styles.root}> 
   <div className={styles.main}>
@@ -130,7 +136,7 @@ export default function VCFeedbacks(props: Props) {
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.map(el=> {
-          return <CvCard cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
+          return <CvCard onChangeItem={()=>init()} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||
         loading && <Spinner size={24} />
@@ -141,7 +147,7 @@ export default function VCFeedbacks(props: Props) {
     }
 
   </div>
-  {((showNav && isTabletWidth) || !isTabletWidth) &&
+  {((showNav  && isTabletWidth) || !isTabletWidth) && responsesContext.VCFeedbacks &&
     <ResponsesNavigation items={navSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} />
   }
   </div>)

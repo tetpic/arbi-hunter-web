@@ -92,8 +92,8 @@ export default function Messages(props: Props) {
   useEffect(()=>{
     if(dialog.chat) {
       setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
-      if(dialog?.chat?.application?.cv?.id||dialog.chat.proposal.cv.id) {
-        CvRepository.getById(dialog?.chat?.application?.cv.id||dialog.chat.proposal.cv.id)
+      if(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id) {
+        CvRepository.getById(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id)
         .then(cv=> {
           setCv(cv)
         })

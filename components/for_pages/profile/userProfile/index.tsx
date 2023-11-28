@@ -6,7 +6,7 @@ import CVs from './CVs'
 import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import UserEditor from './UserEditor'
-import Personal from '../companyProfile/Personal'
+import Personal from '../Personal'
 
 interface Props {
   currentPage: ProfilePages 

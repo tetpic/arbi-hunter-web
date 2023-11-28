@@ -1,5 +1,5 @@
 import RadioListField from 'components/fields/RadioListField'
-import { useResize } from 'components/hooks/useResize'
+// import { useResize } from 'components/hooks/useResize'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
@@ -7,7 +7,7 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import ClosingTitle from 'components/ui/ClosingTitle'
 import Spinner from 'components/ui/Spinner'
-import { usePatternContext } from 'context/pattern_state'
+// import { usePatternContext } from 'context/pattern_state'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IApplication } from 'data/interfaces/IApplication'
@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
 import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
+import { IProposalTextModalProps } from './ProposalTextModal'
 
 
 interface Props {
@@ -38,12 +39,13 @@ export interface IProposalModalProps {
   application?:IApplication, 
   cv?: ICV, 
   page?: ProposalModalPager
+  fn?: () => void
 }
 
 export default function ProposalModal(props: Props) {
-  const patternContext = usePatternContext()
+  // const patternContext = usePatternContext()
   const appContext = useAppContext()
-  const {isTabletWidth} = useResize()
+  // const {isTabletWidth} = useResize()
   const modalArguments = appContext.modalArguments as IProposalModalProps
   const [page, setPage] = useState<ProposalModalPager>(modalArguments.page||ProposalModalPager.Invite)
   const [loading, setIsLoading] = useState<boolean>(false)
@@ -59,7 +61,7 @@ export default function ProposalModal(props: Props) {
       setPage(ProposalModalPager.OtherVacancy)
     }
     else {
-      appContext.showModal(ModalType.ProposalTextModal, {...data, application: modalArguments.application, cv: modalArguments.cv})
+      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {...data, cv: modalArguments.cv, application: modalArguments.application, onSubmit: modalArguments.fn})
     }
   }
 

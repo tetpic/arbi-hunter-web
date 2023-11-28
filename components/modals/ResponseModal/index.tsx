@@ -35,7 +35,7 @@ export default function ResponseModal(props: Props) {
   const submit = (data: {coverLetter: string}) => {
     ApplicationRepository.patchApplicationRespond(args.application.id, data)
     .then(res=> {
-      debugger
+      
       appContext.showSnackbar('Сопроводительное письмо успешно отправлено', SnackbarType.success)
       args.onSubmit(res)
       props.onClose()

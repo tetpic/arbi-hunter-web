@@ -24,7 +24,7 @@ export default function SavedCVs() {
   }, [])
 
   const onChangeItem = (c: ICV) => {
-    debugger
+    
     cvContext.removeCvfromSaved(c.id)
   }
 

@@ -113,7 +113,7 @@ export default function MessageFactory(props: Props) {
             <span>Без сопроводительного письма</span>
           }
         </p>
-        {!props.message?.application?.coverLetter && 
+        {!props.message?.application?.coverLetter && userContext.currentProfile.profileType === ProfileType.Employee &&
           <p className={styles.cover} onClick={()=> {
             if(props.application.cvDeletedOrHidden) {
               appContext.showSnackbar('Резюме было скрыто или удалено', SnackbarType.error)

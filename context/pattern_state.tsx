@@ -29,7 +29,7 @@ export function PatternWrapper(props: Props) {
     Object.values(PatternTypes).forEach(el=> {
       PatternRepository.getPatternByType(el)
       .then(res=>{   
-        debugger
+        
         if(res) {
           setPatternsState(state=> {
             state.set(res.id, res)
@@ -38,7 +38,7 @@ export function PatternWrapper(props: Props) {
         }
       })
       .catch(_=>{
-        debugger
+        
         setPatternsNotExistState(state=> {
           state.add(el)
           return new Set(state)

@@ -101,7 +101,7 @@ export function ChatDialogWrapper(props: Props) {
 
   const refreshMessage = (id: number, message: IMessage) => {
     setMessages(state=> {
-      debugger
+      
       const msg = state.get(id)
       state.set(id, message)
       return new Map(state)

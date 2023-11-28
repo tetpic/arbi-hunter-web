@@ -29,7 +29,7 @@ interface Props {
 export interface IProposalTextModalProps {
   type: ApplicationBSSelectType, 
   vcId?: number, 
-  application: IApplication, 
+  application?: IApplication, 
   cv: ICV,
   onSubmit?: () => void
 }

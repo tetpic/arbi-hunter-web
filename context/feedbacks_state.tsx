@@ -36,6 +36,7 @@ interface IState {
   sorted:IApplication[],
   setSorted: Dispatch<SetStateAction<IApplication[]>>,
   getFilterItems : (p: FilterItems)=> FilterItem
+  removeProposal: (id: number) => void
 }
 
 
@@ -196,6 +197,7 @@ export function FeedbacksWrapper(props: Props) {
   const setStats = async (vcId: number):Promise<boolean> => {
     try {
       const res = await ApplicationRepository.getStatsCountByVacancy(vcId)
+      
       setStatsState(res)
       return true
     } catch (e) {
@@ -221,6 +223,13 @@ export function FeedbacksWrapper(props: Props) {
       case FilterItems.New:
         return {type: p, translation: 'Только новые'}
     }
+  }
+
+  const removeProposal = (id: number) => {
+    setAllCVResponsesState(state=> {
+      state.delete(id)
+      return new Map(state)
+    })
   }
 
   useEffect(()=>{    
@@ -262,7 +271,8 @@ export function FeedbacksWrapper(props: Props) {
     stats,
     setStats,
     setSorted,
-    getFilterItems
+    getFilterItems,
+    removeProposal
   }
 
   return (

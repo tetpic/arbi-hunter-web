@@ -1,5 +1,5 @@
 import { useResize } from 'components/hooks/useResize'
-import { ProposalModalPager } from 'components/modals/ProposalModal'
+import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import DotSvg from 'components/svg/DotSvg'
 import { useCvContext } from 'context/cv_state'
 import { useAppContext } from 'context/state'
@@ -20,9 +20,10 @@ interface ItemProps {
   chat?: IChat
   application?: IApplication
   vcId?: number
+  onChangeItem?: ()=> void
 }
 
-export default function CvCard({cv, chat, vcId, application}: ItemProps) {
+export default function CvCard({cv, chat, vcId, application, ...props}: ItemProps) {
   const router = useRouter()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
@@ -32,8 +33,6 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
     (currentCV?.experienceInfo
       &&currentCV?.experienceInfo.length>0
       &&Formatter.fullTimeLine(currentCV.experienceInfo?.map(el=>[el.fromDate, el.toDate])))
-    // ||
-    // cv?.experienceInfo?.length===1&& ('c ' +  cv.experienceInfo[0].fromDate)
     ||
     'Без опыта'
   const cvContext = useCvContext()
@@ -64,7 +63,7 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
       appContext.showBottomSheet(ModalType.ProposalModal, {application: application, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
     }
     else {
-      appContext.showModal(ModalType.ProposalModal, {application: application, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
+      appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, {application: application, fn: props.onChangeItem, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
     }
   }
 
@@ -93,7 +92,7 @@ export default function CvCard({cv, chat, vcId, application}: ItemProps) {
       </div>
     }
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser?'Пригласить повторно':'Пригласить'}</Button>
+      <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser||application.proposals.length > 0?'Пригласить повторно':'Пригласить'}</Button>
       {chat&& 
         <Button className={styles.buttonBlack} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }

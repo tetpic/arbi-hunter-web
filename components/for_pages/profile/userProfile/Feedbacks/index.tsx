@@ -40,10 +40,15 @@ export default function Feedbacks() {
   const [loading, setLoading] = useState<boolean>(true)
   const [itemsHidden, setItemsHidden] = useState<Map<number, IProposal>>(new Map)
 
-  const onRemove = () => {
-    setLoading(true)
-    feedBackContext.setCVResponses()
-    .then(_=>setLoading(false))
+  const onRemove = (id:number) => {
+    feedBackContext.removeProposal(id)
+    setFiltered(state=> {
+      state.delete(id)
+      return new Map(state)
+    })
+    // setLoading(true)
+    // feedBackContext.setCVResponses()
+    // .then(_=>setLoading(false))
   }
 
 
@@ -149,7 +154,7 @@ export default function Feedbacks() {
         }
         {
           filtered.size > 0 && !loading && [...filtered.entries()].map(([id, proposal])=> {
-            return (<VacancyItem  onRemove={onRemove} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
+            return (<VacancyItem  onRemove={(id)=>onRemove(id)} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
           loading &&

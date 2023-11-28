@@ -1,6 +1,6 @@
 import { IApplication } from 'data/interfaces/IApplication'
 import { IProposal, IStat } from 'data/interfaces/IProposal'
-import { ProposalRequestType } from 'types/enums'
+import { ApplicationStatus, ProposalRequestType } from 'types/enums'
 import request from 'utils/request'
 
 export default class ApplicationRepository {
@@ -52,7 +52,7 @@ export default class ApplicationRepository {
     return res
   }
 
-  static async patchApplicationRespond(applicationId: number, data: {status?: ProposalRequestType, coverLetter?: string}): Promise<IProposal|null> {
+  static async patchApplicationRespond(applicationId: number, data: {status?: ApplicationStatus, coverLetter?: string, deletedByEmployee?: boolean}): Promise<IProposal|null> {
     const res = await request({
       method: 'patch',
       url: `/api/application/${applicationId}`,

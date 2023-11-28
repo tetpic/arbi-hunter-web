@@ -8,10 +8,11 @@ import RemovableItem from 'components/ui/RemovableItem'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { FilterItem, FilterItems } from 'data/interfaces/IFilter'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { colors } from 'styles/variables'
 import { ProposalRequestType} from 'types/enums'
 import styles from './index.module.scss'
+import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 
 
 interface Props {
@@ -23,10 +24,12 @@ export default function ResponsesFilter(props: Props) {
   const feedbacksContext = useFeedbacksContext()
   const {isTabletWidth} = useResize()
   const {filterOptions, setFilterOptions, filters} = feedbacksContext
-  // const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [activeFilter, setActiveFilter] = useState<FilterItem>()
   const [switcher, setSwitcher] = useState<boolean>(false)
   const [switcherLoading, setSwitcherLoading] = useState<boolean>(false)
+  const dropdownRef = useRef(null!)
+  const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
+
 
   const onlyNewHandler = (value?: FilterItem) => {
     if(switcher===false) {
@@ -50,9 +53,16 @@ export default function ResponsesFilter(props: Props) {
     }
   }
 
-  const accordeonHandler = (value?: FilterItem) => {    
+  const accordeonHandler = (value?: FilterItem) => {   
     setActiveFilter(activeFilter===value?null:value)
+    setDropDownOpen(activeFilter===value?false:true)
   }
+
+  useEffect(()=>{
+    if(!isDropDownOpen) {
+      setActiveFilter(null)
+    }
+  }, [isDropDownOpen])
 
   
 
@@ -85,11 +95,11 @@ export default function ResponsesFilter(props: Props) {
           : <Accordeon 
             key={index}
             classNames={{root: styles.accRoot, content: styles.accContent, wrapper: styles.accWrapper }}
-            // onOutsideClick={()=>accordeonHandler()}
             body={
-              <p onClick={()=>accordeonHandler(value)} className={classNames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
+              <p onClick={(e)=>{e.stopPropagation();accordeonHandler(value)}} className={classNames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
             } 
-            isActive={value===activeFilter}>
+            getRef={(r) => dropdownRef.current = r}
+            isActive={value===activeFilter && isDropDownOpen}>
               <>
                 {value.translatedItems && value.translatedItems.map((el, index)=>{
                   return (

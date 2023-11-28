@@ -17,12 +17,13 @@ import { ApplicationStatus, ModalType, ProposalRequestType, SnackbarType } from 
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
+import ApplicationRepository from 'data/repositories/ApplicationRepository'
 
 interface Props {
   vc: IVacancy
   proposal?: IProposal
   refreshCallback?: Function
-  onRemove?: Function
+  onRemove?: (id: number) => void
 }
 
 export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: Props) {
@@ -33,13 +34,23 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
+    debugger
+    console.log(proposal, vc)
     if(!proposal.id) {
       appContext.showSnackbar('Отклик некорректен. Действия невозможны', SnackbarType.error)
       openDropDown(false)
       return
     }
-    await ProposalRepository.changeProposalStatusByEmployee(proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
-    onRemove()
+    try{
+      proposal.type&&
+      await ProposalRepository.changeProposalStatusByEmployee(proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+      ||
+      await ApplicationRepository.patchApplicationRespond(proposal.id, {status: ApplicationStatus.Rejected, deletedByEmployee: deletedByEmployee})
+      onRemove(proposal.id)
+    }
+    catch(err) {
+      appContext.showSnackbar('Приглашение не найдено', SnackbarType.error)
+    }
     openDropDown(false)
   }
 

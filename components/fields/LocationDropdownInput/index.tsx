@@ -23,13 +23,12 @@ interface Props<C> {
 }
 
 export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
-  // const [inputValue, setInputValue] = useState<string>(props.value)
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
-  const {values, setFieldValue } = useFormikContext()
+  const {setFieldValue } = useFormikContext()
 
   const request = useThrottleFn((r: ISearchLocalyRequest) => {
     setLoading(true)

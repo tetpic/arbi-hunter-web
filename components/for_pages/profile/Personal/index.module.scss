@@ -1,0 +1,29 @@
+@import 'styles/index';
+
+.root {
+  width: 100%;
+}
+
+.contentWrapper {
+  margin-top: 24px;
+}
+
+.top {
+  height: 170px;
+  background: $gradient;
+
+}
+
+.photo {
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 114px;
+  height: 114px;
+  flex-shrink: 0;
+}
+
+

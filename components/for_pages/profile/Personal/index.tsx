@@ -1,8 +1,9 @@
 import styles from './index.module.scss'
 import { useState } from 'react'
-import ItemNavigation from '../../ItemNavigation'
+import ItemNavigation from '../ItemNavigation'
 import ChangePassword from './Password'
 import PersonalInformation from './PersonalInformation'
+import Buildings from './Buildings'
 
 interface Props {
 }
@@ -28,9 +29,7 @@ export default function Personal(props: Props) {
 
   return (
     <div className={styles.root}> 
-      <div className={styles.imageSettings}>
-        
-      </div>
+      <Buildings/>
       <ItemNavigation activeItem={activeItem} onClick={(n)=>setActiveItem(n)} items={items} />
       <div className={styles.contentWrapper}>
       {
