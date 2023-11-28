@@ -53,7 +53,7 @@ export default function ChatsFolderModal(props: Props) {
         return (
           <div className={styles.item} key={chat.id} onClick={(e)=>{e.stopPropagation(); checkHandler(chat, isActive)}}>
             <UserPic className={styles.userPic}/>
-            <p className={styles.name}>{collocutor.firstName} {collocutor.lastName}</p>
+            <p className={styles.name}>{collocutor?.firstName} {collocutor?.lastName}</p>
             <p className={styles.vacancy}>test</p>
             <Checkbox className={styles.checkBox} value={chat.id} isActive={isActive} onChange={()=>checkHandler(chat, isActive)}/>
           </div>

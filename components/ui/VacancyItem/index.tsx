@@ -47,7 +47,7 @@ export default function VacancyItem({vacancy, onChangeItem}: Props) {
     <LikeButton className={styles.heartButton} active={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={244} height={220}/>
     <div className={styles.top}>
-      <div className={styles.name}>{vacancy.company}
+      <div className={styles.name}>{vacancy.company||vacancy.contactName}
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }

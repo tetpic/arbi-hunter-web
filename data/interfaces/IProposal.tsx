@@ -5,11 +5,13 @@ import { TimeStamp } from './Common'
 import { INotification } from './INotification'
 import { IUserProfile } from './IUser'
 import { IVacancy } from './IVacancy'
+import { ICV } from './ICV'
 
 export interface IProposal extends TimeStamp {
   applicationId?: number,
   application?: IApplication
   cvId?: number,
+  cv?: ICV,
   vacancyId?: number,
   vacancy?: IVacancy
   cvDeletedOrHidden?: boolean

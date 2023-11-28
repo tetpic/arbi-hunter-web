@@ -6,9 +6,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 100vh;
+  overflow: scroll;
+  padding-bottom: 20px;
   @include mq($TabletWidth, max) {
     height: 100%;
     width: 100%;
+    max-height: unset
   }
 }
 

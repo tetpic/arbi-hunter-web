@@ -7,7 +7,7 @@ import { IApplication } from './IApplication'
 
 export interface MessageFilterOptions {
   vacanciesIds?: string;
-  applicationStatus?: ApplicationStatus // UserCvOrVacancyStatus
+  applicationStatus?: ApplicationStatus
   search?: string
   chatFolderId?: number ;
   onlyUnread?: boolean;
@@ -19,12 +19,12 @@ export interface MessageFilterOptions {
 export interface IMessage extends TimeStamp {
   application?: IProposal
   id?: number|string
-  profileId?: number, //required
+  profileId?: number,
   profile?: IUserProfile,
-  chatId?: number, // required
+  chatId?: number, 
   replyToId?: number,
   message?: string,
-  sid?: string, //required
+  sid?: string,
   imageIds?: number[],
   voiceId?: number[],
   type?: MessageType
@@ -62,8 +62,8 @@ export default interface IChat extends TimeStamp {
   lastMessageAt: string
   profile: IUserProfile
   profiles: IUserProfile[]
-  participant: IUserProfile // Participant
-  application: IApplication // ApplicationModel
+  participant: IUserProfile 
+  application: IApplication
   lastMessage: string
   lastMessageType: string
   totalUnread: number
@@ -77,8 +77,6 @@ export default interface IChat extends TimeStamp {
 
 export interface IChatListRequest extends IPaginationRequest{
   search?: Nullable<string>,
-  // receivingPointId?: Nullable<number>,
-  // dealId?: Nullable<number>,
   userId?: Nullable<number>,
 }
 

@@ -28,6 +28,9 @@ export default function Personal(props: Props) {
 
   return (
     <div className={styles.root}> 
+      <div className={styles.imageSettings}>
+        
+      </div>
       <ItemNavigation activeItem={activeItem} onClick={(n)=>setActiveItem(n)} items={items} />
       <div className={styles.contentWrapper}>
       {

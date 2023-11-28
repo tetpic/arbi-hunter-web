@@ -92,10 +92,15 @@ export default function Messages(props: Props) {
   useEffect(()=>{
     if(dialog.chat) {
       setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
-      CvRepository.getById(dialog.chat.application.cv.id)
-      .then(cv=> {
-        setCv(cv)
-      })
+      if(dialog?.chat?.application?.cv?.id||dialog.chat.proposal.cv.id) {
+        CvRepository.getById(dialog?.chat?.application?.cv.id||dialog.chat.proposal.cv.id)
+        .then(cv=> {
+          setCv(cv)
+        })
+      }
+      else {
+        setCv(null)
+      }
     }
   }, [dialog.chat])
 
@@ -151,9 +156,11 @@ export default function Messages(props: Props) {
         }
       </InfiniteScroll>
       </div>
+      {cv && cv.categories[0] &&
       <div className={styles.bottom}>
-        <p className={styles.bottom__desc}>{cv?.categories[0].name}</p>
+        <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
       </div>
+      }
       <div className={styles.newMessage} onPaste={onPasteHandler}>
         <img src={'/icons/paperclip.svg'} alt='paperclip' className={styles.paperClip}/>
         {pastedImages.size>0 && 

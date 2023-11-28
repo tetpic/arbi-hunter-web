@@ -9,9 +9,6 @@ import { IProposal } from 'data/interfaces/IProposal'
 import Spinner from 'components/ui/Spinner'
 import Formatter from 'utils/formatter'
 
-interface Props {
-}
-
 enum ReviewsNavigation {
   Any = 'any',
   Invite = 'invite',
@@ -32,7 +29,7 @@ function translate (n: ReviewsNavigation) {
   }
 }
 
-export default function Feedbacks(props: Props) {
+export default function Feedbacks() {
 
   const feedBackContext = useFeedbacksContext()
   const {CVFeedbacks} = feedBackContext
@@ -138,11 +135,15 @@ export default function Feedbacks(props: Props) {
       <ItemNavigation activeItem={page} items={items} onClick={(n)=>setPage(n)} className={styles.navigation}/>
       <div className={styles.wrapper}>
         {filtered.size + itemsHidden.size > 0 &&
-        <p className={styles.itemsCounter}>{filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')}</p>
+        <p className={styles.itemsCounter}>
+          {filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')}
+        </p>
         }
         {itemsHidden.size > 0 &&
           <div className={styles.unavailable}>
-            <p className={styles.counter}>{itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')} недоступно</p>
+            <p className={styles.counter}>
+              {itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')} недоступно
+            </p>
             <p className={styles.descriptions}>Соискатель скрыл или удалил свое резюме</p>
           </div>
         }
