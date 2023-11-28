@@ -26,7 +26,7 @@ export default function ApplicationSuccessModal(props: Props) {
     <div className={styles.root}>
       <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
       <Image src={folderImage} alt={'folder'} width={152} height={152}/>
-      <p className={styles.title}>{args.type === 'cv'?'Ваше резюме успешно отправлено':'Приглашение отправлено'}</p>
+      <p className={styles.title}>{args?.type === 'cv'?'Ваше резюме успешно отправлено':'Приглашение отправлено'}</p>
       <p className={styles.description}>Вы можете отслеживать статус вашей заявки в личном кабинете</p>
       <Link onClick={props.onClose} className={styles.grayLink} href={args.type === 'cv'?'/profile?page=feedbacks':`responses/${args.id}`}>Перейти в раздел откликов</Link>
       <Link onClick={props.onClose} className={styles.blueLink} href={'/'}>Смотреть похожие {args.type === 'cv'?'вакансии':'резюме'}</Link>

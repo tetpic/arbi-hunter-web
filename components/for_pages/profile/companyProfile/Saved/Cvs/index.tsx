@@ -15,12 +15,12 @@ export default function SavedCVs() {
   const [load, setLoading ] = useState<boolean>(true)
 
   useEffect(()=>{
-    if(!cvContext.savedCvs||cvContext.savedCvs.length === 0){
+    // if(!cvContext.savedCvs||cvContext.savedCvs.length === 0){
       cvContext.setSavedCvs()
       .then(_=>{
         setLoading(false)
       })
-    }
+    // }
   }, [])
 
   const onChangeItem = (c: ICV) => {

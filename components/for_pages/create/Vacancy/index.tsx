@@ -115,18 +115,21 @@ export default function Vacancy(props: Props) {
       })
       .catch(err=>{        
         appContext.showSnackbar(err.toString(), SnackbarType.error)
+        setLoading(false)
       })
     }
     else {
       VacancyRepository.createVacancy(sendData)
       .then(res => {
-        setLoading(false)
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
           router.replace('/profile?page=vacancies')  
         }, 2000)
       })
       .catch(err=>{
+        setTimeout(()=> {
+          setLoading(false)
+        }, 2000)
         alert(err.toString())
       })
     }

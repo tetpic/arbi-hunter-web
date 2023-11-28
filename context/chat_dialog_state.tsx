@@ -36,6 +36,7 @@ export interface IDialogState {
   recorder: MutableRefObject<MediaRecorder>
   recordVoice: () => void
   recordTime: number
+  refreshMessage: (id: number, message: IMessage) => void
 }
 
 const defaultValue: Partial<IDialogState> = {}
@@ -98,8 +99,17 @@ export function ChatDialogWrapper(props: Props) {
   //   setMessages(i => fromInit ? data : [...i, ...data])
   // }
 
+  const refreshMessage = (id: number, message: IMessage) => {
+    setMessages(state=> {
+      debugger
+      const msg = state.get(id)
+      state.set(id, message)
+      return new Map(state)
+    })
+    init()
+  }
+
   const loadMessages = async (lastCreatedAt?: string) => {
-    
     setLoading(true)
     if(props.chatId) {
       const data = await ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
@@ -337,6 +347,7 @@ export function ChatDialogWrapper(props: Props) {
     sendMessage,
     loading,
     fetchMore,
+    refreshMessage,
     totalMessages,
     scrollableTarget,
     recordVoice,

@@ -52,7 +52,7 @@ export default class ApplicationRepository {
     return res
   }
 
-  static async patchApplicationRespond(applicationId: number, data: {status?: ProposalRequestType, coverLetter?: string}): Promise<any|null> {
+  static async patchApplicationRespond(applicationId: number, data: {status?: ProposalRequestType, coverLetter?: string}): Promise<IProposal|null> {
     const res = await request({
       method: 'patch',
       url: `/api/application/${applicationId}`,

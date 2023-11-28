@@ -151,11 +151,11 @@ export default function ModalContainer(props: Props) {
           <CourseFeedbackModal onClose={commonSettings.onRequestClose}/>
         </Modal>
       case ModalType.ApplicationModal:
-        return <Modal isOpen {...commonSettings}>
+        return <Modal isOpen {...commonSettings} >
           <ApplicationModal onClose={commonSettings.onRequestClose}/>
         </Modal>
       case ModalType.ApplicationSuccessModal:
-        return <Modal isOpen {...commonSettings}>
+        return <Modal isOpen {...commonSettings} >
           <ApplicationSuccessModal onClose={commonSettings.onRequestClose}/>
         </Modal>
     }

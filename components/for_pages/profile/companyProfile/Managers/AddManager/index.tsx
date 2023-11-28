@@ -89,6 +89,7 @@ export default function AddManager(props: Props) {
         labelType={'top'}
         styleType={'default'} 
         color={'default'} 
+        validate={Validator.required}
         />
 
         <InputField 
@@ -105,6 +106,7 @@ export default function AddManager(props: Props) {
         name={'position'}
         styleType={'default'} 
         color={'default'} 
+        validate={Validator.required}
         />
 
         <InputField 
@@ -122,6 +124,7 @@ export default function AddManager(props: Props) {
         inputClassName={styles.input} 
         defaultCountry={'RU'}
         label={'Телефон:'}
+        validate={Validator.required}
         />
 
         <InputField   

@@ -188,3 +188,15 @@
     color: $greyLight;
   }
 }
+
+.bottom {
+  padding: 8px 16px;
+  background-color: $black;
+  border-top: 2px $grey solid;
+
+  &__desc {
+    color: $white;
+    font-size: $smallText;
+    font-weight: $medium;
+  }
+}

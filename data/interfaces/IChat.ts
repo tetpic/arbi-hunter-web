@@ -3,6 +3,7 @@ import { IUser, IUserProfile } from './IUser'
 import { IPagination, Nullable } from 'types/types'
 import { IImage, IPaginationRequest, TimeStamp } from './Common'
 import { IProposal } from './IProposal'
+import { IApplication } from './IApplication'
 
 export interface MessageFilterOptions {
   vacanciesIds?: string;
@@ -62,7 +63,7 @@ export default interface IChat extends TimeStamp {
   profile: IUserProfile
   profiles: IUserProfile[]
   participant: IUserProfile // Participant
-  application: any // ApplicationModel
+  application: IApplication // ApplicationModel
   lastMessage: string
   lastMessageType: string
   totalUnread: number

@@ -1,14 +1,14 @@
-import { PatternTypes } from "types/enums";
-import { TimeStamp } from "./Common";
+import { PatternTypes } from 'types/enums'
+import { TimeStamp } from './Common'
 
 export interface IPatternBase {
-  type: PatternTypes,
-  template: string
+  type?: PatternTypes,
+  template?: string
 }
 
 export interface IPattern extends TimeStamp, IPatternBase{
-  id: number,
-  profileId: number,
+  id?: number,
+  profileId?: number,
 }
 
 export interface IPatternRequest {

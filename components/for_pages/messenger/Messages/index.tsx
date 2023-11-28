@@ -22,6 +22,8 @@ import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
 import { IUserProfile } from 'data/interfaces/IUser'
 import classNames from 'classnames'
+import { ICV } from 'data/interfaces/ICV'
+import CvRepository from 'data/repositories/CvRepository'
 
 
 
@@ -35,6 +37,7 @@ export default function Messages(props: Props) {
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
   const {isTabletWidth} = useResize()
   const [collocutor, setCollocutor] = useState<IUserProfile|any>(false)
+  const [cv, setCv] = useState<ICV>(null)
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
@@ -89,8 +92,14 @@ export default function Messages(props: Props) {
   useEffect(()=>{
     if(dialog.chat) {
       setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
+      CvRepository.getById(dialog.chat.application.cv.id)
+      .then(cv=> {
+        setCv(cv)
+      })
     }
   }, [dialog.chat])
+
+
 
   return (
     <div className={styles.root}> 
@@ -141,6 +150,9 @@ export default function Messages(props: Props) {
           <p className={classNames(styles.empty, 'empty')}>Нет сообщений</p>
         }
       </InfiniteScroll>
+      </div>
+      <div className={styles.bottom}>
+        <p className={styles.bottom__desc}>{cv?.categories[0].name}</p>
       </div>
       <div className={styles.newMessage} onPaste={onPasteHandler}>
         <img src={'/icons/paperclip.svg'} alt='paperclip' className={styles.paperClip}/>

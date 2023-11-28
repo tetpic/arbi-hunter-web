@@ -21,6 +21,8 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import PlusSvg from 'components/svg/PlusSvg'
 import { IResponseModalProps } from 'components/modals/ResponseModal'
 import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
+import { useChatDialogContext } from 'context/chat_dialog_state'
+import { IProposal } from 'data/interfaces/IProposal'
 
 interface Props {
   profileId: number
@@ -33,20 +35,22 @@ export default function MessageFactory(props: Props) {
   const {isPhoneWidth} = useResize()
   const appContext = useAppContext()
   const userContext = useUserContext()
+  const dialogContext = useChatDialogContext()
   const profileType = userContext?.currentProfile?.profileType
 
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
 
+
   const stats = (
-    <div className={styles.stats}>
+    <div className={styles.stats} key={props.message.id}>
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
       <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
     </div>
   )
 
   const textMessage = (
-    <div className={side}>
+    <div className={side} key={props.message.id}>
       <p className={styles.message}>
         {msg.message}
       </p>
@@ -55,7 +59,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const assetMessage = (
-    <div className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
+    <div key={props.message.id} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
       <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{
@@ -80,7 +84,7 @@ export default function MessageFactory(props: Props) {
 
   const applicationMessage = (<>
     {props.application?.status !== ApplicationStatus.Rejected && profileType === ProfileType.Hirer && props.application?.status !== ApplicationStatus.Accepted &&
-      <div className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
+      <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
         <Button 
         onClick={()=>{
           appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.ThisVacancy, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
@@ -104,18 +108,21 @@ export default function MessageFactory(props: Props) {
         <p className={styles.message}>Отклик на вакансию</p>
         <Spacer basis={8} />
         <p className={styles.message}>
-          {props.application?.coverLetter}
-          {!props.application?.coverLetter&&profileType === ProfileType.Hirer&&
+          {props.message?.application?.coverLetter}
+          {!props.message?.application?.coverLetter&&profileType === ProfileType.Hirer&&
             <span>Без сопроводительного письма</span>
           }
         </p>
-        {!props.application?.coverLetter && 
+        {!props.message?.application?.coverLetter && 
           <p className={styles.cover} onClick={()=> {
             if(props.application.cvDeletedOrHidden) {
               appContext.showSnackbar('Резюме было скрыто или удалено', SnackbarType.error)
               return
             }
-            appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application})
+            const onSubmit = (msg: IProposal) => {
+              dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: msg})
+            }
+            appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application, onSubmit})
           }}>
             <PlusSvg/>
             Сопроводительное письмо
@@ -128,7 +135,7 @@ export default function MessageFactory(props: Props) {
 
   const proposalMessage = (<>
     {msg?.proposal?.coverLetter &&
-      <div className={side}>
+      <div className={side} key={props.message.id}>
         <p className={styles.message}>Отклик на резюме</p>
         <Spacer basis={8} />
         <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
@@ -138,7 +145,7 @@ export default function MessageFactory(props: Props) {
   </>)
 
   const voiceMessage = (
-    <div className={side}>
+    <div className={side} key={props.message.id}>
       {msg?.assets?.length > 0 &&
         <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(FILES + msg?.assets[0]?.source):(URL.createObjectURL(msg?.voiceMessage))}/>
       }

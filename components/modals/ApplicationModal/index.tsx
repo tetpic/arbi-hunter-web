@@ -11,11 +11,11 @@ import TextAreaField from 'components/fields/TextAreaField'
 import PlusSvg from 'components/svg/PlusSvg'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
-import Validator from 'utils/Validator'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import { IApplication } from 'data/interfaces/IApplication'
-import { ModalType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import CrossSvg from 'components/svg/CrossSvg'
+import { IApplicationSuccessModalProps } from '../ApplicationSuccessModal'
 
 interface Props {
   onClose: ()=>void
@@ -24,7 +24,6 @@ interface Props {
 export interface IApplicationModalProps {
   vacancyId: number,
   cvs: ICV[]
-
 }
 
 export default function ApplicationModal(props: Props) {
@@ -33,13 +32,14 @@ export default function ApplicationModal(props: Props) {
   const [showTextField, setShowTextField] = useState<boolean>(false)
 
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
+    if(!data.cvId) {
+      appContex.showSnackbar('Укажите резюме для отклика', SnackbarType.error)
+      return
+    }
     ApplicationRepository.sendApplication(data as IApplication)
     .then(res=> {
-      
-      appContex.showModal(ModalType.ApplicationSuccessModal)
+      appContex.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'cv'})
     })
-
-
   }
 
   const formik = useFormik<{vacancyId: number, cvId: number, coverLetter: string}>({
@@ -53,13 +53,12 @@ export default function ApplicationModal(props: Props) {
 
 
   const body = (
-    <div className={styles.root}>
+    <div className={styles.root} >
       <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
       <FormikProvider value={formik}>
         <Form>
           {modalArguments?.cvs?.length > 0 &&
             <RadioListField 
-            validate={Validator.required}
             options={modalArguments.cvs.filter(f=> f.moderationStatus === 'approved'&&f.published===true).map(cv => {return {value: cv.id, label: cv.categories[0].name }})} 
             name={'cvId'}/>
           }

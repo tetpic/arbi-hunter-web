@@ -13,8 +13,8 @@ import TextAreaField from 'components/fields/TextAreaField'
 import Button from 'components/ui/Button'
 import Validator from 'utils/Validator'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
-import { useUserContext } from 'context/user_state'
 import { SnackbarType } from 'types/enums'
+import { IProposal } from 'data/interfaces/IProposal'
 
 interface Props {
   onClose?: () => void
@@ -24,18 +24,20 @@ interface Props {
 export interface IResponseModalProps {
   cv?: ICV
   application: IApplication,
+  onSubmit?: (msg: IProposal) => void
 }
 
 export default function ResponseModal(props: Props) {
   const appContext = useAppContext()
   const args = appContext.modalArguments as IResponseModalProps
-  const userContext = useUserContext()
   const [currentCv, setCurrentCv] = useState<ICV>(null)
 
   const submit = (data: {coverLetter: string}) => {
     ApplicationRepository.patchApplicationRespond(args.application.id, data)
     .then(res=> {
+      debugger
       appContext.showSnackbar('Сопроводительное письмо успешно отправлено', SnackbarType.success)
+      args.onSubmit(res)
       props.onClose()
     })
   }
@@ -69,7 +71,6 @@ export default function ResponseModal(props: Props) {
     </FormikProvider>
   </>)
 
-  //в аргументах есть всё по cv кроме блин того что надо, а именно categories, поэтому получаем cv ОТДЕЛЬНО, только ради того, чтобы получить название резюме...
   useEffect(()=>{
     CvRepository.getById(args.cv.id)
     .then(res=>{
