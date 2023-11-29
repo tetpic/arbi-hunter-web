@@ -19,7 +19,7 @@ enum ReviewsNavigation {
 function translate (n: ReviewsNavigation) {
   switch(n) {
     case ReviewsNavigation.Any:
-      return 'Любые отклики'
+      return 'Все отклики'
     case ReviewsNavigation.Invite:
       return 'Приглашение'
     case ReviewsNavigation.Wait:

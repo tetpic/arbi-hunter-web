@@ -25,8 +25,8 @@
 }
 
 .body {
-  max-height: 80vh;
-  max-height: 80dvh;
+  max-height: calc(100vh - 150px);
+  max-height: calc(100dvh - 150px);
   overflow: auto;
 
   .item {

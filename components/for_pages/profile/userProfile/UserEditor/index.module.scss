@@ -81,3 +81,16 @@
   background-color: $greyAlt;
   align-self: flex-start;
 }
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 4px;
+}
+
+.action {
+  @include buttonYellow;
+  width: unset;
+  padding: 8px;
+}

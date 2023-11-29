@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import Button from 'components/ui/Button'
@@ -59,6 +60,7 @@ export default function ChatsFolderModal(props: Props) {
           </div>
         )
       })}
+      <input type='text'/>
     </div>
   )
 

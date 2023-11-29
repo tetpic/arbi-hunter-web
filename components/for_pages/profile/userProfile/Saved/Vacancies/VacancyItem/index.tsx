@@ -34,8 +34,6 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
-    debugger
-    console.log(proposal, vc)
     if(!proposal.id) {
       appContext.showSnackbar('Отклик некорректен. Действия невозможны', SnackbarType.error)
       openDropDown(false)

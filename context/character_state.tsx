@@ -1,4 +1,3 @@
-// import { IThreeModelProps } from 'components/ui/ThreeModel'
 import { ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
 import CharacterRepository from 'data/repositories/CharacterRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
@@ -21,8 +20,12 @@ const defaultVariant: {[key: string]: string|number} = {
   size: 0,
   eye: 0,
   emotion: 0,
-  hair: 0,
+  hair: '0',
   jacket: 0,
+  face: 0,
+  head: 0,
+  color: 0,
+  glasses: '3'
 }
 
 

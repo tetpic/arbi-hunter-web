@@ -1,0 +1,36 @@
+@import 'styles/index';
+
+.message {
+  width: 100%;
+  span {
+    font-size: $smallText;
+    color: $greyLight;
+    font-weight: $medium;
+  }
+}
+
+.decision {
+  background-color: unset;
+  padding: unset;
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  
+  .button {
+    @include buttonGray;
+    font-size: $smallText;
+    color: $blue;
+  }
+}
+
+.cover {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  color: $blue;
+  cursor: pointer;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}

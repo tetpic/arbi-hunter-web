@@ -15,6 +15,7 @@ import Validator from 'utils/Validator'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import { SnackbarType } from 'types/enums'
 import { IProposal } from 'data/interfaces/IProposal'
+import classNames from 'classnames'
 
 interface Props {
   onClose?: () => void
@@ -56,10 +57,11 @@ export default function ResponseModal(props: Props) {
       <p className={styles.name}>{currentCv?.categories[0]?.name}</p>
     </div>
     <FormikProvider value={formik}>
-      <Form className={styles.form}>
+      <Form className={classNames(styles.form, props.isBottomSheet&&styles.form__bottom)}>
         <TextAreaField 
         placeholder='Ваше сопроводительное письмо' 
-        autoSize 
+        areaClassname={styles.textArea}
+        autoSize
         onChange={(e)=>formik.setValues({coverLetter: e.currentTarget.value})}
         name={'coverLetter'}
         validate={Validator.required}
@@ -78,7 +80,9 @@ export default function ResponseModal(props: Props) {
     })
   }, [])
 
-  return (<ModalLayout>
+
+
+  return (<ModalLayout mobileFullScreen>
     <ModalBody>
       {body}
     </ModalBody>

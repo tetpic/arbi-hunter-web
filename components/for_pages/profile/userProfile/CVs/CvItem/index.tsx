@@ -22,9 +22,11 @@ import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 interface Props {
   cv: ICV
   isLast?: boolean
+  className?: string
+  cardMode?: boolean
 }
 
-export default function CVItem({cv, isLast}: Props) {
+export default function CVItem({cv, isLast, ...props}: Props) {
   const appContext = useAppContext()
   const profilePageContext = useProfilePageContext()
   const feedBackContext = useFeedbacksContext()
@@ -77,7 +79,7 @@ export default function CVItem({cv, isLast}: Props) {
 
   const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)
 
-  return (<div className={styles.root}> 
+  return (<div className={classNames(styles.root, props.className)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic}/>
       <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
@@ -100,18 +102,20 @@ export default function CVItem({cv, isLast}: Props) {
       {name: 'Приглашения', count: cv.totalProposals},
     ]} 
     />
-    
-    <div className={styles.buttonsWrapper}>
-      {cv.moderationStatus !== 'approved' &&
-        <p className={styles.refreshed}>На модерации</p>
+
+    {!props.cardMode &&    
+      <div className={styles.buttonsWrapper}>
+        {cv.moderationStatus !== 'approved' &&
+          <p className={styles.refreshed}>На модерации</p>
+        }
+        <Button className={styles.button}>Поднять в поиске</Button>
+        <Button 
+        className={styles.buttonBlack} 
+        onClick={showFeedbacksForVacancy}
+        >
+          {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+        </Button>
+      </div>
       }
-      <Button className={styles.button}>Поднять в поиске</Button>
-      <Button 
-      className={styles.buttonBlack} 
-      onClick={showFeedbacksForVacancy}
-      >
-        {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
-      </Button>
-    </div>
   </div>)
 }

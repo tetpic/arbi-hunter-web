@@ -27,9 +27,23 @@
 
 .form {
   margin-top: 24px;
+
+  &__bottom {
+    min-height: calc(100% - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .button {
   @include buttonYellow;
   margin-top: 24px;
+  flex-shrink: 0;
+}
+
+.textArea {
+  height: calc(100vh - 170px);
+  height: calc(100dvh - 170px);
+
 }

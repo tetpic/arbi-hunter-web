@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Modes from 'components/ui/Modes'
+import Button from 'components/ui/Button'
 
 enum LoginType {
   Phone= 'phone',
@@ -43,7 +44,6 @@ export default function Login() {
   }
 
   const submit = (data : ILogin) => {  
-
     UserRepository.loginByEmailOrPhone(data)
     .then(res=> {   
       userContext.setToken(res.accessToken)
@@ -60,6 +60,7 @@ export default function Login() {
     })
   }
 
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: submit
@@ -68,6 +69,18 @@ export default function Login() {
   const changeLoginTypeHandler = (s: LoginType) => {
     setLoginType(s)
     formik.resetForm()
+  }
+
+  const onInputEnterPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if(e.key === 'Enter') {
+      e.stopPropagation()
+      e.preventDefault()
+      formik.validateForm()
+      .then(_=> {
+        formik.submitForm()
+      })
+    }
+
   }
 
   useEffect(()=>{
@@ -93,10 +106,8 @@ export default function Login() {
           </Link>
         </p>
         <FormikProvider value={formik}>
-          <Form className={styles.form}>
-
+          <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
             <p className={styles.subTitle}>Войти через</p>  
-
             <Modes 
             className={styles.modes}
             buttonClassName={styles.modesButtons}
@@ -107,7 +118,6 @@ export default function Login() {
             activeButton={loginType} 
             onSet={(type)=> changeLoginTypeHandler(type)}
             />   
-
             {loginType=== LoginType.Email &&
               <InputField   
               label={'E-mail:'}
@@ -119,7 +129,6 @@ export default function Login() {
               validate={Validator.combine([Validator.required, Validator.email])}
               />
             }
-
             {loginType === LoginType.Phone &&
               <PhoneCountryField 
               styleType={'horizontal'} 
@@ -132,7 +141,6 @@ export default function Login() {
               label={'Телефон:'}
               />
             }
-
             <InputField 
             label={'Пароль:'}
             className={styles.input} 
@@ -140,16 +148,15 @@ export default function Login() {
             styleType={'default'} 
             color={'default'} 
             name={'password'} 
+            // onKeyUp={(e)=> onInputEnterPress(e)}
             type={passwordIsOpen?'text':'password'}
             suffix={'icon'}
             suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
-
             <p className={styles.subTitle}>Забыли пароль?</p>
-            
-            <div className={styles.submitButton} onClick={formik.submitForm}><span>Войти</span></div>
+            <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>Войти</span></Button>
           </Form>
         </FormikProvider>
       </div>

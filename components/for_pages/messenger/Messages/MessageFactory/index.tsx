@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationBSSelectType, ApplicationStatus, MessageType, ModalType, SnackbarType } from 'types/enums'
+import { ApplicationStatus, MessageType, ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import Image from 'next/image'
@@ -11,18 +11,14 @@ import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import AudioNode from './AudioNode'
 import { useResize } from 'components/hooks/useResize'
-import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
-import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
 import { IApplication } from 'data/interfaces/IApplication'
 import Spacer from 'components/ui/Spacer'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import PlusSvg from 'components/svg/PlusSvg'
-import { IResponseModalProps } from 'components/modals/ResponseModal'
 import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { IProposal } from 'data/interfaces/IProposal'
+import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode'
 
 interface Props {
   profileId: number
@@ -82,52 +78,16 @@ export default function MessageFactory(props: Props) {
     </div>
   )
 
+  
+
   const applicationMessage = (<>
     {props.application?.status !== ApplicationStatus.Rejected && profileType === ProfileType.Hirer && props.application?.status !== ApplicationStatus.Accepted &&
       <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
-        <Button 
-        onClick={()=>{
-          appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.ThisVacancy, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
-        }} 
-        className={styles.button}
-        >
-          Пригласить
-        </Button>
-      
-        <Button 
-        onClick={()=>{
-          appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.Reject, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
-        }} 
-        className={styles.button}
-        >
-          Отказать
-        </Button>
+        <ApplicationHirerNode/>
       </div>
     }
     <div className={side}>
-        <p className={styles.message}>Отклик на вакансию</p>
-        <Spacer basis={8} />
-        <p className={styles.message}>
-          {props.message?.application?.coverLetter}
-          {!props.message?.application?.coverLetter&&profileType === ProfileType.Hirer&&
-            <span>Без сопроводительного письма</span>
-          }
-        </p>
-        {!props.message?.application?.coverLetter && userContext.currentProfile.profileType === ProfileType.Employee &&
-          <p className={styles.cover} onClick={()=> {
-            if(props.application.cvDeletedOrHidden) {
-              appContext.showSnackbar('Резюме было скрыто или удалено', SnackbarType.error)
-              return
-            }
-            const onSubmit = (msg: IProposal) => {
-              dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: msg})
-            }
-            appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {cv: props.application?.cv, application: props.application, onSubmit})
-          }}>
-            <PlusSvg/>
-            Сопроводительное письмо
-          </p>
-        }
+        <ApplicationEmployeeNode application={props.application} message={msg} profileType={profileType}/>
         {stats}
     </div>
   </>

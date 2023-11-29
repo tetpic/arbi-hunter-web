@@ -122,6 +122,10 @@ export default function MediaPage(props: Props) {
         title: category.name
       })
     }
+    else if(!props.isMobile && router.query.page === MediaPageNav.Categories) {
+      pager(MediaPageNav.Categories)
+      setCurrentCategory(props.categories.find(el=> el.id === +router.query.category))
+    }
   }, [router])
 
   return (<div className={styles.root} > 

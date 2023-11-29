@@ -13,7 +13,7 @@ import WebMoneySvg from 'components/svg/WebMoneySvg'
 import PayUSvg from 'components/svg/PayUSvg'
 import QiwiSvg from 'components/svg/QiwiSvg'
 import RoubleSvg from 'components/svg/RoubleSvg'
-import background from 'images/footer/footerAHBackground.png'
+// import background from 'images/footer/footerAHBackground.png'
 
 
 interface Props {
@@ -24,7 +24,7 @@ export default function Footer(props: Props) {
   return (<div className={styles.root}> 
   <div className='contentWrapper'>
     <div className={styles.top}>
-    <Image className={styles.background} src={background} alt={'back'} width={666} height={457}/>
+    <Image className={styles.background} src={'images/ahFooter.svg'} alt={'back'} width={666} height={457}/>
 
       <div className={styles.left}>
         <div className={styles.logo}>

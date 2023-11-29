@@ -22,7 +22,7 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
   if(isAuth) {
     return {redirect: {destination: '/media/page/', permanent: false}}
   }
-  const categories = await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit:10})
+  const categories = await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit:20})
   const communities = await CommunitiesRepository.getCommunities(1)
   const news = await ArticlesRepository.getNews(true)
   const newsCompilations = (await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit: 20})).data

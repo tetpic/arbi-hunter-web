@@ -34,6 +34,7 @@ interface Props extends IField<string> {
   minLength?: number
   maxLength?: number
   validateOnSubmit?: boolean
+  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
 export default function InputField(props: Props) {  
@@ -65,6 +66,12 @@ export default function InputField(props: Props) {
     props.onClick&&props.onClick(e)
   }
 
+  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    props.onKeyUp&&props.onKeyUp(e)
+  }
+
+  
+
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
@@ -88,6 +95,7 @@ export default function InputField(props: Props) {
             !props.validateOnSubmit&&helpers.setTouched(true)
           }}
           onClick={onClickHandler}
+          onKeyUp={onKeyUp}
           className={classNames({
             [styles.input]: true,
             [styles.error]: showError,

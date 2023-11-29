@@ -1,10 +1,42 @@
-import MainPage from 'components/for_pages/index/MainPage'
+import MainLanding from 'components/for_pages/index/MainLanding'
+import MainPageEmployee from 'components/for_pages/index/MainPageEmployee'
+import MainPageHirer from 'components/for_pages/index/MainPageHirer'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CharacterWrapper } from 'context/character_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import { CookiesType } from 'types/enums'
 
-export default function Page() {
+interface Props {
+  profile?: ProfileType
+}
+
+export const getServerSideProps = (async (context: {req: { cookies: { [x: string]: any } } }) => {
+  const profile = context.req.cookies[CookiesType.profileType]
+  const token = context.req.cookies[CookiesType.accessToken]
+  if(profile && token) {
+    return {props: {profile}}
+  }
+  else {
+    return {props: {}}
+  }
+}) 
+
+export default function Page(props: Props) {
   return (
     <ContentLayout withFooter>
-      <MainPage/>
+      {
+        props?.profile === ProfileType.Employee &&
+        <CharacterWrapper>
+          <MainPageEmployee/>
+        </CharacterWrapper>
+        ||
+        props?.profile === ProfileType.Hirer &&
+        <MainPageHirer/>
+        ||
+        <MainLanding/>
+
+      
+      }
     </ContentLayout>
   )
 }

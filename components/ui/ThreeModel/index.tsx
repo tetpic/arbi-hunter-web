@@ -1,4 +1,5 @@
 import {useAnimations, useGLTF} from '@react-three/drei'
+import { Emotions } from 'components/for_pages/profile/userProfile/UserEditor'
 import { useEffect, useRef } from 'react'
 
 export interface IThreeModelProps {
@@ -16,20 +17,27 @@ export interface IThreeModelProps {
     size?: number
     color?: number,
     r?: number
+    actions: Emotions
 }
 
 export function ThreeModel(props: IThreeModelProps) {
   const mesh = useRef()
+  const currentAction = useRef<Emotions>(props.actions)
     const  {nodes, materials, animations} = useGLTF(`/models/model_${props.model}.glb`, true, true, (loader) => {
         loader.setCrossOrigin('anonymous')
     }) as any
     
     const { actions } = useAnimations(animations, mesh)
-    useEffect(()=>{        
-        // actions.Action_test_2.play()
-    }, [])
+    useEffect(()=>{   
+        // console.log(actions)    
+
+        currentAction.current&&actions[currentAction.current].stop()
+        actions[props.actions]?.play()
+        currentAction.current = props.actions
+    }, [props.actions])
 
     return (
+        
         <group {...props} ref={mesh} dispose={null}>
           <group name="Scene">
             <group name="Арматура">

@@ -17,8 +17,8 @@ interface Props extends Query {
 }
 //export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
-  const token = context.req.cookies[CookiesType.accessToken]
-  const profile = context.req.cookies[CookiesType.profileType]
+  const token = context.req.cookies[CookiesType.accessToken]||null
+  const profile = context.req.cookies[CookiesType.profileType]||null
   const vcId = context.query?.vcId||null
   const cvId = context.query?.cvId||null
   if(profile) {
@@ -27,7 +27,6 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
   else {
     return {props: {}}
   }
-  // const isAuth = token&&profile
 }) 
 
 export default function Recruiting(props: Props) {
@@ -45,6 +44,7 @@ export default function Recruiting(props: Props) {
       props.auth && props.profileType=== ProfileType.Employee &&
       <RecruitingPageEmployee />
       ||
+      props.auth && props.profileType === ProfileType.Hirer &&
       <RecruitingPageHirer vcId={Number(props.vcId)} />
     }
   </ContentLayout>)

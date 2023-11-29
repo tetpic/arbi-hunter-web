@@ -2,8 +2,8 @@ import styles from './index.module.scss'
 
 import SearchBar from 'components/ui/SearchBar'
 import Link from 'next/link'
-import recEmpImage from 'images/recruiting/recruiting_employee_page.png'
-import Image from 'next/image'
+// import recEmpImage from 'images/recruiting/recruiting_employee_page.png'
+// import Image from 'next/image'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
@@ -14,6 +14,7 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import VacancyItem from 'components/ui/VacancyItem'
+import Rive from '@rive-app/react-canvas'
 
 interface Props {
 }
@@ -49,7 +50,12 @@ export default function RecruitingPageEmployee(props: Props) {
   return (<div className={styles.root}> 
   <div className={styles.top}>
     <div className={styles.back}>
-      <Image className={styles.image} src={recEmpImage} alt={'rec image'} width={814} height={249}/>
+      {/* <Image className={styles.image} src={recEmpImage} alt={'rec image'} width={814} height={249}/> */}
+      <Rive 
+      src={'/rive/cv_laptop.riv'} 
+      animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+      className={styles.image}/>
+
     </div>
     <p className={styles.title}>Найти работу в ArbiHunter</p>
     <p className={styles.description}>

@@ -1,4 +1,5 @@
-// import classnames from 'classnames'
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
 import Spinner from 'components/ui/Spinner'
@@ -8,13 +9,10 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
 import AddManager from './AddManager'
-import styles from './index.module.scss'
 import Manager from './ManagerItem'
 
-interface Props {
-}
 
-export default function Managers(props: Props) {
+export default function Managers() {
 
   const managerContext = useManagerContext()
   const [addManagerModal, showManagerModal] = useState<boolean>(false)

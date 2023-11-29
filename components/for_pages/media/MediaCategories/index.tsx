@@ -10,10 +10,10 @@ import { useRef } from 'react'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import LinkBlack from 'components/ui/LinkBlack'
-import bigBitcoin from 'images/big_bitcoin.png'
 import Link from 'next/link'
 import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
+import { FILES } from 'types/constants'
 
 interface Props {
   categories: ICategory[]
@@ -44,7 +44,7 @@ export default function MediaCategories(props: Props) {
           <Link href={`/media/page?page=categories&category=${category.id}`} replace={true} className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
                 <Image 
-                src={bigBitcoin}
+                src={FILES + category.image.source}
                 alt={category.name+ ' image'} 
                 width={100} 
                 height={100}

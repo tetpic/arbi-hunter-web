@@ -123,14 +123,18 @@
 
   .name{
     grid-area: t;
-    font-size: $text20;
+    font-size: $largeText;
     font-weight: $semibold;
     color: $white;
     position: relative;
-    @include lineClamp(1);
+    min-height: 40px;
+    text-align: center;
+    @include lineClamp(2);
     @include mq($TabletWidth, max) {
+      min-height: unset;
       font-size: $smallText;
       font-weight: $regular;
+      text-align: start;
       @include lineClamp(3);
     }
   }

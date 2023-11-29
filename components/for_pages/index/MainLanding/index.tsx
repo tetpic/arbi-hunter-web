@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 interface Props {
 }
 
-export default function MainPage(props: Props) {
+export default function MainLanding(props: Props) {
 
 
   return ( 

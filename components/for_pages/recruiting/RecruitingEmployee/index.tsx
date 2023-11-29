@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import Image from 'next/image'
-import recriuitingTopImageEmp from 'images/recruiting/recriuitingTopImageEmp.png'
 import usersTopEmployee from 'images/recruiting/usersTopEmployee.png'
 import Link from 'next/link'
 import Title from 'components/ui/TitleForSection'
@@ -13,17 +12,20 @@ import Help from '../sections/Help'
 import Search from '../sections/Search'
 import Categories from '../sections/Categories'
 import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
+import Rive from '@rive-app/react-canvas'
 
 
 
-interface Props {
-}
-
-export default function RecruitingEmployee(props: Props) {
+export default function RecruitingEmployee() {
+  
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Image className={styles.image} src={recriuitingTopImageEmp} alt={''} width={600} height={460}/>
+      <Rive 
+      src={'/rive/cv_laptop.riv'} 
+      animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+      className={styles.image}/>
+
       <h2 className={styles.title}>
         Найдите работу мечты 
         <span className={styles.title_big}>в <span className={styles.title_purple}>Arbi</span>Hunter</span>

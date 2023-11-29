@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import CheckboxListField from 'components/fields/CheckboxListField'
 import InputField from 'components/fields/InputField'
 import PasswordField from 'components/fields/PasswordField'
@@ -11,7 +13,6 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { HirerRole, HirerRolePermission } from 'types/enums'
 import { TranslateHirerRole, TranslateHirerRolePermission } from 'utils/enumsTranslations'
 import Validator from 'utils/Validator'
-import styles from './index.module.scss'
 
 interface Props {
   onClose: ()=> void

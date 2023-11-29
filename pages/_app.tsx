@@ -81,16 +81,11 @@ function MyApp({Component, pageProps}: AppProps) {
               {loading &&
                 <Spinner className='mainSpinner' size={32}/>        
               }
-
             <Layout> 
-              <>
-              
               <Component {...pageProps} />
-              </>
             </Layout>
-
-            {clientVisible && <ModalContainer/>}
             {clientVisible && <BottomSheetContainer/>}
+            {clientVisible && <ModalContainer/>}
             {clientVisible && <Snackbar/>}
             
           </AuthWrapper>

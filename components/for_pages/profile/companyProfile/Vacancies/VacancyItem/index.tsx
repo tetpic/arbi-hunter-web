@@ -24,9 +24,10 @@ interface Props {
   vacancy: IVacancy
   isActive?: boolean
   isLast?: boolean
+  cardMode?: boolean
 }
 
-export default function VacancyItem({vacancy, isActive, isLast}: Props) {
+export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props) {
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
@@ -105,16 +106,16 @@ export default function VacancyItem({vacancy, isActive, isLast}: Props) {
       ]}
       />
       
+      {!props.cardMode &&
       <div className={styles.buttonsWrapper}>
         {!isActive && 
           <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
         ||
           <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Пригласить подходящих</span></Link>
-        }
-       
-          <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>
-      
-    </div>
+        }       
+        <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>
+      </div>
+      }
 
   </div>)
 }

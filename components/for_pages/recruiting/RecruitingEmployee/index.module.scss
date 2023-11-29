@@ -9,7 +9,11 @@
   .image {
     position: absolute;
     top: 0;
-    right: -50px;
+    right: 0;
+    width: Min(40vw, 50%);
+    height: 40vw;
+    max-height: 100%;
+    z-index: -1;
   }
 
   .title {
