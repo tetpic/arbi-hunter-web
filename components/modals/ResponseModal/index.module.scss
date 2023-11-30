@@ -29,10 +29,11 @@
   margin-top: 24px;
 
   &__bottom {
-    min-height: calc(100% - 70px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    height: calc(100% - 70px);
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+    // flex-shrink: 0;
   }
 }
 

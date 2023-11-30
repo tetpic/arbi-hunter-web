@@ -1,5 +1,5 @@
 import { ILogin, IToken, ProfileType } from 'data/interfaces/IRegistration'
-import { IUser, IUserProfile } from 'data/interfaces/IUser'
+import { IStats, IUser, IUserProfile } from 'data/interfaces/IUser'
 import request from 'utils/request'
 
 export default class UserRepository {
@@ -17,6 +17,17 @@ export default class UserRepository {
       method: 'post',
       url: '/api/auth/login',
       data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getStats(): Promise<IStats|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/stats',
     })
     if(res.err) {
       return null

@@ -1,0 +1,33 @@
+@import 'styles/index';
+
+.root {
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.bottom {
+  height: 84px;
+  background-color: $black;
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.userPic {
+  transform: translateY(-60%);
+  border: 5px $black solid;
+  width: 114px;
+  height: 114px;
+  background-color: $grey;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >div {
+    width: 120%;
+    height: 120%;
+  }
+}

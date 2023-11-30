@@ -12,6 +12,8 @@ import Spinner from 'components/ui/Spinner'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
+import { CharacterWrapper } from 'context/character_state'
+
 
 interface Props {
   vcId: number
@@ -77,8 +79,8 @@ export default function RecruitingPageHirer(props: Props) {
         {loading &&
           <Spinner size={24} />
           ||
-          !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.map(cv=> {
-            return <CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs(currentFilters)}/>
+          !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.slice(0,10).map(cv=> {
+            return <CharacterWrapper><CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs(currentFilters)}/></CharacterWrapper>
           })
           ||
           <p className='empty'>Нет найденных вакансий</p>

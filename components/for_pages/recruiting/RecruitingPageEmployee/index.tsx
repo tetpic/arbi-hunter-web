@@ -50,7 +50,6 @@ export default function RecruitingPageEmployee(props: Props) {
   return (<div className={styles.root}> 
   <div className={styles.top}>
     <div className={styles.back}>
-      {/* <Image className={styles.image} src={recEmpImage} alt={'rec image'} width={814} height={249}/> */}
       <Rive 
       src={'/rive/cv_laptop.riv'} 
       animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 

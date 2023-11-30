@@ -3,6 +3,7 @@ import {Bounds, Environment, OrthographicCamera, PerspectiveCamera} from '@react
 import { useEffect, useRef} from 'react'
 import { ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
+import { useCharacterContext } from 'context/character_state'
 
 
 
@@ -35,11 +36,25 @@ const Camera = () => {
 }
 
 export default function ThreeModelVariant (props: {[key: string]: string|number}) {
+  const characterContext = useCharacterContext()
+
+  const canvasRef = useRef<HTMLCanvasElement>()
+  // const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
+
+  // useEffect(()=>{
+  //   if(characterContext.modelLoaded && characterContext.dataLoaded) {
+  //     canvasRef.current.toBlob((blob)=> setDataBaseBlob(blob))
+  //   }
+  // }, [characterContext.modelLoaded, characterContext.dataLoaded])
 
 
   return (<div className={styles.root}>
+    {/* {dataBaseBlob &&
+    <img src={URL.createObjectURL(dataBaseBlob)} alt="" />
+    } */}
+
     {props &&
-      <Canvas  style={{width: '100%', height: '100%'}}>
+      <Canvas  gl={{ preserveDrawingBuffer: true }} ref={canvasRef}  style={{width: '100%', height: '100%'}}>
         <OrthographicCamera view={{
           enabled: true,
           fullHeight: 500,

@@ -27,7 +27,7 @@ export enum VCNaviagation {
 export interface NavSet {
   name: string, 
   type: VCNaviagation, 
-  count?: number
+  count?: string
 }
 
 const TranslateVCNavigation = (v: VCNaviagation) =>{
@@ -58,7 +58,7 @@ export default function VCFeedbacks(props: Props) {
   const navigationSet = (stats: IStat[]) => {
     let res = Object.values(VCNaviagation).map((el)=> {
       const count = stats.find(s=> s.status === (el===VCNaviagation.Rejection?ApplicationStatus.Rejected:el===VCNaviagation.Applied?ApplicationStatus.Applied:ApplicationStatus.Accepted))
-      return {name: TranslateVCNavigation(el), type: el, count: el !== VCNaviagation.All?count?.count:responsesContext.VCFeedbacks.size}
+      return {name: TranslateVCNavigation(el), type: el, count: (el !== VCNaviagation.All ? count?.count||'0' : responsesContext?.VCFeedbacks?.size).toString()}
     })
     setNavSet(res)
     setLoading(false)
@@ -107,7 +107,6 @@ export default function VCFeedbacks(props: Props) {
   }
 
   const init = () => {
-    debugger
     setStats(props.id)
     responsesContext.setVCResponses(props.id)
     .then(_=> {

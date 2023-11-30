@@ -34,7 +34,7 @@ export function VacancyWrapper(props: Props) {
   const createVcCvContext = useCreateVcCvContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
-  const [savedVCs, setSavedVCState] = useState<IVacancy[]>([])
+  const [savedVCs, setSavedVCState] = useState<IVacancy[]>(null)
   const [foundVacancies, setFoundVacancies] = useState<IVacancy[]>([])
 
   const setArchiveVacancies = async(): Promise<boolean> => {

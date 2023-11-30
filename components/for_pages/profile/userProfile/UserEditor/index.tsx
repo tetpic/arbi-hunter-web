@@ -22,7 +22,7 @@ export enum Emotions {
 
 export default function UserEditor(props: Props) {
   const characterContext = useCharacterContext()
-  const {categories, setActiveSet, activeSet, variant, setVariant, load, init, activeItem, setActiveItem} = characterContext
+  const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
   const [action, setAction] = useState<Emotions>(Emotions.Idle)
   
   useEffect(()=>{
@@ -47,11 +47,9 @@ export default function UserEditor(props: Props) {
           )
         })}
       </div>
-     
 
       <div className={styles.model}> 
-      
-        {!load && variant &&
+        {dataLoaded && variant &&
           <ThreeModelVariant {...variant} actions={action} r={4}/>
           ||
           <Spinner size={32} />

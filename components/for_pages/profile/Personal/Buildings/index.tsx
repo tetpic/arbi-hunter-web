@@ -23,7 +23,6 @@ export default function Buildings(props: Props) {
         <SwiperSlide className={styles.slide}>
           <Image src={'/images/cities/moscow.png'} alt={''}  width={770} height={170}/>
           <Image src={'/images/buildings/building3.png'}  style={{objectFit: 'contain'}} className={styles.buildings} width={200} height={170} alt={''} />
-
           <Rive className={styles.rive}  src={'/rive/header_boat.riv'}/>
           <Rive className={styles.rive}  src={'/rive/header_particles2.riv'}/>
         </SwiperSlide>

@@ -60,7 +60,6 @@ export default function Login() {
     })
   }
 
-
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: submit
@@ -80,12 +79,11 @@ export default function Login() {
         formik.submitForm()
       })
     }
-
   }
 
   useEffect(()=>{
     if(userContext.currentProfile) {
-      router.replace('/profile')
+      router.replace('/')
     }
   }, [userContext.currentProfile])
 
@@ -135,7 +133,6 @@ export default function Login() {
               disabled={false} 
               placeholder={'000 000 00 00'} 
               name={'login'}  
-              // inputClassName={styles.input} 
               className={styles.input} 
               defaultCountry={'RU'}
               label={'Телефон:'}
@@ -148,7 +145,6 @@ export default function Login() {
             styleType={'default'} 
             color={'default'} 
             name={'password'} 
-            // onKeyUp={(e)=> onInputEnterPress(e)}
             type={passwordIsOpen?'text':'password'}
             suffix={'icon'}
             suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}

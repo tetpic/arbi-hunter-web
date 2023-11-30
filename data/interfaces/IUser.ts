@@ -3,6 +3,32 @@ import { IImage, TimeStamp } from './Common'
 import { IGeoName } from './ILocation'
 import { ProfileType } from './IRegistration'
 
+export interface IStats {
+  viewsCount: {
+    views_count_interval: string,
+    views_count_prev_interval: string,
+    views_count_prev: string,
+    views_count_total: string
+  },
+  responsesCount: {
+      responses_count_interval: string,
+      responses_count_prev_interval: string,
+      responses_count_total: string
+  },
+  newVacanciesCount: {
+    new_vacancies_count_interval: string,
+    new_vacancies_count_prev_interval: string,
+    new_vacancies_count_total: string
+  },
+  newCVsCount: {
+    new_cvs_count_interval: string,
+    new_cvs_count_prev_interval: string,
+    new_cvs_count_total: string
+  }
+}
+
+
+
 export interface IUserProfile extends TimeStamp {
   id: number,
   userId: number,

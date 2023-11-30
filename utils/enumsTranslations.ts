@@ -104,6 +104,8 @@ export const TranslateEducationType = (e: EducationTypes) => {
 
 export const TranslateWorkExperience = (w: WorkExperience) => {
   switch(w) {
+    case WorkExperience.NoExperience: 
+      return 'Без опыта'
     case WorkExperience.From1to3:
       return 'От 1 до 3'
     case WorkExperience.From3to6:

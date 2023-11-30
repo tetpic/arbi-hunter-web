@@ -4,7 +4,8 @@ import { Dispatch, SetStateAction, createContext, useContext, useState } from 'r
 
 interface IState {
   init: ()=> void,
-  load: boolean,
+  modelLoaded: boolean,
+  setModelLoad: Dispatch<SetStateAction<boolean>>
   activeSet: [ICharCategory, ICharItem[]],
   variant: {[key: string]: string|number},
   setVariant: (data: ICharItem) => void
@@ -12,6 +13,7 @@ interface IState {
   categories: Map<ICharCategory, ICharItem[]>
   activeItem: ICharItem,
   setActiveItem: Dispatch<SetStateAction<ICharItem>>
+  dataLoaded: boolean
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -39,7 +41,8 @@ export function CharacterWrapper(props: Props) {
   const [activeSet, setActiveSetState] = useState<[ICharCategory, ICharItem[]]>([undefined, undefined])
   const [activeItem, setActiveItem] = useState<ICharItem>()
   const [variant, setVariantState] = useState<{[key: string]: string|number}>(defaultVariant)
-  const [load, setLoad] = useState<boolean>(true)
+  const [modelLoaded, setModelLoad] = useState<boolean>(false)
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false)
   const [categories, setCategoriesState] = useState<Map<ICharCategory, ICharItem[]>>(new Map)
 
   const init = async() => {
@@ -51,8 +54,8 @@ export function CharacterWrapper(props: Props) {
       res.items.forEach(el=> setItems[el.category.key] = el.animationKey)
       setVariantState(setItems)
     })
-    .catch(err=> {
-      setLoad(false)
+    .catch(_=> {
+      setDataLoaded(true)
     })
     
     await CharacterRepository.fetchCharacterCategoryList()
@@ -76,7 +79,7 @@ export function CharacterWrapper(props: Props) {
         return new Map(state)
       })
     })
-    setLoad(false)
+    setDataLoaded(true)
   }
 
   const setVariant = (data: ICharItem) => {
@@ -105,14 +108,16 @@ export function CharacterWrapper(props: Props) {
 
   const value: IState = {
     init,
-    load,
+    modelLoaded,
+    dataLoaded,
+    setModelLoad,
     activeSet,
     variant,
     setVariant,
     setActiveSet,
     categories,
     activeItem,
-    setActiveItem
+    setActiveItem,
   }
 
   return (

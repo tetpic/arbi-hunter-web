@@ -187,6 +187,21 @@ export function FeedbacksWrapper(props: Props) {
         let ageArr = value.activeItem.split(' ')
         filtered = filtered.filter(el=> el.cv.age > +ageArr[0]&&el.cv.age < +ageArr[1])
       }
+      else if(keyType === 'experienceInfo') {
+        switch(value.activeItem) {
+          case 'noExperience':
+            filtered = filtered.filter(el=> el.cv.experienceInfo.length === 0)
+            break
+          case 'from1to3':
+            
+            //TODO: доделать фильтры по возрасту
+
+            // filtered = filtered.filter(el=> Formatter(el.cv.experienceInfo)
+            break
+          
+        }
+
+      }
       else {
         filtered = filtered.filter(el=> el.cv[keyType] === value.activeItem)
       }

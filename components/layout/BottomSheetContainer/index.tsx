@@ -9,6 +9,7 @@ import VcResponsesFilterModal from 'components/modals/VcResponsesFilterModal'
 import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 import ChatFilterModal from 'components/modals/ChatFilterModal'
+import ResponseModal from 'components/modals/ResponseModal'
 
 
 interface Props { }
@@ -61,10 +62,18 @@ export default function BottomSheetContainer(props: Props) {
         <Sheet
           isOpen={appContext.bottomSheet == ModalType.ChatFilterModal}
           onClose={appContext.hideBottomSheet}
-          snapPoints={[appContext.snapPoints|0.9]}
+          snapPoints={[appContext.snapPoints||0.9]}
           disableDrag={appContext.modalNonSkippable}
         >
           <ChatFilterModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ResponseModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <ResponseModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

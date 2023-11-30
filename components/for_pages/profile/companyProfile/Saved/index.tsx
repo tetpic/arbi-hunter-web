@@ -5,6 +5,7 @@ import SavedCVs from './Cvs'
 import styles from './index.module.scss'
 import SavedMedia from '../../Media'
 import { MediaWrapper } from 'context/media_state'
+import { CharacterWrapper } from 'context/character_state'
 
 interface Props {
 }
@@ -35,7 +36,7 @@ export default function Saved(props: Props) {
   return (<div className={styles.root}> 
     <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
     {
-      activeItem===SavedNavigation.CVS&& <SavedCVs/>
+      activeItem===SavedNavigation.CVS&& <CharacterWrapper><SavedCVs/></CharacterWrapper>
       ||
       activeItem===SavedNavigation.Courses&&<SavedCourses/>
       ||

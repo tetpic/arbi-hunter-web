@@ -14,16 +14,33 @@
   row-gap: 24px;
 }
 
-.model {
+.modelWrapper {
   width: 30%;
   min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
 
   >div {
     width: 570px;
     height: 570px;
+  }
+
+  .model {
+    @include transitionDefault;
+    filter: contrast(0) opacity(.2) blur(30px);
+    &_active {
+      filter: contrast(1) opacity(1) blur(0px);
+    }
+  }
+
+  .modelSpinner {
+    position: absolute;
+    width: 570px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -71,6 +88,8 @@
     font-size: $text28;
     font-weight: $semibold;
 
+
+
   }
 }
 
@@ -93,6 +112,10 @@
     grid-template-areas: 'd i' 'c i';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
+
+    span {
+      color: $blue;
+    }
   }
 
   .title {

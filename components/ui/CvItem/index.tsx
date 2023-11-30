@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function CvItem({cv, ...props}: Props) {
-  
   const appContext = useAppContext()
 
   const respondHandler = () => {
@@ -62,6 +61,9 @@ export default function CvItem({cv, ...props}: Props) {
 
   return (<div className={styles.item}> 
     <LikeButton  className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
+    {/* <div className={styles.image}>
+      <ThreeModelVariant {...characterContext.variant} r={0}/>
+    </div> */}
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={225} height={290}/>
     <div className={styles.top}>
       {cv.categories.length > 0 &&

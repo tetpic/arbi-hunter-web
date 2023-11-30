@@ -16,6 +16,8 @@ import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import { SnackbarType } from 'types/enums'
 import { IProposal } from 'data/interfaces/IProposal'
 import classNames from 'classnames'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose?: () => void
@@ -51,13 +53,14 @@ export default function ResponseModal(props: Props) {
   })
 
   const body = (<>
+    <FormikProvider value={formik}>
+      <Form>
     <div className={styles.top}>
       <UserPic className={styles.picture}/>
       <p className={styles.resume}>Резюме</p>
       <p className={styles.name}>{currentCv?.categories[0]?.name}</p>
     </div>
-    <FormikProvider value={formik}>
-      <Form className={classNames(styles.form, props.isBottomSheet&&styles.form__bottom)}>
+    <div className={classNames(styles.form, props.isBottomSheet&&styles.form__bottom)}>
         <TextAreaField 
         placeholder='Ваше сопроводительное письмо' 
         areaClassname={styles.textArea}
@@ -69,6 +72,7 @@ export default function ResponseModal(props: Props) {
         <Button className={styles.button} type='submit'>
           Отправить
         </Button>
+      </div>
       </Form>
     </FormikProvider>
   </>)
@@ -79,6 +83,16 @@ export default function ResponseModal(props: Props) {
       setCurrentCv(res)
     })
   }, [])
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
 
 

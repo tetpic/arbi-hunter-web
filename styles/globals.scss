@@ -70,6 +70,7 @@ html{
   padding: 0;
   box-sizing: border-box;
   line-height: 125%;
+  outline: none;;
 
   color: inherit;
   letter-spacing: inherit;
@@ -90,28 +91,11 @@ body{
   &.modal-open{
     overflow-y: hidden;
   }
+
  
 }
 
 
-
-// *{
-//   scrollbar-width: thin;          /* "auto" или "thin" */
-//   scrollbar-color: $greyLight $grey;  
-//   &::-webkit-scrollbar {
-//     width: 4px;               
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: $grey;        
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background-color: $greyLight;    
-//     border-radius: 20px;       
-//     border: 1px solid $grey; 
-//   }
-// }
 .infinite-scroll-component {
   scrollbar-width: thin;          /* "auto" или "thin" */
   scrollbar-color: $greyLight $grey;  
@@ -301,13 +285,22 @@ svg {
 .react-modal-sheet-container {
   background-color: $black !important;
 }
+.react-modal-sheet-content {
 
+  flex: 1 1 0% !important;
+  overflow: auto !important;
+  position: relative !important;
+  user-select: none !important;
+  touch-action: pan-x !important;
+}
 .mainSpinner {
   position: fixed;
   top: 16px;
   right: 16px;
   z-index: 20;
 }
+
+
 
 // #mountpoint {
 //   position: absolute;

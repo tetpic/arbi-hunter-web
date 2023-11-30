@@ -7,6 +7,7 @@ import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import UserEditor from './UserEditor'
 import Personal from '../Personal'
+import { CharacterWrapper } from 'context/character_state'
 
 interface Props {
   currentPage: ProfilePages 
@@ -27,7 +28,7 @@ export default function UserProfile(props: Props) {
       case ProfilePages.Edit:
         return <UserEditor/>
       case ProfilePages.Personal:
-      return <Personal/>
+      return <CharacterWrapper><Personal/></CharacterWrapper>
       case ProfilePages.FeedBacks:
         return <Feedbacks/>
       case ProfilePages.Saved:

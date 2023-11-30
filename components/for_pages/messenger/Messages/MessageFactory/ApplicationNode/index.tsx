@@ -57,10 +57,9 @@ export function ApplicationEmployeeNode (props: Props) {
       dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: msg})
     }
     const modalProps = {cv: props.application?.cv, application: props.application, onSubmit}
-    // TODO: не использовать BottomSheet потому что на мобилке не работает подскролл к инпуту, и клавиатура перекрывает инпут.
-    // isTabletWidth
-    // ?appContext.showBottomSheet<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
-    appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
+    isTabletWidth
+    ?appContext.showBottomSheet<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
+    :appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
   }
 
   return (<>

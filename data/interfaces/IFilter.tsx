@@ -1,5 +1,5 @@
 export enum FilterItems {
-  Experience = 'experience',
+  Experience = 'experienceInfo',
   Age = 'age',
   Education = 'education',
   Gender = 'gender',

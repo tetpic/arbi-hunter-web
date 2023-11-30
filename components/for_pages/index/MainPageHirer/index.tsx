@@ -9,6 +9,9 @@ import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import VacancyItem from 'components/for_pages/profile/companyProfile/Vacancies/VacancyItem'
 import { useUserContext } from 'context/user_state'
+import ChatRepository from 'data/repositories/ChatRepository'
+import UserRepository from 'data/repositories/UserRepository'
+import { IStats } from 'data/interfaces/IUser'
 
 
 interface Props {
@@ -18,9 +21,19 @@ export default function MainPageHirer(props: Props) {
   const vacancyContext = useVacancyContext()
   const userContext = useUserContext()
   const [load, setLoad] = useState<boolean>(true)
-  const [messagesCount, setMessagesCount] = useState<number>(0)
+  const [messagesCount, setMessagesCount] = useState<string>(null)
+  const [stats, setStats] = useState<IStats>()
 
   useEffect(()=>{
+    ChatRepository.getChatList({})
+    .then(res=>{
+      const counter = res.data.map(el=>el.totalUnread).reduce((p, c) =>  p + c, 0)
+      setMessagesCount(counter.toString())
+    })
+    UserRepository.getStats()
+    .then(res=> {
+      setStats(res)
+    })
     vacancyContext.setActiveVacancies()
     .then(_=>{
       setLoad(false)
@@ -29,13 +42,19 @@ export default function MainPageHirer(props: Props) {
 
 
   return (<div className={styles.root}> 
+    {/* <div className={styles.background}>
+      <Image src={'/images/cities/moscow.png'} alt={''}  width={770} height={170}/>
+      <Rive className={styles.rive}  src={'/rive/header_airplain.riv'}/>
+      <Rive className={styles.rive}  src={'/rive/header_particles2.riv'}/>
+    </div> */}
+    
     <div className={styles.content}>
       <div className={styles.balance}>
         <p className={styles.title}>Баланс счета</p>
         <div className={styles.card}>
           <p className={styles.count}>{Formatter.formatNumber(userContext?.user?.balance)}</p>
           <Image className={styles.dollar} src={'/images/dollar.png'} alt={'dollar'} width={66} height={66}/>
-          <Button className={styles.whiteButton}>Пополнить баланс</Button>
+          <Link href={'/profile?page=shop'} className={styles.whiteButton}>Пополнить баланс</Link>
         </div>
       </div>
 
@@ -45,13 +64,26 @@ export default function MainPageHirer(props: Props) {
           <div className={styles.card}>
             <p className={styles.desc}>Отклики</p>
             <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
-            <p className={styles.count}>1245</p>
+            {!stats && <Spinner className={styles.count} size={22}/>
+            ||
+            <p className={styles.count}>
+              {stats?.responsesCount.responses_count_prev_interval}
+              { Number(stats?.responsesCount.responses_count_interval)>0 &&
+                <span>
+                  {' + '+ stats?.responsesCount.responses_count_interval}
+                </span>
+              }
+            </p>
+            }
           </div>
-          <div className={styles.card}>
+          <Link href={'/messenger'} className={styles.card}>
             <p className={styles.desc}>Сообщения</p>
             <Image className={styles.icon} src={'/images/circle.svg'} alt='' width={24} height={24}/>
-            <p className={styles.count}>1245</p>
-          </div>
+            {!messagesCount && <Spinner className={styles.count} size={22}/>
+            ||
+            <p className={styles.count}>{messagesCount}</p>            
+            }
+          </Link>
           <div className={styles.card}>
             <p className={styles.desc}>Вакансии</p>
             <Image className={styles.icon} src={'/images/search.svg'} alt='' width={24} height={24}/>
