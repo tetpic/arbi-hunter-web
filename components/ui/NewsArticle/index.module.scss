@@ -7,13 +7,6 @@
   column-gap: 8px;
   row-gap: 8px;
 
-  .name {
-    grid-area: n;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
-  }
-
   .time {
     grid-area: t;
     font-size: $mediumText;
@@ -23,9 +16,6 @@
 
   .imageWrapper {
     grid-area: i;
-    // padding: 8px;
-    // border-radius: 10px;
-    // background: $gradientAlt;
   }
 
   .dots {
@@ -33,11 +23,26 @@
   }
 }
 
+.name {
+  grid-area: n;
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
 .item {
   padding: 16px;
   border-radius: 16px;
   background-color: $black;
   margin-bottom: 16px;
+
+  &_withHover {
+    cursor: pointer;
+    @include transitionDefault;
+    @include hover {
+      background-color: $grey;
+    }
+  }
 }
 
 .body {
@@ -50,8 +55,13 @@
     margin-bottom: 16px;
     font-size: $mediumText;
     font-weight: $medium;
-    // word-break: normal;
     overflow-wrap: break-word;
+    @include transitionDefault;
+    
+    &_big {
+      font-size: $hugeText;
+      font-weight: $semibold;    
+    }
   }
 }
 
@@ -88,5 +98,21 @@
     path {
       fill: $greyLight;
     }
+  }
+}
+
+.block {
+  margin-top: 16px;
+}
+
+.blockContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  margin-top: 16px;
+
+  .content {
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 }

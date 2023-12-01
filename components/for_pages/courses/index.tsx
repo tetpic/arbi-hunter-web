@@ -65,7 +65,7 @@ export default function CoursesMain(props: Props) {
     <Title className={classnames(styles.sectionTitle, styles.sectionTitle_noLink)} title={'Категории'}/>
     <Categories categoryList={props.categoryList}/>
     {!isTabletWidth &&
-    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    <LinkBlack href='/courses/compilations?page=all'>Смотреть все</LinkBlack>
     }
 
     <Title 
@@ -82,7 +82,7 @@ export default function CoursesMain(props: Props) {
       </div>
     </section>
     {!isTabletWidth &&
-    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    <LinkBlack href='/courses/compilations?page=categories'>Смотреть все</LinkBlack>
     }
 
     <Title className={styles.sectionTitle} title={isTabletWidth?'Отзывы':'Отзывы учеников'} link='/feedbacks'/>

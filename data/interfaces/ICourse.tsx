@@ -8,6 +8,7 @@ export interface CoursesData {
   isStarted?: boolean|null, 
   search?: string|null, 
   categories?: number[]|null
+  started?: boolean
 }
 
 export interface IAuthor {

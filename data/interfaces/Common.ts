@@ -186,7 +186,7 @@ export interface IFileDownload {
 export interface IArticleBlock {
   id?: number,
   title?: string,
-  body?: string,
+  body?: string|TrustedHTML,
   image?: Partial<IImage>
   images?: Partial<IImage>[],
   imageLarge?: Partial<IImage>,

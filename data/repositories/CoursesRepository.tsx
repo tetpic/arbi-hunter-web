@@ -34,16 +34,21 @@ export default class CoursesRepository {
   }  
 
   static async getCourses(data: CoursesData, lang: Languages): Promise<IPagination<ICourse>|null> {
-    const object = {
-      page: data.page!= null ? `&page=${data.page}` : null,
-      limit: data.limit!= null ? `&limit=${data.limit}` : null,
-      categories: data.categories != null ? `&categories=${data.categories.join(',')}` : null,
-      isStarted: data.isStarted != null ? '&started=$isStarted' : null,
-      search: data.search != null ? '&search=$search' : null,
-    }
+    // const object = {
+    //   page: data.page!= null ? `&page=${data.page}` : null,
+    //   limit: data.limit!= null ? `&limit=${data.limit}` : null,
+    //   categories: data.categories != null ? `&categories=${data.categories.join(',')}` : null,
+    //   isStarted: data.isStarted != null ? '&started=$isStarted' : null,
+    //   search: data.search != null ? '&search=$search' : null,
+    // }
     const res = await request({
       method: 'get',
-      url: `/api/course?sort=createdAt,DESC&languages=${lang},en` + Object.values(object).filter(Boolean).join(''),
+      url: '/api/course',
+      data: {
+        ...data,
+        // categories: data.categories.join(','),
+        lang
+      }
     })
     if(res.err) {
       return null

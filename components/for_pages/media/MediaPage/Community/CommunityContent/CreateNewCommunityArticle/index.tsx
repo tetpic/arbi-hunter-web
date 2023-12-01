@@ -102,7 +102,7 @@ export default function CreateNewCommunityArticle(props: Props) {
             <FileInput setImages={setPreviewImage}/>
             <PhotoSvg/>
           </label>
-          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body.length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
+          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body.toString().length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
 
         </div>
       </Form>

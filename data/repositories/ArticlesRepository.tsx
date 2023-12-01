@@ -45,7 +45,7 @@ export default class ArticlesRepository {
   static async getById(articleId: number, lang: Languages): Promise<IArticle|null> {
     const res = await request({
       method: 'get',
-      url: `/api/article/${articleId}?categoryType=news&language=${lang}`,
+      url: `/api/article/${articleId}?categoryType=news&full=true&language=${lang}`,
     })
     if(res.err) {
       return null

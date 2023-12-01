@@ -1,0 +1,24 @@
+@import 'styles/index';
+
+.coursesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.course {
+  width: calc(50% - 8px);
+}
+
+.root {
+  width: 100%;
+}
+
+.found {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $medium;
+  margin-bottom: 16px;
+}

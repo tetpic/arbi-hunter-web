@@ -11,18 +11,16 @@ import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
 import TableSvg from 'components/svg/TableSvg'
 import AppsAddSvg from 'components/svg/AppsAddSvg'
 import UserDoubleSvg from 'components/svg/UserDoubleSvg'
-import classNames from 'classnames'
 import SearchBar from 'components/ui/SearchBar'
 import { MediaWrapper } from 'context/media_state'
 import MainMediaPage from './MainMediaPage'
 import Communities from './Communities'
-import AppSvg from 'components/svg/AppSvg'
-import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IMediaCategoryModal } from 'components/modals/MediaCategoryModal'
 import dynamic from 'next/dynamic'
 import Subscriptions from './Subscriptions'
+import SubCategories from 'components/ui/SubCategories'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -41,16 +39,6 @@ export enum MediaPageNav {
   Subscriptions='subscriptions',
   Communities='communities',
 }
-
-function SubCategories(props: {categories: ICategory[], currentCategory: ICategory, setCurrent: (e: ICategory)=>void}) {
-  return (
-    props.categories.map(el=> {
-      const isCurrent = el.id === props.currentCategory?.id
-      return <p  key={el.id} className={classNames(styles.subCategory, isCurrent&&styles.subCategory_active)} onClick={()=> props.setCurrent(el)}><AppSvg color={isCurrent&&colors.yellow} />{el.name}</p>
-    })
-  )
-}
-
 
 
 export default function MediaPage(props: Props) {

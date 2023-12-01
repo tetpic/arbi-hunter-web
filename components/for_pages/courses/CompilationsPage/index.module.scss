@@ -1,0 +1,45 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  margin-top: 48px;
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+  }
+}
+
+.contentWrapper {
+  width: 70%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+}
+
+.bodyWrapper {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 172px);
+  overflow: auto;
+  padding-right: 16px;
+  margin-right: 4px;
+
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+    margin-right: unset;
+    padding-right: unset;
+  }
+}
+
+.searchBar {
+  margin-bottom: 24px;
+}
+
+.bottomString {
+  margin-top: 8px;
+}
+
+.itemNav {
+  margin-bottom: 24px;
+}

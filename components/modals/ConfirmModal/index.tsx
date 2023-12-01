@@ -1,8 +1,8 @@
+import styles from './index.module.scss'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
-import styles from './index.module.scss'
 
 interface Props {
   onClose: ()=>void

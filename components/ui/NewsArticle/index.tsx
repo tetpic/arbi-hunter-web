@@ -11,12 +11,14 @@ import { FILES } from 'types/constants'
 import { useMediaContext } from 'context/media_state'
 import UserPic from '../UserPic'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 interface Props {
   article: IArticle
   titleImg?: string|StaticImageData
   titleName?: string
   withDefaultIcon?: boolean
+  isOpen?: boolean
 }
 
 /**
@@ -24,12 +26,14 @@ interface Props {
  * @titleImg  string|StaticImageData
  * @titleName  string
  * @withDefaultIcon boolean
+ * @isOpen boolean
  */
 export default function NewsArticle(props: Props) {
   const article = props.article
   const mediaContext = useMediaContext()
   const [isLiked, setIsLiked] = useState<boolean>(props.article.isLikedByCurrentProfile)
   const [likesCounter, setLikesCounter] = useState<number>(Number(props.article.likesCount))
+  const router = useRouter()
 
   const likeHandler = (a: IArticle)=> {
     const article: IArticle = {...a, isLikedByCurrentProfile: isLiked} 
@@ -46,7 +50,7 @@ export default function NewsArticle(props: Props) {
     }
   }, [isLiked])
 
-  return ( <div className={styles.item}>
+  return ( <div className={classNames(styles.item, !props.isOpen&&styles.item_withHover)} onClick={()=> !props.isOpen&&router.push(`/media/article/${props.article.id}`)} >
     <div className={styles.top}>
       {(props.titleImg || props.withDefaultIcon) &&
         <UserPic className={styles.imageWrapper} image={props.titleImg&&FILES + props.titleImg} size={40}/>
@@ -56,7 +60,7 @@ export default function NewsArticle(props: Props) {
       <ThreeDotsButton className={styles.dots}/>
     </div>
     <div className={styles.body}>
-      <p className={styles.content}>{article.name}</p>
+      <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{article.name}</p>
       {article.image?.source &&
         <Image src={FILES + article.image.source} alt={article.name} width={727} height={390} style={{
           width: '100%',
@@ -65,6 +69,17 @@ export default function NewsArticle(props: Props) {
           borderRadius: 16
         }}/>
       }
+      {props.isOpen && article.blocks.map(block=> {
+        return (
+          <div className={styles.block}>
+          <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{block.title}</p>
+          <p className={styles.blockContent} dangerouslySetInnerHTML={{__html:block.body}}></p>
+          {block?.image?.source && 
+          <Image src={FILES + block.image.source} alt={''} width={718} height={360}/>
+          }
+          </div>
+        )
+      })}
     </div>
     <div className={styles.stats}>
       <p className={styles.likes} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}}><HeartSvg className={classNames(isLiked&&styles.filledHeart)}/> {likesCounter}</p>

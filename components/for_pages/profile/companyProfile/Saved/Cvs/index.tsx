@@ -5,6 +5,7 @@ import styles from './index.module.scss'
 import CvItem from 'components/ui/CvItem'
 import { ICV } from 'data/interfaces/ICV'
 import Spinner from 'components/ui/Spinner'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
 }
@@ -15,12 +16,10 @@ export default function SavedCVs() {
   const [load, setLoading ] = useState<boolean>(true)
 
   useEffect(()=>{
-    // if(!cvContext.savedCvs||cvContext.savedCvs.length === 0){
       cvContext.setSavedCvs()
       .then(_=>{
         setLoading(false)
       })
-    // }
   }, [])
 
   const onChangeItem = (c: ICV) => {
@@ -41,6 +40,7 @@ export default function SavedCVs() {
         <p className='empty'>Нет сохраненных резюме</p>
         }
       </div>
+      <Spacer basis={24}/>
     </Scrollbars>
   </div>
   )

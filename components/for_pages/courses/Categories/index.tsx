@@ -8,6 +8,7 @@ import Formatter from 'utils/formatter'
 import bitcoin from 'images/big_bitcoin.png'
 import { useResize } from 'components/hooks/useResize'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import Link from 'next/link'
 
 interface Props {
   categoryList: ICategory[]
@@ -15,8 +16,9 @@ interface Props {
 
 
 function CategoryItem(props: {size: 33|50, item: ICategory}) {
+  
 
-  return (<div className={classNames(styles.item, props.size===50&&styles.item_large)} style={{width: `calc(${props.size}% - 8px)`}}>
+  return (<Link href={`/courses/compilations?page=categories&category=${props.item.id}`}  className={classNames(styles.item, props.size === 50 && styles.item_large)} style={{ width: `calc(${props.size}% - 8px)` }} >
     <p className={styles.name}>{props.item.name}</p>
     <p className={styles.counter}>
       {(props.item?.coursesCount||props.item.articlesCount) + ' '} 
@@ -34,8 +36,7 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
         />
       }
     </div>
-
-  </div>)
+  </Link>)
 }
 
 export default function Categories(props: Props) {

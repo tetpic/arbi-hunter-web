@@ -46,7 +46,7 @@ export default function CourseFeedbackModal(props: Props) {
   }
 
   const goldColor = colors.yellow
-  const greyColor = colors.grey
+  const greyColor = colors.greyLight
 
   /** возвращает массив цветов для StarSVG */
   const starsHandler = (choosen?: number): string[] => {
@@ -56,7 +56,7 @@ export default function CourseFeedbackModal(props: Props) {
         items.push(goldColor)
       } 
       else if(rate > choosen && i < rate) {
-        items.push(goldColor+'90')
+        items.push(goldColor)
       }
       else {
         items.push(greyColor)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 interface Props {
-  html: string
+  html: string|TrustedHTML
 }
 
 export default function TextNode(props: Props) {
@@ -9,7 +9,7 @@ export default function TextNode(props: Props) {
 
   useEffect(()=>{
     const textNode = document.createElement('div')
-    textNode.insertAdjacentHTML('afterbegin', props.html)
+    textNode.insertAdjacentHTML('afterbegin', props.html.toString())
     setText(textNode.innerText.toString())
   }, [props.html])
 

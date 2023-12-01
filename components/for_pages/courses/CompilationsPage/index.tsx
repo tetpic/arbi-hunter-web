@@ -1,0 +1,120 @@
+import styles from './index.module.scss'
+
+import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
+import { useResize } from 'components/hooks/useResize'
+import AppsAddSvg from 'components/svg/AppsAddSvg'
+import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
+import SubCategories from 'components/ui/SubCategories'
+import TitleForSection from 'components/ui/TitleForSection'
+import { ICategory } from 'data/interfaces/Common'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import SearchBar from 'components/ui/SearchBar'
+import Navigation from 'components/ui/Navigation'
+import { useCoursesContext } from 'context/courses_state'
+import AllCourses from './AllCourses'
+import CoursesByCategory from './CoursesByCategory'
+import Spinner from 'components/ui/Spinner'
+
+interface Props {
+  category?: number
+  page?: CompilationsNav
+  isMobile?: boolean
+}
+
+export enum CompilationsNav {
+  All='all',
+  Started='started',
+  Categories='categories'
+}
+
+export default function CoursesCompilations(props: Props) {
+
+  const coursesContext = useCoursesContext()
+  const {isTabletWidth, width} = useResize()
+
+  const [page, pager] = useState<CompilationsNav>(props.page)
+  const router = useRouter()
+
+  const [currentCategory, setCurrentCategory] = useState<ICategory>()
+  const subCategories = <SubCategories categories={coursesContext.categories} currentCategory={currentCategory} setCurrent={(e: ICategory) => setCurrentCategory(e)} />
+
+  const navSet = (()=>{
+    let result = Object.values(CompilationsNav).map(page => {
+      switch(page) {
+        case CompilationsNav.All:
+          return {name: 'Все курсы', type: page, icon: <DocumentDoubleSvg/>}
+        case CompilationsNav.Categories:
+          return {name: 'Категории', type: page, subSet: subCategories, icon: <AppsAddSvg/>}
+        case CompilationsNav.Started:
+          return {name: 'Начатые курсы', type: page, icon: <AppsAddSvg/>}
+      }
+    })
+    result = isTabletWidth?result.filter(el=> el.type !== CompilationsNav.Categories):result
+    return result
+  })()
+
+
+  const body = (<>
+  {
+    page === CompilationsNav.All&&<AllCourses key={'all'}/>
+    ||
+    page === CompilationsNav.Categories && (currentCategory &&<CoursesByCategory categoryId={currentCategory.id}/>||<Spinner size={34}/>)
+    ||
+    page === CompilationsNav.Started &&<AllCourses key={'started'} started={true}/>
+  }
+  </>)
+
+  const title = (()=> {
+    switch(page) {
+      case CompilationsNav.All:
+        return 'Все курсы'
+      case CompilationsNav.Started:
+        return 'Начатые курсы'
+      case CompilationsNav.Categories:
+        return currentCategory?.name||'Категории'
+    }
+  })()
+
+  useEffect(()=>{
+    if(width) {
+      router.replace({query: { ...router.query, page: page, category: currentCategory?.id}}, undefined, {shallow: true})
+    }
+  }, [page, currentCategory, width])
+
+  useEffect(()=>{
+    setCurrentCategory([...coursesContext.categories.values()].find(el=> el.id === +router.query.category))
+  }, [router])
+
+  useEffect(()=>{
+    if(coursesContext.categories) {
+      setCurrentCategory(coursesContext.categories.find(el=> el.id === +props.category)||coursesContext.categories[0])
+    }
+  }, [coursesContext.categories])
+
+
+  useEffect(()=>{
+    coursesContext.setCoursesCategories()
+    .then(_=>{
+    })
+  }, [])
+
+  return (<div className={styles.root} > 
+    <div className={styles.contentWrapper}>
+      <div className='container'>
+        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
+        {isTabletWidth && 
+          <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
+        }
+      </div>
+      <div className={styles.bodyWrapper} id={'scrollable'}>
+        <SearchBar className={styles.searchBar}/>
+        {body}
+      </div>
+    </div>
+    {!isTabletWidth && 
+      <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
+    }
+  </div>)
+
+}

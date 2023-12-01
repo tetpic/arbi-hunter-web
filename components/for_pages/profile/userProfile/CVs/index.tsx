@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import ItemNavigation from '../../ItemNavigation'
 import CVItem from './CvItem'
 import styles from './index.module.scss'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
 }
@@ -64,6 +65,7 @@ export default function CVs(props: Props) {
       ||
       <p className={'empty'}>Нет созданных резюме</p>
       }
+      <Spacer basis={24}/>
     </div>
   )
 

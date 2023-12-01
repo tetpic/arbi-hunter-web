@@ -8,9 +8,12 @@ import { CategoryType } from 'types/enums'
 import { useUserContext } from './user_state'
 
 interface IState {
-  courses: ICourse[]
+  courses: Map<number, ICourse>
+  startedCourses: Map<number, ICourse>
+  coursesTotal: number
+  startedCoursesTotal: number
   currentCourse: ICourse
-  setCourses: (data: CoursesData, courses: ICourse[]) => void
+  setCourses: (data: CoursesData, courses?: ICourse[]) => void
   setCurrentCourse: (id: number, course?: ICourse) => Promise<boolean>
 
   courseModules: Map<ICourseBlock, ICourseBlock[]>
@@ -27,11 +30,8 @@ interface IState {
   allBlocksRef: MutableRefObject<ICourseBlock[]>
   allModulesRef: MutableRefObject<ICourseBlock[]>
 
-
   courseInit: () => Promise<boolean>
   loading: boolean
-
-  
 
   coursesNews: IArticle[]
   setCoursesNews: (courseId: number, page: number)=>void
@@ -42,11 +42,10 @@ interface IState {
   setFeedbacks: (courseId: number, page: number, limit: number)=>  Promise<boolean>
 
   categories: ICategory[]
-  setCoursesCategories: (categoryList?: ICategory[])=>void
+  setCoursesCategories: (categoryList?: ICategory[])=>Promise<boolean>
 
   courseStats: ICourseStats,
   getCourseFeedbackStats: (courseId: number) => void
-
 }
 
 
@@ -67,7 +66,10 @@ export function CoursesWrapper(props: Props) {
   const countryCode = userContext?.currentProfile?.countryCode
 
   const [categories, setCategoriesState] = useState<any[]>([])
-  const [courses, setCoursesState] = useState<ICourse[]>([])
+  const [courses, setCoursesState] = useState<Map<number, ICourse>>(new Map)
+  const [coursesTotal, setCoursesTotal] = useState<number>(0)
+  const [startedCourses, setStartedCourse] = useState<Map<number, ICourse>>(new Map)
+  const [startedCoursesTotal, setStartedCourseTotal] = useState<number>(0)
   const [currentCourse, setCurrentCourseState] = useState<ICourse>()
   const [courseModules, setCourseModulesState] = useState<Map<ICourseBlock, ICourseBlock[]>>(new Map())
   const [courseBlocks, setBlocksState] = useState<Map<ICourseBlock, ICourseStep[]>>(new Map())
@@ -82,25 +84,43 @@ export function CoursesWrapper(props: Props) {
   const allBlocksRef = useRef<ICourseBlock[]>([])
   const allModulesRef = useRef<ICourseBlock[]>([])
 
-  const setCoursesCategories = (categoryList?: ICategory[]) => {
+  const setCoursesCategories = async (categoryList?: ICategory[]): Promise<boolean> => {
     if(categoryList) {
       setCategoriesState(categoryList)
-      return
+      return 
     }
     if(categories.length > 0) return
-    ArticlesRepository.getCategoryList({categoryType: CategoryType.Course})
-    .then(res=>{
-      setCategoriesState(res.data)
-    })
+    const res = await ArticlesRepository.getCategoryList({ categoryType: CategoryType.Course })
+    setCategoriesState(res.data)
+    return true
   }
 
-  const setCourses = (data: CoursesData|null, courses: ICourse[]) => {
+  const setCourses = (data: CoursesData|null, courses?: ICourse[]) => {
+    const setState = (c: ICourse[], started?: boolean) => {
+      started?
+      setStartedCourse(state=> {
+        c.forEach(course => {
+          state.set(course.id, course)
+        })
+        return new Map(state)
+      })
+      :
+      setCoursesState(state=> {
+        c.forEach(course => {
+          state.set(course.id, course)
+        })
+        return new Map(state)
+      })
+    }
+
     if(data === null && courses) {
-      setCoursesState(courses)
+      setState(courses)
+      setCoursesTotal(courses.length)
     } else {
       CoursesRepository.getCourses(data, countryCode)
       .then(res=>{
-        setCoursesState(res.data)
+        setState(res.data, data.started)
+        data.started?setStartedCourseTotal(res.total):setCoursesTotal(res.total)
       })
     }
   }
@@ -239,7 +259,7 @@ export function CoursesWrapper(props: Props) {
     
     const res = await CoursesRepository.setStepAnswer(data)
     if(blockId && res) {
-      // setCourseSteps(blockId)
+      setCourseSteps(blockId)
     }
     return true
   }
@@ -281,6 +301,9 @@ export function CoursesWrapper(props: Props) {
 
   const value: IState = {
     courses,
+    coursesTotal,
+    startedCourses,
+    startedCoursesTotal,
     setCourses,
     currentCourse,
     setCurrentCourse,

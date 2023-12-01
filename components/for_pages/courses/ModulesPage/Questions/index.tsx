@@ -24,7 +24,8 @@ export default function Questions({activeStep}: Props) {
       courseBlockStepId: activeStep.id
     }
     courseContext.setStepAnswer(dataToSend, activeStep.courseBlockId)
-    .then()
+    .then(_=>{
+    })
   }
 
   const formik = useFormik<ICourseStepAnswer>({

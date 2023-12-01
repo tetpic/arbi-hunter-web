@@ -18,6 +18,11 @@ interface Props {
 }
 
 
+/**
+ * @image  string
+ * @course ICourse
+ * @className  string
+ */
 export default function CourseItem(props: Props) {
   const router = useRouter()
 
