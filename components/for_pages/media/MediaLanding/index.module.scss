@@ -7,7 +7,7 @@
 
 .title {
   margin-top: clamp(56px, 14vw, 120px);
-  margin-bottom: clamp(16px, 3vw, 32px);
+  margin-bottom: clamp(16px, 3vw, 24px);
   justify-content: center;
   @include container;
   @include mq($TabletWidth, max) {

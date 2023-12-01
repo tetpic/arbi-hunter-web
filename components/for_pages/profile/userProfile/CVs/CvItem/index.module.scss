@@ -49,7 +49,7 @@
   display: grid;
   grid-template-areas: 'i p d' 'i r d';
   grid-template-columns: auto 1fr auto;
-  align-items: center;
+  align-items: flex-start;
   column-gap: 16px;
   row-gap: 8px;
 

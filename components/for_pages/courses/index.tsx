@@ -99,7 +99,7 @@ export default function CoursesMain(props: Props) {
     />
     <CoursesBlock courses={popularCourses}/>
     {!isTabletWidth &&
-    <LinkBlack href='/compilations'>Смотреть все</LinkBlack>
+    <LinkBlack href='/courses/compilations?page=all'>Смотреть все</LinkBlack>
     }
   </div>
 }

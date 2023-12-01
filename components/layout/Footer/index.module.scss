@@ -29,8 +29,6 @@
   position: relative;
   z-index: 2;
 
-
-
   .logo {
     display: flex;
     align-items: center;
@@ -72,7 +70,6 @@
   position: relative;
   z-index: 2;
 
-
   .column {
     display: flex;
     flex-direction: column;
@@ -90,7 +87,6 @@
     font-size: $mediumText;
     font-weight: $medium;
     color: $white;
-
   }
 }
 
@@ -105,8 +101,8 @@
   &:before {
     content: '';
     width: 100vw;
-    height: 2px;
-    background-color: $greyLight;
+    height: 1px;
+    background-color: $grey;
     position: absolute;
     top: 0;
     left: 50%;

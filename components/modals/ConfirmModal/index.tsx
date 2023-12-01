@@ -27,7 +27,7 @@ export default function ConfirmModal(props: Props) {
       <p className={styles.text}>{modalArguments.text}</p>
       <div className={styles.buttonsWrapper}>
         <Button className={styles.button} onClick={onTrueClickHandler}>Да</Button>
-        <Button className={styles.button} onClick={props.onClose}>Нет</Button>
+        <Button className={styles.grayButton} onClick={props.onClose}>Нет</Button>
       </div>
     </>
   )

@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import HeartSvg from 'components/svg/HeartSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import { IArticle } from 'data/interfaces/IArticle'

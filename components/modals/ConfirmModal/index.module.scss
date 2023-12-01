@@ -27,3 +27,8 @@
   width: 48%;
   @include buttonYellow;
 }
+
+.grayButton {
+  width: 48%;
+  @include buttonGray;
+}

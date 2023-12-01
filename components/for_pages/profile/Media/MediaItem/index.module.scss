@@ -14,7 +14,7 @@
 
   *{
     font-size: $mediumText;
-    scrollbar-width: thin;          /* "auto" или "thin" */
+    scrollbar-width: thin;
     scrollbar-color: $greyLight $grey;  
     &::-webkit-scrollbar {
       width: 4px; 
@@ -51,8 +51,6 @@
   }
   code {
     width: 100%;
-    // overflow-y: auto;
-
   }
 }
 
@@ -67,7 +65,7 @@
   display: grid;
   grid-template-areas: 'p n b' 'p d b';
   grid-template-columns: auto 1fr auto;
-  align-items: center;
+  align-items: flex-start;
  
 
   .userPic {

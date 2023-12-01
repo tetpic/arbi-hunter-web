@@ -1,6 +1,6 @@
-import ArbiLogoTextSvg from 'components/svg/ArbiLogoTextSvg'
 import styles from './index.module.scss'
 
+import ArbiLogoTextSvg from 'components/svg/ArbiLogoTextSvg'
 import Image from 'next/image'
 import MailConvertSvg from 'components/svg/MailConvertSvg'
 import twitter from 'images/footer/footerTwitter.svg'
@@ -13,7 +13,6 @@ import WebMoneySvg from 'components/svg/WebMoneySvg'
 import PayUSvg from 'components/svg/PayUSvg'
 import QiwiSvg from 'components/svg/QiwiSvg'
 import RoubleSvg from 'components/svg/RoubleSvg'
-// import background from 'images/footer/footerAHBackground.png'
 
 
 interface Props {

@@ -77,18 +77,13 @@
   display: flex;
   align-items: center;
   column-gap: 6px;
+  
   svg {
     path {
       stroke: $greyLight;
     }
   }
 } 
-
-// .image {
-//   position: absolute;
-//   bottom: 0;
-//   right: 16px;
-// }
 
 .image {
   position: absolute;

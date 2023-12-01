@@ -13,7 +13,22 @@
     width: Min(40vw, 50%);
     height: 40vw;
     max-height: 100%;
-    z-index: -1;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: $gradient;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      filter: blur(70px);
+      scale: (.7);
+      opacity: .2;
+      position: absolute;
+    }
   }
 
   .title {

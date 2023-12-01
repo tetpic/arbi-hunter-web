@@ -8,7 +8,6 @@ import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import UserSvg from 'components/svg/UserSvg'
 import BackBtn from 'components/ui/BackBtn'
 import Button from 'components/ui/Button'
-import IconButton from 'components/ui/IconButton'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
@@ -34,8 +33,6 @@ import { useAppContext } from 'context/state'
 interface Props {
   id: number
   course: ICourse
-  // modules: ICourseBlock[]
-  // blocks: ICourseBlock[]
   page?: CurrentCoursesNav
 }
 
@@ -48,8 +45,7 @@ export enum CurrentCoursesNav {
 
 export default function CurrentCourse(props: Props) {
   const {isTabletWidth} = useResize()
-  const router = useRouter()
-  const [loading, setLoading] = useState<boolean>(true)
+  const router = useRouter()  
   const appContext = useAppContext()
   const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks, courseModules} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
@@ -99,16 +95,13 @@ export default function CurrentCourse(props: Props) {
     pager(page)
     router.replace({
       query: { ...router.query, page: page },
-    }, undefined, {shallow: true})
+    })
   }, [page])
 
   useEffect(()=>{
     setCourseModules(props.id)
     setCourseBlocks(props.id)
     setCurrentCourse(props.id, props.course)
-    .then(()=> 
-      setLoading(false)
-    )
     return ()=>{
       clearModules()
     }
@@ -158,13 +151,13 @@ export default function CurrentCourse(props: Props) {
     
         <Image className={styles.courseImage} src={FILES + course.image.source} alt={course.name} fill/>
           <div className={styles.iconButtonsWrapper}>
-            <IconButton className={styles.iconButton} bgColor={'transparent'}>
+            <Button className={styles.iconButton} >
               <ShareSvg/>
-            </IconButton>
+            </Button>
             {!isTabletWidth &&
-            <IconButton className={styles.iconButton} bgColor={'transparent'}>
+            <Button className={styles.iconButton} >
               <BookMarkSvg/>
-            </IconButton>
+            </Button>
             ||
             <BackBtn className={styles.iconButton} onClick={()=>{router.push('/courses/')}} bgColor={'transparent'}/>
             }

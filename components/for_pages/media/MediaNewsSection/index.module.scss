@@ -33,7 +33,7 @@
 .content {
   display: flex;
   column-gap: 24px;
-  margin-top: 32px;
+  margin-top: 24px;
   @include mq($TabletWidth, max) {
     margin-top: unset;
   }

@@ -15,7 +15,7 @@
   grid-template-areas: 'i c h' 'i l h';
   column-gap: 16px;
   row-gap: 8px;
-  align-items: center;
+  align-items: flex-start;
   grid-template-columns: auto 1fr auto;
 
   .company {
@@ -42,7 +42,6 @@
 }
 
 .heartButton {
-  // padding: 8px;
   border-radius: 10px;
   background-color: $grey;
   @include transitionDefault;
@@ -54,7 +53,6 @@
   }
 
   @include hover {
-    // background-color: $blue;
     svg {
       path {
         stroke: $black;
@@ -70,32 +68,28 @@
 }
 
 .status {
-  border-radius: 10px;
-  // border: 1px $white solid;
+  border-radius: 40px;
   background-color: $grey;
   color: $white;
   font-size: $mediumText;
   font-weight: $medium;
   align-self: flex-start;
-  padding: 8px 16px 8px;
+  padding: 7px 16px 7px;
 }
 
 .applied {
-  border: $blue 2px solid;
+  border: $blue 1px solid;
   color: $blue;
-  // background-color: #4E81F350;
 }
 
 .accepted {
   color: $green;
-  border: $green 2px solid;
-
-  // background-color: #339B6250;
+  border: $green 1px solid;
 }
 
 .rejected {
   color: $red;
-  border: $red 2px solid;
+  border: $red 1px solid;
 }
 
 .interview {
