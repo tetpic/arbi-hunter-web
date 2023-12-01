@@ -8,6 +8,7 @@ import { Languages } from 'types/enums'
 import LinkBlack from 'components/ui/LinkBlack'
 import TextNode from 'components/ui/TextNode'
 import { useResize } from 'components/hooks/useResize'
+import Link from 'next/link'
 
 interface Props {
   link?: string
@@ -21,7 +22,7 @@ export default function MediaNewsSection(props: Props) {
   return (<section className={styles.root}> 
   <div className={styles.content}>
     {!isTabletWidth &&
-      <div className={styles.mainItem}>
+      <Link href={`/media/article/${firstItem.id}`} className={styles.mainItem}>
         <div className={styles.tags}>
           <p 
           className={styles.tag}
@@ -48,12 +49,12 @@ export default function MediaNewsSection(props: Props) {
             />
           }
         </div>
-      </div>
+      </Link>
     }
     <div className={styles.otherItems}>
       {props.news && props.news.slice(1, 4).map(item => {
         return (
-          <div className={styles.item} key={item.id}>
+          <Link href={`/media/article/${item.id}`} className={styles.item} key={item.id}>
             <div className={styles.tags}>
               <p 
               className={styles.tag} 
@@ -79,7 +80,7 @@ export default function MediaNewsSection(props: Props) {
                 />
               }
             </div>
-          </div>
+          </Link>
         )
       })}
     </div>

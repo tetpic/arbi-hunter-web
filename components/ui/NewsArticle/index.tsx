@@ -12,6 +12,9 @@ import { useMediaContext } from 'context/media_state'
 import UserPic from '../UserPic'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useUserContext } from 'context/user_state'
+import { useAppContext } from 'context/state'
+import { SnackbarType } from 'types/enums'
 
 interface Props {
   article: IArticle
@@ -30,12 +33,18 @@ interface Props {
  */
 export default function NewsArticle(props: Props) {
   const article = props.article
+  const appContext = useAppContext()
+  const userContext = useUserContext()
   const mediaContext = useMediaContext()
   const [isLiked, setIsLiked] = useState<boolean>(props.article.isLikedByCurrentProfile)
   const [likesCounter, setLikesCounter] = useState<number>(Number(props.article.likesCount))
   const router = useRouter()
 
   const likeHandler = (a: IArticle)=> {
+    if(!userContext.currentProfile) {
+      appContext.showSnackbar('Чтобы проявить свою восхищенность новостью - пожалуйста, зарегистрируйтесь', SnackbarType.success)
+      return
+    }
     const article: IArticle = {...a, isLikedByCurrentProfile: isLiked} 
     mediaContext.likeArticle(article)
     .then(_=>setIsLiked(!isLiked))

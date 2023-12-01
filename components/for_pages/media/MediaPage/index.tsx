@@ -21,6 +21,7 @@ import { IMediaCategoryModal } from 'components/modals/MediaCategoryModal'
 import dynamic from 'next/dynamic'
 import Subscriptions from './Subscriptions'
 import SubCategories from 'components/ui/SubCategories'
+import { useUserContext } from 'context/user_state'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -43,6 +44,7 @@ export enum MediaPageNav {
 
 export default function MediaPage(props: Props) {
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const {isTabletWidth, width} = useResize()
 
   const [page, pager] = useState<MediaPageNav>((!props.isMobile&&props.page)||(props.page === MediaPageNav.Categories?MediaPageNav.AllArticles:props.page)||MediaPageNav.AllArticles)
@@ -51,7 +53,8 @@ export default function MediaPage(props: Props) {
   const subCategories = <SubCategories categories={props.categories} currentCategory={currentCategory} setCurrent={(e: ICategory) => setCurrentCategory(e)} />
 
   const navSet = (()=>{
-    let result = Object.values(MediaPageNav).map(page => {
+    const obj = userContext.currentProfile?Object.values(MediaPageNav):[MediaPageNav.AllArticles, MediaPageNav.Categories, MediaPageNav.Communities]
+    let result = obj.map(page => {
       switch(page) {
         case MediaPageNav.AllArticles:
           return {name: 'Все статьи', type: page, icon: <DocumentDoubleSvg/>}

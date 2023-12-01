@@ -15,6 +15,7 @@ import { useCoursesContext } from 'context/courses_state'
 import AllCourses from './AllCourses'
 import CoursesByCategory from './CoursesByCategory'
 import Spinner from 'components/ui/Spinner'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   category?: number
@@ -31,6 +32,7 @@ export enum CompilationsNav {
 export default function CoursesCompilations(props: Props) {
 
   const coursesContext = useCoursesContext()
+  const userContext = useUserContext()
   const {isTabletWidth, width} = useResize()
 
   const [page, pager] = useState<CompilationsNav>(props.page)
@@ -40,7 +42,8 @@ export default function CoursesCompilations(props: Props) {
   const subCategories = <SubCategories categories={coursesContext.categories} currentCategory={currentCategory} setCurrent={(e: ICategory) => setCurrentCategory(e)} />
 
   const navSet = (()=>{
-    let result = Object.values(CompilationsNav).map(page => {
+    const obj = userContext.currentProfile?Object.values(CompilationsNav):[CompilationsNav.All, CompilationsNav.Categories]
+    let result = obj.map(page => {
       switch(page) {
         case CompilationsNav.All:
           return {name: 'Все курсы', type: page, icon: <DocumentDoubleSvg/>}
