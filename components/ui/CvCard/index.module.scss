@@ -14,7 +14,7 @@
   grid-template-areas: "i p h" "i n h";
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr 1fr;
-  align-items: center;
+  align-items: flex-start;
   grid-column-gap: 8px;
   column-gap: 8px;
 }

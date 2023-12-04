@@ -20,8 +20,6 @@
   position: absolute;
   top: 4px;
   left: 10px;
-
-
 }
 
 .top {
@@ -114,10 +112,10 @@
     cursor: pointer;
     path {
       @include transitionDefault;
+      stroke: $blue;
     }
     @include hover {
       path {
-        // fill: $white;
         stroke: $white;
       }
     }

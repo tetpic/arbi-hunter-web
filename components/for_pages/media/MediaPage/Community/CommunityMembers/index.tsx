@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import Spinner from 'components/ui/Spinner'
 import UserPic from 'components/ui/UserPic'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { colors } from 'styles/variables'
 import { FILES } from 'types/constants'
-import styles from './index.module.scss'
 
 interface Props {
   members: IUserProfile[]
@@ -13,6 +14,7 @@ interface Props {
 export default function CommunityMembers(props: Props) {
 
   return (<div className={styles.root}> 
+
   <p className={styles.title}>Участники</p>
   <div className={styles.wrapper}>
     {props.members.length > 0 && !props.loading &&
@@ -28,7 +30,7 @@ export default function CommunityMembers(props: Props) {
     props.loading && <Spinner size={24} color={colors.yellow}/>
     ||
     <p className={'empty'}>Нет участников</p>
-    }
+  }
   </div>
 
   

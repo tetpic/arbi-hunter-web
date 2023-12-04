@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
-import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 import VacancyItem from '../VacancyItem'
 
@@ -20,7 +19,6 @@ export default function VacanciesActive(props: Props) {
 
   return (
   <div className={styles.root}> 
-    <Scrollbars universal style={{height: '100%'}} autoHide>
       <div className={styles.wrapper}>
         {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
           [...vacancyContext.activeVacancies.values()].map((el, index)=> {
@@ -38,7 +36,5 @@ export default function VacanciesActive(props: Props) {
           <Spinner  size={24}/>
         } 
       </div>
-    </Scrollbars>
-
   </div>)
 }

@@ -58,7 +58,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     })
   }
 
-  const options = (<div onMouseLeave={()=>openDropDown(false)}>
+  const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
     <p className={styles.option} onClick={archiveHandler}>{vacancy?.published?'Архивировать':'Опубликовать'}</p>
     <p className={styles.option}>Дублировать</p>
     <p className={styles.option}>Поделиться</p>

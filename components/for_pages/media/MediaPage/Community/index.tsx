@@ -67,29 +67,29 @@ export default function CommunityPage({community, id}: Props) {
     return ()=>{communityContext.setCurrentCommunity(null)}
   }, [communityContext.currentCommunity])
 
-  return (<div className={styles.root}> 
+  return (<div className={styles.root} id='scrollable'> 
   {!isTabletWidth &&
     <BackTextButton className={styles.backButton} onClick={router.back}/>
   }
-  <InfiniteScroll 
-  next={()=>setPage((p)=> p+1)} 
-  hasMore={communityContext.communityNews.size < total} 
-  loader={<Spinner size={24} color={colors.yellow}/>} 
-  dataLength={contentLength.current}
-  height={'100%'}
-  >
     <div className={styles.contentWrapper}>
       <CommunityHeader community={com} />
       {communityContext.currentCommunity &&
         <>
+          <InfiniteScroll 
+          next={()=>setPage((p)=> p+1)} 
+          hasMore={communityContext.communityNews.size < total} 
+          loader={<Spinner size={24} color={colors.yellow}/>} 
+          dataLength={contentLength.current}
+          scrollableTarget='scrollable'
+          >
           <CommunityContent/>
+          </InfiniteScroll>
           {!isTabletWidth && !loading &&
             <CommunityMembers members={[...communityContext.communityMembers.values()]} loading={loading}/>
           }
         </>
       }
   </div>
-  </InfiniteScroll>
   </div>
   )
 }

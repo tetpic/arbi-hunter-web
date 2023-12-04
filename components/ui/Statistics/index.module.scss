@@ -2,7 +2,6 @@
 
 .stats {
   display: flex;
-  column-gap: 40px;
   row-gap: 8px;
   flex-wrap: wrap;
 
@@ -18,6 +17,24 @@
     color: $greyLight;
     font-weight: $medium;
     margin-bottom: 8px;
+  }
+
+  &_item {
+    padding: 10px 20px;
+    border-top: 2px $grey solid;
+    position: relative;
+    @include exeptLast {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        width: 2px;
+        height: 70%;
+        background-color: $grey;
+      }
+    }
   }
 
   &_count {

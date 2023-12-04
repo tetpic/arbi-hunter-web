@@ -53,7 +53,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     )
   }
 
-  const options = (<div onMouseLeave={()=>openDropDown(false)}>
+  const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
     <p className={styles.option} onClick={archiveHandler}>{cv?.published?'Архивировать':'Опубликовать'}</p>
     <p className={styles.option}>Дублировать</p>
     <p className={styles.option}>Поделиться</p>

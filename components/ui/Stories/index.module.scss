@@ -2,6 +2,15 @@
 
 .root {
   margin-bottom: 24px;
+  @include hover {
+    .leftButton, .rightButton {
+      opacity: 1;
+    }
+  }
+}
+
+.content {
+  position: relative;
 }
 
 .swiperSlide {
@@ -38,4 +47,31 @@
     font-weight: $medium;
     color: $white;
   }
+}
+
+.leftButton, .rightButton {
+  opacity: 0;
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  backdrop-filter: blur(3px);
+  filter: invert(0);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.396);
+  @include transitionDefault;
+  @include hover {
+    background-color: black;
+    filter: invert(1);
+  }
+}
+
+.leftButton {
+  left: 10px;
+}
+
+.rightButton {
+  right: 10px;
 }

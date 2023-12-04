@@ -33,6 +33,7 @@ export default function MediaCategories(props: Props) {
   ref={swiper}
   freeMode={true}
   slidesPerView={'auto'}
+  spaceBetween={10}
   autoplay={true}
   loop={true}
   modules={[Autoplay]}
@@ -59,12 +60,12 @@ export default function MediaCategories(props: Props) {
       )
     })}
     </Swiper>
-    {!props.hideNav && !isTabletWidth &&
-      <>
+    {/* {!props.hideNav && !isTabletWidth &&
+      <> */}
         <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
         <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
-      </>
-    }
+      {/* </>
+    } */}
     {!props.hideNav && !isTabletWidth &&
       <LinkBlack href={'/media/page?page=categories'}>Смотреть все</LinkBlack>
     }

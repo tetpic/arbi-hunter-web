@@ -99,6 +99,8 @@
   padding: 16px 16px;
   cursor: pointer;
   @include transitionDefault;
+  z-index: 2;
+  position: relative;
   @include hover{
     color: $blue !important;
     *{
@@ -107,3 +109,17 @@
     }
   }
 }
+
+.options {
+  &:before {
+    content: '';
+    width: 100%;
+    height: 120%;
+    display: block;
+    position: absolute;
+    top: 0;
+    transform: translateY(-20%);
+    left: 0;
+  }
+}
+

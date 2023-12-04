@@ -2,11 +2,11 @@
 
 .root {
   margin-top: 28px;
-  height: calc(100vh - 102px);
-  height: calc(100dvh - 102px);
-  >div {
-    height: 100%;
-  }
+  // height: calc(100vh - 102px);
+  // height: calc(100dvh - 102px);
+  // >div {
+  //   height: 100%;
+  // }
 
   @include mq($TabletWidth, max) {
     margin-top: unset;
