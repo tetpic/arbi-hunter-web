@@ -84,7 +84,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       <UserPic className={styles.userPic}/>
       <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
-      <ThreeDotsButton className={styles.dots} onClick={openModal} onMouseEnter={openModal}/>
+      <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal}/>
       {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
           <CvVcOptionsModal isLast={isLast} onClose={()=>openDropDown(false)} outerData={{cv: cv}}>

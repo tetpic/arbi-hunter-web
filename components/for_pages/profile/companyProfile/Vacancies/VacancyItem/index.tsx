@@ -58,7 +58,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     })
   }
 
-  const options = (<>
+  const options = (<div onMouseLeave={()=>openDropDown(false)}>
     <p className={styles.option} onClick={archiveHandler}>{vacancy?.published?'Архивировать':'Опубликовать'}</p>
     <p className={styles.option}>Дублировать</p>
     <p className={styles.option}>Поделиться</p>
@@ -66,7 +66,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     <p className={styles.option}>Улучшить</p>
     <p className={styles.option} onClick={editHandler}>Редактировать</p>
     <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
-   </>)
+   </div>)
 
   const openModalHandler =()=> {
     if (isTabletWidth) {
@@ -87,7 +87,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           <p className={styles.city}>Удаленно</p>
         }
         <SalaryItem vacancy={vacancy}/>
-        <ThreeDotsButton onClick={openModalHandler} className={styles.dots}/>
+        <ThreeDotsButton  onMouseEnter={openModalHandler} className={styles.dots}/>
         {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
           <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{vc: vacancy}}>

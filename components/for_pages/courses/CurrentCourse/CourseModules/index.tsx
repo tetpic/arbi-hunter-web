@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
-import CheckSvg from 'components/svg/CheckSvg'
 import PlayTransparentSvg from 'components/svg/PlayTransparentSvg'
 import Accordeon from 'components/ui/Accordeon'
 import Spinner from 'components/ui/Spinner'
@@ -13,7 +14,6 @@ import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import styles from './index.module.scss'
 import { FILES } from 'types/constants'
 
 interface Props {
@@ -30,7 +30,7 @@ export default function CourseModules({course}: Props) {
   useEffect(()=>{
     if(courseModules?.size === 0) {
       setCourseModules(course.id)
-      .then(res => {
+      .then(_ => {
         setLoadingBlocks(false)
       })
     }  
@@ -70,7 +70,7 @@ export default function CourseModules({course}: Props) {
                       <p 
                       className={styles.stepTitle} 
                       onClick={()=> router.push(`/courses/${course.id}/modules?module=${blockIndex+1}&block=${index+1}&step=1`)}>
-                        {index + 1}. {el.title} {el.progress === 100?<CheckSvg className={styles.checkSvg}/>:<PlayTransparentSvg className={styles.playSvg}/>}
+                        {index + 1}. {el.title} {/*el.progress === 100?*/ /*<CheckSvg className={styles.checkSvg}/>*/ <PlayTransparentSvg className={styles.playSvg}/>}
                       </p>
                       <div className={styles.stepBody} dangerouslySetInnerHTML={{__html: el.body}}></div>
                   </div>
