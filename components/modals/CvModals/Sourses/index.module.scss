@@ -36,3 +36,20 @@
   }
 }
 
+.title {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+  margin-block: 16px;
+  @include mq($PhoneWidth, max) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: unset;
+    &:after {
+      content: '';
+      width: 36px;
+    }
+  }
+}
+

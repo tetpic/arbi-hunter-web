@@ -30,7 +30,7 @@ export default function SavedMedia() {
     next={()=>setPage(p => p+1)} 
     hasMore={mediaContext.savedArticles.size < total}    
     loader={<Spinner size={24}/>}
-    height={'100%'} 
+    scrollableTarget='scrollable'
     dataLength={0}>
       {loaded&&mediaContext?.savedArticles && mediaContext?.savedArticles?.size > 0 &&
         [...mediaContext?.savedArticles?.values()].map(el=> {

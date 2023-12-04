@@ -27,7 +27,7 @@ export default function Profile() {
 
 
   return ( 
-    <div className={classNames(styles.root)}>
+    <div className={classNames(styles.root)} id={'scrollable'}>
       {
         profileType === ProfileType.Employee && !showNav &&
         <UserProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
@@ -36,7 +36,7 @@ export default function Profile() {
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&
-        <Navigation bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
+        <Navigation wrapperClassName={styles.nav} bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
       }
     </div>
   )

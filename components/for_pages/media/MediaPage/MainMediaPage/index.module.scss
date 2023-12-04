@@ -25,12 +25,12 @@
 
 .news {
   // margin-top: 24px;
-  overflow: unset;
-  height: calc(100vh - 248px) !important;
-  height: calc(100dvh - 248px) !important;
+  // overflow: unset;
+  // height: calc(100vh - 248px) !important;
+  // height: calc(100dvh - 248px) !important;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 148px) !important;
-    height: calc(100dvh - 148px) !important;
+    // height: calc(100vh - 148px) !important;
+    // height: calc(100dvh - 148px) !important;
   
   }
 }

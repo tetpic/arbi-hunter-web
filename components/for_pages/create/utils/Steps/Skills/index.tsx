@@ -14,6 +14,7 @@ import languages from '@cospired/i18n-iso-languages'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
 import { ICVCreate } from 'data/interfaces/ICV'
+import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 
 
 type SkillsFields = {
@@ -91,6 +92,12 @@ export default function Skills(props: Props) {
     helperState.activeSources.delete(el)
     cvContext.setHelpObjects({...helperState})
   }
+  
+  const removeGeo = (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeGeos.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = cvContext.helpObjects
@@ -145,6 +152,7 @@ export default function Skills(props: Props) {
       }
   }
 
+
   useEffect(()=>{
     if(showCoursesDetails) {
       appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
@@ -173,7 +181,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.size > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&& [...cvContext.helpObjects?.languageKnowledges.values()]
-        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={languages.getName(el.language, 'ru')} /> )
+        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={(languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true))} /> )
         }
       </div>
     } 
@@ -197,19 +205,38 @@ export default function Skills(props: Props) {
       }
     </>}
 
-    <AddButton 
-    className={styles.addButton} 
-    onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-    text={'Источники трафика'}
-    title={'Маркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт.'} 
-    /> 
-     {cvContext.helpObjects?.activeSources?.size > 0 &&
-      <div className={styles.itemsWrapper}>
-        {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
-        .map(([key, value])=> 
-        <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
-        )}
-      </div>
+    {
+      (cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) &&
+      <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
+      text={'Источники трафика и гео'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+       {cvContext.helpObjects?.activeSources?.size > 0 &&
+       <>
+        <div className={styles.itemsWrapper}>
+        <p className={styles.title}>Источники трафика</p>
+          {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
+            .map(([key, value])=> 
+            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+            )}
+          </div>
+        </>
+        }
+        {cvContext.helpObjects?.activeGeos?.size > 0 &&
+        <>
+          <div className={styles.itemsWrapper}>
+          <p className={styles.title}>Гео</p>
+            {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
+             .map(([key, value])=> 
+             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
+            )}
+          </div>
+         </>
+         }
+      </>
     }
 
     {!props.fieldToHide?.relocation===true && 

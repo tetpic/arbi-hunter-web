@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import Title from 'components/ui/TitleForSection'
 import Saved from './Saved'
-import styles from './index.module.scss'
 import Feedbacks from './Feedbacks'
 import CVs from './CVs'
 import { NavigationSet } from 'types/types'

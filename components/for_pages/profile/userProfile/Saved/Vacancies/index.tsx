@@ -1,5 +1,4 @@
 import { useVacancyContext } from 'context/vacancy_state'
-import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 // import VacancyItem from './VacancyItem'
 import styles from './index.module.scss'
@@ -28,7 +27,6 @@ export default function SavedVacancies(props: Props) {
   }
 
   return (<div className={styles.root}> 
-  <Scrollbars universal style={{height: '100%'}} autoHide>
     <div className={styles.wrapper}>
       {!load &&vacancyContext.savedVCs.length > 0 &&
         vacancyContext.savedVCs.map((el, index) => {
@@ -40,6 +38,5 @@ export default function SavedVacancies(props: Props) {
         <p className='empty'>Нет сохранённых вакансий</p>
       }
     </div>
-  </Scrollbars>
   </div>)
 }

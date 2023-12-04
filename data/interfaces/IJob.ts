@@ -11,6 +11,7 @@ export interface IJob {
   categoriesIds: number[],
   skillsIds :  number[],
   sourcesIds :  number[],
+  geosIds?: number[],
   salary : number,
   compensation: CompensationType,
   currency : Currency,

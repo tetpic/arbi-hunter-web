@@ -9,6 +9,6 @@ interface Props {
 export default function RemovableItem(props: Props) {
 
   return (<p className={styles.item}>
-    {props.text} <CrossSvg className={styles.crossSvg} onClick={props.onClick}/>
+    <span>{props.text}</span> <CrossSvg className={styles.crossSvg} onClick={props.onClick}/>
   </p>)
 }

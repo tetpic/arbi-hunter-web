@@ -2,13 +2,6 @@
 
 .root {
   margin-top: 24px;
-  height: calc(100vh - 260px);
-  height: calc(100dvh - 260px);
-
-  @include mq($TabletWidth, max) {
-    height: calc(100vh - 202px);
-    height: calc(100dvh - 202px);
-  }
 }
 
 .wrapper {
@@ -22,13 +15,9 @@
 
 .item {
   width: clamp(150px, calc(50% - 16px), 372px);
-  background-color: $black;
-  border-radius: 16px;
-  overflow: hidden;
   @include mq($TabletWidth, max) {
     width: 100%;
   }
-  
 }
 
 .top {

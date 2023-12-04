@@ -23,7 +23,6 @@ export interface ICVCreate extends IJob {
   coursesInfo: CoursesInfo[],
   commission?: number|null,
   portfolio?: string
-  geosIds?: []
 }
 
 export interface ICVVC {
@@ -52,6 +51,7 @@ export interface ICV extends ICVCreate, IUserProfile{
   age: number,
   lastExperienceInfo: ExperienceInfo,
   skills?: ISource[],
-  sources?: ISource[]
+  sources?: ISource[],
+  geos?: ISource[],
   isRemote?:boolean
 }

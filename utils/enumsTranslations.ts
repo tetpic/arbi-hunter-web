@@ -142,16 +142,16 @@ export const TranslateApplicationBSSelectType = (t: ApplicationBSSelectType) => 
   }
 }
 
-export const TranslateLanguageKnowLevel = (l: LanguageKnowLevel) => {
+export const TranslateLanguageKnowLevel = (l: LanguageKnowLevel, lowerCase?: boolean) => {  
   switch(l) {
     case LanguageKnowLevel.Advanced :
-      return 'Продвинутый'
+      return lowerCase?'продвинутый': 'Продвинутый'
     case LanguageKnowLevel.Beginner :
-      return 'Начинающий'
+      return lowerCase?'начинающий': 'Начинающий'
     case LanguageKnowLevel.Intermediate :
-      return 'Средний'
+      return lowerCase?'средний': 'Средний'
     case LanguageKnowLevel.Professional :
-      return 'Профессионал'
+      return lowerCase?'профессионал': 'Профессионал'
   }
 }
 

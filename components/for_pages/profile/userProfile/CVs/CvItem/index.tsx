@@ -53,7 +53,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     )
   }
 
-  const options = (<>
+  const options = (<div onMouseLeave={()=>openDropDown(false)}>
     <p className={styles.option} onClick={archiveHandler}>{cv?.published?'Архивировать':'Опубликовать'}</p>
     <p className={styles.option}>Дублировать</p>
     <p className={styles.option}>Поделиться</p>
@@ -61,7 +61,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     <p className={styles.option}>Улучшить</p>
     <p className={styles.option} onClick={editHandler}>Редактировать</p>
     <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
-   </>)
+   </div >)
 
   const openModal = () => {
     if(isTabletWidth) {
@@ -84,7 +84,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       <UserPic className={styles.userPic}/>
       <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
-      <ThreeDotsButton className={styles.dots} onClick={openModal}/>
+      <ThreeDotsButton className={styles.dots} onClick={openModal} onMouseEnter={openModal}/>
       {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
           <CvVcOptionsModal isLast={isLast} onClose={()=>openDropDown(false)} outerData={{cv: cv}}>

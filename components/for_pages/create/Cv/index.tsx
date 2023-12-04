@@ -58,14 +58,13 @@ export default function Cv(props: Props) {
     // animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']
   })
 
-
   const router = useRouter()
   const {progress, setProgress} = creationContext
   const CVItemsCount = 7
 
   const submit = (data: ICVCreate) => {
     setLoading(true)
-    const {activeSources, languageKnowledges, skills, categoryIds} = creationContext?.helpObjects
+    const {activeSources, languageKnowledges, skills, categoryIds, activeGeos} = creationContext?.helpObjects
 
     if(!categoryIds||categoryIds?.length === 0) {
       setProgress(1)
@@ -79,12 +78,13 @@ export default function Cv(props: Props) {
       salary: Number(data.salary),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
-      categoriesIds: categoryIds.map(el=>el.id)
+      categoriesIds: categoryIds.map(el=>el.id),
+      geosIds: [...activeGeos.keys()]
     }
    
     if(props.id) {
       CvRepository.updateCV(props.id, sendData)
-      .then(res=>{
+      .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         creationContext.reset()
         router.replace('/profile?page=cvs')      
@@ -95,7 +95,7 @@ export default function Cv(props: Props) {
     }
     else {
       CvRepository.createCV(sendData)
-      .then(res => {
+      .then(_ => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         creationContext.reset()
         router.replace('/profile?page=cvs')  
@@ -106,8 +106,6 @@ export default function Cv(props: Props) {
       })
     }
   }
-
-  
 
   const initialValues:ICVCreate  = {
     firstName: userContext.currentProfile?.firstName,
@@ -135,13 +133,14 @@ export default function Cv(props: Props) {
     nativeLanguage: props.cv?.nativeLanguage||userContext.user?.language||Languages.ru,
     categoriesIds: props.cv?.categoriesIds||null,
     sourcesIds: props.cv?.sourcesIds||null,
+    geosIds: props.cv?.geosIds||null,
     salary: props.cv?.salary||null,
     schedule: props.cv?.schedule||ScheduleType.FullDay, 
     employment: props.cv?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.cv?.languageKnowledges||null, 
     published: props.cv?.published||true,
     portfolio: props.cv?.portfolio||'',
-    geosIds: []
+
   }
 
   const formik = useFormik({
@@ -257,7 +256,6 @@ export default function Cv(props: Props) {
     }
   }
 
-
   useEffect(()=>{
     if(props.id) {
       creationContext.getCurrentCv(props.id, props.cv)
@@ -268,7 +266,6 @@ export default function Cv(props: Props) {
       creationContext.setHelpObjects({})
       creationContext.reset()    
     }
-   
   }, [])
 
   useEffect(()=>{
@@ -287,7 +284,7 @@ export default function Cv(props: Props) {
 
   return <div className={styles.root}>
     {/* <RiveComponent className={styles.rive}/> */}
-    <Rive src={getImage().src} animations={getImage().animations}  key={progress} className={styles.rive}/>
+    <Rive src={getImage().src} animations={getImage().animations}  key={getImage().src} className={styles.rive}/>
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth && 
@@ -299,7 +296,6 @@ export default function Cv(props: Props) {
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 
-
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
               <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
@@ -313,7 +309,6 @@ export default function Cv(props: Props) {
           </div>
         </Form>
       </FormikProvider>
-      
     </div>
   </div>
 }

@@ -26,6 +26,17 @@ export default class CvRepository {
     return res
   }
 
+  static async getGeos(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/geo',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
 
   /*
   передаю токен и профайл для удобного редактирования резюме - 

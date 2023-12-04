@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 import SavedMedia from '../../Media'
 import { MediaWrapper } from 'context/media_state'
 import { CharacterWrapper } from 'context/character_state'
+import { CoursesWrapper } from 'context/courses_state'
 
 interface Props {
 }
@@ -38,7 +39,7 @@ export default function Saved(props: Props) {
     {
       activeItem===SavedNavigation.CVS&& <CharacterWrapper><SavedCVs/></CharacterWrapper>
       ||
-      activeItem===SavedNavigation.Courses&&<SavedCourses/>
+      activeItem===SavedNavigation.Courses&&<CoursesWrapper><SavedCourses/></CoursesWrapper>
       ||
       activeItem===SavedNavigation.Media&&
       <MediaWrapper>

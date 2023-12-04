@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Spinner from 'components/ui/Spinner'
 import { IButton } from 'types/types'
 import usePressAndHover from 'hooks/usePressAndHover'
-import { ReactElement, RefObject } from 'react'
+import { MouseEventHandler, ReactElement, RefObject } from 'react'
 import useStopPropagation from 'hooks/useStopPropagation'
 
 interface Props extends IButton {
@@ -22,6 +22,7 @@ interface Props extends IButton {
   icon?: ReactElement
   title? : string
   isProcess?: boolean
+  onMouseEnter?: MouseEventHandler
 }
 
 export default function Button(props: Props) {
@@ -76,6 +77,14 @@ export default function Button(props: Props) {
         }
         if (props.onClick && !props.spinner && !props.disabled) {
           props.onClick(e)
+        }
+      }}
+      onMouseEnter={(e) => {
+        if (props.stopPropagation) {
+          e.stopPropagation()
+        }
+        if (props.onMouseEnter && !props.spinner && !props.disabled) {
+          props.onMouseEnter(e)
         }
       }}
       disabled={props.disabled}

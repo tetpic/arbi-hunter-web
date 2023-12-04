@@ -119,7 +119,7 @@ export default function MediaPage(props: Props) {
     }
   }, [router])
 
-  return (<div className={styles.root} > 
+  return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
       <div className='container'>
         <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
@@ -127,7 +127,7 @@ export default function MediaPage(props: Props) {
           <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
         }
       </div>
-      <div className={styles.bodyWrapper} id={'scrollable'}>
+      <div className={styles.bodyWrapper}>
           <SearchBar className={styles.searchBar}/>
           <MediaWrapper>
           {body}
@@ -135,7 +135,7 @@ export default function MediaPage(props: Props) {
       </div>
     </div>
     {!isTabletWidth && 
-      <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
+      <Navigation wrapperClassName={styles.nav} setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
     }
   </div>)
 }

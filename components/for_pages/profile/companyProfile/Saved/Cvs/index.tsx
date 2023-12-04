@@ -1,5 +1,4 @@
 import { useCvContext } from 'context/cv_state'
-import Scrollbars from 'rc-scrollbars'
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import CvItem from 'components/ui/CvItem'
@@ -23,13 +22,11 @@ export default function SavedCVs() {
   }, [])
 
   const onChangeItem = (c: ICV) => {
-    
     cvContext.removeCvfromSaved(c.id)
   }
 
   return (
     <div className={styles.root}> 
-    <Scrollbars universal style={{height: '100%'}}>
       <div className={styles.wrapper}>
         {!load && cvContext.savedCvs.length > 0&&cvContext.savedCvs.map(el => {
           return <CvItem onChangeItem={()=> onChangeItem(el)} cv={el} key={el.id}/>
@@ -41,7 +38,6 @@ export default function SavedCVs() {
         }
       </div>
       <Spacer basis={24}/>
-    </Scrollbars>
   </div>
   )
 }

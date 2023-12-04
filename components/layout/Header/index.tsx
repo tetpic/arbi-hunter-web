@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { ProfileType } from 'data/interfaces/IRegistration'
+import { ProfileType } from 'data/interfaces/IRegistration' 
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
@@ -36,9 +36,6 @@ export default function Header(props: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
-
-
-
   /*очень странный сайд эффект... 
   что при смене профиля, 
   когда появляется currentProfile, 
@@ -48,7 +45,6 @@ export default function Header(props: Props) {
   }, [userContext.currentProfile])
 
   const router = useRouter()
-
   const regPath = '/registration'
   const loginPath = '/login'
 
@@ -68,7 +64,6 @@ export default function Header(props: Props) {
         setDirection('up')
       }
     }
-  
   }, [props.distanceFromTop])
 
   return ( 

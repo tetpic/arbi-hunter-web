@@ -12,6 +12,7 @@ interface Props<T extends string> {
   navSet?: NavigationSet<T>[]
   onClickHandler?: ()=>void
   rootClassName?: string,
+  wrapperClassName?: string
   bottomItem?: JSX.Element
 }
 
@@ -30,7 +31,7 @@ export default function Navigation<T extends string>(props: Props<T>) {
     {isTabletWidth &&
     <TitleForSection title={'Настройка профиля'} onBackClick={()=>{router.back()}}/>
     }
-    <nav className={styles.wrapper}>
+    <nav className={classNames(styles.wrapper, props.wrapperClassName)}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {
         return (
           <NavigationItem 

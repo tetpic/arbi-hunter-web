@@ -12,7 +12,9 @@ interface HelpObject {
   skills?: Map<number, ISource>,
   languageKnowledges?: Map<string, ILanguageKnowledge>,
   sources?: ISource[]
+  geos?: ISource[]
   activeSources?: Map<number, ISource>
+  activeGeos?: Map<number, ISource>
   cityId?: number
   countryId?: number,
   categoryIds?: ISpecializationCategory[]
@@ -46,7 +48,6 @@ interface IState {
   reset: ()=>void
 
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
-
 }
 
 
@@ -60,13 +61,15 @@ export function CreateVcCvWrapper(props: Props) {
   const userContext = useUserContext()
 
   const initialHelpObject: HelpObject = {
-    activeSources: new Map, 
-    skills: new Map, 
-    languageKnowledges: new Map, 
+    activeSources: new Map,
+    activeGeos: new Map,
+    geos: [],
+    skills: new Map,
+    languageKnowledges: new Map,
     sources: [],
     cityId: userContext.currentProfile?.cityId,
     countryId: userContext.currentProfile?.countryId,
-    categoryIds: []
+    categoryIds: [],
   }
 
   const [currentCv, setCv] = useState<ICVCreate>()
@@ -131,8 +134,6 @@ export function CreateVcCvWrapper(props: Props) {
       
       setHelp(state=>{return {...state, 
         categoryIds: vcItem.categories,   
-        // cityId: vcItem.cityId,
-        // countryId: vcItem.countryId,
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
         languageKnowledges: new Map(vcItem?.languageKnowledges?.map(el=>[el.language, el])),
         activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
@@ -145,11 +146,10 @@ export function CreateVcCvWrapper(props: Props) {
       const cvItem = item as ICV
       setHelp(state=>{return {...state, 
         categoryIds: cvItem.categories,   
-        // cityId: cvItem.cityId,
-        // countryId: cvItem.countryId,
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),
         languageKnowledges: new Map(cvItem.languageKnowledges?.map(el=> [el.language, el])),
-        activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el]))
+        activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el])),
+        activeGeos: new Map(cvItem?.geos&&cvItem?.geos?.map(el=> [el.id, el]))
       }})
       setCv(state=> {return {...state, ...item,
         categoriesIds: item.categories.map(el=> el.id)

@@ -9,7 +9,11 @@
   column-gap: 10px;
   border: 2px $grey solid;
   font-size: $mediumText;
-  text-transform: capitalize;
+  span {
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
 }
 
 .crossSvg {

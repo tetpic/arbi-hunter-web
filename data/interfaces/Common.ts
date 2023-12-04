@@ -116,6 +116,8 @@ export interface ISpecializationCategory extends TimeStamp {
   maxVacanciesSalary?: number|null,
   minCVsSalary?: number|null,
   maxCVsSalary?: number|null,
+  withGeos?: boolean,
+  withSources?: boolean
 }
 
 

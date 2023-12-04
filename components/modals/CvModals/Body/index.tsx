@@ -11,11 +11,10 @@ interface Props {
   onClose: () => void
   onSave: () => void
   children: ReactElement | ReactElement[]
-  title: string
+  title?: string
   placeholder?: string
   withInput?: boolean|undefined
   disabledButton?: boolean|undefined
-
 }
 
 export default function Body(props: Props) {

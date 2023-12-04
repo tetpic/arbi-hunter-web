@@ -1,57 +1,39 @@
 import styles from './index.module.scss'
 
-import FolderSvg from 'components/svg/FolderSvg'
-import PlayButtonSvg from 'components/svg/PlayButtonSvg'
-import StarSvg from 'components/svg/StarSvg'
-import UserSvg from 'components/svg/UserSvg'
-import FavoritesButton from 'components/ui/FavoritesButton'
-import Image from 'next/image'
-import Scrollbars from 'react-custom-scrollbars-2'
+import CourseItem from 'components/ui/CourseItem'
+import Spinner from 'components/ui/Spinner'
+import { useCoursesContext } from 'context/courses_state'
+import { useEffect, useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 interface Props {
 }
 
-interface ItemProps {
-  image?: string
-}
 
-
-function Item(props: ItemProps) {
-  return (
-  <div className={styles.item}>
-    <div className={styles.top}>
-      <div className={styles.imageWrapper}>
-        { 
-          props.image &&<Image src={props.image} alt={'courses image'}/>
-          ||
-          <FolderSvg/>
-        }
-      </div>
-      <p className={styles.badge}>Разработка</p>
-      <FavoritesButton className={styles.heartButton}/>
-    </div>
-    <div className={styles.bottom}>
-      <p className={styles.lessonsCount}><PlayButtonSvg/>10 уроков</p>
-      <p className={styles.courseName}>Веб-дизайн начальный и средний уровень</p>
-      <p className={styles.price}>от 3 589 ₽/месяц</p>
-      <p className={styles.rating}><span><UserSvg className={styles.userSvg}/>1560 учеников</span> <span><StarSvg className={styles.starSvg}/>4,9 из 5 </span></p>
-    </div>
-
-  </div>
-  )
-}
 
 export default function SavedCourses(props: Props) {
+  const [page, setPage] = useState<number>(1)
+  const courseCountext = useCoursesContext()
+
+  useEffect(()=>{
+    courseCountext.setCourses({started: true, page})
+  }, [page])
 
   return (<div className={styles.root}> 
-  <Scrollbars style={{height: '100%'}}  autoHide universal>
-    <div className={styles.wrapper}>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-    </div>
-  </Scrollbars>
-
+    <InfiniteScroll
+    next={()=>setPage(p => p+1)}
+    hasMore={courseCountext?.startedCourses?.size < courseCountext.startedCoursesTotal}
+    loader={<Spinner size={24}/>}  
+    scrollableTarget={'scrollable'}
+    dataLength={courseCountext?.startedCourses?.size}  
+    >
+      <div className={styles.wrapper}>
+        {courseCountext?.startedCourses?.size > 0 &&
+        [...courseCountext.startedCourses.values()].map(course =>{
+          return (<CourseItem className={styles.item} course={course}/>)
+        })
+        }
+      </div>
+    </InfiniteScroll>
   </div>)
 }
