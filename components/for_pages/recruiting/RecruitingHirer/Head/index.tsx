@@ -2,17 +2,86 @@ import styles from './index.module.scss'
 
 import Image from 'next/image'
 import tower from 'images/recruiting/tower.png'
-import resumes from 'images/recruiting/resumes.png'
 import Button from 'components/ui/Button'
+import { useEffect, useRef, useState } from 'react'
+import anime from 'animejs'
+import Formatter from 'utils/formatter'
+
 
 
 interface Props {
 }
 
+const sources = [
+  '/images/avatars/7.png',
+  '/images/avatars/6.png',
+  '/images/avatars/1.png',
+  '/images/avatars/8.png',
+  '/images/avatars/2.png',
+  '/images/avatars/5.png',
+  '/images/avatars/3.png',
+  '/images/avatars/4.png',
+]
+
 export default function Head(props: Props) {
+  const [randomSource, setRandomSource] = useState<string>(sources[0])
+  const animationItemRef = useRef<ReturnType<typeof anime>>(null!)
+  const svgPath = useRef<SVGPathElement>(null!)
+  const imageRef = useRef<HTMLImageElement>(null!)
+
+  useEffect(()=>{
+    const path = anime.path(svgPath.current)
+    const tlRotate = anime.timeline({
+      easing: 'linear',
+      autoplay: true,
+      loop: true,
+      loopComplete: ()=> {
+        setRandomSource(Formatter.randomElementsFromArray<string>(sources, 1)[0])
+      }
+    })
+    .add({
+      targets: imageRef.current,
+      translateX: path('x'),
+      translateY: path('y'),
+      rotate: path('angle'),
+      scale: [0.6, 1, 0.2],
+      duration: 3500,
+    }, 0)
+    .add({
+      targets: imageRef.current,
+      opacity: [0, 1],
+      
+      duration: 200,
+    }, 1850)
+   
+   .add({
+      targets: imageRef.current,
+      opacity: [1, 0],
+      duration: 250,
+    }, 3050)
+    animationItemRef.current = tlRotate
+  }, [])
+
 
   return (<section className={styles.head}>
-    <Image className={styles.resumes} src={resumes} alt={'resumes'}/>
+    <svg style={{opacity: 0, position: 'absolute'}} width="901" height="281" viewBox="0 0 901 281" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path  ref={svgPath} d="M899.364 49.4795C902.281 63.8679 892.753 80.2319 872.609 97.5525C852.5 114.842 821.968 132.948 783.279 150.806C705.909 186.518 596.023 221.191 471.964 246.348C347.904 271.505 233.192 282.378 148.022 279.627C105.433 278.251 70.2591 273.469 45.0042 265.378C19.7037 257.273 4.55359 245.914 1.63584 231.525C-1.28191 217.137 8.24633 200.773 28.3908 183.452C48.4991 166.163 79.0316 148.057 117.721 130.199C195.091 94.4866 304.977 59.8142 429.036 34.6568C553.095 9.49943 667.807 -1.37318 752.977 1.37831C795.566 2.7542 830.74 7.53605 855.995 15.6265C881.296 23.7316 896.446 35.0911 899.364 49.4795Z" stroke="black"/>
+    </svg>
+    <div className={styles.resumes}>
+      <div className={styles.back}>
+        {sources.slice(0,4).map((el, index)=> {
+          return <Image className={styles[`img${index+1}`]} src={el} width={60} height={60} alt='1'/>
+        })}
+      </div>
+      <div className={styles.front}>
+      {sources.slice(4,8).map((el, index)=> {
+        return <Image className={styles[`img${index+1}`]} src={el} width={60} height={60} alt='1'/>
+      })}
+      </div>
+      <Image  className={styles.randomImg} ref={imageRef} src={randomSource} alt='random' width={64} height={64}/>
+
+    </div>
+    {/* <Image className={styles.resumes} src={resumes} alt={'resumes'}/> */}
     <Image className={styles.tower} src={tower} alt={'tower'}/>
     <h6 className={styles.title}>
       Разместите вакансию <br />

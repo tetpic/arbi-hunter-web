@@ -21,14 +21,13 @@ export default function Reasons(props: Props) {
           new scrollmagic.Scene({
             triggerElement: triggerRef.current,
             duration: 900,
-            offset: 150
+            offset: -200
             
           })
           .on('enter', ()=> {
             document.querySelectorAll(`.${styles.bucket}`).forEach(el=> el.classList.add(`${styles.bucket_active}`))
           })
-          // .setClassToggle(`.${styles.bucket}`,  `${styles.bucket_active}`)
-            .addTo(controller)
+          .addTo(controller)  
         }
       }
       load()

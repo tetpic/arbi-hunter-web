@@ -20,7 +20,7 @@ export default class CoursesRepository {
 
 
   //передаем токен и профиль при запросе с сервера, для красивого заголовка страницы
-  static async getCourseById(id: number, profile?: ProfileType, token?: string): Promise<ICourse|null> {
+  static async getCourseById(id: number, profile?: ProfileType, token?: string): Promise<null> {
     const res = await request({
       method: 'get',
       url: `/api/course/${id}`,
@@ -32,6 +32,28 @@ export default class CoursesRepository {
     }
     return res
   }  
+
+  static async removeFromSaved(courseId: number): Promise<null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/course/${courseId}/removeFromSaved`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async saveCourse(courseId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/course/${courseId}/save`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 
   static async getCourses(data: CoursesData, lang: Languages): Promise<IPagination<ICourse>|null> {
     // const object = {

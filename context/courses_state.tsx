@@ -9,12 +9,13 @@ import { useUserContext } from './user_state'
 
 interface IState {
   courses: Map<number, ICourse>
-  startedCourses: Map<number, ICourse>
   coursesTotal: number
-  startedCoursesTotal: number
   currentCourse: ICourse
   setCourses: (data: CoursesData, courses?: ICourse[]) => void
   setCurrentCourse: (id: number, course?: ICourse) => Promise<boolean>
+  startedCourses: Map<number, ICourse>
+  startedCoursesTotal: number
+
 
   courseModules: Map<ICourseBlock, ICourseBlock[]>
   setCourseModules: (courseId: number, modules?: ICourseBlock[])=> Promise<boolean>
@@ -31,7 +32,8 @@ interface IState {
   allModulesRef: MutableRefObject<ICourseBlock[]>
 
   courseInit: () => Promise<boolean>
-  loading: boolean
+  blocksLoading: boolean
+  courseLoading: boolean
 
   coursesNews: IArticle[]
   setCoursesNews: (courseId: number, page: number)=>void
@@ -68,8 +70,6 @@ export function CoursesWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<any[]>([])
   const [courses, setCoursesState] = useState<Map<number, ICourse>>(new Map)
   const [coursesTotal, setCoursesTotal] = useState<number>(0)
-  const [startedCourses, setStartedCourse] = useState<Map<number, ICourse>>(new Map)
-  const [startedCoursesTotal, setStartedCourseTotal] = useState<number>(0)
   const [currentCourse, setCurrentCourseState] = useState<ICourse>()
   const [courseModules, setCourseModulesState] = useState<Map<ICourseBlock, ICourseBlock[]>>(new Map())
   const [courseBlocks, setBlocksState] = useState<Map<ICourseBlock, ICourseStep[]>>(new Map())
@@ -78,7 +78,11 @@ export function CoursesWrapper(props: Props) {
   const [courseStats, setCoursesStats] = useState<ICourseStats>()
   const [activeBlock, setActiveBlock] = useState<ICourseBlock>()
   const [activeStep, setActiveStep] = useState<ICourseStep>()
-  const [loading, setLoading] = useState<boolean>(true)
+  const [blocksLoading, setBlocksLoading] = useState<boolean>(true)
+  const [courseLoading, setCourseLoading] = useState<boolean>(true)
+  const [startedCourses, setStartedCourse] = useState<Map<number, ICourse>>(new Map)
+  const [startedCoursesTotal, setStartedCourseTotal] = useState<number>(0)
+
 
   const allStepsRef = useRef<ICourseStep[]>([])
   const allBlocksRef = useRef<ICourseBlock[]>([])
@@ -121,6 +125,8 @@ export function CoursesWrapper(props: Props) {
       .then(res=>{
         setState(res.data, data.started)
         data.started?setStartedCourseTotal(res.total):setCoursesTotal(res.total)
+
+        setCourseLoading(false)
       })
     }
   }
@@ -231,7 +237,7 @@ export function CoursesWrapper(props: Props) {
     setActiveStep(initialStep)
 
 
-    setLoading(false)
+    setBlocksLoading(false)
     return true
   }
 
@@ -324,9 +330,10 @@ export function CoursesWrapper(props: Props) {
 
     coursesNews,
     setCoursesNews,
-
+    
     setStepAnswer,
-    loading,
+    blocksLoading,
+    courseLoading,
 
     feedBacks,
     setFeedbacks,
@@ -336,7 +343,7 @@ export function CoursesWrapper(props: Props) {
     courseInit,
 
     courseStats,
-    getCourseFeedbackStats
+    getCourseFeedbackStats,
   }
 
   return (

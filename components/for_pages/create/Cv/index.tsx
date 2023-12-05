@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
@@ -256,6 +256,11 @@ export default function Cv(props: Props) {
     }
   }
 
+  const memoedRive = useMemo(()=>{
+    const image = getImage()
+    return <Rive src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
+  }, [progress])
+
   useEffect(()=>{
     if(props.id) {
       creationContext.getCurrentCv(props.id, props.cv)
@@ -283,8 +288,8 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
+    {memoedRive}
     {/* <RiveComponent className={styles.rive}/> */}
-    <Rive src={getImage().src} animations={getImage().animations}  key={getImage().src} className={styles.rive}/>
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth && 

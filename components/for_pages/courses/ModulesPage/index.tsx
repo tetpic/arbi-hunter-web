@@ -115,7 +115,7 @@ export default function ModulesPage() {
   return (
   <div className={styles.root}> 
     <div className={styles.body}>
-     {!courseContext.loading && 
+     {!courseContext.blocksLoading && 
      <> {isTabletWidth&&
         <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)} bgColor={'transparent'}/>
         ||
@@ -123,7 +123,7 @@ export default function ModulesPage() {
       }
       <div className={styles.titleWrapper}>
         <h2 className={styles.title}>{courseContext.activeBlock?.translations[0]?.title}</h2>
-        {progressLimit > 1 && !courseContext.loading && 
+        {progressLimit > 1 && !courseContext.blocksLoading && 
           <ProgressBar itemClassName={styles.progressItem} progress={progress} pointsCount={progressLimit} onClick={progressHandler}/>
         }
       </div>
@@ -142,7 +142,7 @@ export default function ModulesPage() {
       <Spinner size={34} color={colors.yellow}/>
       }
     </div>
-    {!isTabletWidth && !courseContext.loading &&
+    {!isTabletWidth && !courseContext.blocksLoading &&
       <ModulesNavigation 
       activeBlock={courseContext.activeBlock} 
       activeStep={courseContext.activeStep}

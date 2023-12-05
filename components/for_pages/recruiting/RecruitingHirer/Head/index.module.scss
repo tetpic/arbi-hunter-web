@@ -71,6 +71,61 @@
 .resumes {
   left: -40px;
   top: 20px;
+  width: 400px;
+  height: 400px;
+  z-index: 3;
+}
+
+.back, .front {
+  position: absolute;
+  top: calc(50% - 100px) ;
+  left: calc(50% - 100px) ;
+  width: 200px;
+  height: 200px;
+
+  img {
+    position: absolute;
+  }
+  .img1{
+    top: 0;
+    left: 0;
+  }
+
+  .img2{
+    top: 0;
+    right: 0;
+  }
+
+  .img3{
+    bottom: 0;
+    left: 0;
+  }
+
+  .img4 {
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.back {
+  animation: rotation 7s linear infinite reverse;
+  z-index: 3;
+
+  img {
+    animation: rotation 7s linear infinite;
+  }
+}
+
+.front {
+  animation: rotation 16s linear infinite reverse;
+  scale: (0.7);
+  filter: blur(10px);
+  z-index: 2;
+
+  img {
+    animation: rotation 16s linear infinite ;
+  }
+
 }
 
 .tower {
@@ -78,3 +133,15 @@
   right: -50px;
 }
 
+.randomImg {
+  position: absolute;
+  bottom: 70%;
+  left: 30%;
+}
+
+
+@keyframes rotation {
+  100% {
+    rotate: 360deg;
+  }
+}

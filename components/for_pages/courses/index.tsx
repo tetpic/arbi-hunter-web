@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import Image from 'next/image'
-import courseImage from '../../../images/courses-main.webp'
 import { useCoursesContext } from 'context/courses_state'
 import { useEffect } from 'react'
 import Formatter from 'utils/formatter'
@@ -53,7 +52,8 @@ export default function CoursesMain(props: Props) {
       </div>
       
       <div className={styles.imageWrapper}>
-        <Image className={styles.coursesImage} src={courseImage} alt={'courses image'}/>
+        <Image className={styles.coursesImage} src={'/images/courses/head.png'} width={340} height={340} alt={'courses image'}/>
+        <Image className={styles.coursesImage} src={'/images/courses/paper.png'} width={340} height={340} alt={'courses image'}/>
       </div>
     </div>
     {!isTabletWidth &&

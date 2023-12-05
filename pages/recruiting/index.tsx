@@ -15,7 +15,6 @@ interface Props extends Query {
   profileType?: ProfileType
   auth?: boolean
 }
-//export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
   const token = context.req.cookies[CookiesType.accessToken]||null
   const profile = context.req.cookies[CookiesType.profileType]||null

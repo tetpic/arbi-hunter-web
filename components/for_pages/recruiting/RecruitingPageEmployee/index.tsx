@@ -2,22 +2,22 @@ import styles from './index.module.scss'
 
 import SearchBar from 'components/ui/SearchBar'
 import Link from 'next/link'
-// import recEmpImage from 'images/recruiting/recruiting_employee_page.png'
-// import Image from 'next/image'
 import { useVacancyContext } from 'context/vacancy_state'
-import { useEffect, useState } from 'react'
-import Spinner from 'components/ui/Spinner'
+import { useEffect, useMemo, useState } from 'react'
 import Formatter from 'utils/formatter'
 import Filters from '../Filters'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
-import VacancyItem from 'components/ui/VacancyItem'
 import Rive from '@rive-app/react-canvas'
+import PageVacancies from './PageVacancies'
+import React from 'react'
 
 interface Props {
 }
+
+
 
 export default function RecruitingPageEmployee(props: Props) {
   const vacancyContext = useVacancyContext()
@@ -46,15 +46,16 @@ export default function RecruitingPageEmployee(props: Props) {
     cvContext.setSavedCvs()
   }, [])
 
+  const memoedRive = useMemo(()=><Rive 
+  key={1}
+  src={'/rive/cv_laptop.riv'} 
+  animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+  className={styles.image}/>, [])
 
   return (<div className={styles.root}> 
   <div className={styles.top}>
     <div className={styles.back}>
-      <Rive 
-      src={'/rive/cv_laptop.riv'} 
-      animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
-      className={styles.image}/>
-
+      {memoedRive}
     </div>
     <p className={styles.title}>Найти работу в ArbiHunter</p>
     <p className={styles.description}>
@@ -77,15 +78,7 @@ export default function RecruitingPageEmployee(props: Props) {
     </div>
 
     <div className={styles.vacancies}>
-      {loading &&
-        <Spinner size={24} />
-        ||
-        !loading && vacancyContext.foundVacancies?.length > 0 && vacancyContext.foundVacancies?.map(vacancy=> {
-          return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies(currentFilters)}/>
-        })
-        ||
-        <p className='empty'>Нет найденных вакансий</p>
-      }
+      <PageVacancies filters={currentFilters} onChange={findVacancies} loading={loading} vacancies={vacancyContext.foundVacancies}/>
     </div>
   </div>
   </div>)

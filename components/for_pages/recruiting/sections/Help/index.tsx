@@ -21,7 +21,7 @@ export default function Help(props: Props) {
           const controller = new scrollmagic.Controller()
           new scrollmagic.Scene({
             triggerElement: triggerRef.current,
-            offset: 50
+            offset: -250
           })
           .on('enter', ()=> {
             document.querySelectorAll(`.${styles.image}`).forEach(el=> el.classList.add(`${styles.image_active}`))

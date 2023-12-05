@@ -149,7 +149,7 @@ export default function Feedbacks() {
             <p className={styles.counter}>
               {itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')} недоступно
             </p>
-            <p className={styles.descriptions}>Соискатель скрыл или удалил свое резюме</p>
+            <p className={styles.descriptions}>Работадатель скрыл или удалил вакансию</p>
           </div>
         }
         {

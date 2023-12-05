@@ -29,6 +29,8 @@ import ModulesSvg from 'components/svg/ModulesSvg'
 import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
 import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 import { useAppContext } from 'context/state'
+import CoursesRepository from 'data/repositories/CoursesRepository'
+import { SnackbarType } from 'types/enums'
 
 interface Props {
   id: number
@@ -68,7 +70,24 @@ export default function CurrentCourse(props: Props) {
   const pager = (p: CurrentCoursesNav) => {
     setPage(p)    
   }
-  
+
+  const saveCurrentCourse = () => {
+    if(currentCourse.isSavedByCurrentProfile) {
+      CoursesRepository.removeFromSaved(props.id)
+      .then(_=> {
+        setCurrentCourse(props.id)
+        appContext.showSnackbar('Курс больше не сохранен.', SnackbarType.success)
+      })
+    }
+    else {
+      CoursesRepository.saveCourse(props.id)
+      .then(_=>{
+        setCurrentCourse(props.id)
+        appContext.showSnackbar('Курс добавлен в сохраненные.', SnackbarType.success)
+      })
+    }
+  }
+
   const availablePages = Object.values(CurrentCoursesNav)
 
   const navSet = useCallback(((): NavigationSet<CurrentCoursesNav>[] => {
@@ -155,8 +174,8 @@ export default function CurrentCourse(props: Props) {
               <ShareSvg/>
             </Button>
             {!isTabletWidth &&
-            <Button className={styles.iconButton} >
-              <BookMarkSvg/>
+            <Button className={styles.iconButton} onClick={()=>saveCurrentCourse()}>
+              <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
             </Button>
             ||
             <BackBtn className={styles.iconButton} onClick={()=>{router.push('/courses/')}} bgColor={'transparent'}/>

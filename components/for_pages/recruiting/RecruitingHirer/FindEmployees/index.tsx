@@ -23,10 +23,10 @@ export default function FindEmployees(props: Props) {
           new scrollmagic.Scene({
             triggerElement: triggerRef.current,
             duration: 900,
-            offset: 0
+            offset: -300
           })
           .on('enter', ()=> {
-            document.querySelectorAll(`.${styles.image}`).forEach(el=> el.classList.add(`${styles.image_active}`))
+            document.querySelectorAll(`.${styles.image}`).forEach((el, index)=> el.classList.add(styles.image_active, styles['image_'+(index+1).toString()]))
           })
             .addTo(controller)
         }

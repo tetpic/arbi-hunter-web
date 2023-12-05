@@ -2,6 +2,8 @@
 
 .root {
   padding-bottom: 90px;
+  margin-top: 82px;
+
 }
 
 .sectionTitle {
@@ -10,7 +12,6 @@
   @include container;
   @include mq($TabletWidth, max) {
     justify-content: space-between;
-    margin-top: 40px;
   }
 
   &_noLink {
@@ -55,13 +56,49 @@
   grid-area: image;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  &:before {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    background: $gradient;
+    width: 400px;
+    height: 400px;
+    opacity: .3;
+    filter: blur(70px);
+  }
+  img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    scale: .3;
+    rotate: 5deg;
+    opacity: 0;
+    &:nth-of-type(1) {
+      animation: imageAppear .3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: .7s;
+    }
+    &:nth-of-type(2) {
+      animation: imageAppear .3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: .9s;
+    }
+  }
   @include mq($TabletWidth, max) {
     img {
       width: 100%;
       height: unset;
-
     }
+  }
+}
+
+@keyframes imageAppear {
+  100%{
+    rotate: 0deg;
+    scale: 1;
+    opacity: 1;
   }
 }
 

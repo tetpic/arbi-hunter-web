@@ -8,7 +8,8 @@ export interface CoursesData {
   isStarted?: boolean|null, 
   search?: string|null, 
   categories?: number[]|null
-  started?: boolean
+  started?: boolean,
+  savedByCurrentProfile?: boolean
 }
 
 export interface IAuthor {
@@ -57,6 +58,7 @@ export default interface ICourse extends CategoryTranslation {
   benefits: string,
   translations: CategoryTranslation[],
   certificate: ICertificate
+  isSavedByCurrentProfile?: boolean
 }
 
 export interface ICourseBlockTranslation extends TimeStamp {
