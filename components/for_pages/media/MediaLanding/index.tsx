@@ -59,7 +59,7 @@ export default function MediaLanding(props: Props) {
       className={styles.title}
       emoji={!isTabletWidth && <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/>}
       title={isTabletWidth?'Подборки':'Подборки для вас'} 
-      link={'/compilations'}
+      link={'/media/page?page=categories'}
       />
       <MediaCompilation newsCompilations={props.newsCompilations}/>
       <MediaCrypto/>

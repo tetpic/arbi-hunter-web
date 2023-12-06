@@ -91,7 +91,7 @@ export default function MediaPage(props: Props) {
       case MediaPageNav.Subscriptions:
         return 'Мои подписки'
       case MediaPageNav.Categories:
-        return currentCategory.name
+        return currentCategory?.name||props.categories[0].name
       case MediaPageNav.Communities:
         return 'Сообщества'
     }

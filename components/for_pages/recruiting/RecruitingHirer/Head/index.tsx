@@ -3,9 +3,8 @@ import styles from './index.module.scss'
 import Image from 'next/image'
 import tower from 'images/recruiting/tower.png'
 import Button from 'components/ui/Button'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import anime from 'animejs'
-import Formatter from 'utils/formatter'
 
 
 
@@ -13,30 +12,61 @@ interface Props {
 }
 
 const sources = [
-  '/images/avatars/7.png',
-  '/images/avatars/6.png',
   '/images/avatars/1.png',
-  '/images/avatars/8.png',
   '/images/avatars/2.png',
-  '/images/avatars/5.png',
   '/images/avatars/3.png',
   '/images/avatars/4.png',
+  '/images/avatars/5.png',
+  '/images/avatars/6.png',
+  '/images/avatars/7.png',
+  '/images/avatars/8.png',
 ]
 
 export default function Head(props: Props) {
-  const [randomSource, setRandomSource] = useState<string>(sources[0])
+  // const [randomSource, setRandomSource] = useState<string>(sources[0])
   const animationItemRef = useRef<ReturnType<typeof anime>>(null!)
   const svgPath = useRef<SVGPathElement>(null!)
   const imageRef = useRef<HTMLImageElement>(null!)
+  const [activeImage, setActiveImage] = useState<[number, string]>([0, sources[0]])
+  const isLoad = useRef<boolean>(false)
+  const [imgIndexes, setImgIndexes] = useState<[number, number, number, number]>([1,2,3,4])
 
   useEffect(()=>{
+    let isExecuted = false
+    if(isExecuted || !isLoad) return
+    setImgIndexes(state=> {
+      if(isExecuted) return state
+      isExecuted = true
+      if(activeImage[0]> 3) {
+        const ind = (activeImage[0]-1<4)?3:activeImage[0]-5
+        state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
+      }
+      else {
+        const ind = (activeImage[0]-1<0)?3:activeImage[0]-1
+        state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
+      }
+      return state
+    }) 
+  }, [activeImage])
+
+  const animation = useCallback(()=> {
     const path = anime.path(svgPath.current)
     const tlRotate = anime.timeline({
       easing: 'linear',
       autoplay: true,
       loop: true,
-      loopComplete: ()=> {
-        setRandomSource(Formatter.randomElementsFromArray<string>(sources, 1)[0])
+      loopBegin: ()=> {
+        setTimeout(
+          ()=>{
+            setActiveImage(state => {
+              if(state[0] === 7) {
+                return [0, sources[0]]
+              }
+              else {
+                return [state[0]+1, sources[state[0]]]
+              }
+            })
+        }, 1000)
       }
     })
     .add({
@@ -45,21 +75,29 @@ export default function Head(props: Props) {
       translateY: path('y'),
       rotate: path('angle'),
       scale: [0.6, 1, 0.2],
-      duration: 3500,
+      duration: 2030,
     }, 0)
     .add({
       targets: imageRef.current,
       opacity: [0, 1],
       
       duration: 200,
-    }, 1850)
+    }, 1050)
    
    .add({
       targets: imageRef.current,
       opacity: [1, 0],
       duration: 250,
-    }, 3050)
+    }, 1750)
     animationItemRef.current = tlRotate
+
+  }, [])
+
+  useEffect(()=>{
+    if(!isLoad.current) {
+      animation()
+      isLoad.current = true
+    }
   }, [])
 
 
@@ -69,19 +107,19 @@ export default function Head(props: Props) {
     </svg>
     <div className={styles.resumes}>
       <div className={styles.back}>
-        {sources.slice(0,4).map((el, index)=> {
-          return <Image className={styles[`img${index+1}`]} src={el} width={60} height={60} alt='1'/>
+        {sources.map((el, index)=> {
+          if(index <4) return null
+          return <Image className={styles[`img${index-3}`]} src={el} width={60} height={60} alt='1'/>
         })}
       </div>
       <div className={styles.front}>
-      {sources.slice(4,8).map((el, index)=> {
-        return <Image className={styles[`img${index+1}`]} src={el} width={60} height={60} alt='1'/>
+      {imgIndexes.map((el, index)=> {
+        return <Image  className={styles[`img${index+1}`]} src={sources[el]} width={60} height={60} alt='1'/>
       })}
       </div>
-      <Image  className={styles.randomImg} ref={imageRef} src={randomSource} alt='random' width={64} height={64}/>
+      <Image  className={styles.randomImg} ref={imageRef} src={activeImage[1]} alt='random' width={64} height={64}/>
 
     </div>
-    {/* <Image className={styles.resumes} src={resumes} alt={'resumes'}/> */}
     <Image className={styles.tower} src={tower} alt={'tower'}/>
     <h6 className={styles.title}>
       Разместите вакансию <br />

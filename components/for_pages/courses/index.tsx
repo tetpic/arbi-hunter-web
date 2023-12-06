@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import Image from 'next/image'
 import { useCoursesContext } from 'context/courses_state'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import Formatter from 'utils/formatter'
 import { ICategory } from 'data/interfaces/Common'
 import Categories from './Categories'
@@ -16,6 +16,7 @@ import LinkBlack from 'components/ui/LinkBlack'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import classnames from 'classnames'
+import Link from 'next/link'
 
 
 interface Props {
@@ -31,6 +32,7 @@ export default function CoursesMain(props: Props) {
   const popularCourses = props.popularCourses
   const {isTabletWidth} = useResize()
 
+  const randomCategories = useMemo(()=>Formatter.randomElementsFromArray<ICategory>(coursesContext.categories, 4), [coursesContext.categories])
   
   useEffect(()=>{
     coursesContext.setCoursesCategories(props.categoryList)
@@ -45,8 +47,8 @@ export default function CoursesMain(props: Props) {
       <h1 className={styles.title}>Станьте<br/> востребованным<br/> специалистом</h1>
       <div className={styles.tagsWrapper}>
         {coursesContext.categories.length > 0 &&
-          Formatter.randomElementsFromArray<ICategory>(coursesContext.categories, 4).map(el=> {
-            return  <p className={styles.tag} key={el.id}>{el.name}</p>
+          randomCategories.map(el=> {
+            return  <Link  className={styles.tag} key={el.id} href={'/courses/compilations?page=categories&category='+el.id}>{el.name}</Link>
           })
         }
       </div>

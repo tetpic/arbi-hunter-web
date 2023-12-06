@@ -1,4 +1,3 @@
-// import styles from './index.module.scss'
 import { Bounds, Decal, Environment, OrthographicCamera, useGLTF, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -20,10 +19,6 @@ function PlanetModel(props: Props) {
   const texture6 = useTexture('/images/avatars/6.png')
   const texture7 = useTexture('/images/avatars/7.png')
   const texture8 = useTexture('/images/avatars/8.png')
-
-
-
-
 
   return (
     <group {...props} dispose={null}>
@@ -135,24 +130,13 @@ export default function Planet(props: Props) {
   return (
     <Canvas>
       <OrthographicCamera 
-      // view={{
-      //     enabled: true,
-      //     fullHeight: 450,
-      //     fullWidth: 450,
-      //     offsetX: 0,
-      //     offsetY: 0,
-      //     width: 450,
-      //     height: 450
-      // }} 
       makeDefault
-      // position={[10, 3, 7]} 
       zoom={30} 
       />
-      {/* <PerspectiveCamera makeDefault/> */}
       <Bounds fit clip observe damping={0} margin={1}>
         <PlanetModel/>
       </Bounds>
-      <OrbitControls maxZoom={30} minZoom={10} /*autoRotate*/  enablePan={false}/>
+      <OrbitControls maxZoom={30} minZoom={10} autoRotate enablePan={false}/>
       <Environment files="/models/skidpan.hdr"/>
     </Canvas>
   )

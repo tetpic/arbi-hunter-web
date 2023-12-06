@@ -116,7 +116,7 @@ export default function CoursesCompilations(props: Props) {
       </div>
     </div>
     {!isTabletWidth && 
-      <Navigation setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
+      <Navigation wrapperClassName={styles.nav} setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
     }
   </div>)
 

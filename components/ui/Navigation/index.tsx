@@ -16,6 +16,16 @@ interface Props<T extends string> {
   bottomItem?: JSX.Element
 }
 
+
+/**
+ * @setPage (p: T) => void
+ * @currentPage T
+ * @navSet  NavigationSet<T>[]
+ * @onClickHandler  ()=>void
+ * @rootClassName  string,
+ * @wrapperClassName  string
+ * @bottomItem  JSX.Element
+ */
 export default function Navigation<T extends string>(props: Props<T>) {
   const {isTabletWidth} = useResize()
   const router = useRouter()

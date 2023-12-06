@@ -200,3 +200,17 @@
     font-weight: $medium;
   }
 }
+
+.fileName {
+  color: $white;
+  font-size: $smallText;
+  font-weight: $medium;
+  position: absolute;
+  bottom: 20%;
+  left: 0;
+  width: 100%;
+  padding-inline: 4px;
+  word-break: break-all;
+  @include lineClamp(2)
+  
+}

@@ -12,6 +12,7 @@ import manyNfts from 'images/many_nfts.png'
 import bigS from 'images/bigS.png'
 import { useResize } from 'components/hooks/useResize'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import Link from 'next/link'
 
 
 interface Props {
@@ -24,7 +25,7 @@ function MediaCompilationItem(props: {el: ICategory, index: number}) {
   const {isTabletWidth} = useResize()
 
   return (
-    <div key={el.id} className={classNames(styles.item, index === 2&&!isTabletWidth&&styles.item_large)} style={{background: `linear-gradient(45deg, #${index===0&&'38BFAE'||index===1&&'AC37C8'||index===2&&'653ABC'}  30%, #${index===0&&'7D5CFF'||index===1&&'7D5CFF'||index===2&&'C2396D'} 100%)`}}>
+    <Link key={el.id} href={'/media/page?page=categories&category=' + props.el.id} className={classNames(styles.item, index === 2 && !isTabletWidth && styles.item_large)} style={{ background: `linear-gradient(45deg, #${index === 0 && '38BFAE' || index === 1 && 'AC37C8' || index === 2 && '653ABC'}  30%, #${index === 0 && '7D5CFF' || index === 1 && '7D5CFF' || index === 2 && 'C2396D'} 100%)` }} >
     <p className={styles.name}>{el.name}</p>
     <Button className={styles.button} ><span style={{color: `#${el.color}`}}>Читать {el.articlesCount} {Formatter.pluralize(+el.articlesCount, 'статью', 'статьи', 'статей')}</span></Button>
     <div className={styles.imageWrapper}>
@@ -49,7 +50,7 @@ function MediaCompilationItem(props: {el: ICategory, index: number}) {
 
       }
     </div>
-</div>
+</Link>
 
   )
 }
@@ -83,7 +84,7 @@ export default function MediaCompilation(props: Props) {
       
     </div>
     {!isTabletWidth &&
-      <LinkBlack href={'/compilations'} >Смотреть все</LinkBlack>
+      <LinkBlack href={'/media/page?page=categories'} >Смотреть все</LinkBlack>
     }
   </div>)
 }

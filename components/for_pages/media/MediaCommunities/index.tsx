@@ -24,7 +24,6 @@ export default function MediaCommunities(props: Props) {
   const swiper = useRef<SwiperRef>(null!)
   const {isTabletWidth} = useResize()
 
-
   return (<div className={styles.root}> 
   <div className={styles.content}>
     <Swiper

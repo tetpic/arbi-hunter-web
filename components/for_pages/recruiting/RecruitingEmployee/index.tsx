@@ -13,18 +13,23 @@ import Search from '../sections/Search'
 import Categories from '../sections/Categories'
 import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
 import Rive from '@rive-app/react-canvas'
+import { useMemo } from 'react'
 
 
 
 export default function RecruitingEmployee() {
+
+  const riveAnimation = useMemo(()=>{
+    return <Rive 
+    src={'/rive/cv_laptop.riv'} 
+    animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+    className={styles.image}/>
+  }, [])
   
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Rive 
-      src={'/rive/cv_laptop.riv'} 
-      animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
-      className={styles.image}/>
+     {riveAnimation}
 
       <h2 className={styles.title}>
         Найдите работу мечты 

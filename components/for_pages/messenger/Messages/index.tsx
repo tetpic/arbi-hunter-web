@@ -24,6 +24,8 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import classNames from 'classnames'
 import { ICV } from 'data/interfaces/ICV'
 import CvRepository from 'data/repositories/CvRepository'
+import folderImage from 'images/folder.png'
+import Image from 'next/image'
 
 
 
@@ -80,6 +82,14 @@ export default function Messages(props: Props) {
     }
   }
 
+  const addFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const items = e.target.files
+    for (let i = 0; i < items.length; i++) {
+      const fakeId = uuidv4()
+      setPastedImages(state => new Map([...state.entries(), [fakeId, items[i]]]))
+    }
+  }
+
   const removeHandler = (key: string) => {
     setPastedImages(state=> {
       state.delete(key)
@@ -88,6 +98,8 @@ export default function Messages(props: Props) {
   }
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
+
+
 
   useEffect(()=>{
     if(dialog.chat) {
@@ -162,11 +174,27 @@ export default function Messages(props: Props) {
       </div>
       }
       <div className={styles.newMessage} onPaste={onPasteHandler}>
-        <img src={'/icons/paperclip.svg'} alt='paperclip' className={styles.paperClip}/>
-        {pastedImages.size>0 && 
+        <label>
+          <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
+          <input type='file' accept='image/png, image/jpg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
+        </label>
+        {(pastedImages.size>0) && 
         <div className={styles.imagesWrapper}>
           {[...pastedImages.entries()].map(([key, el]) => {
-            return <div className={styles.image}><img src={URL.createObjectURL(el)}/> <Button onClick={()=>removeHandler(key)} className={styles.removeImage}><CloseTransparentSvg/></Button> </div>
+            return <div className={styles.image}>
+              {el.type.includes('image') &&
+                <img src={URL.createObjectURL(el)}/>
+                ||
+                <>
+                <Image alt='image' src={folderImage} width={100} height={100} style={{objectFit: 'contain'}} />
+                <p className={styles.fileName}>{el.name}</p>
+
+                </>
+              } 
+              <Button onClick={()=>removeHandler(key)} className={styles.removeImage}>
+                <CloseTransparentSvg/>
+              </Button> 
+            </div>
           })}
         </div>
         }
