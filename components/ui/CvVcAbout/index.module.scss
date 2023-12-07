@@ -1,0 +1,11 @@
+@import 'styles/index';
+
+.about {
+  .description {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+    margin-top: 16px;
+    display: block;
+  }
+}

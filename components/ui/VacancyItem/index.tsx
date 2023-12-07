@@ -14,6 +14,7 @@ import LikeButton from '../LikeButton'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import classNames from 'classnames'
 import CalendarSvg from 'components/svg/CalendarSvg'
+import Link from 'next/link'
 
 interface Props {
   vacancy?: IVacancy
@@ -24,7 +25,9 @@ export default function VacancyItem({vacancy, onChangeItem}: Props) {
   const appContext = useAppContext()
   const cvContext = useCvContext()
 
-  const respondHandler = () => {
+  const respondHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs, vacancyId: vacancy.id})
   }
 
@@ -43,7 +46,7 @@ export default function VacancyItem({vacancy, onChangeItem}: Props) {
     }
   }
 
-  return (<div className={styles.item}> 
+  return (<Link className={styles.item} href={'vacancy/'+vacancy.id}> 
     <LikeButton className={styles.heartButton} active={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
     <Image className={styles.image} src={defaultImage} alt={'def image'} width={244} height={220}/>
     <div className={styles.top}>
@@ -68,5 +71,5 @@ export default function VacancyItem({vacancy, onChangeItem}: Props) {
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={respondHandler}>Откликнуться</Button>
     </div>
-  </div>)
+  </Link>)
 }

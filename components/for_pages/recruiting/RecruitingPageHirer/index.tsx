@@ -79,7 +79,7 @@ export default function RecruitingPageHirer(props: Props) {
         {loading &&
           <Spinner size={24} />
           ||
-          !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.slice(0,10).map(cv=> {
+          !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.map(cv=> {
             return <CharacterWrapper><CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs(currentFilters)}/></CharacterWrapper>
           })
           ||

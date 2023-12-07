@@ -1,0 +1,167 @@
+import styles from './index.module.scss'
+
+import { useEffect } from 'react'
+import { useCvContext } from 'context/cv_state'
+import classNames from 'classnames'
+import BriefCaseSvg from 'components/svg/BriefCaseSvg'
+import TimeLineSvg from 'components/svg/TimeLineSvg'
+import TimerSvg from 'components/svg/TimerSvg'
+import Formatter from 'utils/formatter'
+import languages from '@cospired/i18n-iso-languages'
+import { TranslateEducationType, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import Spinner from 'components/ui/Spinner'
+import TagList from '../../ui/TagList'
+import UserPic from 'components/ui/UserPic'
+import { FILES } from 'types/constants'
+import DotSvg from 'components/svg/DotSvg'
+import { EmploymentType, ModalType, ScheduleType, VacancyLookType } from 'types/enums'
+import { colors } from 'styles/variables'
+import Link from 'next/link'
+import InfoList from 'components/ui/InfoList'
+import Badges from 'components/ui/Badges'
+import Content from 'components/ui/Content'
+import ContentBody from 'components/ui/Content/ContentBody'
+import ContentAside from 'components/ui/Content/ContentAside'
+import CvVcPageTop from 'components/ui/CvVcPageTop'
+import CvVcAbout from 'components/ui/CvVcAbout'
+import ContentAsideItem from 'components/ui/Content/ContentItem'
+import { useAppContext } from 'context/state'
+import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
+
+
+interface Props {
+  id: string
+}
+
+export default function CvPage(props: Props) {
+  const cvContext = useCvContext()
+  const appContext = useAppContext()
+  const {currentCv} = cvContext
+
+  useEffect(()=>{
+    cvContext.getCv(Number(props.id))
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+  }, [])
+
+  const makeResponse = () => {
+    appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv, 
+      page: ProposalModalPager.OtherVacancy
+    })
+  }
+
+  if(!currentCv) return <Spinner size={24}/>
+
+  return (
+    <Content className={styles.root}>
+      <ContentBody className={styles.body}>
+        <CvVcPageTop 
+        city={currentCv?.city?.locName} 
+        title={currentCv?.categories[0]?.name} 
+        buttonText={'Пригласить'}
+        cv={currentCv}
+        onButtonClick={makeResponse}
+        />   
+
+        <Badges items={[
+          {
+            title: 'Место работы',
+            value: 'Удаленно',
+            icon: <TimeLineSvg/>
+          },
+          {title: 'График работы', 
+          value:  (
+            currentCv.schedule === ScheduleType.FullDay && 'Полный день'
+            || 
+            currentCv.schedule === ScheduleType.Flexible && 'Гибкий'              
+            || 
+            currentCv.schedule === ScheduleType.Remote && 'Удаленная работа'
+          ), 
+          icon: <BriefCaseSvg/>},
+          {
+            title: 'Занятость', 
+            value:  (
+              currentCv.employment === EmploymentType.FullTime && 'Полная'
+              || 
+              currentCv.employment === EmploymentType.PartTime && 'Частичная'              
+              || 
+              currentCv.employment === EmploymentType.Project && 'Проектная'
+            ), 
+            icon: <TimerSvg/>
+          },        
+        ]}/>
+
+        <CvVcAbout titleClassName={styles.title} title={'О себе'} text={currentCv?.bio}/>
+
+        <CvVcAbout titleClassName={styles.title} title='Образование' text={TranslateEducationType(currentCv.education)}/>
+
+        {currentCv.experienceInfo?.length > 0 &&
+          <InfoList 
+          title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}`} 
+          titleClassName={styles.title}
+          info={currentCv.experienceInfo.map(el=> {
+            return {
+              fromDate: el.fromDate,
+              toDate: el.toDate,
+              name: el.company,
+              description: el.description
+            }
+          })}/>    
+        }
+
+        {currentCv.educationInfo?.length > 0 &&
+          <InfoList 
+          title={'Курсы'} 
+          titleClassName={styles.title} 
+          info={currentCv.educationInfo.map(el=>{
+            return {
+              fromDate: el.fromDate,
+              toDate: el.toDate,
+              name: el.institution,
+              description: el.speciality
+            }
+          })}/>        
+        }
+
+        {currentCv.skills.length > 0 &&
+          <TagList title={'Навыки'} tags={currentCv.skills.map(el=>el.title)} titleClassName={styles.title}/>
+        }
+        {currentCv.languageKnowledges.length > 0 &&
+          <TagList title={'Языки'} tags={currentCv.languageKnowledges.map(el=>(languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)))} titleClassName={styles.title}/>
+        }
+        {currentCv.geos.length > 0 &&
+          <TagList title={'Гео'} tags={currentCv.geos.map(el=>el.title)} titleClassName={styles.title}/>
+        }
+        {currentCv.sources.length > 0 &&
+          <TagList title={'Источники'} tags={currentCv.sources.map(el=>el.title)} titleClassName={styles.title}/>
+        }
+        {currentCv.portfolio &&
+          <CvVcAbout titleClassName={styles.title} title={'Портфолио'} link={currentCv.portfolio} />
+        }
+      </ContentBody>
+      <ContentAside >
+        <ContentAsideItem className={styles.userCard}>
+          <UserPic size={100} image={currentCv?.profile?.image?.source&& FILES+currentCv.profile.image.source}/>
+          <p className={styles.userName}>{currentCv.profile.firstName} {currentCv.profile.lastName}</p>
+          {(currentCv.age || currentCv.profile?.city?.locName) &&
+          <p className={styles.otherData}>
+            <span>{currentCv.age} {Formatter.pluralize(currentCv.age, 'год', 'года', 'лет', )}</span> 
+            {currentCv.profile?.city?.locName &&
+            <>
+            <DotSvg/> 
+            <span>г. {currentCv.profile?.city?.locName}</span> 
+            </>
+            }
+          </p>
+          }
+          {currentCv.vacancyLookType &&
+            <p className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
+              <DotSvg color={currentCv.vacancyLookType === VacancyLookType.NotLooking?colors.red: colors.green}/>
+              {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
+            </p>
+          }
+        <Link href={'/'} className={styles.openProfile}>Открыть профиль</Link>
+        </ContentAsideItem>
+      </ContentAside>
+    </Content>
+  )
+}

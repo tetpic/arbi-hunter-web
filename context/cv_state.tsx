@@ -9,7 +9,9 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface IState {
   savedCvs: ICV[],
-  foundCvs: ICV[]
+  foundCvs: ICV[],
+  getCv: (id: number) => void
+  currentCv: ICV,
   setSavedCvs: ()=>Promise<boolean>
   saveCv: (id: number)=> Promise<boolean>
   removeCvfromSaved: (id: number) => Promise<boolean>
@@ -31,6 +33,7 @@ export function CvWrapper(props: Props) {
   const createVcCvContext = useCreateVcCvContext()
   const [foundCvs, setFoundCvsState] = useState<ICV[]>([])
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
+  const [currentCv, setCurrentCvState] = useState<ICV>(null)
   
 
   const setSavedCvs = async():Promise<boolean> => {
@@ -105,6 +108,13 @@ export function CvWrapper(props: Props) {
     router.push(`/create/cv?id=${cv.id}`)
   }
 
+  const getCv = (id: number) => {
+    CvRepository.getById(id)
+    .then(res=> {
+      setCurrentCvState(res)
+    })
+  }
+
   const value: IState = {
     savedCvs,
     foundCvs,
@@ -115,6 +125,8 @@ export function CvWrapper(props: Props) {
     updateCv,
     editCv,
     findCvs,
+    getCv,
+    currentCv
   }
 
   return (

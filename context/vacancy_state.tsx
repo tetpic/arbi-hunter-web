@@ -6,17 +6,25 @@ import { useCreateVcCvContext } from './createVcCv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface IState {
+  currentVacancy: IVacancy
+  setCurrentVacancy: (id: number)=> void
+
   archiveVacancies: Map<number, IVacancy>
   setArchiveVacancies: ()=>Promise<boolean>
+
   activeVacancies: Map<number, IVacancy>,
   setActiveVacancies: ()=>Promise<boolean>,
+
   editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
   savedVCs: IVacancy[],
   setSavedVacancies: ()=>Promise<boolean>
   saveVacancy: (id: number) => void
+
   removeVacancyFromSaved: (id: number) => void
   removeVacancy: (id: number, published: boolean) => void
+
   editVcInEditor: (vc: IVacancy)=> void
+
   foundVacancies: IVacancy[]
   findVacancies: (data?: IVacancyCvSearchParams) => Promise<boolean>
 }
@@ -36,6 +44,7 @@ export function VacancyWrapper(props: Props) {
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>(null)
   const [foundVacancies, setFoundVacancies] = useState<IVacancy[]>([])
+  const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
 
   const setArchiveVacancies = async(): Promise<boolean> => {
     return VacancyRepository.getArchiveVacancies()
@@ -122,6 +131,14 @@ export function VacancyWrapper(props: Props) {
     return true
   }
 
+  const setCurrentVacancy = (id: number) => {
+    VacancyRepository.getVacancyById(id)
+    .then(res=> {
+      setCurrentVacancyState(res)
+    })
+  }
+  
+
 
 
   const value: IState = {
@@ -137,7 +154,9 @@ export function VacancyWrapper(props: Props) {
     saveVacancy,
     removeVacancyFromSaved,
     removeVacancy,
-    editVcInEditor
+    editVcInEditor,
+    currentVacancy,
+    setCurrentVacancy,
   }
 
   return (

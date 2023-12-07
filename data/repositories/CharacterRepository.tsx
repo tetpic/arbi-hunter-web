@@ -48,5 +48,17 @@ export default class CharacterRepository {
     return res
   }
 
+  static async updateCharacter(itemsIds: number[], characterId: number): Promise<any|null> {
+    const res = await request({
+      method: 'patch',
+      url: `/api/character/${characterId}`,
+      data: {itemsIds}
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
 
 }

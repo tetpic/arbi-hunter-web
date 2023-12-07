@@ -138,7 +138,6 @@ export const TranslateApplicationBSSelectType = (t: ApplicationBSSelectType) => 
       return'Отказ'
     case ApplicationBSSelectType.ThisVacancy:
       return 'На эту вакансию'
-
   }
 }
 

@@ -15,6 +15,7 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { IStats } from 'data/interfaces/IUser'
 import ChatRepository from 'data/repositories/ChatRepository'
 import UserRepository from 'data/repositories/UserRepository'
+import { Emotions } from 'components/for_pages/profile/userProfile/UserEditor'
 
 
 export default function MainPageEmployee() {
@@ -128,7 +129,7 @@ export default function MainPageEmployee() {
         <Spinner className={styles.modelSpinner} size={52}/>
       } 
       <div className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
-      <ThreeModelVariant {...characterContext.variant } actions={'Idle'}  r={4}/>
+      <ThreeModelVariant data={characterContext.variant } actions={Emotions.Idle}  r={4}/>
       </div>
     </div>
   </div>)

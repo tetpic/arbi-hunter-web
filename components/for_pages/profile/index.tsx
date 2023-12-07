@@ -9,11 +9,13 @@ import { useResize } from 'components/hooks/useResize'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import Button from 'components/ui/Button'
 import { IThreeModelProps } from 'components/ui/ThreeModel'
+import { useCharacterContext } from 'context/character_state'
 
 
 export default function Profile() {
   const {isTabletWidth} = useResize()
   const profilePageContext = useProfilePageContext()
+  const characterContext = useCharacterContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
 
   const onButtonClick = ((data: IThreeModelProps) => {
@@ -21,7 +23,7 @@ export default function Profile() {
   })
 
   const saveCharButton = (<>
-  <Button  className={styles.saveCharButton}>Сохранить</Button>
+  <Button onClick={()=>characterContext.saveCurrentSet()}  className={styles.saveCharButton}>Сохранить</Button>
   </>)
 
 
@@ -36,7 +38,13 @@ export default function Profile() {
         <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&
-        <Navigation wrapperClassName={styles.nav} bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} currentPage={page} navSet={navSet()} setPage={pager} onClickHandler={()=>setShowNav(false)}/>
+        <Navigation 
+        wrapperClassName={styles.nav} 
+        bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} 
+        currentPage={page} 
+        navSet={navSet()} 
+        setPage={pager} 
+        onClickHandler={()=>setShowNav(false)}/>
       }
     </div>
   )

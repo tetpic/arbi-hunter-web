@@ -29,8 +29,11 @@ export default function UserEditor(props: Props) {
     init()
   }, [])
 
+  const onSaveThreeModel = () => {
+
+  }
+
   return (<div className={styles.root}>
-      
       <div className={styles.settings}>
       <div className={styles.actions}>
         {Object.values(Emotions).map((el) => {
@@ -47,19 +50,21 @@ export default function UserEditor(props: Props) {
           )
         })}
       </div>
-
       <div className={styles.model}> 
         {dataLoaded && variant &&
-          <ThreeModelVariant {...variant} actions={action} r={4}/>
+          <ThreeModelVariant data={variant} r={4} actions={action}/>
           ||
           <Spinner size={32} />
         }
       </div>
-
       <div className={styles.variants}>
        {activeSet[1] && activeSet[1].map(item=> {
         return (
-          <UserPic size={80} onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} image={item.image&&FILES + item.image.source}/>
+          <UserPic 
+          size={80} 
+          onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} 
+          active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} 
+          image={item.image&&FILES + item.image.source}/>
         )
        })}
       </div>

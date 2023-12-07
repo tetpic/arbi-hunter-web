@@ -1,0 +1,32 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  .item {
+    display: grid;
+    grid-template-areas: 'tl com' 'tl desc';
+    column-gap: 16px;
+    row-gap: 16px;
+    color: $white;
+    font-size: $smallText;
+    grid-template-columns: auto 1fr;
+  }
+
+  .timeLine {
+    grid-area: tl;
+    max-width: 175px;
+  }
+
+  .name {
+    grid-area: com;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+
+  .description {
+    grid-area: desc;
+  }
+}

@@ -1,0 +1,48 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 32px;
+}
+
+.title {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.sectionTitle {
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+
+  .name {
+    color: $white;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+
+  .button {
+    @include buttonYellow;
+    width: 100%;
+  }  
+}
+
+.otherVacancies {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+  margin-block: 24px 16px;
+}
+
+.bodyItem {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+}

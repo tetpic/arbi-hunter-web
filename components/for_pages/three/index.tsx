@@ -1,9 +1,10 @@
 import {Canvas, useThree} from '@react-three/fiber'
-import {Bounds, Environment, OrthographicCamera, PerspectiveCamera} from '@react-three/drei'
+import {Bounds, Environment, OrbitControls, OrthographicCamera, PerspectiveCamera} from '@react-three/drei'
 import { useEffect, useRef} from 'react'
 import { ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
 import { useCharacterContext } from 'context/character_state'
+import { Emotions } from '../profile/userProfile/UserEditor'
 
 
 
@@ -35,17 +36,18 @@ const Camera = () => {
   />
 }
 
-export default function ThreeModelVariant (props: {[key: string]: string|number}) {
+export default function ThreeModelVariant (props: {onSave?: ()=>void, data: {[key: string]: string|number}, r:number, actions?: Emotions }) {
   const characterContext = useCharacterContext()
 
   const canvasRef = useRef<HTMLCanvasElement>()
-  // const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
 
-  // useEffect(()=>{
-  //   if(characterContext.modelLoaded && characterContext.dataLoaded) {
-  //     canvasRef.current.toBlob((blob)=> setDataBaseBlob(blob))
-  //   }
-  // }, [characterContext.modelLoaded, characterContext.dataLoaded])
+  
+
+  useEffect(()=>{
+    if(characterContext.modelLoaded && characterContext.dataLoaded) {
+      canvasRef.current.toBlob((blob)=> characterContext.setDataBaseBlob(blob))
+    }
+  }, [characterContext.choosenItems])
 
 
   return (<div className={styles.root}>
@@ -68,9 +70,10 @@ export default function ThreeModelVariant (props: {[key: string]: string|number}
         position={[Number(props.r)||0, 1, 7]} zoom={100} />
 
         <Bounds fit clip observe damping={0} margin={1}>
-          <ThreeModel {...props as any}/>
+          <ThreeModel {...props.data as any} actions={props.actions}/>
         </Bounds>
           <Environment files="/models/skidpan.hdr"/>
+          <OrbitControls makeDefault maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.2} maxPolarAngle={1.7}/>
       </Canvas>
     }
   </div>

@@ -32,7 +32,7 @@ export default function Rooms(props: Props) {
     </div>
     <div className={styles.bottom}>
       <div className={styles.userPic}>
-        <ThreeModelVariant {...characterContext.variant} r={0}/>
+        <ThreeModelVariant data={characterContext.variant} r={0}/>
       </div>
     </div>
   </div>)

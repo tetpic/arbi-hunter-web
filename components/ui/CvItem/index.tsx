@@ -14,6 +14,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
 import LikeButton from '../LikeButton'
 import CvRepository from 'data/repositories/CvRepository'
+import Link from 'next/link'
 
 interface Props {
   cv: ICV
@@ -24,7 +25,9 @@ interface Props {
 export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
 
-  const respondHandler = () => {
+  const respondHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     if(props.initialVacancy) {
       appContext.showModal<IProposalTextModalProps>
       (ModalType.ProposalTextModal, 
@@ -59,7 +62,7 @@ export default function CvItem({cv, ...props}: Props) {
     }
   }
 
-  return (<div className={styles.item}> 
+  return (<Link className={styles.item} href={'cv/'+cv.id}> 
     <LikeButton  className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
     {/* <div className={styles.image}>
       <ThreeModelVariant {...characterContext.variant} r={0}/>
@@ -103,5 +106,5 @@ export default function CvItem({cv, ...props}: Props) {
       <Button className={styles.buttonDisabled}>Приглашение выслано</Button>
       }
     </div>
-  </div>)
+  </Link>)
 }

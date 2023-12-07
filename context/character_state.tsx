@@ -1,6 +1,6 @@
 import { ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
 import CharacterRepository from 'data/repositories/CharacterRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react'
 
 interface IState {
   init: ()=> void,
@@ -14,6 +14,9 @@ interface IState {
   activeItem: ICharItem,
   setActiveItem: Dispatch<SetStateAction<ICharItem>>
   dataLoaded: boolean
+  saveCurrentSet: () => Promise<boolean>
+  choosenItems: Map<number, ICharItem>
+  setDataBaseBlob: Dispatch<SetStateAction<Blob>>
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -39,20 +42,29 @@ interface Props {
 
 export function CharacterWrapper(props: Props) {
   const [activeSet, setActiveSetState] = useState<[ICharCategory, ICharItem[]]>([undefined, undefined])
+  const [choosenItems, setChoosenItemsState] = useState<Map<number, ICharItem>>(new Map)
   const [activeItem, setActiveItem] = useState<ICharItem>()
   const [variant, setVariantState] = useState<{[key: string]: string|number}>(defaultVariant)
   const [modelLoaded, setModelLoad] = useState<boolean>(false)
   const [dataLoaded, setDataLoaded] = useState<boolean>(false)
   const [categories, setCategoriesState] = useState<Map<ICharCategory, ICharItem[]>>(new Map)
+  const characterId = useRef<number>(null)
+  const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
 
   const init = async() => {
     await CharacterRepository.getCurrentUserChar()
     .then(res=> {
+      characterId.current = res.id
       const setItems:any = {model: res.gender==='male'?'man':'woman'}
       setItems.eye = 0
       setItems.hair = 0
       res.items.forEach(el=> setItems[el.category.key] = el.animationKey)
       setVariantState(setItems)
+      setChoosenItemsState(state=> {
+        state.clear()
+        res.items.forEach(el=> state.set(el.category.id, el))
+        return new Map(state)
+      })
     })
     .catch(_=> {
       setDataLoaded(true)
@@ -83,6 +95,10 @@ export function CharacterWrapper(props: Props) {
   }
 
   const setVariant = (data: ICharItem) => {
+    setChoosenItemsState(state=> {
+      state.set(data.category.id, data)
+      return new Map(state)
+    })
     if(data.category.key === 'model' && data.animationKey !== variant.model) {
       setVariantState({...defaultVariant, model: data.animationKey as 'man'|'woman'} )
     }
@@ -100,8 +116,23 @@ export function CharacterWrapper(props: Props) {
     }
   }
 
+  const saveCurrentSet = async(): Promise<boolean> => {
+    CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
+    .then(res=> {
+      const link = document.createElement('a')
+      link.type = 'download'
+      link.href = URL.createObjectURL(dataBaseBlob)
+      link.click()
+      console.log(dataBaseBlob)
+    })
+  
+    return true
+  }
+
+
+
   const setActiveSet = (data: [ICharCategory, ICharItem[]]) => {
-    const filteredItems = data[1]?.filter(f=> !f.name?.includes(`${variant.model}_`))
+    const filteredItems = data[1]?.filter(f=> f.gender === (variant.model==='man'?'male':'female'))
     setActiveItem(filteredItems?.find(el=> variant[el.category.key] === el.animationKey))
     setActiveSetState([data[0], filteredItems])
   }
@@ -118,6 +149,9 @@ export function CharacterWrapper(props: Props) {
     categories,
     activeItem,
     setActiveItem,
+    saveCurrentSet,
+    choosenItems,
+    setDataBaseBlob
   }
 
   return (

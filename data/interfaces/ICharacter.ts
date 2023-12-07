@@ -27,6 +27,7 @@ export interface ICharItem extends TimeStamp {
   sort?: number,
   animationKey?: string
   name?: string
+  gender?: 'male'|'female',
 }
 
 export interface IUserCharacter extends TimeStamp{

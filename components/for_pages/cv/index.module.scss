@@ -1,0 +1,157 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+}
+
+.body {
+  border-radius: 32px;
+  background-color: $black;
+  max-width: 760px;
+  width: 70%;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .left {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+
+    .city {
+      font-size: $mediumText;
+      font-weight: $medium;
+      color: $greyLight;
+    }
+  }
+
+  .right {
+    width: 40%;
+    display: grid;
+    justify-content: flex-end;
+    grid-template-areas: 's s h' 'c cont cont';
+    column-gap: 16px;
+    row-gap: 16px;
+  }
+
+  .button {
+    @include buttonGray;
+    width: 40px;
+    height: 40px;
+    padding: unset;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .share {
+    grid-area: s;
+    justify-self: flex-end;
+  }
+
+  .heart {
+    grid-area: h;
+  }
+
+  .closeEye {
+    grid-area: c;
+  }
+
+  .showContacts {
+    grid-area: cont;
+    @include buttonYellow;
+  }
+}
+
+.experience {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  .experienceItem {
+    display: grid;
+    grid-template-areas: 'tl com' 'tl desc';
+    column-gap: 16px;
+    row-gap: 16px;
+    color: $white;
+    font-size: $smallText;
+    grid-template-columns: auto 1fr;
+  }
+
+  .timeLine {
+    grid-area: tl;
+    max-width: 175px;
+  }
+
+  .company {
+    grid-area: com;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+
+  .description {
+    grid-area: desc;
+  }
+}
+
+.userCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 8px;
+
+  .otherData {
+    color: $greyLight;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+
+  
+  .status {
+    display: flex;
+    align-items: center;
+    font-size: $largeText;
+    font-weight: $semibold;
+    column-gap: 8px;
+  
+    svg {
+      width: 6px;
+      height: 6px;
+    }
+  }
+  .userName {
+    font-size: $largeText;
+    font-weight: $semibold;
+    color: $white;
+    margin-top: 8px;
+  }
+  
+  .openProfile {
+    @include buttonYellow;
+  }
+
+  .red {
+    color: $red;    
+  }
+  
+  .green {
+    color: $green;
+  }
+}
+
+.title {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
