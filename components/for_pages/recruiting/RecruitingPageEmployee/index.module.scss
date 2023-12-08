@@ -54,17 +54,13 @@
 .content {
   display: flex;
   column-gap: 16px;
+  align-items: flex-start;
 }
 
 .filters {
   max-width: 330px;
   flex-shrink: 0;
   width: 30%;
-  height: 100vh;
-  height: 100dvh;
-  position: sticky;
-  top: 16px;
-  left: 0;
 }
 
 .vacancies {

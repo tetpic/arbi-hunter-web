@@ -106,7 +106,7 @@ export default function Header(props: Props) {
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
             <>
               <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-              <UserPic image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>{setDropDownOpen(state=> !state)}}/>
+              <UserPic key={1} image={userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source} className={styles.userPic} onClick={()=>{setDropDownOpen(state=> !state)}}/>
             </>}
             {userContext.currentProfile &&
               <UserDropdownMenu       

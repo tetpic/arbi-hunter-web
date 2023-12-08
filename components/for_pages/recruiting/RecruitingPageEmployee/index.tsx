@@ -13,6 +13,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import Rive from '@rive-app/react-canvas'
 import PageVacancies from './PageVacancies'
 import React from 'react'
+import StickyBox from 'react-sticky-box'
 
 interface Props {
 }
@@ -71,11 +72,11 @@ export default function RecruitingPageEmployee(props: Props) {
   }
 
   <div className={styles.content}>
-    <div className={styles.filters}>
+    <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
       <div className={styles.filter}>
         <Filters onFilterChange={onFilterChange}/>
       </div>
-    </div>
+    </StickyBox>
 
     <div className={styles.vacancies}>
       <PageVacancies filters={currentFilters} onChange={findVacancies} loading={loading} vacancies={vacancyContext.foundVacancies}/>

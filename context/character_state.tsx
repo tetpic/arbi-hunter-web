@@ -4,6 +4,8 @@ import FileRepository from 'data/repositories/FileRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
+import { useAppContext } from './state'
+import { SnackbarType } from 'types/enums'
 
 interface IState {
   init: ()=> void,
@@ -45,6 +47,7 @@ interface Props {
 
 export function CharacterWrapper(props: Props) {
   const userContext = useUserContext()
+  const appContext = useAppContext()
   const [activeSet, setActiveSetState] = useState<[ICharCategory, ICharItem[]]>([undefined, undefined])
   const isCharacterExist = useRef<boolean>(false)
   const [choosenItems, setChoosenItemsState] = useState<Map<number, ICharItem>>(new Map)
@@ -139,11 +142,14 @@ export function CharacterWrapper(props: Props) {
     await UserRepository.editProfileByType({imageId: fileId}, userContext.currentProfile.profileType)
     CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .then(res=> {
-      const link = document.createElement('a')
-      link.type = 'download'
-      link.target = '_blank'
-      link.href = URL.createObjectURL(dataBaseBlob)
-      link.click()
+      appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
+      userContext.updateUser()
+      
+      // const link = document.createElement('a')
+      // link.type = 'download'
+      // link.target = '_blank'
+      // link.href = URL.createObjectURL(dataBaseBlob)
+      // link.click()
     })
   
     return true
