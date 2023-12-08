@@ -13,6 +13,7 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
 import { CharacterWrapper } from 'context/character_state'
+import StickyBox from 'react-sticky-box'
 
 
 interface Props {
@@ -69,11 +70,11 @@ export default function RecruitingPageHirer(props: Props) {
     }
   
     <div className={styles.content}>
-      <div className={styles.filters}>
+      <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
         <div className={styles.filter}>
           <Filters onFilterChange={onFilterChange}/>
         </div>
-      </div>
+      </StickyBox>
   
       <div className={styles.vacancies}>
         {loading &&

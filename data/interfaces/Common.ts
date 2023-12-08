@@ -235,4 +235,5 @@ export interface IVacancyCvSearchParams {
   languageKnowledges?: ILanguageKnowledge[],
   withCharacter?: boolean,
   forLastNumberOfDays?: 1|7|30|365, 
+  s?:string
 }

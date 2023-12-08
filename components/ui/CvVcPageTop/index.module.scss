@@ -46,6 +46,13 @@
 
   .heart {
     grid-area: h;
+    &_full {
+      svg {
+        path{
+          fill: $white;
+        }
+      }
+    }
   }
 
   .closeEye {

@@ -8,9 +8,34 @@
   row-gap: 8px;
 }
 
+.card {
+  display: grid;
+  grid-template-areas: 'u n' 'u c';
+  row-gap: 8px;
+
+
+  .userPic{
+    grid-area: u;
+    margin-right: 8px;
+  }
+
+  .name {
+    grid-area: n;
+  }
+
+  .city {
+    grid-area: c;
+  }
+
+}
+
 .button {
   @include buttonYellow;
   @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+
+  &_wide {
     width: 100%;
   }
 }
@@ -20,17 +45,21 @@
   background-color: $black;
   padding: 16px;
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
+  justify-content: space-between;
   row-gap: 16px;
   align-items: flex-start;
   position: relative;
+  container-type: inline-size;
+  container-name: item;
 
   .top {
     display: flex;
     flex-direction: column;
     row-gap: 16px;
     align-items: start;
-    max-width: calc(100% - 180px);
+    width: 100%;
+    // max-width: calc(100% - 180px);
     position: relative;
     @include mq($TabletWidth, max) {
       max-width: 70%;
@@ -70,6 +99,7 @@
   }
 }
 
+
 .time {
   color: $greyLight;
   font-weight: $medium;
@@ -86,9 +116,9 @@
 } 
 
 .image {
-  position: absolute;
-  bottom: 0;
-  right: 16px;
+  // position: absolute;
+  // bottom: 0;
+  // right: 16px;
   pointer-events: none;
   object-fit: contain;
   height: auto;

@@ -4,6 +4,10 @@
   margin-top: 32px;
 }
 
+.asideVacancies {
+  padding: unset !important;
+}
+
 .title {
   font-size: $largeText;
   font-weight: $semibold;
@@ -41,8 +45,14 @@
 }
 
 .bodyItem {
-  padding: 32px;
+  padding: 32px !important;
   display: flex;
   flex-direction: column;
   row-gap: 32px;
+}
+
+.buttonGray {
+  @include buttonGray;
+  color: $blue;
+  margin-top: 24px;
 }

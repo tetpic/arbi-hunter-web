@@ -2,10 +2,29 @@
 
 .root {
   width: 30%;
+  min-width: 25%;
+  max-width: 50%;
+  flex-shrink: 0;
   border-right: 2px $grey solid;
   overflow: auto;
+  position: relative;
   @include mq($TabletWidth, max) {
     width: 100%;
+  }
+}
+
+.draggable {
+  width: 4px;
+  cursor:col-resize;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  @include hover {
+    width: 6px;
+    // background-color: $greyLight;
+    // opacity: 1;
   }
 }
 

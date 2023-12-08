@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
-import {useEffect, useState } from 'react'
+import {useEffect, useRef, useState } from 'react'
 import ChatItem from './ChatItem'
 import IChat from 'data/interfaces/IChat'
 import { useChatContext } from 'context/chat_state'
@@ -16,10 +16,12 @@ interface Props {
 }
 
 export default function Chats(props: Props) {
-  
+  const chatsRef = useRef<HTMLDivElement>(null!)
   const [page, pager] = useState<string>('__all__')
   const chatContext = useChatContext()
   const folders = [...chatContext.folders.values()]
+  const [initialPos,   setInitialPos] = useState(null)
+  const [initialSize, setInitialSize] = useState(null)
 
   const itemsNav = [
     //__all__ если кому-то взбредет назвать папку all
@@ -30,10 +32,20 @@ export default function Chats(props: Props) {
   useEffect(()=>{
     chatContext.setChatsFromFolder(page)
   }, [page])
-  
 
-  return (<>
-    <div className={styles.root} > 
+
+  
+  const initial = (e: React.DragEvent<HTMLDivElement>) => {
+    setInitialPos(e.clientX)
+    setInitialSize(chatsRef.current.offsetWidth)
+  }
+    
+  const resize = (e: React.DragEvent<HTMLDivElement>) => {
+    chatsRef.current.style.width = `${parseInt(initialSize) + (e.clientX - initialPos)}px`
+  }
+
+  return (
+    <div className={styles.root} ref={chatsRef}> 
       <ChatSearchBar/>
       <div className={styles.navWrapper}>
         <ItemNavigation bottomStringClass={styles.navBottom} pClassName={styles.navP} className={styles.nav}  activeItem={page} items={itemsNav} onClick={pager}/>
@@ -52,7 +64,7 @@ export default function Chats(props: Props) {
           <Spinner size={32} color={colors.yellow}/>
         }
       </div>
+      <div className={styles.draggable} draggable={true} onDragStart={initial} onDrag={(e)=> resize(e)}></div>
     </div>
-    
-  </>)
+  )
 }

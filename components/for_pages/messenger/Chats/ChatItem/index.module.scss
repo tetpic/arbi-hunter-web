@@ -14,9 +14,9 @@
   padding: 16px;
   cursor: pointer;
   @include transitionDefault;
-  @include hover {
-    background-color: $grey;
-  }
+  // @include hover {
+  //   background-color: $grey;
+  // }
 
 
   .lastMessage {

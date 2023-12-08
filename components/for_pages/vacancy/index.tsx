@@ -1,9 +1,10 @@
-import Content from 'components/ui/Content'
 import styles from './index.module.scss'
+
+import Content from 'components/ui/Content'
 import ContentBody from 'components/ui/Content/ContentBody'
 import ContentAside from 'components/ui/Content/ContentAside'
 import { useVacancyContext } from 'context/vacancy_state'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
 import Buildings from '../profile/Personal/Buildings'
 import Spacer from 'components/ui/Spacer'
@@ -26,6 +27,10 @@ import ContentItem from 'components/ui/Content/ContentItem'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import { useCvContext } from 'context/cv_state'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import VacancyRepository from 'data/repositories/VacancyRepository'
+import Formatter from 'utils/formatter'
+import Link from 'next/link'
 
 
 interface Props {
@@ -36,6 +41,7 @@ export default function VacancyPage(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
 
 
@@ -46,6 +52,11 @@ export default function VacancyPage(props: Props) {
   useEffect(()=>{
     if(currentVacancy && currentVacancy.categories.length > 0) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
+      VacancyRepository.searchVacancies({s: JSON.stringify({profileId: currentVacancy.profile.id})})
+      .then(res=> {
+        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res, 3)
+        setOtherCompanyVacancies(randomItems)
+      })
     }
   }, [currentVacancy])
 
@@ -121,17 +132,18 @@ export default function VacancyPage(props: Props) {
       <ContentAside>
         <ContentItem className={styles.aside}>
           <UserPic size={100} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
-          <p className={styles.name}>{currentVacancy.company}</p>
+          <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
           <Button className={styles.button}>Открыть профиль</Button>
         </ContentItem>
 
-        {/* <p className={styles.otherVacancies}>Другие вакансии компании</p>
-        <ContentItem>
-          {foundVacancies.length > 0 &&
-            foundVacancies.slice(0, 3).map(vacancy=> 
-            <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+        <p className={styles.otherVacancies}>Другие вакансии компании</p>
+        <ContentItem className={styles.asideVacancies}>
+          {otherCompanyVacncies.length > 0 &&
+            otherCompanyVacncies.map(vacancy=> 
+            <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>)
           }
-        </ContentItem> */}
+        </ContentItem>
+        <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
       </ContentAside>
     </Content>
   </>)

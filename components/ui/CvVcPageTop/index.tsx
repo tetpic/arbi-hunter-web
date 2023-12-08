@@ -8,6 +8,9 @@ import ShareSvg from 'components/svg/ShareSvg'
 import HeartSvg from 'components/svg/HeartSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import SalaryItem from '../SalaryItem'
+import CvRepository from 'data/repositories/CvRepository'
+import VacancyRepository from 'data/repositories/VacancyRepository'
+import { useRef, useState } from 'react'
 
 interface Props {
   title: string
@@ -19,6 +22,39 @@ interface Props {
 }
 
 export default function CvVcPageTop(props: Props) {
+  const liked = useRef(props.cv?props.cv.isSavedByCurrentProfile:props.vc.isSavedByCurrentProfile)
+  const [isLiked, setIsLiked] = useState<boolean>(liked.current)
+
+  const likeItem = ()=>{
+    if(props.cv) {
+      liked.current === false &&
+      CvRepository.addCvToSaved(props.cv.id)
+      .then(_=> {
+        setIsLiked(true)
+        liked.current = true
+      })
+      liked.current === true &&
+      CvRepository.removeCvFromSaved(props.cv.id)
+      .then(_=> {
+        setIsLiked(false)
+        liked.current = false
+      })
+    }
+    else {
+      liked.current === false &&
+      VacancyRepository.addVcToSaved(props.vc.id)
+      .then(_=> {
+        setIsLiked(true)
+        liked.current = true
+      })
+      liked.current === true &&
+      VacancyRepository.removeVcFromSaved(props.vc.id)
+      .then(_=> {
+        setIsLiked(false)
+        liked.current = false
+      })      
+    }
+  }
 
   return (<div className={styles.top}>
     <div className={styles.left}>
@@ -30,7 +66,12 @@ export default function CvVcPageTop(props: Props) {
     </div>
     <div className={styles.right}>
       <Button className={classNames(styles.button, styles.share)}><ShareSvg/></Button>
-      <Button className={classNames(styles.button, styles.heart)}><HeartSvg/></Button>
+      <Button 
+      onClick={()=>likeItem()} 
+      className={classNames(styles.button, styles.heart, isLiked&&styles.heart_full)}
+      >
+        <HeartSvg/>
+      </Button>
       <Button className={classNames(styles.button, styles.closeEye)}><CloseEyeSvg/></Button>
       <Button onClick={()=>props.onButtonClick()} className={styles.showContacts}>{props.buttonText}</Button>
     </div>

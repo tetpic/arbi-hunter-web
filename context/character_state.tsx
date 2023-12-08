@@ -121,9 +121,9 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       const link = document.createElement('a')
       link.type = 'download'
+      link.target = '_blank'
       link.href = URL.createObjectURL(dataBaseBlob)
       link.click()
-      console.log(dataBaseBlob)
     })
   
     return true

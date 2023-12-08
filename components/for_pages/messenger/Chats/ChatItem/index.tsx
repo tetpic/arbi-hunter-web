@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
-import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
 import { useRouter } from 'next/router'
 
