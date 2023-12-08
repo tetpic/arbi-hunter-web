@@ -8,7 +8,6 @@ import UserProfile from './userProfile'
 import { useResize } from 'components/hooks/useResize'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import Button from 'components/ui/Button'
-import { IThreeModelProps } from 'components/ui/ThreeModel'
 import { useCharacterContext } from 'context/character_state'
 
 
@@ -18,12 +17,14 @@ export default function Profile() {
   const characterContext = useCharacterContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
 
-  const onButtonClick = ((data: IThreeModelProps) => {
-    
-  })
-
   const saveCharButton = (<>
-  <Button onClick={()=>characterContext.saveCurrentSet()}  className={styles.saveCharButton}>Сохранить</Button>
+  <Button 
+  isProcess={characterContext.savingProcess}  
+  disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
+  onClick={()=>characterContext.saveCurrentSet()}  
+  className={styles.saveCharButton}>
+    Сохранить
+  </Button>
   </>)
 
 

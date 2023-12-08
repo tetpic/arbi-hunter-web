@@ -22,6 +22,8 @@ interface IState {
   saveCurrentSet: () => Promise<boolean>
   choosenItems: Map<number, ICharItem>
   setDataBaseBlob: Dispatch<SetStateAction<Blob>>
+  dataBaseBlob: Blob
+  savingProcess: boolean
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -55,6 +57,7 @@ export function CharacterWrapper(props: Props) {
   const [variant, setVariantState] = useState<{[key: string]: string|number}>(defaultVariant)
   const [modelLoaded, setModelLoad] = useState<boolean>(false)
   const [dataLoaded, setDataLoaded] = useState<boolean>(false)
+  const [savingProcess, setSavingProcess] = useState<boolean>(false)
   const [categories, setCategoriesState] = useState<Map<ICharCategory, ICharItem[]>>(new Map)
   const characterId = useRef<number>(null)
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
@@ -127,6 +130,7 @@ export function CharacterWrapper(props: Props) {
   }
 
   const saveCurrentSet = async(): Promise<boolean> => {
+    setSavingProcess(true)
     
     if(!isCharacterExist.current) {
       await CharacterRepository.createCharacter({gender: 'male'})
@@ -150,6 +154,7 @@ export function CharacterWrapper(props: Props) {
       // link.target = '_blank'
       // link.href = URL.createObjectURL(dataBaseBlob)
       // link.click()
+      setSavingProcess(false)
     })
   
     return true
@@ -177,7 +182,9 @@ export function CharacterWrapper(props: Props) {
     setActiveItem,
     saveCurrentSet,
     choosenItems,
-    setDataBaseBlob
+    setDataBaseBlob,
+    dataBaseBlob,
+    savingProcess
   }
 
   return (

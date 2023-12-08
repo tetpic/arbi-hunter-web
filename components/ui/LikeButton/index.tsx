@@ -13,9 +13,11 @@ interface Props {
 
 export default function LikeButton(props: Props) {
   const [active, setActive] = useState<boolean>(props.active)
-  const onClickHandler = () => {
+  const onClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
     props.onClick()
     setActive(!active)
   }
-  return (<Button onClick={onClickHandler} className={classNames(styles.heart, props.className, active&&styles.heart_active )}><HeartSvg/></Button>)
+  return (<Button onClick={(e)=> onClickHandler(e)} className={classNames(styles.heart, props.className, active&&styles.heart_active )}><HeartSvg/></Button>)
 }

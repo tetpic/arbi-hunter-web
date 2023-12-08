@@ -36,7 +36,7 @@ const Camera = () => {
   />
 }
 
-export default function ThreeModelVariant (props: {onSave?: ()=>void, data: {[key: string]: string|number}, r:number, actions?: Emotions }) {
+export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: Emotions }) {
   const characterContext = useCharacterContext()
 
   const canvasRef = useRef<HTMLCanvasElement>()
@@ -45,7 +45,19 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, data: {[ke
 
   useEffect(()=>{
     if(characterContext.modelLoaded && characterContext.dataLoaded) {
-      canvasRef.current.toBlob((blob)=> characterContext.setDataBaseBlob(blob))
+      setTimeout(() => {
+        // let thisBlob: Blob
+        canvasRef.current.toBlob((blob)=> {
+          characterContext.setDataBaseBlob(blob)
+          // thisBlob = blob
+          // console.log(thisBlob)
+          // const link = document.createElement('a')
+          // link.type = 'download'
+          // link.target = '_blank'
+          // link.href = URL.createObjectURL(thisBlob)
+          // link.click()
+        })
+      }, 20)
     }
   }, [characterContext.choosenItems])
 
@@ -73,7 +85,9 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, data: {[ke
           <ThreeModel {...props.data as any} actions={props.actions}/>
         </Bounds>
           <Environment files="/models/skidpan.hdr"/>
-          <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={0} minPolarAngle={1.6} maxPolarAngle={1.6}/>
+          {!props.disableControls &&
+            <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={0} minPolarAngle={1.6} maxPolarAngle={1.6}/>
+          }
       </Canvas>
     }
   </div>

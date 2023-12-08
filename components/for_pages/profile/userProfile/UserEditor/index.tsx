@@ -29,9 +29,6 @@ export default function UserEditor(props: Props) {
     init()
   }, [])
 
-  const onSaveThreeModel = () => {
-
-  }
 
   return (<div className={styles.root}>
       <div className={styles.settings}>
