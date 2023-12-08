@@ -1,6 +1,9 @@
 import { ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
 import CharacterRepository from 'data/repositories/CharacterRepository'
+import FileRepository from 'data/repositories/FileRepository'
+import UserRepository from 'data/repositories/UserRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react'
+import { useUserContext } from './user_state'
 
 interface IState {
   init: ()=> void,
@@ -41,7 +44,9 @@ interface Props {
 }
 
 export function CharacterWrapper(props: Props) {
+  const userContext = useUserContext()
   const [activeSet, setActiveSetState] = useState<[ICharCategory, ICharItem[]]>([undefined, undefined])
+  const isCharacterExist = useRef<boolean>(false)
   const [choosenItems, setChoosenItemsState] = useState<Map<number, ICharItem>>(new Map)
   const [activeItem, setActiveItem] = useState<ICharItem>()
   const [variant, setVariantState] = useState<{[key: string]: string|number}>(defaultVariant)
@@ -54,6 +59,7 @@ export function CharacterWrapper(props: Props) {
   const init = async() => {
     await CharacterRepository.getCurrentUserChar()
     .then(res=> {
+      isCharacterExist.current = true
       characterId.current = res.id
       const setItems:any = {model: res.gender==='male'?'man':'woman'}
       setItems.eye = 0
@@ -67,6 +73,7 @@ export function CharacterWrapper(props: Props) {
       })
     })
     .catch(_=> {
+      isCharacterExist.current = false
       setDataLoaded(true)
     })
     
@@ -117,6 +124,19 @@ export function CharacterWrapper(props: Props) {
   }
 
   const saveCurrentSet = async(): Promise<boolean> => {
+    
+    if(!isCharacterExist.current) {
+      await CharacterRepository.createCharacter({gender: 'male'})
+      .then(res=> {
+        characterId.current = res.id
+      })
+    }
+    const file = new File([dataBaseBlob], 'test.png', {type: 'image/png'})
+    const fileId = await FileRepository.uploadFile(file)
+    .then(res=> {
+      return res.id
+    })
+    await UserRepository.editProfileByType({imageId: fileId}, userContext.currentProfile.profileType)
     CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .then(res=> {
       const link = document.createElement('a')

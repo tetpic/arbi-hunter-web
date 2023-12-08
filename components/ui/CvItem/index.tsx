@@ -15,6 +15,7 @@ import { IProposalTextModalProps } from 'components/modals/ProposalModal/Proposa
 import LikeButton from '../LikeButton'
 import CvRepository from 'data/repositories/CvRepository'
 import Link from 'next/link'
+import { FILES } from 'types/constants'
 
 interface Props {
   cv: ICV
@@ -67,7 +68,7 @@ export default function CvItem({cv, ...props}: Props) {
     {/* <div className={styles.image}>
       <ThreeModelVariant {...characterContext.variant} r={0}/>
     </div> */}
-    <Image className={styles.image} src={defaultImage} alt={'def image'} width={225} height={290}/>
+    <Image className={styles.image} src={cv.profile?.image?.source?FILES+cv.profile?.image?.source : defaultImage} alt={'def image'} width={320} height={320} />
     <div className={styles.top}>
       {cv.categories.length > 0 &&
       <p className={styles.name}>{cv.categories[0].name}</p>

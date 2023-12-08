@@ -12,6 +12,7 @@ import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
 import styles from './index.module.scss'
+import { FILES } from 'types/constants'
 
 interface Props {
   className?: string
@@ -68,7 +69,7 @@ export default function UserDropdownMenu(props: Props) {
 
   return ( 
     <div className={classNames(styles.root, props.className)} ref={(ref)=> props.reference(ref)}>
-      <UserPic size={80}/>
+      <UserPic size={80} image={currentProfile?.image?.source&&FILES + currentProfile.image.source}/>
 
       <div className={styles.userData}>
         <p className={styles.name}>{getUserData()?.name}</p>

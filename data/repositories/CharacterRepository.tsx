@@ -14,10 +14,11 @@ export default class CharacterRepository {
     return res
   }
 
-  static async createCharacter(): Promise<any|null> {
+  static async createCharacter(data: {gender: 'male' | 'female'}): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/character',
+      data
     })
     if(res.err) {
       return null
