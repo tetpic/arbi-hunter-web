@@ -10,20 +10,18 @@ import UserPic from 'components/ui/UserPic'
 import { useCommunityContext } from 'context/community_state'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
-import ICommunity from 'data/interfaces/ICommunity'
+// import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import {useState } from 'react'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SettingSvg from 'components/svg/SettingSvg'
 
-interface Props {
-  community: ICommunity
-}
 
-export default function CommunityHeader({community}: Props) {
+
+export default function CommunityHeader() {
   const communityContext = useCommunityContext()
   const userContext = useUserContext()
   const appContext = useAppContext()
@@ -31,14 +29,14 @@ export default function CommunityHeader({community}: Props) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>()
 
-  const buttonHandler = async () => {
+  const buttonHandler = async () => { 
     setIsLoading(true)
-    await communityContext.communitySubsription(community.id, community.isSubscribedByCurrentProfile)
+    await communityContext.communitySubsription(communityContext.currentCommunity.id, communityContext.currentCommunity.isSubscribedByCurrentProfile)
     setIsLoading(false)
   }
 
   const size = 114
-  const isAdmin = community.profile?.id === userContext.currentProfile?.id
+  const isAdmin = communityContext.currentCommunity.profile?.id === userContext.currentProfile?.id
 
   const camera = (
     <div className={styles.svgWrapper}  style={{width: size, height: size}}>
@@ -48,34 +46,34 @@ export default function CommunityHeader({community}: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.background}>
-      {community.image &&
-        <Image src={FILES+ community.image.source} alt={community.name + ' background'} fill/>
+      {communityContext.currentCommunity.image &&
+        <Image src={FILES+ communityContext.currentCommunity.image.source} alt={communityContext.currentCommunity.name + ' background'} fill/>
       }
       {isAdmin && !isTabletWidth &&
         <Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
         ||
         isAdmin && isTabletWidth &&
-        <Button className={styles.editCover} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}><SettingSvg/></Button>
+        <Button className={styles.editCover} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, communityContext.currentCommunity)}><SettingSvg/></Button>
       }
     </div>
     <div className={styles.content}>
       <UserPic 
       className={styles.userPic} 
-      image={community.logo&&FILES + community.logo.source} 
-      icon={community.profile?.id === userContext.currentProfile?.id&&!community.logo&&camera} 
-      size={/*props.image?114:80*/ size}
+      image={communityContext.currentCommunity?.logo?.source&&FILES + communityContext.currentCommunity.logo.source} 
+      icon={communityContext.currentCommunity.profile?.id === userContext.currentProfile?.id&&!communityContext.currentCommunity.logo&&camera} 
+      size={size}
       />
-      <p className={styles.name}>{community.name}</p>
+      <p className={styles.name}>{communityContext.currentCommunity.name}</p>
       {
         userContext.currentProfile &&
         <p className={styles.members} onClick={()=>appContext.showModal(ModalType.MembersModal, [...communityContext.communityMembers.values()])}>
           <UsersSvg/>
-          {Formatter.formatNumber(Number(community.membersCount))} {Formatter.pluralize(+community.membersCount, 'участник', 'участника', 'участников')}
+          {Formatter.formatNumber(Number(communityContext.currentCommunity.membersCount))} {Formatter.pluralize(+communityContext.currentCommunity.membersCount, 'участник', 'участника', 'участников')}
         </p>
       }
       {
         isAdmin && !isTabletWidth && 
-        <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, community)}>Настройки сообщества</Button>
+        <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, communityContext.currentCommunity)}>Настройки сообщества</Button>
         ||
         isAdmin && isTabletWidth &&
         <Button className={styles.createButton} onClick={()=>appContext.showModal(ModalType.CreateCommunityArticleModal)}><span>Создать запись</span></Button>
@@ -87,7 +85,7 @@ export default function CommunityHeader({community}: Props) {
         className={styles.button}
         onClick={buttonHandler} 
         >
-          {community.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
+          {communityContext.currentCommunity.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
         </Button>
       }
     </div>

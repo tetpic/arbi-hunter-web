@@ -10,6 +10,9 @@ import FindEmployees from './FindEmployees'
 import Reasons from './Reasons'
 import Head from './Head'
 import users from 'images/recruiting/users.png'
+import slide1 from 'images/recruiting/recruiting_swipe1.png'
+import slide2 from 'images/recruiting/recruiting_swipe2.png'
+
 
 interface Props {
 }
@@ -25,7 +28,7 @@ export default function RecruitingHirer(props: Props) {
       <Title className={styles.title} title={'С чего начать поиск сотрудников?'}/>
       <FindEmployees/>
       
-      <AppPromo/>
+      <AppPromo cards={[slide1, slide2]}/>
     
       <Title className={styles.title} title={'Поиск по популярным категориям'}/>
       <Categories count='резюме' image={users} titles={['Веб дизайнер', 'Маркетолог', 'Менеджер']}/>

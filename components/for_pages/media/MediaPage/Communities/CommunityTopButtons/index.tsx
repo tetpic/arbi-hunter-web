@@ -1,7 +1,7 @@
 import Button from 'components/ui/Button'
 import { useCommunityContext } from 'context/community_state'
 import { useAppContext } from 'context/state'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { ModalType } from 'types/enums'
 import styles from './index.module.scss'
 import { ICreateNewCommunityModal } from 'components/modals/CreateNewCommunityModal'
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function CommunityTopButtons(props: Props) {
-  const router = useRouter()
+  // const router = useRouter()
   const appContext = useAppContext()
   const communityContext = useCommunityContext()
 

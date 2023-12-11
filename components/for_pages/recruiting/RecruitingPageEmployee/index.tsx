@@ -50,7 +50,17 @@ export default function RecruitingPageEmployee(props: Props) {
   const memoedRive = useMemo(()=><Rive 
   key={1}
   src={'/rive/cv_laptop.riv'} 
-  animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+  animations={[   
+    'Money3',
+    'Money2',
+    'Money1',
+    'MoneyLoop',
+    'Laptop',
+    'HandR',
+    'HandL',
+    'Head',
+    'Eyes',
+    'Boot',]} 
   className={styles.image}/>, [])
 
   return (<div className={styles.root}> 

@@ -30,13 +30,17 @@
   font-weight: $semibold;
 }
 
+.radioList {
+  row-gap: 8px !important;
+}
+
 .radioItem {
   background-color: $grey;
   padding: 10px 16px;
   border-radius: 8px;
-  @include exeptLast {
-    margin-bottom: 8px;
-  }
+  // @include exeptLast {
+  //   margin-bottom: 8px;
+  // }
 
   &_active {
     border: 1px $blue solid;

@@ -17,7 +17,6 @@ import { useState } from 'react'
 import { FILES } from 'types/constants'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
-import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 
 interface Props {
@@ -29,7 +28,6 @@ export default function EditCommunityModal(props: Props) {
   const appContext = useAppContext()
   const modalArgs = appContext.modalArguments as ICommunity
   const {isTabletWidth} = useResize()
-  const router = useRouter()
 
   const [previewLogo, setPreviewLogo] = useState<PreviewImage>()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()

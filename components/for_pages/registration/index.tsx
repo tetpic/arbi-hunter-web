@@ -14,7 +14,7 @@ import DropDownInput from '../../fields/LocationDropdownInput'
 import UserRegImage from 'components/ui/UserRegImage'
 import BackBtn from 'components/ui/BackBtn'
 import { useResize } from 'components/hooks/useResize'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
@@ -68,8 +68,9 @@ export default function Registration() {
       
       RegistrationRepository.completeRegistration(data)
       .then(res=> {
-        userContext.updateUser()
-        router.replace('/') 
+        setTimeout(() => {          
+          userContext.updateUser()
+        }, 300)
       })
       .catch(err=> {
         setDisableButton(false)
@@ -103,7 +104,10 @@ export default function Registration() {
 
   useEffect(()=>{
     if(userContext.currentProfile) {
-      router.replace('/profile')
+      setTimeout(()=>{
+        
+        router.push('/')
+      }, 100)
     }
   }, [userContext.currentProfile])
 

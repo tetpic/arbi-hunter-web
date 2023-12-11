@@ -32,8 +32,13 @@ export default function MainPageEmployee() {
     cvContext.setSavedCvs()
     ChatRepository.getChatList({})
     .then(res=>{
-      const counter = res.data.map(el=>el.totalUnread).reduce((p, c) =>  p + c, 0)
-      setMessagesCount(counter.toString())
+      if(res?.data?.length >0) {
+        const counter = res.data.map(el=>el.totalUnread).reduce((p, c) =>  p + c, 0)
+        setMessagesCount(counter.toString())
+      }
+      else {
+        setMessagesCount('0')
+      }
     })
     UserRepository.getStats()
     .then(res=> {

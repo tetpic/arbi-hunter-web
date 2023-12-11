@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 
 interface Props {
   className?: string
-  onClick?: ()=>void
+  onClick?: (e: React.MouseEvent<Element, MouseEvent>)=>void
   onMouseEnter?: () => void
 }
 

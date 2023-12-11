@@ -22,6 +22,7 @@ interface Props {
   titleName?: string
   withDefaultIcon?: boolean
   isOpen?: boolean
+  threeDotsHandler?: (e: React.MouseEvent<Element, MouseEvent>, a: IArticle) => void
 }
 
 /**
@@ -66,7 +67,7 @@ export default function NewsArticle(props: Props) {
       }
       <p className={styles.name}>{props.titleName}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
-      <ThreeDotsButton className={styles.dots}/>
+      <ThreeDotsButton onClick={(e)=>props.threeDotsHandler&&props.threeDotsHandler(e, article)} className={styles.dots}/>
     </div>
     <div className={styles.body}>
       <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{article.name}</p>

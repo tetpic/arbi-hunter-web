@@ -6,7 +6,7 @@ import { CookiesType, SnackbarType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useAppContext } from './state'
 
 interface IState {
@@ -23,7 +23,7 @@ interface IState {
   setProfileType: (t: ProfileType) => void,
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
   removeCurrentProfile: () => void
-  updateUser: (user?: IUser) => void
+  updateUser: (user?: IUser) => Promise<IUser> 
 }
 
 const loginState$ = new Subject<boolean>()
@@ -68,7 +68,6 @@ export function UserWrapper(props: Props) {
     else {
       const data = await UserRepository.getCurrentUser()
       if (data) {
-        
         setUser(data)
         setCurrentProfileState(data.profiles[0])
         if(data.profiles.length === 0 && data.isRegistrationCompleted) {

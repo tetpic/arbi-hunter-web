@@ -64,6 +64,7 @@ export default function CreateNewCommunityModal(props: Props) {
       name={'name'}/>
       :
       <RadioListField 
+      wrapperClassName={styles.radioList}
       itemClassName={styles.radioItem}  
       name={'categoryId'} 
       activeItemClassName={styles.radioItem_active}

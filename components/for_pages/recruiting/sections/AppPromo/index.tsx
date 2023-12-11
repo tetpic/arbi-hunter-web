@@ -1,8 +1,6 @@
 import styles from './index.module.scss'
 
-import Image from 'next/image'
-import slide1 from 'images/recruiting/recruiting_swipe1.png'
-import slide2 from 'images/recruiting/recruiting_swipe2.png'
+import Image, { StaticImageData } from 'next/image'
 import qr from 'images/recruiting/recruiting_qr.svg'
 import check from 'images/recruiting/recruiting_check.svg'
 import cross from 'images/recruiting/recruiting_cross.svg'
@@ -14,17 +12,17 @@ import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 interface Props {
+  cards: string[]|StaticImageData[]
 }
 
-enum CardsNames {
-  c1, c2
-}
+
 
 export default function AppPromo(props: Props) {
-  const cardsRef = useRef<{c1: HTMLImageElement, c2: HTMLImageElement}>({c1: null, c2: null})
-  const [activeCard, setActiveCard] = useState<HTMLImageElement>(cardsRef.current.c1)
+  const cardsRef = useRef<HTMLImageElement[]>([])
+  const [activeCard, setActiveCard] = useState<HTMLImageElement>(cardsRef.current[0])
 
   const translateCard = (type: 'check'|'cross') => {
+    const currentIndex = cardsRef.current.indexOf(activeCard)
     activeCard.style.opacity = '0'
     if(type === 'check') {
       activeCard.style.transform = 'translateX(-100px)'
@@ -39,12 +37,12 @@ export default function AppPromo(props: Props) {
       activeCard.style.transform = null
       activeCard.style.rotate = null
 
-      setActiveCard(activeCard === cardsRef.current.c1?cardsRef.current.c2:cardsRef.current.c1)
+      setActiveCard(currentIndex=== props.cards.length-1?cardsRef.current[0]:cardsRef.current[currentIndex+1])
     }, 300)
   }
 
   useEffect(()=>{
-    setActiveCard(cardsRef.current.c1)
+    setActiveCard(cardsRef.current[0])
   }, [])
 
 
@@ -69,8 +67,15 @@ export default function AppPromo(props: Props) {
       <div className={styles.mobile}>
         <Image className={styles.back} src={phone} alt={'phone image'} width={306} height={420}/>
         <div className={styles.cards}>
-          <Image ref={(r)=> cardsRef.current.c1 = r} className={classNames(styles.img, activeCard === cardsRef.current.c1&&styles.active)} src={slide1} alt={'card1'} width={187} height={315}/>
-          <Image ref={(r)=> cardsRef.current.c2 = r}  className={classNames(styles.img, activeCard === cardsRef.current.c2&&styles.active)} src={slide2} alt={'card2'} width={187} height={315}/>
+          {props.cards.map((el, index)=> {
+            return <Image 
+            ref={(r)=> cardsRef.current[index] = r} 
+            className={classNames(styles.img, activeCard === cardsRef.current[index]&&styles.active)} 
+            src={el} 
+            alt={index.toString()} 
+            width={178} 
+            height={300}/>
+          })}
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} onClick={()=>translateCard('check')}><Image src={check} alt={'check'}/></Button>

@@ -30,7 +30,6 @@ export default function CommunityPage({community, id}: Props) {
   const [total, setTotal] = useState<number>()
   const contentLength = useRef(communityContext.communityNews.size)
   const router = useRouter()
-  const com = communityContext.currentCommunity||community
 
   useEffect(()=>{
     communityContext.getCommunityNews(page)
@@ -67,12 +66,16 @@ export default function CommunityPage({community, id}: Props) {
     return ()=>{communityContext.setCurrentCommunity(null)}
   }, [communityContext.currentCommunity])
 
+  if(!communityContext.currentCommunity) {
+    return <Spinner size={24}/>
+  }
+
   return (<div className={styles.root} id='scrollable'> 
   {!isTabletWidth &&
     <BackTextButton className={styles.backButton} onClick={router.back}/>
   }
     <div className={styles.contentWrapper}>
-      <CommunityHeader community={com} />
+      <CommunityHeader/>
       {communityContext.currentCommunity &&
         <>
           <InfiniteScroll 

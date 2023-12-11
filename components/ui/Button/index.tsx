@@ -41,6 +41,7 @@ export default function Button(props: Props) {
   }, props.className)
 
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
     e.stopPropagation()
     props.onClick(e)
   }

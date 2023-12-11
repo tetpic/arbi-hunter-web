@@ -41,8 +41,6 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
 
   const canvasRef = useRef<HTMLCanvasElement>()
 
-  
-
   useEffect(()=>{
     if(characterContext.modelLoaded && characterContext.dataLoaded) {
       setTimeout(() => {

@@ -180,8 +180,10 @@ export function ChatWrapper(props: Props) {
 
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({})
-    setChats(new Map(data.data.map(el=> [el.id, el])) ?? new Map)
-    setTotalChats(data.total)
+    if(data.data) {
+      setChats(new Map(data.data.map(el=> [el.id, el])) ?? new Map)
+      setTotalChats(data.total)
+    }
   }, 1000)
 
   useEffect(() => {

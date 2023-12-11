@@ -13,7 +13,11 @@ import Search from '../sections/Search'
 import Categories from '../sections/Categories'
 import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
 import Rive from '@rive-app/react-canvas'
-import { useMemo } from 'react'
+import {  useMemo } from 'react'
+import slide3 from 'images/recruiting/recruiting_swipe3.png'
+import slide4 from 'images/recruiting/recruiting_swipe4.png'
+import slide5 from 'images/recruiting/recruiting_swipe5.png'
+
 
 
 
@@ -22,7 +26,17 @@ export default function RecruitingEmployee() {
   const riveAnimation = useMemo(()=>{
     return <Rive 
     src={'/rive/cv_laptop.riv'} 
-    animations={['MoneyLoop','Laptop','HandR','HandL','Head','Eyes','Boot',]} 
+    animations={[   
+      'Money3',
+      'Money2',
+      'Money1',
+      'MoneyLoop',
+      'Laptop',
+      'HandR',
+      'HandL',
+      'Head',
+      'Eyes',
+      'Boot',]} 
     className={styles.image}/>
   }, [])
   
@@ -59,7 +73,7 @@ export default function RecruitingEmployee() {
     <Vacancies/>
     <Button className={styles.watchAll}>Смотреть все</Button>
 
-    <AppPromo/>
+    <AppPromo cards={[slide3, slide4, slide5]}/>
 
     <Help/>
   </div>)

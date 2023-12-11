@@ -4,7 +4,7 @@ import ICommunity from 'data/interfaces/ICommunity'
 import { IUserProfile } from 'data/interfaces/IUser'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react'
 import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
@@ -170,15 +170,19 @@ export function CommunityWrapper(props: Props) {
   const createCommunity = (data: UpdateCommunityForm) => {
     CommunitiesRepository.createCommunity(data)
     .then(res=> {
+      debugger
+
+      router.push('/media/community/'+ res.id)
       appContext.hideModal()
-      router.push('/media/community/my')
+
     })
   }
 
   const updateCommunity = async (data: UpdateCommunityForm):Promise<boolean> => {
     const res = await CommunitiesRepository.updateCommunity(currentCommunity.id, data)
+    debugger
     appContext.hideModal()
-    setCurrentCommunity(res)
+    setCurrentCommunity(state => {return {...state, ...res} })
     return true
   }
 
