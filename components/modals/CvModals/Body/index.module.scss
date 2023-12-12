@@ -7,11 +7,11 @@
   align-items: center;
   column-gap: 8px;
   padding: 8px 16px;
-
 }
 
 .loupeSvg {
   display: block;
+
   path {
     fill: $greyLight;
   }
@@ -41,7 +41,7 @@
 }
 
 .positionsWrapper {
-  min-height: 30vh;
+  // min-height: 30vh;
   display: flex;
   flex-direction: column;
   row-gap: 8px;
@@ -83,4 +83,8 @@
   pointer-events: none;
   opacity: .5;
   filter: grayscale(1);
+}
+
+.noTitle {
+  margin-top: unset;
 }

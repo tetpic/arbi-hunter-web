@@ -27,6 +27,7 @@ export default function RecruitingPageEmployee(props: Props) {
   const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>({})
 
   const findVacancies = (data: IVacancyCvSearchParams):void => {
+    
     vacancyContext.findVacancies(data)
     .then(_=>setLoading(false))
   }

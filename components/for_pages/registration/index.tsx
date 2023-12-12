@@ -33,7 +33,8 @@ export default function Registration() {
   const [cityId, setCityId] = useState<number>()
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
-  const [loading, setLoading] = useState<boolean>(false)
+  //TODO пофиксить кнопку  регистрации, когда нажали на вход
+  // const [loading, setLoading] = useState<boolean>(false)
   const [disableButton, setDisableButton] = useState<boolean>(false)
   const router = useRouter()
 
@@ -202,7 +203,7 @@ export default function Registration() {
             validate={Validator.combine([Validator.required, Validator.email])}
             />
 
-          <Button disabled={disableButton} className={styles.submitButton} onClick={()=> formik.submitForm()} spinner={loading}>
+          <Button disabled={disableButton} className={styles.submitButton} onClick={()=> formik.submitForm()}>
             Зарегистрироваться
           </Button>
           </Form>

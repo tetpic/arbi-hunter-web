@@ -131,6 +131,7 @@ export function CommunityWrapper(props: Props) {
   }
   
   const communitySubsription = async (id: number, isSubsribed: boolean):Promise<boolean> => {
+    
     const changeState = (b: boolean) => {
       if(currentCommunity) {
         setCurrentCommunity(state=> {
@@ -170,8 +171,6 @@ export function CommunityWrapper(props: Props) {
   const createCommunity = (data: UpdateCommunityForm) => {
     CommunitiesRepository.createCommunity(data)
     .then(res=> {
-      debugger
-
       router.push('/media/community/'+ res.id)
       appContext.hideModal()
 
@@ -180,9 +179,9 @@ export function CommunityWrapper(props: Props) {
 
   const updateCommunity = async (data: UpdateCommunityForm):Promise<boolean> => {
     const res = await CommunitiesRepository.updateCommunity(currentCommunity.id, data)
-    debugger
+    
     appContext.hideModal()
-    setCurrentCommunity(state => {return {...state, ...res} })
+    setCurrentCommunity(_ => {return {...res} })
     return true
   }
 

@@ -3,18 +3,21 @@ import styles from './index.module.scss'
 import FileInput from 'components/fields/FileInput'
 import InputField from 'components/fields/InputField'
 import RichTextField from 'components/fields/RichTextField'
-import PhotoSvg from 'components/svg/PhotoSvg'
 import Button from 'components/ui/Button'
 import { useCommunityContext } from 'context/community_state'
 import { useAppContext } from 'context/state'
 import { ICreateNews, IArticleBlock, PreviewImage } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CategoryType } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
 import classNames from 'classnames'
+import PlusSvg from 'components/svg/PlusSvg'
+import Image from 'next/image'
+import { FILES } from 'types/constants'
+import CrossSvg from 'components/svg/CrossSvg'
 
 interface Props {
   article?: IArticle
@@ -22,7 +25,6 @@ interface Props {
 }
 
 export default function CreateNewCommunityArticle(props: Props) {
-  
   const communityContext = useCommunityContext()
   const appContext = useAppContext()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()
@@ -35,14 +37,14 @@ export default function CreateNewCommunityArticle(props: Props) {
       articleType: CategoryType.News,     
       name: data.title,
       published: true,
-      image: {id: +previewImage?.id||null},
+      image: {id: +previewImage?.id||props.article?.image?.id|| null},
       imageIds: images.map(i=> +i.id),
       blocks: [
         {
           title: '',
           body: data.body,
-          image: null,
-          imageLarge: null,
+            // image: null,
+            // imageLarge: null,
         }, 
         ...images.map(im=> {
           return {
@@ -54,6 +56,7 @@ export default function CreateNewCommunityArticle(props: Props) {
         })
       ],
     }
+    
     communityContext.createNews(submitData, props?.article?.id)
     .then(_=> {
       helpers.resetForm()
@@ -71,40 +74,62 @@ export default function CreateNewCommunityArticle(props: Props) {
     onSubmit: submit
   })
 
+  const removeImage = (id: number|string) => {
+    setImages(state=> state.filter(i=> i.id !== id))
+  }
+
+  useEffect(()=>{
+    setImages(props?.article?.blocks.slice(1).map(i=> ({id: i.image.id, source: i.image.source, loaded: true} as PreviewImage))||[])
+  }, [])
+
   return (<div className={styles.root}> 
     <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||'Опубликуйте запись'}/>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
+        <div className={styles.addCover}>
+          {(props.article?.image?.source || previewImage?.image) &&
+          <Image src={props.article?.image?.source?FILES+props.article.image.source:URL.createObjectURL(previewImage?.image)} alt={''} width={700} height={400}/>
+          }
+          {(!props.article?.image?.source && !previewImage?.image) &&
+          <p className={styles.subTitle}>Добавить обложку <br/> (не обязательно)</p>
+          }
+          <label className={styles.label}>
+            <FileInput setImages={setPreviewImage}/>
+            <div className={styles.addCoverButton}><PlusSvg/></div>
+          </label>
+        </div>
+
         <InputField 
         placeholder='Название' 
         name={'title'} 
         styleType={'default'} 
-        color={'default'} />
-        {previewImage && 
-          <img src={URL.createObjectURL(previewImage.image)}/>
-        }
+        color={'default'} 
+        />
+
         <RichTextField 
-        value={formik.values.body.toString()}  
+        value={formik.values.body?.toString()}  
         returnValueType={'html'}  
         placeholder='Введите текст' 
         name={'body'} 
         onAddImage={setImages} 
-        hideButtons={{helpers: true}}/>
-        {images &&images.length > 0 &&
-        <div className={styles.imagesWrapper}>
-          {images.map(i=> {
-            return  <img key={i.id} src={URL.createObjectURL(i.image)} alt={''}/>
-          })}
-        </div>
-        }
-        <div className={styles.buttonsWrapper}>
-          <label className={styles.label}>
-            <FileInput setImages={setPreviewImage}/>
-            <PhotoSvg/>
-          </label>
-          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body.toString().length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
+        hideButtons={{helpers: true}}
+        />
 
+        {images &&images.length > 0 &&
+          <div className={styles.imagesWrapper}>
+            {images.map(i=> {
+              return  <div className={styles.image}>
+              <img key={i.id} src={i.source?FILES+i.source:URL.createObjectURL(i.image)} alt={''}/>
+              <Button type='button' className={styles.removeButton} onClick={()=> removeImage(i.id)}><CrossSvg/></Button>
+              </div>
+            })}
+          </div>
+        }
+
+        <div className={styles.buttonsWrapper}>
+          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body?.toString().length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
         </div>
+
       </Form>
     </FormikProvider>
   </div>)

@@ -104,7 +104,6 @@ export default function SoursesModal(props: Props) {
       </div>
       <p className={styles.title}>Гео:</p>
       <div className={styles.wrapper}>
-
         {geos?.length>0&&geos
         .map(el=> 
             <p 

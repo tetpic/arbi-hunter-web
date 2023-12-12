@@ -24,6 +24,7 @@ interface Props {
 export default function NewsByCategories(props: Props) {
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
+  const [loading, setLoading] = useState(true)
   const mediaContext = useMediaContext()
   
   const news = mediaContext.currentNews
@@ -37,6 +38,7 @@ export default function NewsByCategories(props: Props) {
   }, [props.category])
 
   useEffect(()=>{
+    setLoading(true)
     let data: any = {
       isTop: false, 
       page: page, 
@@ -49,11 +51,12 @@ export default function NewsByCategories(props: Props) {
     .then(res => {
       setTotal(res.total)
       mediaContext.setCurrentNews({articles: res.data})
+      setLoading(false)
     })
   }, [page, props.category])
 
   return (<>
-  {!props.hideNav && 
+  {!props.hideNav && !loading &&
     <div className={styles.sort}>
       <p className={styles.found}>Найдено {total||0} {Formatter.pluralize(total, 'статья', 'статьи', 'статей')}</p>
       <p className={styles.sortBy}>Сортировать по <SortArrowsSvg/></p>
@@ -61,6 +64,9 @@ export default function NewsByCategories(props: Props) {
   }
 
   <div className={classNames(styles.root, props.className)}> 
+  {loading &&
+  <Spinner size={24}/>
+  }
   <InfiniteScroll 
   next={()=>setPage(p => p+1)} 
   hasMore={news?.size < total} 

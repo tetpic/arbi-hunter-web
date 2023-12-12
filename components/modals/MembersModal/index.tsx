@@ -41,15 +41,14 @@ export default function MembersModal(props: Props) {
   useEffect(()=>{
     communityContext.setCommunityMembers(page)
     .then(res=> {
-      
       res instanceof Object && setTotal(res.total)
       setFiltered([...communityContext.communityMembers.values()])
       setLength(communityContext.communityMembers.size)
     })
-    .catch(err=> {
+    .catch(_=> {
       
     })
-  }, [page, ])
+  }, [page])
 
 
   const top = (<div className={styles.top}>
@@ -84,7 +83,7 @@ export default function MembersModal(props: Props) {
   </div>)
 
   return (<ModalLayout mobileFullScreen className={styles.modalLayout}>
-    <ModalBody>
+    <ModalBody className={styles.modalBody}>
       {top}
       {body}
     </ModalBody>

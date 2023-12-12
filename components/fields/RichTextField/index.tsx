@@ -123,7 +123,7 @@ export default function RichTextField(props: Props) {
       editor.commands.clearContent()
       editor.commands.insertContent(props.value)
     }
-  }, [props.value, editor])
+  }, [/*props.value, editor*/])
 
   const hasError = !!meta.error && meta.touched
 

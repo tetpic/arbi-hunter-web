@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { useResize } from 'components/hooks/useResize'
-import EditSvg from 'components/svg/EditSvg'
+// import EditSvg from 'components/svg/EditSvg'
 import PhotoCameraSvg from 'components/svg/PhotoCameraSvg'
 import UsersSvg from 'components/svg/UsersSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -13,7 +13,7 @@ import { useUserContext } from 'context/user_state'
 // import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import {useState } from 'react'
+import { useState } from 'react'
 import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
@@ -47,11 +47,11 @@ export default function CommunityHeader() {
   return (<div className={styles.root}> 
     <div className={styles.background}>
       {communityContext.currentCommunity.image &&
-        <Image src={FILES+ communityContext.currentCommunity.image.source} alt={communityContext.currentCommunity.name + ' background'} fill/>
+        <Image key={communityContext.currentCommunity.image.source} src={FILES+ communityContext.currentCommunity.image.source} alt={communityContext.currentCommunity.name + ' background'} fill/>
       }
-      {isAdmin && !isTabletWidth &&
-        <Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
-        ||
+      {//isAdmin && !isTabletWidth &&
+        //<Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
+        //||
         isAdmin && isTabletWidth &&
         <Button className={styles.editCover} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, communityContext.currentCommunity)}><SettingSvg/></Button>
       }

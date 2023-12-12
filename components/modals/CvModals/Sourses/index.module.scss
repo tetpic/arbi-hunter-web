@@ -17,6 +17,7 @@
   flex-wrap: wrap;
   column-gap: 16px;
   row-gap: 16px;
+  margin-bottom: 20px;
 }
 
 
@@ -40,7 +41,7 @@
   color: $white;
   font-size: $largeText;
   font-weight: $semibold;
-  margin-block: 16px;
+  margin-bottom: 16px;
   @include mq($PhoneWidth, max) {
     display: flex;
     align-items: center;

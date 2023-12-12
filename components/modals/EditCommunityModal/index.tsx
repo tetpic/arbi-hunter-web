@@ -73,7 +73,7 @@ export default function EditCommunityModal(props: Props) {
     <div className={styles.dropZone}>
       <label className={styles.imageLabel}>
       <FileInput setImages={setPreviewImage}/>
-      {previewImage && !communityContext.currentCommunity?.image?.source &&
+      {previewImage  &&
         <img className={classnames(styles.bannerImage, !previewImage.loaded&&styles.bannerImage_load)}  alt={'name'} src={URL.createObjectURL(previewImage.image)}/>
         ||
         !previewImage && !communityContext.currentCommunity?.image?.source &&

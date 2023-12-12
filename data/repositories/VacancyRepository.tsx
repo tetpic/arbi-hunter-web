@@ -115,6 +115,7 @@ export default class VacancyRepository {
   static async searchVacancies(data: IVacancyCvSearchParams): Promise<IVacancy[]|null> {
     const dataToSend:any = {...data}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
+    data?.sources&&data.sources.length>0&&(dataToSend.sources = data.sources.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
     data?.experience&&data.experience.length>0&&(dataToSend.experience = data.experience.join(','))
     data?.cities&&data.cities.length>0&&(dataToSend.cities = data.cities.join(','))

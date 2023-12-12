@@ -43,7 +43,13 @@ export default function ArticlePage(props: Props) {
         <div className={styles.root}>
         {loading && <Spinner size={34} />
         ||
-        article && !loading && <NewsArticle article={article} isOpen />
+        article && !loading && 
+        <NewsArticle 
+        article={article} 
+        titleName={article?.community?.name} 
+        isOpen 
+        titleImg={article.community?.image?.source} 
+        />
         }
         </div>
       </MediaWrapper>

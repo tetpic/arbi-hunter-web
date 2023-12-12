@@ -1,11 +1,10 @@
 import styles from './index.module.scss'
 
 import { useResize } from 'components/hooks/useResize'
-// import { CommunityNewsViewModalProps } from 'components/modals/CommunityNewsViewModal'
 import NewsArticle from 'components/ui/NewsArticle'
 import { useCommunityContext } from 'context/community_state'
-// import { useMediaContext } from 'context/media_state'
 import { useAppContext } from 'context/state'
+import { useUserContext } from 'context/user_state'
 import { IArticle } from 'data/interfaces/IArticle'
 import dynamic from 'next/dynamic'
 import { ModalType } from 'types/enums'
@@ -15,12 +14,12 @@ interface Props {
 }
 
 export default function CommunityContent(props: Props) {
-  // const mediaContext = useMediaContext()
+  const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
   const communityContext = useCommunityContext()
 
-  const isAdmin = communityContext.currentCommunity?.id === communityContext.myCommunity?.id
+  const isAdmin = communityContext.currentCommunity.profile?.id === userContext.currentProfile?.id
 
   // const likeHandler = async (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>, news: IArticle) => {
   //   e.stopPropagation()
@@ -44,20 +43,21 @@ export default function CommunityContent(props: Props) {
   //   appContext.showModal<CommunityNewsViewModalProps>(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
   // }
 
+
   return (
   <div className={styles.root}> 
       <div className={styles.infinite}>
-        {communityContext.myCommunity?.id === communityContext.currentCommunity.id && !isTabletWidth &&
+        {isAdmin && !isTabletWidth &&
           <CreateNewCommunityArticle/>
         }
         {communityContext.communityNews&&communityContext.communityNews.size > 0 && 
         [...communityContext.communityNews.values()].map(news=> {
           return (
             <NewsArticle threeDotsHandler={(e, article)=> dotsHandler(e, article)} titleName={communityContext.currentCommunity?.name} article={news} titleImg={communityContext.currentCommunity?.logo?.source}/>
-          )
-        })
-        ||
-        <p className={'empty'}>Нет новостей</p>
+            )
+          })
+          ||
+          <p className={'empty'}>Нет новостей</p>
         }
       </div>
   </div>

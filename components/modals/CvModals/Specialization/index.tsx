@@ -1,7 +1,6 @@
 import styles from '../index.module.scss'
 
 import classnames from 'classnames'
-// import Radio from 'components/fields/RadioListField/Radio'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
@@ -11,8 +10,6 @@ import {  useEffect, useRef, useState } from 'react'
 import Body from '../Body'
 import Scrollbars from 'react-custom-scrollbars-2'
 import { useAppContext } from 'context/state'
-// import { SnackbarType } from 'types/enums'
-// import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import { Form, FormikProvider, useFormik } from 'formik'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import RadioListField from 'components/fields/RadioListField'
@@ -30,16 +27,13 @@ export interface ISpecializationModalProps {
 }
 
 
-
 export default function SpecializationModal(props: Props) {
-
   const cvContext = useCreateVcCvContext()
   const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
   const appContext = useAppContext()
   const args = appContext.modalArguments as ISpecializationModalProps
   const [chooseAll, setChooseAll] = useState<boolean>(false)
   const [load, setLoad] = useState<boolean>(false)
-
 
   const scrollBar = useRef<Scrollbars>(null!)
 
@@ -54,9 +48,9 @@ export default function SpecializationModal(props: Props) {
     props.onClose()
   } 
 
-  const formik = useFormik<{specialization: ISpecializationCategory|ISpecializationCategory[]}>({
+  const formik = useFormik<{specialization: ISpecializationCategory[]}>({
     initialValues: {
-      specialization: args.manyItems?[]:undefined,
+      specialization: [],
     },
     onSubmit: submit
   })

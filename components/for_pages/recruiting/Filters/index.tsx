@@ -58,11 +58,14 @@ export default function Filters(props: Props) {
   }, [formik.values])
 
   useEffect(()=>{
-    formik.setValues({
+    const values = {
       ...formik.values,
       languageKnowledges: [...creationContext.helpObjects.languageKnowledges.values()],
-    })
-  }, [creationContext.helpObjects])
+      sources:  [...creationContext.helpObjects.activeSources.values()].map(el=> el.id),
+    }
+    creationContext.activeSubCategory&&(values.categories = Array.isArray(creationContext.activeSubCategory)?creationContext.activeSubCategory.map(el => el.id):[creationContext.activeSubCategory?.id])
+    formik.setValues(values)
+  }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
   return (<div className={styles.root}> 
     <FormikProvider value={formik}>

@@ -26,6 +26,7 @@ import { ICV } from 'data/interfaces/ICV'
 import CvRepository from 'data/repositories/CvRepository'
 import folderImage from 'images/folder.png'
 import Image from 'next/image'
+import Link from 'next/link'
 
 
 
@@ -99,8 +100,6 @@ export default function Messages(props: Props) {
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
-
-
   useEffect(()=>{
     if(dialog.chat) {
       setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
@@ -115,8 +114,6 @@ export default function Messages(props: Props) {
       }
     }
   }, [dialog.chat])
-
-
 
   return (
     <div className={styles.root}> 
@@ -140,7 +137,9 @@ export default function Messages(props: Props) {
       <div className={styles.invite}>
         <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
         <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
-        <InformationSvg className={styles.invite__info}/>
+        <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
+          <InformationSvg />
+          </Link>
       </div>
       <div 
       className={styles.messagesWrapper} 
@@ -169,9 +168,9 @@ export default function Messages(props: Props) {
       </InfiniteScroll>
       </div>
       {cv && cv.categories[0] &&
-      <div className={styles.bottom}>
+      <Link href={`/cv/${cv.id}`} className={styles.bottom}>
         <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
-      </div>
+      </Link>
       }
       <div className={styles.newMessage} onPaste={onPasteHandler}>
         <label>

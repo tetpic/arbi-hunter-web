@@ -54,13 +54,13 @@ export default function CvPage(props: Props) {
   return (
     <Content className={styles.root}>
       <ContentBody className={styles.body}>
-        <CvVcPageTop 
-        city={currentCv?.city?.locName} 
-        title={currentCv?.categories[0]?.name} 
-        buttonText={'Пригласить'}
-        cv={currentCv}
-        onButtonClick={makeResponse}
-        />   
+          <CvVcPageTop 
+          city={currentCv?.city?.locName} 
+          title={currentCv?.categories[0]?.name} 
+          buttonText={'Пригласить'}
+          cv={currentCv}
+          onButtonClick={makeResponse}
+          />   
 
         <Badges items={[
           {

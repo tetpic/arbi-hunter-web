@@ -1,4 +1,4 @@
-import {formatRelative} from 'date-fns'
+import {formatRelative, subDays} from 'date-fns'
 import {ru} from 'date-fns/locale'
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat
@@ -25,9 +25,10 @@ export default class Formatter {
   static formatDateRelative(date: string | Date) {
     const formatRelativeLocale: { [key: string]: string } = {
       'yesterday': 'Вчера в HH:mm',
-      'today': ' в HH:mm',
+      'today': ' HH:mm',
+      'lastWeek': 'eeee',
       'tomorrow': 'Завтра в HH:mm',
-      'other': 'dd.MM.yyyy HH:mm', // Difference: Add time to the date
+      'other': 'dd.MM.yy ', // Difference: Add time to the date
     }
 
     const locale = {
@@ -38,8 +39,14 @@ export default class Formatter {
     if (!date) {
       return ''
     }
-    return formatRelative(typeof date === 'string' ? new Date(date) : date, new Date(), {locale})
+    return formatRelative(subDays(new Date(date), 0) , new Date(), {locale})
   }
+
+  // static formatDistanceToNow(date: string | Date) {
+  //   const dt = formatDistance(subDays(new Date(), 0), new Date(date), { locale: ru })
+  //   console.log(dt)
+  //   return dt
+  // }
 
   static formatPhone(phone: string) {
     try {

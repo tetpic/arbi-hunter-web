@@ -62,15 +62,18 @@ export default function CommunityPage({community, id}: Props) {
       }
       )
     }
+  }, [communityContext.currentCommunity])
+
+  useEffect(()=>{
     communityContext.setCurrentCommunity(community)
     return ()=>{communityContext.setCurrentCommunity(null)}
-  }, [communityContext.currentCommunity])
+  }, [])
 
   if(!communityContext.currentCommunity) {
     return <Spinner size={24}/>
   }
 
-  return (<div className={styles.root} id='scrollable'> 
+  return (<div className={styles.root} > 
   {!isTabletWidth &&
     <BackTextButton className={styles.backButton} onClick={router.back}/>
   }
@@ -83,7 +86,6 @@ export default function CommunityPage({community, id}: Props) {
           hasMore={communityContext.communityNews.size < total} 
           loader={<Spinner size={24} color={colors.yellow}/>} 
           dataLength={contentLength.current}
-          scrollableTarget='scrollable'
           >
           <CommunityContent/>
           </InfiniteScroll>

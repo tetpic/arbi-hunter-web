@@ -1,6 +1,8 @@
-import UserRegImage from 'components/ui/UserRegImage'
-import { ProfileType } from 'data/interfaces/IRegistration'
-import { useEffect, useState } from 'react'
+import styles from './index.module.scss'
+
+// import UserRegImage from 'components/ui/UserRegImage'
+// import { ProfileType } from 'data/interfaces/IRegistration'
+import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
@@ -19,8 +21,9 @@ import Compensation from '../utils/Steps/Compensation'
 import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
-import styles from './index.module.scss'
 import Spacer from 'components/ui/Spacer'
+import Rive /*{ useRive }*/ from '@rive-app/react-canvas'
+import Specialization from '../utils/Steps/Specialization'
 
 interface Props {
   id?: number
@@ -53,7 +56,15 @@ export default function Vacancy(props: Props) {
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
 
-  const CVItemsCount = 6
+  //  DEV код для получения названий анимаций из rive
+  // const { rive, RiveComponent } = useRive({
+  //   src: '/rive/vacancyCreate/7.riv',
+  //   stateMachines: 'bumpy',
+  //   autoplay: true,
+  //   // animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']
+  // })
+
+  const CVItemsCount = 7
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
 
 
@@ -144,17 +155,17 @@ export default function Vacancy(props: Props) {
     switch (progress) {
       case 1:
         return [<VacancyName/>, VacancyNavigation.Name] 
-      // case 2: 
-      //   return [<Specialization/>, VacancyNavigation.Specialization]
       case 2: 
+        return [<Specialization/>, VacancyNavigation.Specialization]
+      case 3: 
         return [<WorkPlace/>, VacancyNavigation.WorkPlace]
-      case 3:
+      case 4:
         return [<VacancyExperience/>, VacancyNavigation.Experience]
-      case 4: 
-        return [<Compensation/>, VacancyNavigation.Salary]
       case 5: 
+        return [<Compensation/>, VacancyNavigation.Salary]
+      case 6: 
         return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
-      case 6:
+      case 7:
         return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true}}/>, VacancyNavigation.Skills]
     }
   }
@@ -188,7 +199,6 @@ export default function Vacancy(props: Props) {
         formik.setFieldError(val, err||' ')
       })
     }
-    
 
     switch(progress) {
       case 1:
@@ -196,65 +206,55 @@ export default function Vacancy(props: Props) {
           setErr('name', 'Укажите название вакансии')
           return false
         }
+        setProgress(pageNumber||progress+1)
+        return false
+      case 2:
         if(creationContext.helpObjects.categoryIds.length === 0) {
           appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
           return false
         }
         setProgress(pageNumber||progress+1)
         return false
-
-
-        // formik.validateForm()
-        // .then(res=> {
-        //   
-        //   if(res.name) {
-        //     formik.setFieldTouched('name', true)
-        //     return false
-        //   }
-        //   creationContext.helpObjects.categoryIds.length > 0
-        //   ? setProgress(pageNumber||progress+1)
-        //   : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
-        //   return false
-        // })
-      case 4: 
-      if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
-        setErr('salary')
-        return false
-      }
-      else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
-        setErr('commission')
-        return false
-      }
-      else if(formik.values.compensation === CompensationType.Gybrid) {
-        if(!formik.values.commission||formik.values.commission < 1) {
-          setErr('commission')
-          return false
-        }
-        if(!formik.values.salary||formik.values.salary < 1) {
+      case 5: 
+        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
           setErr('salary')
           return false
         }
-        if(formik.values.commission > 0 && formik.values.salary > 0) {
-          setProgress(pageNumber||progress+1)
-          return true
+        else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
+          setErr('commission')
+          return false
         }
-      }
-      else {
-        setProgress(pageNumber||progress+1)
-        return false
-      }
-    break
-    case 5: 
-      if(formik.values.description.trim().length < 1) {
-        setErr('description', 'Напишите подробнее о вакансии')
-        return false
-      } else {
-        setProgress(pageNumber||progress+1)
-        return false
-      }
-    case 6:
-      return true
-    break
+        else if(formik.values.compensation === CompensationType.Gybrid) {
+          if(!formik.values.commission||formik.values.commission < 1) {
+            setErr('commission')
+            return false
+          }
+          if(!formik.values.salary||formik.values.salary < 1) {
+            setErr('salary')
+            return false
+          }
+          if(formik.values.commission > 0 && formik.values.salary > 0) {
+            setProgress(pageNumber||progress+1)
+            return true
+          }
+        }
+        else {
+          setProgress(pageNumber||progress+1)
+          return false
+        }
+      break
+      case 6: 
+        if(formik.values.description.trim().length < 1) {
+          setErr('description', 'Напишите подробнее о вакансии')
+          return false
+        } 
+        else {
+          setProgress(pageNumber||progress+1)
+          return false
+        }
+      case 7:
+        return true
+      break
       default :
         setProgress(pageNumber||progress+1)
         return true
@@ -266,6 +266,32 @@ export default function Vacancy(props: Props) {
     setTitle(getTitle(type))   
     setPage(element)
   }
+
+  const getImage = ():{src: string, animations: string[]} => {
+    switch (progress) {
+      case 1:
+        return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
+      case 2: 
+        return {src: '/rive/vacancyCreate/2.riv', animations: ['Arg', 'ManLegs', 'Head', 'Hand', 'Papers']}
+      case 3: 
+        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text']}
+      case 4: 
+        return {src: '/rive/vacancyCreate/4.riv', animations: ['Text']}
+      case 5: 
+        return {src: '/rive/vacancyCreate/5.riv', animations: ['Man1','Man2', 'Man1Head']}
+      case 6: 
+        return {src: '/rive/vacancyCreate/6.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
+      case 7: 
+        return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
+      default:
+        return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
+    }
+  }
+
+  const memoedRive = useMemo(()=>{
+    const image = getImage()
+    return <Rive src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
+  }, [progress])
 
   useEffect(()=>{
     if(progress < 1) {
@@ -296,7 +322,8 @@ export default function Vacancy(props: Props) {
   
 
   return <div className={styles.root}>
-    <UserRegImage type={ProfileType.Hirer} className={styles.regImage}/>
+    {memoedRive}
+    {/* <RiveComponent className={styles.rive}/> */}
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth &&

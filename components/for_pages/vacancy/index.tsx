@@ -31,6 +31,8 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import Formatter from 'utils/formatter'
 import Link from 'next/link'
+import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 interface Props {
@@ -41,6 +43,7 @@ export default function VacancyPage(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
 
@@ -121,12 +124,16 @@ export default function VacancyPage(props: Props) {
           }
         </ContentItem>
 
-        <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
-        <ContentItem>
-          {foundVacancies.length > 0 &&
-            foundVacancies.map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+          {userContext.currentProfile.profileType === ProfileType.Employee &&
+          <>
+            <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
+            <ContentItem>
+              {foundVacancies.length > 0 &&
+                foundVacancies.map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+              }
+            </ContentItem>        
+          </>
           }
-        </ContentItem>        
       </ContentBody>
 
       <ContentAside>
@@ -136,14 +143,18 @@ export default function VacancyPage(props: Props) {
           <Button className={styles.button}>Открыть профиль</Button>
         </ContentItem>
 
-        <p className={styles.otherVacancies}>Другие вакансии компании</p>
-        <ContentItem className={styles.asideVacancies}>
-          {otherCompanyVacncies.length > 0 &&
-            otherCompanyVacncies.map(vacancy=> 
-            <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>)
-          }
-        </ContentItem>
-        <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
+        {userContext.currentProfile.profileType === ProfileType.Employee &&
+          <>
+            <p className={styles.otherVacancies}>Другие вакансии компании</p>
+            <ContentItem className={styles.asideVacancies}>
+              {otherCompanyVacncies.length > 0 &&
+                otherCompanyVacncies.map(vacancy=> 
+                  <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>)
+                }
+            </ContentItem>
+            <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
+          </>
+        }
       </ContentAside>
     </Content>
   </>)

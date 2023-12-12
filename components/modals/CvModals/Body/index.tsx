@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
 import { ChangeEvent, ReactElement } from 'react'
-import styles from './index.module.scss'
 import classNames from 'classnames'
 
 interface Props {
@@ -15,26 +16,41 @@ interface Props {
   placeholder?: string
   withInput?: boolean|undefined
   disabledButton?: boolean|undefined
+  className?: string
 }
 
+
+
+/**
+ * @onChange  (e: ChangeEvent<HTMLInputElement>) => void
+ * @onClose () => void
+ * @onSave () => void
+ * @children ReactElement | ReactElement[]
+ * @title  string
+ * @placeholder  string
+ * @withInput  boolean|undefined
+ * @disabledButton  boolean|undefined
+ */
 export default function Body(props: Props) {
 
   const {isPhoneWidth} = useResize()
 
   return (<>
-  <p className={styles.title}>
-    {isPhoneWidth && 
-      <Button className={styles.buttonSmall} onClick={props.onClose}><ArrowDownSvg className={styles.arrow}/></Button>
-    }
-    {props.title}
-  </p>
+  {props.title &&
+    <p className={styles.title}>
+      {isPhoneWidth && 
+        <Button className={styles.buttonSmall} onClick={props.onClose}><ArrowDownSvg className={styles.arrow}/></Button>
+      }
+      {props.title}
+    </p>
+  }
     {props.withInput !== false&&
       <div className={styles.inputWrapper}>
         <LoupeSvg className={styles.loupeSvg}/>
           <input className={styles.input} type="text" onChange={props.onChange} placeholder={props.placeholder} />
       </div>
     }
-      <div className={styles.positionsWrapper}>
+      <div className={classNames(styles.positionsWrapper, !props.title&&styles.noTitle)}>
         {props.children}
       </div>
   <div className={styles.buttonsWrapper}>

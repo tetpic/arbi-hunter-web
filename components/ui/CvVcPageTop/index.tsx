@@ -11,6 +11,8 @@ import SalaryItem from '../SalaryItem'
 import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRef, useState } from 'react'
+import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   title: string
@@ -24,6 +26,8 @@ interface Props {
 export default function CvVcPageTop(props: Props) {
   const liked = useRef(props.cv?props.cv.isSavedByCurrentProfile:props.vc.isSavedByCurrentProfile)
   const [isLiked, setIsLiked] = useState<boolean>(liked.current)
+  const userContext = useUserContext()
+
 
   const likeItem = ()=>{
     if(props.cv) {
@@ -64,6 +68,10 @@ export default function CvVcPageTop(props: Props) {
       }
       <SalaryItem cv={props.cv} vacancy={props.vc} />
     </div>
+    {((userContext.currentProfile.profileType === ProfileType.Hirer && props.cv) 
+    ||
+    (userContext.currentProfile.profileType === ProfileType.Employee && props.vc))
+    &&
     <div className={styles.right}>
       <Button className={classNames(styles.button, styles.share)}><ShareSvg/></Button>
       <Button 
@@ -75,5 +83,6 @@ export default function CvVcPageTop(props: Props) {
       <Button className={classNames(styles.button, styles.closeEye)}><CloseEyeSvg/></Button>
       <Button onClick={()=>props.onButtonClick()} className={styles.showContacts}>{props.buttonText}</Button>
     </div>
+      }
   </div>)
 }

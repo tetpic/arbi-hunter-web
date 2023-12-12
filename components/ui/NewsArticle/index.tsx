@@ -85,7 +85,7 @@ export default function NewsArticle(props: Props) {
           <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{block.title}</p>
           <p className={styles.blockContent} dangerouslySetInnerHTML={{__html:block.body}}></p>
           {block?.image?.source && 
-          <Image src={FILES + block.image.source} alt={''} width={718} height={360}/>
+          <Image className={styles.blockImage} src={FILES + block.image.source} alt={''} width={718} height={360} style={{objectFit: 'contain'}}/>
           }
           </div>
         )

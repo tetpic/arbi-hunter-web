@@ -82,10 +82,10 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
         <Bounds fit clip observe damping={0} margin={1}>
           <ThreeModel {...props.data as any} actions={props.actions}/>
         </Bounds>
-          <Environment files="/models/skidpan.hdr"/>
-          {!props.disableControls &&
-            <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={0} minPolarAngle={1.6} maxPolarAngle={1.6}/>
-          }
+        <Environment files="/models/skidpan.hdr"/>
+        {!props.disableControls &&
+          <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={0} minPolarAngle={1.6} maxPolarAngle={1.6}/>
+        }
       </Canvas>
     }
   </div>
