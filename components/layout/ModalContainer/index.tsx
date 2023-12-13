@@ -32,6 +32,7 @@ import ConfirmModal from 'components/modals/ConfirmModal'
 import CourseFeedbackModal from 'components/modals/CourseFeedbackModal'
 import ApplicationModal from 'components/modals/ApplicationModal'
 import ApplicationSuccessModal from 'components/modals/ApplicationSuccessModal'
+import SearchFilterModal from 'components/modals/SearchFilterModal'
 
 
 interface Props { }
@@ -66,7 +67,7 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings}>
           <SoursesModal onClose={commonSettings.onRequestClose}/>
         </Modal>
-      case ModalType.CvVcOptionsModal:
+      case ModalType.OptionsModal:
         return <Modal isOpen {...commonSettings}>
           <CvVcOptionsModal onClose={commonSettings.onRequestClose}/>
         </Modal>
@@ -157,6 +158,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.ApplicationSuccessModal:
         return <Modal isOpen {...commonSettings} >
           <ApplicationSuccessModal onClose={commonSettings.onRequestClose}/>
+        </Modal>
+      case ModalType.SearchFilterModal:
+        return <Modal isOpen {...commonSettings} >
+          <SearchFilterModal onClose={commonSettings.onRequestClose}/>
         </Modal>
     }
   })()

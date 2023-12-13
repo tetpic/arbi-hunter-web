@@ -123,16 +123,16 @@ export default function CvPage(props: Props) {
         }
 
         {currentCv.skills.length > 0 &&
-          <TagList title={'Навыки'} tags={currentCv.skills.map(el=>el.title)} titleClassName={styles.title}/>
+          <TagList title={'Навыки'} tags={currentCv.skills.map(el=>({name:el.title}))} titleClassName={styles.title}/>
         }
         {currentCv.languageKnowledges.length > 0 &&
-          <TagList title={'Языки'} tags={currentCv.languageKnowledges.map(el=>(languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)))} titleClassName={styles.title}/>
+          <TagList title={'Языки'} tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
         }
         {currentCv.geos.length > 0 &&
-          <TagList title={'Гео'} tags={currentCv.geos.map(el=>el.title)} titleClassName={styles.title}/>
+          <TagList title={'Гео'} tags={currentCv.geos.map(el=>({name: el.title}))} titleClassName={styles.title}/>
         }
         {currentCv.sources.length > 0 &&
-          <TagList title={'Источники'} tags={currentCv.sources.map(el=>el.title)} titleClassName={styles.title}/>
+          <TagList title={'Источники'} tags={currentCv.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
         }
         {currentCv.portfolio &&
           <CvVcAbout titleClassName={styles.title} title={'Портфолио'} link={currentCv.portfolio} />

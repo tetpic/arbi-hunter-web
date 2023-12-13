@@ -1,9 +1,9 @@
-import Tag from 'components/ui/Tag'
 import styles from './index.module.scss'
+import Tag from 'components/ui/Tag'
 
 interface Props {
   title: string
-  tags: string[]
+  tags: {name: string, isActive?: boolean, onClick?: (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>)=>void}[]
   titleClassName: string
 }
 
@@ -14,7 +14,7 @@ export default function TagList(props: Props) {
     <div className={styles.tagList}>
       {props.tags.map((el, index)=>{
         return (
-          <Tag className={styles.tag} text={el}  key={index}/>
+          <Tag className={styles.tag} isActive={el.isActive} text={el.name} onClick={el.onClick} key={index}/>
         )
       })}
     </div>

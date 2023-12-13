@@ -7,6 +7,7 @@
   column-gap: 8px;
   row-gap: 8px;
   align-items: flex-start;
+  position: relative;
 
   .time {
     grid-area: t;
@@ -40,9 +41,10 @@
   &_withHover {
     cursor: pointer;
     @include transitionDefault;
-    @include hover {
-      background-color: $grey;
-    }
+  }
+
+  @include mq($TabletWidth, max) {
+    width: 100%;
   }
 }
 
@@ -116,9 +118,35 @@
   flex-direction: column;
   row-gap: 8px;
   margin-top: 16px;
+  @include textFormatter;
 
   .content {
     margin-top: 16px;
     margin-bottom: 16px;
   }
 }
+
+.modalWrapper {
+  position: absolute;
+  width: 100%;
+  top: 40px;
+  pointer-events: none;
+  opacity: 0;
+  right: 0;
+  transform: scale(0.6);
+  transform-origin: right;
+  @include transitionDefault;
+  z-index: 4;
+  // display: none;
+
+  &_active {
+    opacity: 1;
+    // display: block;
+    pointer-events: all;
+    transform: scale(1);
+  }
+  // height: 0%
+  // bottom
+
+}
+

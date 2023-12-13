@@ -15,13 +15,13 @@ interface Props {
 
 export default function CreateCommunityArticleModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IArticle
+  const args = appContext.modalArguments as {article: IArticle}
   const [fullArticle, setFullArticle] = useState<IArticle>()
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(()=>{
     if(args) {
-      ArticlesRepository.getById(args.id, Languages.ru)
+      ArticlesRepository.getById(args.article.id, Languages.ru)
       .then(res=> {
         setLoading(false)
         setFullArticle(res)

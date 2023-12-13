@@ -11,7 +11,6 @@ import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
 import TableSvg from 'components/svg/TableSvg'
 import AppsAddSvg from 'components/svg/AppsAddSvg'
 import UserDoubleSvg from 'components/svg/UserDoubleSvg'
-import SearchBar from 'components/ui/SearchBar'
 import { MediaWrapper } from 'context/media_state'
 import MainMediaPage from './MainMediaPage'
 import Communities from './Communities'
@@ -32,6 +31,7 @@ interface Props {
   categories?: ICategory[]
   page?: MediaPageNav
   isMobile?: boolean
+
 }
 
 export enum MediaPageNav {
@@ -80,7 +80,7 @@ export default function MediaPage(props: Props) {
       case MediaPageNav.Communities:
         return <Communities/>
       case MediaPageNav.Categories:
-        return isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories category={currentCategory} scrollableTarget='scrollable'/>
+        return isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories categories={props.categories} category={currentCategory} scrollableTarget='scrollable'/>
     }
   })()
 
@@ -118,6 +118,7 @@ export default function MediaPage(props: Props) {
       setCurrentCategory(props.categories.find(el=> el.id === +router.query.category))
     }
   }, [router])
+  
 
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
@@ -128,7 +129,6 @@ export default function MediaPage(props: Props) {
         }
       </div>
       <div className={styles.bodyWrapper}>
-          <SearchBar className={styles.searchBar}/>
           <MediaWrapper>
           {body}
           </MediaWrapper>

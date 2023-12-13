@@ -12,7 +12,7 @@ import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
-import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
+import OptionsModal, { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { ApplicationStatus, ModalType, ProposalRequestType, SnackbarType } from 'types/enums'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
@@ -25,6 +25,8 @@ interface Props {
   refreshCallback?: Function
   onRemove?: (id: number) => void
 }
+
+//TODO: доделать всплывашку OptionsModal
 
 export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: Props) {
   const appContext = useAppContext()
@@ -64,7 +66,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
 
 const openModalHandler =()=> {
   if (isTabletWidth) {
-    appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vc, children: options}, 200)
+    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, null, 200)
   }
   else {
     openDropDown(!dropDown)
@@ -79,9 +81,9 @@ const openModalHandler =()=> {
     <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
     <ThreeDotsButton onClick={openModalHandler} className={styles.heartButton}/>
     <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-      <CvVcOptionsModal onClose={()=>openDropDown(false)} outerData={{vc: vc}} >
+      <OptionsModal onClose={()=>openDropDown(false)} >
         {options}
-      </CvVcOptionsModal>
+      </OptionsModal>
     </div>
   </div>
   <p className={styles.vcName}>{vc.name}</p>

@@ -6,7 +6,7 @@ export enum ModalType {
   SkillsModal = 'skillsModal',
   LanguageModal = 'languageModal',
   SourcesModal= 'sourcesModal',
-  CvVcOptionsModal = 'cvOptionsModal',
+  OptionsModal = 'optionsModal',
   ProposalModal= 'proposalModal',
   ProposalTextModal= 'proposalTextModal',
   ConfirmModal= 'confirmModal',
@@ -29,7 +29,8 @@ export enum ModalType {
   ChatFilterModal = 'chatFilterModal',
   CourseFeedbackModal = 'courseFeedbackModal',
   ApplicationModal = 'applicationModal',
-  ApplicationSuccessModal = 'applicationSuccessModal'
+  ApplicationSuccessModal = 'applicationSuccessModal',
+  SearchFilterModal = 'searchFilterModal',
 
 
 }

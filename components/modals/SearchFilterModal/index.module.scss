@@ -1,0 +1,30 @@
+@import 'styles/index';
+
+.active {
+  background-color: $blue !important;
+}
+
+.title {
+  color: $white;
+  font-weight: $semibold;
+  font-size: $text20;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 8px;
+  margin-top: 24px;
+
+  .cancel {
+    @include buttonGray;
+  }
+
+  .accept {
+    @include buttonYellow;
+  }
+}
+
+.modalLayout {
+  max-width: 460px;
+}

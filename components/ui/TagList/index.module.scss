@@ -14,7 +14,7 @@
 }
 
 .tag {
-  pointer-events: none;
-  background-color: $grey;
+  // pointer-events: none;
+  background-color: $grey !important;
   border: unset !important;
 }

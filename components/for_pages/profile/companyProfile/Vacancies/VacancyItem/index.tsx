@@ -12,13 +12,14 @@ import { useRouter } from 'next/router'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 
-import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
+import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
-import classNames from 'classnames'
-import { colors } from 'styles/variables'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import Link from 'next/link'
+import OptionsList from 'components/ui/OptionsList'
+import { colors } from 'styles/variables'
+import OptionsDropDown from 'components/ui/OptionsDropDown'
 
 interface Props {
   vacancy: IVacancy
@@ -58,19 +59,21 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     })
   }
 
-  const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
-    <p className={styles.option} onClick={archiveHandler}>{vacancy?.published?'Архивировать':'Опубликовать'}</p>
-    <p className={styles.option}>Дублировать</p>
-    <p className={styles.option}>Поделиться</p>
-    <p className={styles.option}>Продлить и Поднять</p>
-    <p className={styles.option}>Улучшить</p>
-    <p className={styles.option} onClick={editHandler}>Редактировать</p>
-    <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
-   </div>)
+  const options = <OptionsList options={[
+    {title: vacancy?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
+    {title: 'Дублировать'},
+    {title: 'Поделиться'},
+    {title: 'Продлить и Поднять'},
+    {title: 'Улучшить'},
+    {title: 'Редактировать', onClick: editHandler},
+    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]}
+  onMouseLeave={()=>openDropDown(false)}
+  />
 
   const openModalHandler =()=> {
     if (isTabletWidth) {
-      appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {vc: vacancy, children: options})
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options})
     }
     else {
       openDropDown(!dropDown)
@@ -88,13 +91,13 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
         }
         <SalaryItem vacancy={vacancy}/>
         <ThreeDotsButton  onMouseEnter={openModalHandler} className={styles.dots}/>
-        {!isTabletWidth &&
-        <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <CvVcOptionsModal isLast={isLast}  onClose={()=>openDropDown(false)} outerData={{vc: vacancy}}>
-            {options}
-          </CvVcOptionsModal>
-        </div>
-      }
+        {!isTabletWidth && 
+          <OptionsDropDown 
+          options={options}
+          getRef={(r) => {dropRef.current = r}} 
+          active={dropDown} 
+          onClose={()=>openDropDown(false)}/>        
+        }
       </div>
 
       <Statistics 

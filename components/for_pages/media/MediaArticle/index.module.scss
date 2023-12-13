@@ -1,0 +1,7 @@
+@import 'styles/index';
+
+.article {
+  @include mq($TabletWidth, max) {
+    background-color: unset !important;
+  }
+}

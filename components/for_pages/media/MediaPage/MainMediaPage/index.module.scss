@@ -1,7 +1,6 @@
 @import 'styles/index';
 
 .root {
-  // overflow: auto;
   width: 100%;
   @include mq($TabletWidth, max) {
     overflow: unset;
@@ -23,14 +22,7 @@
   margin-top: unset !important;
 }
 
-.news {
-  // margin-top: 24px;
-  // overflow: unset;
-  // height: calc(100vh - 248px) !important;
-  // height: calc(100dvh - 248px) !important;
-  @include mq($TabletWidth, max) {
-    // height: calc(100vh - 148px) !important;
-    // height: calc(100dvh - 148px) !important;
-  
-  }
+.searchBar {
+  margin-bottom: 24px;
 }
+

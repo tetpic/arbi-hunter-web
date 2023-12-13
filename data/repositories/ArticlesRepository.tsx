@@ -43,6 +43,7 @@ export default class ArticlesRepository {
   }
 
   static async getById(articleId: number, lang: Languages): Promise<IArticle|null> {
+    debugger
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}?categoryType=news&full=true&language=${lang}`,
@@ -53,16 +54,19 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories?: number, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: [number], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
+    const dataToSend: any = {
+      isTop: true,
+      articleType: 'news',
+      full, 
+      ...data
+    }
+    data.categories&&(dataToSend.categories = data.categories?.join(','))
+    
     const res = await request({
       method: 'get',
       url: '/api/article',
-      data: {
-        isTop: true,
-        articleType: 'news',
-        full: full,
-        ...data,
-      },
+      data: dataToSend,
     })
     if(res.err) {
       return null
@@ -98,8 +102,8 @@ export default class ArticlesRepository {
       method: 'get',
       url: '/api/article-category',
       data: {
-        limit: LOAD_LIMIT,
-        page: 1,
+        limit: data.limit||LOAD_LIMIT,
+        page: data.page||1,
         ...data, 
       }
     })
@@ -153,6 +157,17 @@ export default class ArticlesRepository {
     const res = await request({
       method: 'get',
       url: `/api/article/${id}/save`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async removeArticleFromSaved(id: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/article/${id}/removeFromSaved`,
     })
     if(res.err) {
       return null

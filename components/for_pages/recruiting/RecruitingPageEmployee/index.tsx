@@ -75,7 +75,7 @@ export default function RecruitingPageEmployee(props: Props) {
     </p>
     <Link className={styles.createLink} href={'/create/cv'}>Создать резюме</Link>
   </div>
-  <SearchBar fullWidth className={styles.searchBar} onChange={(s)=>onFilterChange({...currentFilters, search: s})}/>
+  <SearchBar fullWidth className={styles.searchBar} onChange={(s)=>onFilterChange({...currentFilters,  ...s})}/>
   {!loading &&
     <p className={styles.found}>Найдено {vacancyContext.foundVacancies.length} {Formatter.pluralize(vacancyContext.foundVacancies.length, 'вакансия', 'вакансии', 'вакансий')}</p>
     ||

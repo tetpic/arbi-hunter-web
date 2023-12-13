@@ -4,7 +4,7 @@ import { RemoveScroll } from 'react-remove-scroll'
 import Sheet from 'react-modal-sheet'
 import { ModalType } from 'types/enums'
 import ProposalModal from 'components/modals/ProposalModal'
-import CvVcOptionsModal from 'components/modals/OptionsModal'
+import OptionsModal from 'components/modals/OptionsModal'
 import VcResponsesFilterModal from 'components/modals/VcResponsesFilterModal'
 import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
@@ -28,12 +28,12 @@ export default function BottomSheetContainer(props: Props) {
           <ProposalModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
         <Sheet
-          isOpen={appContext.bottomSheet == ModalType.CvVcOptionsModal}
+          isOpen={appContext.bottomSheet == ModalType.OptionsModal}
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||400]}
           disableDrag={appContext.modalNonSkippable}
         >
-          <CvVcOptionsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+          <OptionsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
         <Sheet
           isOpen={appContext.bottomSheet == ModalType.VcResponsesFilterModal}

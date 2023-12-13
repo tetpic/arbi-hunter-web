@@ -10,11 +10,16 @@ import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import { FILES } from 'types/constants'
 import { useMediaContext } from 'context/media_state'
 import UserPic from '../UserPic'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
-import { SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
+import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import { useResize } from 'components/hooks/useResize'
+import OptionsDropDown from '../OptionsDropDown'
+import OptionsList, { IOptionList } from '../OptionsList'
+import { IOptionsModalProps } from 'components/modals/OptionsModal'
 
 interface Props {
   article: IArticle
@@ -22,7 +27,9 @@ interface Props {
   titleName?: string
   withDefaultIcon?: boolean
   isOpen?: boolean
-  threeDotsHandler?: (e: React.MouseEvent<Element, MouseEvent>, a: IArticle) => void
+  options?: IOptionList[]
+  optionsTitle?: string
+  className?: string
 }
 
 /**
@@ -31,6 +38,8 @@ interface Props {
  * @titleName  string
  * @withDefaultIcon boolean
  * @isOpen boolean
+ * @threeDotsHandler ?: (e: React.MouseEvent<Element, MouseEvent>, a: IArticle) => void
+ * @options ?: JSX.Element|JSX.Element[]
  */
 export default function NewsArticle(props: Props) {
   const article = props.article
@@ -39,7 +48,14 @@ export default function NewsArticle(props: Props) {
   const mediaContext = useMediaContext()
   const [isLiked, setIsLiked] = useState<boolean>(props.article.isLikedByCurrentProfile)
   const [likesCounter, setLikesCounter] = useState<number>(Number(props.article.likesCount))
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
+  const {isTabletWidth} = useResize()
+
+  const optionsList = <OptionsList 
+  options={props.options} 
+  onMouseLeave={()=>openDropDown(false)}/>
 
   const likeHandler = (a: IArticle)=> {
     if(!userContext.currentProfile) {
@@ -51,6 +67,12 @@ export default function NewsArticle(props: Props) {
     .then(_=>setIsLiked(!isLiked))
   }
 
+  const openModal = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
+    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {title: props.optionsTitle||'Действия с медиа', children: optionsList})
+  }
+
   useEffect(()=>{
     if(isLiked !== props.article.isLikedByCurrentProfile) {
       isLiked?setLikesCounter(s => s+1):setLikesCounter(s => s-1)
@@ -60,14 +82,23 @@ export default function NewsArticle(props: Props) {
     }
   }, [isLiked])
 
-  return ( <div className={classNames(styles.item, !props.isOpen&&styles.item_withHover)} onClick={()=> !props.isOpen&&router.push(`/media/article/${props.article.id}`)} >
+  return ( <div className={classNames(styles.item, !props.isOpen&&styles.item_withHover, props.className)} onClick={()=> !props.isOpen&&router.push(`/media/article/${props.article.id}`)} >
     <div className={styles.top}>
       {(props.titleImg || props.withDefaultIcon) &&
         <UserPic className={styles.imageWrapper} image={props.titleImg&&FILES + props.titleImg} size={40}/>
       }
       <p className={styles.name}>{props.titleName}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
-      <ThreeDotsButton onClick={(e)=>props.threeDotsHandler&&props.threeDotsHandler(e, article)} className={styles.dots}/>
+
+      <ThreeDotsButton onMouseEnter={()=>openDropDown(true)} onClick={openModal} className={styles.dots}/>
+      
+      {!isTabletWidth && props.options &&
+        <OptionsDropDown 
+        options={optionsList}
+        getRef={(r) => {dropRef.current = r}} 
+        active={dropDown} 
+        onClose={()=>openDropDown(false)}/>   
+      }
     </div>
     <div className={styles.body}>
       <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{article.name}</p>

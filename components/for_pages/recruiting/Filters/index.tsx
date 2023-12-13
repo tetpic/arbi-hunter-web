@@ -15,6 +15,7 @@ import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { periods } from 'utils/commonObjects'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -75,10 +76,9 @@ export default function Filters(props: Props) {
         rootClass={styles.radioField}
         options={[
           {value: null, label: 'За все время'},
-          {value: 1, label: 'За сутки'},
-          {value: 7, label: 'За неделю'},
-          {value: 30, label: 'За месяц'},
-          {value: 365, label: 'За год'},
+          ...periods.map(el=>{
+            return {value: el.value, label: el.name}
+          })         
         ]} 
         name={'forLastNumberOfDays'}/>
 

@@ -1,0 +1,20 @@
+@import 'styles/index';
+
+.modalWrapper {
+  position: absolute;
+  width: 100%;
+  top: 40px;
+  pointer-events: none;
+  opacity: 0;
+  right: 0;
+  transform: scale(0.6);
+  transform-origin: right;
+  @include transitionDefault;
+  z-index: 4;
+
+  &_active {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+  }
+}

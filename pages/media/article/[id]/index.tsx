@@ -1,14 +1,13 @@
 import styles from './index.module.scss'
 
-
 import ContentLayout from 'components/layout/ContentLayout'
-import NewsArticle from 'components/ui/NewsArticle'
 import Spinner from 'components/ui/Spinner'
 import { MediaWrapper } from 'context/media_state'
 import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { useEffect, useState } from 'react'
 import { Languages } from 'types/enums'
+import MediaArticle from 'components/for_pages/media/MediaArticle'
 
 
 
@@ -37,6 +36,7 @@ export default function ArticlePage(props: Props) {
     })
   }, [])
 
+
   return (
     <ContentLayout>
       <MediaWrapper>
@@ -44,12 +44,7 @@ export default function ArticlePage(props: Props) {
         {loading && <Spinner size={34} />
         ||
         article && !loading && 
-        <NewsArticle 
-        article={article} 
-        titleName={article?.community?.name} 
-        isOpen 
-        titleImg={article.community?.image?.source} 
-        />
+          <MediaArticle article={article}/>
         }
         </div>
       </MediaWrapper>

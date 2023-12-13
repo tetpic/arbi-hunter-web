@@ -552,12 +552,30 @@
     padding-left: 16px;
     list-style-type: decimal;
     margin-bottom: 8px;
+    li::marker {
+      color: $blue;
+    }
   }
 
   ul {
     padding-left: 16px;
     list-style-type: disc;
     margin-bottom: 8px;
+    li::marker {
+      color: $blue;
+    }
+  }
+
+  blockquote {
+    padding: 16px;
+    margin-bottom: 8px;
+    background-color: $grey;
+    color: $white;
+    border-radius: 16px;
+  }
+
+  img {
+    width: 100%;
   }
   
 }

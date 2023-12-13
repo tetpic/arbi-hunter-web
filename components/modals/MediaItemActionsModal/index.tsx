@@ -20,7 +20,7 @@ import { ModalType } from 'types/enums'
 import styles from './index.module.scss'
 
 interface Props {
-  onClose: ()=>void
+  onClose?: ()=>void
   isBottomSheet?: boolean
 }
 

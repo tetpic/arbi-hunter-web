@@ -1,13 +1,20 @@
 import styles from './index.module.scss'
 
+import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import { useResize } from 'components/hooks/useResize'
+import LinkSvg from 'components/svg/LinkSvg'
+import ShareSvg from 'components/svg/ShareSvg'
 import NewsArticle from 'components/ui/NewsArticle'
+import { IOptionList } from 'components/ui/OptionsList'
 import { useCommunityContext } from 'context/community_state'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { IArticle } from 'data/interfaces/IArticle'
 import dynamic from 'next/dynamic'
 import { ModalType } from 'types/enums'
+import TrashBasketSvg from 'components/svg/TrashBasketSvg'
+import { colors } from 'styles/variables'
+import EditPencilSvg from 'components/svg/EditPencilSvg'
 
 const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {
@@ -21,16 +28,6 @@ export default function CommunityContent(props: Props) {
 
   const isAdmin = communityContext.currentCommunity.profile?.id === userContext.currentProfile?.id
 
-  // const likeHandler = async (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>, news: IArticle) => {
-  //   e.stopPropagation()
-  //   await mediaContext.likeArticle(news)
-  //   communityContext.setCommunityNews(state=>{     
-  //     const counter = news.isLikedByCurrentProfile?Number(news.likesCount) -1: Number(news.likesCount) +1
-  //     state.set(news.id, {...news, isLikedByCurrentProfile: !news.isLikedByCurrentProfile, likesCount: String(counter) })
-  //     return new Map(state)
-  //   })
-  // }
-
   const dotsHandler = (e: React.MouseEvent<Element, MouseEvent>, news: IArticle) => {
     e.stopPropagation()
     e.preventDefault()
@@ -39,10 +36,34 @@ export default function CommunityContent(props: Props) {
     :appContext.showModal(ModalType.MediaItemActionsModal, {isAdmin, news})
   }
 
-  // const openNewsHandler = (news: IArticle) => {
-  //   appContext.showModal<CommunityNewsViewModalProps>(ModalType.CommunityNewsViewModal, [news, communityContext.currentCommunity, isAdmin] )
-  // }
+  const getOptions = (article: IArticle):IOptionList[] => {
+    if(isAdmin) {
+      return [
+        {
+          title: 'Редактировать',
+          icon: <EditPencilSvg/>,
+          onClick: () => appContext.showModal(ModalType.CreateCommunityArticleModal, {article})
+        },
+        {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+        {
+          title: 'Удалить',
+          icon: <TrashBasketSvg/>,           
+          style: {color: colors.red},
+          onClick: ()=>{
+            communityContext.removeNews(article.id)
+          }
+        }
+      ]
 
+    } 
+    else {
+      return [
+        {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+        {title: 'Поделиться',icon: <ShareSvg/>},
+        {title: 'Скрыть',icon: <CloseEyeSvg/>}
+      ]
+    }
+  }
 
   return (
   <div className={styles.root}> 
@@ -53,7 +74,7 @@ export default function CommunityContent(props: Props) {
         {communityContext.communityNews&&communityContext.communityNews.size > 0 && 
         [...communityContext.communityNews.values()].map(news=> {
           return (
-            <NewsArticle threeDotsHandler={(e, article)=> dotsHandler(e, article)} titleName={communityContext.currentCommunity?.name} article={news} titleImg={communityContext.currentCommunity?.logo?.source}/>
+            <NewsArticle options={getOptions(news)} titleName={communityContext.currentCommunity?.name} article={news} titleImg={communityContext.currentCommunity?.logo?.source}/>
             )
           })
           ||

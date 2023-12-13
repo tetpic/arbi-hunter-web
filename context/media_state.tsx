@@ -2,17 +2,19 @@ import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { createContext, useContext, useState } from 'react'
 import { ICategory } from 'data/interfaces/Common'
+import { CategoryType } from 'types/enums'
 
 export interface IMediaContextState {
   savedArticles: Map<number, IArticle>
   setSavedArticles: (p: number)=>Promise<boolean|{total: number}>
   likeArticle: (article: IArticle) => Promise<boolean>
   categories: Map<number, ICategory>
-  setCategories: ()=>Promise<boolean>
+  setCategories: (data:{categoryType?: CategoryType, limit: number, page: number})=>Promise<boolean>
   currentNews: Map<number, IArticle>
   setCurrentNews: (data: {articles?: IArticle[], clear?: boolean}) => void
   stories: Map<number, IArticle> 
   setStories: () => void
+  saveOrRemoveArticle: (article: IArticle) => Promise<boolean>
 }
 
 const MediaContext = createContext<Partial<IMediaContextState>>({})
@@ -25,7 +27,7 @@ interface Props {
 
 export function MediaWrapper(props: Props) {
   const [savedArticles, setSavedArticlesState] = useState<Map<number, IArticle>>(new Map)
-  const [categories, setCategoriesState] = useState<Map<number, ICategory>>()
+  const [categories, setCategoriesState] = useState<Map<number, ICategory>>(new Map)
   const [stories, setStoriesState] = useState<Map<number, IArticle>>(new Map)
   const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
 
@@ -55,15 +57,36 @@ export function MediaWrapper(props: Props) {
     .catch(_=>false)
   }
 
-  const setCategories = async ():Promise<boolean> => {
-    const res = await ArticlesRepository.getCategoryList()
+  const setCategories = async (data:{categoryType?: CategoryType, limit: number, page: number}):Promise<boolean> => {
+    const res = await ArticlesRepository.getCategoryList(data)
     setCategoriesState(state=> {
       res.data.forEach(r=>{
         state.set(r.id, r)
       })
-      return state
+      return new Map(state)
     } )
     return true
+  }
+
+  const saveOrRemoveArticle = async (article: IArticle): Promise<boolean> => {
+    if(article.isSavedByCurrentProfile) {
+      await ArticlesRepository.removeArticleFromSaved(article.id)
+      setCurrentNewsState(state=> {
+        const a = state.get(article.id)
+        a.isSavedByCurrentProfile = false
+        return new Map(state)
+      })
+      return true
+    }
+    else {
+      await ArticlesRepository.addArticleToSaved(article.id)
+      setCurrentNewsState(state=> {
+        const a = state.get(article.id)
+        a.isSavedByCurrentProfile = true
+        return new Map(state)
+      })
+      return true
+    }
   }
 
   const likeStateHandler = (state: Map<number, IArticle>, article: IArticle, isLiked: boolean, currentLikes: string): Map<number, IArticle> => {
@@ -117,7 +140,8 @@ export function MediaWrapper(props: Props) {
     currentNews,
     setCurrentNews,
     stories,
-    setStories
+    setStories,
+    saveOrRemoveArticle
   }
 
   return (

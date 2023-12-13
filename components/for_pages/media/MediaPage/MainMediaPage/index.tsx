@@ -6,6 +6,8 @@ import { ICategory } from 'data/interfaces/Common'
 import { useMediaContext } from 'context/media_state'
 import NewsByCategories from '../NewsByCategories'
 import { useEffect } from 'react'
+import SearchBar from 'components/ui/SearchBar'
+import { periods } from 'utils/commonObjects'
 
 interface Props {
   categories: ICategory[]
@@ -31,10 +33,21 @@ export default function MainMediaPage(props: Props) {
     <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav/>
   </>)
 
-  return (<div className={styles.root}> 
-    {body}
-    <NewsByCategories hideNav className={styles.news} scrollableTarget='scrollable'/>
-      {/* {body}
-    </NewsByCategories> */}
-  </div>)
+  return (<>
+    <SearchBar 
+    className={styles.searchBar} 
+    placeholder='Найти статьи'
+    categories={props.categories}
+    periods={periods}
+    />
+
+    <div className={styles.root}> 
+      {body}
+      <NewsByCategories 
+      hideNav 
+      className={styles.news} 
+      scrollableTarget='scrollable'
+      />
+    </div>
+  </>)
 }

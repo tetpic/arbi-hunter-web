@@ -11,13 +11,13 @@ import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
-import CvVcOptionsModal, { ICvVcOptionsModalProps } from 'components/modals/OptionsModal'
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
+import OptionsModal, { IOptionsModalProps } from 'components/modals/OptionsModal'
 
 interface Props {
   cv: ICV
@@ -65,7 +65,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet<ICvVcOptionsModalProps>(ModalType.CvVcOptionsModal, {cv: cv, children: options})
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal)
     }
     else {
       openDropDown(!dropDown)
@@ -87,9 +87,9 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal}/>
       {!isTabletWidth &&
         <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <CvVcOptionsModal isLast={isLast} onClose={()=>openDropDown(false)} outerData={{cv: cv}}>
+          <OptionsModal isLast={isLast} onClose={()=>openDropDown(false)} >
             {options}
-          </CvVcOptionsModal>
+          </OptionsModal>
         </div>
       }
     </div>
