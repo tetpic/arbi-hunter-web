@@ -10,7 +10,7 @@
   position: relative;
   z-index: 10;
   transform: translateY(0);
-  transition: .7s ease-in-out;
+  transition: .7s linear;
   &:after {
     content: '';
     width: 50px;

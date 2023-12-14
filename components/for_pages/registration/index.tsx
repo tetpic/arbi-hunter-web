@@ -11,7 +11,6 @@ import RegistrationRepository from 'data/repositories/RegistrationRepository'
 import LocationRepository from 'data/repositories/LocationRepository'
 import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation'
 import DropDownInput from '../../fields/LocationDropdownInput'
-import UserRegImage from 'components/ui/UserRegImage'
 import BackBtn from 'components/ui/BackBtn'
 import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/navigation'
@@ -21,6 +20,7 @@ import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
 import Button from 'components/ui/Button'
 import PasswordField from 'components/fields/PasswordField'
+import UserRegImage from 'components/ui/UserRegImage'
 
 
 
@@ -85,6 +85,8 @@ export default function Registration() {
     initialValues: initialValues,
     onSubmit: submit
   })
+
+
 
   const countryHandler = (obj: ISearchCountryResult) => {
     setCountry(obj)

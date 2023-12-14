@@ -22,6 +22,10 @@
 }
 
 .regImage {
+  width: 550px;
+  height: 550px;
+  border-radius: 16px;
+  overflow: hidden;
   @include mq($TabletWidth, max) {
     display: none !important;
   }

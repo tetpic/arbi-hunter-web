@@ -6,19 +6,20 @@ import { useResize } from 'components/hooks/useResize'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
-import UserRegImage from 'components/ui/UserRegImage'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
-import { ILogin } from 'data/interfaces/IRegistration'
+import { ILogin, ProfileType } from 'data/interfaces/IRegistration'
 import UserRepository from 'data/repositories/UserRepository'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Modes from 'components/ui/Modes'
 import Button from 'components/ui/Button'
+import Rive from '@rive-app/react-canvas'
+import UserRegImage from 'components/ui/UserRegImage'
 
 enum LoginType {
   Phone= 'phone',
@@ -81,6 +82,11 @@ export default function Login() {
     }
   }
 
+  const memoedRive = useMemo(()=>{
+    const src = userContext.profileType===ProfileType.Hirer?'/rive/login/company.riv':'/rive/login/user.riv'
+    return <Rive src={src} key={src} className={styles.regImage}/>
+  }, [userContext.currentProfile])
+
   useEffect(()=>{
     if(userContext.currentProfile) {
       router.replace('/')
@@ -90,7 +96,8 @@ export default function Login() {
   return ( 
     <div className={styles.root}>
       {!isTabletWidth&& 
-      <UserRegImage type={userContext.profileType} className={styles.regImage}/>
+        <UserRegImage type={userContext.profileType} className={styles.regImage}/>
+
       }
       <div className={styles.content}>
         <p className={styles.title}>
