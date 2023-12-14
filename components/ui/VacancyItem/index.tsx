@@ -16,6 +16,7 @@ import classNames from 'classnames'
 import CalendarSvg from 'components/svg/CalendarSvg'
 import Link from 'next/link'
 import UserPic from '../UserPic'
+import useAbortController from 'components/hooks/useAbortController'
 
 interface Props {
   vacancy?: IVacancy
@@ -26,6 +27,7 @@ interface Props {
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const appContext = useAppContext()
   const cvContext = useCvContext()
+  const {getNewSignal} = useAbortController()
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -34,17 +36,20 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   }
 
   const likeHandler = () => {
+    const signal = getNewSignal('likeHandler')
     if(!vacancy.isSavedByCurrentProfile) {
-      VacancyRepository.addVcToSaved(vacancy.id)
+      VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem()
       })
+      .catch(_=>{})
     }
     else {
-      VacancyRepository.removeVcFromSaved(vacancy.id)
+      VacancyRepository.removeVcFromSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem()
       })
+      .catch(_=>{})
     }
   }
 

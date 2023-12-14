@@ -1,5 +1,5 @@
-import { CSSProperties } from 'react'
 import styles from './index.module.scss'
+import { CSSProperties } from 'react'
 
 export interface IOptionList {
   title: string, 

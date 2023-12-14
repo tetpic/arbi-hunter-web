@@ -20,6 +20,7 @@ import { useResize } from 'components/hooks/useResize'
 import OptionsDropDown from '../OptionsDropDown'
 import OptionsList, { IOptionList } from '../OptionsList'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
+import useAbortController from 'components/hooks/useAbortController'
 
 interface Props {
   article: IArticle
@@ -52,6 +53,8 @@ export default function NewsArticle(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
   const {isTabletWidth} = useResize()
+  const {getNewSignal} = useAbortController()
+
 
   const optionsList = <OptionsList 
   options={props.options} 
@@ -89,9 +92,7 @@ export default function NewsArticle(props: Props) {
       }
       <p className={styles.name}>{props.titleName}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
-
       <ThreeDotsButton onMouseEnter={()=>openDropDown(true)} onClick={openModal} className={styles.dots}/>
-      
       {!isTabletWidth && props.options &&
         <OptionsDropDown 
         options={optionsList}

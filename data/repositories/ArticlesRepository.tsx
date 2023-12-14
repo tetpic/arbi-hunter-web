@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { ICategory, ICreateNews } from 'data/interfaces/Common'
 import { IArticle } from 'data/interfaces/IArticle'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -43,7 +44,7 @@ export default class ArticlesRepository {
   }
 
   static async getById(articleId: number, lang: Languages): Promise<IArticle|null> {
-    debugger
+    
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}?categoryType=news&full=true&language=${lang}`,
@@ -131,10 +132,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async addLikeToArticle(articleId: number ): Promise<any|null> {
+  static async addLikeToArticle(articleId: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}/like`,
+      config
     })
     if(res.err) {
       return null
@@ -142,10 +144,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async removeLikeFromArticle(articleId: number): Promise<any|null> {
+  static async removeLikeFromArticle(articleId: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${articleId}/unlike`,
+      config
     })
     if(res.err) {
       return null
@@ -153,10 +156,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async addArticleToSaved(id: number): Promise<any|null> {
+  static async addArticleToSaved(id: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${id}/save`,
+      config
     })
     if(res.err) {
       return null
@@ -164,10 +168,11 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async removeArticleFromSaved(id: number): Promise<any|null> {
+  static async removeArticleFromSaved(id: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/article/${id}/removeFromSaved`,
+      config
     })
     if(res.err) {
       return null

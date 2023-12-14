@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { ISpecializationCategory, IPosition, ISource, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -144,10 +145,11 @@ export default class CvRepository {
     return res
   }
 
-  static async removeCvFromSaved(id: number): Promise<any|null> {
+  static async removeCvFromSaved(id: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/removeFromSaved`,
+      config
     })
     if(res.err) {
       return null
@@ -155,10 +157,11 @@ export default class CvRepository {
     return res
   }
 
-  static async addCvToSaved(id: number, ): Promise<any|null> {
+  static async addCvToSaved(id: number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/save`,
+      config
     })
     if(res.err) {
       return null

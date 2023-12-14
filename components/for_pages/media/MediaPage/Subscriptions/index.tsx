@@ -10,22 +10,23 @@ import { colors } from 'styles/variables'
 import { IOptionList } from 'components/ui/OptionsList'
 import BookmarkFilledSvg from 'components/svg/BookmarkFilledSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
-import { useMediaContext } from 'context/media_state'
-import { SnackbarType } from 'types/enums'
-import { useAppContext } from 'context/state'
 import LinkSvg from 'components/svg/LinkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
+import useAbortController from 'components/hooks/useAbortController'
+import { useAppContext } from 'context/state'
+import { SnackbarType } from 'types/enums'
 
 interface Props {
 }
 
 export default function Subscriptions(props: Props) {
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
-  const mediaContext = useMediaContext()
-  const appContext = useAppContext()
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
+  const appContext = useAppContext()
+  const {getNewSignal} = useAbortController()
+
 
   useEffect(()=>{
     ArticlesRepository.getSubscriptions(page)
@@ -47,8 +48,35 @@ export default function Subscriptions(props: Props) {
         title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
-          mediaContext.saveOrRemoveArticle(article)
-          .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
+          const signal = getNewSignal()
+          if(article.isSavedByCurrentProfile) {
+            ArticlesRepository.removeArticleFromSaved(article.id, {signal})
+            .then(_=> {
+              setNews(state=> {
+                const item = state.get(article.id)
+                item.isSavedByCurrentProfile = false
+                state.set(article.id, item)
+                return new Map(state)
+              })    
+            })
+            .catch(_=> {
+              appContext.showSnackbar('Вы быстрее интернета', SnackbarType.error)
+            })
+          }
+          else {
+            ArticlesRepository.addArticleToSaved(article.id, {signal})
+            .then(_=> {
+              setNews(state=> {
+                const item = state.get(article.id)
+                item.isSavedByCurrentProfile = true
+                state.set(article.id, item)
+                return new Map(state)
+              })    
+            })
+            .catch(_=> {
+              appContext.showSnackbar('Вы быстрее интернета', SnackbarType.error)
+            })
+          }
         }        
       },
       {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
@@ -63,10 +91,18 @@ export default function Subscriptions(props: Props) {
   hasMore={news.size < total} 
   loader={<Spinner size={32} color={colors.yellow}/>} 
   scrollableTarget={'scrollable'}
+  style={{overflow: 'unset'}}
   dataLength={news.size}>
 
   {news && news.size > 0 &&
-    [...news.values()].map(n=> <NewsArticle article={n} titleName={n.community.name} titleImg={n.community?.image?.source} withDefaultIcon/>)
+    [...news.values()].map(n=> 
+      <NewsArticle 
+      article={n} 
+      options={getOptions(n)} 
+      titleName={n.community.name} 
+      titleImg={n.community?.image?.source} 
+      withDefaultIcon/>
+    )
   } 
   </InfiniteScroll>
   </div>)

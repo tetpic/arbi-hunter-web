@@ -24,6 +24,7 @@ export default function FileInput(props: Props) {
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     for(const file of files) {
+      
       const id = uuidv4()
       const abortController = new AbortController()
       props.setImages({image: file, loaded: false, id })

@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy, IVacancyCreate} from 'data/interfaces/IVacancy'
@@ -79,10 +80,11 @@ export default class VacancyRepository {
     return res
   }
 
-  static async addVcToSaved(id: any): Promise<any|null> {
+  static async addVcToSaved(id: any, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}/save`,
+      config
     })
     if(res.err) {
       return null
@@ -90,10 +92,11 @@ export default class VacancyRepository {
     return res
   }
 
-  static async removeVcFromSaved(id:number): Promise<any|null> {
+  static async removeVcFromSaved(id:number, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}/removeFromSaved`,
+      config
     })
     if(res.err) {
       return null

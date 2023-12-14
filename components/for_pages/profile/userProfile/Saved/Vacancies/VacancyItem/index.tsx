@@ -12,12 +12,13 @@ import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
-import OptionsModal, { IOptionsModalProps } from 'components/modals/OptionsModal'
+import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { ApplicationStatus, ModalType, ProposalRequestType, SnackbarType } from 'types/enums'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
+import OptionsDropDown from 'components/ui/OptionsDropDown'
 
 interface Props {
   vc: IVacancy
@@ -54,7 +55,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
     openDropDown(false)
   }
 
-  const options = (<div className={styles.options}>
+  const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
     <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
     {(proposal?.status === ApplicationStatus.Accepted||proposal.type === ProposalRequestType.Interview) && 
       <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
@@ -64,14 +65,16 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
     }
   </div>)
 
-const openModalHandler =()=> {
-  if (isTabletWidth) {
-    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, null, 200)
+
+
+  const openModalHandler =()=> {
+    if (isTabletWidth) {
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, null, 200)
+    }
+    else {
+      openDropDown(!dropDown)
+    }
   }
-  else {
-    openDropDown(!dropDown)
-  }
-}
 
   return (<div className={styles.root}> 
   <div className={styles.top}>
@@ -79,12 +82,15 @@ const openModalHandler =()=> {
     <p className={styles.company}>{vc.company||vc.contactName}</p>
     
     <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
-    <ThreeDotsButton onClick={openModalHandler} className={styles.heartButton}/>
-    <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-      <OptionsModal onClose={()=>openDropDown(false)} >
-        {options}
-      </OptionsModal>
-    </div>
+    <ThreeDotsButton onMouseEnter={openModalHandler} className={styles.heartButton}/>
+    {!isTabletWidth &&
+      <OptionsDropDown 
+      options={options} 
+      active={dropDown} 
+      getRef={(r)=>dropRef.current=r} 
+      onClose={()=>openDropDown(false)}/>       
+    }
+
   </div>
   <p className={styles.vcName}>{vc.name}</p>
   

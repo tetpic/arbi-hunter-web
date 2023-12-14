@@ -16,6 +16,7 @@ import LikeButton from '../LikeButton'
 import CvRepository from 'data/repositories/CvRepository'
 import Link from 'next/link'
 import { FILES } from 'types/constants'
+import useAbortController from 'components/hooks/useAbortController'
 
 interface Props {
   cv: ICV
@@ -25,6 +26,7 @@ interface Props {
 
 export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
+  const {getNewSignal} = useAbortController()
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -49,17 +51,20 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   const likeHandler = () => {
+    const signal = getNewSignal('likeHandler')
     if(!cv.isSavedByCurrentProfile) {
-      CvRepository.addCvToSaved(cv.id)
+      CvRepository.addCvToSaved(cv.id, {signal})
       .then(res=> {
         props.onChangeItem()      
       })
+      .catch(_=>{})
     }
     else {
-      CvRepository.removeCvFromSaved(cv.id)
+      CvRepository.removeCvFromSaved(cv.id, {signal})
       .then(_=> {
         props.onChangeItem()
       })
+      .catch(_=>{})
     }
   }
 

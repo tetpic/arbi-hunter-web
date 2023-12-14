@@ -3,6 +3,7 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { createContext, useContext, useState } from 'react'
 import { ICategory } from 'data/interfaces/Common'
 import { CategoryType } from 'types/enums'
+import useAbortController from 'components/hooks/useAbortController'
 
 export interface IMediaContextState {
   savedArticles: Map<number, IArticle>
@@ -30,6 +31,7 @@ export function MediaWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<Map<number, ICategory>>(new Map)
   const [stories, setStoriesState] = useState<Map<number, IArticle>>(new Map)
   const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
+  const {getNewSignal} = useAbortController()
 
   const setCurrentNews = (data: {articles?: IArticle[], clear?: boolean}) => {
     setCurrentNewsState(state=> {
@@ -106,11 +108,16 @@ export function MediaWrapper(props: Props) {
   const likeArticle = async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
     const isLiked = article.isLikedByCurrentProfile
     const currentLikes = article.likesCount
+    const signal = getNewSignal('likeArticle')
     if(article.isLikedByCurrentProfile) {
-      await ArticlesRepository.removeLikeFromArticle(article.id)
+      try{
+        await ArticlesRepository.removeLikeFromArticle(article.id, {signal})
+      } catch(e) {}
     }
     else if(!article.isLikedByCurrentProfile) {
-      await ArticlesRepository.addLikeToArticle(article.id)
+      try{
+        await ArticlesRepository.addLikeToArticle(article.id, {signal})
+      } catch(e) {}
     }
     currentNews.size > 0 && setCurrentNewsState(state=> {
       return new Map(likeStateHandler(state, article, isLiked, currentLikes))

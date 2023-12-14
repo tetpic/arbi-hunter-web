@@ -17,7 +17,9 @@ import { colors } from 'styles/variables'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
-import OptionsModal, { IOptionsModalProps } from 'components/modals/OptionsModal'
+import { IOptionsModalProps } from 'components/modals/OptionsModal'
+import OptionsList from 'components/ui/OptionsList'
+import OptionsDropDown from 'components/ui/OptionsDropDown'
 
 interface Props {
   cv: ICV
@@ -53,15 +55,18 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     )
   }
 
-  const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
-    <p className={styles.option} onClick={archiveHandler}>{cv?.published?'Архивировать':'Опубликовать'}</p>
-    <p className={styles.option}>Дублировать</p>
-    <p className={styles.option}>Поделиться</p>
-    <p className={styles.option}>Продлить и Поднять</p>
-    <p className={styles.option}>Улучшить</p>
-    <p className={styles.option} onClick={editHandler}>Редактировать</p>
-    <p className={styles.option} onClick={(e)=> {e.stopPropagation();removeHandler()}}  style={{color: colors.red}}>Удалить</p>
-   </div >)
+  const options = <OptionsList 
+  options={[
+    {title: cv?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
+    {title: 'Дублировать'},
+    {title: 'Поделиться'},
+    {title: 'Продлить и Поднять'},
+    {title: 'Улучшить'},
+    {title: 'Редактировать', onClick: editHandler},
+    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]} 
+  onMouseLeave={()=>openDropDown(false)}
+  />
 
   const openModal = () => {
     if(isTabletWidth) {
@@ -86,11 +91,11 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal}/>
       {!isTabletWidth &&
-        <div ref={dropRef} className={classNames(styles.modalWrapper, dropDown&&styles.modalWrapper_active)}>
-          <OptionsModal isLast={isLast} onClose={()=>openDropDown(false)} >
-            {options}
-          </OptionsModal>
-        </div>
+       <OptionsDropDown 
+       options={options}
+       getRef={(r) => {dropRef.current = r}} 
+       active={dropDown} 
+       onClose={()=>openDropDown(false)}/>       
       }
     </div>
 
