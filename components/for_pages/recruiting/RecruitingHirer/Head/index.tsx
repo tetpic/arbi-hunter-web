@@ -5,6 +5,7 @@ import tower from 'images/recruiting/tower.png'
 import Button from 'components/ui/Button'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import anime from 'animejs'
+import UserSvg from 'components/svg/UserSvg'
 
 
 
@@ -30,6 +31,7 @@ export default function Head(props: Props) {
   const [activeImage, setActiveImage] = useState<[number, string]>([0, sources[0]])
   const isLoad = useRef<boolean>(false)
   const [imgIndexes, setImgIndexes] = useState<[number, number, number, number]>([1,2,3,4])
+  const [counter, setCounter] = useState<number>(-1)
 
   useEffect(()=>{
     let isExecuted = false
@@ -56,6 +58,7 @@ export default function Head(props: Props) {
       autoplay: true,
       loop: true,
       loopBegin: ()=> {
+        setCounter(state=> state>6?0:state+1)
         setTimeout(
           ()=>{
             setActiveImage(state => {
@@ -120,7 +123,10 @@ export default function Head(props: Props) {
       <Image  className={styles.randomImg} ref={imageRef} src={activeImage[1]} alt='random' width={64} height={64}/>
 
     </div>
-    <Image className={styles.tower} src={tower} alt={'tower'}/>
+    <div className={styles.tower}>
+      <Image  src={tower} alt={'tower'}/>
+      <p className={styles.counter}><UserSvg/>  <span>000{counter}</span></p>
+    </div>
     <h6 className={styles.title}>
       Разместите вакансию <br />
       <span className={styles.title_big}>

@@ -130,6 +130,37 @@
 .tower {
   top: 40px;
   right: -50px;
+
+  .counter {
+    position: absolute;
+    top: 128px;
+    right: 122px;
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 8px;
+    align-items: center;
+    width: 105px;
+    height: 40px;
+    background-color: #22222A;
+    transform: matrix(1.00,0.04,0.01,1.00,0,0);
+    color: $blue;
+    text-shadow: 0px 0px 5px;
+    border: 2px $greyLight solid;
+  }
+
+  svg {
+    transform: matrix(1.00,0.03,0.01,1.00,0,0);
+    
+    path {
+      filter: brightness(1.2) ;
+      box-shadow: -5px -5px 10px #888; 
+      fill: $blue;
+
+      
+
+
+    }
+  }
 }
 
 .randomImg {
