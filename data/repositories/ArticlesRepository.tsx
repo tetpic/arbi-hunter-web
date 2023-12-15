@@ -62,7 +62,7 @@ export default class ArticlesRepository {
       full, 
       ...data
     }
-    data.categories&&(dataToSend.categories = data.categories?.join(','))
+    data?.categories&&(dataToSend.categories = data.categories?.join(','))
     
     const res = await request({
       method: 'get',
