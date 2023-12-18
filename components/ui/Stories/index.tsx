@@ -40,9 +40,9 @@ export default function Stories(props: Props) {
       freeMode={true}
       modules={[Autoplay]}
       >
-        {[...stories, ...stories].map(el=> {
+        {[...stories, ...stories].map((el, index)=> {
           return (
-            <SwiperSlide className={styles.swiperSlide}>
+            <SwiperSlide key={index} className={styles.swiperSlide}>
               <div className={styles.item} onClick={()=>openStoriesViewer(el)}>
                 <div className={styles.imageWrapper}>
                   <Image src={FILES + el.image.source } alt={el.name} width={200} height={200} style={{objectFit: 'cover', width: '100%', height: '100%'}}/>
@@ -58,6 +58,5 @@ export default function Stories(props: Props) {
       <Button className={styles.leftButton} onClick={()=>swiperRef.current.swiper.slidePrev()}><ArrowLeftSvg/></Button>
       <Button className={styles.rightButton} onClick={()=> swiperRef.current.swiper.slideNext()}><ArrowRightSvg/></Button>
     </div>
-
   </div>)
 }

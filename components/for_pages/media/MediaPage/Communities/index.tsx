@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import Spinner from 'components/ui/Spinner'
 import { useCommunityContext } from 'context/community_state'
 import { useUserContext } from 'context/user_state'
@@ -7,7 +9,6 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
 import CommunityItem from './CommunityItem'
-import styles from './index.module.scss'
 
 const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 

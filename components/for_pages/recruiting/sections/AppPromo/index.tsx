@@ -69,6 +69,7 @@ export default function AppPromo(props: Props) {
         <div className={styles.cards}>
           {props.cards.map((el, index)=> {
             return <Image 
+            key={index}
             ref={(r)=> cardsRef.current[index] = r} 
             className={classNames(styles.img, activeCard === cardsRef.current[index]&&styles.active)} 
             src={el} 

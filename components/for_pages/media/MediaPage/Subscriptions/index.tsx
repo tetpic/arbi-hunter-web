@@ -97,6 +97,7 @@ export default function Subscriptions(props: Props) {
   {news && news.size > 0 &&
     [...news.values()].map(n=> 
       <NewsArticle 
+      key={n.id}
       article={n} 
       options={getOptions(n)} 
       titleName={n.community.name} 

@@ -44,16 +44,8 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
   useEffect(()=>{
     if(characterContext.modelLoaded && characterContext.dataLoaded) {
       setTimeout(() => {
-        // let thisBlob: Blob
         canvasRef.current.toBlob((blob)=> {
           characterContext.setDataBaseBlob(blob)
-          // thisBlob = blob
-          // console.log(thisBlob)
-          // const link = document.createElement('a')
-          // link.type = 'download'
-          // link.target = '_blank'
-          // link.href = URL.createObjectURL(thisBlob)
-          // link.click()
         })
       }, 20)
     }

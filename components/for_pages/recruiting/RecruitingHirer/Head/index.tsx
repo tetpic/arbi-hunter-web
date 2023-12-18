@@ -36,19 +36,22 @@ export default function Head(props: Props) {
   useEffect(()=>{
     let isExecuted = false
     if(isExecuted || !isLoad) return
-    setImgIndexes(state=> {
-      if(isExecuted) return state
-      isExecuted = true
-      if(activeImage[0]> 3) {
-        const ind = (activeImage[0]-1<4)?3:activeImage[0]-5
-        state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
-      }
-      else {
-        const ind = (activeImage[0]-1<0)?3:activeImage[0]-1
-        state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
-      }
-      return state
-    }) 
+    // setTimeout(()=> {
+      
+      setImgIndexes(state=> {
+        if(isExecuted) return state
+        isExecuted = true
+        if(activeImage[0]> 3) {
+          const ind = (activeImage[0]-1<4)?3:activeImage[0]-5
+          state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
+        }
+        else {
+          const ind = (activeImage[0]-1<0)?3:activeImage[0]-1
+          state[ind] = state[ind]<4?state[ind]+4:state[ind]-4
+        }
+        return state
+      }) 
+    // }, 1000)
   }, [activeImage])
 
   const animation = useCallback(()=> {
@@ -58,7 +61,6 @@ export default function Head(props: Props) {
       autoplay: true,
       loop: true,
       loopBegin: ()=> {
-        setCounter(state=> state>6?0:state+1)
         setTimeout(
           ()=>{
             setActiveImage(state => {
@@ -70,6 +72,7 @@ export default function Head(props: Props) {
               }
             })
         }, 1000)
+        setCounter(state=> state>6?0:state+1)
       }
     })
     .add({
@@ -83,10 +86,8 @@ export default function Head(props: Props) {
     .add({
       targets: imageRef.current,
       opacity: [0, 1],
-      
       duration: 200,
     }, 1050)
-   
    .add({
       targets: imageRef.current,
       opacity: [1, 0],
