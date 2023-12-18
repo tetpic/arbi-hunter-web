@@ -68,7 +68,7 @@ export default function Header(props: Props) {
 
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
-      <Link href={'/'}>
+      <Link href={userContext.currentProfile?'/profile':'/'} className={styles.logo}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       </Link>
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
@@ -79,7 +79,7 @@ export default function Header(props: Props) {
             {name: 'Компания', type: ProfileType.Hirer}
           ]} 
           activeButton={profileType} 
-          onSet={(type)=>setProfileType(type)}/>
+          onSet={(type)=>setProfileType(type)}/>  
         }
 
         {!isTabletWidth &&
