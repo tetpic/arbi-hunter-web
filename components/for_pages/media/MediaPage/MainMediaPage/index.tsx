@@ -4,23 +4,19 @@ import Stories from 'components/ui/Stories'
 import MediaCategories from '../../MediaCategories'
 import { ICategory } from 'data/interfaces/Common'
 import { useMediaContext } from 'context/media_state'
-import NewsByCategories from '../NewsByCategories'
-import { useEffect } from 'react'
-import SearchBar from 'components/ui/SearchBar'
+import NewsList from '../NewsList'
+import { useEffect} from 'react'
+import SearchBar, { ISearchBarReturnParams } from 'components/ui/SearchBar'
 import { periods } from 'utils/commonObjects'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
   categories: ICategory[]
 }
 
 export default function MainMediaPage(props: Props) {
+  
   const mediaContext = useMediaContext()
-
-  useEffect(()=>{
-    if(mediaContext.stories.size === 0) {
-      mediaContext.setStories()
-    }
-  }, [])
 
   const body = (<>
    {mediaContext.stories.size > 0 &&
@@ -33,20 +29,34 @@ export default function MainMediaPage(props: Props) {
     <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav/>
   </>)
 
+  const search = (data: ISearchBarReturnParams) => {
+    mediaContext.setSearchParams({...data, activeCategories: data.activeCategories.length > 0?data.activeCategories : props.categories.map(el=>el.id)}) 
+  }  
+
+  useEffect(()=>{
+    if(mediaContext.stories.size === 0) {
+      mediaContext.setStories()
+    }
+  }, [])
+
   return (<>
     <SearchBar 
     className={styles.searchBar} 
     placeholder='Найти статьи'
     categories={props.categories}
     periods={periods}
+    onChange={search}
     />
 
     <div className={styles.root}> 
       {body}
-      <NewsByCategories 
+      <Spacer basis={24}/>
+      <NewsList 
+      key={'mainMediaPage'}
       hideNav 
       className={styles.news} 
       scrollableTarget='scrollable'
+      categories={mediaContext.searchParams?.activeCategories || props.categories.map(el=>el.id)}
       />
     </div>
   </>)

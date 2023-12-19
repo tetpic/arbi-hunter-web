@@ -94,6 +94,11 @@
     cursor: pointer;
     @include transitionDefault;
     @include hoverButtonSmooth;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 

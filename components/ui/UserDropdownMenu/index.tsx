@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import ExitRedSvg from 'components/svg/ExitRedSvg'
 import FolderSvg from 'components/svg/FolderSvg'
@@ -11,8 +13,9 @@ import Link from 'next/link'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
-import styles from './index.module.scss'
 import { FILES } from 'types/constants'
+import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
+import UserSvg from 'components/svg/UserSvg'
 
 interface Props {
   className?: string
@@ -54,6 +57,7 @@ export default function UserDropdownMenu(props: Props) {
         {name: 'Сохраненное', image: <HeartSvg/>, link: '/profile?page=saved'},
         {name: 'Мои резюме', image: <FolderSvg/>, link: '/profile?page=cvs'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
+        {name: 'База знаний', image: <DocumentDoubleSvg/>, link: '/base'},
       ]
       return userItems
       case ProfileType.Hirer:
@@ -62,6 +66,8 @@ export default function UserDropdownMenu(props: Props) {
         {name: 'Сохраненное', image: <HeartSvg/>, link: '/profile?page=saved'},
         {name: 'Вакансии', image: <FolderSvg/>, link: '/profile?page=vacancies'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
+        {name: 'База знаний', image: <DocumentDoubleSvg/>, link: '/base'},
+        {name: 'Профиль', image: <UserSvg/>, link: '/company/my'}
       ]
       return userItems
     }

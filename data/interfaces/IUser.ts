@@ -27,8 +27,6 @@ export interface IStats {
   }
 }
 
-
-
 export interface IUserProfile extends TimeStamp {
   id: number,
   userId: number,
@@ -63,7 +61,6 @@ export interface IUserProfile extends TimeStamp {
   role?: 'admin'|'participant'
 }
 
-
 export interface IUser extends TimeStamp {
   name: string
   id: number,
@@ -81,4 +78,6 @@ export interface IUser extends TimeStamp {
   profiles: IUserProfile[]
   company?: string|null,
 }
+
+
 

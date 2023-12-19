@@ -18,7 +18,6 @@ interface IState {
   userLoaded: boolean
   user: IUser
   currentProfile: IUserProfile,
-  setCurrentProfile: (p: IUserProfile) => void
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
@@ -41,15 +40,16 @@ interface Props {
 }
 
 export function UserWrapper(props: Props) {
-  const [token, setUserToken] = useState<string | null>(props.token ?? null)
-  const [user, setUser] = useState<IUser | null>(props.user)
-  const [userLoaded, setUserLoaded] = useState<boolean>(false)
   const appContext = useAppContext()
   const router = useRouter()
 
+  const [token, setUserToken] = useState<string | null>(props.token ?? null)
+  const [user, setUser] = useState<IUser | null>(props.user)
+  const [userLoaded, setUserLoaded] = useState<boolean>(false)
   const [profileType, setProfileTypeState] = useState<ProfileType>(props.profileType||ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
+
 
   
   const userRef = useRef<IUser | null>(null)
@@ -101,17 +101,15 @@ export function UserWrapper(props: Props) {
     return true
   }
 
-  const setCurrentProfile = (p: IUserProfile) => {
 
-  }
+
 
   const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<boolean> => {
     return UserRepository.editProfileByType(data, currentProfile.profileType)
-    .then(res=> {
-      setCurrentProfile(res)
+    .then(_=> {
       return true
     })
-    .catch(err=> {
+    .catch(_=> {
       return false
     })
   }
@@ -179,12 +177,11 @@ export function UserWrapper(props: Props) {
    profileType,
    setProfileType,
    currentProfile,
-   setCurrentProfile,
    isAuth,
    logout,
    editCurrentProfile,
    removeCurrentProfile,
-   updateUser
+   updateUser,
   }
 
   return (

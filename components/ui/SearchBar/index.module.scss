@@ -47,6 +47,18 @@
   .filterButton {
     margin-left: auto;
     cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    border-radius: 6px;
+    padding: 4px;
+
+    &_active {
+      svg {
+        path {
+          stroke: $blue;
+        }
+      }
+    }
   }
 
 }

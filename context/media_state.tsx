@@ -1,9 +1,10 @@
 import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import { createContext, useContext, useState } from 'react'
+import { Dispatch,  SetStateAction, createContext, useContext,  useEffect,  useState } from 'react'
 import { ICategory } from 'data/interfaces/Common'
 import { CategoryType } from 'types/enums'
 import useAbortController from 'components/hooks/useAbortController'
+import { ISearchBarReturnParams } from 'components/ui/SearchBar'
 
 export interface IMediaContextState {
   savedArticles: Map<number, IArticle>
@@ -16,6 +17,24 @@ export interface IMediaContextState {
   stories: Map<number, IArticle> 
   setStories: () => void
   saveOrRemoveArticle: (article: IArticle) => Promise<boolean>
+  searchParams: ISearchBarReturnParams
+  setSearchParams: Dispatch<SetStateAction<ISearchBarReturnParams>>  
+
+  /**
+   * if passed page - current news will be reseted
+   * @args {categories?: number[], page?: number}
+   */
+  refreshPage: (args: {categories?: number[], page?: number})=> void
+
+  page: number
+  setPage: Dispatch<SetStateAction<number>>
+  total: number
+  setTotal: Dispatch<SetStateAction<number>>
+  loading: boolean
+  setLoading: Dispatch<SetStateAction<boolean>>
+
+  id: number
+  
 }
 
 const MediaContext = createContext<Partial<IMediaContextState>>({})
@@ -24,6 +43,7 @@ interface Props {
   children: React.ReactNode
   categories?: Map<number, ICategory>
   savedArticles?: IArticle[]
+  id?: number
 }
 
 export function MediaWrapper(props: Props) {
@@ -31,6 +51,11 @@ export function MediaWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<Map<number, ICategory>>(new Map)
   const [stories, setStoriesState] = useState<Map<number, IArticle>>(new Map)
   const [currentNews, setCurrentNewsState] = useState<Map<number, IArticle>>(new Map)
+  const [searchParams, setSearchParams] = useState<ISearchBarReturnParams>(null)
+  const [page, setPage] = useState<number>(1)
+  const [total, setTotal] = useState<number>()
+  const [loading, setLoading] = useState(true)
+
   const {getNewSignal} = useAbortController()
 
   const setCurrentNews = (data: {articles?: IArticle[], clear?: boolean}) => {
@@ -44,6 +69,36 @@ export function MediaWrapper(props: Props) {
       return new Map(state)
     })
   }
+
+
+  const refreshPage = (args: {categories?: number[], page?: number}) => {
+    
+    let data: any = {
+      isTop: false, 
+      page: args.page||page, 
+      limit: 10
+    }
+    if(searchParams){
+      data = {
+        ...data,
+        search: searchParams.searchValue,
+        categories: [searchParams.activeCategories],
+        forLastNumberOfDays: searchParams.activePeriod
+      }
+    }
+    args.categories&&(data.categories = args.categories)
+    args.page&&setPage(args.page)
+    
+    ArticlesRepository.getNews(true, data)
+    .then(res => {
+      setCurrentNews({articles: res.data})
+      setTotal(res.total)
+      setCurrentNews({articles: res.data, clear: !!args.page})
+      setLoading(false)
+    })
+  }
+
+
 
   const setSavedArticles = async(page: number):Promise<boolean|{total: number}> => {
     return ArticlesRepository.getSavedByCurrentUser({page, full: true})
@@ -138,6 +193,12 @@ export function MediaWrapper(props: Props) {
     })
   }
 
+  useEffect(()=>{
+    if(searchParams) {
+      refreshPage({categories: searchParams.activeCategories, page: 1})
+    }
+  }, [searchParams])
+
   const value: IMediaContextState = {
     setSavedArticles,
     savedArticles,
@@ -148,7 +209,17 @@ export function MediaWrapper(props: Props) {
     setCurrentNews,
     stories,
     setStories,
-    saveOrRemoveArticle
+    saveOrRemoveArticle,
+    searchParams,
+    setSearchParams,
+    refreshPage,
+    id: props.id,
+    page,
+    setPage,
+    total,
+    setTotal,
+    loading,
+    setLoading,
   }
 
   return (

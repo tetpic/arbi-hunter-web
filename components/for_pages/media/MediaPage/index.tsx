@@ -19,7 +19,7 @@ import { ModalType } from 'types/enums'
 import { IMediaCategoryModal } from 'components/modals/MediaCategoryModal'
 import dynamic from 'next/dynamic'
 import Subscriptions from './Subscriptions'
-import SubCategories from 'components/ui/SubCategories'
+import SubCategories from 'components/ui/SubNavigationSet'
 import { useUserContext } from 'context/user_state'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
@@ -74,13 +74,13 @@ export default function MediaPage(props: Props) {
   const body = (()=>{
     switch(page) {
       case MediaPageNav.AllArticles:
-        return <MainMediaPage categories={props.categories}/>
+        return <MediaWrapper key={'mainMediaWrapper'} id={1}><MainMediaPage categories={props.categories}/></MediaWrapper>
       case MediaPageNav.Subscriptions:
         return <Subscriptions/>
       case MediaPageNav.Communities:
         return <Communities/>
       case MediaPageNav.Categories:
-        return isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories categories={props.categories} category={currentCategory} scrollableTarget='scrollable'/>
+        return <MediaWrapper  key={'categoriesMediaWrapper'} id={2}>{isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories  category={currentCategory}/>}</MediaWrapper>
     }
   })()
 
@@ -129,9 +129,7 @@ export default function MediaPage(props: Props) {
         }
       </div>
       <div className={styles.bodyWrapper}>
-          <MediaWrapper>
-          {body}
-          </MediaWrapper>
+        {body}
       </div>
     </div>
     {!isTabletWidth && 

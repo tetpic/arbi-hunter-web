@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import SmallStarPassiveSvg from 'components/svg/SmallStarPassiveSvg'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
+import { colors } from 'styles/variables'
 
 interface Props {
   rating: number
@@ -20,7 +21,7 @@ export default function RatingLine(props: Props) {
         || 
         Number(el)>0 && <SmallStarPassiveSvg className={styles.halfStar}/>
         ||
-        <SmallStarPassiveSvg/>)}
+        <SmallStarPassiveSvg color={colors.greyLight}/>)}
     </p>
  )
 }

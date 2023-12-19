@@ -1,9 +1,17 @@
-import CompanyPage from 'components/for_pages/company/CompanyPage'
+import PersonalPage from 'components/for_pages/personal'
+import ContentLayout from 'components/layout/ContentLayout'
+import { PersonalWrapper } from 'context/personal_state'
 
 interface Props {
 }
 
 export default function MyCompanyPage() {
 
-  return (<CompanyPage/>)
+  return (
+    <ContentLayout>
+      <PersonalWrapper>
+        <PersonalPage/>
+      </PersonalWrapper>
+    </ContentLayout>
+  )
 }

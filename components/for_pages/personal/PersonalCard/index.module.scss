@@ -1,0 +1,36 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 16px;
+  background-color: $black;
+  padding: 24px 16px;
+  border-radius: 16px;
+}
+
+.name {
+  font-weight: $semibold;
+  font-size: $largeText;
+  color: $white;
+} 
+
+.rating {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+
+  .ratingValue {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+  }
+
+  .ratingCount {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $greyLight;
+  }
+}

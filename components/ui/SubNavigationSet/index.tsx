@@ -1,15 +1,18 @@
 import styles from './index.module.scss'
 
-import { ICategory } from 'data/interfaces/Common'
 import classNames from 'classnames'
 import AppSvg from 'components/svg/AppSvg'
 import { colors } from 'styles/variables'
 
-interface Props {categories: ICategory[], currentCategory: ICategory, setCurrent: (e: ICategory)=>void}
+interface Props<T> {
+  categories: T[], 
+  currentCategory: T, 
+  setCurrent: (e: T)=>void
+}
 
 
 
-export default function SubCategories(props: Props) {
+export default function SubNavigationSet<T extends {id: number, name: string}>(props: Props<T>) {
   return (
     props.categories.map(el=> {
       const isCurrent = el.id === props.currentCategory?.id

@@ -35,7 +35,6 @@ export default class UserRepository {
     return res
   }
 
-
   static async passwordChangeConfirmation(data: {newPassword: string}): Promise<IToken|null> {
     const res = await request({
       method: 'post',

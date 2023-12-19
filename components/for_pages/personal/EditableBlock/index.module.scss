@@ -1,0 +1,26 @@
+@import 'styles/index';
+
+.root {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 16px;
+}
+
+.title {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.imageWrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
