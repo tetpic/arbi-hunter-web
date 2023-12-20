@@ -1,51 +1,39 @@
 import { useAppContext } from 'context/state'
 import { PreviewImage } from 'data/interfaces/Common'
-import { ChangeEvent, useRef } from 'react'
+import { ChangeEvent } from 'react'
 import { SnackbarType } from 'types/enums'
 import styles from './index.module.scss'
 import {v4 as uuidv4} from 'uuid'
 import FileRepository from 'data/repositories/FileRepository'
+import useAbortController from 'components/hooks/useAbortController'
 
 
 interface Props {
   setImages: (imageData: PreviewImage) => void
-}
-
-interface IAbortControllerWithId extends AbortController {
-  id?: string
+  getController?: (controller: AbortController) => void
 }
 
 export default function FileInput(props: Props) {
   const appContext = useAppContext()
-  const abortControllersRef = useRef<IAbortControllerWithId[]>()
-
-
+  const {getNewSignal} = useAbortController()
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     for(const file of files) {
-      
       const id = uuidv4()
-      const abortController = new AbortController()
-      props.setImages({image: file, loaded: false, id })
-      // setPreviewImages(state=> [...state, {image: file, loaded: false, id, }])
+      const [signal, controller] = getNewSignal(id)
+      props.getController(controller)
+      props.setImages({image: file, loaded: false, rawId: id, id})
       try{        
-        (abortController as IAbortControllerWithId).id = id
-        FileRepository.uploadFile(file, {signal: abortController.signal})
+        FileRepository.uploadFile(file, {signal})
         .then(fl => {
-          // 
-          props.setImages({image: file, loaded: true, id: fl.id})
+          props.setImages({image: file, loaded: true, id: fl.id, rawId: id, data: fl})
         })
         .catch(err=> {
           appContext.showSnackbar(err.toString(), SnackbarType.error)
         })
       }
       catch(e) {
-        // if(abortController.signal.aborted) {
-        //   setPreviewImages(state=> {
-        //     return [...state.filter(el => el.id !== id)]
-        //   })
-        // }
       }
     }
   }

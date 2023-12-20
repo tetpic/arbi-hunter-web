@@ -36,7 +36,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   }
 
   const likeHandler = () => {
-    const signal = getNewSignal('likeHandler')
+    const[signal] = getNewSignal('likeHandler')
     if(!vacancy.isSavedByCurrentProfile) {
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {

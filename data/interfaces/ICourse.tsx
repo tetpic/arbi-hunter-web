@@ -1,5 +1,5 @@
 import { CoursesStepType, CourseStepAnswerType, Languages } from 'types/enums'
-import { CategoryTranslation,ICategory,IImage, IVideo, TimeStamp} from './Common'
+import { CategoryTranslation,ICategory,IFile, IVideo, TimeStamp} from './Common'
 import { IUserProfile } from './IUser'
 
 export interface CoursesData {
@@ -15,7 +15,7 @@ export interface CoursesData {
 export interface IAuthor {
   description: string,
   id: number,
-  image: IImage,
+  image: IFile,
   name: string
 }
 
@@ -30,7 +30,7 @@ export interface IStepVariant extends IStepVariantTranslation {
   translations: IStepVariantTranslation[]
 }
 
-export interface ICertificate extends IImage {
+export interface ICertificate extends IFile {
 
 }
 
@@ -52,7 +52,7 @@ export default interface ICourse extends CategoryTranslation {
   adminUpdatedAt: string,
   adminId: number,
   deletedAt: string|null,
-  image: IImage,
+  image: IFile,
   categoriesIds: number[],
   categories?: ICategory[]
   benefits: string,
@@ -78,8 +78,8 @@ export interface ICourseBlock extends ICourseBlockTranslation {
   stepsCount: string,
   completedStepsCount: string,
   progress: number,
-  image: IImage,
-  imageLarge: IImage,
+  image: IFile,
+  imageLarge: IFile,
   translations: ICourseBlockTranslation[],
 }
 
@@ -96,7 +96,7 @@ export interface ICourseStep extends ICourseBlockTranslation{
   answer?: ICourseStepAnswer[]
   courseBlockId: 20,
   order: 0,
-  image: IImage,
+  image: IFile,
   courseBlock: ICourseBlock,
   translations: ICourseBlockTranslation[],
   answers: ICourseStepAnswer[],

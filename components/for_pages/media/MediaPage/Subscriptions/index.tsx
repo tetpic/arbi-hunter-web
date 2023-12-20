@@ -48,7 +48,7 @@ export default function Subscriptions(props: Props) {
         title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
-          const signal = getNewSignal()
+          const [signal] = getNewSignal()
           if(article.isSavedByCurrentProfile) {
             ArticlesRepository.removeArticleFromSaved(article.id, {signal})
             .then(_=> {

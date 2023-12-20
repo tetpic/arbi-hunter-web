@@ -1,1 +1,28 @@
 @import 'styles/index';
+
+.buttonsWrapper {
+  column-gap: 8px;
+  margin-bottom: 16px;
+  display: none;
+
+  &_active {
+    display: flex;
+  }
+
+
+  .button {
+    @include buttonGray;
+    height: unset;
+    padding: 6px;
+
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .trash {
+    margin-left: auto;
+  }
+}

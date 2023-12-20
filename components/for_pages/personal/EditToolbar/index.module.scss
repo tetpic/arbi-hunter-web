@@ -1,0 +1,29 @@
+@import 'styles/index';
+
+.title {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 14px;
+  row-gap: 14px;
+  margin-top: 24px;
+}
+
+.button {
+  @include buttonGray;
+  padding: 10px;
+  width: 104px;
+  height: 96px;
+
+  span {
+    flex-direction: column;
+    font-size: $smallText;
+    font-weight: $regular;
+    row-gap: 16px;
+  }
+}

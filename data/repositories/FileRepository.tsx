@@ -1,10 +1,9 @@
 import request from 'utils/request'
 import {AxiosRequestConfig} from 'axios'
-import { IFileDownload } from 'data/interfaces/Common'
+import { IFile } from 'data/interfaces/Common'
 
 export default class FileRepository {
-  static async uploadFile(file: File, config?: AxiosRequestConfig): Promise<IFileDownload> {
-    
+  static async uploadFile(file: File, config?: AxiosRequestConfig): Promise<IFile> {
     return request({
       url: '/api/asset/upload',
       file: file,

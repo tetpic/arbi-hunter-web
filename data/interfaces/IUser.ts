@@ -1,5 +1,5 @@
 import { ActivityStatus, HirerRole, HirerRolePermission, Languages, VacancyLookType } from 'types/enums'
-import { IImage, TimeStamp } from './Common'
+import { IFile, TimeStamp } from './Common'
 import { IGeoName } from './ILocation'
 import { ProfileType } from './IRegistration'
 
@@ -53,7 +53,7 @@ export interface IUserProfile extends TimeStamp {
   statsShowNewCVsCount: boolean,
   permissions: HirerRolePermission[],
   ownerId: null,
-  image: IImage|null,
+  image: IFile|null,
   country: IGeoName,
   city: IGeoName,
   activityStatus: ActivityStatus,

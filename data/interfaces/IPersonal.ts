@@ -1,18 +1,19 @@
-import { IImage, TimeStamp } from './Common'
+import { PersonalBlockType } from 'types/enums'
+import { IFile, TimeStamp } from './Common'
 
 export interface IPersonalPageBlock {
-  text: string,
-  type: 'location'|'text'|'gallery'|'banner',
-  order: number,
-  title: string,
-  assets: number[]
+  text?: string,
+  type: PersonalBlockType,
+  order?: number,
+  title?: string,
+  assets?: number[]
 }
 
 
 
 export interface IPersonalPage extends TimeStamp {
-  id : 99,
-  profileId : 294,
+  id : number,
+  profileId : number,
   blocks : IPersonalPageBlock[],
-  assets: IImage[]
+  assets: IFile[]
 }

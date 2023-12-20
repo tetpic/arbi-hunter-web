@@ -17,10 +17,42 @@
 .imageWrapper {
   border-radius: 16px;
   overflow: hidden;
+  align-self: flex-start;
   
   img {
-    width: 100%;
+    width: unset;
+    max-width: 100%;
+    height: unset;
     object-fit: cover;
+  }
+}
+
+.swiper {
+  height: 450px;
+  width: 100%;
+}
+
+.swiperSlide {
+  width: unset;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+
+
+  img {
+    width: unset;
+    height: 100%;
+    background-color: $grey;
+  }
+
+}
+
+.video {
+  border-radius: 16px;
+  overflow: hidden;
+
+  video {
+    display: block;
   }
 }
 

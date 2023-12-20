@@ -1,0 +1,19 @@
+@import 'styles/index';
+
+.imageButton {
+  @include buttonBlack;
+}
+
+.form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+
+
+.submitButton {
+  @include buttonYellow;
+}
+

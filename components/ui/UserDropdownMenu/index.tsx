@@ -58,6 +58,8 @@ export default function UserDropdownMenu(props: Props) {
         {name: 'Мои резюме', image: <FolderSvg/>, link: '/profile?page=cvs'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
         {name: 'База знаний', image: <DocumentDoubleSvg/>, link: '/base'},
+        {name: 'Персональная страница', image: <UserSvg/>, link: '/personal/my'}
+
       ]
       return userItems
       case ProfileType.Hirer:
@@ -67,7 +69,7 @@ export default function UserDropdownMenu(props: Props) {
         {name: 'Вакансии', image: <FolderSvg/>, link: '/profile?page=vacancies'},
         {name: 'Магазин', image: <ShopSvg/>, link: '/profile?page=shop'},
         {name: 'База знаний', image: <DocumentDoubleSvg/>, link: '/base'},
-        {name: 'Профиль', image: <UserSvg/>, link: '/company/my'}
+        {name: 'Персональная страница', image: <UserSvg/>, link: '/personal/my'}
       ]
       return userItems
     }

@@ -51,7 +51,7 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   const likeHandler = () => {
-    const signal = getNewSignal('likeHandler')
+    const [signal] = getNewSignal('likeHandler')
     if(!cv.isSavedByCurrentProfile) {
       CvRepository.addCvToSaved(cv.id, {signal})
       .then(res=> {

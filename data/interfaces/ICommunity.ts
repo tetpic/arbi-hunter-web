@@ -1,4 +1,4 @@
-import { IImage, TimeStamp } from './Common'
+import { IFile, TimeStamp } from './Common'
 import { IUser, IUserProfile } from './IUser'
 
 export default interface ICommunity extends TimeStamp {
@@ -7,9 +7,9 @@ export default interface ICommunity extends TimeStamp {
   name: string,
   imageId: number|null,
   logoId: number|null,
-  image: IImage|null,
+  image: IFile|null,
   profile: IUserProfile,
-  logo: IImage|null,
+  logo: IFile|null,
   members: IUser[],
   isSubscribedByCurrentProfile: boolean,
   membersCount: string

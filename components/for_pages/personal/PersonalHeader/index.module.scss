@@ -4,4 +4,12 @@
   border-radius: 16px;
   overflow: hidden;
   margin-top: 80px;
+  position: relative;
 }
+
+.userPic {
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+}
+

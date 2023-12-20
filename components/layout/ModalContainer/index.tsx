@@ -33,6 +33,7 @@ import CourseFeedbackModal from 'components/modals/CourseFeedbackModal'
 import ApplicationModal from 'components/modals/ApplicationModal'
 import ApplicationSuccessModal from 'components/modals/ApplicationSuccessModal'
 import SearchFilterModal from 'components/modals/SearchFilterModal'
+import AddPersonalBlockModal from 'components/modals/AddPersonalBlockModal'
 
 
 interface Props { }
@@ -163,6 +164,11 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings} >
           <SearchFilterModal onClose={commonSettings.onRequestClose}/>
         </Modal>
+      case ModalType.AddPersonalBlockModal:
+        return <Modal isOpen {...commonSettings} >
+        <AddPersonalBlockModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+
     }
   })()
 

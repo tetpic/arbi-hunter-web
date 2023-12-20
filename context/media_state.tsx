@@ -163,7 +163,7 @@ export function MediaWrapper(props: Props) {
   const likeArticle = async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
     const isLiked = article.isLikedByCurrentProfile
     const currentLikes = article.likesCount
-    const signal = getNewSignal('likeArticle')
+    const [signal] = getNewSignal('likeArticle')
     if(article.isLikedByCurrentProfile) {
       try{
         await ArticlesRepository.removeLikeFromArticle(article.id, {signal})

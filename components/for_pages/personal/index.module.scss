@@ -4,8 +4,14 @@
   margin-top: 32px;
 }
 
-.contentBody {
-  background-color: $black;
-  padding: 32px;
+.bodyItem {
+  padding: 32px !important;
   border-radius: 16px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  row-gap: 24px;
 }

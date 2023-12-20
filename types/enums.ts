@@ -31,6 +31,7 @@ export enum ModalType {
   ApplicationModal = 'applicationModal',
   ApplicationSuccessModal = 'applicationSuccessModal',
   SearchFilterModal = 'searchFilterModal',
+  AddPersonalBlockModal = 'addPersonalBlockModal',
 
 
 }
@@ -281,5 +282,15 @@ export enum MessageType  {
   Application = 'application',
   Proposal = 'proposal',
   Voice = 'voice'
+}
+
+export enum PersonalBlockType {
+  Text ='text',
+  Image = 'image',
+  Gallery = 'gallery',
+  Video = 'video',
+  Banner = 'banner',
+  Location = 'location',
+  Separator = 'separator'
 }
 

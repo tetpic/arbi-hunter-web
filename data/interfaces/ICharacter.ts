@@ -1,4 +1,4 @@
-import { IImage, ITranslation, TimeStamp } from './Common'
+import { IFile, ITranslation, TimeStamp } from './Common'
 
 export interface ICharCategory extends TimeStamp{
   id?: number,
@@ -11,14 +11,14 @@ export interface ICharCategory extends TimeStamp{
   itemsCount?: string,
   name?: string,
   translations?: ITranslation[],
-  image?: IImage
+  image?: IFile
 }
 
 export interface ICharItem extends TimeStamp {
   id?: number,
   categoryId?: number,
   category?: ICharCategory
-  image?: IImage,
+  image?: IFile,
   imageId?: number,
   isLocked?: boolean,
   isNew?: boolean,

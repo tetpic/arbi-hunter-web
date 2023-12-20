@@ -1,4 +1,4 @@
-import { IPersonalPage } from 'data/interfaces/IPersonal'
+import { IPersonalPage, IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import request from 'utils/request'
 
 export default class PersonalRepository {
@@ -13,11 +13,13 @@ export default class PersonalRepository {
     return res
   }
 
-  static async updatePersonalPage(id: number, data: Partial<IPersonalPage>): Promise<IPersonalPage> {
+  static async updatePersonalPage(id: number, data: Partial<IPersonalPageBlock[]>): Promise<IPersonalPage> {
     const res = await request({
       method: 'patch',
       url: `/api/personal-page/${id}`,
-      data
+      data : {
+        blocks: data
+      }
     })
     if(res.err) {
       return null
@@ -29,6 +31,20 @@ export default class PersonalRepository {
     const res = await request({
       method: 'get',
       url: `/api/personal-page?s={"profileId": ${id}}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async createPersonalPage(data: Partial<IPersonalPageBlock[]>): Promise<IPersonalPage> {
+    const res = await request({
+      method: 'post',
+      url: '/api/personal-page',
+      data: {
+        blocks: data
+      }
     })
     if(res.err) {
       return null

@@ -51,17 +51,17 @@ export interface IFocalPoint {
   y: string
 }
 
-export interface IImage extends TimeStamp {
+export interface IFile extends TimeStamp {
   id: number,
-  published: boolean,
-  name: string,
-  type: 'IMAGE'|'VIDEO'|'BINARY',
-  mimeType: 'image/png'|'video/mp4'|'application/pdf',
-  fileSize: number,
-  duration: number|null,
+  published?: boolean,
+  name?: string,
+  type?: 'IMAGE'|'VIDEO'|'BINARY',
+  mimeType?: 'image/png'|'video/mp4'|'application/pdf',
+  fileSize?: number,
+  duration?: number|null,
   source: string,
-  focalPoint: IFocalPoint,
-  userId: number|null
+  focalPoint?: IFocalPoint,
+  userId?: number|null
 }
 
 export interface IVideo extends TimeStamp {
@@ -144,7 +144,7 @@ export interface ICategory extends TimeStamp, CategoryTranslation {
   imageId: number|null,
   articlesCount: string, //number
   deletedAt: string|null,
-  image: IImage|null,
+  image: IFile|null,
   translations: CategoryTranslation[],
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,
@@ -163,14 +163,10 @@ export interface PreviewImage {
   source?: string
   loaded: boolean
   id: string|number
+  rawId?: string
+  data?: IFile
 }
 
-
-
-export default interface IFile {
-  link: string
-  focalPoint?: IFocalPoint
-}
 
 export interface IFileDownload {
   id: string
@@ -190,9 +186,9 @@ export interface IArticleBlock {
   id?: number,
   title?: string,
   body?: string|TrustedHTML,
-  image?: Partial<IImage>
-  images?: Partial<IImage>[],
-  imageLarge?: Partial<IImage>,
+  image?: Partial<IFile>
+  images?: Partial<IFile>[],
+  imageLarge?: Partial<IFile>,
   imagesIds?: number[]
 }
 
