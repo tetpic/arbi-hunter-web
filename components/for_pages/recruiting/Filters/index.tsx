@@ -4,7 +4,7 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import { CompensationType, CompensationTypeTranslated, EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import AddButton from 'components/ui/AddButton'
@@ -16,6 +16,9 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
+import Accordeon from 'components/ui/Accordeon'
+import ArrowDownSvg from 'components/svg/ArrowDownSvg'
+import Spacer from 'components/ui/Spacer'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -23,7 +26,9 @@ interface Props {
 
 export default function Filters(props: Props) {
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const creationContext = useCreateVcCvContext()
+  const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
 
   const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
@@ -50,6 +55,38 @@ export default function Filters(props: Props) {
     creationContext.setHelpObjects({...helperState})
   }
 
+  const openSpecializationModal = () => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, {
+        manyItems: true,
+        onClose: ()=>appContext.hideBottomSheet()
+      }, 0.9)
+      return
+    } 
+    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
+      manyItems: true})
+  }
+
+  const openSourcesModal = () => {
+    if (isTabletWidth) {
+      appContext.showBottomSheet(ModalType.SourcesModal, {
+        onClose: ()=>appContext.hideBottomSheet()
+      }, 0.4)
+      return
+    }
+    appContext.showModal(ModalType.SourcesModal)
+  }
+
+  const openLangsModal = () => {
+    if (isTabletWidth) {
+      appContext.showBottomSheet(ModalType.LanguageModal, {
+        onClose: ()=>appContext.hideBottomSheet()
+      }, 0.9)
+      return
+    }
+    appContext.showModal(ModalType.LanguageModal)    
+  }
+
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
@@ -71,18 +108,23 @@ export default function Filters(props: Props) {
   return (<div className={styles.root}> 
     <FormikProvider value={formik}>
       <Form>
-        <p className={styles.fieldTitle}>Показать период</p>
-        <RadioListField 
-        rootClass={styles.radioField}
-        options={[
-          {value: null, label: 'За все время'},
-          ...periods.map(el=>{
-            return {value: el.value, label: el.name}
-          })         
-        ]} 
-        name={'forLastNumberOfDays'}/>
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
+          <span>Показать период</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+        </p>
+        <Accordeon isActive={activeAccordeon === 1} disabled={!isTabletWidth}>
+          <RadioListField 
+          rootClass={styles.radioField}
+          options={[
+            {value: null, label: 'За все время'},
+            ...periods.map(el=>{
+              return {value: el.value, label: el.name}
+            })         
+          ]} 
+          name={'forLastNumberOfDays'}/>
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
 
-        <p className={styles.fieldTitle}>Специализация</p>
+        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>Специализация</p>
           {Array.isArray(creationContext.activeSubCategory) && creationContext.activeSubCategory.length > 0 &&
             <div className={styles.itemsWrapper}>
               { creationContext.activeSubCategory.map(el=> {
@@ -90,14 +132,21 @@ export default function Filters(props: Props) {
               })}
             </div>
           }
-        <AddButton className={styles.addButton} title='Добавить' onClick={()=>appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {manyItems: true})}/>
+        {!isTabletWidth &&
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
+        }
 
-        <p className={styles.fieldTitle}>Оплата</p>
-        <RadioListField 
-        rootClass={styles.radioField}
-        options={CompensationTypeTranslated.map(el=> {return {value: el[0], label: el[1]}})} 
-        name={'compensation'}
-        />
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
+          <span>Оплата</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+        </p>
+        <Accordeon isActive={activeAccordeon === 2} disabled={!isTabletWidth}>
+          <RadioListField 
+          rootClass={styles.radioField}
+          options={CompensationTypeTranslated.map(el=> {return {value: el[0], label: el[1]}})} 
+          name={'compensation'}
+          />
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
         {(formik.values.compensation === CompensationType.Commission || formik.values.compensation === CompensationType.Gybrid) &&
           <>
             <p className={styles.fieldTitle}>Комиссия</p>
@@ -124,7 +173,7 @@ export default function Filters(props: Props) {
           </>
         }
 
-        <p className={styles.fieldTitle}>Источники</p>
+        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal()}>Источники</p>
         {creationContext.helpObjects.sources.length > 0 &&
           <div className={styles.itemsWrapper}>
            {creationContext.helpObjects && [...creationContext.helpObjects?.activeSources.entries()]
@@ -133,28 +182,40 @@ export default function Filters(props: Props) {
             )}
           </div>
         }
-        <AddButton className={styles.addButton} title='Добавить' onClick={()=>appContext.showModal(ModalType.SourcesModal)}/>
+        {!isTabletWidth &&
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal()}/>
+        }
 
-        <p className={styles.fieldTitle}>Занятость</p>
-        <CheckboxListField 
-        rootClass={styles.radioField}
-        name={'employment'} 
-        options={[
-          {value: EmploymentType.FullTime, label: 'Полная'},
-          {value: EmploymentType.PartTime, label: 'Частичная'},
-          {value: EmploymentType.Project, label: 'Проектная'}
-        ]}/>
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
+          <span>Занятость</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+        </p>
+        <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
+          <CheckboxListField 
+          rootClass={styles.radioField}
+          name={'employment'} 
+          options={[
+            {value: EmploymentType.FullTime, label: 'Полная'},
+            {value: EmploymentType.PartTime, label: 'Частичная'},
+            {value: EmploymentType.Project, label: 'Проектная'}
+          ]}/>
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
 
-        <p className={styles.fieldTitle}>Тип работы</p>
-        <CheckboxListField 
-        rootClass={styles.radioField}
-        name={'schedule'}
-        options={[
-          {value: ScheduleType.Flexible, label: 'Гибкий график'},
-          {value: ScheduleType.FullDay, label: 'Полный день'},
-          {value: ScheduleType.Remote, label: 'Удаленная работа'}
-        ]} 
-        />
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
+          <span>Тип работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>}
+        </p>
+        <Accordeon  isActive={activeAccordeon === 4} disabled={!isTabletWidth}>
+          <CheckboxListField 
+          rootClass={styles.radioField}
+          name={'schedule'}
+          options={[
+            {value: ScheduleType.Flexible, label: 'Гибкий график'},
+            {value: ScheduleType.FullDay, label: 'Полный день'},
+            {value: ScheduleType.Remote, label: 'Удаленная работа'}
+          ]} 
+          />
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
 
         <p className={styles.fieldTitle}>Знания языков</p>
         {creationContext.helpObjects?.languageKnowledges?.size > 0 &&
@@ -164,14 +225,21 @@ export default function Filters(props: Props) {
             }
           </div>
         } 
-        <AddButton className={styles.addButton} title='Добавить' onClick={()=>appContext.showModal(ModalType.LanguageModal)}/>
+        {!isTabletWidth &&
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openLangsModal()}/>
+        }
 
-        <p className={styles.fieldTitle}>Опыт работы</p>
-        <CheckboxListField 
-        name={'experience'} 
-        rootClass={styles.radioField}
-        options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
-        />
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
+          <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+        </p>
+        <Accordeon isActive={activeAccordeon === 5} disabled={!isTabletWidth}>
+          <CheckboxListField 
+          name={'experience'} 
+          rootClass={styles.radioField}
+          options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+          />
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
 
       </Form> 
     </FormikProvider>

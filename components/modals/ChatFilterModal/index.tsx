@@ -44,7 +44,7 @@ export default function ChatFilterModal(props: Props) {
 
   const [currentPage, setCurrentPage] = useState<Pages>(Pages.Main)
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IChatFilterModalProps
+  const args: IChatFilterModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const vacs = args.vacancies.filter(Boolean)
 
   const submit = (data: IChatsFilter) => {

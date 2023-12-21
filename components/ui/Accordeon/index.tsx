@@ -3,7 +3,7 @@ import {  useRef } from 'react'
 import styles from './index.module.scss'
 
 interface Props {
-  children: JSX.Element,
+  children: JSX.Element|JSX.Element[],
   body?: JSX.Element
   isActive: boolean
   getRef?: (r: HTMLDivElement) => void
@@ -12,11 +12,16 @@ interface Props {
     content?: string,
     wrapper?: string
   }
+  disabled?: boolean
 }
 
 export default function Accordeon(props: Props) {
 
   const contentRef = useRef<HTMLDivElement>(null!)
+
+  if(props.disabled) {
+    return props.children
+  }
 
   return (
   <div className={classNames(styles.root, props.classNames?.root)} ref={((r)=> props.getRef&&props.getRef(r))}> 

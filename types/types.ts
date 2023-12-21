@@ -67,7 +67,7 @@ export interface IButton {
   isExternalHref?: boolean // add target blank and no referrer
 }
 
-export interface NavigationSet<T extends string> {
+export interface NavigationSet<T extends string|number> {
   name: string, 
   type: T, 
   icon?: JSX.Element

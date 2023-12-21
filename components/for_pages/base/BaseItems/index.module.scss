@@ -1,0 +1,7 @@
+@import 'styles/index';
+
+.root {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
+}

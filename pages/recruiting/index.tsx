@@ -32,7 +32,7 @@ export default function Recruiting(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.profileType
 
-  return (<ContentLayout withFooter title='Рекрутинг'>
+  return (<ContentLayout withFooter hideMobileHeader  title='Рекрутинг'>
     {!props.auth&&((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
       <RecruitingEmployee/>
       ||

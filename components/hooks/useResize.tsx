@@ -1,6 +1,17 @@
 import { useState,  useEffect } from 'react'
 import { breakpoints } from 'styles/variables'
 
+export interface IResize {
+  width: number
+  isDesktopWidth: boolean
+  isMdDesktopWidth: boolean
+  isSmDesktopWidth: boolean
+  isPhoneWidth: boolean
+  isLPhoneWidth: boolean
+  isMPhoneWidth: boolean
+  // isSmPhoneWidth: boolean
+  isTabletWidth: boolean
+}
 
 export const useResize = () => {
 
@@ -30,5 +41,5 @@ export const useResize = () => {
     isMPhoneWidth: width <= breakpoints.MPhoneWidth,
     // isSmPhoneWidth: width <= breakpoints.SmPhoneWidth,
     isTabletWidth: width <= breakpoints.TabletWidth,
-  }
+  } as IResize
 }

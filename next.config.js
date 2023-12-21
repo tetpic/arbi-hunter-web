@@ -3,7 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    files: 'https://arbi-hunter.dev.glob-com.ru/api/asset/files/'
+    files: 'https://arbi-hunter.dev.glob-com.ru/api/asset/files/',
+    host: process.env.HOST
   },
 
   publicRuntimeConfig: {

@@ -32,7 +32,7 @@ interface Props extends IOptionsModalProps{
 export default function OptionsModal(props: Props) {
   
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IOptionsModalProps
+  const args: IOptionsModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments 
   const title = props.title||args?.title  
   const children = props.children||args?.children
 

@@ -23,7 +23,7 @@ export interface IChatsFolderModalProps {
 
 export default function ChatsFolderModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IChatsFolderModalProps
+  const args: IChatsFolderModalProps = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [chats, setChats] = useState<Map<IChat, boolean>>(new Map(args.chats.map(el=> [el, false])))
 
   const onSaveHandler = () => {

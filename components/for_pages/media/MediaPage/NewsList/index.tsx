@@ -19,6 +19,7 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { SnackbarType } from 'types/enums'
 import { useAppContext } from 'context/state'
+import copyToClipboard from 'utils/copyToClipboard'
 
 interface Props {
   className?: string
@@ -44,7 +45,10 @@ export default function NewsList(props: Props) {
           .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+      }},
       {title: 'Поделиться',icon: <ShareSvg/>},
       {title: 'Скрыть',icon: <CloseEyeSvg/>}
     ]

@@ -16,6 +16,7 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import useAbortController from 'components/hooks/useAbortController'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
+import copyToClipboard from 'utils/copyToClipboard'
 
 interface Props {
 }
@@ -79,7 +80,10 @@ export default function Subscriptions(props: Props) {
           }
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+      }},
       {title: 'Поделиться',icon: <ShareSvg/>},
       {title: 'Скрыть',icon: <CloseEyeSvg/>}
     ]

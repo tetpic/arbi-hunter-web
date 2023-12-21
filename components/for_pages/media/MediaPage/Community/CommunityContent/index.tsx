@@ -11,10 +11,11 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { IArticle } from 'data/interfaces/IArticle'
 import dynamic from 'next/dynamic'
-import { ModalType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import { colors } from 'styles/variables'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
+import copyToClipboard from 'utils/copyToClipboard'
 
 const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {
@@ -44,7 +45,10 @@ export default function CommunityContent(props: Props) {
           icon: <EditPencilSvg/>,
           onClick: () => appContext.showModal(ModalType.CreateCommunityArticleModal, {article})
         },
-        {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+        {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+          copyToClipboard(process.env.host + '/media/article/' + article.id)
+          appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        }},
         {
           title: 'Удалить',
           icon: <TrashBasketSvg/>,           

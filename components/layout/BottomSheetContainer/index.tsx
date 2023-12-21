@@ -10,6 +10,10 @@ import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 import ChatFilterModal from 'components/modals/ChatFilterModal'
 import ResponseModal from 'components/modals/ResponseModal'
+import SearchFilterModal from 'components/modals/SearchFilterModal'
+import SpecializationModal from 'components/modals/CvModals/Specialization'
+import SoursesModal from 'components/modals/CvModals/Sourses'
+import LangaugesModal from 'components/modals/CvModals/Languages'
 
 
 interface Props { }
@@ -74,6 +78,38 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <ResponseModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.SearchFilterModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <SearchFilterModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.SpecializationModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <SpecializationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.SourcesModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <SoursesModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.LanguageModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <LangaugesModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

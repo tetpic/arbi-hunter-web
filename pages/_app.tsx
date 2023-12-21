@@ -23,7 +23,6 @@ import { VacancyWrapper } from 'context/vacancy_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
-import { CommunityWrapper } from 'context/community_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Router from 'next/router'
@@ -70,7 +69,6 @@ function MyApp({Component, pageProps}: AppProps) {
           <CvWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
-          <CommunityWrapper>
           <AuthWrapper>
             <Head>
               <meta
@@ -89,7 +87,6 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <Snackbar/>}
             
           </AuthWrapper>
-          </CommunityWrapper>
           </FeedbacksWrapper>
           </PatternWrapper>
           </CvWrapper>

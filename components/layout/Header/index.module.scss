@@ -45,14 +45,18 @@
   display: flex;
   width: Max(320px, 40%);
   justify-content: space-between;
+  height: 44px;
+  align-items: center;
   @include mq($TabletWidth, max) {
     display: none
   }
-
 }
 
 .link {
   @include textGradientWithHover;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .userWrapper {

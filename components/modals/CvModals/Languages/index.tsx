@@ -10,13 +10,19 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
+import { useAppContext } from 'context/state'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 export default function LangaugesModal(props: Props) {
   const cvContext = useCreateVcCvContext()
+  const appContext = useAppContext()
+  const args: {onClose: ()=> void } = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
@@ -35,7 +41,7 @@ export default function LangaugesModal(props: Props) {
   const onSaveHandler = () => {
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||new Map
     cvContext.setHelpObjects({languageKnowledges: new Map([...lansgKnown, [langRadioActive, {language: langRadioActive, level: levelRadioActive}]])})
-    props.onClose()
+    args.onClose?args.onClose():props.onClose()
   }
 
   const body = (
@@ -46,7 +52,6 @@ export default function LangaugesModal(props: Props) {
     withInput={false}
     disabledButton={!langRadioActive || !levelRadioActive}
     >
-      <>
       <div className={styles.wrapper}>
         <p className={styles.title} onClick={()=>{setLangsActive(!langsDropdownActive)}}>Язык <ArrowDownSvg className={langsDropdownActive&&styles.arrow_active}/></p>
         <div className={classNames(styles.list, langsDropdownActive&&styles.list_active)}>
@@ -81,9 +86,18 @@ export default function LangaugesModal(props: Props) {
           })}
         </div>
       </div>
-      </>
     </Body>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return ( 
     <ModalLayout mobileFullScreen  className={styles.rootLayout}>

@@ -21,6 +21,7 @@ import OptionsDropDown from '../OptionsDropDown'
 import OptionsList, { IOptionList } from '../OptionsList'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import useAbortController from 'components/hooks/useAbortController'
+import Spacer from '../Spacer'
 
 interface Props {
   article: IArticle
@@ -31,6 +32,8 @@ interface Props {
   options?: IOptionList[]
   optionsTitle?: string
   className?: string
+  disableLikes?: boolean
+  icon?: JSX.Element
 }
 
 /**
@@ -41,6 +44,7 @@ interface Props {
  * @isOpen boolean
  * @threeDotsHandler ?: (e: React.MouseEvent<Element, MouseEvent>, a: IArticle) => void
  * @options ?: JSX.Element|JSX.Element[]
+ * @disableLikes ?: boolean
  */
 export default function NewsArticle(props: Props) {
   const article = props.article
@@ -87,11 +91,15 @@ export default function NewsArticle(props: Props) {
 
   return ( <div className={classNames(styles.item, !props.isOpen&&styles.item_withHover, props.className)} onClick={()=> !props.isOpen&&router.push(`/media/article/${props.article.id}`)} >
     <div className={styles.top}>
-      {(props.titleImg || props.withDefaultIcon) &&
+      {(props.titleImg || props.withDefaultIcon ) && !props.icon &&
         <UserPic className={styles.imageWrapper} image={props.titleImg&&FILES + props.titleImg} size={40}/>
+        ||
+        props.icon && props.icon
       }
       <p className={styles.name}>{props.titleName}</p>
+      {!props.disableLikes && 
       <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
+      }
       <ThreeDotsButton onMouseEnter={()=>openDropDown(true)} onClick={openModal} className={styles.dots}/>
       {!isTabletWidth && props.options &&
         <OptionsDropDown 
@@ -123,9 +131,13 @@ export default function NewsArticle(props: Props) {
         )
       })}
     </div>
-    <div className={styles.stats}>
-      <p className={styles.likes} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}}><HeartSvg className={classNames(isLiked&&styles.filledHeart)}/> {likesCounter}</p>
-      <p className={styles.views}><OpenEyeSvg/> {article.totalViews}</p>
-    </div>
+      <div className={styles.stats}>
+        {!props.disableLikes &&
+          <p className={styles.likes} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}}><HeartSvg className={classNames(isLiked&&styles.filledHeart)}/> {likesCounter}</p>
+          ||
+          <Spacer/>
+        }
+        <p className={styles.views}><OpenEyeSvg/> {article.totalViews}</p>
+      </div>
   </div>)
 }

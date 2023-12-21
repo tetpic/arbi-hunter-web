@@ -19,7 +19,7 @@ export default function NewsByCategories(props: Props) {
   }, [props.category])
 
   const search = (data: ISearchBarReturnParams) => {
-    mediaContext.setSearchParams(state=> ({...state, activePeriod: data.activePeriod, searchValue: data.searchValue}))
+    mediaContext.setSearchParams(state=> ({...state, activePeriod: data.activePeriod, searchValue: data.search}))
   }
 
   return (<>

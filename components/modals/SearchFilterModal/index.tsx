@@ -8,9 +8,12 @@ import { useAppContext } from 'context/state'
 import Spacer from 'components/ui/Spacer'
 import { useState } from 'react'
 import Button from 'components/ui/Button'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: ()=>void
+  isBottomSheet?: boolean
 }
 
 export interface ISearchFilterModalProps {
@@ -24,7 +27,7 @@ export interface ISearchFilterModalProps {
 
 export default function SearchFilterModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as ISearchFilterModalProps
+  const args:ISearchFilterModalProps =props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [categories, setCategories] = useState<[ICategory, boolean][]>(args.categories&&args.categories.map(el=>[el, args.activeCategories.includes(el.id)]))
   const [periods, setPeriods] = useState<[{name: string, value: number}, boolean][]>(args.periods.map(el=>[el, args.activePeriod===el.value]))
 
@@ -85,6 +88,16 @@ export default function SearchFilterModal(props: Props) {
       <Button className={styles.accept} onClick={submit}>Применить</Button>
     </div>
   </>)
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>

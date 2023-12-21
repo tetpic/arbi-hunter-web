@@ -39,7 +39,7 @@ enum ActionItems {
 export default function MediaItemActionsModal(props: Props) {
   const appContext = useAppContext()
   const communityContext = useCommunityContext()
-  const args = appContext.modalArguments as {isAdmin: boolean, news: IArticle}
+  const args: {isAdmin: boolean, news: IArticle} = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [isSaved, setSaved] = useState<boolean>(args?.news?.isSavedByCurrentProfile||null)
 
   const items = (actions: ActionItems[]):ActionType[] => {

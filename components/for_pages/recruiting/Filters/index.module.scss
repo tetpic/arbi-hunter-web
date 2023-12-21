@@ -4,6 +4,11 @@
   background-color: $black;
   padding: 24px;
   border-radius: 16px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    padding: unset;
+    margin-top: 16px;
+  }
   // overflow: auto;
   // height: calc(100vh - 32px);
   // height: calc(100dvh - 32px);
@@ -29,6 +34,23 @@
   color: $white;
   font-size: $largeText;
   font-weight: $semibold;
+  @include mq($TabletWidth, max) {
+    padding: 16px;
+    height: 56px;
+    background-color: $grey;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  svg {
+    @include transitionDefault;
+  }
+  
+  .active {
+    rotate: 180deg;
+  }
 }
 
 .addButton {

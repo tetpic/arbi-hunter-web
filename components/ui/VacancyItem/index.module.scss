@@ -62,7 +62,7 @@
     // max-width: calc(100% - 180px);
     position: relative;
     @include mq($TabletWidth, max) {
-      max-width: 70%;
+      // max-width: 70%;
       row-gap: 8px;
     }
   }
@@ -125,6 +125,7 @@
   @include mq($TabletWidth, max) {
     width: Clamp(170px, 33%, 200px);
     bottom: 60px;
+    display: none;
   }
 }
 

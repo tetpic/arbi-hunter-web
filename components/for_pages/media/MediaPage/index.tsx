@@ -21,6 +21,7 @@ import dynamic from 'next/dynamic'
 import Subscriptions from './Subscriptions'
 import SubCategories from 'components/ui/SubNavigationSet'
 import { useUserContext } from 'context/user_state'
+import { CommunityWrapper } from 'context/community_state'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -78,7 +79,7 @@ export default function MediaPage(props: Props) {
       case MediaPageNav.Subscriptions:
         return <Subscriptions/>
       case MediaPageNav.Communities:
-        return <Communities/>
+        return <CommunityWrapper><Communities/></CommunityWrapper>
       case MediaPageNav.Categories:
         return <MediaWrapper  key={'categoriesMediaWrapper'} id={2}>{isTabletWidth&&width?<MainMediaPage categories={props.categories}/>:<NewsByCategories  category={currentCategory}/>}</MediaWrapper>
     }

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { NavigationSet } from 'types/types'
 import NavigationItem from './NavigationItem'
 
-interface Props<T extends string> {
+interface Props<T extends string|number> {
   setPage: (p: T) => void
   currentPage: T
   navSet?: NavigationSet<T>[]
@@ -14,6 +14,7 @@ interface Props<T extends string> {
   rootClassName?: string,
   wrapperClassName?: string
   bottomItem?: JSX.Element
+  title?: string
 }
 
 
@@ -26,7 +27,7 @@ interface Props<T extends string> {
  * @wrapperClassName  string
  * @bottomItem  JSX.Element
  */
-export default function Navigation<T extends string>(props: Props<T>) {
+export default function Navigation<T extends string|number>(props: Props<T>) {
   const {isTabletWidth} = useResize()
   const router = useRouter()
 
@@ -38,8 +39,8 @@ export default function Navigation<T extends string>(props: Props<T>) {
   }
 
   return ( <div className={classNames(styles.root, props.rootClassName) }>
-    {isTabletWidth &&
-    <TitleForSection title={'Настройка профиля'} onBackClick={()=>{router.back()}}/>
+    {isTabletWidth && props.title &&
+    <TitleForSection title={props.title||'Настройка профиля'} onBackClick={()=>{router.back()}}/>
     }
     <nav className={classNames(styles.wrapper, props.wrapperClassName)}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {

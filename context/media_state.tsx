@@ -15,7 +15,7 @@ export interface IMediaContextState {
   currentNews: Map<number, IArticle>
   setCurrentNews: (data: {articles?: IArticle[], clear?: boolean}) => void
   stories: Map<number, IArticle> 
-  setStories: () => void
+  setStories: (stories?: IArticle[], target?: 'course'|'news') => void
   saveOrRemoveArticle: (article: IArticle) => Promise<boolean>
   searchParams: ISearchBarReturnParams
   setSearchParams: Dispatch<SetStateAction<ISearchBarReturnParams>>  
@@ -81,7 +81,7 @@ export function MediaWrapper(props: Props) {
     if(searchParams){
       data = {
         ...data,
-        search: searchParams.searchValue,
+        search: searchParams.search,
         categories: [searchParams.activeCategories],
         forLastNumberOfDays: searchParams.activePeriod
       }
@@ -183,11 +183,11 @@ export function MediaWrapper(props: Props) {
     return true
   }
 
-  const setStories = (stories?: IArticle[]) => {
+  const setStories = (stories?: IArticle[], target?: 'course'|'news') => {
     if(stories) {
       setStoriesState(new Map(stories.map(el=> [el.id, el]) ))
     }
-    ArticlesRepository.getStories()
+    ArticlesRepository.getStories({sort: 'publishedAt,DESC', isTop: false, target})
     .then(res=> {
       setStoriesState(new Map(res.data.map(el=> [el.id, el]) ))
     })

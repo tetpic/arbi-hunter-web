@@ -16,14 +16,18 @@ import RadioListField from 'components/fields/RadioListField'
 import { SnackbarType } from 'types/enums'
 import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import Spinner from 'components/ui/Spinner'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: ()=> void
+  isBottomSheet?: boolean
 }
 
 export interface ISpecializationModalProps {
   manyItems?: boolean
   onSubmit?: (specialization: ISpecializationCategory|ISpecializationCategory[])=>void
+  onClose?: ()=>void
 }
 
 
@@ -31,7 +35,7 @@ export default function SpecializationModal(props: Props) {
   const cvContext = useCreateVcCvContext()
   const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
   const appContext = useAppContext()
-  const args = appContext.modalArguments as ISpecializationModalProps
+  const args = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments as ISpecializationModalProps
   const [chooseAll, setChooseAll] = useState<boolean>(false)
   const [load, setLoad] = useState<boolean>(false)
 
@@ -45,7 +49,7 @@ export default function SpecializationModal(props: Props) {
     cvContext.setActiveSubcategory(data.specialization )
     cvContext.setActiveCategory(null)
     args.onSubmit&&args?.onSubmit(data.specialization)
-    props.onClose()
+    args.onClose?args.onClose():props.onClose()
   } 
 
   const formik = useFormik<{specialization: ISpecializationCategory[]}>({
@@ -143,6 +147,16 @@ export default function SpecializationModal(props: Props) {
       </FormikProvider>
     </Body>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return ( 
     <ModalLayout className={styles.rootLayout} >

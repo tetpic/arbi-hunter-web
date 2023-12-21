@@ -55,7 +55,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories?: [number], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number}): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: [number], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number, articleType?: CategoryType}): Promise<IPagination<IArticle>|null> {
     const dataToSend: any = {
       isTop: true,
       articleType: 'news',
@@ -74,6 +74,8 @@ export default class ArticlesRepository {
     }
     return res
   }
+  
+
 
   static async removeArticle(profile: ProfileType, id: number): Promise<any|null> {
     const res = await request({
@@ -204,7 +206,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getStories(data = {sort: 'publishedAt,DESC', isTop: false}): Promise<IPagination<IArticle>|null> {
+  static async getStories(data: {sort: 'publishedAt,DESC', isTop: boolean, target?: 'course'|'news'}): Promise<IPagination<IArticle>|null> {
     const res = await request({
       method: 'get',
       url: '/api/story',

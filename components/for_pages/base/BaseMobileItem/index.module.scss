@@ -1,0 +1,33 @@
+@import 'styles/index';
+
+
+
+.root {
+  border: 1px solid $grey;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 8px;
+
+  .categoryName {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $white;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $grey;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    color: $white;
+    font-size: $smallText;
+  }
+
+  .items {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+  }
+}

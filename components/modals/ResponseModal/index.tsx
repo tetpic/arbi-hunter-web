@@ -32,7 +32,7 @@ export interface IResponseModalProps {
 
 export default function ResponseModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IResponseModalProps
+  const args: IResponseModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [currentCv, setCurrentCv] = useState<ICV>(null)
 
   const submit = (data: {coverLetter: string}) => {

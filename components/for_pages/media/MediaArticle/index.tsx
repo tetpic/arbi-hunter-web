@@ -12,6 +12,7 @@ import LinkSvg from 'components/svg/LinkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import { useEffect } from 'react'
+import copyToClipboard from 'utils/copyToClipboard'
 
 interface Props {
   article: IArticle
@@ -35,7 +36,10 @@ export default function MediaArticle(props: Props) {
           .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
+      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+      }},
       {title: 'Поделиться',icon: <ShareSvg/>},
       {title: 'Скрыть',icon: <CloseEyeSvg/>}
     ]

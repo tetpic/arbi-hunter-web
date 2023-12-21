@@ -1,65 +1,61 @@
 import styles from './index.module.scss'
 
-import { ProfileType } from 'data/interfaces/IRegistration'
-import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
-import TableSvg from 'components/svg/TableSvg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navigation from 'components/ui/Navigation'
-import SubNavigationSet from 'components/ui/SubNavigationSet'
 import ContentBody from 'components/ui/Content/ContentBody'
 import ContentAside from 'components/ui/Content/ContentAside'
 import Content from 'components/ui/Content'
-import Title from 'components/ui/TitleForSection'
 import SearchBar from 'components/ui/SearchBar'
+import { useKnowledgeContext } from 'context/knowledge_state'
+import BaseItems from './BaseItems'
+import Spinner from 'components/ui/Spinner'
+import { periods } from 'utils/commonObjects'
+import { useAppContext } from 'context/state'
+import TitleForSection from 'components/ui/TitleForSection'
+import { useRouter } from 'next/navigation'
 
-interface Props {
-  profileType: ProfileType
-}
-
-
-export default function BasePage(props: Props) {
-  const [page, pager] = useState<ProfileType>(props.profileType)
-  const [currentEmployeeSub, setCurrentEmployeeSub] = useState<{id: number, name: string}>(undefined)
-  const [currentHirerSub, setCurrentHirerSub] = useState<{id: number, name: string}>(undefined)
-
-
-  const employeeSubSet = <SubNavigationSet categories={[
-    {name: 'test1', id: 1},
-    {name: 'test2', id: 2},
-  ]} 
-  currentCategory={currentEmployeeSub} 
-  setCurrent={setCurrentEmployeeSub}/>
-
-  const hirerSubSet = <SubNavigationSet 
-  categories={[
-    {name: 'test1', id: 1},
-    {name: 'test2', id: 2},
-  ]} currentCategory={currentHirerSub} 
-  setCurrent={setCurrentHirerSub}/>
-
+export default function BasePage() {
+  const knowledgeContext = useKnowledgeContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
+  const [page, pager] = useState<number>()
+  const router = useRouter()
 
   const navSet = (()=>{
-    let result = Object.values(ProfileType).map(page => {
-      switch(page) {
-        case ProfileType.Employee:
-          return {name: 'Соискателю', type: page, subSet: employeeSubSet, icon: <DocumentDoubleSvg/>}
-        case ProfileType.Hirer:
-          return {name: 'Работодателю', type: page, subSet: hirerSubSet, icon: <TableSvg/>}
+    return [...knowledgeContext.categories.values()].map(el=> {
+      return {
+        name: el.name,
+        type: el.id,
       }
     })
-    return result
   })()
 
+  useEffect(()=>{
+    knowledgeContext.setKnowledgeBase()
+  }, [])
+
+  useEffect(()=>{
+    if(knowledgeContext.articlesByCategories.size > 0) {
+      pager([...knowledgeContext.categories.keys()][0])
+    }
+  }, [knowledgeContext.articlesByCategories])
 
   return (
     <Content className={styles.root}>
       <ContentBody className={styles.body}>
-        <Title title={'База знаний'}/>
-        <SearchBar placeholder='Поиск по базе знаний'/>
+        <TitleForSection onBackClick={router.back} title={'База знаний'} className={styles.title}/>
+        <SearchBar fullWidth periods={periods} onChange={(params)=> knowledgeContext.setSearchParams(params)} placeholder='Поиск по базе знаний'/>
+        {page &&
+          <BaseItems activeCategory={page} />
+          ||
+          <Spinner size={24} />
+        }
       </ContentBody>
-      <ContentAside>
-        <Navigation rootClassName={styles.nav} setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
-      </ContentAside>
+      {!isTabletWidth &&
+        <ContentAside>
+          <Navigation rootClassName={styles.nav} setPage={(p)=> pager(p)} currentPage={page} navSet={navSet}/>
+        </ContentAside>
+      }
     </Content>
   
   )

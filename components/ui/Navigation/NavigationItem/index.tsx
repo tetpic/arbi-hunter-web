@@ -4,14 +4,14 @@ import { NavigationSet } from 'types/types'
 import classnames from 'classnames'
 import { useEffect, useState } from 'react'
 
-interface Props<T extends string> {
+interface Props<T extends string|number> {
   onClick: (type: T) => void
   item: NavigationSet<T>
   currentPage: T
   size: boolean
 }
 
-export default function NavigationItem<T extends string>(props: Props<T>) {
+export default function NavigationItem<T extends string|number>(props: Props<T>) {
   const el = props.item
   const [isOpenSubset, setOpenSubset] = useState<boolean>(el.type === props.currentPage)
 
@@ -36,7 +36,7 @@ export default function NavigationItem<T extends string>(props: Props<T>) {
     <p 
     onClick={onClickHandler} 
     className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>
-      <span className={styles.icon}>{el.icon}</span> {el.name}
+      {el.icon&&<span className={styles.icon}>{el.icon}</span>} {el.name}
       {props.size&& <ArrowRightSvg className={styles.arrow}/>}
     </p>
     <div className={classnames(styles.subSet, isOpenSubset&&styles.subSet_active)}>

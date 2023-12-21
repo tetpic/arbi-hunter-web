@@ -46,7 +46,7 @@ export default function ProposalModal(props: Props) {
   // const patternContext = usePatternContext()
   const appContext = useAppContext()
   // const {isTabletWidth} = useResize()
-  const modalArguments = appContext.modalArguments as IProposalModalProps
+  const modalArguments: IProposalModalProps = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments 
   const [page, setPage] = useState<ProposalModalPager>(modalArguments.page||ProposalModalPager.Invite)
   const [loading, setIsLoading] = useState<boolean>(false)
 

@@ -3,10 +3,10 @@ import { useState } from 'react'
 import ItemNavigation from '../ItemNavigation'
 import ChangePassword from './Password'
 import PersonalInformation from './PersonalInformation'
-import Rooms from './Rooms'
-import Buildings from './Buildings'
+// import Rooms from './Rooms'
+// import Buildings from './Buildings'
 import { useUserContext } from 'context/user_state'
-import { ProfileType } from 'data/interfaces/IRegistration'
+// import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 
@@ -32,11 +32,11 @@ export default function Personal() {
 
   return (
     <div className={styles.root}> 
-      {userContext.currentProfile.profileType === ProfileType.Hirer &&
+      {/* {userContext.currentProfile.profileType === ProfileType.Hirer &&
         <Buildings/>
         ||
         <Rooms/>
-      }
+      } */}
       <ItemNavigation activeItem={activeItem} onClick={(n)=>setActiveItem(n)} items={items} />
       <div className={styles.contentWrapper}>
       {

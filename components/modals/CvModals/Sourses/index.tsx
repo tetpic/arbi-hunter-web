@@ -8,14 +8,19 @@ import { ISource } from 'data/interfaces/Common'
 import CvRepository from 'data/repositories/CvRepository'
 import { useEffect, useState } from 'react'
 import Body from '../Body'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import { useAppContext } from 'context/state'
 
 interface Props {
   onClose: ()=> void
+  isBottomSheet?: boolean
 }
 
 export default function SoursesModal(props: Props) {
-    
   const cvContext = useCreateVcCvContext()
+  const appContext = useAppContext()
+  const args: {onClose: ()=> void } = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
 
   const [sources, setSources] = useState<ISource[]>(cvContext?.helpObjects?.sources||[])
   const [geos, setGeos] = useState<ISource[]>(cvContext?.helpObjects?.geos||[])
@@ -43,7 +48,7 @@ export default function SoursesModal(props: Props) {
   const saveSourcesHandler = () => {
     const cvHelpState = cvContext.helpObjects
     cvContext.setHelpObjects({...cvHelpState, activeSources: choosenSources, activeGeos: choosenGeos})
-    props.onClose()
+    args.onClose?args.onClose():props.onClose()
   }
 
   const onSourceClickHandler = (e: ISource) => {
@@ -89,7 +94,11 @@ export default function SoursesModal(props: Props) {
     onClose={props.onClose}
     onSave={saveSourcesHandler}
     >
+      {/* {props.isBottomSheet &&
+       <TitleForSection title={' '} onBackClick={args.onClose||props.onClose}/>  
+      } */}
       <p className={styles.title}>Источники трафика:</p>
+     
       <div className={styles.wrapper}>
         {sources?.length>0&&sources
         .map(el=> 
@@ -119,13 +128,21 @@ export default function SoursesModal(props: Props) {
     </>
   )
 
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
+
   return ( 
     <ModalLayout mobileFullScreen className={styles.rootLayout}>
       <ModalBody>
         {body}
       </ModalBody>
     </ModalLayout>
-    
-
   )
 }

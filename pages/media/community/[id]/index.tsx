@@ -1,5 +1,6 @@
 import CommunityPage from 'components/for_pages/media/MediaPage/Community'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CommunityWrapper } from 'context/community_state'
 import { MediaWrapper } from 'context/media_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
@@ -32,7 +33,9 @@ export default function Community(props: Props) {
   return (
     <ContentLayout hideMobileHeader title={props.community.name.toString()}> 
       <MediaWrapper>
-        <CommunityPage community={props.community} id={props.id}/>
+        <CommunityWrapper>
+          <CommunityPage community={props.community} id={props.id}/>
+        </CommunityWrapper>
       </MediaWrapper>
     </ContentLayout>
   )

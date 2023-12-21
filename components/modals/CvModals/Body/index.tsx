@@ -4,14 +4,14 @@ import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
-import { ChangeEvent, ReactElement } from 'react'
+import { ChangeEvent} from 'react'
 import classNames from 'classnames'
 
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   onClose: () => void
   onSave: () => void
-  children: ReactElement | ReactElement[]
+  children: JSX.Element | JSX.Element[]
   title?: string
   placeholder?: string
   withInput?: boolean|undefined

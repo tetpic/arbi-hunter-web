@@ -32,6 +32,7 @@ export enum ModalType {
   ApplicationSuccessModal = 'applicationSuccessModal',
   SearchFilterModal = 'searchFilterModal',
   AddPersonalBlockModal = 'addPersonalBlockModal',
+  RecruitingFiltersModal = 'recruitingFiltersModal',
 
 
 }
@@ -220,7 +221,8 @@ export enum CategoryType {
   News = 'news',
   Course = 'course',
   CourseNews = 'courseNews',
-  CourseCompilation = 'courseCompilation'
+  CourseCompilation = 'courseCompilation',
+  Knowledge = 'knowledge',
 }
 
 export enum AcceptApplicationType {

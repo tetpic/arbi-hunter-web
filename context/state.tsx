@@ -2,6 +2,7 @@ import {Dispatch, SetStateAction, createContext, useContext, useState} from 'rea
 import { ModalType, SnackbarType } from 'types/enums'
 import ReactModal from 'react-modal'
 import { SnackbarData } from 'types/types'
+import { IResize, useResize } from 'components/hooks/useResize'
 
 interface IState {
   isMobile: boolean
@@ -18,6 +19,7 @@ interface IState {
   snapPoints: number
 
   bottomSheet: ModalType | null
+  bottomSheetArguments: any
   showBottomSheet: <T,>(type: ModalType, args?: T, snapPoints?: number) => void
   hideBottomSheet: () => void
   hideHeader: boolean
@@ -26,40 +28,12 @@ interface IState {
   isOverlayShown?: boolean
   showOverlay: () => void
   hideOverlay: () => void
+  size: IResize
 }
 
 
-const ModalsBottomSheet: ModalType[] = [
+const ModalsBottomSheet: ModalType[] = []
 
-]
-// const loginState$ = new Subject<boolean>()
-// const loginUserState$ = new Subject<IUser | null>()
-// const cartState$ = new Subject<ICart | null>()
-// const currentAddressState$ = new Subject<IUserAddress | null>()
-
-// const defaultValue: IState = {
-//   isMobile:  false,
-//   setIsMobile: () => null,
-
-//   snackbar: null,
-//   showSnackbar: (text, type) => null,
-
-//   modal: null,
-//   modalArguments: null,
-//   hideModal: () => null,
-//   showModal: (type) => null,
-//   modalNonSkippable: false,
-
-//   hideHeader: false,
-
-//   bottomSheet: null,
-//   showBottomSheet: (type) => null,
-//   hideBottomSheet: () => null,
-
-//   isOverlayShown: false,
-//   showOverlay: () => null,
-//   hideOverlay: () => null,
-// }
 
 const AppContext = createContext<Partial<IState>>({})
 
@@ -75,11 +49,13 @@ export function AppWrapper(props: Props) {
   const [snackbar, setSnackbar] = useState<SnackbarData | null>(null)
   const [modal, setModal] = useState<ModalType | null>(null)
   const [modalArguments, setModalArguments] = useState<any>(null)
+  const [bottomSheetArguments, setBottomSheeetArguments] = useState<any>(null)
   const [bottomSheet, setBottomSheet] = useState<ModalType | null>(null)
   const [isOverlayShown, setIsOverlayShown] = useState<boolean>(false)
   const [modalNonSkippable, setModalNonSkippable] = useState<boolean>(false)
   const [hideHeader, setHideHeader] = useState<boolean>(false)
   const [snapPoints, setSnapPoints] = useState<number>(null)
+  const size = useResize()
 
 
 
@@ -116,7 +92,7 @@ export function AppWrapper(props: Props) {
   const showBottomSheet = <T extends unknown>(type: ModalType, props?: T, snapPoints?: number) => {
     setSnapPoints(snapPoints||null)
     ReactModal.setAppElement('body')
-    setModalArguments(props)
+    setBottomSheeetArguments(props)
     setBottomSheet(type)
   }
 
@@ -140,6 +116,7 @@ export function AppWrapper(props: Props) {
     modalNonSkippable,
 
     bottomSheet,
+    bottomSheetArguments,
     showBottomSheet,
     hideBottomSheet,
     snapPoints,
@@ -154,6 +131,7 @@ export function AppWrapper(props: Props) {
     hideOverlay: () => {
       setIsOverlayShown(false)
     },
+    size
   }
 
 

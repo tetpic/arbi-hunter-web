@@ -16,6 +16,7 @@ import AllCourses from './AllCourses'
 import CoursesByCategory from './CoursesByCategory'
 import Spinner from 'components/ui/Spinner'
 import { useUserContext } from 'context/user_state'
+import { MediaWrapper } from 'context/media_state'
 
 interface Props {
   category?: number
@@ -60,7 +61,7 @@ export default function CoursesCompilations(props: Props) {
 
   const body = (<>
   {
-    page === CompilationsNav.All&&<AllCourses key={'all'}/>
+    page === CompilationsNav.All&&<MediaWrapper><AllCourses key={'all'}/></MediaWrapper>
     ||
     page === CompilationsNav.Categories && (currentCategory &&<CoursesByCategory categoryId={currentCategory.id}/>||<Spinner size={34}/>)
     ||
