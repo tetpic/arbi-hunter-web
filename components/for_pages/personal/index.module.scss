@@ -22,14 +22,19 @@
   grid-area: bd;
   @include mq($TabletWidth, max) {
     overflow: hidden;
+    row-gap: 8px;
   }
 
   .bodyItem {
-    padding: 32px !important;
+    padding: 32px;
     border-radius: 16px;
     @include mq($TabletWidth, max) {
       background-color: unset;
-      
+      padding: 0px;
+      &_edit {
+        padding: 16px;
+        background-color: $black;        
+      }
     }
   }
 }

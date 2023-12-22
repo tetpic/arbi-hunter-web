@@ -13,6 +13,8 @@ export default class PersonalRepository {
     return res
   }
 
+
+
   static async updatePersonalPage(id: number, data: Partial<IPersonalPageBlock[]>): Promise<IPersonalPage> {
     const res = await request({
       method: 'patch',
@@ -27,7 +29,7 @@ export default class PersonalRepository {
     return res
   }
 
-  static async getPersonalPageById(id: number): Promise<any|null> {
+  static async getPersonalPageById(id: number): Promise<IPersonalPage> {
     const res = await request({
       method: 'get',
       url: `/api/personal-page?s={"profileId": ${id}}`,
@@ -35,7 +37,7 @@ export default class PersonalRepository {
     if(res.err) {
       return null
     }
-    return res
+    return res[0]
   }
 
   static async createPersonalPage(data: Partial<IPersonalPageBlock[]>): Promise<IPersonalPage> {

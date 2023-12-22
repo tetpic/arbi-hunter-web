@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import Image from 'next/image'
-import { useUserContext } from 'context/user_state'
 import { FILES } from 'types/constants'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useAppContext } from 'context/state'
@@ -10,14 +9,15 @@ import DownloadCloudSvg from 'components/svg/DownloadCloudSvg'
 import FileInput from 'components/fields/FileInput'
 import { PreviewImage } from 'data/interfaces/Common'
 import { useState } from 'react'
+import { usePersonalContext } from 'context/personal_state'
 
 interface Props {
   isEditing?: boolean
 }
 
 export default function PersonalHeader(props: Props) {
-  const userContext = useUserContext()
   const appContext = useAppContext()
+  const personalContext = usePersonalContext()
   const {isTabletWidth} = appContext.size
   const [editedImage, setEditedImage] = useState<PreviewImage>()
 
@@ -29,29 +29,42 @@ export default function PersonalHeader(props: Props) {
       </label>
     }
     else {
-      return <>
-      <DownloadCloudSvg/>
+      return <label>
+      <DownloadCloudSvg color='white'/>
       <div>
         <p>Изменить баннер</p>      
-        <p>Фото, видео, gif</p>      
+        <span>Фото, видео, gif</span>      
       </div>
-      </>
+      </label>
     }
   })()
 
 
   return (<div className={styles.root}> 
     {editedImage &&
-    <Image src={editedImage.data?FILES + editedImage.data.source: URL.createObjectURL(editedImage.image)} className={styles.background} alt={'moscow'} width={1148} height={300} />
+    <Image 
+    src={editedImage.data?FILES + editedImage.data.source: URL.createObjectURL(editedImage.image)} 
+    className={styles.background} 
+    alt={'moscow'} 
+    width={1148} 
+    height={300} />
     ||
-    <Image src={userContext.currentProfile?.profileType===ProfileType.Hirer?'/images/cities/moscow.png':'/images/rooms/coworking.png'} className={styles.background} alt={'moscow'} width={1148} height={300} />
+    <Image 
+    src={personalContext.currentProfile?.profileType===ProfileType.Hirer?'/images/cities/companyDefaultBack.png':'/images/rooms/coworking.png'} 
+    className={styles.background} alt={'moscow'} 
+    width={1148} 
+    height={300} />
     }
-    {userContext.currentProfile?.image &&
-      <Image className={styles.userPic} src={userContext.currentProfile?.image&& FILES+ userContext.currentProfile?.image.source} alt={'user Picture'} width={300} height={300}/>
+    {personalContext.currentProfile?.image &&
+      <Image 
+      className={styles.userPic} 
+      src={personalContext.currentProfile?.image&& FILES+ personalContext.currentProfile?.image.source} 
+      alt={'user Picture'} 
+      width={300} 
+      height={300}/>
     }
     {props.isEditing &&
     <div className={styles.editButton}>{editingButton}</div>
     }
-
   </div>)
 }

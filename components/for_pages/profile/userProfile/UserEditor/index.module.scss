@@ -5,16 +5,29 @@
   grid-template-areas: 's m' 's v';
   grid-template-rows: auto 1fr;
   margin-top: 32px;
+  @include mq($SmDesktopWidth, max) {
+    grid-template-areas: 'm' 's' 'v';
+  }
 }
 
 .model {
   grid-area: m;
-  width: 504px;
-  height: 504px;
+  width: Min(35vw, 504px);
+  height: Min(35vw, 504px);
   background-color: $black;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
+  @include mq($SmDesktopWidth, max) {
+    width: Clamp(300px, 54vw, 504px);
+    height: Clamp(300px, 54vw, 504px);
+  }
+  @include mq($TabletWidth, max) {
+    width: calc(100vw - 32px);
+    height: calc(100vw - 32px);
+    border-radius: 50%;
+  }
+  
 
   &_disabled {
     pointer-events: none;

@@ -7,11 +7,13 @@ import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
 import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
+import { useAppContext } from 'context/state'
+import ItemNavigation from '../../ItemNavigation'
 
 interface Props {
 }
 
-export enum Emotions {
+export enum ModelActions {
   Idle= 'Idle',
   Action_test = 'Action_test',
   Joy ='Joy',
@@ -24,16 +26,18 @@ export enum Emotions {
 
 export default function UserEditor(props: Props) {
   const characterContext = useCharacterContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
-  const [action, setAction] = useState<Emotions>(Emotions.LongAnimation)
+  const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
 
-  const actionsAllowedMap: {type: Emotions, duration: number}[] = [
-    {type: Emotions.Joy, duration: 1600},
-    {type: Emotions.Sadness, duration: 3000},
-    {type: Emotions.Shrug, duration: 1600},
-    {type: Emotions.Action_test, duration: 4800},
+  const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
+    {type: ModelActions.Joy, duration: 1600},
+    {type: ModelActions.Sadness, duration: 3000},
+    {type: ModelActions.Shrug, duration: 1600},
+    {type: ModelActions.Action_test, duration: 4800},
   ]
-  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: Emotions, duration: number}>(actionsAllowedMap[0])
+  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
   const [disableClick, setDisableClick] = useState<boolean>(false)
 
 
@@ -42,10 +46,16 @@ export default function UserEditor(props: Props) {
     setDisableClick(true)
     setAction(temporaryAnimation.type)
     setTimeout(()=> {
-      setAction(Emotions.LongAnimation)
+      setAction(ModelActions.LongAnimation)
       setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
       setDisableClick(false)      
     }, temporaryAnimation.duration)
+  }
+
+  const onNavClick = (n: number) => {
+    const key = [...categories.keys()].find(el=> el.id === n)
+    setActiveSet([key, categories.get(key)])
+
   }
   
   useEffect(()=>{
@@ -54,12 +64,8 @@ export default function UserEditor(props: Props) {
 
 
   return (<div className={styles.root}>
+      {!isTabletWidth &&
       <div className={styles.settings}>
-      {/* <div className={styles.actions}>
-        {Object.values(Emotions).map((el) => {
-          return  (<p key={el} onClick={()=>setAction(el)} className={styles.action}>{el}</p>)
-        })}
-      </div> */}
         {[...categories.entries()].map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
@@ -69,6 +75,11 @@ export default function UserEditor(props: Props) {
           )
         })}
       </div>
+      ||
+      activeSet&&activeSet.length > 0 &&
+      <ItemNavigation activeItem={activeSet[0]?.id} items={[...categories.keys()].map(el=> {return {name: el.name, type: el.id}})} onClick={(n)=> onNavClick(n)}/>
+      }
+
       <div className={classnames(styles.model, disableClick&&styles.model_disabled)} onClick={()=> showNextAnimation()} > 
         {dataLoaded && variant &&
           <ThreeModelVariant data={variant} r={4} actions={action}/>

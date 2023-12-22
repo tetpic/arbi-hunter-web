@@ -61,7 +61,7 @@ export default function PersonalBody(props: Props) {
     {blocks.size > 0 &&
       [...blocks.entries()].map(([order, {block, assets}], i) => {
         return <SortableItem key={i}>
-          <div className={styles.item}>
+          <div className={classNames(styles.item, props.isEditing&&styles.item_edit)}>
             <div className={classNames(styles.buttonsWrapper, props.isEditing && styles.buttonsWrapper_active)}>
               <SortableKnob>
                 <div className={styles.button}><PointerExpandSvg/></div>

@@ -22,7 +22,7 @@ import Title from 'components/ui/TitleForSection'
 import VacancyItem from 'components/ui/VacancyItem'
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
-import Button from 'components/ui/Button'
+// import Button from 'components/ui/Button'
 import ContentItem from 'components/ui/Content/ContentItem'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
@@ -57,7 +57,7 @@ export default function VacancyPage(props: Props) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
       VacancyRepository.searchVacancies({s: JSON.stringify({profileId: currentVacancy.profile.id})})
       .then(res=> {
-        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res, 3)
+        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res, 2)
         setOtherCompanyVacancies(randomItems)
       })
     }
@@ -129,7 +129,7 @@ export default function VacancyPage(props: Props) {
             <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
             <ContentItem>
               {foundVacancies.length > 0 &&
-                foundVacancies.map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+                foundVacancies.slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
               }
             </ContentItem>        
           </>
@@ -140,18 +140,18 @@ export default function VacancyPage(props: Props) {
         <ContentItem className={styles.aside}>
           <UserPic size={100} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
           <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
-          <Button className={styles.button}>Открыть профиль</Button>
+          <Link href={'/personal/' + currentVacancy.profileId} className={styles.button}>Открыть профиль</Link>
         </ContentItem>
 
         {userContext.currentProfile.profileType === ProfileType.Employee &&
           <>
             <p className={styles.otherVacancies}>Другие вакансии компании</p>
-            <ContentItem className={styles.asideVacancies}>
               {otherCompanyVacncies.length > 0 &&
                 otherCompanyVacncies.map(vacancy=> 
-                  <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>)
-                }
-            </ContentItem>
+                <ContentItem className={styles.asideVacancies}>
+                      <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>
+                </ContentItem>
+                )}
             <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
           </>
         }

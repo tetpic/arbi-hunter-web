@@ -59,6 +59,17 @@ export default class UserRepository {
     return res
   }
 
+  static async getUserProfileById(id: number): Promise<IUserProfile|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/profile/${id}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async removeCurrentUserByType(profile: ProfileType): Promise<any|null> {
     const res = await request({
       method: 'delete',

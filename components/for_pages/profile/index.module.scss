@@ -4,7 +4,6 @@
   display: flex;
   justify-content: space-between;
   padding-top: 48px;
-  // align-items: flex-start;
   position: relative;
   @include container;
   @include mq($TabletWidth, max) {
@@ -13,8 +12,17 @@
 }
 
 .saveCharButton {
-  @include buttonYellow;
+  @include mq($TabletWidth, min) {
+    @include buttonYellow;
+  }
+  @include mq($TabletWidth, max) {
+    font-size: $mediumText;
+    font-weight: $medium;
+    color: $blue;
+    width: unset;
+  }
   width: 100%;
+    
 }
 
 .nav {

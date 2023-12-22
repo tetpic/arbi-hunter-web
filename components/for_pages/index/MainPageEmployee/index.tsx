@@ -15,17 +15,46 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { IStats } from 'data/interfaces/IUser'
 import ChatRepository from 'data/repositories/ChatRepository'
 import UserRepository from 'data/repositories/UserRepository'
-import { Emotions } from 'components/for_pages/profile/userProfile/UserEditor'
+import { useAppContext } from 'context/state'
+import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
+import { FILES } from 'types/constants'
+
+
 
 
 export default function MainPageEmployee() {
   const characterContext = useCharacterContext()
+  const appContext = useAppContext()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const [load, setLoad] = useState<boolean>(true)
   const userContext = useUserContext()
   const [messagesCount, setMessagesCount] = useState<string>(null)
   const [stats, setStats] = useState<IStats>(null)
+  const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
+  const {isSmDesktopWidth} = appContext.size
+
+  const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
+    {type: ModelActions.Joy, duration: 1600},
+    {type: ModelActions.Sadness, duration: 3000},
+    {type: ModelActions.Shrug, duration: 1600},
+    {type: ModelActions.Action_test, duration: 4800},
+  ]
+  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
+  const [disableClick, setDisableClick] = useState<boolean>(false)
+
+
+
+  const showNextAnimation = () => {
+    setDisableClick(true)
+    setAction(temporaryAnimation.type)
+    setTimeout(()=> {
+      setAction(ModelActions.LongAnimation)
+      setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
+      setDisableClick(false)      
+    }, temporaryAnimation.duration)
+  }
+  
 
   useEffect(()=>{
     characterContext.init()
@@ -56,7 +85,11 @@ export default function MainPageEmployee() {
         <p className={styles.title}>Баланс счета</p>
         <div className={styles.card}>
           <p className={styles.count}>{Formatter.formatNumber(userContext?.user?.balance)}</p>
-          <Image className={styles.dollar} src={'/images/dollar.png'} alt={'dollar'} width={66} height={66}/>
+          {isSmDesktopWidth && userContext?.currentProfile?.image &&
+            <Image className={styles.userImage} src={FILES + userContext.currentProfile.image.source} alt={''} width={300} height={300}/>
+            ||
+            <Image className={styles.dollar} src={'/images/dollar.png'} alt={'dollar'} width={66} height={66}/>
+          }
           <Link href={'/profile?page=shop'} className={styles.whiteButton}>Пополнить баланс</Link>
         </div>
       </div>
@@ -133,8 +166,8 @@ export default function MainPageEmployee() {
       {!characterContext.modelLoaded && 
         <Spinner className={styles.modelSpinner} size={52}/>
       } 
-      <div className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
-      <ThreeModelVariant disableControls data={characterContext.variant } actions={Emotions.Idle}  r={4}/>
+      <div onClick={()=> showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
+      <ThreeModelVariant disableControls data={characterContext.variant } actions={action}  r={4}/>
       </div>
     </div>
   </div>)

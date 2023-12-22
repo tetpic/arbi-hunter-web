@@ -16,6 +16,9 @@
   position: absolute;
   bottom: 0;
   right: 10%;
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
 }
 
 .editButton {
@@ -28,9 +31,13 @@
   color: $white;
   font-weight: $semibold;
   background-color: rgba(128, 128, 128, 0.453);
+  backdrop-filter: blur(2px) saturate(50%);
   @include mq($TabletWidth, max) {
+    bottom: unset;
+    padding-block: 16px;
     top: 50%;
     right: 50%;
+    transform: translate(50%, -50%);
     border: 2px $white dotted;
   }
 
@@ -42,8 +49,8 @@
 }
 
 .background {
-  object-fit: cover;
-  max-width: 100%;
+  text-align: end;
   height: Clamp(250px, 70vw, 300px);
+  text-align: end;
 }
 

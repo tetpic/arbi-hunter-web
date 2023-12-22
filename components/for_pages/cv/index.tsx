@@ -159,7 +159,7 @@ export default function CvPage(props: Props) {
               {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
             </p>
           }
-        <Link href={'/'} className={styles.openProfile}>Открыть профиль</Link>
+        <Link href={'/personal/'+ currentCv.profileId} className={styles.openProfile}>Открыть профиль</Link>
         </ContentAsideItem>
       </ContentAside>
     </Content>

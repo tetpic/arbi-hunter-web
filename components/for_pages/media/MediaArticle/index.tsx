@@ -7,7 +7,7 @@ import { useMediaContext } from 'context/media_state'
 import { IOptionList } from 'components/ui/OptionsList'
 import BookmarkFilledSvg from 'components/svg/BookmarkFilledSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
-import { SnackbarType } from 'types/enums'
+import { CategoryType, SnackbarType } from 'types/enums'
 import LinkSvg from 'components/svg/LinkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
@@ -27,7 +27,7 @@ export default function MediaArticle(props: Props) {
   }, [])
 
   const getOptions = (article: IArticle):IOptionList[] => {
-    return [
+    const arr = [
       {
         title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
@@ -41,8 +41,9 @@ export default function MediaArticle(props: Props) {
         appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
       }},
       {title: 'Поделиться',icon: <ShareSvg/>},
-      {title: 'Скрыть',icon: <CloseEyeSvg/>}
+      (props.article.articleCategory.categoryType !== CategoryType.Knowledge&&{title: 'Скрыть',icon: <CloseEyeSvg/>})
     ]
+    return arr.filter(Boolean)
   }
 
   return (<>
@@ -55,6 +56,7 @@ export default function MediaArticle(props: Props) {
       isOpen 
       options={getOptions(mediaContext.currentNews.get(props.article.id))}
       titleImg={props.article.community?.image?.source} 
+      disableLikes={props.article.articleCategory.categoryType === CategoryType.Knowledge}
       />
     }  
   </>)

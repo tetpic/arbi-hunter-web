@@ -4,7 +4,7 @@ import { useEffect, useRef} from 'react'
 import { ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
 import { useCharacterContext } from 'context/character_state'
-import { Emotions } from '../profile/userProfile/UserEditor'
+import { ModelActions } from '../profile/userProfile/UserEditor'
 
 
 
@@ -36,7 +36,7 @@ const Camera = () => {
   />
 }
 
-export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: Emotions }) {
+export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: ModelActions }) {
   const characterContext = useCharacterContext()
 
   const canvasRef = useRef<HTMLCanvasElement>()
@@ -76,7 +76,7 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
         </Bounds>
         <Environment files="/models/skidpan.hdr"/>
         {!props.disableControls &&
-          <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={0} minPolarAngle={1.6} maxPolarAngle={1.6}/>
+          <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.6} maxPolarAngle={1.6}/>
         }
       </Canvas>
     }

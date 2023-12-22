@@ -1,5 +1,5 @@
 import {useAnimations, useGLTF} from '@react-three/drei'
-import { Emotions } from 'components/for_pages/profile/userProfile/UserEditor'
+import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
 import { useCharacterContext } from 'context/character_state'
 import { useEffect, useRef } from 'react'
 
@@ -18,13 +18,13 @@ export interface IThreeModelProps {
     size?: number
     color?: number,
     r?: number
-    actions: Emotions
+    actions: ModelActions
 }
 
 export function ThreeModel(props: IThreeModelProps) {
   const mesh = useRef()
   const characterContext = useCharacterContext()
-  const currentAction = useRef<Emotions>(props.actions)
+  const currentAction = useRef<ModelActions>(props.actions)
   const  {nodes, materials, animations} = useGLTF(`/models/model_${props.model}.glb`, true, true, (loader) => {
     loader.setCrossOrigin('anonymous')
   }) as any

@@ -5,14 +5,15 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import CompanyProfile from './companyProfile'
 import Navigation from '../../ui/Navigation'
 import UserProfile from './userProfile'
-import { useResize } from 'components/hooks/useResize'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import Button from 'components/ui/Button'
 import { useCharacterContext } from 'context/character_state'
+import { useAppContext } from 'context/state'
 
 
 export default function Profile() {
-  const {isTabletWidth} = useResize()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const profilePageContext = useProfilePageContext()
   const characterContext = useCharacterContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
@@ -23,7 +24,7 @@ export default function Profile() {
   disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
   onClick={()=>characterContext.saveCurrentSet()}  
   className={styles.saveCharButton}>
-    Сохранить
+    {isTabletWidth?'Готово':'Сохранить'}
   </Button>
   </>)
 
@@ -33,15 +34,15 @@ export default function Profile() {
     <div className={classNames(styles.root)} id={'scrollable'}>
       {
         profileType === ProfileType.Employee && !showNav &&
-        <UserProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
+        <UserProfile titleButton={page===ProfilePages.Edit && profileType === ProfileType.Employee && isTabletWidth&& saveCharButton}  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
         ||
         profileType === ProfileType.Hirer && !showNav &&
-        <CompanyProfile currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
+        <CompanyProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
       {((showNav && isTabletWidth) || !isTabletWidth) &&
         <Navigation 
         wrapperClassName={styles.nav} 
-        bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && saveCharButton} 
+        bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && !isTabletWidth&& saveCharButton} 
         currentPage={page} 
         navSet={navSet()} 
         setPage={pager} 

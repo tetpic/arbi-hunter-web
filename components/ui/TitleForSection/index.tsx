@@ -14,6 +14,7 @@ interface Props {
   onBackClick?: ()=>void
   showButton?: boolean 
   link?: string
+  rightButton?: JSX.Element
 }
 
 /**
@@ -36,7 +37,7 @@ export default function Title(props: Props) {
 
       {props.title} {props.emoji}
       {((isTabletWidth&&props.onBackClick)||props.showButton)&&
-        <div className={styles.filler}></div>
+        props.rightButton||<div className={styles.filler}></div>
       }
       {isTabletWidth && props.link &&
         <Link className={styles.link} href={props.link}>Все <ArrowRightSvg/></Link>

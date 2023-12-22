@@ -39,7 +39,7 @@ export default function UserPic(props: Props) {
       {
       props.icon !== null && props.icon 
       ||
-      <Image src={props.image?props.image: '/icons/defaultUser.png'} alt={'sefault user pic'} width={props.size||40} height={props.size||40}/>
+      <Image src={props.image?props.image: '/icons/defaultUser.svg'} alt={'sefault user pic'} width={props.size||40} height={props.size||40}/>
       }
     </div>
   )
