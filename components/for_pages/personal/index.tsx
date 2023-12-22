@@ -30,10 +30,10 @@ export default function PersonalPage(props: Props) {
       personalContext.personalPage === null && <Spinner size={24} />
       ||
       <>
-      <PersonalHeader />
+      <PersonalHeader isEditing={isEditing}/>
       <Content className={styles.content}>
         <ContentBody className={styles.body}>
-          {isEditing &&
+          {isEditing && 
           <ContentItem className={styles.bodyItem}>
             <EditToolbar/>
           </ContentItem>
@@ -41,9 +41,9 @@ export default function PersonalPage(props: Props) {
           <ContentItem  className={styles.bodyItem}>
             <PersonalBody isEditing={isEditing}/>
           </ContentItem>
-          
         </ContentBody>
-        <ContentAside>
+
+        <ContentAside className={styles.aside}>
           <PersonalCard save={() => personalContext.updatePersonalPage()} isEditing={isEditing} switchMode={() => setIsEditing(!isEditing)}/>
         </ContentAside>
       </Content>

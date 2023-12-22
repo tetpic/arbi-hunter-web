@@ -22,7 +22,7 @@ export default function FileInput(props: Props) {
     for(const file of files) {
       const id = uuidv4()
       const [signal, controller] = getNewSignal(id)
-      props.getController(controller)
+      props.getController&&props.getController(controller)
       props.setImages({image: file, loaded: false, rawId: id, id})
       try{        
         FileRepository.uploadFile(file, {signal})

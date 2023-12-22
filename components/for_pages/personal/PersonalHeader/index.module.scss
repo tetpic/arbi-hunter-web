@@ -5,11 +5,45 @@
   overflow: hidden;
   margin-top: 80px;
   position: relative;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+  }
 }
 
 .userPic {
   position: absolute;
   bottom: 0;
   right: 10%;
+}
+
+.editButton {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: $largeText;
+  color: $white;
+  font-weight: $semibold;
+  background-color: rgba(128, 128, 128, 0.453);
+  @include mq($TabletWidth, max) {
+    top: 50%;
+    right: 50%;
+    border: 2px $white dotted;
+  }
+
+  label {
+    display: flex;
+    align-items: center;  
+    column-gap: 8px;
+  }
+}
+
+.background {
+  object-fit: cover;
+  max-width: 100%;
+  height: Clamp(250px, 70vw, 300px);
 }
 

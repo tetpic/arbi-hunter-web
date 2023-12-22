@@ -47,24 +47,26 @@ export default function FilesField(props: Props) {
 
   return ( <div className={styles.imagesField}>
     <label>
-     <div className={styles.imageButton}><span>{props.buttonName||'Добавить изображение'}</span></div>
-     <FileInput getController={(c) => setController(c)}  setImages={(image) => setImages(state=>new Map([...state, [image.rawId, image]]))}/>
-   </label>
-   <div className={styles.imagesWrapper}>
-     {[...images.values()].map((el, i) => {
-       return (
-         <div className={classNames(styles.image, el.image.type.includes('video')&&styles.video)}>
-            {!el.loaded && <Spinner className={styles.spinner} size={24}/>}
-            <Button type='button' className={styles.removeButton} onClick={()=>removeImage(el.rawId, el.id.toString())}><CrossSvg/></Button>
-            {el.image.type.includes('image') &&
-              <img key={i} src={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} alt={''}/>
-            }
-            {el.image.type.includes('video') &&
-              <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} controls/>
-            }
-         </div>
-       )
-     })}
-   </div>
+      <div className={styles.imageButton}><span>{props.buttonName||'Добавить изображение'}</span></div>
+      <FileInput getController={(c) => setController(c)}  setImages={(image) => setImages(state=>new Map([...state, [image.rawId, image]]))}/>
+    </label>
+    {images.size > 0 &&
+      <div className={styles.imagesWrapper}>
+        {[...images.values()].map((el, i) => {
+          return (
+            <div className={classNames(styles.image, (el.image?.type.includes('video')||el.data?.type === 'VIDEO')&&styles.video)}>
+               {!el.loaded && <Spinner className={styles.spinner} size={24}/>}
+               <Button type='button' className={styles.removeButton} onClick={()=>removeImage(el.rawId, el.id.toString())}><CrossSvg/></Button>
+               {(el.image?.type.includes('image')||el.data?.type === 'IMAGE') &&
+                 <img key={i} src={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} alt={''}/>
+               }
+               {(el.image?.type.includes('video')||el.data?.type === 'VIDEO') &&
+                 <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} controls/>
+               }
+            </div>
+          )
+         })}
+      </div>
+    }
  </div>)
 }

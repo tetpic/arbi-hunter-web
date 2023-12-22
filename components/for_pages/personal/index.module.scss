@@ -1,17 +1,45 @@
 @import 'styles/index';
 
+
+
 .content {
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    display: grid !important;
+    grid-template-areas: 'as' 'bd';
+    row-gap: 16px;
+    margin-top: unset;
+  }
 }
 
-.bodyItem {
-  padding: 32px !important;
-  border-radius: 16px;
-}
+
 
 .body {
   display: flex;
   flex-direction: column;
   justify-content: stretch;
   row-gap: 24px;
+  grid-area: bd;
+  @include mq($TabletWidth, max) {
+    overflow: hidden;
+  }
+
+  .bodyItem {
+    padding: 32px !important;
+    border-radius: 16px;
+    @include mq($TabletWidth, max) {
+      background-color: unset;
+      
+    }
+  }
+}
+
+.aside {
+  grid-area: as;
+  @include mq($TabletWidth, max) {
+    width: 100% !important;
+    max-width: unset !important;
+    position: relative;
+    z-index: 3;
+  }
 }

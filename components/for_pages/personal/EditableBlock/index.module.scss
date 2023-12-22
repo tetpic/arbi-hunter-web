@@ -28,7 +28,7 @@
 }
 
 .swiper {
-  height: 450px;
+  height: Clamp(250px, 20vw, 450px);
   width: 100%;
 }
 
@@ -50,9 +50,11 @@
 .video {
   border-radius: 16px;
   overflow: hidden;
+  max-width: 100%;
 
   video {
     display: block;
+    max-width: 100%;
   }
 }
 

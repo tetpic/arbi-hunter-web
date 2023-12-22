@@ -8,7 +8,7 @@ interface Props {
 export default function MyCompanyPage() {
 
   return (
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <PersonalWrapper>
         <PersonalPage/>
       </PersonalWrapper>

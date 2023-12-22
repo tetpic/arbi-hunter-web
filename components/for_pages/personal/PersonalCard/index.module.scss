@@ -9,6 +9,9 @@
   background-color: $black;
   padding: 24px 16px;
   border-radius: 16px;
+  @include mq($TabletWidth, max) {
+    background-color: unset;
+  }
 }
 
 .name {
@@ -38,4 +41,16 @@
 .button {
   @include buttonYellow;
   width: 100%;
+}
+
+.userPic {
+  @include mq($TabletWidth, max) {    
+    margin-top: Clamp(-150px, -15vw, -70px);
+    width: Clamp(108px, 25vw, 192px);
+    height: Clamp(108px, 25vw, 192px);
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
 }

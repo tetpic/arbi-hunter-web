@@ -99,7 +99,7 @@ export default function AddPersonalBlockModal(props: Props) {
     </div>
   )
 
-  return (<ModalLayout>
+  return (<ModalLayout className={styles.modalLayout} >
     <ModalBody>
       {body}
     </ModalBody>
