@@ -9,6 +9,8 @@ import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import Button from 'components/ui/Button'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
+import TitleForSection from 'components/ui/TitleForSection'
+import { useRouter } from 'next/navigation'
 
 
 export default function Profile() {
@@ -17,6 +19,7 @@ export default function Profile() {
   const profilePageContext = useProfilePageContext()
   const characterContext = useCharacterContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
+  const router = useRouter()
 
   const saveCharButton = (<>
   <Button 
@@ -32,6 +35,9 @@ export default function Profile() {
 
   return ( 
     <div className={classNames(styles.root)} id={'scrollable'}>
+      {showNav && isTabletWidth &&
+        <TitleForSection title={'Настройки профиля'} onBackClick={()=>router.back()}/>
+      }
       {
         profileType === ProfileType.Employee && !showNav &&
         <UserProfile titleButton={page===ProfilePages.Edit && profileType === ProfileType.Employee && isTabletWidth&& saveCharButton}  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 

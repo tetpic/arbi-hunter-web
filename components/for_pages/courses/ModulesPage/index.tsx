@@ -1,3 +1,4 @@
+import styles from './index.module.scss'
 
 import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
@@ -9,7 +10,6 @@ import { useEffect, useRef, useState } from 'react'
 import { CoursesStepType, ModalType } from 'types/enums'
 import ModulesNavigation from './ModulesNavigation'
 import Questions from './Questions'
-import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
 import { useAppContext } from 'context/state'

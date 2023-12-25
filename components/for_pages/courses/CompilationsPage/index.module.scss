@@ -24,7 +24,7 @@
   margin-right: 4px;
 
   @include mq($TabletWidth, max) {
-    margin-top: unset;
+    margin-top: 16px;
     margin-right: unset;
     padding-right: unset;
   }

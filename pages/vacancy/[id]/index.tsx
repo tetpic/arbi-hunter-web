@@ -19,7 +19,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function Vacancy(props: Props) {
 
   return (
-  <ContentLayout title='Вакансия'>
+  <ContentLayout title='Вакансия' hideMobileHeader>
     <VacancyPage id={Number(props.id)}/>
   </ContentLayout>
   )

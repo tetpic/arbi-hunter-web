@@ -27,6 +27,12 @@ import CvVcAbout from 'components/ui/CvVcAbout'
 import ContentAsideItem from 'components/ui/Content/ContentItem'
 import { useAppContext } from 'context/state'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
+import Button from 'components/ui/Button'
+import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import CloseEyeSvg from 'components/svg/CloseEyeSvg'
+import ShareSvg from 'components/svg/ShareSvg'
+import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
+import { useRouter } from 'next/navigation'
 
 
 interface Props {
@@ -36,7 +42,10 @@ interface Props {
 export default function CvPage(props: Props) {
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const router = useRouter()
+  const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
+
 
   useEffect(()=>{
     cvContext.getCv(Number(props.id))
@@ -44,14 +53,57 @@ export default function CvPage(props: Props) {
   }, [])
 
   const makeResponse = () => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv,
+        page: ProposalModalPager.OtherVacancy
+      })
+      return
+    }
     appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv, 
       page: ProposalModalPager.OtherVacancy
     })
   }
 
+  const userCard = (<>
+    <UserPic size={100} image={currentCv?.profile?.image?.source&& FILES+currentCv.profile.image.source}/>
+    <p className={styles.userName}>{currentCv?.profile?.firstName} {currentCv?.profile?.lastName}</p>
+    {(currentCv?.age || currentCv?.profile?.city?.locName) &&
+    <p className={styles.otherData}>
+      <span>{currentCv?.age} {Formatter.pluralize(currentCv?.age, 'год', 'года', 'лет', )}</span> 
+      {currentCv?.profile?.city?.locName &&
+      <>
+      <DotSvg/> 
+      <span>г. {currentCv?.profile?.city?.locName}</span> 
+      </>
+      }
+    </p>
+    }
+    {currentCv?.vacancyLookType &&
+      <p className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
+        <DotSvg color={currentCv.vacancyLookType === VacancyLookType.NotLooking?colors.red: colors.green}/>
+        {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
+      </p>
+    }
+    <Link href={'/personal/'+ currentCv?.profileId} className={styles.openProfile}>Открыть профиль</Link>
+  </>)
+
   if(!currentCv) return <Spinner size={24}/>
 
   return (
+    <>
+    {isTabletWidth &&
+      <div className={styles.buttonsWrapper}>
+        <Button onClick={() => router.back()} className={styles.button}><ArrowLeftSvg/></Button>
+        <Button className={styles.button}><CloseEyeSvg/></Button>
+        <Button className={styles.button}><ShareSvg/></Button>
+        <Button className={styles.button}><BookmarkEmptySvg/></Button>
+      </div>
+    }
+    {isTabletWidth &&
+      <div className={styles.userCard} >
+        {userCard}
+      </div>
+    }
     <Content className={styles.root}>
       <ContentBody className={styles.body}>
           <CvVcPageTop 
@@ -138,30 +190,17 @@ export default function CvPage(props: Props) {
           <CvVcAbout titleClassName={styles.title} title={'Портфолио'} link={currentCv.portfolio} />
         }
       </ContentBody>
-      <ContentAside >
+      <ContentAside  hide={isTabletWidth}>
         <ContentAsideItem className={styles.userCard}>
-          <UserPic size={100} image={currentCv?.profile?.image?.source&& FILES+currentCv.profile.image.source}/>
-          <p className={styles.userName}>{currentCv.profile.firstName} {currentCv.profile.lastName}</p>
-          {(currentCv.age || currentCv.profile?.city?.locName) &&
-          <p className={styles.otherData}>
-            <span>{currentCv.age} {Formatter.pluralize(currentCv.age, 'год', 'года', 'лет', )}</span> 
-            {currentCv.profile?.city?.locName &&
-            <>
-            <DotSvg/> 
-            <span>г. {currentCv.profile?.city?.locName}</span> 
-            </>
-            }
-          </p>
-          }
-          {currentCv.vacancyLookType &&
-            <p className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
-              <DotSvg color={currentCv.vacancyLookType === VacancyLookType.NotLooking?colors.red: colors.green}/>
-              {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
-            </p>
-          }
-        <Link href={'/personal/'+ currentCv.profileId} className={styles.openProfile}>Открыть профиль</Link>
+          {userCard}
         </ContentAsideItem>
       </ContentAside>
     </Content>
+    {isTabletWidth && 
+      <div className={styles.responseWrapper}>
+        <Button onClick={makeResponse} className={styles.responseButton}>Пригласить</Button>
+      </div>
+    }
+    </>
   )
 }

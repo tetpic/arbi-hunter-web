@@ -5,6 +5,7 @@ interface Props {
   mobileOnly?: boolean
   desktopOnly?: boolean
   basis?: number
+  hide?: boolean
 }
 
 /**
@@ -21,6 +22,10 @@ export default function Spacer(props: Props) {
   }
 
   if (props.desktopOnly && appContext.isMobile) {
+    return null
+  }
+
+  if(props.hide ) {
     return null
   }
 

@@ -10,6 +10,9 @@
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+    @include mq($TabletWidth, max) {
+      width: 100%;
+    }
 
     .city {
       font-size: $mediumText;

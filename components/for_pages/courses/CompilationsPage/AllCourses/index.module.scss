@@ -1,15 +1,26 @@
 @import 'styles/index';
 
+.root {
+  width: 100%;
+}
+
 .coursesWrapper {
   display: flex;
   flex-wrap: wrap;
   column-gap: 16px;
   row-gap: 16px;
   width: 100%;
+  @include mq($TabletWidth, max) {
+    padding: 0 16px;
+
+  }
 }
 
 .course {
   width: calc(50% - 8px);
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .root {
@@ -21,6 +32,9 @@
   font-size: $largeText;
   font-weight: $medium;
   margin-bottom: 16px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .title {
@@ -28,4 +42,8 @@
   color: $white;
   font-size: $largeText;
   font-weight: $medium;
+}
+
+.spinner {
+  align-self: flex-start;
 }

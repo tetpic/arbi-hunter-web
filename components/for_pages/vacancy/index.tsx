@@ -22,7 +22,6 @@ import Title from 'components/ui/TitleForSection'
 import VacancyItem from 'components/ui/VacancyItem'
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
-// import Button from 'components/ui/Button'
 import ContentItem from 'components/ui/Content/ContentItem'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
@@ -33,6 +32,12 @@ import Formatter from 'utils/formatter'
 import Link from 'next/link'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import Button from 'components/ui/Button'
+import CloseEyeSvg from 'components/svg/CloseEyeSvg'
+import ShareSvg from 'components/svg/ShareSvg'
+import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
+import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import { useRouter } from 'next/navigation'
 
 
 interface Props {
@@ -43,12 +48,18 @@ export default function VacancyPage(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const userContext = useUserContext()
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
+  const router = useRouter()
 
 
-  const makeResponce = () => {
+  const makeResponse = () => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, {vacancyId: currentVacancy.id, cvs: cvContext.savedCvs})
+      return
+    }
     appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {vacancyId: currentVacancy.id, cvs: cvContext.savedCvs})
   }
 
@@ -72,16 +83,28 @@ export default function VacancyPage(props: Props) {
   if(!currentVacancy) return <Spinner size={24}/>
 
   return (<>
-    <Spacer basis={48}/>
-    <Buildings/>
+    <Spacer basis={48} hide={isTabletWidth}/>
+    {
+      currentVacancy.profile.image && !isTabletWidth &&
+      <Buildings/>
+    }
+    {isTabletWidth &&
+      <div className={styles.buttonsWrapper}>
+        <Button onClick={() => router.back()} className={styles.button}><ArrowLeftSvg/></Button>
+        <Button className={styles.button}><CloseEyeSvg/></Button>
+        <Button className={styles.button}><ShareSvg/></Button>
+        <Button className={styles.button}><BookmarkEmptySvg/></Button>
+      </div>
+    }
     <Content className={styles.root}>
       <ContentBody>
         <ContentItem className={styles.bodyItem}>
           <CvVcPageTop 
+          hideButtons={isTabletWidth}
           title={currentVacancy.name} 
           vc={currentVacancy} 
           buttonText={'Откликнуться'}
-          onButtonClick={makeResponce}
+          onButtonClick={makeResponse}
           />
           <Badges 
           items={[
@@ -109,6 +132,12 @@ export default function VacancyPage(props: Props) {
             },
           ]}
           />
+          {isTabletWidth && 
+            <Link href={'/personal/' + currentVacancy.profileId} className={styles.companyCard}>
+              <UserPic size={100} className={styles.userPic} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
+              <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
+            </Link>
+          }
           <CvVcAbout titleClassName={styles.title} title={'Описание вакансии'} text={currentVacancy.description}/>
           {currentVacancy.skills.length > 0 &&
             <TagList title={'Навыки'} tags={currentVacancy.skills.map(el=>({name: el.title}))} titleClassName={styles.title}/>
@@ -123,20 +152,20 @@ export default function VacancyPage(props: Props) {
             <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
         </ContentItem>
-
-          {userContext.currentProfile.profileType === ProfileType.Employee &&
-          <>
-            <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
-            <ContentItem>
-              {foundVacancies.length > 0 &&
-                foundVacancies.slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
-              }
-            </ContentItem>        
-          </>
-          }
+        {userContext.currentProfile.profileType === ProfileType.Employee &&
+        <>
+          <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
+          <ContentItem>
+            {foundVacancies.length > 0 &&
+              foundVacancies.slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+            }
+          </ContentItem>        
+        </>
+        }
+     
       </ContentBody>
 
-      <ContentAside>
+      <ContentAside hide={isTabletWidth}>
         <ContentItem className={styles.aside}>
           <UserPic size={100} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
           <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
@@ -157,5 +186,11 @@ export default function VacancyPage(props: Props) {
         }
       </ContentAside>
     </Content>
+
+    {isTabletWidth && 
+      <div className={styles.responseWrapper}>
+        <Button onClick={makeResponse} className={styles.responseButton}>Откликнуться</Button>
+      </div>
+    }
   </>)
 }

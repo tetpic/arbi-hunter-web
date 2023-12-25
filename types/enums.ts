@@ -33,6 +33,7 @@ export enum ModalType {
   SearchFilterModal = 'searchFilterModal',
   AddPersonalBlockModal = 'addPersonalBlockModal',
   RecruitingFiltersModal = 'recruitingFiltersModal',
+  CoursesCategoriesModal = 'coursesCategoriesModal'
 
 
 }

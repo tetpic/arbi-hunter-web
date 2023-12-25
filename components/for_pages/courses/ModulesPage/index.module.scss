@@ -8,12 +8,9 @@
   padding-bottom: 32px;
   @include mq($TabletWidth, max) {
     margin-top: 16px;
+    padding-inline: 16px;
   }
 }
-
-
-
-
 
 .body {
   display: flex;

@@ -3,7 +3,10 @@
 .root {
   padding-bottom: 90px;
   margin-top: 82px;
-
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+    overflow: hidden;
+  }
 }
 
 .sectionTitle {
@@ -12,10 +15,7 @@
   @include container;
   @include mq($TabletWidth, max) {
     justify-content: space-between;
-  }
-
-  &_noLink {
-    justify-content: center;
+    margin-top: 40px;
   }
 }
 
@@ -31,6 +31,8 @@
     grid-template-areas: 'image' 'title' 'tags';
     grid-template-rows: unset;
     grid-template-columns: unset;
+    padding-inline: unset;
+    
   }
 }
 
@@ -87,6 +89,9 @@
     }
   }
   @include mq($TabletWidth, max) {
+    width: calc(100vw - 32px);
+    height: calc(100vw - 32px);
+    justify-self: center;
     img {
       width: 100%;
       height: unset;
@@ -113,6 +118,7 @@
     flex-wrap: nowrap;
     overflow: auto;
     padding-bottom: 10px;
+    padding-inline: 16px;
   }
   .tag {
     @include tag;
@@ -121,6 +127,9 @@
     font-size: $mediumText;
     font-weight: $regular;
     white-space: nowrap;
+    @include mq($TabletWidth, max) {
+      padding: 10px 16px;
+    }
   }
 }
 
@@ -149,4 +158,30 @@
   &_large {
     width: 100%;
   }
+
+  @include mq($TabletWidth, max) {
+    
+  }
+}
+
+.categories {
+  @include mq($TabletWidth, max) {
+    padding: unset !important;
+  }
+}
+
+.bannersSlider {
+  padding-inline: 16px;
+  .slide {
+    width: 80%;
+  }
+}
+
+.stories {
+  margin-top: 24px;
+}
+
+.navTitle {
+  margin-top: 8px;
+  padding-inline: 16px;
 }

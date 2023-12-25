@@ -119,7 +119,6 @@ export default function ProposalModal(props: Props) {
 
   if(props.isBottomSheet) {
     return (
-
       <BottomSheetLayout>
       <BottomSheetBody>
         {title}

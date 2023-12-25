@@ -2,6 +2,11 @@
 
 .root {
   margin-top: 48px;
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+    padding-inline: 16px;
+    padding-bottom: 100px !important;
+  }
 }
 
 .body {
@@ -13,6 +18,11 @@
   display: flex;
   flex-direction: column;
   row-gap: 32px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    padding: unset;
+    background-color: unset;
+  }
 }
 
 .top {
@@ -109,6 +119,11 @@
   flex-direction: column;
   align-items: center;
   row-gap: 8px;
+  @include mq ($TabletWidth, max) {
+    padding: 16px;
+    background-color: $black;
+    margin-block: 16px;
+  }
 
   .otherData {
     color: $greyLight;
@@ -129,6 +144,7 @@
       height: 6px;
     }
   }
+
   .userName {
     font-size: $largeText;
     font-weight: $semibold;
@@ -137,8 +153,14 @@
   }
   
   .openProfile {
-    @include buttonYellow;
     width: 100%;
+    @include mq($TabletWidth, min) {
+      @include buttonYellow;      
+    }
+    @include mq($TabletWidth, max) {
+      @include buttonGray;
+      color: $blue;
+    }
   }
 
   .red {
@@ -155,4 +177,38 @@
   font-weight: $semibold;
   color: $white;
 }
+
+.buttonsWrapper {
+  display: flex;
+  margin-top: 14px;
+  padding-inline: 16px;
+  column-gap: 8px;
+}
+
+.button {
+  border-radius: 10px;
+  background-color: $grey;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  &:first-of-type {
+    margin-right: auto;
+  }
+}
+
+.responseWrapper {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 16px;
+  padding-bottom: 100px;
+  background-color: $grey;
+  border-radius: 16px;
+
+
+  .responseButton {
+    @include buttonYellow;
+    width: 100%;
+  }
+}   
 

@@ -33,7 +33,7 @@ export default function ApplicationSuccessModal(props: Props) {
     </div>
   )
 
-  return (<ModalLayout className={styles.modalLayout}>
+  return (<ModalLayout className={styles.modalLayout} mobileFullScreen>
     <ModalBody>
       {body}
     </ModalBody>

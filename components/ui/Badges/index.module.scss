@@ -4,6 +4,12 @@
   display: flex;
   justify-content: space-between;
   column-gap: 16px;
+  @include mq($TabletWidth, max) {
+    background: $gradientAlt;
+    padding: 16px;
+    border-radius: 16px;
+    column-gap: unset;
+  }
 
   .badge{
     width: 32%;
@@ -18,12 +24,34 @@
     font-weight: $medium;
     color: $white;
     background: $blueGradient;
+    @include mq($TabletWidth, max) {
+      background: unset;
+      border-radius: unset;
+      padding: unset;
+      flex-direction: column;
+      width: unset;
+    }
+  }
+
+  .separator {
+    display: none;
+    @include mq($TabletWidth, max) {
+      @include exeptLast{
+        display: block;
+        width: 1px;
+        background-color: rgba(255, 255, 255, 0.302);
+        height: 38px;
+      }
+    }
   }
 
   .badgeIcon {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.44);
     padding: 8px;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 
   .badgeText {

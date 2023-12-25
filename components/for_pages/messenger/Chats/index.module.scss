@@ -10,6 +10,7 @@
   position: relative;
   @include mq($TabletWidth, max) {
     width: 100%;
+    max-width: unset;
   }
 }
 
@@ -23,8 +24,6 @@
   opacity: 0;
   @include hover {
     width: 6px;
-    // background-color: $greyLight;
-    // opacity: 1;
   }
 }
 
@@ -51,7 +50,6 @@
   height: calc(100% - 100px);
   overflow: auto;
   @include mq($TabletWidth, max) {
-    // height: calc(100% - 155px);
     height: unset;
   }
 }

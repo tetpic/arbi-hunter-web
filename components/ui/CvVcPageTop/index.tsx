@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import { ICV } from 'data/interfaces/ICV'
 import Title from '../TitleForSection'
-import styles from './index.module.scss'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Button from '../Button'
 import classNames from 'classnames'
@@ -21,6 +22,7 @@ interface Props {
   vc?: IVacancy
   buttonText: string
   onButtonClick?: ()=>void
+  hideButtons?: boolean
 }
 
 export default function CvVcPageTop(props: Props) {
@@ -70,7 +72,7 @@ export default function CvVcPageTop(props: Props) {
     </div>
     {((userContext.currentProfile.profileType === ProfileType.Hirer && props.cv) 
     ||
-    (userContext.currentProfile.profileType === ProfileType.Employee && props.vc))
+    (userContext.currentProfile.profileType === ProfileType.Employee && props.vc && !props.hideButtons))
     &&
     <div className={styles.right}>
       <Button className={classNames(styles.button, styles.share)}><ShareSvg/></Button>

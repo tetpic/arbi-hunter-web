@@ -121,6 +121,7 @@ export function CoursesWrapper(props: Props) {
       setState(courses)
       setCoursesTotal(courses.length)
     } else {
+      setCourseLoading(true)
       CoursesRepository.getCourses(data, countryCode)
       .then(res=>{
         setState(res.data, data.started)

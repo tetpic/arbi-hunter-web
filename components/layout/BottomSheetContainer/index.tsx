@@ -14,6 +14,7 @@ import SearchFilterModal from 'components/modals/SearchFilterModal'
 import SpecializationModal from 'components/modals/CvModals/Specialization'
 import SoursesModal from 'components/modals/CvModals/Sourses'
 import LangaugesModal from 'components/modals/CvModals/Languages'
+import ApplicationModal from 'components/modals/ApplicationModal'
 
 
 interface Props { }
@@ -110,6 +111,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <LangaugesModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ApplicationModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <ApplicationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

@@ -38,14 +38,13 @@ export default function CourseItem(props: Props) {
         </div>
         <div className={styles.badges}>
           {props.course.categories.length > 0  &&
-          props.course.categories.filter(f=>f.id !== 30).map(ctg => {
+          props.course.categories.filter(f=>f.id !== 30).slice(0, 3).map(ctg => {
             return (
               <p key={ctg.id} className={styles.badge}>{ctg.name}</p>
               )
             })
           }
         </div>
-        
         {/* <FavoritesButton className={styles.heartButton}/> */}
       </div>
       <div className={styles.bottom}>

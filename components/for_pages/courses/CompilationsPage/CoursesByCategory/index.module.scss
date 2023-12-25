@@ -6,10 +6,16 @@
   column-gap: 16px;
   row-gap: 16px;
   width: 100%;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .course {
   width: calc(50% - 8px);
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
 }
 
 .root {
@@ -21,4 +27,7 @@
   font-size: $largeText;
   font-weight: $medium;
   margin-bottom: 16px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }

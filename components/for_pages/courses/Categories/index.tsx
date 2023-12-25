@@ -11,6 +11,7 @@ import { FILES } from 'types/constants'
 
 interface Props {
   categoryList: ICategory[]
+  className?: string
 }
 
 
@@ -41,7 +42,7 @@ export default function Categories(props: Props) {
   const {isTabletWidth} = useResize()
 
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, props.className)}>
       <div className={styles.content}>
       {props.categoryList.length > 0 
       && !isTabletWidth &&
@@ -52,11 +53,13 @@ export default function Categories(props: Props) {
       {isTabletWidth &&
         <Swiper 
         spaceBetween={16}
+        slidesPerView={'auto'}
+        className={styles.swiper}
         >
           {  
             props.categoryList.map((item, index)=> {
               return (
-                <SwiperSlide>
+                <SwiperSlide className={styles.slide}>
                   <CategoryItem key={item.id} size={33} item={item}/>
                 </SwiperSlide>
               ) 

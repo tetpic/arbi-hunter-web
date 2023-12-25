@@ -16,9 +16,12 @@ import { IApplication } from 'data/interfaces/IApplication'
 import { ModalType, SnackbarType } from 'types/enums'
 import CrossSvg from 'components/svg/CrossSvg'
 import { IApplicationSuccessModalProps } from '../ApplicationSuccessModal'
+import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: ()=>void
+  isBottomSheet?: boolean
 }
 
 export interface IApplicationModalProps {
@@ -28,7 +31,7 @@ export interface IApplicationModalProps {
 
 export default function ApplicationModal(props: Props) {
   const appContex = useAppContext()
-  const modalArguments = appContex.modalArguments as IApplicationModalProps
+  const modalArguments:IApplicationModalProps = props.isBottomSheet?appContex.bottomSheetArguments:appContex.modalArguments
   const [showTextField, setShowTextField] = useState<boolean>(false)
 
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
@@ -70,10 +73,19 @@ export default function ApplicationModal(props: Props) {
           } 
         </Form>
       </FormikProvider>
-      <Button className={styles.nextButton} onClick={formik.submitForm}>Продолжить</Button>
-
+      <Button disabled={!formik.values.cvId} className={styles.nextButton} onClick={formik.submitForm}>Продолжить</Button>
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (<ModalLayout>
     <ModalBody>

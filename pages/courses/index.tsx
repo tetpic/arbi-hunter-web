@@ -1,6 +1,7 @@
 import CoursesMain from 'components/for_pages/courses'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CoursesWrapper } from 'context/courses_state'
+import { MediaWrapper } from 'context/media_state'
 import { ICategory } from 'data/interfaces/Common'
 import ICourse, { ICourseFeedback } from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
@@ -40,15 +41,17 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 export default function Courses(props: Props) {
   
   return (
-    <ContentLayout withFooter title={'Онлайн обучение'}>
+    <ContentLayout withFooter title={'Онлайн обучение'} hideMobileHeader>
       <CoursesWrapper>
-        <CoursesMain 
-        categoryList={props.categoryList} 
-        courses={props.courses} 
-        popularCourses={props.popularCourses} 
-        compilations={props.compilations}
-        feedbacks={props.feedbacks}
-        />
+        <MediaWrapper>
+          <CoursesMain 
+          categoryList={props.categoryList} 
+          courses={props.courses} 
+          popularCourses={props.popularCourses} 
+          compilations={props.compilations}
+          feedbacks={props.feedbacks}
+          />
+        </MediaWrapper>
       </CoursesWrapper>
     </ContentLayout>
   )

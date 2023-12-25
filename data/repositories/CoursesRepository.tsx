@@ -69,7 +69,8 @@ export default class CoursesRepository {
       data: {
         ...data,
         // categories: data.categories.join(','),
-        lang
+        // lang,
+        sort: 'createdAt,DESC'
       }
     })
     if(res.err) {

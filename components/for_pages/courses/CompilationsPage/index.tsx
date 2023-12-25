@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useResize } from 'components/hooks/useResize'
 import AppsAddSvg from 'components/svg/AppsAddSvg'
 import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
@@ -16,7 +15,6 @@ import AllCourses from './AllCourses'
 import CoursesByCategory from './CoursesByCategory'
 import Spinner from 'components/ui/Spinner'
 import { useUserContext } from 'context/user_state'
-import { MediaWrapper } from 'context/media_state'
 
 interface Props {
   category?: number
@@ -58,10 +56,9 @@ export default function CoursesCompilations(props: Props) {
     return result
   })()
 
-
   const body = (<>
   {
-    page === CompilationsNav.All&&<MediaWrapper><AllCourses key={'all'}/></MediaWrapper>
+    page === CompilationsNav.All&&<AllCourses key={'all'}/>
     ||
     page === CompilationsNav.Categories && (currentCategory &&<CoursesByCategory categoryId={currentCategory.id}/>||<Spinner size={34}/>)
     ||
@@ -79,6 +76,10 @@ export default function CoursesCompilations(props: Props) {
         return currentCategory?.name||'Категории'
     }
   })()
+
+  const openCategoriesList = () => {
+    
+  }
 
   useEffect(()=>{
     if(width) {
@@ -106,13 +107,13 @@ export default function CoursesCompilations(props: Props) {
   return (<div className={styles.root} > 
     <div className={styles.contentWrapper}>
       <div className='container'>
-        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
-        {isTabletWidth && 
+        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.back()}/>
+        {/* {isTabletWidth && 
           <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
-        }
+        } */}
       </div>
       <div className={styles.bodyWrapper} id={'scrollable'}>
-        <SearchBar className={styles.searchBar}/>
+        <SearchBar className={styles.searchBar} onFilterClick={() => openCategoriesList()}/>
         {body}
       </div>
     </div>

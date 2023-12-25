@@ -1,0 +1,42 @@
+@import 'styles/index';
+
+.categoriesWrapper {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 8px;
+
+  .item {
+    width: calc(50% - 4px);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    color: $white;
+    justify-content: space-between;
+    background-color: $grey;
+    
+    .title {
+      width: 100%;
+    }
+
+    .counter {
+      width: 48%;
+      align-self: flex-end;
+      @include buttonBlack;
+      font-size: $smallText;
+      margin-top: 16px;
+      span {
+        color: $white;
+      }
+    }
+
+    img {
+      width: 48%;
+      object-fit: contain;
+    }
+  }
+}

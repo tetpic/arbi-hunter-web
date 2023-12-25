@@ -75,3 +75,9 @@
 .rightButton {
   right: 10px;
 }
+
+.swiper {
+  @include mq($TabletWidth, max) {
+    padding: 0 16px;
+  }
+}

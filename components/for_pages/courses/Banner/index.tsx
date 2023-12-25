@@ -1,10 +1,11 @@
+import styles from './index.module.scss'
+
 import Button from 'components/ui/Button'
 import Image from 'next/image'
 import { ICategory } from 'data/interfaces/Common'
 import Formatter from 'utils/formatter'
 import { FILES } from 'types/constants'
 import classNames from 'classnames'
-import styles from './index.module.scss'
 
 interface Props {
   category: ICategory

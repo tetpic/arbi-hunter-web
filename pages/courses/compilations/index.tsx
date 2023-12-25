@@ -19,7 +19,7 @@ export default function Compilations(props: Props) {
 
 
   return (
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <CoursesWrapper>
         <CoursesCompilations page={props.page} category={props.category}/>
       </CoursesWrapper>

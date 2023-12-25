@@ -4,6 +4,11 @@
   margin-top: 24px;
   min-width: 100%;
   overflow: auto;
+  display: flex;
+}
+
+.wrapper {
+  min-width: 100%;
 }
 
 .items {
@@ -29,7 +34,6 @@
       pointer-events: none;
     }
   }
-
 }
 
 .bottomString {

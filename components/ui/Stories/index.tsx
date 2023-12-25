@@ -12,9 +12,11 @@ import { useRef } from 'react'
 import Button from '../Button'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
+import classNames from 'classnames'
 
 interface Props {
   stories: IArticle[]
+  className?: string
 }
 
 export default function Stories(props: Props) {
@@ -30,7 +32,7 @@ export default function Stories(props: Props) {
     })
   }
 
-  return (<div className={styles.root}> 
+  return (<div className={classNames(styles.root, props.className)}> 
     <div className={styles.content}>
       <Swiper
       ref={swiperRef}
@@ -39,6 +41,7 @@ export default function Stories(props: Props) {
       loop
       freeMode={true}
       modules={[Autoplay]}
+      className={styles.swiper}
       >
         {[...stories, ...stories].map((el, index)=> {
           return (

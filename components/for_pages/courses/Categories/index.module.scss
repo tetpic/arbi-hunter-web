@@ -49,6 +49,10 @@
     grid-template-columns: 60% 40%; 
     min-width: unset;
   }
+  @include mq($TabletWidth, max) {
+    padding: 16px;
+    grid-template-columns: 1fr 1fr;
+  }
   @include mq($PhoneWidth, max) {
     width: 100% !important;
     border-radius: 16px;
@@ -113,6 +117,18 @@
         // font-size: $hugeText;
       // }
     // }
+  }
+}
+
+.slide {
+  @include mq($TabletWidth, max) {
+    width: 80%;
+  }
+}
+
+.swiper {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
   }
 }
 
