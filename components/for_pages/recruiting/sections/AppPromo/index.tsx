@@ -10,6 +10,7 @@ import phone from 'images/recruiting/recruiting_mobile.png'
 import Button from 'components/ui/Button'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
+import { useAppContext } from 'context/state'
 
 interface Props {
   cards: string[]|StaticImageData[]
@@ -19,6 +20,8 @@ interface Props {
 
 export default function AppPromo(props: Props) {
   const cardsRef = useRef<HTMLImageElement[]>([])
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const [activeCard, setActiveCard] = useState<HTMLImageElement>(cardsRef.current[0])
 
   const translateCard = (type: 'check'|'cross') => {
@@ -85,12 +88,14 @@ export default function AppPromo(props: Props) {
       </div>
     </div>
 
-    <div className={styles.right}>
-      <p className={styles.title}>Скачайте приложение по&nbsp;QR коду</p>
-      <p className={styles.desc}>Отсканируйте код с&nbsp;камеры своего телефона</p>
-      <div className={styles.imageWrapper}>
-        <Image src={qr} alt={'qr code'}/>
+    {!isTabletWidth &&
+      <div className={styles.right}>
+        <p className={styles.title}>Скачайте приложение по&nbsp;QR коду</p>
+        <p className={styles.desc}>Отсканируйте код с&nbsp;камеры своего телефона</p>
+        <div className={styles.imageWrapper}>
+          <Image src={qr} alt={'qr code'}/>
+        </div>
       </div>
-    </div>
+    } 
   </div>)
 }

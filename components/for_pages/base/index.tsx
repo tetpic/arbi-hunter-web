@@ -44,7 +44,7 @@ export default function BasePage() {
     <Content className={styles.root}>
       <ContentBody className={styles.body}>
         <TitleForSection onBackClick={router.back} title={'База знаний'} className={styles.title}/>
-        <SearchBar fullWidth periods={periods} onChange={(params)=> knowledgeContext.setSearchParams(params)} placeholder='Поиск по базе знаний'/>
+        <SearchBar periods={periods} onChange={(params)=> knowledgeContext.setSearchParams(params)} placeholder='Поиск по базе знаний'/>
         {page &&
           <BaseItems activeCategory={page} />
           ||

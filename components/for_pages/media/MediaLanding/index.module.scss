@@ -3,6 +3,9 @@
 .root {
   margin-top: 24px;    
   padding-bottom: 50px;
+  @include mq($TabletWidth, max) {
+    overflow: hidden;
+  }
 }
 
 .title {
@@ -13,7 +16,6 @@
   @include mq($TabletWidth, max) {
     justify-content: space-between;
   }
-
 }
 
 

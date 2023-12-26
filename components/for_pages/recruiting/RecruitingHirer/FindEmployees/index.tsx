@@ -6,11 +6,14 @@ import land_vacancy from 'images/recruiting/land_vacancy.png'
 import star from 'images/recruiting/star.png'
 import chain from 'images/recruiting/chain.svg'
 import { useEffect, useRef } from 'react'
+import { useAppContext } from 'context/state'
 
 interface Props {
 }
 
 export default function FindEmployees(props: Props) {
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   const triggerRef = useRef<HTMLDivElement>(null!)
 
@@ -42,14 +45,18 @@ export default function FindEmployees(props: Props) {
       <p className={styles.title}>Зарегистрируйтесь</p>
       <p className={styles.desc}>И получите доступ ко всем услугам</p>
     </div>
-    <Image src={chain} alt={'chain'}/>
+    {!isTabletWidth &&
+      <Image src={chain} alt={'chain'}/>
+    }
     <div className={styles.item}>
       <Image src={land_vacancy} className={styles.image} width={200} height={200} alt={'land vacancy'}/>
       <p className={styles.step}>Шаг 2</p>
       <p className={styles.title}>Разместите вакансию</p>
       <p className={styles.desc}>И получите доступ ко всем услугам</p>
     </div>
-    <Image src={chain} alt={'chain'}/>
+    {!isTabletWidth &&
+      <Image src={chain} alt={'chain'}/>
+    }
     <div className={styles.item}>
       <Image src={star} className={styles.image} width={200} height={200}  alt={'star'}/>
       <p className={styles.step}>Шаг 3</p>

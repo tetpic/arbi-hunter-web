@@ -4,11 +4,24 @@
   display: flex;
   align-items: center;
   margin-top: 100px;
+  @include mq($TabletWidth, max) {
+    flex-direction: column-reverse;
+    margin-top: 40px;
+  }
 }
 
 .imageWrapper {
-  width: 49%;
-  height: 450px;
+  max-width: 49%;
+  max-height: 450px;
+  width: 100vw;
+  height: 100vw;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+    max-height: unset;
+    width: calc(100vw - 32px);
+    height: calc(100vw - 32px);
+    margin-top: 24px;
+  }
 }
 
 .body {
@@ -16,11 +29,18 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    padding-inline: 16px;
+  }
 
   .title {
     font-size: $text32;
     font-weight: $semibold;
     color: $white;
+    @include mq($TabletWidth, max) {
+      font-size: $hugeText;
+    }
   }
 
   .card {
@@ -28,13 +48,15 @@
     grid-template-areas: 'i t' 'i r';
     grid-template-columns: auto 1fr;
     column-gap: 8px;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
 
     &_title {
       grid-area: t;
       font-size: $hugeText;
       font-weight: $medium;
       color: $white;
-
     }
 
     &_pic {
@@ -65,13 +87,18 @@
     align-self: flex-start;
     padding: 18px 32px !important;
     height: 52px !important;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 
   .desc {
     font-size: $largeText;
     font-weight: $medium;
     color: $greyLight;
-
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 }
 

@@ -22,7 +22,6 @@ interface Props {
 export default function Stories(props: Props) {
   const stories = props.stories
   const swiperRef= useRef<SwiperRef>(null!)
-
   const appContext = useAppContext()
 
   const openStoriesViewer = (story: IArticle) => {

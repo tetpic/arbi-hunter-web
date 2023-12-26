@@ -4,6 +4,10 @@
   display: flex;
   justify-content: space-between;
   margin-top: 94px;
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+    margin-top: 40px;
+  }
 
 }
 
@@ -25,10 +29,16 @@
     background: $gradientAlt;
     z-index: 0;
     opacity: .4;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
   
   img {
     position: relative;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 
   .title {
@@ -36,6 +46,13 @@
     font-weight: $semibold;
     color: $white;
     padding-top: 26px;
+    @include mq($TabletWidth, max) {
+      font-size: $hugeText;
+      padding: 0px 16px;
+      br{
+        display: none;
+      }
+    }
 
     &_purple {
       @include textGradientDefault;
@@ -45,6 +62,10 @@
 
 .right {
   width: 54%;
+  @include mq($TabletWidth, max) {
+    width: 70%;
+    align-self: center;
+  }
 
   .item {
     display: grid;
@@ -55,6 +76,15 @@
     row-gap: 16px;
     align-items: center;
     padding-block: 26px;
+    @include mq($TabletWidth, max) {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border-bottom: unset;
+      padding-block: unset;
+      margin-top: 16px;
+    }
+    
   }
 
   .title {
@@ -62,6 +92,9 @@
     font-size: $text20;
     font-weight: $semibold;
     color: $white;
+    @include mq($TabletWidth, max) {
+      text-align: center;
+    }
   }
 
   .desc {
@@ -69,6 +102,10 @@
     font-size: $largeText;
     color: $greyLight;
     width: 70%;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
+
   }
 
   .image {

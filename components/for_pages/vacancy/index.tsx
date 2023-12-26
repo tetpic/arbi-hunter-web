@@ -152,11 +152,11 @@ export default function VacancyPage(props: Props) {
             <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
         </ContentItem>
-        {userContext.currentProfile.profileType === ProfileType.Employee &&
+        {userContext.currentProfile.profileType === ProfileType.Employee && foundVacancies.length > 0 &&
         <>
           <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
           <ContentItem>
-            {foundVacancies.length > 0 &&
+            {
               foundVacancies.slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
             }
           </ContentItem>        

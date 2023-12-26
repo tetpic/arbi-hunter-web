@@ -73,7 +73,7 @@ export default function CvItem({cv, ...props}: Props) {
     {/* <div className={styles.image}>
       <ThreeModelVariant {...characterContext.variant} r={0}/>
     </div> */}
-    <Image className={styles.image} src={cv.profile?.image?.source?FILES+cv.profile?.image?.source : defaultImage} alt={'def image'} width={320} height={320} />
+    <Image className={styles.image} src={cv.profile?.logo?.source?FILES+cv.profile?.logo?.source : defaultImage} alt={'def image'} width={320} height={320} />
     <div className={styles.top}>
       {cv.categories.length > 0 &&
       <p className={styles.name}>{cv.categories[0].name}</p>

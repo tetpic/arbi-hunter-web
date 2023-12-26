@@ -59,6 +59,9 @@ export interface IUserProfile extends TimeStamp {
   activityStatus: ActivityStatus,
   countryCode: Languages
   role?: 'admin'|'participant'
+  logo?: IFile,
+  logoId?: number
+  useOwnLogo?: boolean
 }
 
 export interface IUser extends TimeStamp {

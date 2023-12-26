@@ -78,3 +78,20 @@
     @include buttonYellow;
   }
 }
+
+.swiper {
+  width: 100%;
+  padding-inline: 16px;
+}
+
+.slide {
+  width: calc(33.3% - 8px);
+  min-width: 330px;
+  >a {
+    height: 100% !important;
+  }
+  @include mq($TabletWidth, max) {    
+    width: calc(50% - 8px);
+    min-width: 300px;
+  }
+}

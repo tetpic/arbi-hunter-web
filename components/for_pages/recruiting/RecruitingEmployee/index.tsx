@@ -10,18 +10,31 @@ import Vacancies from './Vacancies'
 import AppPromo from '../sections/AppPromo'
 import Help from '../sections/Help'
 import Search from '../sections/Search'
-import Categories from '../sections/Categories'
 import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
 import Rive from '@rive-app/react-canvas'
 import {  useMemo } from 'react'
 import slide3 from 'images/recruiting/recruiting_swipe3.png'
 import slide4 from 'images/recruiting/recruiting_swipe4.png'
 import slide5 from 'images/recruiting/recruiting_swipe5.png'
+import { useAppContext } from 'context/state'
+import SearchBar from 'components/ui/SearchBar'
+import dynamic from 'next/dynamic'
+import { IVacancy } from 'data/interfaces/IVacancy'
+
+const Categories = dynamic(() => import('../sections/Categories'), {
+  ssr: false
+})
+
+interface Props {
+  vacancies?: IVacancy[]
+}
 
 
 
 
-export default function RecruitingEmployee() {
+export default function RecruitingEmployee(props: Props) {
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   const riveAnimation = useMemo(()=>{
     return <Rive 
@@ -42,12 +55,12 @@ export default function RecruitingEmployee() {
   
 
   return (<div className={styles.root}> 
+    {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
     <div className={styles.top}>
-     {riveAnimation}
-
+      {riveAnimation}
       <h2 className={styles.title}>
         Найдите работу мечты 
-        <span className={styles.title_big}>в <span className={styles.title_purple}>Arbi</span>Hunter</span>
+        <span className={styles.title_big}> в <span className={styles.title_purple}>Arbi</span>Hunter</span>
       </h2>
       <p className={styles.description}>
         Ежедневно более 1000 людей находят работу в ArbiHunter которая позволяет им расти и становиться успешными!
@@ -61,17 +74,24 @@ export default function RecruitingEmployee() {
       <Link className={styles.createLink} href={'/create/cv'} ><span>Создать резюме</span></Link>
     </div>
 
-    <Search title={'Поиск вакансий'}/>
+    {!isTabletWidth && <Search title={'Поиск вакансий'}/>}
     
     <Title title="Поиск по популярным категориям" className={styles.title}/>
     <Categories count='вакансий' image={recruitingCatCompanies} titles={['Вакансии дня', 'Для программистов', 'Для дизайнеров']}/>
-    <Button className={styles.watchAll}>Смотреть все</Button>
+    {!isTabletWidth &&
+      <Button className={styles.watchAll}>Смотреть все</Button>
+    }
 
     <Possibilities/>
-
-    <Title title={'Вакансии дня'} className={styles.title}/>
-    <Vacancies/>
-    <Button className={styles.watchAll}>Смотреть все</Button>
+    {props.vacancies.length > 0 &&  
+    <>
+      <Title title={'Вакансии дня'} className={styles.title}/>
+      <Vacancies vacancies={props.vacancies}/>
+    </>
+    }
+    {!isTabletWidth &&
+      <Button className={styles.watchAll}>Смотреть все</Button>
+    }
 
     <AppPromo cards={[slide3, slide4, slide5]}/>
 

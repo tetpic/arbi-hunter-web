@@ -16,6 +16,10 @@
 .swiperSlide {
   width: 124px;
   height: 174px;
+  @include mq ($TabletWidth, max) {
+    width: unset;
+    height: unset;
+  }
 }
 
 .item {
@@ -28,6 +32,9 @@
   height: 100%;
   padding: 4px;
   position: relative;
+  @include mq($TabletWidth, max) {
+    height: unset;
+  }
   
   .imageWrapper {
     width: 100%;
@@ -35,6 +42,10 @@
     background-color: $greyLight;
     overflow: hidden;
     border-radius: 16px;
+    @include mq($TabletWidth, max) {
+      width: 30vw;
+      height: 30vw;
+    }
   }
 
   .description {
@@ -46,6 +57,9 @@
     font-size: $smallText;
     font-weight: $medium;
     color: $white;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 }
 

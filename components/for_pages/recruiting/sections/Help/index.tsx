@@ -6,12 +6,15 @@ import telegram from 'images/recruiting/recruiting_telegram.png'
 import Button from 'components/ui/Button'
 import { useEffect, useRef } from 'react'
 import classNames from 'classnames'
+import { useAppContext } from 'context/state'
 
 interface Props {
 }
 
 export default function Help(props: Props) {
   const triggerRef = useRef<HTMLDivElement>(null!)
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   useEffect(()=>{
     if(window !== undefined) {
@@ -41,8 +44,12 @@ export default function Help(props: Props) {
         <Image src={telegram} alt={'telegram icon'}/>
         Написать в поддержку в Telegramm
       </Button>
-      <Image className={classNames(styles.image, styles.image2)} width={256} height={256} src={dialog2} alt={'faq image'}/>
-      <Image className={classNames(styles.image, styles.image1)} width={256} height={256} src={dialog1} alt={'faq image'}/>
+      {!isTabletWidth && 
+      <>
+        <Image className={classNames(styles.image, styles.image2)} width={256} height={256} src={dialog2} alt={'faq image'}/>
+        <Image className={classNames(styles.image, styles.image1)} width={256} height={256} src={dialog1} alt={'faq image'}/>
+      </>
+      } 
     </section>
   )
 }

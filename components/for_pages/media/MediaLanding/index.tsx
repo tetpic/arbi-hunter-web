@@ -45,7 +45,7 @@ export default function MediaLanding(props: Props) {
       <Title 
       className={styles.title}
       title={'Популярное'} 
-      link={'/'}
+      link={'/media/page?page=allArticles'}
       />
       <MediaNewsSection news={props.news.slice(0, 4)}/>
 
@@ -62,7 +62,7 @@ export default function MediaLanding(props: Props) {
       link={'/media/page?page=categories'}
       />
       <MediaCompilation newsCompilations={props.newsCompilations}/>
-      <MediaCrypto/>
+      {!isTabletWidth && <MediaCrypto/>}
     </div>
   )
 }

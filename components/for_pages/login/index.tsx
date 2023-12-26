@@ -112,7 +112,6 @@ export default function Login() {
         </p>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
-            <p className={styles.subTitle}>Войти через</p>  
             <Modes 
             className={styles.modes}
             buttonClassName={styles.modesButtons}

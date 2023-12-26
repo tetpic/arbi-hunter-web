@@ -36,6 +36,7 @@ import SearchFilterModal from 'components/modals/SearchFilterModal'
 import AddPersonalBlockModal from 'components/modals/AddPersonalBlockModal'
 import RecruitingFiltersModal from 'components/modals/RecruitingFiltersModal'
 import CoursesCategoriesModal from 'components/modals/CoursesCategoriesModal'
+import UserImageModal from 'components/modals/UserImageModal'
 
 
 interface Props { }
@@ -177,6 +178,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.CoursesCategoriesModal:
         return <Modal isOpen {...commonSettings} >
         <CoursesCategoriesModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.UserImageModal:
+        return <Modal isOpen {...commonSettings} >
+        <UserImageModal onClose={commonSettings.onRequestClose}/>
       </Modal>
 
     }

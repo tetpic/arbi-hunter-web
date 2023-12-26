@@ -47,7 +47,7 @@ export default class UserRepository {
     return res
   }
 
-  static async editProfileByType(data: any, profile: ProfileType): Promise<IUserProfile|null> {
+  static async editProfileByType(data: any, profile?: ProfileType): Promise<IUserProfile|null> {
     const res = await request({
       method: 'post',
       url: `/api/profile/${profile}`,
@@ -74,6 +74,20 @@ export default class UserRepository {
     const res = await request({
       method: 'delete',
       url: `/api/profile/${profile}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+
+  
+  static async getBackgrounds(data?: {profileId?: number, categoryId?: number, lang?: string}): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/background',
+      data
     })
     if(res.err) {
       return null

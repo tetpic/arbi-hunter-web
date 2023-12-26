@@ -1,14 +1,11 @@
 import styles from './index.module.scss'
 
-// import UserRegImage from 'components/ui/UserRegImage'
-// import { ProfileType } from 'data/interfaces/IRegistration'
 import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
-import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
 import About from '../utils/Steps/About'
@@ -22,7 +19,7 @@ import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
 import Spacer from 'components/ui/Spacer'
-import Rive /*{ useRive }*/ from '@rive-app/react-canvas'
+import Rive from '@rive-app/react-canvas'
 import Specialization from '../utils/Steps/Specialization'
 
 interface Props {
@@ -48,7 +45,7 @@ export default function Vacancy(props: Props) {
   const userContext = useUserContext()
   const creationContext = useCreateVcCvContext()
 
-  const {isPhoneWidth} = useResize()
+  const {isPhoneWidth, isTabletWidth} = appContext.size
   const router = useRouter()
   const {progress, setProgress} = creationContext
   
@@ -56,17 +53,8 @@ export default function Vacancy(props: Props) {
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
 
-  //  DEV код для получения названий анимаций из rive
-  // const { rive, RiveComponent } = useRive({
-  //   src: '/rive/vacancyCreate/7.riv',
-  //   stateMachines: 'bumpy',
-  //   autoplay: true,
-  //   // animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']
-  // })
-
   const CVItemsCount = 7
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
-
 
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
@@ -322,7 +310,7 @@ export default function Vacancy(props: Props) {
   
 
   return <div className={styles.root}>
-    {memoedRive}
+    {!isTabletWidth && memoedRive}
     {/* <RiveComponent className={styles.rive}/> */}
     <div className={styles.content}>    
       <p className={styles.title}>

@@ -27,19 +27,19 @@ function MediaCategoryModalInner(props: Props) {
 
   const onCloseHandler = () => {
     props.onClose()
-    mediaContext.setCurrentNews({clear: true})
+    // mediaContext.setCurrentNews({clear: true})
   }
 
   const body = (<div className={styles.root}>
     <BackBtn className={styles.backBtn} onClick={onCloseHandler} bgColor={'transparent'}/>
     <Title className={styles.title} title={args.title} />
     <SearchBar/>
-    <NewsByCategories category={args.currentCategory}/>
+    <NewsByCategories category={args.currentCategory} scrollableTarget='modalBody'/>
   </div>)
 
   return (
     <ModalLayout mobileFullScreen>
-      <ModalBody className={styles.body}>
+      <ModalBody className={styles.body} id='modalBody'>
           {body}
       </ModalBody>
     </ModalLayout>

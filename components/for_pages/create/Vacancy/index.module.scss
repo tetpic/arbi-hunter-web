@@ -100,8 +100,10 @@
 
 .rive {
   flex-shrink: 0;
-  width: 566px;
-  height: 566px;
+  max-width: 566px;
+  max-height: 566px;
+  height: 35vw;
+  width: 35vw;
   border-radius: 16px;
   overflow: hidden;
   background: url('/rive/Back.jpg') center;

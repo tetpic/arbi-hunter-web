@@ -1,18 +1,34 @@
 import styles from './index.module.scss'
 
-import HeartSvg from 'components/svg/HeartSvg'
-import UserPic from 'components/ui/UserPic'
-import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
-import Button from 'components/ui/Button'
+// import HeartSvg from 'components/svg/HeartSvg'
+// import UserPic from 'components/ui/UserPic'
+// import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
+// import Button from 'components/ui/Button'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import VacancyItem from 'components/ui/VacancyItem'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 
 interface Props {
+  vacancies?: IVacancy[]
 }
 
 export default function Vacancies(props: Props) {
 
   return (<section className={styles.vacancies}>
-    <div className={styles.vacancy}>
+    <Swiper
+    slidesPerView={'auto'}
+    spaceBetween={16}
+    className={styles.swiper}
+    >
+    {props.vacancies?.map(vacancy=>
+      <SwiperSlide className={styles.slide}>
+        <VacancyItem key={vacancy.id} vacancy={vacancy}/>
+      </SwiperSlide>
+    )}
+
+    </Swiper>
+    {/* <div className={styles.vacancy}>
       <div className={styles.top}>
         <UserPic className={styles.pic} image={beats} size={42}/>
         <p className={styles.title}>Apple Company</p>
@@ -53,7 +69,7 @@ export default function Vacancies(props: Props) {
         <p className={styles.time}>13 мая в 11:00</p>
         <Button className={styles.button}>Откликнуться</Button>
       </div>
-    </div>
+    </div> */}
 
 
   </section>)

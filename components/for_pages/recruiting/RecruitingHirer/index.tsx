@@ -12,17 +12,26 @@ import Head from './Head'
 import users from 'images/recruiting/users.png'
 import slide1 from 'images/recruiting/recruiting_swipe1.png'
 import slide2 from 'images/recruiting/recruiting_swipe2.png'
+import { ICV } from 'data/interfaces/ICV'
+import { useAppContext } from 'context/state'
+import SearchBar from 'components/ui/SearchBar'
 
 
 interface Props {
+  cvs?: ICV[]
 }
 
 export default function RecruitingHirer(props: Props) {
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   return (
     <div className={styles.root}> 
+    {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
       <Head/>
-      <Search title={'Поиск сотрудников'}/>
+
+      {!isTabletWidth && <Search title={'Поиск сотрудников'}/>}
+      
       <Reasons/>
     
       <Title className={styles.title} title={'С чего начать поиск сотрудников?'}/>

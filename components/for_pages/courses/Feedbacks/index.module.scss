@@ -45,6 +45,9 @@
     flex-shrink: 0;
     height: 140%;
     align-self: flex-end;
+    @include mq($TabletWidth, max) {
+      max-width: 150px;
+    }
   }
 
   .content {

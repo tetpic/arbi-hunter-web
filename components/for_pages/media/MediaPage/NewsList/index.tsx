@@ -65,7 +65,10 @@ export default function NewsList(props: Props) {
   }, [mediaContext.page])
 
   useEffect(()=>{
-    mediaContext.refreshPage({categories, page: 1})   
+    if(props.category) {
+      mediaContext.setSearchParams(state => ({...state, activeCategories: [props.category.id]}))
+      mediaContext.refreshPage({categories: [props.category.id], page: 1})   
+    }
   }, [props.category])
 
 

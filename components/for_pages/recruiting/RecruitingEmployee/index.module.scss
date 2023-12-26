@@ -1,10 +1,21 @@
 @import 'styles/index';
 
+.root {
+  @include mq($TabletWidth, max) {
+    padding-top: 16px;
+    overflow: hidden;
+  }
+}
+
 .top {
   display: flex;
   flex-direction: column;
   row-gap: 30px;
   position: relative;
+  @include mq($MdDesktopWidth, max) {
+    align-items: center;
+    row-gap: 16px;
+  }
 
   .image {
     position: absolute;
@@ -14,6 +25,13 @@
     height: 40vw;
     max-height: 100%;
     z-index: 1;
+    @include mq($MdDesktopWidth, max) {
+      position: static;
+    }
+    @include mq($TabletWidth, max) {
+      width: 100vw;
+      height: 100vw;
+    }
 
     &::before {
       content: '';
@@ -39,6 +57,11 @@
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+    @include mq($MdDesktopWidth, max) {
+      margin-top: unset;
+      text-align: center;
+      row-gap: 8px
+    }
 
     &_purple {
       @include textGradientDefault;
@@ -47,6 +70,10 @@
     &_big {
       font-size: $text36;
       font-weight: $bold;
+      @include mq($MdDesktopWidth, max) {
+        font-size: inherit;
+        font-weight: inherit;
+      }
     }
   }
 
@@ -54,6 +81,9 @@
     max-width: 524px;
     color: $white;
     font-size: $largeText;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 
   .found {
@@ -63,6 +93,9 @@
     font-size: $mediumText;
     font-weight: $semibold;
     color: $greyLight;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
 
     &_bold {
       font-weight: $bold;
@@ -73,12 +106,18 @@
   .createLink {
     @include buttonYellow;
     max-width: 224px;
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 }
 
 .title {
   justify-content: center;
   margin-top: 120px;
+  @include mq($TabletWidth, max) {
+    margin-top: 40px;
+  }
 }
 
 .watchAll {

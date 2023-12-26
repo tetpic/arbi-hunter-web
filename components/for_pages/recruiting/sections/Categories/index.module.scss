@@ -11,6 +11,7 @@
     border-radius: 24px;
     background-color: $black;
     width: 32%;
+    min-width: 300px;
     overflow: hidden;
 
     &:before {
@@ -51,6 +52,12 @@
       height: 52px;
       display: flex;
       align-items: center;
+    }
+  }
+
+  .swiper {
+    @include mq($TabletWidth, max) {
+      padding: 0px 16px;
     }
   }
 }

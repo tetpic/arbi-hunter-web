@@ -8,6 +8,10 @@
   padding-top: 100px;
   margin-bottom: 146px;
   margin-top: 50px;
+  @include mq($TabletWidth, max) {
+    padding-top: 40px;
+    margin-bottom: 40px;
+  }
 
   &:before, &:after {
     content: '';
@@ -18,6 +22,9 @@
     opacity: .2;
     top: 0;
     filter: blur(80px);
+    @include mq($TabletWidth, max) {
+      display: none;
+    }
   }
 
   &:before {
@@ -37,11 +44,18 @@
     text-align: center;
     display: flex;
     flex-direction: column;
+    // @include mq($TabletWidth, max) {
+    //   font-size: $hugeText;
+    // }
 
     &_big {
       font-size: $text36;
       font-weight: $bold;
       margin-top: 24px;
+      @include mq($TabletWidth, max) {
+        font-size: inherit;
+        font-weight: inherit;
+      }
     }
 
     &_purple {

@@ -36,7 +36,6 @@ export default function Feedbacks(props: Props) {
                     alt={item.profile.firstName}
                     width={176}
                     height={250}
-                    
                     style={{objectFit: 'cover', height: '100%', width: '100%'}}
                     />
                     ||

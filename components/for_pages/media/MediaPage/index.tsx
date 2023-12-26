@@ -111,7 +111,7 @@ export default function MediaPage(props: Props) {
       const category = props.categories.find(el=> el.id === Number(categoryId))
       appContext.showModal<IMediaCategoryModal>(ModalType.MediaCategoryModal, {
         currentCategory: category,
-        title: category.name
+        title: category?.name
       })
     }
     else if(!props.isMobile && router.query.page === MediaPageNav.Categories) {
@@ -124,7 +124,7 @@ export default function MediaPage(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.contentWrapper}>
       <div className='container'>
-        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.push('/')}/>
+        <TitleForSection title={title} onBackClick={()=>isTabletWidth&&router.back()}/>
         {isTabletWidth && 
           <ItemNavigation bottomStringClass={styles.bottomString} className={styles.itemNav} activeItem={page} items={navSet} onClick={(p)=> {pager(p)}}/>
         }
