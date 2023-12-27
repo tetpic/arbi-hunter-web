@@ -8,8 +8,6 @@ import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Lan
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
-import { useResize } from 'components/hooks/useResize'
-import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
 import Specialization from '../utils/Steps/Specialization'
 import Compensation from '../utils/Steps/Compensation'
@@ -21,7 +19,8 @@ import Busyness from '../utils/Steps/Busyness'
 import ProgressBar from '../../../ui/ProgressBar'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
-import Rive, { useRive } from '@rive-app/react-canvas'
+import Rive from '@rive-app/react-canvas'
+import Title from 'components/ui/TitleForSection'
 
 
 interface Props {
@@ -43,25 +42,13 @@ enum CvNavigation {
 export default function Cv(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isPhoneWidth, isTabletWidth} = appContext.size
+
   const creationContext = useCreateVcCvContext()
-  const {isPhoneWidth} = useResize()
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
-
-  const { rive, RiveComponent } = useRive({
-    src: '/rive/cvCreate/7.riv',
-    stateMachines: 'bumpy',
-    autoplay: true,
-    // animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']
-  })
-
-  // useEffect(()=>{
-  //   console.log(rive)
-    
-  
-  // }, [rive])
 
   const router = useRouter()
   const {progress, setProgress} = creationContext
@@ -151,7 +138,6 @@ export default function Cv(props: Props) {
     initialValues: initialValues,
     onSubmit: submit
   })
-
 
   const getComponent = (progress: number): [JSX.Element, CvNavigation] => {
     switch (progress) {
@@ -302,15 +288,11 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-    {memoedRive}
-    {/* <RiveComponent className={styles.rive}/> */}
+    {!isTabletWidth&& memoedRive}
     <div className={styles.content}>    
-      <p className={styles.title}>
-        {isPhoneWidth && 
-          <Button className={styles.buttonBlackSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
-        }
-        {title}
-      </p>
+      {isPhoneWidth && 
+        <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
+      }
       <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>

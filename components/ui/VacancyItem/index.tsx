@@ -17,6 +17,7 @@ import CalendarSvg from 'components/svg/CalendarSvg'
 import Link from 'next/link'
 import UserPic from '../UserPic'
 import useAbortController from 'components/hooks/useAbortController'
+import { FILES } from 'types/constants'
 
 interface Props {
   vacancy?: IVacancy
@@ -83,7 +84,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       </div>
     </div>
     {!smallCard &&
-      <Image className={styles.image} src={defaultImage} alt={'def image'} width={244} height={220}/>
+      <Image className={classNames(styles.image, vacancy?.profile?.logo&&styles.imageWithLogo)} src={vacancy?.profile?.logo?FILES + vacancy?.profile?.logo?.source:defaultImage} alt={'def image'} width={244} height={220}/>
     }
    
   </Link>)

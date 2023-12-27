@@ -71,6 +71,7 @@
     opacity: .3;
     filter: blur(70px);
   }
+
   img {
     position: absolute;
     top: 0;
@@ -92,6 +93,8 @@
     width: calc(100vw - 32px);
     height: calc(100vw - 32px);
     justify-self: center;
+    max-width: 300px;
+    max-height: 300px;
     img {
       width: 100%;
       height: unset;

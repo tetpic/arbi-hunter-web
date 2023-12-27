@@ -37,29 +37,12 @@
   }
 }
 
-.title {
-  font-size: $largeText;
-  font-weight: $semibold;
-  color: $white;
-  margin-bottom: 24px;
-  @include mq($PhoneWidth, max) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &::after {
-      content: '';
-      width: 36px;
-    }
-  }
-}
-
 .buttonWrapper {
   display: flex;
   margin-top: 32px;
   column-gap: 16px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
- 
     position: absolute;
     bottom: 16px;
     width: calc(100% - 32px);
@@ -112,6 +95,10 @@
   @include mq($SmDesktopWidth, max) {
     display: none !important;
   }
+}
+
+.title {
+  margin-bottom: 16px;
 }
 
 .rive {

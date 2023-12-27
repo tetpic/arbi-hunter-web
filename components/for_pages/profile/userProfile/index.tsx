@@ -19,7 +19,6 @@ interface Props {
 export default function UserProfile(props: Props) {
 
   const choosenNav = props.navSet.find(s => s.type === props.currentPage)
-
   const title = (
     <Title title={choosenNav?.name} onBackClick={props.onBackClick} rightButton={props.titleButton}/>
   )

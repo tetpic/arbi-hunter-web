@@ -38,7 +38,7 @@ export default function Title(props: Props) {
       }
 
       {props.title} {props.emoji}
-      {((isTabletWidth&&props.onBackClick)||props.showButton||props.rightButton)&&
+      {((isTabletWidth&&props.onBackClick)||props.showButton)&&!props.rightButton&&
         <div className={styles.filler}></div>
       }
       {isTabletWidth && props.link &&
@@ -47,6 +47,7 @@ export default function Title(props: Props) {
       {isTabletWidth && props.onAllWatchClick && 
         <div className={styles.link} onClick={props.onAllWatchClick}>Все <ArrowRightSvg/></div>
       }
+      {props.rightButton}
     </div>
   )
 }

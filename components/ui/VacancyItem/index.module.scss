@@ -160,3 +160,10 @@
   color: $greyLight;
   font-size: $smallText;
 }
+
+.imageWithLogo {
+  align-self: center;
+  margin-right: 40px;
+  border-radius: 16px;
+  max-width: 30%;
+}

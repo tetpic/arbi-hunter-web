@@ -20,8 +20,6 @@ import { ModelActions } from 'components/for_pages/profile/userProfile/UserEdito
 import { FILES } from 'types/constants'
 
 
-
-
 export default function MainPageEmployee() {
   const characterContext = useCharacterContext()
   const appContext = useAppContext()

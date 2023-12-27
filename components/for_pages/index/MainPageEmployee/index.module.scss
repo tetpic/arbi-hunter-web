@@ -89,6 +89,16 @@
     }
   }
 
+  .userLogo {
+    justify-self: flex-end;
+    grid-area: d;
+    margin-bottom: -20px;
+    display: block;
+    margin-top: -40px;
+    width: Clamp(170px, 30vw, 300px);
+    height: Clamp(170px, 30vw, 300px);
+  }
+
   .whiteButton {
     grid-area: b;
     @include buttonWhite;
