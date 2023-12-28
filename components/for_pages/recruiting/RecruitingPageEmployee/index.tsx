@@ -3,14 +3,13 @@ import styles from './index.module.scss'
 import SearchBar from 'components/ui/SearchBar'
 import Link from 'next/link'
 import { useVacancyContext } from 'context/vacancy_state'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect,  useState } from 'react'
 import Formatter from 'utils/formatter'
 import Filters from '../Filters'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
-import Rive from '@rive-app/react-canvas'
 import PageVacancies from './PageVacancies'
 import React from 'react'
 import StickyBox from 'react-sticky-box'
@@ -19,6 +18,8 @@ import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFilter
 import { ModalType } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import employee from 'images/recruiting/job_back.jpg'
 
 
 
@@ -59,27 +60,29 @@ export default function RecruitingPageEmployee() {
     })
   }
 
-  const memoedRive = useMemo(()=><Rive 
-  key={1}
-  src={'/rive/cv_laptop.riv'} 
-  animations={[   
-    'Money3',
-    'Money2',
-    'Money1',
-    'MoneyLoop',
-    'Laptop',
-    'HandR',
-    'HandL',
-    'Head',
-    'Eyes',
-    'Boot',]} 
-  className={styles.image}/>, [])
+  // const memoedRive = useMemo(()=><Rive 
+  // key={1}
+  // src={'/rive/cv_laptop.riv'} 
+  // animations={[   
+  //   'Money3',
+  //   'Money2',
+  //   'Money1',
+  //   'MoneyLoop',
+  //   'Laptop',
+  //   'HandR',
+  //   'HandL',
+  //   'Head',
+  //   'Eyes',
+  //   'Boot',]} 
+  // className={styles.image}/>, [])
 
   return (<div className={styles.root}> 
   {!isTabletWidth &&
     <div className={styles.top}>
-      <div className={styles.back}></div>
-      {memoedRive}
+      <div className={styles.back}>
+        <Image src={employee} className={styles.backImage} alt={'back'} />
+      </div>
+      {/* {memoedRive} */}
       <p className={styles.title}>Найти работу в ArbiHunter</p>
       <p className={styles.description}>
         Ежедневно более 1000 людей находят работу в&nbsp;ArbiHunter <br/> которая позволяет им&nbsp;расти и&nbsp;становиться успешными!    

@@ -9,41 +9,48 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import { useEffect, useState } from 'react'
 import { FILES } from 'types/constants'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
-import { useCommunityContext } from 'context/community_state'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
+import { useAppContext } from 'context/state'
+import { IPagination } from 'types/types'
 
 interface Props {
   onClose: ()=> void
 }
 
-export default function MembersModal(props: Props) {
-  const communityContext = useCommunityContext()
+export interface ICommunityMembersModalProps {
+  members?: Map<number, IUserProfile>
+  onSearch?: (page: number, search?: string) => Promise<IPagination<IUserProfile>>
+}
 
-  const [filtered, setFiltered] = useState<IUserProfile[]>([...communityContext.communityMembers.values()])
-  const [dataLength, setLength] = useState<number>(communityContext.communityMembers.size)
+export default function MembersModal(props: Props) {
+  const appContext = useAppContext()
+  const args: ICommunityMembersModalProps = appContext.modalArguments
+
+  const [filtered, setFiltered] = useState<IUserProfile[]>([...args.members.values()])
+  const [dataLength, setLength] = useState<number>(args.members.size)
   const [total, setTotal] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   
   const searchUsers = useThrottleFn((e: React.ChangeEvent<HTMLInputElement>)=>{
     const value = e.target?.value as string
     if(value.length > 0) {
-      communityContext.searchCommunityMembers(1, value)
+      args.onSearch(1, value)
       .then(res=> {
         setFiltered(res.data)
       })
     }
     else {
-      setFiltered([...communityContext.communityMembers.values()])
+      setFiltered([...args.members.values()])
     }
   }, 300)
 
   useEffect(()=>{
-    communityContext.setCommunityMembers(page)
+    args.onSearch(page)
     .then(res=> {
       res instanceof Object && setTotal(res.total)
-      setFiltered([...communityContext.communityMembers.values()])
-      setLength(communityContext.communityMembers.size)
+      setFiltered([...args.members.values()])
+      setLength(args.members.size)
     })
     .catch(_=> {
       

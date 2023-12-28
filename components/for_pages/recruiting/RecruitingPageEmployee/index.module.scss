@@ -23,14 +23,15 @@
     width: calc(100vw - 88px);
     height: 100%;
     z-index: -1;
-    background: linear-gradient(241deg, #7C5BFF 7.14%, rgba(57, 225, 195, 0.85) 100%);
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 
-    .image {
-      width: 500px;
-      height: 250px;
-      margin-right: 100px;
+
+    .backImage {
+      height: 100%;
+      object-fit: contain;
     }
   }
 
@@ -61,7 +62,6 @@
 }
 
 .searchBar {
-  margin-top: -30px;
   @include mq($TabletWidth, max) {
     margin-top: 16px;
   }

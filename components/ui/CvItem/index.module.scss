@@ -30,7 +30,7 @@
     min-height: 280px;
   }
  
-  .top {
+  .content {
     display: flex;
     flex-direction: column;
     row-gap: 16px;
@@ -38,11 +38,26 @@
     width: calc(100% - 250px);
     position: relative;
     @include mq($TabletWidth, max) {
-      width: unset;
+      width: 70%;
     }
   }
 
+  .top {
+    display: grid;
+    grid-template-areas: 'u s' 'u n';
+    row-gap: 8px;
+    grid-template-columns: auto 1fr;
+  }
+  
+  .userPic {
+    grid-area: u;
+    margin-right: 8px;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
   .sub {
+    grid-area: s;
     font-size: $mediumText;
     font-weight: $medium;
     color: $greyLight;
@@ -56,7 +71,7 @@
   }
 
   .name {
-    grid: n;
+    grid-area: n;
     font-size: $largeText;
     font-weight: $semibold;
     color: $white;
@@ -100,18 +115,32 @@
   font-size: $mediumText;
 } 
 
-.image {
+.logo, .image {
   position: absolute;
-  bottom: 0;
-  right: 16px;
   pointer-events: none;
   object-fit: contain;
-  height: auto;
-  width:325px; 
-  height:320px;
+
+}
+
+.logo {
+  right: 0px;
+  bottom: 0;
+  width: clamp(160px, 33vw, 320px);
+  height: clamp(160px, 33vw, 320px);
   @include mq($TabletWidth, max) {
-    width: Clamp(130px, 33%, 200px);
-    bottom: 40px;
+    bottom: 56px;
+  }
+}
+
+.image {
+  bottom: 66px;
+  width: clamp(100px, 30vw, 194px);
+  height: clamp(100px, 30vw, 194px);
+  right: 56px;
+  border-radius: 16px;
+  background-color: $grey;
+  @include mq($TabletWidth, max) {
+    display: none;
   }
 }
 

@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .root {
-  // overflow: hidden;
+  //do NOT set overflow to hidden
   min-height: 100vh;
   min-height: 100dvh;
   @include mq($TabletWidth, max) {

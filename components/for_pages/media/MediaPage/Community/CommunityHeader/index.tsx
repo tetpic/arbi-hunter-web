@@ -18,6 +18,7 @@ import { FILES } from 'types/constants'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SettingSvg from 'components/svg/SettingSvg'
+import { ICommunityMembersModalProps } from 'components/modals/MembersModal'
 
 
 
@@ -44,6 +45,13 @@ export default function CommunityHeader() {
     </div>
   )
 
+  const openMembersModal = () => {
+    appContext.showModal<ICommunityMembersModalProps>(ModalType.MembersModal, {
+      members: communityContext.communityMembers,
+      onSearch: (page, search) => communityContext.searchCommunityMembers(page, search)
+    })
+  }
+
   return (<div className={styles.root}> 
     <div className={styles.background}>
       {communityContext.currentCommunity.image &&
@@ -66,7 +74,7 @@ export default function CommunityHeader() {
       <p className={styles.name}>{communityContext.currentCommunity.name}</p>
       {
         userContext.currentProfile &&
-        <p className={styles.members} onClick={()=>appContext.showModal(ModalType.MembersModal, [...communityContext.communityMembers.values()])}>
+        <p className={styles.members} onClick={()=>openMembersModal()}>
           <UsersSvg/>
           {Formatter.formatNumber(Number(communityContext.currentCommunity.membersCount))} {Formatter.pluralize(+communityContext.currentCommunity.membersCount, 'участник', 'участника', 'участников')}
         </p>

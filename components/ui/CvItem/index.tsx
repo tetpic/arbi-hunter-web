@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
-import defaultImage from 'images/recruiting/cv_user_default.png'
 import SalaryItem from 'components/ui/SalaryItem'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
@@ -17,6 +16,7 @@ import CvRepository from 'data/repositories/CvRepository'
 import Link from 'next/link'
 import { FILES } from 'types/constants'
 import useAbortController from 'components/hooks/useAbortController'
+import UserPic from '../UserPic'
 
 interface Props {
   cv: ICV
@@ -26,6 +26,7 @@ interface Props {
 
 export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const {getNewSignal} = useAbortController()
 
   const respondHandler = (e: React.MouseEvent) => {
@@ -73,12 +74,24 @@ export default function CvItem({cv, ...props}: Props) {
     {/* <div className={styles.image}>
       <ThreeModelVariant {...characterContext.variant} r={0}/>
     </div> */}
-    <Image className={styles.image} src={cv.profile?.logo?.source?FILES+cv.profile?.logo?.source : defaultImage} alt={'def image'} width={320} height={320} />
-    <div className={styles.top}>
-      {cv.categories.length > 0 &&
-      <p className={styles.name}>{cv.categories[0].name}</p>
-      }
-      <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
+    {cv.profile?.useOwnLogo &&
+      <Image className={styles.logo} src={cv.profile?.logo?.source&&FILES+cv.profile?.logo?.source||'/icons/defaultUser.svg'} alt={'def image'} width={320} height={320} />
+      ||
+      <Image className={styles.image} src={cv.profile?.image?.source&&FILES+cv.profile?.image?.source||'/icons/defaultUser.svg'} alt={'def image'} width={320} height={320} />
+    }
+
+
+
+    <div className={styles.content}>
+      <div className={styles.top}>
+        {isTabletWidth && !cv.profile?.useOwnLogo &&
+          <UserPic className={styles.userPic} image={cv.profile?.image?.source&&FILES+cv.profile.image?.source} size={60}/>
+        }
+        {cv.categories.length > 0 &&
+          <p className={styles.name}>{cv.categories[0].name}</p>
+        }
+        <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
+      </div>
 
       {cv.city && cv.city.locName && !cv.isRemote &&
         <p className={styles.sub}>г. {cv.city?.locName}</p>

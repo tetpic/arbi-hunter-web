@@ -51,7 +51,7 @@ export default function Recruiting(props: Props) {
       <RecruitingPageEmployee />
       ||
       props.auth && props.profileType === ProfileType.Hirer &&
-      <RecruitingPageHirer vcId={Number(props.vcId)} />
+        <RecruitingPageHirer vcId={Number(props.vcId)} />
     }
   </ContentLayout>)
 }
