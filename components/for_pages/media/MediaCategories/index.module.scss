@@ -19,7 +19,13 @@
   object-fit: cover;
   position: relative;
   grid-area: i;
+
+  .image {
+    animation: rotateAndScale 5s linear infinite;
+  }
 }
+
+@include rotateAndScale;
 
 .swiperSlide {
   max-width: 330px;

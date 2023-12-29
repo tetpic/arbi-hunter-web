@@ -46,18 +46,24 @@ export default function PersonalCard(props: Props) {
 
   const openUserImageModal = () => {
     appContext.showModal<IUserImageModalProps>(ModalType.UserImageModal, {onSave: (data) => {
-      debugger
       userContext.editCurrentProfile({imageId: data?.image?.data?.id, useOwnLogo: data.type === 'logo'?true: false})
     }})
   }
 
   return (<div className={styles.root}> 
     <div className={styles.imageWrapper}>
-    {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage &&
-      <UserPic className={styles.userPic} image={FILES + (personalContext?.currentProfile?.image?.source||personalContext?.currentProfile?.logo.source)} size={188}/>
+    {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage && personalContext.currentProfile.profileType === ProfileType.Employee &&
+      <UserPic 
+      className={styles.userPic} 
+      image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + ((!personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.image?.source)||(personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.logo.source))} 
+      size={188}
+      />
+      ||
+      personalContext.currentProfile.profileType === ProfileType.Hirer && personalContext.currentProfile?.logo && 
+      <UserPic className={styles.userPic} image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + personalContext?.currentProfile?.logo.source} size={188}/>
       ||
       props.isEditing && 
-      <UserPic image={(logoImage?.image&&URL.createObjectURL(logoImage?.image)||logoImage?.data&&FILES + logoImage?.data?.source)||'/icons/photoCamera.svg'} className={styles.userPic} size={188}/>
+      <UserPic image={(logoImage?.image?URL.createObjectURL(logoImage?.image):logoImage?.data&&FILES + logoImage?.data?.source)||'/icons/photoCamera.svg'} className={styles.userPic} size={188}/>
       ||
       isTabletWidth && 
       <UserPic className={styles.userPic} size={188}/>

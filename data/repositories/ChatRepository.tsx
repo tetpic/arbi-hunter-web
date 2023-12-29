@@ -15,7 +15,7 @@ export default class ChatRepository {
       config
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -27,7 +27,7 @@ export default class ChatRepository {
       url: '/api/chat/contacts',
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -39,7 +39,7 @@ export default class ChatRepository {
       url: '/api/chat-folder?sort=pinned,DESC&sort=lastMessageAt,DESC',
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -54,7 +54,7 @@ export default class ChatRepository {
       data: rest, 
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -66,7 +66,7 @@ export default class ChatRepository {
       url: `/api/chat/dialog/${id}`,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -80,7 +80,7 @@ export default class ChatRepository {
       data,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -92,7 +92,7 @@ export default class ChatRepository {
       url: `/api/chat-folder/${id}`,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -105,7 +105,7 @@ export default class ChatRepository {
       data,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -118,7 +118,7 @@ export default class ChatRepository {
       data,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -130,7 +130,7 @@ export default class ChatRepository {
       url: '/api/chat/vacancies?page=1&limit=100',
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -142,7 +142,7 @@ export default class ChatRepository {
       url: `/api/chat/${id}`,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -154,7 +154,7 @@ export default class ChatRepository {
       url: `/api/chat/${id}`,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -177,7 +177,7 @@ export default class ChatRepository {
       url: `/api/chat/messages/search?search=${search}`,
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -193,7 +193,7 @@ export default class ChatRepository {
       },
     })
     if(res.err) {
-      debugger
+      
       return null
     }
     return res
@@ -209,7 +209,7 @@ export default class ChatRepository {
       },
     })
     .catch(err => {
-      debugger
+      
     })
   }
 }

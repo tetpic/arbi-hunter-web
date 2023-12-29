@@ -184,7 +184,7 @@ export function ChatDialogWrapper(props: Props) {
       ...data as IMessage,
       sid,
       id: sid,
-      profileId: userContext.currentProfile.id,
+      profileId: userContext?.currentProfile?.id,
       createdAt: (new Date()).toISOString(),
     }
     if(files && (files.pastedImages||files.voiceMessage)) {
@@ -223,7 +223,7 @@ export function ChatDialogWrapper(props: Props) {
       }
     }
  
-    const createdMessage = await ChatRepository.createMessage({...data, chatId: chat.id, sid, profileId: userContext.currentProfile.id})
+    const createdMessage = await ChatRepository.createMessage({...data, chatId: chat.id, sid, profileId: userContext?.currentProfile?.id})
     setMessages(state=> {
       state.delete(sid)
       return new Map([[createdMessage.id, createdMessage], ...state.entries()])

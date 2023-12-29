@@ -32,7 +32,7 @@ export default function Personal() {
 
   return (
     <div className={styles.root}> 
-      {/* {userContext.currentProfile.profileType === ProfileType.Hirer &&
+      {/* {userContext?.currentProfile?.profileType === ProfileType.Hirer &&
         <Buildings/>
         ||
         <Rooms/>

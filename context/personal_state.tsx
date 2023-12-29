@@ -5,6 +5,8 @@ import PersonalRepository from 'data/repositories/PersonalRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { useUserContext } from './user_state'
+import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
+import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 
 interface IState {
   setPersonalPage: (id?: number) => void
@@ -12,7 +14,9 @@ interface IState {
   updatePersonalPage: (data?: Partial<IPersonalPageBlock[]>) => Promise<IPersonalPage>
   blocks: Map<number, {block: IPersonalPageBlock, assets: IFile[]}>
   setBlocks: Dispatch<SetStateAction<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>>
-  currentProfile: IUserProfile
+  currentProfile: IUserProfile,
+  backgrounds: Map<number, IBackground>
+  refreshBackgrounds: () => void
 }
 
 const PersonalContext = createContext<Partial<IState>>({})
@@ -26,6 +30,7 @@ export function PersonalWrapper(props: Props) {
   const [personalPage, setPersonalPageState] = useState<IPersonalPage>(null)
   const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>(new Map)
   const [currentProfile, setCurrentProfile] = useState<IUserProfile>(null) 
+  const [backgrounds, setBackgrounds] = useState<Map<BackgroundCategoryType, IBackground>>(new Map)
 
   const setPersonalPage = async (id?: number) => {
     if(id) {
@@ -37,11 +42,14 @@ export function PersonalWrapper(props: Props) {
     }
     try {
       const res = id?await PersonalRepository.getPersonalPageById(id):await PersonalRepository.getPersonalPage()
+      const backs = await BackgroundRepository.getBackground({profileId: res.profileId})
+
       setPersonalPageState(res)
       res.blocks.forEach(block => {
         const assets = res.assets.filter(el=> block.assets.includes(el.id))
         setBlocks(state=> state.set(block.order, {block, assets}))
       })
+      setBackgrounds(new Map(backs.map(el=> [el.category.id, el])))
     }
     catch (err) {
       setPersonalPageState(undefined)
@@ -69,6 +77,11 @@ export function PersonalWrapper(props: Props) {
     }
   }
 
+  const refreshBackgrounds = async () => {
+    const backs = await BackgroundRepository.getBackground({profileId: currentProfile?.id})
+    setBackgrounds(new Map(backs.map(el=> [el.category.id, el])))
+  }
+
 
   const value: IState = {
     personalPage,
@@ -76,7 +89,9 @@ export function PersonalWrapper(props: Props) {
     updatePersonalPage,
     blocks, 
     setBlocks, 
-    currentProfile
+    currentProfile,
+    backgrounds,
+    refreshBackgrounds
   }
 
   return (

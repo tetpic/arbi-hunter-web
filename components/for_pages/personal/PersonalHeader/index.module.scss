@@ -32,6 +32,12 @@
   font-weight: $semibold;
   background-color: rgba(128, 128, 128, 0.453);
   backdrop-filter: blur(2px) saturate(50%);
+  display: flex;
+  align-items: center;  
+  column-gap: 8px;
+  cursor: pointer;
+  z-index: 4;
+
   @include mq($TabletWidth, max) {
     bottom: unset;
     padding-block: 16px;
@@ -41,16 +47,28 @@
     border: 2px $white dotted;
   }
 
-  label {
-    display: flex;
-    align-items: center;  
-    column-gap: 8px;
-  }
 }
 
 .background {
   text-align: end;
   height: Clamp(250px, 70vw, 300px);
   text-align: end;
+  object-fit: cover;
+}
+
+.personalImageWrapper {
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+
+  .building {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hirerLogo {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
 }
 

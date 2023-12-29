@@ -33,6 +33,8 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import ShareSvg from 'components/svg/ShareSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { useRouter } from 'next/navigation'
+import Buildings from '../profile/Personal/Buildings'
+import Spacer from 'components/ui/Spacer'
 
 
 interface Props {
@@ -64,8 +66,13 @@ export default function CvPage(props: Props) {
     })
   }
 
+  const profileImage = 
+  currentCv?.profile.useOwnLogo && currentCv?.profile?.logo?.source && FILES+currentCv?.profile?.logo?.source
+  ||
+  !currentCv?.profile.useOwnLogo && currentCv?.profile?.image?.source && FILES+currentCv?.profile?.image?.source
+
   const userCard = (<>
-    <UserPic size={100} image={currentCv?.profile?.image?.source&& FILES+currentCv.profile.image.source}/>
+    <UserPic size={100} image={profileImage}/>
     <p className={styles.userName}>{currentCv?.profile?.firstName} {currentCv?.profile?.lastName}</p>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
     <p className={styles.otherData}>
@@ -103,6 +110,13 @@ export default function CvPage(props: Props) {
       <div className={styles.userCard} >
         {userCard}
       </div>
+    }
+    {!isTabletWidth &&
+    <>
+    <Spacer basis={48}/>
+    <Buildings profile={currentCv?.profile}/>
+    
+    </>
     }
     <Content className={styles.root}>
       <ContentBody className={styles.body}>

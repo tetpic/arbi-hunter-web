@@ -53,6 +53,7 @@
   position: relative;
   container-type: inline-size;
   container-name: item;
+  overflow: hidden;
 
   .top {
     display: flex;
@@ -166,4 +167,33 @@
   margin-right: 40px;
   border-radius: 16px;
   max-width: 30%;
+}
+
+.defaultImage {
+  background-color: $grey;
+  border-radius: 16px;
+
+}
+
+.imageWrapper {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  margin-right: 20px;
+
+  .image {
+    border-radius: 16px;
+  }
+}
+
+.buildWrapper {
+  align-self: flex-end;
+  position: relative;
+  margin-bottom: -30px;
+
+  .logo {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 4px;
+  }
 }

@@ -86,7 +86,7 @@ export default function VacancyPage(props: Props) {
     <Spacer basis={48} hide={isTabletWidth}/>
     {
       currentVacancy.profile.image && !isTabletWidth &&
-      <Buildings/>
+      <Buildings profile={currentVacancy.profile}/>
     }
     {isTabletWidth &&
       <div className={styles.buttonsWrapper}>
@@ -152,7 +152,7 @@ export default function VacancyPage(props: Props) {
             <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
         </ContentItem>
-        {userContext.currentProfile.profileType === ProfileType.Employee && foundVacancies.length > 0 &&
+        {userContext?.currentProfile?.profileType === ProfileType.Employee && foundVacancies.length > 0 &&
         <>
           <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
           <ContentItem>
@@ -167,12 +167,12 @@ export default function VacancyPage(props: Props) {
 
       <ContentAside hide={isTabletWidth}>
         <ContentItem className={styles.aside}>
-          <UserPic size={100} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
+          <UserPic size={100} image={currentVacancy?.profile?.logo?.source&& FILES+currentVacancy.profile.logo.source}/>
           <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
           <Link href={'/personal/' + currentVacancy.profileId} className={styles.button}>Открыть профиль</Link>
         </ContentItem>
 
-        {userContext.currentProfile.profileType === ProfileType.Employee &&
+        {userContext?.currentProfile?.profileType === ProfileType.Employee &&
           <>
             <p className={styles.otherVacancies}>Другие вакансии компании</p>
               {otherCompanyVacncies.length > 0 &&

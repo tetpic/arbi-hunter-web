@@ -85,10 +85,10 @@ export default function MainPageEmployee() {
           <p className={styles.count}>{Formatter.formatNumber(userContext?.user?.balance)}</p>
           { 
           isSmDesktopWidth && userContext?.currentProfile?.image && !userContext?.currentProfile?.useOwnLogo &&
-          <Image className={styles.userImage} src={FILES + userContext.currentProfile.image.source} alt={''} width={300} height={300}/>
+          <Image className={styles.userImage} src={FILES + userContext?.currentProfile?.image.source} alt={''} width={300} height={300}/>
             ||
           isSmDesktopWidth && userContext?.currentProfile?.logo && userContext?.currentProfile?.useOwnLogo &&
-          <Image className={styles.userLogo} src={FILES + userContext.currentProfile.logo.source} alt={''} width={300} height={300}/>
+          <Image className={styles.userLogo} src={FILES + userContext?.currentProfile?.logo.source} alt={''} width={300} height={300}/>
             ||
           <Image className={styles.dollar} src={'/images/dollar.png'} alt={'dollar'} width={66} height={66}/>
           }

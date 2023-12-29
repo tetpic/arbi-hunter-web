@@ -240,7 +240,7 @@ export function CommunityWrapper(props: Props) {
   useEffect(()=>{
     if(categories.length === 0 && userContext.currentProfile) {
       setCategories()
-      // userContext.currentProfile.profileType === ProfileType.Hirer&&setMyCommunity()
+      // userContext?.currentProfile?.profileType === ProfileType.Hirer&&setMyCommunity()
     }
   }, [userContext.currentProfile])
 

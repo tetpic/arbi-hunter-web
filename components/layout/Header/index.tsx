@@ -101,7 +101,7 @@ export default function Header(props: Props) {
             <>
               <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
               <UserPic 
-              image={userContext.currentProfile.useOwnLogo
+              image={userContext?.currentProfile?.useOwnLogo
                 ?userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source
                 :userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source
               } 

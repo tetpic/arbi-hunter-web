@@ -76,9 +76,14 @@ export default function UserDropdownMenu(props: Props) {
   }
 
   const userImage = 
-  !currentProfile.useOwnLogo&& currentProfile?.image?.source&&FILES + currentProfile.image.source
+  currentProfile.profileType === ProfileType.Hirer && currentProfile?.logo &&
+  FILES + currentProfile.logo.source
   ||
-  currentProfile.useOwnLogo&&currentProfile?.logo?.source&&FILES + currentProfile.logo.source
+  !currentProfile.useOwnLogo && currentProfile?.image?.source&&
+  FILES + currentProfile.image.source
+  ||
+  currentProfile.useOwnLogo&&currentProfile?.logo?.source
+  &&FILES + currentProfile.logo.source
 
   return ( 
     <div className={classNames(styles.root, props.className)} ref={(ref)=> props.reference(ref)}>

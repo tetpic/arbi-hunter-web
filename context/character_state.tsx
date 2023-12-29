@@ -143,7 +143,7 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       return res.id
     })
-    await UserRepository.editProfileByType({logoId: fileId}, userContext.currentProfile.profileType)
+    await UserRepository.editProfileByType({logoId: fileId}, userContext?.currentProfile?.profileType)
     CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .then(res=> {
       appContext.showSnackbar('Изображение сохранено', SnackbarType.success)

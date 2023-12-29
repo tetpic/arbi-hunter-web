@@ -47,8 +47,8 @@ export interface ITranslation extends TimeStamp {
 }
 
 export interface IFocalPoint {
-  x: string,
-  y: string
+  x: number,
+  y: number
 }
 
 export interface IFile extends TimeStamp {

@@ -48,7 +48,7 @@ export default function WorkPlace(props: Props) {
       <DropDownInput
       onSetOption={countryHandler} 
       name={'countryName'} 
-      value = {cvContext?.currentVc?.country?.locName||userContext.currentProfile.country.locName}
+      value = {cvContext?.currentVc?.country?.locName||userContext?.currentProfile?.country.locName}
       labelName={'Страна где находится офис:'}
       requestFn={LocationRepository.searchCountry} 
       />
@@ -57,7 +57,7 @@ export default function WorkPlace(props: Props) {
       onSetOption={cityHandler} 
       name={'cityName'} 
       country={currentCountryCode}
-      value = {cvContext?.currentVc?.city?.locName||userContext.currentProfile.city.locName}
+      value = {cvContext?.currentVc?.city?.locName||userContext?.currentProfile?.city.locName}
       labelName={'Город где находится офис:'}
       requestFn={LocationRepository.searchCity} 
       />

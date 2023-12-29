@@ -21,6 +21,10 @@
   @include mq($SmDesktopWidth, max) {
     width: 100%;
   }
+
+  &_wide {
+    width: 100%;
+  }
 }
 
 .model {
@@ -29,15 +33,26 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  align-self: flex-end;
   position: relative;
   z-index: 2;
   @include mq($SmDesktopWidth, max) {
     display: none;
-   }
+  }
+  .imageWrapper {
+    position: relative;
+  }
 
-  >div {
-    width: 570px;
-    height: 570px;
+  .build {
+    position: relative;
+    z-index: 2;
+  }
+
+
+  .logo {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 1;
   }
 }
 

@@ -39,7 +39,7 @@ export default function UserImageModal(props: Props) {
           <UserPic 
           className={styles.userPic}
           size={88}
-          image={userContext.currentProfile.logo&&FILES+userContext.currentProfile.logo.source}
+          image={userContext?.currentProfile?.logo&&FILES+userContext?.currentProfile?.logo.source}
           />
           <p>Индивидуальный аватар</p>
         </div>
@@ -49,7 +49,7 @@ export default function UserImageModal(props: Props) {
             <UserPic
             className={styles.userPic}
             size={88}
-            image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext.currentProfile.image&&FILES+userContext.currentProfile.image.source}
+            image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
             />
           </label>
           <p>Загрузить фото</p>

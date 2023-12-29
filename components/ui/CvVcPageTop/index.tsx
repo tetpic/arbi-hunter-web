@@ -70,9 +70,9 @@ export default function CvVcPageTop(props: Props) {
       }
       <SalaryItem cv={props.cv} vacancy={props.vc} />
     </div>
-    {((userContext.currentProfile.profileType === ProfileType.Hirer && props.cv) 
+    {((userContext?.currentProfile?.profileType === ProfileType.Hirer && props.cv) 
     ||
-    (userContext.currentProfile.profileType === ProfileType.Employee && props.vc && !props.hideButtons))
+    (userContext?.currentProfile?.profileType === ProfileType.Employee && props.vc && !props.hideButtons))
     &&
     <div className={styles.right}>
       <Button className={classNames(styles.button, styles.share)}><ShareSvg/></Button>

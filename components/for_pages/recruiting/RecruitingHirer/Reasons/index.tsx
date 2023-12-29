@@ -22,7 +22,6 @@ export default function Reasons(props: Props) {
             triggerElement: triggerRef.current,
             duration: 900,
             offset: -200
-            
           })
           .on('enter', ()=> {
             document.querySelectorAll(`.${styles.bucket}`).forEach(el=> el.classList.add(`${styles.bucket_active}`))

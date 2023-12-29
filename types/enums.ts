@@ -35,6 +35,7 @@ export enum ModalType {
   RecruitingFiltersModal = 'recruitingFiltersModal',
   CoursesCategoriesModal = 'coursesCategoriesModal',
   UserImageModal = 'userImageModal',
+  BackgroundPickModal = 'backgroundPickModal',
 
 
 }

@@ -12,6 +12,8 @@ import { useUserContext } from 'context/user_state'
 import ChatRepository from 'data/repositories/ChatRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { IStats } from 'data/interfaces/IUser'
+import { FILES } from 'types/constants'
+import classnames from 'classnames'
 
 
 interface Props {
@@ -53,7 +55,7 @@ export default function MainPageHirer(props: Props) {
       <Rive className={styles.rive}  src={'/rive/header_particles2.riv'}/>
     </div> */}
     
-    <div className={styles.content}>
+    <div className={classnames(styles.content, !userContext?.currentProfile?.image&&styles.content_wide)}>
       <div className={styles.balance}>
         <p className={styles.title}>Баланс счета</p>
         <div className={styles.card}>
@@ -118,8 +120,22 @@ export default function MainPageHirer(props: Props) {
         </div>
       </div>
     </div>
-    <div className={styles.model}>
-      <Image src={'/images/buildings/building1.png'} width={550} height={570} style={{objectFit: 'contain'}} alt={''}/>
-    </div>
+    {userContext?.currentProfile?.image && 
+      <div className={styles.model}>
+        <div className={styles.imageWrapper}>
+          {userContext?.currentProfile?.image &&
+            <Image className={styles.build} src={FILES + userContext?.currentProfile?.image.source} width={500} height={588} style={{objectFit: 'contain'}} alt={''}/>
+          }            
+          {userContext.currentProfile?.logo && userContext?.currentProfile?.image &&
+            <Image 
+            className={styles.logo}
+            src={FILES + userContext?.currentProfile?.logo.source} 
+            width={104} height={104} 
+            style={{top: userContext?.currentProfile?.image.focalPoint.y*100 + '%', left: userContext?.currentProfile?.image.focalPoint.x*100 + '%'}} 
+            alt={''}/>
+          }
+        </div>
+      </div>
+    }
   </div>)
 }

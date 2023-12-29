@@ -1,0 +1,109 @@
+@import 'styles/index';
+
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.picker {
+  width: calc(100% - 60px);
+  margin-top: -24px;
+}
+
+.buildPicker {
+  max-width: 500px;
+}
+
+.place {
+  overflow: hidden;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px transparent solid;
+
+  &_active {
+    border: 2px $blue solid;
+  }
+  
+  img {
+    object-fit: cover;
+  }
+}
+
+.background {
+  position: relative;
+
+  .closeModal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 4px;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  .buildWrapper {
+    position: absolute;
+    right: 16px;
+    bottom: 0;
+
+    .logo {
+      position: absolute;
+      z-index: 4;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}
+
+.build {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px transparent solid;
+
+  &_active {
+    border: 2px $blue solid;
+  }
+
+  .buildImg {
+    position: relative;
+    z-index: 2;
+  }
+
+  .buildBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+}
+
+.nextButton {
+  @include buttonYellow;
+  width: calc(50% - 8px);
+}
+
+.backButton {
+  @include buttonGray;
+  width: calc(50% - 8px);
+}
+
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px; 
+}
+
+.backgroundImage {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}

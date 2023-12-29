@@ -4,7 +4,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import SalaryItem from 'components/ui/SalaryItem'
 import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
-import defaultImage from 'images/recruiting/vacancyDefaultImage.png'
+// import defaultImage from 'images/recruiting/vacancyDefaultImage.png'
 import Image from 'next/image'
 import { useAppContext } from 'context/state'
 import { ActivityStatus, ModalType } from 'types/enums'
@@ -84,7 +84,29 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       </div>
     </div>
     {!smallCard &&
-      <Image className={classNames(styles.image, vacancy?.profile?.logo&&styles.imageWithLogo)} src={vacancy?.profile?.logo?FILES + vacancy?.profile?.logo?.source:defaultImage} alt={'def image'} width={244} height={220}/>
+      <div className={(vacancy?.profile?.logo && vacancy.profile.image)?styles.buildWrapper:styles.imageWrapper}>
+        {vacancy?.profile?.logo && !vacancy.profile.image &&
+          <Image className={styles.image} src={FILES + vacancy?.profile?.logo?.source} alt={'def image'} width={150} height={150}/>          
+          ||
+          vacancy?.profile?.logo && vacancy.profile.image && 
+          <>
+            <Image 
+            className={styles.build} 
+            src={FILES + vacancy?.profile?.image.source} 
+            alt='build' 
+            width={256} height={300}
+            />
+            <Image 
+            className={styles.logo} 
+            src={ FILES + vacancy?.profile?.logo?.source} 
+            alt={'def image'} 
+            style={{top: vacancy?.profile?.image.focalPoint.y*100 + '%', left: vacancy?.profile?.image.focalPoint.x*100 + '%'}} 
+            width={60} height={60}/>
+          </>
+          ||
+          <Image className={styles.defaultImage} src={'/icons/defaultUser.svg'} alt={'def image'} width={150} height={150}/>
+        }
+      </div>
     }
    
   </Link>)
