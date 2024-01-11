@@ -8,8 +8,9 @@ interface Props {
   pointsCount: number
   rootClassName?: string
   itemClassName?: string
-  onClick: (p: number)=> void
+  onClick?: (p: number)=> void
   titles?: string[]
+  fullWidth?: boolean
 }
 
 interface ProgressItem {
@@ -45,7 +46,12 @@ export default function ProgressBar(props: Props) {
   return ( 
     <div className={classNames(props.rootClassName?props.rootClassName:styles.root)}>
       {progressItems.map((el, index)=> {
-        return <div key={el.key} title={el.title} onClick={()=>props.onClick(index+1)} style={{width: 100/props.pointsCount-1+'%'}} className={classNames(styles.item, el.active&&styles.item_active, props.itemClassName)}></div>
+        return <div key={el.key} title={el.title} 
+        onClick={()=>props.onClick&&props.onClick(index+1)} 
+        style={{width: 100/props.pointsCount-1+'%', maxWidth: props.fullWidth&&'100%'}} 
+        className={classNames(styles.item, el.active&&styles.item_active, props.itemClassName, !props.onClick && styles.item_noClick)}
+        >          
+        </div>
       })}
       
     </div>

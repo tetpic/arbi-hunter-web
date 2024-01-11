@@ -21,6 +21,9 @@ import FormErrorScroll from 'components/ui/FormErrorScroll'
 import Button from 'components/ui/Button'
 import PasswordField from 'components/fields/PasswordField'
 import UserRegImage from 'components/ui/UserRegImage'
+import ProgressBar from 'components/ui/ProgressBar'
+import PhoneCountryField from 'components/fields/PhoneCountryField'
+import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 
 
 
@@ -33,16 +36,18 @@ export default function Registration() {
   const [cityId, setCityId] = useState<number>()
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
-  //TODO пофиксить кнопку  регистрации, когда нажали на вход
-  // const [loading, setLoading] = useState<boolean>(false)
+  const [progress, setProgress] = useState<number>(1)
+
   const [disableButton, setDisableButton] = useState<boolean>(false)
   const router = useRouter()
+  const stepsCount = 3
 
 
   const initialValues: IRegistrationComplete = {
     firstName: '',
     lastName: '',
-    password: '',       
+    password: '',      
+    phone: '', 
     profileType: userContext.profileType??ProfileType.Employee,
     telegramNickname: '',
     email: '',
@@ -86,8 +91,6 @@ export default function Registration() {
     onSubmit: submit
   })
 
-
-
   const countryHandler = (obj: ISearchCountryResult) => {
     setCountry(obj)
     setCityNameValue('')
@@ -98,12 +101,137 @@ export default function Registration() {
     setCityId(obj.id)
   }
 
-  useEffect(()=>{
-    if(!userContext.isLogged) {
-      appContext.showModal(ModalType.RegistrationModal)
+  const  nextPageValidator = (page?: number) => {
+    const setErr = (val: string, err?: string) => {
+      formik.setFieldTouched(val, true).then(_=>{
+        formik.setFieldError(val, err||' ')
+      })
     }
-    return ()=> appContext.hideModal()
-  }, [userContext.isLogged])
+    switch(page||progress) {
+      case 1: (async() => {
+        debugger
+        const values = ['email', 'password', 'phone']
+        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
+        const filteredErrors = errors.filter(el=> el[1] !== undefined)
+        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
+        if(filteredErrors.length === 0) {
+          appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
+            phone: formik.values.phone,
+            onComplete: () => {
+              setProgress(page||progress+1)
+            }
+          })
+        }
+      })()
+      break
+      case 2:(async() => {   
+        const values = ['firstName', 'lastName', 'telegramNickname']
+        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
+        const filteredErrors = errors.filter(el=> el[1] !== undefined)
+        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
+        filteredErrors.length === 0 && setProgress(page||progress+1)
+      })()
+      break
+      case 3:(async() => {
+        const values = ['cityId', 'countryId']
+        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
+        const filteredErrors = errors.filter(el=> el[1] !== undefined)
+        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
+        filteredErrors.length === 0 && submit(formik.values)
+      })()
+    }
+  }
+
+  const stage1 = (<>
+    <InputField   
+    label={'E-mail:'}
+    className={styles.input} 
+    labelType='top' 
+    styleType={'default'} 
+    color={'default'} 
+    name={'email'} 
+    validate={Validator.combine([Validator.required, Validator.email])}
+    />
+
+    <PhoneCountryField 
+    styleType={'horizontal'} 
+    disabled={false} 
+    placeholder={'000 000 00 00'} 
+    name={'phone'}  
+    className={styles.input} 
+    defaultCountry={'RU'}
+    label={'Телефон:'}
+    validate={Validator.phone}
+    />
+
+    <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />
+    </>
+  )
+
+  const stage2 =(<>
+    <InputField 
+    label={'Имя:'}
+    className={styles.input} 
+    labelType='top' 
+    styleType={'default'} 
+    color={'default'} 
+    name={'firstName'} 
+    validate={Validator.combine([Validator.required, Validator.onlyChars])}
+    />
+
+    <InputField 
+    label={'Фамилия:'}
+    className={styles.input} 
+    labelType='top' 
+    styleType={'default'} 
+    color={'default'} 
+    name={'lastName'} 
+    validate={Validator.combine([Validator.required, Validator.onlyChars])}
+    />
+
+    <InputField 
+    label={'Telegram:'}
+    className={styles.input} 
+    labelType='top' 
+    styleType={'default'} 
+    color={'default'} 
+    name={'telegramNickname'} 
+    validate={Validator.required}
+    />
+  </>)
+
+  const stage3 = (<>
+    {userContext.profileType === ProfileType.Hirer &&
+      <InputField 
+      label={'Название компании:'}
+      className={styles.input} 
+      labelType='top' 
+      styleType={'default'} 
+      color={'default'} 
+      name={'company'} 
+      validate={Validator.required}
+      />
+    }
+
+    <DropDownInput 
+    onSetOption={countryHandler} 
+    name={'countryId'} 
+    labelName={'Страна: '}
+    requestFn={LocationRepository.searchCountry}
+    className={styles.dropInput}
+    />
+
+    <DropDownInput 
+    onSetOption={cityHandler} 
+    name={'cityId'} 
+    labelName={'Город: '}
+    requestFn={LocationRepository.searchCity}
+    country={country&&country.country_code}
+    value={cityNameValue}
+    onChange={(s: string) => {setCityNameValue(s)}}
+    className={styles.dropInput}
+    />
+  </>)
 
   useEffect(()=>{
     if(userContext.currentProfile) {
@@ -129,85 +257,21 @@ export default function Registration() {
           Уже есть аккаунт? 
           <Link className={styles.loginLink} href={'/login'}>Войти</Link>
         </p>
+        <ProgressBar fullWidth progress={progress} pointsCount={stepsCount}/>
+
         <FormikProvider value={formik} >
           <Form className={styles.form} autoComplete={'false'} >
             <FormErrorScroll formik={formik} />
-            <InputField 
-            label={'Имя:'}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'firstName'} 
-            validate={Validator.combine([Validator.required, Validator.onlyChars])}
-            />
-
-            <InputField 
-            label={'Фамилия:'}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'lastName'} 
-            validate={Validator.combine([Validator.required, Validator.onlyChars])}
-            />
-
-            {userContext.profileType === ProfileType.Hirer &&
-              <InputField 
-              label={'Название компании:'}
-              className={styles.input} 
-              labelType='top' 
-              styleType={'default'} 
-              color={'default'} 
-              name={'company'} 
-              validate={Validator.required}
-              />
-            }
-
-            <DropDownInput 
-            onSetOption={countryHandler} 
-            name={'countryId'} 
-            labelName={'Страна: '}
-            requestFn={LocationRepository.searchCountry}
-            className={styles.dropInput}
-            />
-
-            <DropDownInput 
-            onSetOption={cityHandler} 
-            name={'cityId'} 
-            labelName={'Город: '}
-            requestFn={LocationRepository.searchCity}
-            country={country&&country.country_code}
-            value={cityNameValue}
-            onChange={(s: string) => {setCityNameValue(s)}}
-            className={styles.dropInput}
-            />
-            
-            <InputField 
-            label={'Telegram:'}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'telegramNickname'} 
-            validate={Validator.required}
-            />
-
-            <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />
-
-            <InputField   
-            label={'E-mail:'}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'email'} 
-            validate={Validator.combine([Validator.required, Validator.email])}
-            />
-
-          <Button disabled={disableButton} className={styles.submitButton} onClick={()=> formik.submitForm()}>
-            Зарегистрироваться
-          </Button>
+            {progress === 1 && stage1}
+            {progress === 2 && stage2}
+            {progress === 3 && stage3}
+          {progress === 3 &&
+            <Button disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
+              Зарегистрироваться
+            </Button>
+            ||
+            <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
+          }
           </Form>
         </FormikProvider>
         

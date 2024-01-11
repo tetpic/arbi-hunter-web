@@ -23,7 +23,7 @@ export interface ILogin {
 }
 
 export interface IRegistrationPhone {
-  phone: string,
+  phone?: string,
   code?: string 
 }
 

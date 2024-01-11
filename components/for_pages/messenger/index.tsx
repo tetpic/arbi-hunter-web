@@ -29,6 +29,7 @@ export default function Messenger() {
   const [component, setComponent] = useState<ChatComponent>(ChatComponent.Chat)
 
   const handleSelectChat = (chat: IChat) => {
+    debugger
     chatContext.setCurrentChatId(chat.id)
     setComponent(ChatComponent.Dialog)
     router.replace({query: { ...router.query, chat: chat.id}}, undefined, {shallow: true})

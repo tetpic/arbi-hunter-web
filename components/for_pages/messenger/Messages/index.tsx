@@ -100,20 +100,22 @@ export default function Messages(props: Props) {
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
-  useEffect(()=>{
-    if(dialog.chat) {
-      setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
-      if(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id) {
-        CvRepository.getById(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id)
-        .then(cv=> {
-          setCv(cv)
-        })
+
+  //TODO:  убрать получение cv после оптимизации запросов к чатам и сообщениям
+    useEffect(()=>{
+      if(dialog.chat) {
+        setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
+        if(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id) {
+          CvRepository.getById(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id)
+          .then(cv=> {
+            setCv(cv)
+          })
+        }
+        else {
+          setCv(null)
+        }
       }
-      else {
-        setCv(null)
-      }
-    }
-  }, [dialog.chat])
+    }, [dialog.chat])
 
   return (
     <div className={styles.root}> 

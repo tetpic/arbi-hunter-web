@@ -1,18 +1,11 @@
 @import 'styles/index';
 
 .modalRoot {
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  position: relative;
-  border-radius: unset;
-  padding: 0;
-  max-height: unset !important;
-  background-color: $backgroundBlack;
+  max-width: 390px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  padding: 37px 32px;
 }
 
 .background {
@@ -35,11 +28,9 @@
 .body {
   position: relative;
   z-index: 1;
-  max-width: 400px;
-  padding: 24px;
+  width: 100%;
   background-color: $black;
   border-radius: 16px;
-  margin-top: 78px;
 }
 
 .title {
@@ -55,8 +46,10 @@
 }
 
 .disclaimer {
-  color: $white;
+  color: $greyLight;
   font-size: $smallText;
+  margin-top: 24px;
+  text-align: center;
 }
 
 .nextButton {
@@ -85,8 +78,9 @@
 
 .confirmTitle {
   color: $white;
-  font-size: $largeText;
+  font-size: $text20;
   font-weight: $semibold;
+  text-align: center;
 }
 
 .timeRemain {
@@ -110,14 +104,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
+  width: 100%;
   margin-top: 24px;
+  row-gap: 8px;
   justify-content: center;
  
 
   .navButton{
     border-radius: 10px;
     padding: 10px 0;
-    width: 49%;
+    width: 100%;
     cursor: pointer;
     @include transitionDefault;
 
