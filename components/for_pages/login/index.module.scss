@@ -1,12 +1,10 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 48px;
+  padding-top: Clamp(8px, 3vw, 48px); // 48px;
   display: flex;
   @include container;
-  @include mq($PhoneWidth, max) {
-    margin-top: 8px;
-  }
+
 }
 
 .content {
@@ -80,32 +78,27 @@
     justify-content: space-between;
   }
   @include mq($PhoneWidth, max) {
-    min-height: calc(100vh - 210px);
-    min-height: calc(100dvh - 210px);
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
     justify-content: flex-start;
     flex-direction: column;
   }
 }
 
 .input {
-  width: 100%;
-  // @include exeptLast {
-  //   margin-bottom: 24px;
-  // }
-  @include mq($TabletWidth, max) {
-    width: 49%;
-  }
-  @include mq($PhoneWidth, max) {
-    width: 100%;
-  }
+  width: 100% !important;
+  
 }
 
 .submitButton {
-  @include buttonBlack;
+  @include mq($PhoneWidth, min) {
+    @include buttonBlack;
+  }
   padding: 10px 24px;
   // display: inline-block;
   @include mq($PhoneWidth, max) {
-    // width: 100%;
+    @include buttonYellow;
+    width: 100%;
     margin-top: auto;
   }
 }
@@ -137,6 +130,9 @@
 
 .modes {
   min-width: 300px;
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
 }
 
 .modesButtons {
@@ -145,6 +141,8 @@
 
 .forgot {
   color: $blue;
+  font-size: $mediumText;
+  font-weight: $medium;
   display: flex;
   align-items: center;
   column-gap: 8px;

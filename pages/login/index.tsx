@@ -8,7 +8,7 @@ interface Props {
 export default function LoginPage(props: Props) { 
 
   return ( 
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <Login/>
     </ContentLayout>
   )

@@ -1,5 +1,6 @@
-import { useState } from 'react'
 import styles from './index.module.scss'
+
+import { useState } from 'react'
 import { LoginType, ModalType } from 'types/enums'
 import { ILogin } from 'data/interfaces/IRegistration'
 import { Form, FormikProvider, useFormik } from 'formik'
@@ -24,9 +25,7 @@ export default function Password(props: Props) {
   const userContext = useUserContext()
   const router = useRouter()
 
-
   const {isTabletWidth} = appContext.size
-
 
   const initialValues: ILogin = {
     phone: '',
@@ -37,7 +36,6 @@ export default function Password(props: Props) {
     appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
       [loginType]: formik.values[loginType],
       onComplete: () => {
-        debugger
         appContext.hideModal()
         router.push('/')
         setTimeout(()=>{

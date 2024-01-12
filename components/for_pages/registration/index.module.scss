@@ -2,12 +2,9 @@
 
 .root {
   @include container;
-  margin-top: 48px;
+  padding-top: Clamp(8px, 3vw, 48px);
   display: flex;
   padding-bottom: 24px;
-  @include mq($PhoneWidth, max) {
-    margin-top: 8px;
-  }
 }
 
 .content {
@@ -61,6 +58,7 @@
   column-gap: 8px;
   @include mq($PhoneWidth, max) {
     margin-top: 24px;
+    margin-bottom: 24px;
     font-size: $mediumText;
   }
 }
@@ -78,20 +76,17 @@
   }
   @include mq($PhoneWidth, max) {
     margin-top: 24px;
+    min-height: calc(100vh - 170px);
+    min-height: calc(100dvh - 170px);
+    justify-content: flex-start;
+    flex-direction: column;
   }
 }
 
 .input {
-  width: 100%;
+  width: 100% !important;
   @include exeptLast {
     margin-bottom: 24px;
-  }
-
-  @include mq($TabletWidth, max) {
-    width: 49%;
-  }
-  @include mq($PhoneWidth, max) {
-    width: 100%;
   }
 }
 
@@ -99,6 +94,7 @@
   @include buttonYellow;
   @include mq($PhoneWidth, max) {
     width: 100%;
+    margin-top: auto;
   }
 }
 

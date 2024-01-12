@@ -8,7 +8,7 @@ interface Props {
 export default function PasswordPage(props: Props) { 
 
   return ( 
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <Password/>
     </ContentLayout>
   )

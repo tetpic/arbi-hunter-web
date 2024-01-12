@@ -22,7 +22,7 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 export default function RegistrationPage() {
 
   return ( 
-    <ContentLayout title={'Регистрация'}>
+    <ContentLayout title={'Регистрация'} hideMobileHeader>
       <Registration/>
     </ContentLayout>
   )
