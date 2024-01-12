@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './index.module.scss'
-import { LoginType } from 'types/enums'
+import { LoginType, ModalType } from 'types/enums'
 import { ILogin } from 'data/interfaces/IRegistration'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useAppContext } from 'context/state'
@@ -13,6 +13,7 @@ import InputField from 'components/fields/InputField'
 import Validator from 'utils/Validator'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import Button from 'components/ui/Button'
+import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 
 interface Props {
 }
@@ -28,10 +29,22 @@ export default function Password(props: Props) {
 
 
   const initialValues: ILogin = {
-    login: '',
+    phone: '',
+    email: '',
   }
 
   const submit = (data : ILogin) => {  
+    appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
+      [loginType]: formik.values[loginType],
+      onComplete: () => {
+        debugger
+        appContext.hideModal()
+        router.push('/')
+        setTimeout(()=>{
+          appContext.showModal(ModalType.NewPasswordModal, {nonSkippable: true})
+        }, 200)
+      }
+    })
   }
 
   const formik = useFormik({
@@ -86,7 +99,7 @@ export default function Password(props: Props) {
             labelType='top' 
             styleType={'default'} 
             color={'default'} 
-            name={'login'} 
+            name={'email'} 
             validate={Validator.combine([Validator.required, Validator.email])}
             />
           }
@@ -95,10 +108,11 @@ export default function Password(props: Props) {
             styleType={'horizontal'} 
             disabled={false} 
             placeholder={'000 000 00 00'} 
-            name={'login'}  
+            name={'phone'}  
             className={styles.input} 
             defaultCountry={'RU'}
             label={'Телефон:'}
+            validate={Validator.combine([Validator.required, Validator.phone])}
             />
           }
           <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>Восстановить</span></Button>

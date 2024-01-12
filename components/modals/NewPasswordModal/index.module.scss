@@ -1,0 +1,23 @@
+@import 'styles/index';
+
+.button {
+  @include buttonYellow;
+  width: 100%;
+}
+
+.modalLayout {
+  max-width: 390px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 16px;
+}
+
+.title {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}

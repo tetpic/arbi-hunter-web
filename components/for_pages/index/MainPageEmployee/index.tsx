@@ -41,8 +41,6 @@ export default function MainPageEmployee() {
   const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
   const [disableClick, setDisableClick] = useState<boolean>(false)
 
-
-
   const showNextAnimation = () => {
     setDisableClick(true)
     setAction(temporaryAnimation.type)

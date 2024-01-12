@@ -50,10 +50,10 @@ export function PersonalWrapper(props: Props) {
     })
     setTransport(_=> {
       switch(place.id) {
-        case 6: return transportList.find(el=> el.id === 14)
+        case 6: return transportList.find(el=> el.id === 16)
         case 7: return transportList.find(el=> el.id === 15)
         case 8: return transportList.find(el=> el.id === 13)
-        case 9: return transportList.find(el=> el.id === 16)     
+        case 9: return transportList.find(el=> el.id === 14)     
       }
     })
 

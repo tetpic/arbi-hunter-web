@@ -19,11 +19,14 @@ export interface IRegistrationComplete {
 
 export interface ILogin {
   login?: string,
+  phone?: string,
+  email?: string
   password?: string
 }
 
-export interface IRegistrationPhone {
+export interface IRegistrationData {
   phone?: string,
+  email?: string
   code?: string 
 }
 

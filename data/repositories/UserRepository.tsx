@@ -10,7 +10,6 @@ export default class UserRepository {
       token
     })
     if(res.err) {
-      debugger
       return null
     }
     return res

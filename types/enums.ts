@@ -36,8 +36,7 @@ export enum ModalType {
   CoursesCategoriesModal = 'coursesCategoriesModal',
   UserImageModal = 'userImageModal',
   BackgroundPickModal = 'backgroundPickModal',
-
-
+  NewPasswordModal = 'newPasswordModal'
 }
 
 export enum SnackbarType {

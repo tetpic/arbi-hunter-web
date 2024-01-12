@@ -1,10 +1,11 @@
 import styles from './index.module.scss'
 
 import UserPic from 'components/ui/UserPic'
-import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
+// import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
 import Button from 'components/ui/Button'
 import dynamic from 'next/dynamic'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { ICompany } from './Planet'
 const RatingLine = dynamic(()=>import('components/ui/RatingLine'), {ssr: false})
 const Planet = dynamic(()=>import('./Planet'), {ssr: false})
 
@@ -12,8 +13,38 @@ interface Props {
 }
 
 export default function Possibilities(props: Props) {
+  const companies: [ICompany, ICompany, ICompany] = [
+    {name: 'Beats',  
+      logo: '/images/companyLogos/beatsLogo.png', 
+      id: 1,
+      descriptions: [
+        'Dre (Beats) — ведущий бренд в мире музыки, созданный Dr. Dre и Джимми Айовином в 2006 году.',
+        'Компания выпускает первоклассные наушники с оголовьем, вставные наушники и колонки. Главное отличие продукции Beats — потрясающее качество звука.'
+      ]
+    },
+    {name: 'Google',  
+      logo: '/images/companyLogos/googleLogo.png', 
+      id: 2,
+      descriptions: [
+        'Google (Google) — американская компания, созданная в 1998 году и основанная в 2004 году. ',
+        'Гугол — это число, состоящее из единицы и ста нулей — 1×10100. Позднее в рекламной кампании было заявлено, что оно было выбрано, чтобы показать, что поисковая система хочет обеспечить людей большим количеством информации'
+      ]
+    },
+    {name: 'The North Face',  
+      logo: '/images/companyLogos/northFaceLogo.png', 
+      id: 3,
+      descriptions: [
+        'The North Face (рус. Северный склон) — американская компания, специализирующаяся на производстве высококачественной технологичной спортивной, горной одежды, туристического инвентаря.',
+        'Продукция предназначается для альпинистов, скалолазов, туристов и людей, ведущих активный образ жизни.'
+      ]
+    },
+  ]
 
-  const memoedPlanet = useMemo(()=><Planet/>, [])
+  const [currentCompany, setCurrentCompany] = useState<ICompany>(companies[0])
+
+  const memoedPlanet = useMemo(()=><Planet companies={companies} onClick={(id)=>{
+    setCurrentCompany(companies.find(el => el.id === id))}
+  }/>, [])
 
   return (<section className={styles.root}>
     <div className={styles.imageWrapper}>
@@ -22,16 +53,17 @@ export default function Possibilities(props: Props) {
     <div className={styles.body}>
       <p className={styles.title}>Откройте дверь в новый мир возможностей!</p>
       <div className={styles.card}>
-        <UserPic className={styles.card_pic} image={beats} size={55}/>
-        <p className={styles.card_title}>Beats</p>
+        <UserPic className={styles.card_pic} image={currentCompany.logo} size={55}/>
+        <p className={styles.card_title}>{currentCompany.name}</p>
         <div className={styles.rating}>
           <span className={styles.rating_stats}>4,9</span>
           <RatingLine rating={4}/>
           <span className={styles.rating_feeds}>23 отзыва</span>
         </div>
       </div>
-      <p className={styles.desc}>Arbi Hunter - это уникальный инструмент для нахождения арбитражных сделок в криптовалютном рынке.</p>
-      <p className={styles.desc}>Arbi Hunter - это уникальный инструмент для нахождения арбитражных сделок в криптовалютном рынке.</p>
+      {currentCompany.descriptions.map((el, i)=>{
+        return <p key={i} className={styles.desc}>{el}</p>
+      })}
       <Button className={styles.button}>Открыть страницу компании</Button>
     </div>
 

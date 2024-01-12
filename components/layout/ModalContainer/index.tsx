@@ -38,6 +38,7 @@ import RecruitingFiltersModal from 'components/modals/RecruitingFiltersModal'
 import CoursesCategoriesModal from 'components/modals/CoursesCategoriesModal'
 import UserImageModal from 'components/modals/UserImageModal'
 import BackgroundPickModal from 'components/modals/BackgroundPickModal'
+import NewPasswordModal from 'components/modals/NewPasswordModal'
 
 
 interface Props { }
@@ -45,7 +46,7 @@ interface Props { }
 export default function ModalContainer(props: Props) {
   const appContext = useAppContext()
   const commonSettings = {
-    onRequestClose: appContext.hideModal,
+    onRequestClose: !appContext.modalArguments?.nonSkippable&&appContext.hideModal,
     className: styles.modal,
     overlayClassName: classNames([styles.overlay, appContext.modal && styles[appContext.modal]]),
   }
@@ -187,6 +188,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.BackgroundPickModal:
         return <Modal isOpen {...commonSettings} >
         <BackgroundPickModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.NewPasswordModal:
+        return <Modal isOpen {...commonSettings} >
+        <NewPasswordModal />
       </Modal>
 
     }

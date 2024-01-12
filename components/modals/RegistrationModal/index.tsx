@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { Form, FormikProvider, useFormik } from 'formik'
-import { IRegistrationPhone } from 'data/interfaces/IRegistration'
 import { useEffect, useState } from 'react'
 import { useAppContext } from 'context/state'
 import RegistrationRepository from 'data/repositories/RegistrationRepository'
@@ -12,6 +11,8 @@ import OtpCodeField from 'components/fields/OtpCodeField'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
+import { IRegistrationData } from 'data/interfaces/IRegistration'
+import useAbortController from 'components/hooks/useAbortController'
 
 interface Props {
 }
@@ -22,7 +23,8 @@ enum RegPages {
 
 export interface IRegistrationModalProps {
   onComplete?: () => void
-  phone?: string
+  phone?: string,
+  email?: string
 }
 
 export default function RegistrationModal(props: Props) {
@@ -31,13 +33,14 @@ export default function RegistrationModal(props: Props) {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [seconds, setSeconds] = useState<number>(0)
+  const {getNewSignal} = useAbortController()
   const args:IRegistrationModalProps = appContext.modalArguments
 
   const [code, setCode] = useState<string>('')
 
-  const submit = async(data: IRegistrationPhone) => {
+  const submit = async(data: IRegistrationData) => {
     setLoading(true)
-    authContext.confirmCode(args.phone, data.code)
+    authContext.confirmCode({phone: args.phone, code: data.code, email: args.email})
     .then(res=>{
       if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
@@ -53,7 +56,7 @@ export default function RegistrationModal(props: Props) {
     })
   }
 
-  const formik = useFormik<IRegistrationPhone>({
+  const formik = useFormik<IRegistrationData>({
     initialValues: {
       code: ''
     },
@@ -69,19 +72,29 @@ export default function RegistrationModal(props: Props) {
 
   useEffect(()=>{
     if(!code) {
-      RegistrationRepository.sendSmsCode({phone: args.phone}).then(res=> {        
+      const [signal, controller] = getNewSignal('getSmsCode')
+      args.phone&&RegistrationRepository.sendSmsCode({phone: args.phone}, {signal}).then(res=> {        
         setCode(res.code)
         setLoading(false)
         setSeconds(res.codeCanRetryIn)
       })
+      .catch(err=> {
+      })
+      args.email&&RegistrationRepository.sendEmailCode({email: args.email}, {signal}).then(res=> {        
+        setCode(res.code)
+        setLoading(false)
+        setSeconds(res.codeCanRetryIn)
+      })
+      .catch(err=> {
+      })
     }
-  }, [args.phone])
+  }, [args.phone, args.email])
 
 
 
   const codeField = (<>
-    <p className={styles.confirmTitle}>Отправили код на номер <br /> 
-    {Formatter.formatPhone(args.phone)}
+    <p className={styles.confirmTitle}>Отправили код на {args.phone?'номер':'e-mail'} <br /> 
+    {args.phone&&Formatter.formatPhone(args.phone)||args.email}
     </p>
     <p className={styles.disclaimer}>
       Введите его, чтобы мы убедились что <br />

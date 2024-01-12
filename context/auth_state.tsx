@@ -23,7 +23,7 @@ interface IState {
   setLoginFormData: (value: ILoginFormData) => void
   signUp: (values: ILoginFormData) => void
   sendCodeAgain: () => void
-  confirmCode: (phone: string, code: string) => Promise<boolean>
+  confirmCode: (data: {phone?: string, code: string, email?: string}) => Promise<boolean>
   setSending: (value: boolean) => void
   setSendingAgain: (value: boolean) => void
   clear: () => void
@@ -36,7 +36,7 @@ const defaultValue: IState = {
   signUpSpinner: false,
   confirmSpinner: false,
   againSpinner: false,
-  confirmCode: async (phone: string, code: string) => false,
+  confirmCode: async (data: {phone?: string, code: string, email?: string}) => false,
   setSending: (value: boolean) => null,
   codeRes: null,
   LoginFormData: null,
@@ -94,13 +94,15 @@ export function AuthWrapper(props: Props) {
   }
 
   // Sign up step 2
-  const confirmCode = async (phone: string, code: string): Promise<boolean> => {
+  const confirmCode = async (data: {phone?: string, code: string, email?: string}): Promise<boolean> => {
     
     setConfirmSpinner(true)
     let accessToken: IToken = {accessToken: '', expiresIn: null}
 
     try {
-      accessToken = await RegistrationRepository.phoneConfirmation({phone: phone, code: code})
+      accessToken = data.phone
+      ?await RegistrationRepository.phoneConfirmation({phone: data.phone, code: data.code})
+      :await RegistrationRepository.emailConfirmation({email: data.email, code: data.code})
     } 
     catch (err) {
       if (err instanceof RequestError) {

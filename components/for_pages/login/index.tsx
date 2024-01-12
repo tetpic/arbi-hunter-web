@@ -156,7 +156,7 @@ export default function Login() {
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
-            <p className={styles.subTitle}>Забыли пароль?</p>
+            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>Забыли пароль?</p> Восстановить</Link>
             <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>Войти</span></Button>
           </Form>
         </FormikProvider>

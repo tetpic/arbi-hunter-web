@@ -8,7 +8,6 @@ export default class CharacterRepository {
       method: 'get',
       url: '/api/character/current',
     })
-    debugger
     if(res.err) {
       return null
     }
@@ -21,7 +20,6 @@ export default class CharacterRepository {
       url: '/api/character',
       data
     })
-    debugger
     if(res.err) {
       return null
     }
@@ -33,7 +31,6 @@ export default class CharacterRepository {
       method: 'get',
       url: '/api/character-item-category',
     })
-    debugger
     if(res.err) {
       return null
     }
@@ -46,7 +43,6 @@ export default class CharacterRepository {
       url: '/api/character-item',
       data
     })
-    debugger
     if(res.err) {
       return null
     }
@@ -59,12 +55,9 @@ export default class CharacterRepository {
       url: `/api/character/${characterId}`,
       data: {itemsIds}
     })
-    debugger
     if(res.err) {
       return null
     }
     return res
   }
-
-
 }
