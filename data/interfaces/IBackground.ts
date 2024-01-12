@@ -23,7 +23,7 @@ export interface IBackground extends TimeStamp {
   profileType: ProfileType,
   backgroundType: 'png'|'rive',
   sort: number|null,
-  riveKeys: string[],
+  riveKeys: {key: string}[],
   imageId: number,
   image: IFile,
   category: BackgroundCategory

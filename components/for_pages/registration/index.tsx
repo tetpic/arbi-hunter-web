@@ -109,7 +109,6 @@ export default function Registration() {
     }
     switch(page||progress) {
       case 1: (async() => {
-        debugger
         const values = ['email', 'password', 'phone']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
         const filteredErrors = errors.filter(el=> el[1] !== undefined)

@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import InputField from 'components/fields/InputField'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
-import { useResize } from 'components/hooks/useResize'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -14,24 +13,21 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { SnackbarType } from 'types/enums'
+import { LoginType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Modes from 'components/ui/Modes'
 import Button from 'components/ui/Button'
 import Rive from '@rive-app/react-canvas'
 import UserRegImage from 'components/ui/UserRegImage'
 
-enum LoginType {
-  Phone= 'phone',
-  Email = 'email'
-}
+
 
 export default function Login() {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
-  const {isTabletWidth} = useResize()
   const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
 
@@ -93,11 +89,14 @@ export default function Login() {
     }
   }, [userContext.currentProfile])
 
+  useEffect(()=>{
+    userContext.logout(true)
+  }, [])
+
   return ( 
     <div className={styles.root}>
       {!isTabletWidth&& 
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
-
       }
       <div className={styles.content}>
         <p className={styles.title}>

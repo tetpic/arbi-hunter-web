@@ -17,6 +17,8 @@ interface IState {
   currentProfile: IUserProfile,
   backgrounds: Map<number, IBackground>
   refreshBackgrounds: () => void
+  weather: IBackground
+  transport: IBackground
 }
 
 const PersonalContext = createContext<Partial<IState>>({})
@@ -31,6 +33,32 @@ export function PersonalWrapper(props: Props) {
   const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>(new Map)
   const [currentProfile, setCurrentProfile] = useState<IUserProfile>(null) 
   const [backgrounds, setBackgrounds] = useState<Map<BackgroundCategoryType, IBackground>>(new Map)
+  const [weather, setWeater] = useState<IBackground>()
+  const [transport, setTransport] = useState<IBackground>()
+
+  const setRives = async(backs: [] | IBackground[]) => {
+    const weathersList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Weather})
+    const transportList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Transport})
+    const place = backs.find(el=> el.category.id === BackgroundCategoryType.Places)
+    setWeater(_=> {
+      switch(place.id) {
+        case 6: return weathersList.find(el=> el.id === 20)
+        case 7: return weathersList.find(el=> el.id === 18) 
+        case 8: return weathersList.find(el=> el.id === 17) 
+        case 9: return weathersList.find(el=> el.id === 19)     
+      }
+    })
+    setTransport(_=> {
+      switch(place.id) {
+        case 6: return transportList.find(el=> el.id === 14)
+        case 7: return transportList.find(el=> el.id === 15)
+        case 8: return transportList.find(el=> el.id === 13)
+        case 9: return transportList.find(el=> el.id === 16)     
+      }
+    })
+
+  }
+
 
   const setPersonalPage = async (id?: number) => {
     if(id) {
@@ -43,7 +71,7 @@ export function PersonalWrapper(props: Props) {
     try {
       const res = id?await PersonalRepository.getPersonalPageById(id):await PersonalRepository.getPersonalPage()
       const backs = await BackgroundRepository.getBackground({profileId: res.profileId})
-
+      setRives(backs)
       setPersonalPageState(res)
       res.blocks.forEach(block => {
         const assets = res.assets.filter(el=> block.assets.includes(el.id))
@@ -79,6 +107,7 @@ export function PersonalWrapper(props: Props) {
 
   const refreshBackgrounds = async () => {
     const backs = await BackgroundRepository.getBackground({profileId: currentProfile?.id})
+    setRives(backs)
     setBackgrounds(new Map(backs.map(el=> [el.category.id, el])))
   }
 
@@ -91,7 +120,9 @@ export function PersonalWrapper(props: Props) {
     setBlocks, 
     currentProfile,
     backgrounds,
-    refreshBackgrounds
+    refreshBackgrounds,
+    weather,
+    transport
   }
 
   return (

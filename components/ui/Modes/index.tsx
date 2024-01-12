@@ -29,6 +29,7 @@ export default function Modes<T extends string>(props: Props<T>) {
     </div>
 
     <button 
+    type='button'
     ref={usrBtn} 
     className={classnames(styles.modeButton, props.activeButton === props.buttons[0].type&&styles.modeButton_active, props.buttonClassName)} 
     onClick={()=>props.onSet(props.buttons[0].type)}
@@ -37,6 +38,7 @@ export default function Modes<T extends string>(props: Props<T>) {
     </button>
 
     <button 
+    type='button'
     ref={cmpBtn} 
     className={classnames(styles.modeButton, props.activeButton === props.buttons[1].type&&styles.modeButton_active, props.buttonClassName)} 
     onClick={()=>props.onSet(props.buttons[1].type)}

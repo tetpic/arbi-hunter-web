@@ -18,8 +18,8 @@ export interface IRegistrationComplete {
 }
 
 export interface ILogin {
-  login: string,
-  password: string
+  login?: string,
+  password?: string
 }
 
 export interface IRegistrationPhone {

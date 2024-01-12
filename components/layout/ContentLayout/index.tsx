@@ -3,6 +3,7 @@ import Footer from '../Footer'
 import { useAppContext } from 'context/state'
 import { useResize } from 'components/hooks/useResize'
 import { useEffect } from 'react'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   title?: string,
@@ -21,6 +22,7 @@ interface Props {
  */
 export default function ContentLayout(props: Props) {
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const {isTabletWidth} = useResize()
 
   useEffect(()=>{
@@ -34,6 +36,8 @@ export default function ContentLayout(props: Props) {
     }
   
   }, [isTabletWidth])
+
+
 
   return (
   <>

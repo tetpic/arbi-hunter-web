@@ -63,6 +63,9 @@ export function CharacterWrapper(props: Props) {
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
 
   const init = async() => {
+    if(!userContext.currentProfile) {
+      return    
+    }
     await CharacterRepository.getCurrentUserChar()
     .then(res=> {
       isCharacterExist.current = true
@@ -116,7 +119,6 @@ export function CharacterWrapper(props: Props) {
       setVariantState({...defaultVariant, model: data.animationKey as 'man'|'woman'} )
     }
     else {
-      
       setVariantState(state=> {
         if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses')) {
           delete state[data.category?.key]
@@ -130,6 +132,9 @@ export function CharacterWrapper(props: Props) {
   }
 
   const saveCurrentSet = async(): Promise<boolean> => {
+    if(!userContext.currentProfile) {
+      return    
+    }
     setSavingProcess(true)
     
     if(!isCharacterExist.current) {

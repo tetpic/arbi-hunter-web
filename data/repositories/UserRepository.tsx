@@ -4,11 +4,15 @@ import request from 'utils/request'
 
 export default class UserRepository {
   static async getCurrentUser(token?: string): Promise<IUser> {
-    const res = await request<IUser>({
+    const res = await request({
       method: 'get',
       url: '/api/auth/currentUser',
       token
     })
+    if(res.err) {
+      debugger
+      return null
+    }
     return res
   }
 

@@ -109,7 +109,7 @@ export default function UserDropdownMenu(props: Props) {
         })}
       </div>
 
-      <button className={styles.exitButton} onClick={logout}><ExitRedSvg/>Выйти</button>
+      <button className={styles.exitButton} onClick={()=>logout()}><ExitRedSvg/>Выйти</button>
     </div>
   )
 }

@@ -14,7 +14,7 @@ interface IState {
   setToken: (token: string) => Promise<boolean>
   isLogged: boolean
   isAuth: MutableRefObject<boolean>
-  logout: () => void
+  logout: (noReplace?: boolean) => void
   userLoaded: boolean
   user: IUser
   currentProfile: IUserProfile,
@@ -114,8 +114,8 @@ export function UserWrapper(props: Props) {
     })
   }
 
-  const logout = () => {
-    router.replace('/')
+  const logout = (noReplace?: boolean) => {
+    !noReplace&&router.replace('/')
     Cookies.remove(CookiesType.accessToken)
     Cookies.remove(CookiesType.profileType)
     Cookies.remove(CookiesType.language)

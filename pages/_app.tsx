@@ -123,9 +123,11 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     if ((appContext.ctx?.req as any).cookies) {
       props.pageProps.token = (appContext.ctx as any).req.cookies[CookiesType.accessToken]
       props.pageProps.profileType = (appContext.ctx as any).req.cookies[CookiesType.profileType]
-      props.pageProps.user = await UserRepository.getCurrentUser(props.pageProps.token).catch(err => {
-        return null
-      })
+      if(props.pageProps.token) {
+        props.pageProps.user = await UserRepository.getCurrentUser(props.pageProps.token).catch(err => {
+          return null
+        })      
+      }
     }
   }
 

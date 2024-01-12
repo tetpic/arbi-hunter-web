@@ -8,13 +8,14 @@ import EditPencilSvg from 'components/svg/EditPencilSvg'
 import DownloadCloudSvg from 'components/svg/DownloadCloudSvg'
 // import FileInput from 'components/fields/FileInput'
 // import { PreviewImage } from 'data/interfaces/Common'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { usePersonalContext } from 'context/personal_state'
 import { IBackgroundPickModalArguments } from 'components/modals/BackgroundPickModal'
 import { ModalType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
+import Rive from '@rive-app/react-canvas'
 
 interface Props {
   isEditing?: boolean
@@ -28,6 +29,10 @@ export default function PersonalHeader(props: Props) {
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
   const building = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
+  // const {rive, RiveComponent} = useRive({src: FILES + personalContext.transport.image?.source,
+  //   stateMachines: 'State Machine 1', 
+
+  // })
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -69,8 +74,24 @@ export default function PersonalHeader(props: Props) {
   })()
 
   useEffect(()=>{
-    setBackImage(personalContext.backgrounds.get(BackgroundCategoryType.Places))    
+    setBackImage(personalContext.backgrounds.get(BackgroundCategoryType.Places))  
   }, [personalContext.backgrounds])
+
+  // useEffect(()=>{
+  //   console.log(rive)
+  //   console.log(personalContext.weather)
+  
+  // }, [rive])
+
+  const transportRive = useMemo(()=>{
+    if(!personalContext.transport) return null
+    return <Rive stateMachines={'State Machine 1'}  key={personalContext.transport.id} className={styles.transport} src={FILES + personalContext.transport.image.source} animations={personalContext.transport.riveKeys.map(el=> el.key)}/>
+  }, [personalContext.transport])
+
+  const weatherRive = useMemo(()=>{
+    if(!personalContext.weather) return null
+    return <Rive stateMachines={'State Machine 1'} key={personalContext.weather.id} className={styles.rive} src={FILES + personalContext.weather.image.source} animations={personalContext.weather.riveKeys.map(el=> el.key)}/>
+  }, [personalContext.weather])
 
 
   return (<div className={styles.root}> 
@@ -88,6 +109,9 @@ export default function PersonalHeader(props: Props) {
     width={1148} 
     height={300} />
     }
+    {backImage && personalContext.transport && transportRive}
+    {backImage && personalContext.weather && weatherRive}
+    {/* <RiveComponent/> */}
     <div className={styles.personalImageWrapper}>
       {
       personalContext.currentProfile.profileType === ProfileType.Hirer 
@@ -118,6 +142,8 @@ export default function PersonalHeader(props: Props) {
         height={300}
         />
       }
+
+
 
     </div>
     {/* {personalContext.currentProfile?.image &&

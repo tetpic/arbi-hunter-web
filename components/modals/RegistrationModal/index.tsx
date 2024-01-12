@@ -36,8 +36,6 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationPhone) => {
-    debugger
-    
     setLoading(true)
     authContext.confirmCode(args.phone, data.code)
     .then(res=>{
@@ -70,7 +68,6 @@ export default function RegistrationModal(props: Props) {
   }, [seconds])
 
   useEffect(()=>{
-    debugger
     if(!code) {
       RegistrationRepository.sendSmsCode({phone: args.phone}).then(res=> {        
         setCode(res.code)

@@ -1,0 +1,146 @@
+@import 'styles/index';
+
+.root {
+  margin-top: 48px;
+  display: flex;
+  @include container;
+  @include mq($PhoneWidth, max) {
+    margin-top: 8px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+  row-gap: 24px;
+  width: 49%;
+   @include mq($TabletWidth, max) {
+    width: 100%;
+    margin-left: unset;
+  }
+}
+
+.regImage {
+  width: 550px;
+  height: 550px;
+  border-radius: 16px;
+  overflow: hidden;
+  @include mq($TabletWidth, max) {
+    display: none !important;
+  }
+}
+
+.title {
+  color: $white;
+  font-size: Clamp($largeText, 4vw, $hugeText);
+  font-weight: $medium;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  @include mq($TabletWidth, max) {
+    justify-content: space-between;
+    &:after {
+      content: '';
+      width: 44px;
+    }
+  }
+}
+
+
+.subTitle {
+  font-size: $largeText;
+  font-weight: $medium;
+  color: $white;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 16px;
+  width: 100%;
+  @include mq($PhoneWidth, max) {
+    margin-top: unset;
+    font-size: $mediumText;
+  }
+}
+
+.loginLink {
+  color: $blue;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 24px;
+
+  @include mq($TabletWidth, max) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  @include mq($PhoneWidth, max) {
+    min-height: calc(100vh - 210px);
+    min-height: calc(100dvh - 210px);
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+}
+
+.input {
+  width: 100%;
+  // @include exeptLast {
+  //   margin-bottom: 24px;
+  // }
+  @include mq($TabletWidth, max) {
+    width: 49%;
+  }
+  @include mq($PhoneWidth, max) {
+    width: 100%;
+  }
+}
+
+.submitButton {
+  @include buttonBlack;
+  padding: 10px 24px;
+  // display: inline-block;
+  @include mq($PhoneWidth, max) {
+    // width: 100%;
+    margin-top: auto;
+  }
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.button  {
+  padding: 10px 24px;
+  background-color: $grey;
+  border-radius: 8px;
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  @include transitionDefault;
+  @include hoverButtonBlack;
+  cursor: pointer;
+
+  &_active {
+    background-color: $blue;
+    color: $black;
+    pointer-events: none;
+  }
+}
+
+.modes {
+  min-width: 300px;
+}
+
+.modesButtons {
+  width: 50%;
+}
+
+
