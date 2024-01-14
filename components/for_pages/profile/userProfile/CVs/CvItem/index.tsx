@@ -87,7 +87,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
   return (<div className={classNames(styles.root, props.className)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic}/>
-      <p className={styles.position}>{cv.categories[0].name||'Должность не указана'}</p>
+      <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal}/>
       {!isTabletWidth &&

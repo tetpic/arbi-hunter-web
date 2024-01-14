@@ -167,7 +167,7 @@ export default function MainPageEmployee() {
         <Spinner className={styles.modelSpinner} size={52}/>
       } 
       <div onClick={()=> showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
-      <ThreeModelVariant disableControls data={characterContext.variant } actions={action}  r={4}/>
+      <ThreeModelVariant disableControls data={characterContext.variant } actions={action}  r={4}/> 
       </div>
     </div>
   </div>)
