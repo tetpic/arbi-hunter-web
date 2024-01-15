@@ -4,7 +4,7 @@ import UserPic from 'components/ui/UserPic'
 // import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
 import Button from 'components/ui/Button'
 import dynamic from 'next/dynamic'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ICompany } from './Planet'
 const RatingLine = dynamic(()=>import('components/ui/RatingLine'), {ssr: false})
 const Planet = dynamic(()=>import('./Planet'), {ssr: false})
@@ -40,13 +40,39 @@ export default function Possibilities(props: Props) {
     },
   ]
 
+  const triggerRef = useRef<HTMLDivElement>(null!)
+  const [active, setActive] = useState<boolean>(false)
+
+
+  useEffect(()=>{
+    if(window !== undefined) {
+      const load = async () => {
+        if (typeof window !== undefined) {
+          const scrollmagic = (await import('scrollmagic')).default
+          const controller = new scrollmagic.Controller()
+          new scrollmagic.Scene({
+            triggerElement: triggerRef.current,
+            offset: -250
+          })
+          .on('enter', ()=> {
+            setActive(true)
+          })
+          .addTo(controller)
+        }
+      }
+      load()
+    }
+  }, [])
+
+  
+
   const [currentCompany, setCurrentCompany] = useState<ICompany>(companies[0])
 
-  const memoedPlanet = useMemo(()=><Planet companies={companies} onClick={(id)=>{
+  const memoedPlanet = useMemo(()=><Planet active={active} companies={companies} onClick={(id)=>{
     setCurrentCompany(companies.find(el => el.id === id))}
-  }/>, [])
+  }/>, [active])
 
-  return (<section className={styles.root}>
+  return (<section className={styles.root} ref={triggerRef}>
     <div className={styles.imageWrapper}>
       {memoedPlanet}
     </div>

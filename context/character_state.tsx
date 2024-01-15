@@ -112,15 +112,20 @@ export function CharacterWrapper(props: Props) {
 
   const setVariant = (data: ICharItem) => {
     setChoosenItemsState(state=> {
-      state.set(data.category.id, data)
+      if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses'||data.category?.key === 'face'||data.category?.key === 'chain')) {
+        state.delete(data.category.id)        
+      }
+      else {
+        state.set(data.category.id, data)
+      }
       return new Map(state)
     })
     if(data.category.key === 'model' && data.animationKey !== variant.model) {
-      setVariantState({...defaultVariant, model: data.animationKey as 'man'|'woman'} )
+      setVariantState({...defaultVariant, model: data.gender==='female'?'woman':'man'} )
     }
     else {
       setVariantState(state=> {
-        if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses')) {
+        if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses'||data.category?.key === 'face'||data.category?.key === 'chain')) {
           delete state[data.category?.key]
           return state
         } 
@@ -153,12 +158,6 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
       userContext.updateUser()
-      
-      // const link = document.createElement('a')
-      // link.type = 'download'
-      // link.target = '_blank'
-      // link.href = URL.createObjectURL(dataBaseBlob)
-      // link.click()
       setSavingProcess(false)
     })
   
@@ -168,7 +167,7 @@ export function CharacterWrapper(props: Props) {
 
 
   const setActiveSet = (data: [ICharCategory, ICharItem[]]) => {
-    const filteredItems = data[1]?.filter(f=> f.gender === (variant.model==='man'?'male':'female'))
+    const filteredItems = data[0].key  === 'model'?data[1]: data[1]?.filter(f=> f.gender === (variant.model==='man'?'male':'female'))
     setActiveItem(filteredItems?.find(el=> variant[el.category.key] === el.animationKey))
     setActiveSetState([data[0], filteredItems])
   }

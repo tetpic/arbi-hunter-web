@@ -96,36 +96,58 @@
   width: 200px;
   height: 200px;
 
-  img {
-    position: absolute;
-  }
   .img1{
+    position: absolute;
     top: 0;
     left: 0;
   }
 
   .img2{
+    position: absolute;
     top: 0;
     right: 0;
   }
 
   .img3{
+    position: absolute;
     bottom: 0;
     right: 0;
   }
 
   .img4 {
+    position: absolute;
     bottom: 0;
     left: 0;
   }
 }
 
 .front {
-  animation: rotation 8s linear infinite reverse;
   z-index: 3;
+  transform: translate3d();
+
+
 
   img {
-    animation: rotation 8s linear infinite;
+    scale: .2;
+    opacity: 0;
+   
+  }
+
+  &_active {
+    animation: rotation 8s linear infinite reverse;
+    div {
+      animation:  rotation 8s linear infinite;
+
+      $selectors: (1:.2, 2:.4, 3:.6, 4:.8);
+      @each $index, $selector in $selectors {
+        &:nth-of-type(#{$index}) {
+          img {
+            animation: appear linear .2s forwards;
+            animation-delay: #{$selector}s;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -138,7 +160,6 @@
   img {
     animation: rotation 16s linear infinite ;
   }
-
 }
 
 .tower {
@@ -151,20 +172,25 @@
     right: 122px;
     display: flex;
     justify-content: space-between;
-    padding-inline: 8px;
+    padding-inline: 2px;
     align-items: center;
     width: 105px;
     height: 40px;
     background-color: #22222A;
     transform: matrix(1.00,0.04,0.01,1.00,0,0);
-    color: $blue;
-    text-shadow: 0px 0px 5px;
+    color: $greyLight;
     border: 2px $greyLight solid;
     font-family: 'Monomials';
+    font-size: $hugeText;
+  }
+
+  p {
+    margin-bottom: -4px;
   }
 
   span {
-    margin-bottom: -4px;
+    color: $purple;
+    text-shadow: 0px 0px 5px;
   }
 
   svg {
@@ -173,7 +199,7 @@
     path {
       filter: brightness(1.2) ;
       box-shadow: -5px -5px 10px #888; 
-      fill: $blue;
+      fill: $purple;
     }
   }
 }
@@ -182,11 +208,20 @@
   position: absolute;
   bottom: 70%;
   left: 30%;
+  transform: translate3d();
 }
 
 
 @keyframes rotation {
   100% {
+    transform: translate3d();
     rotate: 360deg;
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
+    scale: 1;
   }
 }

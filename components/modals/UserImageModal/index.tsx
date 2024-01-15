@@ -18,13 +18,14 @@ interface Props {
 
 export interface IUserImageModalProps {
   onSave: (data: {image: PreviewImage, type?: 'logo'|'image'}) => void
+
 }
 
 export default function UserImageModal(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const args: IUserImageModalProps = appContext.modalArguments
-  const [type, setType] = useState<'logo'|'image'>('logo')
+  const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile.useOwnLogo? 'logo' :'image')
   const [image, setImage] = useState<PreviewImage>()
 
   const onSave = () => {
@@ -43,17 +44,15 @@ export default function UserImageModal(props: Props) {
           />
           <p>Индивидуальный аватар</p>
         </div>
-        <div className={classNames(styles.item, type==='image' && styles.active)} onClick={()=>setType('image')}>
-          <label>
-            <FileInput setImages={setImage}/>
-            <UserPic
-            className={styles.userPic}
-            size={88}
-            image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
-            />
-          </label>
-          <p>Загрузить фото</p>
-        </div>
+        <label className={classNames(styles.item, type==='image' && styles.active)} onClick={()=>setType('image')}>
+              <FileInput setImages={setImage}/>
+              <UserPic
+              className={styles.userPic}
+              size={88}
+              image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
+              />
+            <p>Загрузить фото</p>
+        </label>
       </div>
       <div className={styles.buttonsWrapper}>
         <Button className={styles.button} onClick={props.onClose}>

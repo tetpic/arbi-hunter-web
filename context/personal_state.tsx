@@ -41,7 +41,7 @@ export function PersonalWrapper(props: Props) {
     const transportList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Transport})
     const place = backs.find(el=> el.category.id === BackgroundCategoryType.Places)
     setWeater(_=> {
-      switch(place.id) {
+      switch(place?.id) {
         case 6: return weathersList.find(el=> el.id === 20)
         case 7: return weathersList.find(el=> el.id === 18) 
         case 8: return weathersList.find(el=> el.id === 17) 
@@ -49,7 +49,7 @@ export function PersonalWrapper(props: Props) {
       }
     })
     setTransport(_=> {
-      switch(place.id) {
+      switch(place?.id) {
         case 6: return transportList.find(el=> el.id === 16)
         case 7: return transportList.find(el=> el.id === 15)
         case 8: return transportList.find(el=> el.id === 13)

@@ -62,7 +62,6 @@ export default function UserEditor(props: Props) {
     init()
   }, [])
 
-
   return (<div className={styles.root}>
       {!isTabletWidth &&
       <div className={styles.settings}>

@@ -33,6 +33,9 @@ export function ThreeModel(props: IThreeModelProps) {
     
   const { actions } = useAnimations(animations, mesh)
   useEffect(()=>{   
+    if(props.model === 'woman') {
+      return
+    }
     currentAction.current&&actions[currentAction.current].stop()
     actions[props.actions]?.play()
     currentAction.current = props.actions
@@ -43,6 +46,27 @@ export function ThreeModel(props: IThreeModelProps) {
       characterContext.setModelLoad(true)
     }
   }, [nodes, characterContext.dataLoaded])
+
+  if(props.model === 'woman') {
+    return (
+      <group {...props} dispose={null} >
+      <mesh geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} material={materials[`Body_${props.color||'0'}`]} />
+      {props.face &&
+      <mesh geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} />
+      }
+      {props.glasses &&
+        <mesh geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} />
+      }
+      <mesh geometry={nodes[`Hair_${props.cap||props.hair||'0'}`].geometry} material={materials[`Hair_${props.cap||props.hair||'0'}`]} />
+      <mesh geometry={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} />
+      <mesh geometry={nodes.Eye_0.geometry} material={materials.Eye_0} />
+      {props.chain &&
+      <mesh geometry={nodes[`Chain_${props.chain}_${props.body}`].geometry} material={materials[`Chain_${props.chain}`]} />
+      }
+      <mesh geometry={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'0'}`]} />
+    </group>
+    )
+  }
 
   return (      
     <group {...props} ref={mesh} dispose={null}>
@@ -62,7 +86,9 @@ export function ThreeModel(props: IThreeModelProps) {
           <skinnedMesh name={`Chain_${props.chain}_${props.body}`} geometry={nodes[`Chain_${props.chain}_${props.body}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body}`].skeleton} />
           }
           <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
+          {props.face &&
           <skinnedMesh name={`Face_${props.face||'0'}`} geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} skeleton={nodes[`Face_${props.face||'0'}`].skeleton} />
+          }
           {props.glasses &&
             <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
           }
