@@ -264,16 +264,19 @@ export default function Registration() {
             {progress === 1 && stage1}
             {progress === 2 && stage2}
             {progress === 3 && stage3}
-          {progress === 3 &&
-            <Button disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
-              Зарегистрироваться
-            </Button>
-            ||
-            <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
-          }
+
+            {progress < 4 && progress > 1 &&
+              <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator(progress - 1)}>Назад</Button>
+            }
+            {progress === 3 &&
+              <Button disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
+                Зарегистрироваться
+              </Button>
+              ||
+              <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
+            }
           </Form>
         </FormikProvider>
-        
       </div>
     </div>
   )

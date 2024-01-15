@@ -70,14 +70,16 @@ export function PersonalWrapper(props: Props) {
     }
     try {
       const res = id?await PersonalRepository.getPersonalPageById(id):await PersonalRepository.getPersonalPage()
-      const backs = await BackgroundRepository.getBackground({profileId: res.profileId})
+      const backs = await BackgroundRepository.getBackground({profileId: id||res.profileId})
       setRives(backs)
       setPersonalPageState(res)
-      res.blocks.forEach(block => {
-        const assets = res.assets.filter(el=> block.assets.includes(el.id))
-        setBlocks(state=> state.set(block.order, {block, assets}))
-      })
-      setBackgrounds(new Map(backs.map(el=> [el.category.id, el])))
+      if(res?.blocks) {
+        res?.blocks.forEach(block => {
+          const assets = res.assets.filter(el=> block.assets.includes(el.id))
+          setBlocks(state=> state.set(block.order, {block, assets}))
+        })
+      }
+      setBackgrounds(new Map(backs.map(el=> [el.category.id , el])))
     }
     catch (err) {
       setPersonalPageState(undefined)

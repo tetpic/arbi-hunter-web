@@ -1,7 +1,6 @@
-// import { CookiesType } from 'types/enums';
-
 import CvPage from 'components/for_pages/cv'
 import ContentLayout from 'components/layout/ContentLayout'
+import { PersonalWrapper } from 'context/personal_state'
 
 interface Query {
   id: string
@@ -22,6 +21,8 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function Cv(props: Props) {
 
   return (<ContentLayout title='Резюме' hideMobileHeader>
-    <CvPage id={props.id}/>
+    <PersonalWrapper key={props.id}>
+      <CvPage id={props.id}/>
+    </PersonalWrapper>
   </ContentLayout>)
 }

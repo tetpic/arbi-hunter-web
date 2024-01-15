@@ -38,6 +38,8 @@ import ShareSvg from 'components/svg/ShareSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import { useRouter } from 'next/navigation'
+import { usePersonalContext } from 'context/personal_state'
+import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 
 interface Props {
@@ -48,6 +50,7 @@ export default function VacancyPage(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const personalContext = usePersonalContext()
   const {isTabletWidth} = appContext.size
   const userContext = useUserContext()
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
@@ -79,14 +82,20 @@ export default function VacancyPage(props: Props) {
     vacancyContext.setCurrentVacancy(props.id)  
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
+  
+  useEffect(()=>{
+    if(vacancyContext.currentVacancy) {
+      personalContext.setPersonalPage(vacancyContext.currentVacancy.profileId)
+    }
+  }, [vacancyContext.currentVacancy])
 
   if(!currentVacancy) return <Spinner size={24}/>
 
   return (<>
     <Spacer basis={48} hide={isTabletWidth}/>
     {
-      currentVacancy.profile.image && !isTabletWidth &&
-      <Buildings profile={currentVacancy.profile}/>
+      currentVacancy.profile.image && !isTabletWidth && personalContext.backgrounds.size > 0 &&
+      <Buildings profile={currentVacancy.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
     }
     {isTabletWidth &&
       <div className={styles.buttonsWrapper}>

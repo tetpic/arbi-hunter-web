@@ -4,8 +4,9 @@ import UserPic from 'components/ui/UserPic'
 // import beats from 'images/recruiting/recruiting_mock_company.png' //55*55
 import Button from 'components/ui/Button'
 import dynamic from 'next/dynamic'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { ICompany } from './Planet'
+import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
 const RatingLine = dynamic(()=>import('components/ui/RatingLine'), {ssr: false})
 const Planet = dynamic(()=>import('./Planet'), {ssr: false})
 
@@ -43,28 +44,7 @@ export default function Possibilities(props: Props) {
   const triggerRef = useRef<HTMLDivElement>(null!)
   const [active, setActive] = useState<boolean>(false)
 
-
-  useEffect(()=>{
-    if(window !== undefined) {
-      const load = async () => {
-        if (typeof window !== undefined) {
-          const scrollmagic = (await import('scrollmagic')).default
-          const controller = new scrollmagic.Controller()
-          new scrollmagic.Scene({
-            triggerElement: triggerRef.current,
-            offset: -250
-          })
-          .on('enter', ()=> {
-            setActive(true)
-          })
-          .addTo(controller)
-        }
-      }
-      load()
-    }
-  }, [])
-
-  
+  useTriggerOnVisible(triggerRef, ()=>{setActive(true)}, {offset: 100})  
 
   const [currentCompany, setCurrentCompany] = useState<ICompany>(companies[0])
 

@@ -32,7 +32,7 @@ export default function PersonalPage(props: Props) {
       personalContext.personalPage === null && <Spinner size={24} />
       ||
       <>
-      {(!props.id || personalContext.currentProfile?.image) &&
+      {(!props.id || personalContext.currentProfile?.image) && personalContext.backgrounds.size > 0 && 
         <PersonalHeader isEditing={!props.id&&isEditing}/>
       }
       <Content className={styles.content}>

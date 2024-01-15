@@ -4,9 +4,10 @@ import dialog1 from 'images/recruiting/dialog_1.png'
 import dialog2 from 'images/recruiting/dialog_2.png'
 import telegram from 'images/recruiting/recruiting_telegram.png'
 import Button from 'components/ui/Button'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
+import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
 
 interface Props {
 }
@@ -16,25 +17,9 @@ export default function Help(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
 
-  useEffect(()=>{
-    if(window !== undefined) {
-      const load = async () => {
-        if (typeof window !== undefined) {
-          const scrollmagic = (await import('scrollmagic')).default
-          const controller = new scrollmagic.Controller()
-          new scrollmagic.Scene({
-            triggerElement: triggerRef.current,
-            offset: -250
-          })
-          .on('enter', ()=> {
-            document.querySelectorAll(`.${styles.image}`).forEach(el=> el.classList.add(`${styles.image_active}`))
-          })
-          .addTo(controller)
-        }
-      }
-      load()
-    }
-  }, [])
+  useTriggerOnVisible(triggerRef, ()=> {
+    document.querySelectorAll(`.${styles.image}`).forEach(el=> el.classList.add(`${styles.image_active}`))
+  })
 
   return (
     <section className={styles.root} ref={triggerRef}>

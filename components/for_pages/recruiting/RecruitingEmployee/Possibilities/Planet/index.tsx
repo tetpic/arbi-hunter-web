@@ -30,14 +30,6 @@ function PlanetModel(props: Props) {
   const texture1 = useTexture(props.companies[0].logo)
   const texture2 = useTexture(props.companies[1].logo)
   const texture3 = useTexture(props.companies[2].logo)
-  // const texture1 = useTexture('/images/companyLogos/northFaceLogo.png')
-  // const texture2 = useTexture('/images/companyLogos/beatsLogo.png')
-  // const texture3 = useTexture('/images/companyLogos/googleLogo.png')
-  // const texture4 = useTexture('/images/companyLogos/northFaceLogo.png')
-  // const texture5 = useTexture('/images/companyLogos/beatsLogo.png')
-  // const texture6 = useTexture('/images/companyLogos/googleLogo.png')
-  // const texture7 = useTexture('/images/companyLogos/northFaceLogo.png')
-  // const texture8 = useTexture('/images/companyLogos/beatsLogo.png')
 
 
 

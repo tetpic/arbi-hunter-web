@@ -1,5 +1,6 @@
 import VacancyPage from 'components/for_pages/vacancy'
 import ContentLayout from 'components/layout/ContentLayout'
+import { PersonalWrapper } from 'context/personal_state'
 
 
 interface Query {
@@ -20,7 +21,9 @@ export default function Vacancy(props: Props) {
 
   return (
   <ContentLayout title='Вакансия' hideMobileHeader>
-    <VacancyPage id={Number(props.id)}/>
+    <PersonalWrapper>
+      <VacancyPage id={Number(props.id)}/>
+    </PersonalWrapper>
   </ContentLayout>
   )
 }

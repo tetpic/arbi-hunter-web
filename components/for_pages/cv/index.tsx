@@ -35,6 +35,8 @@ import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { useRouter } from 'next/navigation'
 import Buildings from '../profile/Personal/Buildings'
 import Spacer from 'components/ui/Spacer'
+import { usePersonalContext } from 'context/personal_state'
+import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 
 interface Props {
@@ -44,15 +46,25 @@ interface Props {
 export default function CvPage(props: Props) {
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const personalContext = usePersonalContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
 
+  useEffect(()=>{
+    personalContext.setPersonalPage(Number(props.id))
+  }, [])
 
   useEffect(()=>{
     cvContext.getCv(Number(props.id))
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
+
+  useEffect(()=>{
+    if(cvContext.currentCv) {
+      personalContext.setPersonalPage(cvContext.currentCv.profileId)
+    }
+  }, [cvContext.currentCv])
 
   const makeResponse = () => {
     if(isTabletWidth) {
@@ -111,11 +123,10 @@ export default function CvPage(props: Props) {
         {userCard}
       </div>
     }
-    {!isTabletWidth &&
+    {!isTabletWidth && personalContext.backgrounds.size > 0 &&
     <>
-    <Spacer basis={48}/>
-    <Buildings profile={currentCv?.profile}/>
-    
+      <Spacer basis={48}/>
+      <Buildings profile={currentCv?.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
     </>
     }
     <Content className={styles.root}>
