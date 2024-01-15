@@ -16,29 +16,6 @@
   }
 }
 
-@mixin afs($First, $Second, $Third, $Zero: $First) {
-  @include mq($TabletWidth, max) {
-    font-size: $Second;
-  }
-
-  @include mq($PhoneWidth, max) {
-    font-size: $Third;
-  }
-
-  @include mq($TabletWidth, min) {
-    font-size: $First;
-  }
-
-  @include mq($SmDesktopWidth, min) {
-    font-size: $Zero;
-  }
-}
-
-@mixin size($width, $height: $width) {
-  width: $width;
-  height: $height;
-}
-
 @mixin positionCenter($positionType: absolute) {
   position: $positionType;
   top: 50%;
@@ -70,16 +47,6 @@
   background-position: $position;
   background-size: $size;
   background-repeat: $repeat;
-}
-
-@mixin dialog-wingow($width, $height: auto, $breakepoint: $TabletWidth) {
-  @include positionCenter(fixed);
-  @include size($width, $height);
-
-  @media screen and (max-width: $breakepoint) {
-    width: 100%;
-    padding: 1rem;
-  }
 }
 
 @mixin br($btr, $btl: $btr, $bbr: $btr, $bbl: $btr) {
