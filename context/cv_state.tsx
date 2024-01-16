@@ -2,14 +2,14 @@ import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CvRepository from 'data/repositories/CvRepository'
 import { useRouter } from 'next/router'
-import { createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface IState {
   savedCvs: ICV[],
-  foundCvs: ICV[],
+  foundCvs: Map<number, ICV>,
   getCv: (id: number) => void
   currentCv: ICV,
   setSavedCvs: ()=>Promise<boolean>
@@ -19,6 +19,9 @@ interface IState {
   updateCv: (id: number, cv: ICV) =>void
   editCv: (cv: ICV) => void
   findCvs: (data?: IVacancyCvSearchParams) => Promise<boolean>
+  page: number,
+  setPage: Dispatch<SetStateAction<number>>,
+  total: number,
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -31,9 +34,11 @@ export function CvWrapper(props: Props) {
   const router = useRouter()
   const {currentProfile} = useUserContext()
   const createVcCvContext = useCreateVcCvContext()
-  const [foundCvs, setFoundCvsState] = useState<ICV[]>([])
+  const [foundCvs, setFoundCvsState] = useState<Map<number, ICV>>(new Map)
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
   const [currentCv, setCurrentCvState] = useState<ICV>(null)
+  const [page, setPage] = useState<number>(1)
+  const [total, setTotal] = useState<number>(undefined)
   
 
   const setSavedCvs = async():Promise<boolean> => {
@@ -96,9 +101,14 @@ export function CvWrapper(props: Props) {
   }
 
   const findCvs = async(data?: IVacancyCvSearchParams) => {
-    const res = await CvRepository.findCvs(data)
+    const res = await CvRepository.findCvs(data, page, 40)
     if(typeof res === 'object') {
-      setFoundCvsState(res)
+      setFoundCvsState(state=> {
+        page === 1&& state.clear()
+        res.data.forEach(el=> state.set(el.id, el))
+        return new Map(state)
+      })
+      setTotal(res.total)
     }
     return true
   }
@@ -126,7 +136,10 @@ export function CvWrapper(props: Props) {
     editCv,
     findCvs,
     getCv,
-    currentCv
+    currentCv,
+    page,
+    setPage,
+    total
   }
 
   return (

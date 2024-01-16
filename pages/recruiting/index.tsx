@@ -28,10 +28,10 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
   const vcId = context.query?.vcId||null
   const cvId = context.query?.cvId||null
   if(profile) {
-    return {props: {profileType: profile, auth: token, vcId, cvId, vacancies: vacancies.slice(0, 10)}}
+    return {props: {profileType: profile, auth: token, vcId, cvId, vacancies: vacancies.data.slice(0, 10)}}
   }
   else {
-    return {props: {vacancies: vacancies.slice(0, 10)}}
+    return {props: {vacancies: vacancies.data.slice(0, 10)}}
   }
 }) 
 

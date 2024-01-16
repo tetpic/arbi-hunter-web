@@ -10,10 +10,8 @@ interface Props extends Query {
 }
 
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
-  const id  = Number(context.query.id)
-  // const profileType = context.req.cookies[CookiesType.profileType]
-  // const token = context.req.cookies[CookiesType.accessToken]
-  return {props: {id}}
+  const cvId  = Number(context.query.id)
+  return {props: {id: cvId}}
 }) 
 
 
@@ -21,8 +19,8 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function Cv(props: Props) {
 
   return (<ContentLayout title='Резюме' hideMobileHeader>
-    <PersonalWrapper key={props.id}>
-      <CvPage id={props.id}/>
+    <PersonalWrapper key={'cv_page'+props.id}>
+      <CvPage cvId={props.id}/>
     </PersonalWrapper>
   </ContentLayout>)
 }

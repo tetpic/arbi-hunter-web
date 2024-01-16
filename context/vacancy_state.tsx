@@ -1,7 +1,7 @@
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
-import { createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { useCreateVcCvContext } from './createVcCv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
@@ -25,8 +25,13 @@ interface IState {
 
   editVcInEditor: (vc: IVacancy)=> void
 
-  foundVacancies: IVacancy[]
+  foundVacancies: Map<number, IVacancy>
   findVacancies: (data?: IVacancyCvSearchParams) => Promise<boolean>
+
+  page: number,
+  setPage: Dispatch<SetStateAction<number>>,
+  total: number,
+
 }
 
 
@@ -43,8 +48,11 @@ export function VacancyWrapper(props: Props) {
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>(null)
-  const [foundVacancies, setFoundVacancies] = useState<IVacancy[]>([])
+  const [foundVacancies, setFoundVacancies] = useState<Map<number, IVacancy>>(new Map)
   const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
+  const [page, setPage] = useState<number>(1)
+  const [total, setTotal] = useState<number>(undefined)
+
 
   const setArchiveVacancies = async(): Promise<boolean> => {
     return VacancyRepository.getArchiveVacancies()
@@ -124,9 +132,14 @@ export function VacancyWrapper(props: Props) {
   }
 
   const findVacancies = async (data?: IVacancyCvSearchParams):Promise<boolean> => {
-    const res = await VacancyRepository.searchVacancies(data)
+    const res = await VacancyRepository.searchVacancies(data, page, 40)
     if(typeof res === 'object') {
-      setFoundVacancies(res)
+      setFoundVacancies(state=>{
+        page === 1 && state.clear()
+        res.data.forEach(el=> state.set(el.id, el))
+        return new Map(state)
+      })
+      setTotal(res.total)
     }
     return true
   }
@@ -137,8 +150,6 @@ export function VacancyWrapper(props: Props) {
       setCurrentVacancyState(res)
     })
   }
-  
-
 
 
   const value: IState = {
@@ -157,6 +168,9 @@ export function VacancyWrapper(props: Props) {
     editVcInEditor,
     currentVacancy,
     setCurrentVacancy,
+    page,
+    total,
+    setPage,
   }
 
   return (

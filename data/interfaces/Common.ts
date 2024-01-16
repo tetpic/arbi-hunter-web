@@ -233,5 +233,5 @@ export interface IVacancyCvSearchParams {
   withCharacter?: boolean,
   forLastNumberOfDays?: 1|7|30|365, 
   s?:string
-  sources?: number[]
+  sources?: number[],
 }

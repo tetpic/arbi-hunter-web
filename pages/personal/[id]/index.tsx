@@ -24,7 +24,7 @@ export default function MyCompanyPage(props: Props) {
 
   return (
     <ContentLayout hideMobileHeader>
-      <PersonalWrapper>
+      <PersonalWrapper key={'id_personal_page'}>
         <PersonalPage id={props.id}/>
       </PersonalWrapper>
     </ContentLayout>

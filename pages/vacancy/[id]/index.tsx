@@ -14,6 +14,9 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const id  = Number(context.query.id)
   // const profileType = context.req.cookies[CookiesType.profileType]
   // const token = context.req.cookies[CookiesType.accessToken]
+  if(id === 0 || !id) {
+    return {redirect: {destination: '/', permanent: false}}
+  }
   return {props: {id}}
 }) 
 
@@ -21,7 +24,7 @@ export default function Vacancy(props: Props) {
 
   return (
   <ContentLayout title='Вакансия' hideMobileHeader>
-    <PersonalWrapper>
+    <PersonalWrapper key={'vacancy_page'+props.id}>
       <VacancyPage id={Number(props.id)}/>
     </PersonalWrapper>
   </ContentLayout>

@@ -3,6 +3,7 @@ import { ISpecializationCategory, IPosition, ISource, IVacancyCvSearchParams } f
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { Languages } from 'types/enums'
+import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class CvRepository {
@@ -169,8 +170,8 @@ export default class CvRepository {
     return res
   }
 
-  static async findCvs(data: IVacancyCvSearchParams): Promise<ICV[]|null> {
-    const dataToSend:any = {...data}
+  static async findCvs(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<ICV>|null> {
+    const dataToSend:any = {...data, page, limit}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))

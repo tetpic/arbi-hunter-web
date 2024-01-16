@@ -64,25 +64,7 @@
   color: $blue;
 }
 
-.form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  row-gap: 24px;
 
-  @include mq($TabletWidth, max) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  @include mq($PhoneWidth, max) {
-    min-height: calc(100vh - 100px);
-    min-height: calc(100dvh - 100px);
-    justify-content: flex-start;
-    flex-direction: column;
-  }
-}
 
 .input {
   width: 100%;
@@ -97,18 +79,7 @@
   }
 }
 
-.submitButton {
-  @include mq($PhoneWidth, min) {
-    @include buttonBlack;    
-  }
-  padding: 10px 24px;
-  // display: inline-block;
-  @include mq($PhoneWidth, max) {
-    @include buttonYellow;
-    width: 100%;
-    margin-top: auto;
-  }
-}
+
 
 .buttonsWrapper {
   display: flex;
@@ -135,20 +106,9 @@
   }
 }
 
-.modes {
-  min-width: 300px;
-   @include mq($PhoneWidth, max) {
-    width: 100%;
-  }
-}
 
-.modesButtons {
-  width: 50%;
- 
-}
 
-.input {
-  width: 100% !important;  
-}
+
+
 
 

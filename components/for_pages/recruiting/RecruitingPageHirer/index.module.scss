@@ -74,11 +74,14 @@
 }
 
 .vacancies {
+  width: 100%;
+  min-height: 150vh;
+}
+
+.vacanciesWrapper {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  width: 100%;
-  min-height: 150vh;
 }
 
 .found {

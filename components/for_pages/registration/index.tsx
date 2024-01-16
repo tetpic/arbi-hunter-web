@@ -12,7 +12,6 @@ import LocationRepository from 'data/repositories/LocationRepository'
 import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation'
 import DropDownInput from '../../fields/LocationDropdownInput'
 import BackBtn from 'components/ui/BackBtn'
-import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/navigation'
 import { ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
@@ -31,7 +30,7 @@ import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 export default function Registration() {
   const userContext = useUserContext()
   const appContext = useAppContext()
-  const {isTabletWidth} = useResize()
+  const {isTabletWidth} = appContext.size
 
   const [cityId, setCityId] = useState<number>()
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
@@ -235,11 +234,15 @@ export default function Registration() {
   useEffect(()=>{
     if(userContext.currentProfile) {
       setTimeout(()=>{
-        
         router.push('/')
       }, 100)
     }
   }, [userContext.currentProfile])
+
+  useEffect(()=>{
+    isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
+  }, [])
+
 
   return ( 
     <div className={styles.root}>

@@ -3,7 +3,7 @@
 .root {
   border-radius: 16px;
   overflow: hidden;
-  margin-top: 80px;
+  margin-top: 48px;
   position: relative;
   @include mq($TabletWidth, max) {
     margin-top: unset;

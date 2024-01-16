@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy, IVacancyCreate} from 'data/interfaces/IVacancy'
+import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class VacancyRepository {
@@ -57,6 +58,9 @@ export default class VacancyRepository {
   поля сразу заполнены, пользователь не видит пустых полей, если вакансия еще не загрузилась
   */
   static async getVacancyById(id: number, profile?: ProfileType, token?: string): Promise<IVacancy|null> {
+    if(!id || id === 0) {
+      return null
+    }
     const res = await request({
       method: 'get',
       url: `/api/vacancy/${id}`,
@@ -115,8 +119,8 @@ export default class VacancyRepository {
     return res
   }
 
-  static async searchVacancies(data: IVacancyCvSearchParams): Promise<IVacancy[]|null> {
-    const dataToSend:any = {...data}
+  static async searchVacancies(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<IVacancy>|null> {
+    const dataToSend:any = {...data, page, limit}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
     data?.sources&&data.sources.length>0&&(dataToSend.sources = data.sources.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))

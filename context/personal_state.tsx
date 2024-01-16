@@ -3,13 +3,14 @@ import { IPersonalPage, IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IUserProfile } from 'data/interfaces/IUser'
 import PersonalRepository from 'data/repositories/PersonalRepository'
 import UserRepository from 'data/repositories/UserRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import { useUserContext } from './user_state'
 import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface IState {
-  setPersonalPage: (id?: number) => void
+  setPersonalPage: (data?: {profileId?: number, profile?: IUserProfile}) => Promise<IUserProfile>
   personalPage: IPersonalPage
   updatePersonalPage: (data?: Partial<IPersonalPageBlock[]>) => Promise<IPersonalPage>
   blocks: Map<number, {block: IPersonalPageBlock, assets: IFile[]}>
@@ -19,6 +20,8 @@ interface IState {
   refreshBackgrounds: () => void
   weather: IBackground
   transport: IBackground
+  loading: boolean  
+  setBackgrounds: (profile: IUserProfile) => Promise<[] | IBackground[]>
 }
 
 const PersonalContext = createContext<Partial<IState>>({})
@@ -32,9 +35,10 @@ export function PersonalWrapper(props: Props) {
   const [personalPage, setPersonalPageState] = useState<IPersonalPage>(null)
   const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>(new Map)
   const [currentProfile, setCurrentProfile] = useState<IUserProfile>(null) 
-  const [backgrounds, setBackgrounds] = useState<Map<BackgroundCategoryType, IBackground>>(new Map)
+  const [backgrounds, setBackgroundsState] = useState<Map<BackgroundCategoryType, IBackground>>(undefined)
   const [weather, setWeater] = useState<IBackground>()
   const [transport, setTransport] = useState<IBackground>()
+  const [loading, setLoading] = useState(true)
 
   const setRives = async(backs: [] | IBackground[]) => {
     const weathersList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Weather})
@@ -56,22 +60,38 @@ export function PersonalWrapper(props: Props) {
         case 9: return transportList.find(el=> el.id === 14)     
       }
     })
+  }
 
+  const setBackgrounds =  async(profile: IUserProfile): Promise<[] | IBackground[]> => {
+    setLoading(true)
+    const backs = await BackgroundRepository.getBackground({profileId: profile?.id})
+      
+    profile?.profileType === ProfileType.Hirer 
+    && setRives(backs)
+
+    setBackgroundsState(new Map(backs.map(el=> [el.category.id , el])))
+    
+    setLoading(false)    
+    return backs
   }
 
 
-  const setPersonalPage = async (id?: number) => {
-    if(id) {
-      const profile = await UserRepository.getUserProfileById(id)
+  const setPersonalPage = async (data?: {profileId?: number, profile?: IUserProfile}): Promise<IUserProfile> => {
+    setLoading(true)
+    let profile: IUserProfile
+    if(data?.profileId) {
+      profile = await UserRepository.getUserProfileById(data?.profileId)
       setCurrentProfile(profile)
+    }
+    else if(data?.profile) {
+      profile = data?.profile
+      setCurrentProfile(data?.profile)
     }
     else {
       setCurrentProfile(userContext?.currentProfile)
     }
     try {
-      const res = id?await PersonalRepository.getPersonalPageById(id):await PersonalRepository.getPersonalPage()
-      const backs = await BackgroundRepository.getBackground({profileId: id||res.profileId})
-      setRives(backs)
+      const res = (data?.profile||data?.profileId)?await PersonalRepository.getPersonalPageById(data?.profile?.id||data?.profileId):await PersonalRepository.getPersonalPage()
       setPersonalPageState(res)
       if(res?.blocks) {
         res?.blocks.forEach(block => {
@@ -79,11 +99,12 @@ export function PersonalWrapper(props: Props) {
           setBlocks(state=> state.set(block.order, {block, assets}))
         })
       }
-      setBackgrounds(new Map(backs.map(el=> [el.category.id , el])))
     }
     catch (err) {
       setPersonalPageState(undefined)
     }
+    setLoading(false)
+    return profile
   }
 
   const updatePersonalPage = async (): Promise<IPersonalPage> => {
@@ -110,8 +131,17 @@ export function PersonalWrapper(props: Props) {
   const refreshBackgrounds = async () => {
     const backs = await BackgroundRepository.getBackground({profileId: currentProfile?.id})
     setRives(backs)
-    setBackgrounds(new Map(backs.map(el=> [el.category.id, el])))
+    setBackgroundsState(new Map(backs.map(el=> [el.category.id, el])))
   }
+
+  useEffect(()=>{
+    return ()=>{
+      setCurrentProfile(null)
+      setLoading(true)
+      setPersonalPageState(undefined)
+      setBackgroundsState(undefined)
+    }
+  }, [])
 
 
   const value: IState = {
@@ -124,7 +154,9 @@ export function PersonalWrapper(props: Props) {
     backgrounds,
     refreshBackgrounds,
     weather,
-    transport
+    transport,
+    loading,
+    setBackgrounds
   }
 
   return (

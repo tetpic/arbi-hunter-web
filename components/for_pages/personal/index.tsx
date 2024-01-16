@@ -12,6 +12,7 @@ import { usePersonalContext } from 'context/personal_state'
 import ContentItem from 'components/ui/Content/ContentItem'
 import EditToolbar from './EditToolbar'
 import classNames from 'classnames'
+import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 interface Props {
   id?: number
@@ -22,17 +23,25 @@ export default function PersonalPage(props: Props) {
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(()=>{
-    personalContext.setPersonalPage(props.id)  
+    personalContext.setPersonalPage({profileId: props.id}) 
+    .then(res => {
+      personalContext.setBackgrounds(res)
+    })
   }, [])
 
-
+  if(personalContext.loading) {
+    return <Spinner size={24} />
+  }
 
   return (<div className={styles.root}> 
     {
       personalContext.personalPage === null && <Spinner size={24} />
       ||
       <>
-      {(!props.id || personalContext.currentProfile?.image) && personalContext.backgrounds.size > 0 && 
+      {(!props.id || personalContext.currentProfile?.image) 
+      && personalContext.backgrounds.size > 0 
+      && (!isEditing && personalContext.backgrounds.get(BackgroundCategoryType.Places) && personalContext.backgrounds.get(BackgroundCategoryType.Buildings)) 
+      &&
         <PersonalHeader isEditing={!props.id&&isEditing}/>
       }
       <Content className={styles.content}>

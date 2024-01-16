@@ -39,6 +39,7 @@ import CoursesCategoriesModal from 'components/modals/CoursesCategoriesModal'
 import UserImageModal from 'components/modals/UserImageModal'
 import BackgroundPickModal from 'components/modals/BackgroundPickModal'
 import NewPasswordModal from 'components/modals/NewPasswordModal'
+import ProfileTypeSwitcher from 'components/modals/ProfileTypeSwitcher'
 
 
 interface Props { }
@@ -192,6 +193,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.NewPasswordModal:
         return <Modal isOpen {...commonSettings} >
         <NewPasswordModal />
+      </Modal>
+      case ModalType.ProfileTypeSwitcher:
+        return <Modal isOpen {...commonSettings} >
+        <ProfileTypeSwitcher onClose={commonSettings.onRequestClose}/>
       </Modal>
 
     }

@@ -11,7 +11,6 @@ import Spinner from 'components/ui/Spinner'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
-import { CharacterWrapper } from 'context/character_state'
 import StickyBox from 'react-sticky-box'
 import hirer from 'images/recruiting/vacancy_back.jpg'
 import { useAppContext } from 'context/state'
@@ -19,6 +18,8 @@ import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
 import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
 import { ModalType } from 'types/enums'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 
 interface Props {
@@ -26,25 +27,24 @@ interface Props {
 }
 
 export default function RecruitingPageHirer(props: Props) {
-  const [loading, setLoading] = useState<boolean>(true)
   const cvContext = useCvContext()
-  const [currentFilters, setCurrentFilters] = useState<any>({})
+  const [loading, setLoading] = useState<boolean>(true)
+  const currentFilters = useRef<IVacancyCvSearchParams>({})
   const currentVacancy = useRef<IVacancy>()
   const categories = useRef<number[]>([])
   const appContext = useAppContext()
   const router = useRouter()
 
-
   const {isTabletWidth} = appContext.size
 
-
-  const findCvs = (data: any):void => {
-    categories.current&&(data.categories = categories.current)
-    cvContext.findCvs(data)
+  const findCvs = (data?: IVacancyCvSearchParams):void => {
+    categories.current&&data&&(data.categories = categories.current)
+    cvContext.findCvs(data||currentFilters.current)
     .then(_=>setLoading(false))
   }
 
   const onFilterClick = ()=>{
+    if(!isTabletWidth) {return}
     appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
       onFilterChange: (data)=>onFilterChange(data)
     })
@@ -53,23 +53,31 @@ export default function RecruitingPageHirer(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
+    cvContext.setPage(1)
     setLoading(true)
-    setCurrentFilters(data)
+    currentFilters.current = data
     findVacanciesThrottle.callback(data)
   }
+
+  useEffect(()=>{
+    findCvs()  
+  }, [cvContext.page])
 
   const init = async() => {
     const vc = props.vcId> 0?await VacancyRepository.getVacancyById(props.vcId):null
     categories.current = vc&&vc.categories.map(e=> e.id)
     currentVacancy.current = vc
-    cvContext.foundCvs.length === 0 && cvContext.findCvs()
+    cvContext.foundCvs?.size === 0 && cvContext.findCvs()
     .then(_=>setLoading(false))
-    cvContext.foundCvs.length > 0 &&setLoading(false)
+    cvContext.foundCvs?.size > 0 &&setLoading(false)
   }
 
   useEffect(()=>{
     init()
   }, [])
+
+  useEffect(()=>{
+  }, [cvContext.foundCvs])
 
   return (<div className={styles.root}> 
     {!isTabletWidth &&
@@ -90,10 +98,10 @@ export default function RecruitingPageHirer(props: Props) {
     }
     <SearchBar placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
     onChange={(s)=>onFilterChange({...currentFilters, search: s})}
-    onFilterClick={onFilterClick}
+    onFilterClick={isTabletWidth&&onFilterClick}
     />
     {!loading &&
-      <p className={styles.found}>Найдено {cvContext.foundCvs.length} резюме {props.vcId?'на вакансию '+ currentVacancy.current.name:''}</p>
+      <p className={styles.found}>Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ currentVacancy.current.name:''}</p>
       ||
       <Spacer basis={88}/>
     }
@@ -108,15 +116,23 @@ export default function RecruitingPageHirer(props: Props) {
       }
   
       <div className={styles.vacancies}>
-        {loading &&
-          <Spinner size={24} />
-          ||
-          !loading && cvContext.foundCvs?.length > 0 && cvContext.foundCvs?.map(cv=> {
-            return <CharacterWrapper><CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs(currentFilters)}/></CharacterWrapper>
-          })
-          ||
-          <p className='empty'>Нет найденных вакансий</p>
-        }
+        <InfiniteScroll 
+        next={()=>{cvContext.setPage(p=> p+1)}} 
+        hasMore={cvContext.foundCvs?.size < cvContext.total} 
+        loader={<Spinner size={24}/>} 
+        dataLength={cvContext.foundCvs?.size + 1}>
+          <div className={styles.vacanciesWrapper}>
+            {loading &&
+              <Spinner size={24} />
+              ||
+              !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
+                return <CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs()}/>
+              })
+              ||
+              <p className='empty'>Нет найденных вакансий</p>
+            }
+          </div>
+        </InfiniteScroll>
       </div>
     </div>
     </div>)

@@ -1,0 +1,53 @@
+import ModalLayout from 'components/layout/Modal/ModalLayout'
+import styles from './index.module.scss'
+import ModalBody from 'components/layout/Modal/ModalBody'
+import { useUserContext } from 'context/user_state'
+import classNames from 'classnames'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import UserSvg from 'components/svg/UserSvg'
+import { colors } from 'styles/variables'
+import Button from 'components/ui/Button'
+import Image from 'next/image'
+import BriefCaseAltSvg from 'components/svg/BriefCaseAltSvg'
+import { useAppContext } from 'context/state'
+
+interface Props {
+  onClose: () => void
+}
+
+export default function ProfileTypeSwitcher(props: Props) {
+  const userContext = useUserContext()
+  const appContext = useAppContext()
+
+
+  const body = (
+    <div className={styles.root}>
+      <div className={styles.imageWrapper}>
+        <Image src={'/favicon.svg'} alt={'logo'} width={110} height={110}/>
+      </div>
+
+      <p className={styles.heading}>Выберите способ регистрации</p>
+      <div className={styles.types}>
+        <div onClick={() =>userContext.setProfileType(ProfileType.Employee)} className={classNames(styles.item, userContext.profileType === ProfileType.Employee && styles.active)}>
+          <UserSvg  color={userContext.profileType === ProfileType.Employee && colors.blueLight}/>
+          <p className={styles.title}>Частное лицо</p>
+          <p className={styles.subTitle}>Я хочу найти работу для себя</p>
+        </div>
+        <div onClick={() =>userContext.setProfileType(ProfileType.Hirer )} className={classNames(styles.item, userContext.profileType === ProfileType.Hirer && styles.active)}>
+          <BriefCaseAltSvg  color={userContext.profileType === ProfileType.Hirer && colors.blueLight}/>
+          <p className={styles.title}>Компания</p>
+          <p className={styles.subTitle}>Я хочу найти сотрудников</p>
+        </div>
+      </div>
+      <Button className={styles.submitButton} onClick={()=> appContext.hideModal()}><span>Продолжить</span></Button>
+    </div>
+  )
+
+  return (
+    <ModalLayout mobileFullScreen className={styles.modalLayout}>
+      <ModalBody>
+        {body}
+      </ModalBody>
+    </ModalLayout>
+  )
+}

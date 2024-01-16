@@ -175,8 +175,6 @@
   border-radius: 16px;
   width: 100%;
   height: auto;
-
-
 }
 
 .imageWrapper {
@@ -201,7 +199,8 @@
   .build {
     width: 100%;
     height: auto;
-
+    position: relative;
+    z-index: 2;
   }
 
   .logo {

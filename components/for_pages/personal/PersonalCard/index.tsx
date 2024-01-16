@@ -59,7 +59,7 @@ export default function PersonalCard(props: Props) {
       size={188}
       />
       ||
-      personalContext.currentProfile.profileType === ProfileType.Hirer && personalContext.currentProfile?.logo && 
+      personalContext.currentProfile?.profileType === ProfileType.Hirer && personalContext.currentProfile?.logo && 
       <UserPic className={styles.userPic} image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + personalContext?.currentProfile?.logo.source} size={188}/>
       ||
       props.isEditing && 
@@ -86,7 +86,7 @@ export default function PersonalCard(props: Props) {
     }
     </div>
     
-    <p className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile.firstName + ' ' + personalContext?.currentProfile?.lastName}</p>
+    <p className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</p>
     {/* <div className={styles.rating}>
       <p className={styles.ratingValue}>4.0</p>
       <RatingLine rating={4}/>

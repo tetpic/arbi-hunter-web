@@ -6,8 +6,6 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useAppContext } from 'context/state'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
 import DownloadCloudSvg from 'components/svg/DownloadCloudSvg'
-// import FileInput from 'components/fields/FileInput'
-// import { PreviewImage } from 'data/interfaces/Common'
 import { useEffect, useMemo, useState } from 'react'
 import { usePersonalContext } from 'context/personal_state'
 import { IBackgroundPickModalArguments } from 'components/modals/BackgroundPickModal'
@@ -29,10 +27,6 @@ export default function PersonalHeader(props: Props) {
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
   const building = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
-  // const {rive, RiveComponent} = useRive({src: FILES + personalContext.transport.image?.source,
-  //   stateMachines: 'State Machine 1', 
-
-  // })
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -59,7 +53,6 @@ export default function PersonalHeader(props: Props) {
     if(!isTabletWidth) {
       return <div className={styles.editButton} onClick={openBackgroundPickModal}>
       Изменить фон <EditPencilSvg/>
-      {/* <FileInput setImages={setEditedImage}/> */}
       </div>
     }
     else {
@@ -76,12 +69,6 @@ export default function PersonalHeader(props: Props) {
   useEffect(()=>{
     setBackImage(personalContext.backgrounds.get(BackgroundCategoryType.Places))  
   }, [personalContext.backgrounds])
-
-  // useEffect(()=>{
-  //   console.log(rive)
-  //   console.log(personalContext.weather)
-  
-  // }, [rive])
 
   const transportRive = useMemo(()=>{
     if(!personalContext.transport) return null

@@ -85,12 +85,14 @@ export default function SearchBar(props: Props) {
     <div className={classNames(styles.container, props.fullWidth&&styles.container_wide)}>
       <div className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
         <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||'Поиск'} /> 
+        {props.onFilterClick &&
         <Button 
         title='filter button' 
         onClick={openFilters} 
         className={classNames(styles.filterButton, (activeCategories.size>0||activePeriod)&&styles.filterButton_active)}>
           <SettingsThreeSlidersSvg/>
         </Button>
+        }
 
         <Button 
         title='search button' 

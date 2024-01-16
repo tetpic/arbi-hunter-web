@@ -6,6 +6,7 @@
   padding-top: 48px;
   position: relative;
   @include container;
+  padding-bottom: 40px;
   @include mq($TabletWidth, max) {
     padding-top: 8px;
     flex-direction: column;

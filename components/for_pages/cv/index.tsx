@@ -40,7 +40,7 @@ import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 
 interface Props {
-  id: string
+  cvId: string
 }
 
 export default function CvPage(props: Props) {
@@ -50,21 +50,6 @@ export default function CvPage(props: Props) {
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
-
-  useEffect(()=>{
-    personalContext.setPersonalPage(Number(props.id))
-  }, [])
-
-  useEffect(()=>{
-    cvContext.getCv(Number(props.id))
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-  }, [])
-
-  useEffect(()=>{
-    if(cvContext.currentCv) {
-      personalContext.setPersonalPage(cvContext.currentCv.profileId)
-    }
-  }, [cvContext.currentCv])
 
   const makeResponse = () => {
     if(isTabletWidth) {
@@ -77,6 +62,19 @@ export default function CvPage(props: Props) {
       page: ProposalModalPager.OtherVacancy
     })
   }
+
+  useEffect(()=>{
+    cvContext.getCv(Number(props.cvId))
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+  }, [])
+
+  useEffect(()=>{
+    if(currentCv?.id === Number(props.cvId) && !personalContext.backgrounds) {
+      personalContext.setBackgrounds(currentCv.profile)
+    }
+  }, [cvContext.currentCv])
+
+  if(personalContext.loading) return <Spinner size={24}/>
 
   const profileImage = 
   currentCv?.profile.useOwnLogo && currentCv?.profile?.logo?.source && FILES+currentCv?.profile?.logo?.source
@@ -106,7 +104,6 @@ export default function CvPage(props: Props) {
     <Link href={'/personal/'+ currentCv?.profileId} className={styles.openProfile}>Открыть профиль</Link>
   </>)
 
-  if(!currentCv) return <Spinner size={24}/>
 
   return (
     <>
@@ -123,7 +120,7 @@ export default function CvPage(props: Props) {
         {userCard}
       </div>
     }
-    {!isTabletWidth && personalContext.backgrounds.size > 0 &&
+    {!isTabletWidth && personalContext.backgrounds.size > 0 && 
     <>
       <Spacer basis={48}/>
       <Buildings profile={currentCv?.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>

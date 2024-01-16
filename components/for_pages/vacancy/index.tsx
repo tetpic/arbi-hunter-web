@@ -67,11 +67,15 @@ export default function VacancyPage(props: Props) {
   }
 
   useEffect(()=>{
+    if(currentVacancy && !currentVacancy?.profile) {
+      router.back()
+      return
+    }
     if(currentVacancy && currentVacancy.categories.length > 0) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
-      VacancyRepository.searchVacancies({s: JSON.stringify({profileId: currentVacancy.profile.id})})
+      VacancyRepository.searchVacancies({s: JSON.stringify({profileId: currentVacancy.profile?.id})})
       .then(res=> {
-        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res, 2)
+        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 2)
         setOtherCompanyVacancies(randomItems)
       })
     }
@@ -84,19 +88,25 @@ export default function VacancyPage(props: Props) {
   }, [])
   
   useEffect(()=>{
-    if(vacancyContext.currentVacancy) {
-      personalContext.setPersonalPage(vacancyContext.currentVacancy.profileId)
+    if(currentVacancy?.id === props.id && !personalContext.personalPage) {
+      personalContext.setPersonalPage({profile: currentVacancy.profile})
+      .then(r=> {
+        personalContext.setBackgrounds(r)
+      })
     }
-  }, [vacancyContext.currentVacancy])
+  }, [currentVacancy])
 
-  if(!currentVacancy) return <Spinner size={24}/>
+
+  if(personalContext.loading) return <Spinner size={24}/>
 
   return (<>
-    <Spacer basis={48} hide={isTabletWidth}/>
-    {
-      currentVacancy.profile.image && !isTabletWidth && personalContext.backgrounds.size > 0 &&
-      <Buildings profile={currentVacancy.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
+    {currentVacancy.profile.image && !isTabletWidth && personalContext.backgrounds?.size > 0 && personalContext.backgrounds.get(BackgroundCategoryType.Places) &&
+      <>
+        <Spacer basis={48} hide={isTabletWidth}/>
+          <Buildings profile={currentVacancy.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
+      </>
     }
+
     {isTabletWidth &&
       <div className={styles.buttonsWrapper}>
         <Button onClick={() => router.back()} className={styles.button}><ArrowLeftSvg/></Button>
@@ -161,12 +171,12 @@ export default function VacancyPage(props: Props) {
             <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
         </ContentItem>
-        {userContext?.currentProfile?.profileType === ProfileType.Employee && foundVacancies.length > 0 &&
+        {userContext?.currentProfile?.profileType === ProfileType.Employee && foundVacancies.size > 0 &&
         <>
           <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
           <ContentItem>
             {
-              foundVacancies.slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
+              [...foundVacancies.values()].slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
             }
           </ContentItem>        
         </>
