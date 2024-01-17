@@ -2,10 +2,9 @@ import styles from './index.module.scss'
 
 import InputField from 'components/fields/InputField'
 import TextAreaField from 'components/fields/TextAreaField'
-import BackTextButton from 'components/ui/BackTextButton'
 import Button from 'components/ui/Button'
 import { TimeLine } from 'data/interfaces/Common'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent,  useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import classNames from 'classnames'
@@ -13,6 +12,7 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { useAppContext } from 'context/state'
 import Validator from 'utils/Validator'
 import { SnackbarType } from 'types/enums'
+import Title from 'components/ui/TitleForSection'
 
 export interface DetailsFieldProps<T> {
   onClose: ()=> void
@@ -91,8 +91,9 @@ export default function DetailsField<T extends TimeLine>(props: DetailsFieldProp
 
   return (
   <div className={styles.root}>
-    <BackTextButton onClick={props.onClose}/>
-    <p className={styles.title}>{props.title}</p>
+    <Title title={props.title} onBackClick={props.onClose} className={styles.title}/>
+    {/* <BackTextButton onClick={props.onClose}/>
+    <p className={styles.title}>{props.title}</p> */}
     <FormikProvider value={formik}>
       <Form className={styles.inputsWrapper}>
         {props.datePickerSettings?.on&&
@@ -163,6 +164,9 @@ export default function DetailsField<T extends TimeLine>(props: DetailsFieldProp
       })}
       </Form>
       </FormikProvider >
-    <Button className={styles.buttonSave} type={'button'} onClick={()=>formik.submitForm()}>Сохранить</Button>
+    <div className={styles.buttonsWrapper}>
+      <Button className={styles.buttonBack} type={'button'} onClick={props.onClose}>Отменить</Button>
+      <Button className={styles.buttonSave} type={'button'} onClick={formik.submitForm}>Сохранить</Button>
+    </div>
   </div>)
 }

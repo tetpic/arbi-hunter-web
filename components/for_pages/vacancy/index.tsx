@@ -79,15 +79,6 @@ export default function VacancyPage(props: Props) {
         setOtherCompanyVacancies(randomItems)
       })
     }
-  }, [currentVacancy])
-
-  useEffect(()=>{
-    cvContext.setSavedCvs()
-    vacancyContext.setCurrentVacancy(props.id)  
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-  }, [])
-  
-  useEffect(()=>{
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
       .then(r=> {
@@ -96,8 +87,13 @@ export default function VacancyPage(props: Props) {
     }
   }, [currentVacancy])
 
+  useEffect(()=>{
+    cvContext.setSavedCvs()
+    vacancyContext.setCurrentVacancy(props.id)  
+    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+  }, [])
 
-  if(personalContext.loading) return <Spinner size={24}/>
+  if(personalContext.loading && !personalContext.backgrounds) return <Spinner size={24}/>
 
   return (<>
     {currentVacancy.profile.image && !isTabletWidth && personalContext.backgrounds?.size > 0 && personalContext.backgrounds.get(BackgroundCategoryType.Places) &&

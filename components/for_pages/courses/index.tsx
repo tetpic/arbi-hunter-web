@@ -70,7 +70,7 @@ export default function CoursesMain(props: Props) {
         {coursesContext.categories.length > 0 &&
           randomCategories.map(el=> {
             return  (
-              <Tag className={styles.tag} text={el.name} link={'/courses/compilations?page=categories&category='+el.id}/>
+              <Tag key={el.id} className={styles.tag} text={el.name} link={'/courses/compilations?page=categories&category='+el.id}/>
             )
           })
         }

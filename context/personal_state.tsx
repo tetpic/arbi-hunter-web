@@ -88,6 +88,7 @@ export function PersonalWrapper(props: Props) {
       setCurrentProfile(data?.profile)
     }
     else {
+      profile = userContext?.currentProfile
       setCurrentProfile(userContext?.currentProfile)
     }
     try {

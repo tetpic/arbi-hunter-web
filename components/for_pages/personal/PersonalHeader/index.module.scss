@@ -60,6 +60,7 @@
   position: absolute;
   bottom: 0;
   right: 10%;
+  z-index: 2;
 
   .building {
     position: relative;
@@ -79,10 +80,12 @@
   right: 0;
   height: 110%;
   width: 1100px;
+  z-index: 3;
 }
 
 .transport {
   @extend .rive;
   top: 40px;
+  z-index: 1;
 }
 

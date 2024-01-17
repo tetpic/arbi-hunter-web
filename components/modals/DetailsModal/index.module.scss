@@ -1,8 +1,8 @@
 @import 'styles/index';
 
-// .modalLayout {
-//   width: unset;
-//   @include mq($TabletWidth, max) {
-    
-//   }
-// }
+.modalLayout {
+  max-width: 544px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
+}

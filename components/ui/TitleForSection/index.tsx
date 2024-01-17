@@ -11,6 +11,7 @@ interface Props {
   title: string|JSX.Element
   emoji?: JSX.Element
   className?: string
+  itemClassName?: string
   onBackClick?: ()=>void
   showButton?: boolean 
   link?: string
@@ -34,7 +35,7 @@ export default function Title(props: Props) {
   return (
     <div className={classNames(styles.root, props.className)}>
       {((isTabletWidth&&props.onBackClick)||props.showButton) &&
-        <Button className={styles.backButton} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
+        <Button className={classNames(styles.backButton, props.itemClassName)} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
       }
 
       {props.title} {props.emoji}
@@ -42,10 +43,10 @@ export default function Title(props: Props) {
         <div className={styles.filler}></div>
       }
       {isTabletWidth && props.link &&
-        <Link className={styles.link} href={props.link}>Все <ArrowRightSvg/></Link>
+        <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>Все <ArrowRightSvg/></Link>
       }
       {isTabletWidth && props.onAllWatchClick && 
-        <div className={styles.link} onClick={props.onAllWatchClick}>Все <ArrowRightSvg/></div>
+        <div className={classNames(styles.link, props.itemClassName)} onClick={props.onAllWatchClick}>Все <ArrowRightSvg/></div>
       }
       {props.rightButton}
     </div>

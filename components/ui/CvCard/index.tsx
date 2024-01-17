@@ -14,6 +14,7 @@ import FavoritesButton from '../FavoritesButton'
 import UserPic from '../UserPic'
 import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
+import { useVacancyContext } from 'context/vacancy_state'
 
 interface ItemProps {
   cv: ICV
@@ -23,11 +24,14 @@ interface ItemProps {
   onChangeItem?: ()=> void
 }
 
+
+
 export default function CvCard({cv, chat, vcId, application, ...props}: ItemProps) {
   const router = useRouter()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
   const [currentCV, setCurrentCV] = useState<ICV>(cv)
+  const vacancyContext = useVacancyContext()
   
   const experience = 
     (currentCV?.experienceInfo
@@ -60,10 +64,21 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
 
   const inviteHandler = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet(ModalType.ProposalModal, {application: application, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
+      appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, 
+        {application: application, 
+          cv: cv, 
+          page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy,
+          activeVacancies: [...vacancyContext.activeVacancies.values()]          
+        })
     }
     else {
-      appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, {application: application, fn: props.onChangeItem, cv: cv, page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy})
+      appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, 
+        {application: application, 
+          fn: props.onChangeItem, 
+          cv: cv, 
+          page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy,
+          activeVacancies: [...vacancyContext.activeVacancies.values()]
+        })
     }
   }
 
@@ -100,3 +115,4 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   </div>
   )
 }
+

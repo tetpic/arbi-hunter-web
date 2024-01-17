@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { IStat } from 'data/interfaces/IProposal'
 import FiltersSvg from 'components/svg/FiltersSvg'
 import { useAppContext } from 'context/state'
+import { useVacancyContext } from 'context/vacancy_state'
 
 interface Props {
   id?: number
@@ -47,6 +48,7 @@ export default function VCFeedbacks(props: Props) {
   
   const responsesContext = useFeedbacksContext()
   const appContext = useAppContext()
+  const vacancyContext = useVacancyContext()
   const {setStats, stats, filterOptions} = responsesContext
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState<VCNaviagation>(VCNaviagation.All)
@@ -91,9 +93,12 @@ export default function VCFeedbacks(props: Props) {
         arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)||[]
         responsesContext.setSorted(arr)
         break
-
     }
   }, [currentPage, responsesContext.VCFeedbacks])
+
+  useEffect(()=>{
+    vacancyContext.setActiveVacancies()
+  }, [])
 
   const openFiltersHandler = () => {
     appContext.showBottomSheet(ModalType.VcResponsesFilterModal)

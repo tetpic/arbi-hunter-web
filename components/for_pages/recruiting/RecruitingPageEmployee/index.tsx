@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import SearchBar from 'components/ui/SearchBar'
 import Link from 'next/link'
-import { useVacancyContext } from 'context/vacancy_state'
+import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 import { useEffect,  useRef,  useState } from 'react'
 import Formatter from 'utils/formatter'
 import Filters from '../Filters'
@@ -24,8 +24,15 @@ import VacancyItem from 'components/ui/VacancyItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 
-
 export default function RecruitingPageEmployee() {
+  return (
+    <VacancyWrapper>
+      <RecruitingPageEmployeeInner/>
+    </VacancyWrapper>
+  )
+}
+
+function RecruitingPageEmployeeInner() {
   const router = useRouter()
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()

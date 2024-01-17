@@ -19,7 +19,7 @@ import { CreateVcCvWrapper} from 'context/createVcCv_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
-import { VacancyWrapper } from 'context/vacancy_state'
+// import { VacancyWrapper } from 'context/vacancy_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
@@ -65,7 +65,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
           <ManagerWrapper>
           <CreateVcCvWrapper>
-          <VacancyWrapper>
+          {/* <VacancyWrapper> */}
           <CvWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
@@ -90,7 +90,7 @@ function MyApp({Component, pageProps}: AppProps) {
           </FeedbacksWrapper>
           </PatternWrapper>
           </CvWrapper>
-          </VacancyWrapper>
+          {/* </VacancyWrapper> */}
           </CreateVcCvWrapper>
           </ManagerWrapper>
         </UserWrapper>

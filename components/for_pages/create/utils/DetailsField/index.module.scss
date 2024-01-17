@@ -28,7 +28,6 @@
   font-size: $largeText;
   font-weight: $semibold;
   color: $white;
-  margin-top: 32px;
 }
 
 .inputsWrapper {
@@ -62,10 +61,13 @@
   :global .react-datepicker {
     width: 170px;
   }
+
+  >div {
+    width: calc(50% - 8px); 
+  }
 }
 
 .buttonSave {
-  margin-top: 24px;
   @include buttonYellow;
   @include mq($TabletWidth, max) {
     margin-top: auto;
@@ -76,4 +78,16 @@
   input {
     border: 2px $red solid;  
   }
+}
+
+.buttonsWrapper {
+  display: flex;
+  width: 100%;
+  column-gap: 8px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.buttonBack {
+  @include buttonGray;
 }

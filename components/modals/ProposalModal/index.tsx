@@ -1,5 +1,4 @@
 import RadioListField from 'components/fields/RadioListField'
-// import { useResize } from 'components/hooks/useResize'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
@@ -7,17 +6,16 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import ClosingTitle from 'components/ui/ClosingTitle'
 import Spinner from 'components/ui/Spinner'
-// import { usePatternContext } from 'context/pattern_state'
 import { useAppContext } from 'context/state'
-import { useVacancyContext } from 'context/vacancy_state'
 import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { Form, FormikProvider, useFormik } from 'formik'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
 import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
 import styles from './index.module.scss'
 import { IProposalTextModalProps } from './ProposalTextModal'
+import { IVacancy } from 'data/interfaces/IVacancy'
 
 
 interface Props {
@@ -40,17 +38,15 @@ export interface IProposalModalProps {
   cv?: ICV, 
   page?: ProposalModalPager
   fn?: () => void
+  activeVacancies?: IVacancy[]
 }
 
 export default function ProposalModal(props: Props) {
-  // const patternContext = usePatternContext()
   const appContext = useAppContext()
-  // const {isTabletWidth} = useResize()
   const modalArguments: IProposalModalProps = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments 
   const [page, setPage] = useState<ProposalModalPager>(modalArguments.page||ProposalModalPager.Invite)
   const [loading, setIsLoading] = useState<boolean>(false)
 
-  const vacancyContext = useVacancyContext()
 
   const submit = (data: FormikState) => {
     if(!data.vcId) {
@@ -64,19 +60,6 @@ export default function ProposalModal(props: Props) {
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {...data, cv: modalArguments.cv, application: modalArguments.application, onSubmit: modalArguments.fn})
     }
   }
-
-  useEffect(()=>{
-    setIsLoading(true)
-    if(page === ProposalModalPager.OtherVacancy) {
-      vacancyContext.setActiveVacancies().then(res=>
-        setIsLoading(false)
-      )
-    }
-  }, [page])
-
-  // useEffect(()=>{
-  //   patternContext.setPatterns()
-  // }, [])
 
   const formik = useFormik<FormikState>({
     initialValues: {
@@ -105,7 +88,7 @@ export default function ProposalModal(props: Props) {
           <RadioListField 
           wrapperClassName={styles.radioWrapper} 
           name={'vcId'} 
-          options={[...vacancyContext.activeVacancies.values()].filter(el=> modalArguments.cv.proposalByCurrentUser?.vacancyId !== el.id)
+          options={modalArguments.activeVacancies.filter(el=> modalArguments.cv.proposalByCurrentUser?.vacancyId !== el.id)
           .map(el => {
             return {value: el.id, label: el.name}
           })}/>          

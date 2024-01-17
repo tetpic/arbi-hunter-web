@@ -17,11 +17,11 @@ export default function RatingLine(props: Props) {
     className={classNames(styles.stars, props.starClass)}
     >
       {Formatter.getMarks(props.rating)
-      .map(el=> el===true&&<SmallStarActiveSvg/>
+      .map((el, index)=> el===true&&<SmallStarActiveSvg key={index}/>
         || 
-        Number(el)>0 && <SmallStarPassiveSvg className={styles.halfStar}/>
+        Number(el)>0 && <SmallStarPassiveSvg key={index} className={styles.halfStar}/>
         ||
-        <SmallStarPassiveSvg color={colors.greyLight}/>)}
+        <SmallStarPassiveSvg key={index} color={colors.greyLight}/>)}
     </p>
  )
 }

@@ -13,6 +13,7 @@ import ContentItem from 'components/ui/Content/ContentItem'
 import EditToolbar from './EditToolbar'
 import classNames from 'classnames'
 import { BackgroundCategoryType } from 'data/interfaces/IBackground'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   id?: number
@@ -38,11 +39,16 @@ export default function PersonalPage(props: Props) {
       personalContext.personalPage === null && <Spinner size={24} />
       ||
       <>
-      {(!props.id || personalContext.currentProfile?.image) 
-      && personalContext.backgrounds.size > 0 
-      && (!isEditing && personalContext.backgrounds.get(BackgroundCategoryType.Places) && personalContext.backgrounds.get(BackgroundCategoryType.Buildings)) 
-      &&
+      { !isEditing && 
+        (
+          (personalContext.currentProfile.profileType === ProfileType.Hirer && personalContext.backgrounds.get(BackgroundCategoryType.Places) && personalContext.backgrounds.get(BackgroundCategoryType.Buildings) && personalContext.currentProfile.logo)
+          ||
+          (personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.backgrounds.get(BackgroundCategoryType.Places) && personalContext.currentProfile.logo && personalContext.currentProfile.useOwnLogo) 
+        )
+        &&
         <PersonalHeader isEditing={!props.id&&isEditing}/>
+        ||
+        isEditing && <PersonalHeader isEditing={!props.id&&isEditing}/>
       }
       <Content className={styles.content}>
         <ContentBody className={styles.body}>

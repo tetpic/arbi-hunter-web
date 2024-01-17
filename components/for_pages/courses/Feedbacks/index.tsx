@@ -27,7 +27,7 @@ export default function Feedbacks(props: Props) {
     >
       {props.feedbacks.map(item=> {
         return (
-            <SwiperSlide className={styles.swiperSlide}>
+            <SwiperSlide key={item.id} className={styles.swiperSlide}>
               <div className={styles.item}>
                 <div className={styles.imageWrapper}>
                   {item.profile.image &&

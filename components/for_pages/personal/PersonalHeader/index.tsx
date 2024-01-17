@@ -98,7 +98,6 @@ export default function PersonalHeader(props: Props) {
     }
     {backImage && personalContext.transport && transportRive}
     {backImage && personalContext.weather && weatherRive}
-    {/* <RiveComponent/> */}
     <div className={styles.personalImageWrapper}>
       {
       personalContext.currentProfile.profileType === ProfileType.Hirer 

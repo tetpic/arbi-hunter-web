@@ -2,6 +2,7 @@ import Profile from 'components/for_pages/profile'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CharacterWrapper } from 'context/character_state'
 import { ProfilePageWrapper } from 'context/profile_page_state'
+import { VacancyWrapper } from 'context/vacancy_state'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -30,7 +31,9 @@ export default function ProfilePage(props: Props) {
     <ContentLayout hideMobileHeader title='Личный кабинет'>
       <ProfilePageWrapper page={props.page}>
         <CharacterWrapper>
-          <Profile/>
+          <VacancyWrapper>
+            <Profile/>
+          </VacancyWrapper>
         </CharacterWrapper>
       </ProfilePageWrapper>
     </ContentLayout>

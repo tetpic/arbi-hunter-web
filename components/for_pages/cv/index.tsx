@@ -37,6 +37,7 @@ import Buildings from '../profile/Personal/Buildings'
 import Spacer from 'components/ui/Spacer'
 import { usePersonalContext } from 'context/personal_state'
 import { BackgroundCategoryType } from 'data/interfaces/IBackground'
+import { useVacancyContext } from 'context/vacancy_state'
 
 
 interface Props {
@@ -45,6 +46,7 @@ interface Props {
 
 export default function CvPage(props: Props) {
   const cvContext = useCvContext()
+  const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
   const personalContext = usePersonalContext()
   const router = useRouter()
@@ -54,18 +56,21 @@ export default function CvPage(props: Props) {
   const makeResponse = () => {
     if(isTabletWidth) {
       appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv,
-        page: ProposalModalPager.OtherVacancy
+        page: ProposalModalPager.OtherVacancy,
+        activeVacancies: [...vacancyContext.activeVacancies.values()]
       })
       return
     }
     appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv, 
-      page: ProposalModalPager.OtherVacancy
+      page: ProposalModalPager.OtherVacancy,
+      activeVacancies: [...vacancyContext.activeVacancies.values()]
     })
   }
 
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+    vacancyContext.setActiveVacancies()
   }, [])
 
   useEffect(()=>{

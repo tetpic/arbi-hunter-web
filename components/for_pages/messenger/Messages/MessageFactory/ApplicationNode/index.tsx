@@ -25,7 +25,13 @@ export  function ApplicationHirerNode (props: Props) {
   return (<>
     <Button 
     onClick={()=>{
-      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.ThisVacancy, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
+      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, 
+        {type: ApplicationBSSelectType.ThisVacancy, 
+          application: props.application, 
+          cv: props.application.cv, 
+          vcId: props.application.vacancyId,
+          
+        })
     }} 
     className={styles.button}
     >
@@ -61,6 +67,8 @@ export function ApplicationEmployeeNode (props: Props) {
     ?appContext.showBottomSheet<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
     :appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
   }
+
+
 
   return (<>
   <p className={styles.message}>Отклик на вакансию</p>

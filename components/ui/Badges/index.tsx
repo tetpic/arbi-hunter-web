@@ -24,7 +24,7 @@ export default function Badges(props: Props) {
     {props.items.map((el, index)=>{
       return (
         <>
-          <div className={styles.badge} key={index}>
+          <div className={styles.badge} key={index+el.value} >
             <div className={styles.badgeIcon}>
               {el.icon}
             </div>
@@ -35,7 +35,7 @@ export default function Badges(props: Props) {
               {el.value}
             </p>
           </div>
-          <div className={styles.separator}></div>
+          <div className={styles.separator}  key={index}></div>
         </>
       )
     })}  

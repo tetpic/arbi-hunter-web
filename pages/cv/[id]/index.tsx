@@ -1,6 +1,7 @@
 import CvPage from 'components/for_pages/cv'
 import ContentLayout from 'components/layout/ContentLayout'
 import { PersonalWrapper } from 'context/personal_state'
+import { VacancyWrapper } from 'context/vacancy_state'
 
 interface Query {
   id: string
@@ -20,7 +21,9 @@ export default function Cv(props: Props) {
 
   return (<ContentLayout title='Резюме' hideMobileHeader>
     <PersonalWrapper key={'cv_page'+props.id}>
-      <CvPage cvId={props.id}/>
+      <VacancyWrapper>
+        <CvPage cvId={props.id}/>
+      </VacancyWrapper>
     </PersonalWrapper>
   </ContentLayout>)
 }
