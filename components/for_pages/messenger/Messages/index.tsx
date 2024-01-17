@@ -204,7 +204,7 @@ export default function Messages(props: Props) {
           {
           dialog.recorder?.current?.state === 'recording' &&
             <>
-              <span>{Formatter.formatSecondtToTime(dialog.recordTime)}</span>
+              <span>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
             </>
             ||

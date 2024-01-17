@@ -48,9 +48,13 @@ export default class Formatter {
   //   return dt
   // }
 
-  static formatPhone(phone: string) {
+  /** get formatted phone number +79999999999, return +7 999 999-99-99 */
+  static formatPhone(phone: string):string {
+    if(!phone) {return ''}
     try {
-      const number = phoneUtil.parseAndKeepRawInput(this.cleanPhone(`${phone}`), 'RU')
+      const number = phoneUtil.parseAndKeepRawInput(this.cleanPhone(`${phone}`))
+      const result = phoneUtil.format(number, PNF.INTERNATIONAL)
+
       return phoneUtil.format(number, PNF.INTERNATIONAL)
     } catch (e) {
       return phone
@@ -58,13 +62,13 @@ export default class Formatter {
   }
 
 
-  /** get formatted phone number +7 999 999 99 99, return +7 999 ***-**-99 */
+  /** get formatted phone number +7 999 999 99 99, return +7 999 *** ** 99 */
   static hideSomePhoneNumbers(phone: string) {
     if(!phone) {return}
-    let phoneResult = phone.split('').map((e, index)=> {
-      return (index > 6 && index < 10)||(index > 10 && index < 13) ? '*': e
+    let phoneResult = phone.split(' ').map((e, index)=> {
+      return index > 1 && index < 4 ? '*'.repeat(e.length) : e
     })
-    return phoneResult.join('')
+    return phoneResult.join(' ')
   }
 
   static pad(pad: string, str: string, padLeft = true) {
@@ -114,10 +118,17 @@ export default class Formatter {
   }
 
   /** return HH:mm:ss format time */
-  static formatSecondtToTime(s: number) {
+  static formatSecondsToTime(s: number):string {
+    if(!s) {
+      return '00:00'
+    } 
     let date = new Date(0)
     date.setSeconds(s)
-    return date.toISOString().substring(14, 19)
+    const time = date.toISOString().split('T')[1].split('.')[0].split(':')
+    if(time[0] === '00') {
+      return `${time[1]}:${time[2]}`
+    }
+    return time.join(':')
   }
 
   /** return dd.MM.yy HH:mm date format */ 
@@ -130,19 +141,21 @@ export default class Formatter {
     if (!date) {
       return ''
     }
-    return formatRelative(typeof date === 'string' ? new Date(date) : date, new Date(), {locale})
+    const result = formatRelative(typeof date === 'string' ? new Date(date) : date, new Date(date), {locale})
+    return result
   }
 
   /** get arr like [['02.2022', '03.2023'], ['02.1992', '03.1993']], return for example '2 года 2 месяца' */
   static fullTimeLine = (arr: string[][]) => {
     let allMonths = arr.map((el) => {
       let oldString = el[0]?.split('.')||[new Date().getMonth().toString(), new Date().getFullYear().toString()]
-      let oldDate = new Date(+oldString[1], +oldString[0] - 1)
+      let oldDate = new Date(+oldString[1], +oldString[0])
       let newString = el[1]?el[1]?.split('.'):[new Date().getMonth, new Date().getFullYear()]
-      let newDate = new Date(+newString[1], +newString[0] - 1)
+      let newDate = new Date(+newString[1], +newString[0])
       let m1=oldDate.getMonth()+(oldDate.getFullYear()*12)
       let m2=newDate.getMonth()+(newDate.getFullYear()*12)
-      return (m2-m1)+1
+      let result = (m2-m1)
+      return result === 0 ? 1 : result
     })
     .reduce((p, c)=>{return p+c}, 0)
   
@@ -150,7 +163,7 @@ export default class Formatter {
     let months = allMonths%12
     let yearsString = years>0 ? (years + ' ' + Formatter.pluralize(years, 'год', 'года', 'лет')):''
     let monthsString = months > 0 ? months +' '+ Formatter.pluralize(months, 'месяц', 'месяца', 'месяцев'):''
-    return (yearsString?yearsString + ' ':'') + monthsString
+    return ((yearsString?yearsString + ' ':'') + monthsString).trim()
   }
 
   /** get array, return some random elements from it with limit */

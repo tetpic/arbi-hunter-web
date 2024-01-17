@@ -128,7 +128,7 @@ export default function RegistrationModal(props: Props) {
   </div>
   {seconds === 0 
     ? <p className={styles.refreshCode} >Отправить код повторно</p>
-    : <p className={styles.timeRemain}>Повторить через {Formatter.formatSecondtToTime(seconds)}</p>
+    : <p className={styles.timeRemain}>Повторить через {Formatter.formatSecondsToTime(seconds)}</p>
   }
   <p className={styles.confirmTitle}>{code}</p>
   </>)
