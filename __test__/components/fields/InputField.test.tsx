@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom'
 import { render, screen, act } from '@testing-library/react'
-import InputField from '.'
+import InputField from '../../../components/fields/InputField'
 import { Form, FormikProvider, useFormik } from 'formik'
 
-function TestingNode() {
+function FormTestingNode() {
   const formik = useFormik<{phone: string}>({
     initialValues: {
       phone: '+7000000000'
@@ -19,7 +19,7 @@ function TestingNode() {
  
 describe('Page', () => {
   it('renders an input', () => {
-    render(<TestingNode/>)
+    render(<FormTestingNode/>)
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()
     expect(input).toBeVisible()
