@@ -87,6 +87,7 @@ export default class Formatter {
 
   static formatProductPrice(price: { value?: number, min?: number, max?: number }) {
     const pr = price?.value || price.min
+    if(!pr) {return ''}
     return this.formatPrice(pr)
   }
 
@@ -169,7 +170,7 @@ export default class Formatter {
   /** get array, return some random elements from it with limit */
   static randomElementsFromArray = <T>(arr: any[], limit: number): T[] => {
     const arrLength = arr.length
-    let newArray = []
+    let newArray: T[] = []
     while (newArray.length < (arrLength<=limit?arrLength:limit)) {
       let randomInt = ~~(Math.random() * (arrLength))
       newArray.push(arr[randomInt])
