@@ -8,13 +8,16 @@
 }
 
 .radio {
-  border-radius: 4px;
-  border: 1px solid $greyLight;
+  border-radius: 6px;
+  border: 2px solid $greyAlt2;
 }
 
 .radioItem {
   @include exeptLast {
     margin-bottom: 16px;
+    @include mq($TabletWidth, max) {
+      margin-bottom: unset;
+    }
   }
 }
 

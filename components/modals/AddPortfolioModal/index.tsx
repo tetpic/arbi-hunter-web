@@ -8,9 +8,12 @@ import InputField from 'components/fields/InputField'
 import { useAppContext } from 'context/state'
 import Button from 'components/ui/Button'
 import Validator from 'utils/Validator'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: ()=> void
+  isBottomSheet?: boolean
 }
 
 export interface IPortfolioModal {
@@ -21,7 +24,7 @@ export interface IPortfolioModal {
 
 export default function AddPortfolioModal(props: Props) {
   const appContext = useAppContext()
-  const args = appContext.modalArguments as IPortfolioModal
+  const args:IPortfolioModal = appContext.modalArguments||appContext.bottomSheetArguments
 
   const submit = (data: {portfolio: string}) => {
     args.onSubmit(data)
@@ -53,6 +56,16 @@ export default function AddPortfolioModal(props: Props) {
       <Button type='button' onClick={formik.submitForm} className={styles.saveButton}>Сохранить</Button>
     </div>
   </>)
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    ) 
+  }
 
   return (
   <ModalLayout className={styles.modalLayout}>

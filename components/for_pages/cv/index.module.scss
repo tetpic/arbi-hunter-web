@@ -21,6 +21,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
     padding: unset;
+    padding-bottom: 100px;
     background-color: unset;
   }
 }
@@ -123,12 +124,16 @@
     padding: 16px;
     background-color: $black;
     margin-block: 16px;
+    border-radius: 16px;
   }
 
   .otherData {
     color: $greyLight;
     font-size: $mediumText;
     font-weight: $medium;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
   }
 
   

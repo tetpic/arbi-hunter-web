@@ -81,9 +81,14 @@ export default function MessageFactory(props: Props) {
   
 
   const applicationMessage = (<>
-    {props.application?.status !== ApplicationStatus.Rejected && profileType === ProfileType.Hirer && props.application?.status !== ApplicationStatus.Accepted &&
+    {
+    props.application?.status !== ApplicationStatus.Rejected 
+    && profileType === ProfileType.Hirer 
+    && props.application?.status !== ApplicationStatus.Accepted 
+    && props.application?.cv?.published 
+    &&
       <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
-        <ApplicationHirerNode/>
+        <ApplicationHirerNode application={props.application} message={msg}/>
       </div>
     }
     <div className={side}>

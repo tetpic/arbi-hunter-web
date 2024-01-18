@@ -22,7 +22,7 @@ interface Props<C> {
   error?: string
 }
 
-export default function DropDownInput<C extends {name?: string}>(props: Props<C>) {
+export default function LocationDropDownInput<C extends {name?: string}>(props: Props<C>) {
   const [options, setOptions] = useState<C[]>([])
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
@@ -46,16 +46,13 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     setDropDownOpen(false)
     props.onSetOption(option)
     setFieldValue(props.name, option.name)
-    // setInputValue(option.name)
   }
 
   const requestHandler = (pageNumber?: number, value?: string) => {
-    
-    
     const options = {
       page: pageNumber?pageNumber:page,
       limit: 10,
-      search: value||props.value||'', 
+      search: value||'', 
       lang: 'ru', //поменять на динмический
       country: props.country
     }
@@ -65,7 +62,6 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
   const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setPage(1)
     const targetValue = e.target.value
-    // setInputValue(targetValue)
     setFieldValue(props.name, targetValue)
 
     if(props.onChange) {props.onChange(targetValue)}
@@ -82,6 +78,8 @@ export default function DropDownInput<C extends {name?: string}>(props: Props<C>
     setDropDownOpen(true)
     requestHandler(1, targetValue)
   }
+
+
 
   useEffect(()=>{
     requestHandler()

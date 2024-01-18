@@ -32,13 +32,14 @@ export default function Compensation(props: Props) {
         && 
         <InputField  
         isNumbersOnly
-        maxLength={10} 
+        maxLength={12} 
         className={styles.input} 
         styleType={'default'} 
         color={'default'} 
         name={'salary'} 
         label={'Оклад'} 
         labelType={'top'} 
+        priceFormatting
         suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
         />
       }

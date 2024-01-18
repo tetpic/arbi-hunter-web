@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -67,11 +67,12 @@ export default function Cv(props: Props) {
       ...data, 
       commission: Number(data.commission),
       skillsIds: [...skills.keys()], 
-      salary: Number(data.salary),
+      salary: Number(data.salary.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=>el.id),
-      geosIds: [...activeGeos.keys()]
+      geosIds: [...activeGeos.keys()],
+      experience: WorkExperience.From1to3
     }
    
     if(props.id) {
@@ -186,14 +187,16 @@ export default function Cv(props: Props) {
       })
     }
 
+    const salaryNumber: number = Number(formik.values?.salary?.toString().replaceAll(' ', ''))
     switch(progress) {
+
       case 1:
         creationContext.helpObjects.categoryIds.length > 0 ? 
         setProgress(pageNumber||progress+1)
         : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       break
       case 2: 
-        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
+        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
           setErr('salary')
           return
         }
@@ -205,10 +208,10 @@ export default function Cv(props: Props) {
           if(!formik.values.commission||formik.values.commission < 1) {
             setErr('commission')
           }
-          if(!formik.values.salary||formik.values.salary < 1) {
+          if(!formik.values.salary||salaryNumber < 1) {
             setErr('salary')
           }
-          if(formik.values.commission > 0 && formik.values.salary > 0) {
+          if(formik.values.commission > 0 && salaryNumber > 0) {
             setProgress(pageNumber||progress+1)
           }
         }

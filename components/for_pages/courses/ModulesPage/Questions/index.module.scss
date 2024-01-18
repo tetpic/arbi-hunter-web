@@ -12,6 +12,9 @@
 
 .form {
   min-width: 50%;
+  @include mq($TabletWidth, max) {
+    min-width: 100%;
+  }
 }
 
 .question {
@@ -73,5 +76,8 @@
 
   .answerButton {
     @include buttonYellow;
+    @include mq($TabletWidth, max) {
+      width: 100%;
+    }
   }
 }

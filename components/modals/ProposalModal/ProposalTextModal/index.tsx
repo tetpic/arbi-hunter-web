@@ -55,7 +55,7 @@ export default function ProposalTextModal(props: Props) {
       }
     })
     .catch(err=>{
-      appContext.showSnackbar(`Невозможно отправить ${pattern.type === PatternTypes.Rejection?'отказ': 'приглашение'}. Вакансия или резюме удалено`, SnackbarType.error)
+      appContext.showSnackbar(`Невозможно отправить ${pattern.type === PatternTypes.Rejection?'отказ': 'приглашение'}. Вакансия или резюме удалено или не опубликовано`, SnackbarType.error)
     })
   }
 

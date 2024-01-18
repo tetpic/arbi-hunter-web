@@ -38,7 +38,7 @@ export default function ArticlePage(props: Props) {
 
 
   return (
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <MediaWrapper>
         <div className={styles.root}>
         {loading && <Spinner size={34} />

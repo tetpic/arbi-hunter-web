@@ -9,13 +9,15 @@
   overflow: auto;
   padding-bottom: 20px;
   @include mq($PhoneWidth, max) {
-    padding: 16px 0px;
-    height: 100vh;
-    height: 100dvh;
+    padding: unset;
+    padding-bottom: unset;
+    // padding: 16px 0px;
+    height: calc(100vh - 32px);
+    height: calc(100dvh - 32px);
     display: flex;
     flex-direction: column;
-    background-color: $black;
-    padding-bottom: 24px;
+    background-color: $backgroundBlack;
+    // padding-bottom: 24px;
 
   }
 
@@ -86,6 +88,9 @@
   column-gap: 8px;
   margin-top: 24px;
   justify-content: flex-end;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .buttonBack {

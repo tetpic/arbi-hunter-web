@@ -15,6 +15,7 @@ import SpecializationModal from 'components/modals/CvModals/Specialization'
 import SoursesModal from 'components/modals/CvModals/Sourses'
 import LangaugesModal from 'components/modals/CvModals/Languages'
 import ApplicationModal from 'components/modals/ApplicationModal'
+import AddPortfolioModal from '@/components/modals/AddPortfolioModal'
 
 
 interface Props { }
@@ -119,6 +120,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <ApplicationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.AddPortfolioModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <AddPortfolioModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

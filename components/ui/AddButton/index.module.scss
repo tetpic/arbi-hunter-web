@@ -17,6 +17,9 @@
         circle {
           fill: $blue;
         }
+        path {
+          stroke: $white;
+        }
       }
     }
   }
@@ -28,8 +31,10 @@
 .plusSvg  {
   path {
     @include transitionDefault;
+    stroke: $black;
   }
   circle {
     @include transitionDefault;
+    fill: $white;
   }
 }

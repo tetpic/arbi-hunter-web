@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import RegistrationRepository from 'data/repositories/RegistrationRepository'
 import LocationRepository from 'data/repositories/LocationRepository'
 import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation'
-import DropDownInput from '../../fields/LocationDropdownInput'
+import LocationDropDownInput from '../../fields/LocationDropdownInput'
 import BackBtn from 'components/ui/BackBtn'
 import { useRouter } from 'next/navigation'
 import { ModalType, SnackbarType } from 'types/enums'
@@ -211,7 +211,7 @@ export default function Registration() {
       />
     }
 
-    <DropDownInput 
+    <LocationDropDownInput 
     onSetOption={countryHandler} 
     name={'countryId'} 
     labelName={'Страна: '}
@@ -219,7 +219,7 @@ export default function Registration() {
     className={styles.dropInput}
     />
 
-    <DropDownInput 
+    <LocationDropDownInput 
     onSetOption={cityHandler} 
     name={'cityId'} 
     labelName={'Город: '}

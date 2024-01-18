@@ -28,7 +28,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 export default function ResponseItem(props: Props) {
   
   return ( 
-    <ContentLayout title={'Отзывы'}>
+    <ContentLayout title={'Отзывы'} hideMobileHeader>
       <Responses id={Number(props.id)}/>
     </ContentLayout>
   )

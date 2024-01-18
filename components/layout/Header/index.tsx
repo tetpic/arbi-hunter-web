@@ -18,6 +18,7 @@ import MenuButtonSvg from 'components/svg/MenuButtonSvg'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
+import { getUserImageSource } from 'utils/helpers'
 
 const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
@@ -101,10 +102,7 @@ export default function Header(props: Props) {
             <>
               <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
               <UserPic 
-              image={userContext?.currentProfile?.useOwnLogo
-                ?userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source
-                :userContext.currentProfile?.image&&FILES+userContext.currentProfile?.image.source
-              } 
+              image={getUserImageSource(userContext.currentProfile)} 
               className={styles.userPic} 
               onClick={()=>setDropDownOpen(state=> !state)}
               />

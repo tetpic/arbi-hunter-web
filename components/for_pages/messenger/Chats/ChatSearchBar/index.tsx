@@ -14,6 +14,7 @@ import Title from 'components/ui/TitleForSection'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IChatFilterModalProps } from 'components/modals/ChatFilterModal'
+import { IVacancy } from 'data/interfaces/IVacancy'
 
 interface Props {
 }
@@ -26,10 +27,13 @@ export default function ChatSearchBar(props: Props) {
 
 
   const openFiltersModal = () => {
+    const chatAllVacancies = [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy)
+    const chatVacancies: Map<number, IVacancy> = new Map()
+    chatAllVacancies.forEach(el=> chatVacancies.set(el?.id, el))
     if(isTabletWidth) {
       appContext.showBottomSheet<IChatFilterModalProps>(ModalType.ChatFilterModal, 
         {
-          vacancies: [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy),
+          vacancies: [...chatVacancies.values()],
           onSubmit: (data) => chatContext.setFilter(data),
           onClear: () => chatContext.setFilter(null),
           filters: chatContext.filter
@@ -38,7 +42,7 @@ export default function ChatSearchBar(props: Props) {
     else {
       appContext.showModal<IChatFilterModalProps>(ModalType.ChatFilterModal, 
         {
-          vacancies: [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy),
+          vacancies: [...chatVacancies.values()],
           onSubmit: (data) => chatContext.setFilter(data),
           onClear: () => chatContext.setFilter(null),
           filters: chatContext.filter

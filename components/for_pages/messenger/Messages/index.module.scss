@@ -26,6 +26,7 @@
   align-items: center;
   padding: 16px 24px;
   border-bottom: 2px $grey solid;
+  cursor: pointer;
 
   .userPic {
     grid-area: i;
@@ -214,4 +215,9 @@
   word-break: break-all;
   @include lineClamp(2)
   
+}
+
+.online {
+  color: $green;
+  opacity: .4;
 }

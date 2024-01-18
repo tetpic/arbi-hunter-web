@@ -14,9 +14,9 @@ import { IProposalTextModalProps } from 'components/modals/ProposalModal/Proposa
 import LikeButton from '../LikeButton'
 import CvRepository from 'data/repositories/CvRepository'
 import Link from 'next/link'
-import { FILES } from 'types/constants'
 import useAbortController from 'components/hooks/useAbortController'
 import UserPic from '../UserPic'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   cv: ICV
@@ -28,6 +28,10 @@ export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const {getNewSignal} = useAbortController()
+
+  const defaultImage = '/icons/defaultUser.svg'
+  const userImage = getUserImageSource(cv.profile)
+
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -71,21 +75,16 @@ export default function CvItem({cv, ...props}: Props) {
 
   return (<Link className={styles.item} href={'cv/'+cv.id}> 
     <LikeButton  className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
-    {/* <div className={styles.image}>
-      <ThreeModelVariant {...characterContext.variant} r={0}/>
-    </div> */}
-    {cv.profile?.useOwnLogo &&
-      <Image className={styles.logo} src={cv.profile?.logo?.source&&FILES+cv.profile?.logo?.source||'/icons/defaultUser.svg'} alt={'def image'} width={320} height={320} />
-      ||
-      <Image className={styles.image} src={cv.profile?.image?.source&&FILES+cv.profile?.image?.source||'/icons/defaultUser.svg'} alt={'def image'} width={320} height={320} />
-    }
-
-
+    <Image 
+    className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
+    src={userImage||defaultImage} 
+    alt={'def image'} width={320} height={320} 
+    />
 
     <div className={styles.content}>
       <div className={styles.top}>
         {isTabletWidth && !cv.profile?.useOwnLogo &&
-          <UserPic className={styles.userPic} image={cv.profile?.image?.source&&FILES+cv.profile.image?.source} size={60}/>
+          <UserPic className={styles.userPic} image={userImage} size={60}/>
         }
         {cv.categories.length > 0 &&
           <p className={styles.name}>{cv.categories[0].name}</p>

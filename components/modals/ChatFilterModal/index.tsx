@@ -100,7 +100,7 @@ export default function ChatFilterModal(props: Props) {
       Показать только непрочитанные 
       <SwitchField 
       onColor={colors.green}
-      offColor={colors.grey}
+      offColor={colors.greyLight}
       offHandleColor={colors.white}
       onHandleColor={colors.white}
       name={'unreaded'}/>
@@ -110,7 +110,7 @@ export default function ChatFilterModal(props: Props) {
       <SwitchField 
       name={'inactive'}
       onColor={colors.green}
-      offColor={colors.grey}
+      offColor={colors.greyLight}
       offHandleColor={colors.white}
       onHandleColor={colors.white}
       />
@@ -140,7 +140,7 @@ export default function ChatFilterModal(props: Props) {
   const body = (<div className={styles.body}>
     <p className={styles.title}>
       {currentPage}
-      <Button onClick={onCloseHandler}><CrossSvg/></Button>
+      <Button className={styles.closeButton} onClick={onCloseHandler}><CrossSvg/></Button>
     </p> 
     <FormikProvider value={formik}>
       <Form>

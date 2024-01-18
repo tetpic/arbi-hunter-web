@@ -28,9 +28,8 @@ export  function ApplicationHirerNode (props: Props) {
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, 
         {type: ApplicationBSSelectType.ThisVacancy, 
           application: props.application, 
-          cv: props.application.cv, 
-          vcId: props.application.vacancyId,
-          
+          cv: props.application?.cv, 
+          vcId: props.application?.vacancyId,
         })
     }} 
     className={styles.button}

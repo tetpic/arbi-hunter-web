@@ -70,7 +70,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 448)
     }
     else {
       openDropDown(!dropDown)
@@ -89,7 +89,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       <UserPic className={styles.userPic}/>
       <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
-      <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal}/>
+      <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={isTabletWidth&&openModal}/>
       {!isTabletWidth &&
        <OptionsDropDown 
        options={options}

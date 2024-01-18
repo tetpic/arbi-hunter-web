@@ -46,6 +46,9 @@
   flex-direction: column;
   row-gap: 8px;
   margin-top: 16px;
+  @include mq($TabletWidth, max) {
+    margin-bottom: 60px;
+  }
 }
 
 
@@ -73,7 +76,7 @@
   margin-top: 24px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
-    position: absolute;
+    position: fixed;
     bottom: 16px;
     right: 16px;
   }

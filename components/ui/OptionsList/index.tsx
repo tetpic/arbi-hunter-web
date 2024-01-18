@@ -1,3 +1,4 @@
+import { useAppContext } from 'context/state'
 import styles from './index.module.scss'
 import { CSSProperties } from 'react'
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function OptionsList(props: Props) {
+  const appContext = useAppContext()
 
   return (<div className={styles.options} onMouseLeave={()=>props.onMouseLeave&&props.onMouseLeave()} >
   {props.options &&
@@ -25,6 +27,7 @@ export default function OptionsList(props: Props) {
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
+        appContext.hideBottomSheet()
         el.onClick&&el.onClick(e)
       }}
       >

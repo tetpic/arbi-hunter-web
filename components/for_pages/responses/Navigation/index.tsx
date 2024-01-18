@@ -10,7 +10,6 @@ interface Props<T> {
 }
 
 export default function ResponsesNavigation<T extends string>(props: Props<T>) {
-  
 
   return (<div className={classnames(styles.root, props.className)}> 
   {props.items.map((el, index)=>{

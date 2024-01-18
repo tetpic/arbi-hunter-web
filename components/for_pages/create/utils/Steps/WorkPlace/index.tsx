@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import DropDownInput from 'components/fields/LocationDropdownInput'
+import LocationDropDownInput from 'components/fields/LocationDropdownInput'
 import RadioListField from 'components/fields/RadioListField'
 import LocationRepository from 'data/repositories/LocationRepository'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
@@ -27,7 +27,8 @@ export default function WorkPlace(props: Props) {
   }
 
   const countryHandler = (c: ISearchCountryResult) => {
-    
+    debugger
+    formikContext.setFieldValue('cityName', '')
     setCurrentCountryCode(c.country_code)
     const cvHelpers = cvContext.helpObjects
     cvContext.setHelpObjects({...cvHelpers, countryId: c.geoname.geonameid})
@@ -45,7 +46,7 @@ export default function WorkPlace(props: Props) {
 
     {!formikContext.values.isRemote &&
     <>
-      <DropDownInput
+      <LocationDropDownInput
       onSetOption={countryHandler} 
       name={'countryName'} 
       value = {cvContext?.currentVc?.country?.locName||userContext?.currentProfile?.country.locName}
@@ -53,7 +54,7 @@ export default function WorkPlace(props: Props) {
       requestFn={LocationRepository.searchCountry} 
       />
 
-      <DropDownInput
+      <LocationDropDownInput
       onSetOption={cityHandler} 
       name={'cityName'} 
       country={currentCountryCode}

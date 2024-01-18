@@ -8,12 +8,12 @@ import { IUserProfile } from './IUser'
 export interface IVacancyCreate extends IJob {
   name : string,
   description : string,
-  experience : WorkExperience,
   contactName : string,
   company? : string|null, 
   isRemote: boolean,
   published?: boolean
   commission?: number|null
+  experience?: WorkExperience
 }
 
 export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {

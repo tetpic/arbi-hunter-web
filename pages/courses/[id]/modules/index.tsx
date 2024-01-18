@@ -34,7 +34,7 @@ export default function CourseModulesPage(props: Props) {
  
 
   return (
-    <ContentLayout title={`|Прохождение курса|${+props.course?.name.toString()}`}>
+    <ContentLayout title={`|Прохождение курса|${+props.course?.name.toString()}`} hideMobileHeader>
       <CoursesWrapper  id={Number(props.id)} block={Number(props.block)} module={Number(props.module)} step={Number(props.step)} course={props.course} >
         <ModulesPage />
       </CoursesWrapper>

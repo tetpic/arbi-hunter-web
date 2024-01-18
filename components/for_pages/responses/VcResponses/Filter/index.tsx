@@ -1,5 +1,6 @@
+import styles from './index.module.scss'
+
 import classnames from 'classnames'
-import classNames from 'classnames'
 import Radio from 'components/fields/RadioListField/Radio'
 import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
@@ -11,7 +12,6 @@ import { FilterItem, FilterItems } from 'data/interfaces/IFilter'
 import { useEffect, useRef, useState } from 'react'
 import { colors } from 'styles/variables'
 import { ProposalRequestType} from 'types/enums'
-import styles from './index.module.scss'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 
 
@@ -73,7 +73,7 @@ export default function ResponsesFilter(props: Props) {
           return (
             <div key={index} className={styles.item} onClick={()=>onlyNewHandler(value)} >
               Только новые
-              <div className={classNames(styles.switcher, switcher&&styles.switcher_active)}>
+              <div className={classnames(styles.switcher, switcher&&styles.switcher_active)}>
                 <div className={styles.roller}>
                   {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.yellow}/>}
                 </div>
@@ -102,7 +102,7 @@ export default function ResponsesFilter(props: Props) {
             key={index}
             classNames={{root: styles.accRoot, content: styles.accContent, wrapper: styles.accWrapper }}
             body={
-              <p onClick={(e)=>{e.stopPropagation();accordeonHandler(value)}} className={classNames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
+              <p onClick={(e)=>{e.stopPropagation();accordeonHandler(value)}} className={classnames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
             } 
             getRef={(r) => dropdownRef.current = r}
             isActive={value===activeFilter && isDropDownOpen}>

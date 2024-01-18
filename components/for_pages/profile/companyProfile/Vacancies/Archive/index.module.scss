@@ -2,4 +2,7 @@
 
 .root {
   margin-top: 24px;
+  @include mq($TabletWidth, max) {
+    padding-bottom: 40px;
+  }
 }

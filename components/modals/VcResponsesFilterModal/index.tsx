@@ -1,9 +1,10 @@
+import styles from './index.module.scss'
+
 import ResponsesFilter from 'components/for_pages/responses/VcResponses/Filter'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import Button from 'components/ui/Button'
 import { useFeedbacksContext } from 'context/feedbacks_state'
-import styles from './index.module.scss'
 
 interface Props {
   onClose: ()=>void

@@ -73,7 +73,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
   const openModalHandler =()=> {
     if (isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options})
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 430)
     }
     else {
       openDropDown(!dropDown)
@@ -90,7 +90,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           <p className={styles.city}>Удаленно</p>
         }
         <SalaryItem vacancy={vacancy}/>
-        <ThreeDotsButton  onMouseEnter={openModalHandler} className={styles.dots}/>
+        <ThreeDotsButton  onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth && 
           <OptionsDropDown 
           options={options}

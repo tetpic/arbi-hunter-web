@@ -9,6 +9,7 @@ import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
 import styles from './index.module.scss'
+import Formatter from 'utils/formatter'
 
 type FormatType = 'phone'
 
@@ -35,6 +36,7 @@ interface Props extends IField<string> {
   maxLength?: number
   validateOnSubmit?: boolean
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  priceFormatting?: boolean
 }
 
 export default function InputField(props: Props) {  
@@ -70,6 +72,14 @@ export default function InputField(props: Props) {
     props.onKeyUp&&props.onKeyUp(e)
   }
 
+  const onInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if(props.priceFormatting || props.isNumbersOnly) {
+      const numbers = e.target.value.replace(/[^0-9]/g, '') as string
+      props.isNumbersOnly && (e.target.value = numbers)
+      props.priceFormatting && (e.target.value = Formatter.formatNumber(Number(numbers)))
+    }
+  }
+
   
 
   return (
@@ -84,7 +94,7 @@ export default function InputField(props: Props) {
           type={props.type ?? 'text'}
           disabled={props.disabled}
           autoComplete={props.autocompleteOff?'off':''}
-          onInput= {props.isNumbersOnly ? (e: ChangeEvent<HTMLInputElement>) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') } : null}
+          onInput= {onInput}
           onFocus={() => {
             setFocused(true)
           }}

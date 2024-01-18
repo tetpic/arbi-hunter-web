@@ -34,7 +34,8 @@ export default function Experience(props: Props) {
   const [activeDetails, setActiveDetails] = useState<ExperienceInfo>(initialData)
   const formikContext = useFormikContext()
   const values = formikContext.values as ICVCreate
-  const {setFieldTouched, setFieldError} = formikContext
+  const {setFieldTouched} = formikContext
+
 
   const closeModalHandler = (fl: ExperienceInfo) => {
     setDetailsInfo(f=> [...f, {...fl}])
@@ -125,14 +126,10 @@ export default function Experience(props: Props) {
     }
   }
 
-  useEffect(()=>{
-    if(showDetails) {
-      appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
-    }
-  }, [showDetails])
-
-
-
+  const onAddButtonClick = () => {
+    setDetails(true)
+    appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
+  }
 
   return (
     <div className={styles.root}>
@@ -167,7 +164,7 @@ export default function Experience(props: Props) {
       }
 
       {values.workExperiencePresense === 'present' &&
-        <AddButton onClick={()=> setDetails(true)} text='Добавить место работы'/>
+        <AddButton onClick={onAddButtonClick} text='Добавить место работы'/>
       }
     </div>
   )

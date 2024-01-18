@@ -13,6 +13,9 @@ import ShareSvg from 'components/svg/ShareSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import { useEffect } from 'react'
 import copyToClipboard from 'utils/copyToClipboard'
+import { shareData } from 'utils/helpers'
+import Title from '@/components/ui/TitleForSection'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   article: IArticle
@@ -20,7 +23,9 @@ interface Props {
 
 export default function MediaArticle(props: Props) {
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const mediaContext = useMediaContext()
+  const router = useRouter()
 
   useEffect(()=>{
     mediaContext.setCurrentNews({articles: [props.article], clear: true})
@@ -40,13 +45,16 @@ export default function MediaArticle(props: Props) {
         copyToClipboard(process.env.host + '/media/article/' + article.id)
         appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
       }},
-      {title: 'Поделиться',icon: <ShareSvg/>},
-      (props.article.articleCategory.categoryType !== CategoryType.Knowledge&&{title: 'Скрыть',icon: <CloseEyeSvg/>})
+      navigator.share&&{title: 'Поделиться',icon: <ShareSvg/>, onClick: ()=>{
+        shareData({url: process.env.host + '/media/article/' + article.id})
+      }},
+      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: 'Скрыть',icon: <CloseEyeSvg/>})
     ]
     return arr.filter(Boolean)
   }
 
   return (<>
+    {isTabletWidth && <Title title={' '} onBackClick={router.back} className={styles.title}/>}
     {
       mediaContext.currentNews&&mediaContext.currentNews.size > 0 &&
       <NewsArticle 
@@ -56,7 +64,7 @@ export default function MediaArticle(props: Props) {
       isOpen 
       options={getOptions(mediaContext.currentNews.get(props.article.id))}
       titleImg={props.article.community?.image?.source} 
-      disableLikes={props.article.articleCategory.categoryType === CategoryType.Knowledge}
+      disableLikes={props.article?.articleCategory?.categoryType === CategoryType.Knowledge}
       />
     }  
   </>)

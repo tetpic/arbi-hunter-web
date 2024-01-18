@@ -23,7 +23,7 @@ export default function SalaryItem({vacancy, cv}: Props) {
   ||
   (vacancy?.compensation === CompensationType.Contract||cv?.compensation === CompensationType.Contract) &&  <span>{TranslateCompensationType(vacancy?.compensation||cv?.compensation)}</span>
   ||
-  (vacancy?.compensation === CompensationType.Gybrid||cv?.compensation === CompensationType.Gybrid) && <span>{Formatter.formatNumber(vacancy?.salary||cv?.salary)} {TranslateCurrency(vacancy?.currency||cv?.currency)} + {vacancy?.commission||cv?.commission}%</span>
+  (vacancy?.compensation === CompensationType.Gybrid||cv?.compensation === CompensationType.Gybrid) && <span>{Formatter.formatNumber(Number(vacancy?.salary||cv?.salary))} {TranslateCurrency(vacancy?.currency||cv?.currency)} + {vacancy?.commission||cv?.commission}%</span>
  }
  </p>)
 }

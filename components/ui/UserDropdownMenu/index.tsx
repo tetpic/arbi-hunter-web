@@ -13,9 +13,9 @@ import Link from 'next/link'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
-import { FILES } from 'types/constants'
 import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
 import UserSvg from 'components/svg/UserSvg'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   className?: string
@@ -75,19 +75,11 @@ export default function UserDropdownMenu(props: Props) {
     }
   }
 
-  const userImage = 
-  currentProfile.profileType === ProfileType.Hirer && currentProfile?.logo &&
-  FILES + currentProfile.logo.source
-  ||
-  !currentProfile.useOwnLogo && currentProfile?.image?.source&&
-  FILES + currentProfile.image.source
-  ||
-  currentProfile.useOwnLogo&&currentProfile?.logo?.source
-  &&FILES + currentProfile.logo.source
+
 
   return ( 
     <div className={classNames(styles.root, props.className)} ref={(ref)=> props.reference(ref)}>
-      <UserPic size={80} image={userImage}/>
+      <UserPic size={80} image={getUserImageSource(currentProfile)}/>
 
       <div className={styles.userData}>
         <p className={styles.name}>{getUserData()?.name}</p>

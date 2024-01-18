@@ -122,14 +122,13 @@ export default function RecruitingPageHirer(props: Props) {
         loader={<Spinner size={24}/>} 
         dataLength={cvContext.foundCvs?.size + 1}>
           <div className={styles.vacanciesWrapper}>
-            {loading &&
-              <Spinner size={24} />
+            {loading && <Spinner size={24}/>
               ||
               !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
                 return <CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs()}/>
               })
               ||
-              <p className='empty'>Нет найденных вакансий</p>
+              !loading && <p className='empty'>Нет найденных вакансий</p>
             }
           </div>
         </InfiniteScroll>

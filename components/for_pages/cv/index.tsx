@@ -92,10 +92,10 @@ export default function CvPage(props: Props) {
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
     <p className={styles.otherData}>
       <span>{currentCv?.age} {Formatter.pluralize(currentCv?.age, 'год', 'года', 'лет', )}</span> 
-      {currentCv?.profile?.city?.locName &&
+      {currentCv?.city?.locName &&
       <>
       <DotSvg/> 
-      <span>г. {currentCv?.profile?.city?.locName}</span> 
+      <span>г. {currentCv?.city?.locName}</span> 
       </>
       }
     </p>
@@ -205,7 +205,11 @@ export default function CvPage(props: Props) {
           <TagList title={'Навыки'} tags={currentCv.skills.map(el=>({name:el.title}))} titleClassName={styles.title}/>
         }
         {currentCv.languageKnowledges.length > 0 &&
-          <TagList title={'Языки'} tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
+          <TagList 
+          title={'Языки'} 
+          tags={currentCv.languageKnowledges
+            .map(el=>({...el, language: el.language.slice(0, 2)}))
+            .map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
         }
         {currentCv.geos.length > 0 &&
           <TagList title={'Гео'} tags={currentCv.geos.map(el=>({name: el.title}))} titleClassName={styles.title}/>

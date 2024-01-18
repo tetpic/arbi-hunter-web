@@ -20,7 +20,7 @@ import { useResize } from 'components/hooks/useResize'
 import OptionsDropDown from '../OptionsDropDown'
 import OptionsList, { IOptionList } from '../OptionsList'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
-import useAbortController from 'components/hooks/useAbortController'
+// import useAbortController from 'components/hooks/useAbortController'
 import Spacer from '../Spacer'
 
 interface Props {
@@ -57,7 +57,7 @@ export default function NewsArticle(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
   const {isTabletWidth} = useResize()
-  const {getNewSignal} = useAbortController()
+  // const {getNewSignal} = useAbortController()
 
 
   const optionsList = <OptionsList 

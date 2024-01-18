@@ -38,6 +38,10 @@
 
   .userPic {
     grid-area: i;
+    @include transitionDefault;
+    &_active {
+      background-color: $black;
+    }
   }
 
   .time {

@@ -12,7 +12,7 @@ export interface IJob {
   skillsIds :  number[],
   sourcesIds :  number[],
   geosIds?: number[],
-  salary : number,
+  salary : number|string,
   compensation: CompensationType,
   currency : Currency,
   schedule : ScheduleType, 

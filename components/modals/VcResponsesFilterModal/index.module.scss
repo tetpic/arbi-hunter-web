@@ -25,4 +25,11 @@
 
 .button {
   @include buttonYellow;
+  @include mq ($TabletWidth, max) {
+    position: fixed;
+    bottom: 16px;
+    margin-inline: 16px;
+    left: 0;
+    right: 0;
+  }
 }

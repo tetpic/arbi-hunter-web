@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { useEffect,  useState } from 'react'
@@ -9,7 +11,6 @@ import Radio from 'components/fields/RadioListField/Radio'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
-import styles from './index.module.scss'
 import { useAppContext } from 'context/state'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
@@ -41,7 +42,7 @@ export default function LangaugesModal(props: Props) {
   const onSaveHandler = () => {
     const lansgKnown = cvContext.helpObjects?.languageKnowledges||new Map
     cvContext.setHelpObjects({languageKnowledges: new Map([...lansgKnown, [langRadioActive, {language: langRadioActive, level: levelRadioActive}]])})
-    args.onClose?args.onClose():props.onClose()
+    args?.onClose?args.onClose():props.onClose()
   }
 
   const body = (

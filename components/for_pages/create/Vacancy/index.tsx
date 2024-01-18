@@ -91,7 +91,7 @@ export default function Vacancy(props: Props) {
       ...data, 
       commission: (data.commission&&Number(data.commission))||null,
       skillsIds: [...skills.keys()], 
-      salary: Number(data.salary),
+      salary: Number(data.salary.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=> el.id)
@@ -204,7 +204,8 @@ export default function Vacancy(props: Props) {
         setProgress(pageNumber||progress+1)
         return false
       case 5: 
-        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||formik.values.salary < 1)) {
+        const salaryNumber: number = Number(formik.values.salary?.toString().replaceAll(' ', ''))
+        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
           setErr('salary')
           return false
         }
@@ -213,15 +214,16 @@ export default function Vacancy(props: Props) {
           return false
         }
         else if(formik.values.compensation === CompensationType.Gybrid) {
+          const salaryNumber: number = Number(formik.values.salary.toString().replaceAll(' ', ''))
           if(!formik.values.commission||formik.values.commission < 1) {
             setErr('commission')
             return false
           }
-          if(!formik.values.salary||formik.values.salary < 1) {
+          if(!formik.values.salary||salaryNumber < 1) {
             setErr('salary')
             return false
           }
-          if(formik.values.commission > 0 && formik.values.salary > 0) {
+          if(formik.values.commission > 0 && salaryNumber > 0) {
             setProgress(pageNumber||progress+1)
             return true
           }

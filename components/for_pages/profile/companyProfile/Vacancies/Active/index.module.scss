@@ -13,4 +13,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  @include mq($TabletWidth, max) {
+    padding-bottom: 80px;
+  }
 }

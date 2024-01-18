@@ -40,6 +40,7 @@ export default function Skills(props: Props) {
 
   const cvContext = useCreateVcCvContext()
   const appContext  = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
@@ -152,12 +153,28 @@ export default function Skills(props: Props) {
       }
   }
 
+  const onAddCoursesClick = () => {
+    setCoursesDetails(true)
+    appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
+  }
 
-  useEffect(()=>{
-    if(showCoursesDetails) {
-      appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
+  const onAddPortfolioClick = () => {
+    const portfolioProps: IPortfolioModal = {
+      onSubmit: (data) => {
+        setFieldValue('portfolio', data.portfolio)
+      },
+      portfolio: values.portfolio
     }
-  }, [showCoursesDetails])
+    if(isTabletWidth) {
+      appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 240)
+    }
+    else {
+      appContext.showModal<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps)
+    }
+  }
+
+
+  
 
   return ( <div className={styles.root}>
     <AddButton 
@@ -189,7 +206,7 @@ export default function Skills(props: Props) {
     {!props.fieldToHide?.courses === true && <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{setCoursesDetails(true)}} 
+      onClick={onAddCoursesClick} 
       text={'Повышение квалификации и курсы'}
       /> 
       {cvContext.currentCv?.coursesInfo?.length > 0 &&
@@ -257,12 +274,7 @@ export default function Skills(props: Props) {
     {!props.fieldToHide?.portfolio  && <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=> appContext.showModal<IPortfolioModal>(ModalType.AddPortfolioModal, {
-        onSubmit: (data) => {
-          setFieldValue('portfolio', data.portfolio)
-        },
-        portfolio: values.portfolio
-      })} 
+      onClick={onAddPortfolioClick} 
       text={'Добавить порфтолио'} />
       {values.portfolio &&
         <div className={styles.itemsWrapper}>

@@ -123,11 +123,10 @@ export default function Education(props: Props) {
     }
   }
 
-  useEffect(()=>{
-    if(showDetails) {
-      appContext.showModal(ModalType.DetailsModal, detailProps)
-    }
-  }, [showDetails])
+  const onAddButtonClick = () => {
+    setDetails(true)
+    appContext.showModal(ModalType.DetailsModal, detailProps)
+  }
 
   return (<>
   <RadioListField 
@@ -160,7 +159,7 @@ export default function Education(props: Props) {
     }) 
   }
 
-  <AddButton onClick={()=> setDetails(true)} text={'Добавить место учебы'}/>
+  <AddButton onClick={onAddButtonClick} text={'Добавить место учебы'}/>
 
   {/* {showDetails && isPhoneWidth &&
     <DetailsField  {...detailProps}/>

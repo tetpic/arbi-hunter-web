@@ -1,12 +1,11 @@
 import styles from './index.module.scss'
 
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
 import IChat from 'data/interfaces/IChat'
-import { useRouter } from 'next/router'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   chat: IChat
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export default function ChatItem(props: Props) {
-  const router = useRouter()
   const chat = props.chat
 
   const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
@@ -26,7 +24,7 @@ export default function ChatItem(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.isActive&&styles.active)} onClick={onClickHandler}> 
-      <UserPic size={56} className={styles.userPic}  image={collocutor?.image&& FILES +collocutor?.image?.source}/>
+      <UserPic size={56} className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  image={getUserImageSource(collocutor)}/>
       <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>

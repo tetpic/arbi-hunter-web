@@ -3,6 +3,9 @@
 .rootLayout {
   background-color: $black;
   max-width: 520px;
+  @include mq($TabletWidth, max) {
+    background-color: $backgroundBlack;
+  }
 }
 
 .position {

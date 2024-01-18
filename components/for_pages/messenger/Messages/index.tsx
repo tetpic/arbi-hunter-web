@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import InformationSvg from 'components/svg/InformationSvg'
@@ -27,6 +26,8 @@ import CvRepository from 'data/repositories/CvRepository'
 import folderImage from 'images/folder.png'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getUserImageSource } from 'utils/helpers'
+import { useRouter } from 'next/navigation'
 
 
 
@@ -41,6 +42,7 @@ export default function Messages(props: Props) {
   const {isTabletWidth} = useResize()
   const [collocutor, setCollocutor] = useState<IUserProfile|any>(false)
   const [cv, setCv] = useState<ICV>(null)
+  const router = useRouter()
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
@@ -98,6 +100,10 @@ export default function Messages(props: Props) {
     })
   }
 
+  const onTopClick = () => {
+    router.push('/personal/' + collocutor.id)
+  }
+
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
 
@@ -119,15 +125,15 @@ export default function Messages(props: Props) {
 
   return (
     <div className={styles.root}> 
-      <div className={styles.top}>
+      <div className={styles.top} onClick={onTopClick}>
         {dialog.chat &&
         <>
           {isTabletWidth &&
             <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
           }
-          <UserPic size={48} className={styles.userPic} image={collocutor?.image&& FILES + collocutor.image.source}/>
+          <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor)}/>
           <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
-          <p className={styles.time}>В сети c {Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
+          <p className={styles.time}>{collocutor.online?<span className={styles.online}>В сети</span>:'Был(а) в сети  '+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
           {!isTabletWidth &&
             <ThreeDotsButton className={styles.dots}/>
           }

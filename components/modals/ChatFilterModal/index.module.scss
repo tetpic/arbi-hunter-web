@@ -26,6 +26,7 @@
     font-size: $mediumText;
     font-weight: $medium;
     border-radius: 10px;
+    cursor: pointer;
   }
 }
 
@@ -63,4 +64,23 @@
 
 .modalLayout {
   max-width: 400px;
+}
+
+.closeButton {
+  cursor: pointer;
+  svg {
+    path {
+      @include transitionDefault;
+    }
+  }
+  @include hover {
+    svg {
+      path {
+        &:first-of-type {
+          fill: $greyLight;
+        }
+      }
+    }
+  }
+  
 }
