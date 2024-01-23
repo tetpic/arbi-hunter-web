@@ -13,17 +13,43 @@ interface Props {
 
 export default function SalaryItem({vacancy, cv}: Props) {
 
-  return (<p className={styles.salary}><Image src={'/icons/money.png'} width={24} height={24} alt={'money icon'}/> 
+  const salary = vacancy?.salary||cv?.salary
+  const compensation = vacancy?.compensation||cv?.compensation
+  const currency = vacancy?.currency||cv?.currency
+  const commission = vacancy?.commission||cv?.commission
+
+  const image =   <Image src={'/icons/money.png'} width={24} height={24} alt={'money icon'}/> 
+
+
+
+  return (<p className={styles.salary}>
   {
-  (vacancy?.compensation === CompensationType.Salary||cv?.compensation === CompensationType.Salary) && <span>от {vacancy?.salary||cv?.salary} {TranslateCurrency(vacancy?.currency||cv?.currency)}</span>
+  compensation === CompensationType.Salary && salary &&
+  <>
+    {image}
+    <span>от {Formatter.formatNumber(Number(salary))} {TranslateCurrency(currency)}</span>
+  </>
   ||
-  (vacancy?.compensation === CompensationType.Piecework||cv?.compensation === CompensationType.Piecework) && <span>{TranslateCompensationType(vacancy?.compensation||cv.compensation)} ({TranslateCurrency(vacancy?.currency||cv?.currency)})</span>
+  compensation === CompensationType.Piecework && 
+  <>
+    {image}
+    <span>{TranslateCompensationType(compensation)} ({TranslateCurrency(currency)})</span>
+  </>
   ||
-  (vacancy?.compensation === CompensationType.Commission||cv?.compensation === CompensationType.Commission) && <span>{vacancy?.commission||cv?.commission}% ({TranslateCurrency(vacancy?.currency||cv?.currency)})</span>
+  compensation === CompensationType.Commission && commission &&
+  <>
+    {image}
+    <span>{commission}% ({TranslateCurrency(currency)})</span>
+  </>
   ||
-  (vacancy?.compensation === CompensationType.Contract||cv?.compensation === CompensationType.Contract) &&  <span>{TranslateCompensationType(vacancy?.compensation||cv?.compensation)}</span>
+  compensation === CompensationType.Contract &&  
+    <span>{TranslateCompensationType(compensation)}</span>
   ||
-  (vacancy?.compensation === CompensationType.Gybrid||cv?.compensation === CompensationType.Gybrid) && <span>{Formatter.formatNumber(Number(vacancy?.salary||cv?.salary))} {TranslateCurrency(vacancy?.currency||cv?.currency)} + {vacancy?.commission||cv?.commission}%</span>
- }
+  compensation === CompensationType.Gybrid && 
+  <>
+    {image}
+    <span>{salary && Formatter.formatNumber(Number(salary)) + ' ' + TranslateCurrency(currency) + ' + ' } {commission}%</span>
+  </>
+  }
  </p>)
 }

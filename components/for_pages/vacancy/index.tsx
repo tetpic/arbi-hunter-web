@@ -187,15 +187,15 @@ export default function VacancyPage(props: Props) {
           <Link href={'/personal/' + currentVacancy.profileId} className={styles.button}>Открыть профиль</Link>
         </ContentItem>
 
-        {userContext?.currentProfile?.profileType === ProfileType.Employee &&
+        {userContext?.currentProfile?.profileType === ProfileType.Employee && otherCompanyVacncies.length > 0 &&
           <>
             <p className={styles.otherVacancies}>Другие вакансии компании</p>
-              {otherCompanyVacncies.length > 0 &&
+              {
                 otherCompanyVacncies.map(vacancy=> 
                 <ContentItem className={styles.asideVacancies}>
                       <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>
                 </ContentItem>
-                )}
+              )}
             <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
           </>
         }

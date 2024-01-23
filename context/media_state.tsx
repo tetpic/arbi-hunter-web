@@ -16,7 +16,7 @@ export interface IMediaContextState {
   setCurrentNews: (data: {articles?: IArticle[], clear?: boolean}) => void
   stories: Map<number, IArticle> 
   setStories: (stories?: IArticle[], target?: 'course'|'news') => void
-  saveOrRemoveArticle: (article: IArticle) => Promise<boolean>
+  saveOrRemoveArticle: (article: IArticle, type?: 'current'|'saved') => Promise<boolean>
   searchParams: ISearchBarReturnParams
   setSearchParams: Dispatch<SetStateAction<ISearchBarReturnParams>>  
 
@@ -125,14 +125,36 @@ export function MediaWrapper(props: Props) {
     return true
   }
 
-  const saveOrRemoveArticle = async (article: IArticle): Promise<boolean> => {
-    if(article.isSavedByCurrentProfile) {
-      await ArticlesRepository.removeArticleFromSaved(article.id)
+  const saveOrRemoveArticle = async (article: IArticle, type?: 'current'|'saved'): Promise<boolean> => {
+    const setCurrent = (b: boolean) => {
       setCurrentNewsState(state=> {
         const a = state.get(article.id)
-        a.isSavedByCurrentProfile = false
+        a.isSavedByCurrentProfile = b
         return new Map(state)
       })
+      return true
+    }
+
+    const setSaved = (b: boolean) => {
+      setSavedArticlesState(state=> {
+        state.delete(article.id)
+        return new Map(state)
+      })
+    }
+
+
+    if(article.isSavedByCurrentProfile) {
+      await ArticlesRepository.removeArticleFromSaved(article.id)
+      switch(type) {
+        case 'current':
+          setCurrent(false)
+          break
+        case 'saved':
+          setSaved(false)
+          break
+        default:
+          setCurrent(false)
+      }
       return true
     }
     else {
@@ -142,6 +164,16 @@ export function MediaWrapper(props: Props) {
         a.isSavedByCurrentProfile = true
         return new Map(state)
       })
+      switch(type) {
+        case 'current':
+          setCurrent(true)
+          break
+        case 'saved':
+          setSaved(true)
+          break
+        default:
+          setCurrent(true)
+      }
       return true
     }
   }

@@ -181,10 +181,7 @@ export default function Messages(props: Props) {
       </Link>
       }
       <div className={styles.newMessage} onPaste={onPasteHandler}>
-        <label>
-          <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
-          <input type='file' accept='image/png, image/jpg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
-        </label>
+        
         {(pastedImages.size>0) && 
         <div className={styles.imagesWrapper}>
           {[...pastedImages.entries()].map(([key, el]) => {
@@ -205,6 +202,10 @@ export default function Messages(props: Props) {
           })}
         </div>
         }
+        <label>
+          <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
+          <input type='file' accept='image/png, image/jpg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
+        </label>
         <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
         <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
           {

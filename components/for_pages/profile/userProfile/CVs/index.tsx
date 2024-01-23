@@ -49,7 +49,7 @@ export default function CVs(props: Props) {
         setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false && el.moderationStatus === 'approved'))
         break
       case CVNavigation.Drafts: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false && el.moderationStatus !== 'approved'))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => el.moderationStatus !== 'approved'))
         break
     }
   }, [activeItem, cvContext.savedCvs])
