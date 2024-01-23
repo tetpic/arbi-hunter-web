@@ -45,7 +45,13 @@ export default function MainPageHirer(props: Props) {
     .then(_=>{
       setLoad(false)
     })   
+
+    document.body.style.overflowX = 'hidden'
+    return ()=>{
+      document.body.style.overflowX = 'hidden'
+    }
   }, [])
+
 
 
   return (<div className={styles.root}> 

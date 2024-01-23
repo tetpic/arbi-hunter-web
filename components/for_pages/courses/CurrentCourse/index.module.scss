@@ -253,6 +253,8 @@
   @include container;
   @include mq($TabletWidth, max) {
     width: 100%;
+    min-height: calc(100vh - 550px);
+    min-height: calc(100dvh - 550px);
   }
 }
 

@@ -1,5 +1,5 @@
 import ModalLayout from 'components/layout/Modal/ModalLayout'
-// import styles from './index.module.scss'
+import styles from './index.module.scss'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import Filters from 'components/for_pages/recruiting/Filters'
 import { useAppContext } from 'context/state'
@@ -19,7 +19,7 @@ export default function RecruitingFiltersModal(props: Props) {
   const args = appContext.modalArguments as IRecruitingFiltersModalProps
 
   return (<ModalLayout mobileFullScreen>
-    <ModalBody>
+    <ModalBody className={styles.modalBody}>
       <TitleForSection title={'Фильтры'} onBackClick={props.onClose}/>
       <Filters onFilterChange={args.onFilterChange}/>
     </ModalBody>

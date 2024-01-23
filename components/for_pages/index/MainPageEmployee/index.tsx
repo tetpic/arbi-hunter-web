@@ -50,6 +50,13 @@ export default function MainPageEmployee() {
       setDisableClick(false)      
     }, temporaryAnimation.duration)
   }
+
+  useEffect(()=>{
+    document.body.style.overflowX = 'hidden'
+    return ()=>{
+      document.body.style.overflowX = 'auto'
+    }
+  }, [])
   
 
   useEffect(()=>{

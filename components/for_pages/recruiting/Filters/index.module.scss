@@ -8,6 +8,10 @@
     width: 100%;
     padding: unset;
     margin-top: 16px;
+    min-height: calc(100% - 32px);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
   }
   // overflow: auto;
   // height: calc(100vh - 32px);
@@ -27,6 +31,9 @@
   @include buttonGray;
   width: 100%;
   margin-top: 24px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .fieldTitle {
