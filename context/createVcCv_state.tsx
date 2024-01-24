@@ -13,8 +13,10 @@ interface HelpObject {
   languageKnowledges?: Map<string, ILanguageKnowledge>,
   sources?: ISource[]
   geos?: ISource[]
+  verticals?: ISource[]
   activeSources?: Map<number, ISource>
   activeGeos?: Map<number, ISource>
+  activeVerticals?: Map<number, ISource>
   cityId?: number
   countryId?: number,
   categoryIds?: ISpecializationCategory[]

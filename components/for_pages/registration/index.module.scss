@@ -108,3 +108,23 @@
     width: 100%;
   }
 }
+
+.modes {
+  margin-bottom: 24px;
+}
+
+.modesButtons {
+  width: 50%;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 8px;
+}
+
+.uneditable {
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $greyLight;
+  margin-bottom: 24px;
+}

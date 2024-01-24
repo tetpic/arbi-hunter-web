@@ -107,14 +107,14 @@ export enum Answer {
 }
 
 export enum CompensationType {
-  Salary = 'salary',
-  Commission = 'commission',
-  Gybrid = 'gybrid',
-  Piecework = 'piecework',
+  // Salary = 'salary',
+  // Commission = 'commission',
+  // Gybrid = 'gybrid',
+  // Piecework = 'piecework',
   Contract = 'contract'
 }
 
-export const CompensationTypeTranslated = translateEnum(CompensationType, ['Оклад', 'Комиссия', 'Гибрид(оклад + процент)', 'Сдельная', 'Договорная'])
+export const CompensationTypeTranslated = translateEnum(CompensationType, [/*'Оклад', 'Комиссия', 'Гибрид(оклад + процент)', 'Сдельная',*/ 'Договорная'])
 
 export enum Currency {
   RUB = 'RUB',

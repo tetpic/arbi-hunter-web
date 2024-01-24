@@ -73,11 +73,15 @@ export function CharacterWrapper(props: Props) {
       const setItems:any = {model: res.gender==='male'?'man':'woman'}
       setItems.eye = 0
       setItems.hair = 0
-      res.items.forEach(el=> setItems[el.category.key] = el.animationKey)
+      res.items.forEach(el=> {
+        if(el.gender === res.gender) {
+          setItems[el.category.key] = el.animationKey          
+        }
+      })
       setVariantState(setItems)
       setChoosenItemsState(state=> {
         state.clear()
-        res.items.forEach(el=> state.set(el.category.id, el))
+        res.items.forEach(el=> el.gender===res.gender&&state.set(el.category.id, el))
         return new Map(state)
       })
     })
@@ -140,14 +144,11 @@ export function CharacterWrapper(props: Props) {
     if(!userContext.currentProfile) {
       return    
     }
-    setSavingProcess(true)
-    
-    if(!isCharacterExist.current) {
-      await CharacterRepository.createCharacter({gender: 'male'})
-      .then(res=> {
-        characterId.current = res.id
-      })
-    }
+    setSavingProcess(true)    
+    await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
+    .then(res=> {
+      characterId.current = res.id
+    })
     const file = new File([dataBaseBlob], 'test.png', {type: 'image/png'})
     const fileId = await FileRepository.uploadFile(file)
     .then(res=> {
@@ -159,8 +160,10 @@ export function CharacterWrapper(props: Props) {
       appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
       userContext.updateUser()
       setSavingProcess(false)
-    })
-  
+    })  
+    setTimeout(()=> {
+      userContext.updateUser()      
+    },1500)
     return true
   }
 

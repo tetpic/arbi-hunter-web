@@ -1,6 +1,7 @@
 import RadioListField from 'components/fields/RadioListField'
 import { EmploymentType, ScheduleType } from 'types/enums'
 import styles from './index.module.scss'
+import WorkPlace from '../WorkPlace'
 
 interface Props {
 }
@@ -30,6 +31,9 @@ export default function Busyness(props: Props) {
         {label: 'Гибкий рабочий день', value: EmploymentType.Project},
       ]} 
       />
+
+    <p className={styles.title}>Mecто работы</p>
+    <WorkPlace/>
    
   </div>)
 }

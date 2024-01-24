@@ -31,10 +31,6 @@
   font-weight: $medium;
 }
 
-.input {
-  margin-top: 16px;
-}
-
 .title {
   margin-bottom: 16px;
   font-size: $largeText;
@@ -71,8 +67,27 @@
   }
 }
 
+.input {
+  input {
+    height: 30px !important;
+  }
+}
+
 .currencyLabel {
   margin-left: unset !important;
 
   @include transitionDefault;
+}
+
+.inputsWrapper {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+
+  >span {
+    color: $greyLight;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
 }

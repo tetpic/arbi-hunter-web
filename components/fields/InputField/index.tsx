@@ -27,7 +27,7 @@ interface Props extends IField<string> {
   errorClassName?: string
   value?: any
   onClick?: MouseEventHandler<HTMLInputElement>
-  labelType?: 'floating' | 'top'
+  labelType?: 'floating' | 'top' | 'static'
   isNumbersOnly?: boolean
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   autocompleteOff?: boolean
@@ -85,8 +85,9 @@ export default function InputField(props: Props) {
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
-      <div className={styles.wrapper} ref={wrapperRef}>
+      <div className={classNames(styles.wrapper, props.styleType === 'bottomBorder' && styles.wrapperBottomBorder)} ref={wrapperRef}>
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
+        {props.labelType === 'static'? <FieldLabel className={styles.staticLabel}>{props.label}</FieldLabel>:null}
         <input
           {...field}
           value = {props.value||field.value}
@@ -116,15 +117,15 @@ export default function InputField(props: Props) {
             [styles.white]: props.color === 'white',
             [styles.purple]: props.color === 'purple',
             [styles.darkPurple]: props.color === 'darkPurple',
-          }, styles[props.styleType])}
+          }, styles[props.styleType], styles[props.labelType])}
           placeholder={props.placeholder}
           {...(props.format === 'phone'?{value: value}: '') }
           {...(props.onChange&&{onChange: props.onChange}) }
         />
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}
-        <FieldError className={props.errorClassName} showError={showError}>{props.error||meta.error}</FieldError>
       </div>
+      <FieldError className={props.errorClassName} showError={showError}>{props.error||meta.error}</FieldError>
     </div>
   )
 }

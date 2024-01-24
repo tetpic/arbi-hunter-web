@@ -6,11 +6,12 @@ import classNames from 'classnames'
 interface Props {
  active?: boolean
  children: string | ReactElement | ReactElement[]
+ className?: string
 }
 
 export default function FloatingFieldLabel(props: Props) {
   return (
-    <div className={classNames(styles.root, {[styles.active]: props.active})}>
+    <div className={classNames(styles.root, {[styles.active]: props.active}, props.className)}>
       {props.children}
     </div>
   )

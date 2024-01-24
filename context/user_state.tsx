@@ -69,6 +69,7 @@ export function UserWrapper(props: Props) {
       const data = await UserRepository.getCurrentUser()
       if (data) {
         setUser(data)
+        
         setCurrentProfileState(data.profiles[0])
         if(data.profiles.length === 0 && data.isRegistrationCompleted) {
           appContext.showSnackbar('Аккаунт не существует', SnackbarType.error)
@@ -143,7 +144,9 @@ export function UserWrapper(props: Props) {
   useEffect(() => { 
     if (props.token && user && props.user?.isRegistrationCompleted) {    
       setIsLogged(true)
-      setCurrentProfileState(props.user.profiles && props.user.profiles.find(u => user.id === u.userId))
+      if(!currentProfile) {
+        setCurrentProfileState(props.user.profiles && props.user.profiles.find(u => user.id === u.userId))
+      }
       isAuth.current = true
     }
   }, [user, props.user])

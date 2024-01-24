@@ -3,9 +3,9 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import { CompensationType, CompensationTypeTranslated, EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
+import {  CompensationTypeTranslated, EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
-import InputField from 'components/fields/InputField'
+// import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import AddButton from 'components/ui/AddButton'
 import { useAppContext } from 'context/state'
@@ -147,7 +147,7 @@ export default function Filters(props: Props) {
           />
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
-        {(formik.values.compensation === CompensationType.Commission || formik.values.compensation === CompensationType.Gybrid) &&
+        {/* {(formik.values.compensation === CompensationType.Commission || formik.values.compensation === CompensationType.Gybrid) &&
           <>
             <p className={styles.fieldTitle}>Комиссия</p>
             <div className={styles.range}>
@@ -171,7 +171,7 @@ export default function Filters(props: Props) {
               <InputField styleType={'default'} placeholder='До' color={'white'} name={'salaryMax'}/>
             </div>
           </>
-        }
+        } */}
 
         <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal()}>Источники</p>
         {creationContext.helpObjects.sources.length > 0 &&

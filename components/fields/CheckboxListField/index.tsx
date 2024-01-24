@@ -41,12 +41,13 @@ export default function CheckboxListField<T>(props: Props<T>) {
   const [field, meta, helpers] = useField<T[]>(props as any)
   const {value} = field
   const handleCheckboxChanged = (val: T) => {
+    
     if(value && !value.includes(val)){
       helpers.setValue([...value, val])
-    }else{
+    }
+    else{
       helpers.setValue(value?.filter(i => i !== val))
     }
-
   }
 
   return (

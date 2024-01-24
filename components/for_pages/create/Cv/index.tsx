@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -105,7 +105,7 @@ export default function Cv(props: Props) {
     lastName: userContext.currentProfile?.lastName,
     patronymic: userContext.currentProfile?.patronymic||'unset',
     birthday: userContext.currentProfile?.birthday,
-    compensation: props.cv?.compensation||CompensationType.Salary,
+    compensation: props.cv?.compensation||undefined,
     phone: userContext.currentProfile?.phone,
     email: userContext.currentProfile?.email,
     telegramNickname: userContext.currentProfile?.telegramNickname, 
@@ -196,28 +196,28 @@ export default function Cv(props: Props) {
         : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       break
       case 2: 
-        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
-          setErr('salary')
-          return
-        }
-        else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
-          setErr('commission')
-          return
-        }
-        else if(formik.values.compensation === CompensationType.Gybrid) {
-          if(!formik.values.commission||formik.values.commission < 1) {
-            setErr('commission')
-          }
-          if(!formik.values.salary||salaryNumber < 1) {
-            setErr('salary')
-          }
-          if(formik.values.commission > 0 && salaryNumber > 0) {
-            setProgress(pageNumber||progress+1)
-          }
-        }
-        else {
-          setProgress(pageNumber||progress+1)
-        }
+        // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
+        //   setErr('salary')
+        //   return
+        // }
+        // else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
+        //   setErr('commission')
+        //   return
+        // }
+        // else if(formik.values.compensation === CompensationType.Gybrid) {
+        //   if(!formik.values.commission||formik.values.commission < 1) {
+        //     setErr('commission')
+        //   }
+        //   if(!formik.values.salary||salaryNumber < 1) {
+        //     setErr('salary')
+        //   }
+        //   if(formik.values.commission > 0 && salaryNumber > 0) {
+        //     setProgress(pageNumber||progress+1)
+        //   }
+        // }
+        // else {
+        //   setProgress(pageNumber||progress+1)
+        // }
       break
       case 5: 
         if(formik.values.bio.trim().length < 1) {
@@ -299,6 +299,7 @@ export default function Cv(props: Props) {
       <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
+          {isTabletWidth && memoedRive}
           {page} 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&

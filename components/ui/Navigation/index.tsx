@@ -39,10 +39,12 @@ export default function Navigation<T extends string|number>(props: Props<T>) {
   }
 
   return ( <div className={classNames(styles.root, props.rootClassName) }>
+    <div className={classNames(styles.rootWrapper, props.wrapperClassName)}>
+
     {isTabletWidth && props.title &&
     <TitleForSection title={props.title||'Настройка профиля'} onBackClick={()=>{router.back()}}/>
     }
-    <nav className={classNames(styles.wrapper, props.wrapperClassName)}>
+    <nav className={styles.wrapper}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {
         return (
           <NavigationItem 
@@ -59,6 +61,7 @@ export default function Navigation<T extends string|number>(props: Props<T>) {
         {props.bottomItem}
       </div>
     }
+    </div>
   </div>
   )
 }

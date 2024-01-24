@@ -50,12 +50,6 @@
 }
 
 .button {
-  // border-radius: 10px;
-  // padding: 12px 24px;
-  // font-size: $mediumText;
-  // font-weight: $medium;
-  // cursor: pointer;
-  // @include transitionDefault;
   @include mq($PhoneWidth, max) {
     width: 100%;
   }
@@ -64,9 +58,6 @@
 .buttonBlack {
   @include buttonBlack;
   @extend .button;
-  // background-color: $grey;
-  // color: $blue;
-  // @include hoverButtonBlack;
 }
 
 .buttonBlackSmall {
@@ -81,9 +72,6 @@
 .buttonYellow {
   @include buttonYellow;
   @extend .button;
-  // background-color: $blue;
-  // color: $grey;
-  // @include hoverButtonYellow;
 }
 
 .disabled {
@@ -109,4 +97,9 @@
   overflow: hidden;
   background: url('/rive/Back.jpg') center;
   background-size: contain;
+  @include mq($TabletWidth, max) {
+    margin-top: 24px;
+    width: calc(100vw - 32px);
+    height: calc(100vw - 32px);
+  }
 }

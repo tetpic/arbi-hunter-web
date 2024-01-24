@@ -1,0 +1,15 @@
+@import 'styles/index';
+
+.title {
+  margin-top: 32px;
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+  margin-bottom: 16px;
+}
+
+.inputsWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}

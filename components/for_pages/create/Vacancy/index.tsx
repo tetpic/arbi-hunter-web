@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
-import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
+import { Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
 import ProgressBar from '../../../ui/ProgressBar'
-import WorkPlace from '../utils/Steps/WorkPlace'
 import {IVacancy, IVacancyCreate} from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import Compensation from '../utils/Steps/Compensation'
@@ -21,6 +20,8 @@ import { useAppContext } from 'context/state'
 import Spacer from 'components/ui/Spacer'
 import Rive from '@rive-app/react-canvas'
 import Specialization from '../utils/Steps/Specialization'
+import Busyness from '../utils/Steps/Busyness'
+import Contacts from '../utils/Steps/Contacts'
 
 interface Props {
   id?: number
@@ -37,7 +38,9 @@ enum VacancyNavigation {
   About = 'about',
   Skills = 'skills',
   Busyness = 'busyness',
-  Tariff = 'tariff'
+  Tariff = 'tariff',
+  Contacts = 'contacts'
+
 }
 
 export default function Vacancy(props: Props) {
@@ -53,8 +56,22 @@ export default function Vacancy(props: Props) {
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
 
-  const CVItemsCount = 7
+  const CVItemsCount = 8
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
+
+  const getContactName = () => {
+    if(props.vacancy) {
+      const arr = [props.vacancy.profile.firstName, props.vacancy.profile.lastName, props.vacancy.profile.patronymic]
+      return arr.filter(Boolean).join(' ')
+    }
+    else if(userContext.currentProfile) {
+      const arr = [userContext.currentProfile.firstName, userContext.currentProfile.lastName, userContext.currentProfile.patronymic]
+      return arr.filter(Boolean).join(' ')
+    }
+    else {
+      return ''
+    }
+  }
 
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
@@ -63,7 +80,7 @@ export default function Vacancy(props: Props) {
     contactName: props.vacancy?.contactName||userContext.currentProfile?.firstName, 
     company: props.vacancy?.company||userContext.currentProfile?.company, 
     isRemote: props.vacancy?.isRemote||false,
-    compensation: props.vacancy?.compensation||CompensationType.Salary,
+    compensation: props.vacancy?.compensation||undefined,
     phone: props.vacancy?.phone||userContext.currentProfile?.phone,
     email: props.vacancy?.email||userContext.currentProfile?.email,
     telegramNickname: props.vacancy?.telegramNickname||userContext.currentProfile?.telegramNickname, 
@@ -79,6 +96,13 @@ export default function Vacancy(props: Props) {
     employment: props.vacancy?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.vacancy?.languageKnowledges|| null, 
     published: props.vacancy?.published||true,
+    contacts: {
+      name: getContactName(),
+      telegramNickname: props.vacancy?.profile.telegramNickname||userContext.currentProfile?.telegramNickname||'',
+      phone: props.vacancy?.profile.phone||userContext.currentProfile?.phone||'',
+      email: props.vacancy?.profile.email||userContext.currentProfile?.email||''
+    },
+    contactsToShow: []
   }
 
   const submit = (data: IVacancyCreate) => {
@@ -146,22 +170,25 @@ export default function Vacancy(props: Props) {
       case 2: 
         return [<Specialization/>, VacancyNavigation.Specialization]
       case 3: 
-        return [<WorkPlace/>, VacancyNavigation.WorkPlace]
-      case 4:
-        return [<VacancyExperience/>, VacancyNavigation.Experience]
-      case 5: 
         return [<Compensation/>, VacancyNavigation.Salary]
+      case 4:
+        return [<Busyness/>, VacancyNavigation.Busyness]
+      case 5: 
+        return [<VacancyExperience/>, VacancyNavigation.Experience]
       case 6: 
-        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
-      case 7:
         return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true}}/>, VacancyNavigation.Skills]
+      case 7:
+        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
+      case 8: 
+        return [<Contacts/>, VacancyNavigation.Contacts]
+
     }
   }
 
   const getTitle = (t: VacancyNavigation): string => {
     switch(t) {
       case VacancyNavigation.Specialization: 
-        return 'Специализация'
+        return 'Категория и специализация'
       case VacancyNavigation.Name:
         return 'Название вакансии'
       case VacancyNavigation.Salary:
@@ -169,7 +196,7 @@ export default function Vacancy(props: Props) {
       case VacancyNavigation.WorkPlace:
         return 'Место работы'
       case VacancyNavigation.Experience:
-        return 'Опыт и график работы'
+        return 'Опыт работы'
       case VacancyNavigation.Education:
         return 'Образование'
       case VacancyNavigation.About:
@@ -203,37 +230,39 @@ export default function Vacancy(props: Props) {
         }
         setProgress(pageNumber||progress+1)
         return false
-      case 5: 
+      case 3: 
         const salaryNumber: number = Number(formik.values.salary?.toString().replaceAll(' ', ''))
-        if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
-          setErr('salary')
-          return false
-        }
-        else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
-          setErr('commission')
-          return false
-        }
-        else if(formik.values.compensation === CompensationType.Gybrid) {
-          const salaryNumber: number = Number(formik.values.salary.toString().replaceAll(' ', ''))
-          if(!formik.values.commission||formik.values.commission < 1) {
-            setErr('commission')
-            return false
-          }
-          if(!formik.values.salary||salaryNumber < 1) {
-            setErr('salary')
-            return false
-          }
-          if(formik.values.commission > 0 && salaryNumber > 0) {
-            setProgress(pageNumber||progress+1)
-            return true
-          }
-        }
-        else {
-          setProgress(pageNumber||progress+1)
-          return false
-        }
+        setProgress(pageNumber||progress+1)
+
+        // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
+        //   setErr('salary')
+        //   return false
+        // }
+        // else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
+        //   setErr('commission')
+        //   return false
+        // }
+        // else if(formik.values.compensation === CompensationType.Gybrid) {
+        //   const salaryNumber: number = Number(formik.values.salary.toString().replaceAll(' ', ''))
+        //   if(!formik.values.commission||formik.values.commission < 1) {
+        //     setErr('commission')
+        //     return false
+        //   }
+        //   if(!formik.values.salary||salaryNumber < 1) {
+        //     setErr('salary')
+        //     return false
+        //   }
+        //   if(formik.values.commission > 0 && salaryNumber > 0) {
+        //     setProgress(pageNumber||progress+1)
+        //     return true
+        //   }
+        // }
+        // else {
+        //   setProgress(pageNumber||progress+1)
+        //   return false
+        // }
       break
-      case 6: 
+      case 7: 
         if(formik.values.description.trim().length < 1) {
           setErr('description', 'Напишите подробнее о вакансии')
           return false
@@ -242,8 +271,8 @@ export default function Vacancy(props: Props) {
           setProgress(pageNumber||progress+1)
           return false
         }
-      case 7:
-        return true
+      // case 7:
+      //   return true
       break
       default :
         setProgress(pageNumber||progress+1)
@@ -313,7 +342,6 @@ export default function Vacancy(props: Props) {
 
   return <div className={styles.root}>
     {!isTabletWidth && memoedRive}
-    {/* <RiveComponent className={styles.rive}/> */}
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth &&

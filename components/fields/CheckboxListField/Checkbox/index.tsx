@@ -27,6 +27,7 @@ interface Props<T> {
  */
 export default function Checkbox<T>(props: Props<T>) {
   const handleClick = () => {
+    
     props.onChange(props.value)
   }
   return (

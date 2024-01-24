@@ -21,7 +21,7 @@ export default function Password(props: Props) {
   const [step, setStep] = useState<number>(1)
 
   const onSubmitHandler = () => {
-    debugger
+    
     if(userContext.user?.isRegistrationCompleted) {
       setStep(2)
     }

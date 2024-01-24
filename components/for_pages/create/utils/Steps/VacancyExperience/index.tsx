@@ -1,13 +1,32 @@
 import RadioListField from 'components/fields/RadioListField'
-import { EmploymentType, ScheduleType, WorkExperience } from 'types/enums'
+import { ModalType, WorkExperience} from 'types/enums'
 import styles from './index.module.scss'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { useAppContext } from 'context/state'
+import AddButton from '@/components/ui/AddButton'
+import RemovableItem from '@/components/ui/RemovableItem'
 
 interface Props {
 }
 
 export default function VacancyExperience(props: Props) {
+  const cvContext = useCreateVcCvContext()
+  const appContext = useAppContext()
+
+  const removeSource = (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeSources.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
+  
+  const removeGeo = (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeGeos.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
 
   return ( <div className={styles.root}>
+
     <p className={styles.title}>Опыт работы</p>
     <RadioListField 
     name={'experience'}
@@ -20,26 +39,57 @@ export default function VacancyExperience(props: Props) {
     ]} 
     />
 
-    <p className={styles.title}>График работы</p>
-    <RadioListField 
-    name={'schedule'}    
-    wrapperClassName={styles.radioWrapper}
-    options={[
-      {value: ScheduleType.FullDay, label: 'Полный день'},
-      {value: ScheduleType.Flexible, label: 'Гибкий график'}
-    ]} 
-    />
+{
+      (cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) &&
+      <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
+      text={'Источники трафика и гео'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+      {cvContext.helpObjects?.activeSources?.size > 0 &&
+       <>
+         <div className={styles.itemsWrapper}>
+            <p className={styles.title}>Источники трафика</p>
+            {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
+              .map(([key, value])=> 
+              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+            )}
+          </div>
+        </>
+      }
+      {cvContext.helpObjects?.activeGeos?.size > 0 &&
+        <>
+          <div className={styles.itemsWrapper}>
+          <p className={styles.title}>Гео</p>
+            {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
+             .map(([key, value])=> 
+             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
+            )}
+          </div>
+        </>
+      }
 
-    <p className={styles.title}>Занятость</p>
-    <RadioListField 
-    name={'employment'}
-    wrapperClassName={styles.radioWrapper}
-    options={[
-      {value: EmploymentType.PartTime, label: 'Частичная'},
-      {value: EmploymentType.FullTime, label: 'Полная'},
-      {value: EmploymentType.Project, label: 'Проектная'}
-    ]} 
-    />
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
+      text={'Вертикали'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+      {cvContext.helpObjects?.activeSources?.size > 0 &&
+        <>
+        <div className={styles.itemsWrapper}>
+        <p className={styles.title}>Источники трафика</p>
+        {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
+        .map(([key, value])=> 
+        <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+        )}
+        </div>
+        </>
+      }
+      </>
+    }
   
   </div>)
 }

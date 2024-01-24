@@ -27,7 +27,7 @@ export default function WorkPlace(props: Props) {
   }
 
   const countryHandler = (c: ISearchCountryResult) => {
-    debugger
+    
     formikContext.setFieldValue('cityName', '')
     setCurrentCountryCode(c.country_code)
     const cvHelpers = cvContext.helpObjects

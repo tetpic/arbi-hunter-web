@@ -87,18 +87,6 @@ export default function Skills(props: Props) {
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
-  
-  const removeSource = (el: number) => {
-    const helperState = cvContext.helpObjects
-    helperState.activeSources.delete(el)
-    cvContext.setHelpObjects({...helperState})
-  }
-  
-  const removeGeo = (el: number) => {
-    const helperState = cvContext.helpObjects
-    helperState.activeGeos.delete(el)
-    cvContext.setHelpObjects({...helperState})
-  }
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = cvContext.helpObjects
@@ -173,9 +161,6 @@ export default function Skills(props: Props) {
     }
   }
 
-
-  
-
   return ( <div className={styles.root}>
     <AddButton 
     className={styles.addButton} 
@@ -222,39 +207,7 @@ export default function Skills(props: Props) {
       }
     </>}
 
-    {
-      (cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) &&
-      <>
-      <AddButton 
-      className={styles.addButton} 
-      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-      text={'Источники трафика и гео'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
-      /> 
-       {cvContext.helpObjects?.activeSources?.size > 0 &&
-       <>
-        <div className={styles.itemsWrapper}>
-        <p className={styles.title}>Источники трафика</p>
-          {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
-            .map(([key, value])=> 
-            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
-            )}
-          </div>
-        </>
-        }
-        {cvContext.helpObjects?.activeGeos?.size > 0 &&
-        <>
-          <div className={styles.itemsWrapper}>
-          <p className={styles.title}>Гео</p>
-            {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
-             .map(([key, value])=> 
-             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
-            )}
-          </div>
-         </>
-         }
-      </>
-    }
+
 
     {!props.fieldToHide?.relocation===true && 
       <div className={styles.radioSection}>

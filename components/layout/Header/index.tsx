@@ -67,6 +67,8 @@ export default function Header(props: Props) {
     }
   }, [props.distanceFromTop])
 
+
+
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
       <Link href={userContext.currentProfile?'/profile':'/'} className={styles.logo}>
@@ -102,6 +104,7 @@ export default function Header(props: Props) {
             <>
               <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
               <UserPic 
+              key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
               image={getUserImageSource(userContext.currentProfile)} 
               className={styles.userPic} 
               onClick={()=>setDropDownOpen(state=> !state)}

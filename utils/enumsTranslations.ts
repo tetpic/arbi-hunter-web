@@ -117,16 +117,16 @@ export const TranslateWorkExperience = (w: WorkExperience) => {
 
 export const TranslateCompensationType = (c: CompensationType) => {
   switch(c) {
-    case CompensationType.Commission: 
-    return 'Процент'
+    // case CompensationType.Commission: 
+    // return 'Процент'
     case CompensationType.Contract:
       return 'Договорная'
-    case CompensationType.Gybrid: 
-      return 'Гибрид'
-    case CompensationType.Piecework: 
-      return 'Сдельная'
-    case CompensationType.Salary:
-      return 'Оклад'
+    // case CompensationType.Gybrid: 
+    //   return 'Гибрид'
+    // case CompensationType.Piecework: 
+    //   return 'Сдельная'
+    // case CompensationType.Salary:
+    //   return 'Оклад'
     }
 }
 

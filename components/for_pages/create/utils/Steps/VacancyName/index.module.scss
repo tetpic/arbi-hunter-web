@@ -10,14 +10,56 @@
   margin-top: 48px;
 }
 
-.input {
-  margin-top: 16px;
-}
-
 .tags {
-  margin-top: 16px;
+  margin-top: 32px;
   display: flex;
   column-gap: 8px;
   row-gap: 8px;
   flex-wrap: wrap;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.suggestionsWrapper {
+  margin-block: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+
+   p {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    padding: 16px 8px;
+    @include transitionDefault;
+    border-radius: 10px;
+    cursor: pointer;
+    @include hover {
+      background-color: $grey;
+    }
+
+  }
+
+
+}
+
+.suggestions {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 8px 8px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  z-index: 10;
+  max-height: 400px;
+  overflow: auto;
+  display: none;
+}
+
+.active {
+  display: block;
 }

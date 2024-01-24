@@ -38,7 +38,7 @@ export default function UserDropdownMenu(props: Props) {
       case ProfileType.Employee: 
         return {
           name: `${currentProfile.firstName} ${currentProfile.lastName}`, 
-          sub: `${currentProfile.city.locName}`
+          sub: `${currentProfile.city?.locName||''}`
         }
       case ProfileType.Hirer: 
         return {

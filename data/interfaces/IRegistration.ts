@@ -7,6 +7,7 @@ export enum ProfileType {
 export interface IRegistrationComplete {
   firstName : string,
   lastName : string,
+  patronymic: string,
   password : string,
   phone?: string,
   countryId?: number|undefined,

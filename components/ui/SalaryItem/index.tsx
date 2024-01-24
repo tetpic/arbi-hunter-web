@@ -1,8 +1,8 @@
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Image from 'next/image'
 import { CompensationType } from 'types/enums'
-import { TranslateCompensationType, TranslateCurrency } from 'utils/enumsTranslations'
-import Formatter from 'utils/formatter'
+import { TranslateCompensationType} from 'utils/enumsTranslations'
+// import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 import { ICV } from 'data/interfaces/ICV'
 
@@ -24,32 +24,32 @@ export default function SalaryItem({vacancy, cv}: Props) {
 
   return (<p className={styles.salary}>
   {
-  compensation === CompensationType.Salary && salary &&
-  <>
-    {image}
-    <span>от {Formatter.formatNumber(Number(salary))} {TranslateCurrency(currency)}</span>
-  </>
-  ||
-  compensation === CompensationType.Piecework && 
-  <>
-    {image}
-    <span>{TranslateCompensationType(compensation)} ({TranslateCurrency(currency)})</span>
-  </>
-  ||
-  compensation === CompensationType.Commission && commission &&
-  <>
-    {image}
-    <span>{commission}% ({TranslateCurrency(currency)})</span>
-  </>
-  ||
+  // compensation === CompensationType.Salary && salary &&
+  // <>
+  //   {image}
+  //   <span>от {Formatter.formatNumber(Number(salary))} {TranslateCurrency(currency)}</span>
+  // </>
+  // ||
+  // compensation === CompensationType.Piecework && 
+  // <>
+  //   {image}
+  //   <span>{TranslateCompensationType(compensation)} ({TranslateCurrency(currency)})</span>
+  // </>
+  // ||
+  // compensation === CompensationType.Commission && commission &&
+  // <>
+  //   {image}
+  //   <span>{commission}% ({TranslateCurrency(currency)})</span>
+  // </>
+  // ||
   compensation === CompensationType.Contract &&  
     <span>{TranslateCompensationType(compensation)}</span>
-  ||
-  compensation === CompensationType.Gybrid && 
-  <>
-    {image}
-    <span>{salary && Formatter.formatNumber(Number(salary)) + ' ' + TranslateCurrency(currency) + ' + ' } {commission}%</span>
-  </>
+  // ||
+  // compensation === CompensationType.Gybrid && 
+  // <>
+  //   {image}
+  //   <span>{salary && Formatter.formatNumber(Number(salary)) + ' ' + TranslateCurrency(currency) + ' + ' } {commission}%</span>
+  // </>
   }
  </p>)
 }
