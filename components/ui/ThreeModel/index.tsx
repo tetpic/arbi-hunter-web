@@ -21,24 +21,19 @@ export interface IThreeModelProps {
     actions: ModelActions
 }
 
-export function ThreeModel(props: IThreeModelProps) {
 
-  
+
+export function ThreeModel(props: IThreeModelProps) {
   const mesh = useRef()
   const characterContext = useCharacterContext()
   const currentAction = useRef<ModelActions>(props.actions)
   const  {nodes, materials, animations} = useGLTF(`/models/model_${props.model}.glb`, true, true, (loader) => {
     loader.setCrossOrigin('anonymous')
   }) as any
-
-  // debugger
     
   const { actions } = useAnimations(animations, mesh)
 
   useEffect(()=>{   
-    const propAction =props.actions
-    actions[currentAction.current]
-
     if(!actions[currentAction.current]) {
       return
     }
@@ -53,11 +48,21 @@ export function ThreeModel(props: IThreeModelProps) {
     }
   }, [nodes, characterContext.dataLoaded])
 
+  useEffect(()=>{
+    characterContext.setDurations(state=> {
+      (animations as {name: string, duration: number}[]).map((animation)=>{
+        state[animation.name] = animation.duration
+      })
+      return {...state}
+    })
+  
+  }, [animations])
+
   if(props.model === 'woman') {
     return (
-      <group {...props} dispose={null}>
+      <group {...props}  ref={mesh} dispose={null}>
         <group name="Scene">
-          <group name="Арматура">
+          <group name="Арматура" key={1}>
             <primitive object={nodes.Spine} />
             <skinnedMesh 
             name={`Body_${props.body||'0'}${props.body||'_0'}`} 
@@ -85,11 +90,11 @@ export function ThreeModel(props: IThreeModelProps) {
       </group>
     )
   }
-
+  else if(props.model === 'man') {
   return (      
-    <group {...props} ref={mesh} dispose={null}>
-      <group name="Scene">
-        <group name="Арматура">
+    <group {...props} key={2} ref={mesh} dispose={null}>
+      <group name={'Scene'}>
+        <group name={'Арматура'} key={2}>
           <primitive object={nodes.Spine} />
           <primitive object={nodes.neutral_bone} />
           <skinnedMesh 
@@ -97,7 +102,7 @@ export function ThreeModel(props: IThreeModelProps) {
           geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} 
           material={materials[`Body_${props.color||'0'}`]} 
           skeleton={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].skeleton} />
-          {props.cap && 
+          {props.cap && props.model === 'man' &&
             <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
           }
           {props.chain &&
@@ -119,6 +124,10 @@ export function ThreeModel(props: IThreeModelProps) {
       </group>         
     </group>
   )
+}
+else {
+  return null
+}
 }
 
 useGLTF.preload('/models/model_man.glb', true, true, (loader) => {

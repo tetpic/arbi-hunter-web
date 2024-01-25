@@ -24,6 +24,8 @@ interface IState {
   setDataBaseBlob: Dispatch<SetStateAction<Blob>>
   dataBaseBlob: Blob
   savingProcess: boolean
+  durations: {[key: string]: number;}
+  setDurations: Dispatch<SetStateAction<{[key: string]: number;}>>
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -61,6 +63,7 @@ export function CharacterWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<Map<ICharCategory, ICharItem[]>>(new Map)
   const characterId = useRef<number>(null)
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
+  const [durations, setDurations ] = useState<{[key: string]: number}>({})
 
   const init = async() => {
     if(!userContext.currentProfile) {
@@ -191,7 +194,9 @@ export function CharacterWrapper(props: Props) {
     choosenItems,
     setDataBaseBlob,
     dataBaseBlob,
-    savingProcess
+    savingProcess,
+    durations,
+    setDurations,
   }
 
   return (
