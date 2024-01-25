@@ -2,8 +2,58 @@
 
 .modalLayout {
   max-width: 544px;
+  background-color: $backgroundBlack;
+
   @include mq($TabletWidth, max) {
     max-width: unset;
-    background-color: $backgroundBlack;
   }
+}
+
+.dateField {
+  width: 100%;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  column-gap: 16px
+}
+
+.grayButton {
+  @include buttonGray;
+}
+
+.sendButton {
+  @include buttonYellow;
+}
+
+.period {
+  display: flex;
+  column-gap: 16px;
+  margin-bottom: 24px;
+}
+
+.toPresent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  p{
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+}
+
+.inputsWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin-bottom: 16px;
 }

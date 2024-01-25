@@ -39,19 +39,18 @@ export default function VacancyExperience(props: Props) {
     ]} 
     />
 
-{
+    {
       (cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) &&
       <>
       <AddButton 
       className={styles.addButton} 
       onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-      text={'Источники трафика и гео'}
+      text={'Источники трафика'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
       {cvContext.helpObjects?.activeSources?.size > 0 &&
        <>
          <div className={styles.itemsWrapper}>
-            <p className={styles.title}>Источники трафика</p>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
               .map(([key, value])=> 
               <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
@@ -59,10 +58,15 @@ export default function VacancyExperience(props: Props) {
           </div>
         </>
       }
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
+      text={'Гео'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
       {cvContext.helpObjects?.activeGeos?.size > 0 &&
         <>
           <div className={styles.itemsWrapper}>
-          <p className={styles.title}>Гео</p>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
              .map(([key, value])=> 
              <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
@@ -80,7 +84,6 @@ export default function VacancyExperience(props: Props) {
       {cvContext.helpObjects?.activeSources?.size > 0 &&
         <>
         <div className={styles.itemsWrapper}>
-        <p className={styles.title}>Источники трафика</p>
         {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
         .map(([key, value])=> 
         <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>

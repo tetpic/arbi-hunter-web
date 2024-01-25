@@ -42,30 +42,7 @@
   }
 }
 
-.circleCurrency {
-  display: none;
-}
 
-.currencyRoot {
-  display: flex !important;
-  margin-top: 32px;
-  column-gap: 8px !important;
-  flex-direction: row !important;
-}
-
-.currencyItem {
-  padding: 10px 16px 8px;
-  border: 1px solid $grey;
-  border-radius: 50px;
-  @include transitionDefault;
-
-  &_active {
-    background-color: $grey;
-    // .currencyLabel{
-    //   color: $black;
-    // }
-  }
-}
 
 .input {
   input {
@@ -73,17 +50,14 @@
   }
 }
 
-.currencyLabel {
-  margin-left: unset !important;
 
-  @include transitionDefault;
-}
 
 .inputsWrapper {
   margin-top: 16px;
   display: flex;
   align-items: center;
   column-gap: 16px;
+  margin-bottom: 24px;
 
   >span {
     color: $greyLight;

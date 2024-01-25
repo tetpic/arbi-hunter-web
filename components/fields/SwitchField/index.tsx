@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import {IField} from 'types/types'
 import classnames from 'classnames'
 import Switch from 'components/ui/Switch'
+import { colors } from 'styles/variables'
 
 interface Props extends IField<boolean>{
   onChange?: () => void
@@ -32,12 +33,14 @@ interface Props extends IField<boolean>{
 export default function SwitchField(props: Props) {
   //@ts-ignore
   const [field, meta] = useField(props)
-  const { setFieldValue } = useFormikContext()
+  const formikContext = useFormikContext()
+  const {values, setFieldValue } = useFormikContext()
   const hasError = !!meta.error && meta.touched
 
   const handleChange = (val: boolean) => {
-    props.onChange && props.onChange()
+    props.onChange?.()
     setFieldValue(field.name, val)
+    formikContext.values
   }
   const label = ( <div className={classnames(styles.label, props.labelClassName)}>
     {props.label}
@@ -47,11 +50,11 @@ export default function SwitchField(props: Props) {
       {props.label && props.fluid && label}
       <Switch
           onChange={(val) => handleChange(val)}
-          checked={field.value}
-          offColor={props.offColor}
-          onColor={props.onColor}
-          offHandleColor={props.offHandleColor}
-          onHandleColor={props.onHandleColor}
+          checked={field.value||false}
+          offColor={props.offColor||colors.white}
+          onColor={props.onColor||colors.yellow}
+          offHandleColor={props.offHandleColor||colors.yellow}
+          onHandleColor={props.onHandleColor||colors.white}
           />
           {props.label && !props.fluid && label}
     </div>

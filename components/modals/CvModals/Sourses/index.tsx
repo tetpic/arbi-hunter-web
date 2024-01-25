@@ -48,7 +48,7 @@ export default function SoursesModal(props: Props) {
   const saveSourcesHandler = () => {
     const cvHelpState = cvContext.helpObjects
     cvContext.setHelpObjects({...cvHelpState, activeSources: choosenSources, activeGeos: choosenGeos})
-    args.onClose?args.onClose():props.onClose()
+    args?.onClose?args?.onClose():props.onClose()
   }
 
   const onSourceClickHandler = (e: ISource) => {

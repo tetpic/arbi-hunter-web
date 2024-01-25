@@ -9,12 +9,12 @@ import { CoursesInfo, ISource } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
-import { DetailsFieldProps } from '../../DetailsField'
 import languages from '@cospired/i18n-iso-languages'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 
 
 type SkillsFields = {
@@ -101,49 +101,64 @@ export default function Skills(props: Props) {
     cvContext.setHelpObjects({...helperState, skills: new Map(filteredSkills.map(el=> [el.id, el]))})
   }
 
-  const detailsFieldProps: DetailsFieldProps<CoursesInfo> = {
-    title:'Повышение квалификации и курсы',
-    set: activeDetails,
-    onSave: closeModalHandler,
-    onEditValidator: (fields) => {
-      const today = new Date()
-      const fromDate = new Date(fields.date)
-      if(fromDate > today) {
-        return {error: 'Дата начала не может быть в будущем'}
-      }
-      else {
-        return true
-      }
-    },
-    onClose: ()=> {
-      setCoursesDetails(false)
-      appContext.hideModal()
-    },
-    inputsSettings: [
-      {label: 'Название учреждения:', name: 'location', value: '', required: true, errorState: 'Введите название учреждения'},
-      {label: 'Название курсов:', name: 'name', value: '', required: true, errorState: 'Введите название курсов' }
-    ],
-    datePickerSettings:{
-        on: true,
-        formatter: {year: 'numeric'},
-        dates: [
-          {
-            format: 'yyyy',
-            pickerType: 'showYearPicker',
-            yearDropdown: true,
-            inputLabel: 'Год окончания:',
-            dateName: 'date',
-            dateValue: '',
-            required: true,
-            errorState: 'Укажите год окончания курсов'
-          }
-        ]
-      }
-  }
+  // const detailsFieldProps: DetailsFieldProps<CoursesInfo> = {
+  //   title:'Повышение квалификации и курсы',
+  //   set: activeDetails,
+  //   onSave: closeModalHandler,
+  //   onEditValidator: (fields) => {
+  //     const today = new Date()
+  //     const fromDate = new Date(fields.date)
+  //     if(fromDate > today) {
+  //       return {error: 'Дата начала не может быть в будущем'}
+  //     }
+  //     else {
+  //       return true
+  //     }
+  //   },
+  //   onClose: ()=> {
+  //     setCoursesDetails(false)
+  //     appContext.hideModal()
+  //   },
+  //   inputsSettings: [
+  //     {label: 'Название учреждения:', name: 'location', value: '', required: true, errorState: 'Введите название учреждения'},
+  //     {label: 'Название курсов:', name: 'name', value: '', required: true, errorState: 'Введите название курсов' }
+  //   ],
+  //   datePickerSettings:{
+  //       on: true,
+  //       formatter: {year: 'numeric'},
+  //       dates: [
+  //         {
+  //           format: 'yyyy',
+  //           pickerType: 'showYearPicker',
+  //           yearDropdown: true,
+  //           inputLabel: 'Год окончания:',
+  //           dateName: 'date',
+  //           dateValue: '',
+  //           required: true,
+  //           errorState: 'Укажите год окончания курсов'
+  //         }
+  //       ]
+  //     }
+  // }
 
   const onAddCoursesClick = () => {
     setCoursesDetails(true)
-    appContext.showModal(ModalType.DetailsModal, detailsFieldProps)
+    appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
+      type: 'coursesInfo',
+      values: {
+        coursesInfo: [{
+          name: '',
+          location: '',
+          date: '',
+        }]
+      },
+      onSubmit: (data) => {
+        const coursesInfo = values.coursesInfo
+        coursesInfo?.push(data.coursesInfo[0])
+        setFieldValue('coursesInfo', coursesInfo)
+        appContext.hideModal()
+      }
+    })
   }
 
   const onAddPortfolioClick = () => {
@@ -194,9 +209,9 @@ export default function Skills(props: Props) {
       onClick={onAddCoursesClick} 
       text={'Повышение квалификации и курсы'}
       /> 
-      {cvContext.currentCv?.coursesInfo?.length > 0 &&
+      {values?.coursesInfo?.length > 0 &&
         <div className={styles.itemsWrapper}>
-        {cvContext.currentCv&&cvContext.currentCv?.coursesInfo
+        {values?.coursesInfo
           .map((el)=> 
             <RemovableItem key={el.date} text={el.name} onClick={()=>{
               setDetailsCoursesInfo(state=> state.filter(f=> f.name !== el.name))

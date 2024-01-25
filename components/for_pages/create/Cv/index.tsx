@@ -9,18 +9,17 @@ import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
 import { useRouter } from 'next/router'
-import Specialization from '../utils/Steps/Specialization'
-import Compensation from '../utils/Steps/Compensation'
-import Experience from '../utils/Steps/Experience'
+import Experience from './steps/Experience'
 import Education from '../utils/Steps/Education'
-import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
-import Busyness from '../utils/Steps/Busyness'
 import ProgressBar from '../../../ui/ProgressBar'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
 import Rive from '@rive-app/react-canvas'
 import Title from 'components/ui/TitleForSection'
+import CvName from './steps/CvName'
+import CvAbout from './steps/CvAbout'
+import CvBusyness from './steps/CvBusyness'
 
 
 interface Props {
@@ -133,6 +132,7 @@ export default function Cv(props: Props) {
     languageKnowledges: props.cv?.languageKnowledges||null, 
     published: props.cv?.published||true,
     portfolio: props.cv?.portfolio||'',
+    businessTrips: props.cv?.businessTrips||false
   }
 
   const formik = useFormik({
@@ -143,19 +143,19 @@ export default function Cv(props: Props) {
   const getComponent = (progress: number): [JSX.Element, CvNavigation] => {
     switch (progress) {
       case 1: 
-        return [<Specialization/>, CvNavigation.Specialization]
+        return [<CvName/>, CvNavigation.Specialization]
       case 2: 
-        return [<Compensation/>, CvNavigation.Salary]
+        // return [<Compensation/>, CvNavigation.Salary]
+        return [<CvAbout/>, CvNavigation.About]
       case 3: 
         return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
       case 4:
         return [<Education name={'educationInfo'}/>, CvNavigation.Education]
       case 5: 
-        return [<About/>, CvNavigation.About]
-      case 6: 
         return [<Skills/>, CvNavigation.Skills]
+      case 6: 
+        return [<CvBusyness/>, CvNavigation.Busyness]
       case 7: 
-        return [<Busyness/>, CvNavigation.Busyness]
     }
   }
 
@@ -191,9 +191,10 @@ export default function Cv(props: Props) {
     switch(progress) {
 
       case 1:
-        creationContext.helpObjects.categoryIds.length > 0 ? 
+
+        // creationContext.helpObjects.categoryIds.length > 0 ? 
         setProgress(pageNumber||progress+1)
-        : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+        // : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       break
       case 2: 
         // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
@@ -216,15 +217,15 @@ export default function Cv(props: Props) {
         //   }
         // }
         // else {
-        //   setProgress(pageNumber||progress+1)
+        setProgress(pageNumber||progress+1)
         // }
       break
       case 5: 
-        if(formik.values.bio.trim().length < 1) {
-          setErr('bio', 'Напишите подробнее о себе')
-        } else {
+        // if(formik.values.bio.trim().length < 1) {
+        //   setErr('bio', 'Напишите подробнее о себе')
+        // } else {
           setProgress(pageNumber||progress+1)
-        }
+        // }
       break
 
       default :
@@ -293,7 +294,7 @@ export default function Cv(props: Props) {
   return <div className={styles.root}>
     {!isTabletWidth&& memoedRive}
     <div className={styles.content}>    
-      {isPhoneWidth && 
+      {!isPhoneWidth && 
         <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
       }
       <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>

@@ -30,13 +30,14 @@ export function ThreeModel(props: IThreeModelProps) {
   const  {nodes, materials, animations} = useGLTF(`/models/model_${props.model}.glb`, true, true, (loader) => {
     loader.setCrossOrigin('anonymous')
   }) as any
+
+  // debugger
     
   const { actions } = useAnimations(animations, mesh)
 
   useEffect(()=>{   
     const propAction =props.actions
     actions[currentAction.current]
-    
 
     if(!actions[currentAction.current]) {
       return
@@ -58,7 +59,6 @@ export function ThreeModel(props: IThreeModelProps) {
         <group name="Scene">
           <group name="Арматура">
             <primitive object={nodes.Spine} />
-            <primitive object={nodes.neutral_bone} />
             <skinnedMesh 
             name={`Body_${props.body||'0'}${props.body||'_0'}`} 
             geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} 

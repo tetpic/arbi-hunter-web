@@ -17,7 +17,6 @@ import Compensation from '../utils/Steps/Compensation'
 import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
-import Spacer from 'components/ui/Spacer'
 import Rive from '@rive-app/react-canvas'
 import Specialization from '../utils/Steps/Specialization'
 import Busyness from '../utils/Steps/Busyness'
@@ -73,9 +72,11 @@ export default function Vacancy(props: Props) {
     }
   }
 
+  const initialDescription = '<p>Обязанности</p><ul><li></li><li></li><li></li></ul><p>Требования</p><ul><li></li><li></li><li></li></ul><p>Условия</p><ul><li></li><li></li><li></li></ul>'
+
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
-    description: props.vacancy?.description||'',
+    description: props.vacancy?.description||initialDescription,
     experience: props.vacancy?.experience||WorkExperience.From1to3, 
     contactName: props.vacancy?.contactName||userContext.currentProfile?.firstName, 
     company: props.vacancy?.company||userContext.currentProfile?.company, 
@@ -205,6 +206,8 @@ export default function Vacancy(props: Props) {
         return 'Навыки и инструменты'
       case VacancyNavigation.Busyness:
         return 'Занятость'
+      case VacancyNavigation.Contacts:
+        return 'Контактная информация'
     }
   }
 
@@ -353,8 +356,6 @@ export default function Vacancy(props: Props) {
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
           {page} 
-
-          <Spacer basis={16}/>
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&

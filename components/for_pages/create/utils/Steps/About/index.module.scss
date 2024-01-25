@@ -2,9 +2,10 @@
 
 
 .textarea {
-  border: unset !important;
+  border: 2px $grey solid !important;
+
   border-bottom: 2px $grey solid !important;
-  border-radius: 0px;
+  border-radius: 16px;
   margin-top: 32px;
 }
 
@@ -20,4 +21,41 @@
 
 .birthday {
   margin-top: 24px;
+}
+
+.name {
+  font-size: $largeText;
+  font-weight: $semibold;
+  color: $white;
+}
+
+.disclaimer {
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $greyLight;
+  margin-top: 24px;
+}
+
+.textField {
+  display: flex;
+  row-gap: 16px;
+  flex-direction: column-reverse;
+  border: 2px $grey solid;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 24px;
+}
+
+.label {
+  max-width: 260px;
+  color: $red !important;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.editor {
+  min-height: 200px;
+  border: unset !important;
+  margin-top: unset;
+  padding-inline: 10px 0px !important;
 }

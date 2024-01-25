@@ -1,12 +1,5 @@
 @import 'styles/index';
 
-.subTitle {
-  font-weight: $semibold;
-  font-size: $largeText;
-  color: $white;
-  margin-top: 32px;
-}
-
 .radioWrapper {
   margin-top: 16px;
   display: flex !important;
@@ -20,4 +13,8 @@
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
+}
+
+.fieldItem {
+  margin-bottom: 24px;
 }

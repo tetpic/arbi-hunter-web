@@ -24,6 +24,7 @@ export interface ICVCreate extends IJob {
   commission?: number|null,
   portfolio?: string
   experience?: WorkExperience
+  
 }
 
 export interface ICVVC {

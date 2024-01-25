@@ -10,6 +10,7 @@ import { useState } from 'react'
 import CountrySelect from './CountrySelect'
 import {AsYouType} from 'libphonenumber-js'
 import { IField } from 'types/types'
+import FieldLabel from '@/components/ui/FieldLabel'
 
 // @ts-ignore
 const metadata = new Metadata(minMetadata)
@@ -69,9 +70,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
       <div className={styles.wrapper}>
         <div className={classNames(styles.inputWrapper, { [styles.withLabel]: props.label })}>
           {props.label &&
-            <div className={styles.label}>
-              {props.label}
-            </div>
+           <FieldLabel>{props.label}</FieldLabel>
           }
           <div id={'phone-field'} className={classNames(styles.fieldWrapper, props.fieldWrapperClassName)}>
             <PhoneInputWithCountrySelect

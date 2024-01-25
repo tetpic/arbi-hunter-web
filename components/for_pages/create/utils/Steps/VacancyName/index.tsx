@@ -22,12 +22,16 @@ export default function VacancyName(props: Props) {
   const [isActive, setIsActive] = useDetectOutsideClick(inputWrapperRef, false)
 
   const {values, setFieldValue} = useFormikContext<IVacancyCreate>()
+  const isClicked = useRef<boolean>(false)
 
   const onInputChange = (s: string) => {
-    setIsActive(true)
+    if(!isClicked.current) {
+      setIsActive(true)
+    }
     VacancyRepository.suggestPosition({search: s})
     .then(res=> {
       setSuggestions(res)
+      isClicked.current = false
     })
   }
 
@@ -40,9 +44,8 @@ export default function VacancyName(props: Props) {
 
   const onSuggestionClick = (name: string) => {
     setFieldValue('name', name)
-    setTimeout(()=> {
-      setIsActive(false)      
-    }, 200)
+    setIsActive(false)
+    isClicked.current = true
   }
   
   const onChangeThrottle = useThrottleFn(onInputChange, 300)
@@ -71,7 +74,7 @@ export default function VacancyName(props: Props) {
         placeholder={'Введите название вакансии'} 
         validate={Validator.required}
         />
-        <div className={classNames(styles.suggestions, isActive && styles.active)}>
+        <div className={classNames(styles.suggestions, isActive && suggestions.length > 0 && styles.active)}>
           <div className={styles.suggestionsWrapper}>
           {
             suggestions.map(s=> {
@@ -86,7 +89,7 @@ export default function VacancyName(props: Props) {
       <div className={styles.tags}>
         {
           tags.map(s=> {
-            return <Tag text={s.name} onClick={()=>setFieldValue('name', s.name)}/>
+            return <Tag text={s.name} onClick={()=>onSuggestionClick(s.name)}/>
           })
         }
       </div>

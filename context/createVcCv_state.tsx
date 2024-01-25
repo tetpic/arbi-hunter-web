@@ -40,6 +40,7 @@ interface IState {
   setProgress: (p: number) => void
 
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
+  subCategories: Map<number, ISpecializationCategory>
   activeCategory: ISpecializationCategory
   activeSubCategory: ISpecializationCategory|ISpecializationCategory[]
   setCategories: ()=> Promise<boolean>
@@ -79,6 +80,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [progress, handleProgress] = useState<number>(1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
+  const [subCategories, setSubCategoriesState] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
   const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory|ISpecializationCategory[]>(null)
 
@@ -103,7 +105,6 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setCategories =():Promise<boolean> => {
-    // if(categories?.size < 1) {
       return CvRepository.getCategories()
       .then(res => {
         setCategoriesState(()=> {
@@ -124,6 +125,12 @@ export function CreateVcCvWrapper(props: Props) {
       .then(res => {
         setCategoriesState(state => {
           state.set(s, res)
+          return new Map(state)
+        })
+        setSubCategoriesState(state => {
+          res.forEach(el=> {
+            state.set(el.id, el)
+          })
           return new Map(state)
         })
       })
@@ -182,7 +189,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const reset = () => {
-    handleProgress(1)
+    handleProgress(5)
     setHelp(initialHelpObject)
     setCv(null)
     setVc(null)
@@ -205,6 +212,7 @@ export function CreateVcCvWrapper(props: Props) {
     setProgress,
 
     categories,
+    subCategories,
     setCategories,
     setSubCategories,
     reset,

@@ -2,11 +2,12 @@
 
 .label {
   color: $greyLight;
-  font-size: $mediumText;
+  font-size: $smallText;
+  background-color: $backgroundBlack;
   font-weight: $medium;
-  margin-bottom: 8px;
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  z-index: 1;
+  padding-inline: 6px;
 }
-
-// .label{
-//   @include inputLabel;
-// }

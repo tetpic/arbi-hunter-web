@@ -2,16 +2,13 @@ import RadioListField from 'components/fields/RadioListField'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { EducationInfo } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
-import { useEffect, useState } from 'react'
 import { EducationTypes, ModalType } from 'types/enums'
-import { DetailsFieldProps } from '../../DetailsField'
 import styles from './index.module.scss'
-import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import { ICVCreate } from 'data/interfaces/ICV'
+import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 
 interface Props {
   name: string
@@ -19,113 +16,33 @@ interface Props {
 
 export default function Education(props: Props) {
 
-  const {isPhoneWidth} = useResize()
   const appContext = useAppContext()
-  const initialData:EducationInfo = {
-    toDate: '', 
-    fromDate: '', 
-    institution: '', 
-    speciality: ''
-  }
-
-  const creationContext = useCreateVcCvContext()
   const {values, setFieldValue, setFieldError, setFieldTouched} = useFormikContext<ICVCreate>()
 
-  const [showDetails, setDetails] = useState<boolean>(false)
-  const [detailsInfo, setDetailsInfo] = useState<EducationInfo[]>(values.educationInfo||creationContext.currentCv?.educationInfo||[])
-  const [activeDetails, setActiveDetails] = useState<EducationInfo>(initialData)
-
-  const saveModalHandler = (fl: EducationInfo) => {
-    setDetailsInfo(f=> [...f, {...fl}])
-    setDetails(false)
-    setActiveDetails(initialData)
-    appContext.hideModal()
-  }
-
-  useEffect(()=>{
-    const values =  ['setSpeciality', 'setInstitution', 'set_fromDate']
-    if(!activeDetails) {
-     values.map(el=> {
-        setFieldTouched(el, false)
-      })
-    }
-    else {
-      values.map(el=> {
-        setFieldTouched(el, true)
-      })
-    }
-  }, [activeDetails])
-
-  const closeModalHandler = () => {
-    setDetails(false)
-    setActiveDetails(initialData)
-    appContext.hideModal()
-  }
-
   const removeItem = (e: EducationInfo) => {
-    setDetailsInfo(state => state.filter(el=> el !== e))
-  }
-
-  useEffect(()=>{
-    setFieldValue(props.name, detailsInfo)
-  }, [detailsInfo])
-
-  const detailProps: DetailsFieldProps<EducationInfo> = {
-    title: 'Место учёбы',
-    onSave: saveModalHandler,
-    onClose: closeModalHandler,
-    onEditValidator: (fields) => {
-      const today = new Date()
-      const fromDate = new Date(fields.fromDate)
-      const toDate = new Date(fields.toDate)
-      
-      if(fromDate > toDate ) {
-        return {error: 'Дата окончания не может быть раньше даты начала'}
-      }
-      if(toDate > today) {
-        return {error: 'Дата окончания не может быть в будущем'}
-      }
-      if(fromDate > today) {
-        return {error: 'Дата начала не может быть в будущем'}
-      }
-      else {
-        return true
-      }
-    },
-    set: activeDetails,
-    inputsSettings: [
-      {value: '', name: 'institution', label: 'Заведение: ', required: true, errorState: 'Введите название заведения'},
-      {value: '', name: 'speciality', label: 'Специализация: ', required: true, errorState: 'Введите специальность'}
-    ],
-    datePickerSettings: {
-      on: true,
-      formatter: {year: 'numeric'},
-      dates: [
-        {
-          format: 'yyyy', 
-          pickerType: 'showYearPicker',
-          yearDropdown: true,
-          inputLabel: 'Начало обучения',
-          dateName: 'fromDate',
-          dateValue: '',
-          required: true,
-          errorState: 'Введите дату начала обучения'
-        },
-        {
-          format: 'yyyy',
-          pickerType: 'showYearPicker',
-          yearDropdown: true,
-          inputLabel:'Окончание обучения',
-          dateName: 'toDate',
-          dateValue: '',
-        }
-      ]
-    }
+    setFieldValue('educationInfo', values.educationInfo?.filter(el=> el !== e))
   }
 
   const onAddButtonClick = () => {
-    setDetails(true)
-    appContext.showModal(ModalType.DetailsModal, detailProps)
+    appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
+      values: {
+        educationInfo: [{
+          institution: '',
+          speciality: '',
+          fromDate: '',
+          toDate: '',
+          toPresent: true,
+          faculity: ''
+        }]
+      },
+      type: 'educationInfo',
+      onSubmit: (data) => {
+        const educationInfo = values.educationInfo
+        educationInfo?.push(data.educationInfo[0])
+        setFieldValue('educationInfo', educationInfo)
+        appContext.hideModal()
+      }
+    })
   }
 
   return (<>
@@ -145,7 +62,7 @@ export default function Education(props: Props) {
   name={'education'} 
   />
 
-  {detailsInfo&&detailsInfo.length>0&&detailsInfo.map(el=> {
+  {values.educationInfo&&values.educationInfo.length>0&&values.educationInfo.map(el=> {
     return (
       <div 
       key={el.date} 
@@ -158,11 +75,6 @@ export default function Education(props: Props) {
       </div>)
     }) 
   }
-
   <AddButton onClick={onAddButtonClick} text={'Добавить место учебы'}/>
-
-  {/* {showDetails && isPhoneWidth &&
-    <DetailsField  {...detailProps}/>
-  } */}
   </>)
 }

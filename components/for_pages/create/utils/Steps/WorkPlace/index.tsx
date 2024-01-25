@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useFormikContext } from 'formik'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import { useUserContext } from 'context/user_state'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   id?: number
@@ -44,6 +45,8 @@ export default function WorkPlace(props: Props) {
     wrapperClassName={styles.radioWrapper}
     />
 
+    <Spacer basis={16}/>
+
     {!formikContext.values.isRemote &&
     <>
       <LocationDropDownInput
@@ -53,6 +56,8 @@ export default function WorkPlace(props: Props) {
       labelName={'Страна где находится офис:'}
       requestFn={LocationRepository.searchCountry} 
       />
+
+      <Spacer basis={16}/>
 
       <LocationDropDownInput
       onSetOption={cityHandler} 

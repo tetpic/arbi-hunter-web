@@ -27,6 +27,7 @@
 }
 
 .form {
+  margin-top: 24px;
   @include mq($PhoneWidth, max) {
     // height: 100%;
     display: flex;

@@ -15,7 +15,6 @@ export function Model(props) {
       <group name="Scene">
         <group name="Арматура">
           <primitive object={nodes.Spine} />
-          <primitive object={nodes.neutral_bone} />
           <skinnedMesh name="Body_0_0" geometry={nodes.Body_0_0.geometry} material={materials.Body_0} skeleton={nodes.Body_0_0.skeleton} />
           <skinnedMesh name="Body_0_1" geometry={nodes.Body_0_1.geometry} material={materials.Body_1} skeleton={nodes.Body_0_1.skeleton} />
           <skinnedMesh name="Body_0_2" geometry={nodes.Body_0_2.geometry} material={materials.Body_2} skeleton={nodes.Body_0_2.skeleton} />

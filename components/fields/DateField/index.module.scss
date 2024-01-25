@@ -9,6 +9,7 @@
   top: 50%;
   transform: translateY(-50%);
   right: 8px;
+  left: unset !important;
 
   &.default {
     left: 17px;
@@ -172,6 +173,6 @@
 }
 
 .input {
-  background-color: $grey;
+  background-color: $backgroundBlack;
   border-radius: 10px;
 }

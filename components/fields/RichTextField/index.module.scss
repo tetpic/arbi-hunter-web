@@ -12,4 +12,26 @@
   margin-top: 16px;
   padding: 10px;
   @include textFormatter;
+  position: relative;
+
+  :global {
+    .tiptap .is-empty:first-child::before {
+      color: #adb5bd;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+.focused {
+  padding-top: 60px;
+}
+
+.label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: $greyLight;
 }

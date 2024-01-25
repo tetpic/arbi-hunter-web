@@ -10,7 +10,8 @@ export interface TimeStamp {
 export interface TimeLine {
   toDate?: string, 
   fromDate?: string,
-  date?: string
+  date?: string,
+  toPresent?: boolean
 }
 
 export interface IPosition {
@@ -30,7 +31,8 @@ export interface ExperienceInfo extends TimeLine {
 
 export interface EducationInfo extends TimeLine {
   institution: string,
-  speciality: string
+  speciality: string,
+  faculity: string
 }
 
 export interface CoursesInfo extends TimeLine {

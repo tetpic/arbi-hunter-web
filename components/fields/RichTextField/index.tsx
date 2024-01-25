@@ -16,6 +16,7 @@ import FieldError from 'components/ui/FieldError'
 import RichTextToolbar from './RichTextToolbar'
 import Image from '@tiptap/extension-image'
 import { PreviewImage } from 'data/interfaces/Common'
+import classNames from 'classnames'
 
 interface IBubbleShowProps {
   editor: Editor,
@@ -41,6 +42,9 @@ interface Props extends IField<string | null>{
   onAddImage?: Dispatch<SetStateAction<PreviewImage[]>>
   hideButtons?: Buttons
   returnValueType?: 'json'|'html'
+  placeholderClassName?: string
+  editorClassName?: string
+  labelClassName?: string
 }
 
 export default function RichTextField(props: Props) {
@@ -82,8 +86,8 @@ export default function RichTextField(props: Props) {
       Image.configure({}),
       Underline,
       Placeholder.configure({
-        emptyEditorClass: 'emptyText',
-        placeholder: 'Введите текст',
+        emptyEditorClass: props.placeholderClassName||'emptyText',
+        placeholder: props.placeholder||'Введите текст',
       }),
       Link.extend({
 
@@ -129,9 +133,12 @@ export default function RichTextField(props: Props) {
 
   return (
     <div className={styles.root}> 
-      <div className={styles.field}>
+      <div className={classNames(styles.field, className) }>
         <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
-        <div className={styles.editor}>
+        <div className={classNames(styles.editor, props.editorClassName, !focus&&props.label&&styles.focused)}>
+          {!focus &&
+            <p className={classNames(styles.label, props.labelClassName)}>{props.label}</p>
+          }
           <EditorContent editor={editor} />
         </div>
       </div>

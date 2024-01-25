@@ -19,8 +19,11 @@ interface Props extends IField<string> {
   maxDate?: Date
   minDate?: Date
   visibleYearSelector?: boolean
+  visibleMonthSelector?: boolean
   excludeDates?: Date[]
   className?: string
+  inputClassName?: string
+  dateFormat?: string
 }
 
 export default function DateField(props: Props) {
@@ -43,31 +46,32 @@ export default function DateField(props: Props) {
             [styles.press]: press,
           }, /*styles[props.styleType]*/)}
           locale={ru}
-          dateFormat="dd/MM/yyyy"
+          dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
           forceShowMonthNavigation={false}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
-          showMonthDropdown={props.visibleYearSelector}
+          showMonthDropdown={props.visibleMonthSelector}
           dropdownMode="select"
           maxDate={props.maxDate}
           customInput={
             <InputField 
             autocompleteOff={true} 
-            className={classNames(styles.input)}  
+            className={classNames(styles.input, props.inputClassName)}  
             value={field.value} 
-            labelType={'top'} 
+            // labelType={'top'} 
             name={field.name} 
             styleType={'default'} 
             type="text" 
             color={'default'} 
             error={meta.error}
-            suffix={<CalendarSvg className={classNames([styles.icon, styles[props.styleType], {[styles.withLabel]: props.label}])}/>}
+            suffix={<CalendarSvg className={classNames([styles.icon, styles[props.styleType]])}/>}
             />
           }
           minDate={props.minDate}
           excludeDates={props.excludeDates}
           onChange={(date) => {
+            debugger
             if (date) {
              helpers.setValue(format(date, 'dd.MM.yyyy'))
             } else {
@@ -80,7 +84,7 @@ export default function DateField(props: Props) {
             [styles.label]: true,
             [styles.withIcon]: props.iconName,
           })}>
-            {props.label}
+            {/* {props.label} */}
           </div>
         )}
         {/* {props.iconName && (

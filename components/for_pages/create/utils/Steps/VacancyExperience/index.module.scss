@@ -15,3 +15,20 @@
   flex-direction: column;
   row-gap: 16px !important;
 }
+
+.itemsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+.title {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.addButton {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}

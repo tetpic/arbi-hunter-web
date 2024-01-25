@@ -27,6 +27,7 @@ export interface IJob {
   isSavedByCurrentProfile?: boolean,
   categories?: ISpecializationCategory[],
   commission?: number|null,
+  businessTrips?: boolean
 }
 
 export interface IModeration {
