@@ -19,7 +19,9 @@ export default class Validator {
 
   static required(_value: string | number | boolean): string | undefined {
     const value = _value && typeof _value === 'string' ? _value.replace(/\s+/g, ' ').trim() : _value
-    return (value || typeof value === 'number') ? undefined : 'Обязательное поле'
+    if(Number(value)=== 0) return 'Обязательное поле'
+    const result = (value || (typeof value === 'number' && value > 0)) ? undefined : 'Обязательное поле'
+    return result
   }
 
   static phone(value: string): string | undefined{

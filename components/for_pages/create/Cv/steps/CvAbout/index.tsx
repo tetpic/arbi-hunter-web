@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function CvAbout(props: Props) {
-  const {values} = useFormikContext<ICVCreate>()
+  const {values, setFieldValue} = useFormikContext<ICVCreate>()
 
   const [isActive, setIsActive] = useState<boolean>(true)
 
@@ -69,6 +69,6 @@ export default function CvAbout(props: Props) {
   </div>
 
   <SectionSubtitle text='Добавить текст о себе'/>
-  <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder='Опишите ваш опыт подробнее'/>
+  <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder='Опишите ваш опыт подробнее' onChange={(el)=>setFieldValue('bio', el.target.value)}/>
   </div>)
 }

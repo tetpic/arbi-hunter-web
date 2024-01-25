@@ -24,6 +24,7 @@ export interface ICVCreate extends IJob {
   commission?: number|null,
   portfolio?: string
   experience?: WorkExperience
+  searchPosition?: string
   
 }
 
@@ -35,7 +36,6 @@ export interface ICVVC {
 
 
 export interface ICV extends ICVCreate, IUserProfile{
-  businessTrips?: boolean|null,
   portfolio: string|null,
   profileId: number,
   moderationStatus: string,  // "approved"add enums

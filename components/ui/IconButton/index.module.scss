@@ -8,3 +8,16 @@
 .white {
   background: $white;
 }
+
+.transparent {
+  background: unset;
+  width: unset;
+  height: unset ;
+  padding: unset;
+  &:before {
+    display: none;
+  }
+  &:after {
+    display: none;
+  }
+}

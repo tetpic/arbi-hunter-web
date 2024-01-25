@@ -37,6 +37,9 @@ interface Props extends IField<string> {
   validateOnSubmit?: boolean
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   priceFormatting?: boolean
+  labelClassName?: string
+  inputClassName?: string
+  backgroundColor?: string
 }
 
 export default function InputField(props: Props) {  
@@ -72,13 +75,22 @@ export default function InputField(props: Props) {
     props.onKeyUp&&props.onKeyUp(e)
   }
 
+  
+
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     if(props.priceFormatting || props.isNumbersOnly) {
       const numbers = e.target.value.replace(/[^0-9]/g, '') as string
       props.isNumbersOnly && (e.target.value = numbers)
-      props.priceFormatting && (e.target.value = Formatter.formatNumber(Number(numbers)))
+      const formatted = Formatter.formatNumber(Number(numbers))
+      props.priceFormatting && (e.target.value = formatted==='0'?'':formatted)
     }
   }
+  
+  useEffect(()=>{
+    if(props.priceFormatting && field.value) {
+      helpers.setValue(Formatter.formatNumber(Number(field.value)))
+    }
+  }, [])
 
   
 
@@ -87,7 +99,7 @@ export default function InputField(props: Props) {
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
       <div className={classNames(styles.wrapper, props.styleType === 'bottomBorder' && styles.wrapperBottomBorder)} ref={wrapperRef}>
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
-        {props.labelType === 'static'? <FieldLabel className={styles.staticLabel}>{props.label}</FieldLabel>:null}
+        {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         <input
           {...field}
           value = {props.value||field.value}
@@ -117,7 +129,9 @@ export default function InputField(props: Props) {
             [styles.white]: props.color === 'white',
             [styles.purple]: props.color === 'purple',
             [styles.darkPurple]: props.color === 'darkPurple',
-          }, styles[props.styleType], styles[props.labelType])}
+          }, styles[props.styleType], styles[props.labelType],
+            props.inputClassName
+          )}
           placeholder={props.placeholder}
           {...(props.format === 'phone'?{value: value}: '') }
           {...(props.onChange&&{onChange: props.onChange}) }

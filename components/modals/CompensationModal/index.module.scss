@@ -1,0 +1,51 @@
+@import 'styles/index';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin-bottom: unset;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.modalBody {
+  background-color: $black;
+  border-radius: 16px;
+}
+
+.modalLayout {
+  max-width: 458px;
+}
+
+.button {
+  @include buttonYellow;
+}
+
+  .salaryLabel {
+    color: $blue;
+    max-width: unset;
+    position: absolute;
+    top: -8px;
+    left: 0;
+    background-color: unset;
+    margin: unset;
+    pointer-events: none;
+    padding: unset;
+  }
+
+  .salary {
+    border-bottom: 2px $blue solid;
+  }
+
+  .salaryInput {
+    padding: unset;
+  }

@@ -9,7 +9,11 @@
   column-gap: 10px;
   border: 2px $grey solid;
   font-size: $mediumText;
+  max-width: 100%;
   span {
+    word-wrap: break-word;
+    
+    max-width: calc(100% - 40px);
     &::first-letter {
       text-transform: capitalize;
     }

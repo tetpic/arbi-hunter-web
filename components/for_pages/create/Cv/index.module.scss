@@ -99,7 +99,7 @@
   background: url('/rive/Back.jpg') center;
   background-size: contain;
   @include mq($TabletWidth, max) {
-    margin-top: 24px;
+    margin-bottom: 16px;
     width: calc(100vw - 32px);
     height: calc(100vw - 32px);
   }

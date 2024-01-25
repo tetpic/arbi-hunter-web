@@ -101,7 +101,7 @@ export default function Filters(props: Props) {
       languageKnowledges: [...creationContext.helpObjects.languageKnowledges.values()],
       sources:  [...creationContext.helpObjects.activeSources.values()].map(el=> el.id),
     }
-    creationContext.activeSubCategory&&(values.categories = Array.isArray(creationContext.activeSubCategory)?creationContext.activeSubCategory.map(el => el.id):[creationContext.activeSubCategory?.id])
+    creationContext.activeSubCategory&&(values.categories = Array.isArray(creationContext.activeSubCategory)?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 

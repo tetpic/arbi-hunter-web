@@ -117,7 +117,22 @@ export default class CvRepository {
     return res
   }
 
-  static async getSubCategories(id: number): Promise<ISpecializationCategory[]|null> {
+  static async getSubcategories(data: {search?: string, page: number, limit?: number}): Promise<ISpecializationCategory[]|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/service-category',
+      data: {
+        ...data,
+        subcategoriesOnly: true
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getSubCategoriesByCategoryId(id: number): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/service-category',

@@ -5,3 +5,54 @@
   font-weight: $medium;
   font-size: $largeText;
 }
+
+.categoryName {
+  color: $white;
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  background-color: $black;
+  padding: 10px;
+  border-radius: 16px;
+  position: absolute;
+  bottom: -4px;
+  transform: translateY(100%);
+  z-index: 2;
+
+  .category {
+    color: $white;
+    font-size: $mediumText;
+    font-weight: $medium;
+    padding: 16px 10px;
+    cursor: pointer;
+    border-radius: 16px;
+    margin-right: 10px;
+    @include hover {
+      background-color: $grey;
+    }
+  }
+
+  .suggestionsWrapper {
+    max-height: 250px;
+    overflow: auto;
+  }
+}
+
+.disabled {
+  display: none;
+}

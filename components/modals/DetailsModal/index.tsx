@@ -160,8 +160,6 @@ export default function DetailsModal(props: Props) {
     </div>
   </>)
 
-
-
   return (
     <ModalLayout mobileFullScreen  className={styles.modalLayout}>
       <ModalBody>

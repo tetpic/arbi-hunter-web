@@ -26,7 +26,7 @@ interface Props {
 
 export interface ISpecializationModalProps {
   manyItems?: boolean
-  onSubmit?: (specialization: ISpecializationCategory|ISpecializationCategory[])=>void
+  onSubmit?: (specialization: ISpecializationCategory[])=>void
   onClose?: ()=>void
 }
 
@@ -41,20 +41,21 @@ export default function SpecializationModal(props: Props) {
 
   const scrollBar = useRef<Scrollbars>(null!)
 
-  const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
+  const submit = (data: {specialization: ISpecializationCategory}) => {
     if(!data.specialization) {
       appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       return
     }
-    cvContext.setActiveSubcategory(data.specialization )
+    debugger
+    cvContext.setActiveSubcategory([data.specialization])
     cvContext.setActiveCategory(null)
     args.onSubmit&&args?.onSubmit(data.specialization)
     args.onClose?args.onClose():props.onClose()
   } 
 
-  const formik = useFormik<{specialization: ISpecializationCategory[]}>({
+  const formik = useFormik<{specialization: ISpecializationCategory}>({
     initialValues: {
-      specialization: [],
+      specialization: undefined,
     },
     onSubmit: submit
   })
@@ -67,7 +68,7 @@ export default function SpecializationModal(props: Props) {
       setActiveCategory(null)
       return
     }
-    cvContext.setSubCategories(el)
+    cvContext.setSubcategoriesToCategory(el)
     setActiveCategory(el)
   }
 

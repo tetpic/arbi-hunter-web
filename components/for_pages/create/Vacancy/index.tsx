@@ -21,6 +21,7 @@ import Rive from '@rive-app/react-canvas'
 import Specialization from '../utils/Steps/Specialization'
 import Busyness from '../utils/Steps/Busyness'
 import Contacts from '../utils/Steps/Contacts'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   id?: number
@@ -93,6 +94,8 @@ export default function Vacancy(props: Props) {
     categoriesIds: props.vacancy?.categoriesIds||  null,
     sourcesIds: props.vacancy?.sourcesIds|| null,
     salary: props.vacancy?.salary|| null,
+    salaryMin: props.vacancy?.salaryMin|| null,
+    salaryMax: props.vacancy?.salaryMax|| null,
     schedule: props.vacancy?.schedule|| ScheduleType.FullDay, 
     employment: props.vacancy?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.vacancy?.languageKnowledges|| null, 
@@ -108,7 +111,9 @@ export default function Vacancy(props: Props) {
 
   const submit = (data: IVacancyCreate) => {
     const isValid = nextPageValidator()
-    if(!isValid) {return}
+    if(!isValid) {
+      return
+    }
 
     setLoading(true)
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
@@ -116,7 +121,8 @@ export default function Vacancy(props: Props) {
       ...data, 
       commission: (data.commission&&Number(data.commission))||null,
       skillsIds: [...skills.keys()], 
-      salary: Number(data.salary.toString().replaceAll(' ', '')),
+      salaryMin: Number(data.salaryMin.toString().replaceAll(' ', '')),
+      salaryMax: Number(data.salaryMax.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=> el.id)
@@ -274,9 +280,10 @@ export default function Vacancy(props: Props) {
           setProgress(pageNumber||progress+1)
           return false
         }
+      case 8:
+        return true
       // case 7:
       //   return true
-      break
       default :
         setProgress(pageNumber||progress+1)
         return true
@@ -355,7 +362,10 @@ export default function Vacancy(props: Props) {
       <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>
+          {isTabletWidth && memoedRive}
           {page} 
+
+          {isTabletWidth && <Spacer basis={24}/>}
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&

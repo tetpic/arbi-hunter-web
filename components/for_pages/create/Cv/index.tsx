@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -20,6 +20,8 @@ import Title from 'components/ui/TitleForSection'
 import CvName from './steps/CvName'
 import CvAbout from './steps/CvAbout'
 import CvBusyness from './steps/CvBusyness'
+import { ICompensationModalArgs } from '@/components/modals/CompensationModal'
+import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
 
 
 interface Props {
@@ -41,9 +43,9 @@ enum CvNavigation {
 export default function Cv(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const creationContext = useCreateVcCvContext()
   const {isPhoneWidth, isTabletWidth} = appContext.size
 
-  const creationContext = useCreateVcCvContext()
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
@@ -51,15 +53,16 @@ export default function Cv(props: Props) {
 
   const router = useRouter()
   const {progress, setProgress} = creationContext
-  const CVItemsCount = 7
+  const CVItemsCount = 6
 
   const submit = (data: ICVCreate) => {
     setLoading(true)
-    const {activeSources, languageKnowledges, skills, categoryIds, activeGeos} = creationContext?.helpObjects
+    const {activeSources, languageKnowledges, skills,  activeGeos} = creationContext?.helpObjects
 
-    if(!categoryIds||categoryIds?.length === 0) {
+    if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
+      setLoading(false)
       return 
     }
     const sendData: ICVCreate = {
@@ -69,7 +72,7 @@ export default function Cv(props: Props) {
       salary: Number(data.salary.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
-      categoriesIds: categoryIds.map(el=>el.id),
+      categoriesIds: [creationContext.activeSubCategory[0].id],
       geosIds: [...activeGeos.keys()],
       experience: WorkExperience.From1to3
     }
@@ -132,7 +135,8 @@ export default function Cv(props: Props) {
     languageKnowledges: props.cv?.languageKnowledges||null, 
     published: props.cv?.published||true,
     portfolio: props.cv?.portfolio||'',
-    businessTrips: props.cv?.businessTrips||false
+    businessTrips: props.cv?.businessTrips||Answer.No,
+    searchPosition: ''
   }
 
   const formik = useFormik({
@@ -145,7 +149,6 @@ export default function Cv(props: Props) {
       case 1: 
         return [<CvName/>, CvNavigation.Specialization]
       case 2: 
-        // return [<Compensation/>, CvNavigation.Salary]
         return [<CvAbout/>, CvNavigation.About]
       case 3: 
         return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
@@ -155,7 +158,6 @@ export default function Cv(props: Props) {
         return [<Skills/>, CvNavigation.Skills]
       case 6: 
         return [<CvBusyness/>, CvNavigation.Busyness]
-      case 7: 
     }
   }
 
@@ -187,14 +189,36 @@ export default function Cv(props: Props) {
       })
     }
 
-    const salaryNumber: number = Number(formik.values?.salary?.toString().replaceAll(' ', ''))
     switch(progress) {
 
       case 1:
+        (()=> {
+          const args: ICompensationModalArgs = {
+            onSubmit: (data) => {
+              formik.setValues({...formik.values, ...data})
+               setProgress(pageNumber||progress+1)
+             },
+             initialValues: formik.values
+          }
 
-        // creationContext.helpObjects.categoryIds.length > 0 ? 
-        setProgress(pageNumber||progress+1)
-        // : appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+          if(creationContext.activeSubCategory.length > 0) {
+            isTabletWidth?
+            appContext.showBottomSheet<ICompensationModalArgs>(ModalType.CompensationModal, args, 420):
+            appContext.showModal<ICompensationModalArgs>(ModalType.CompensationModal, args)
+          }
+          else {
+            appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
+              manyItems: false,
+              onSubmit: ()=>{
+                appContext.hideModal()
+                isTabletWidth?
+                appContext.showBottomSheet<ICompensationModalArgs>(ModalType.CompensationModal, args, 420):
+                appContext.showModal<ICompensationModalArgs>(ModalType.CompensationModal, args)
+              },
+            })
+            appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+          }
+        })()
       break
       case 2: 
         // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
@@ -289,14 +313,13 @@ export default function Cv(props: Props) {
   useEffect(()=>{
     formik.setValues(initialValues)
   }, [userContext.currentProfile, props.cv])
+
   
 
   return <div className={styles.root}>
     {!isTabletWidth&& memoedRive}
     <div className={styles.content}>    
-      {!isPhoneWidth && 
-        <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
-      }
+      <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
       <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
         <Form  className={styles.form}>

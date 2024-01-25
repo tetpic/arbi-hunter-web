@@ -40,6 +40,7 @@ import UserImageModal from 'components/modals/UserImageModal'
 import BackgroundPickModal from 'components/modals/BackgroundPickModal'
 import NewPasswordModal from 'components/modals/NewPasswordModal'
 import ProfileTypeSwitcher from 'components/modals/ProfileTypeSwitcher'
+import CompensationModal from '@/components/modals/CompensationModal'
 
 
 interface Props { }
@@ -197,6 +198,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.ProfileTypeSwitcher:
         return <Modal isOpen {...commonSettings} >
         <ProfileTypeSwitcher onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.CompensationModal:
+        return <Modal isOpen {...commonSettings} >
+        <CompensationModal onClose={commonSettings.onRequestClose}/>
       </Modal>
 
     }

@@ -21,6 +21,8 @@ export interface IVacancyCreate extends IJob {
   published?: boolean
   commission?: number|null
   experience?: WorkExperience
+  salaryMin?: number
+  salaryMax?: number
   contacts?: {
     phone?: string,
     email?: string,

@@ -22,7 +22,7 @@ export default function VacancyName(props: Props) {
   const [isActive, setIsActive] = useDetectOutsideClick(inputWrapperRef, false)
 
   const {values, setFieldValue} = useFormikContext<IVacancyCreate>()
-  const isClicked = useRef<boolean>(false)
+  const isClicked = useRef<boolean>(true)
 
   const onInputChange = (s: string) => {
     if(!isClicked.current) {

@@ -10,6 +10,10 @@
   background-color: transparent;
   display: inline-block;
   border: 1px $greyAlt2 solid;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-width: 100%;
   @include transitionDefault;
   @include hover {
     background-color: $greyAlt2;

@@ -4,7 +4,7 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 import { useUserContext } from './user_state'
 
 
@@ -42,11 +42,12 @@ interface IState {
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
   subCategories: Map<number, ISpecializationCategory>
   activeCategory: ISpecializationCategory
-  activeSubCategory: ISpecializationCategory|ISpecializationCategory[]
+  activeSubCategory: ISpecializationCategory[]
   setCategories: ()=> Promise<boolean>
-  setSubCategories: (v: ISpecializationCategory)=>void
+  setSubCategories: (s: string, page: number)=>Promise<ISpecializationCategory[]>
   setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
-  setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory|ISpecializationCategory[]>>
+  setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory[]>>
+  setSubcategoriesToCategory: (s: ISpecializationCategory) => void
   
   reset: ()=>void
 
@@ -82,7 +83,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
   const [subCategories, setSubCategoriesState] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
-  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory|ISpecializationCategory[]>(null)
+  const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory[]>([])
 
 
   const setCurrentCv = (v: ICVCreate) => {
@@ -119,9 +120,23 @@ export function CreateVcCvWrapper(props: Props) {
     // }
   }
 
-  const setSubCategories = (s: ISpecializationCategory) => {
-    if(!categories.get(s)) {
-      CvRepository.getSubCategories(s.id)
+  const setSubCategories = (s: string, page: number): Promise<ISpecializationCategory[]> => {
+    return CvRepository.getSubcategories({search: s, page, limit: 20})
+    .then(res => {
+      setSubCategoriesState(state => {
+        state.clear()
+        res.forEach(el=> {
+          state.set(el.id, el)
+        })
+        return new Map(state)
+      })
+      return res
+    })
+  }
+
+  const setSubcategoriesToCategory = (s: ISpecializationCategory) => {
+      if(!categories.get(s)) {
+      CvRepository.getSubCategoriesByCategoryId(s.id)
       .then(res => {
         setCategoriesState(state => {
           state.set(s, res)
@@ -135,6 +150,7 @@ export function CreateVcCvWrapper(props: Props) {
         })
       })
     }
+
   }
 
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
@@ -189,11 +205,17 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const reset = () => {
-    handleProgress(5)
+    handleProgress(1)
     setHelp(initialHelpObject)
     setCv(null)
     setVc(null)
   }
+
+  useEffect(()=>{
+    if(currentCv && subCategories && activeSubCategory.length === 0) {
+      setActiveSubcategory([currentCv.categories.find(el => subCategories.has(el.id))] || [])
+    }
+  }, [currentCv, subCategories])
   
 
   const value: IState = {
@@ -222,6 +244,7 @@ export function CreateVcCvWrapper(props: Props) {
     activeSubCategory,
     setActiveCategory,
     setActiveSubcategory,
+    setSubcategoriesToCategory
   }
 
   return (

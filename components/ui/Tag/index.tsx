@@ -25,6 +25,6 @@ export default function Tag(props: Props) {
   }
 
   return (
-    <p className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</p>
+    <p title={props.text} className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</p>
   )
 }
