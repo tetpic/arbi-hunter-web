@@ -6,11 +6,10 @@
   position: relative;
   @include container;
   @include mq($PhoneWidth, max) {
-    height: calc(100vh - 88px);
-    height: calc(100dvh - 88px);
     margin-top: unset;
     overflow: auto;
     padding-top: 8px;
+    padding-bottom: 140px;
   }
 }
 
@@ -59,7 +58,8 @@
   @include mq($PhoneWidth, max) {
     margin-top: auto;
     position: fixed;
-    bottom: 50px
+    bottom: 90px;
+    z-index: 10;
    
   }
 }

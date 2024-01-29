@@ -205,7 +205,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const reset = () => {
-    handleProgress(3)
+    handleProgress(1)
     setHelp(initialHelpObject)
     setCv(null)
     setVc(null)

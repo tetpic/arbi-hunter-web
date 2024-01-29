@@ -9,6 +9,7 @@ import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import Tag from 'components/ui/Tag'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
+import LoupeSvg from '@/components/svg/LoupeSvg'
 
 
 interface Props {
@@ -71,6 +72,7 @@ export default function VacancyName(props: Props) {
         styleType={'default'} 
         color={'default'} 
         name={'name'} 
+        prefix={<LoupeSvg/>}
         placeholder={'Введите название вакансии'} 
         validate={Validator.required}
         />

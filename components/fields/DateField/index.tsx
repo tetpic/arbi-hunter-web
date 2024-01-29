@@ -6,7 +6,6 @@ import ru from 'date-fns/locale/ru'
 import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
 import FieldError from 'components/ui/FieldError'
-// import { format } from 'date-fns'
 import { useState } from 'react'
 import FieldLabel from 'components/ui/FieldLabel'
 import InputField from '../InputField'
@@ -23,6 +22,8 @@ interface Props extends IField<string> {
   className?: string
   inputClassName?: string
   dateFormat?: string
+  formatOptions?: Intl.DateTimeFormatOptions
+  showMonthYearPicker?: boolean
 }
 
 export default function DateField(props: Props) {
@@ -32,9 +33,10 @@ export default function DateField(props: Props) {
   const [date, setDate] = useState<Date | null>(null)
 
 
+
   const onChangeDate = (d : Date) => {
     const date = new Date(d)
-    const dateFormatter = new Intl.DateTimeFormat('ru', {formatMatcher: 'best fit', year: 'numeric', month: '2-digit'})
+    const dateFormatter = new Intl.DateTimeFormat('ru', props.formatOptions)
     const formattedDate =  dateFormatter.format(date) 
     helpers.setValue(formattedDate, true) 
   }
@@ -55,12 +57,13 @@ export default function DateField(props: Props) {
           onChange={(date)=> {onChangeDate(date)}} 
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
-          forceShowMonthNavigation={false}
+          // forceShowMonthNavigation={false}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
           showMonthDropdown={props.visibleMonthSelector}
           // dateFormat="MM/yyyy"
-          showMonthYearPicker
+          showMonthYearPicker={props.showMonthYearPicker}
+          scrollableYearDropdown
           dropdownMode="select"
           maxDate={props.maxDate}
           customInput={

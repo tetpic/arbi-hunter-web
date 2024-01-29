@@ -92,7 +92,7 @@ export default function InputField(props: Props) {
   
   useEffect(()=>{
     if(props.priceFormatting && field.value) {
-      helpers.setValue(Formatter.formatNumber(Number(field.value)))
+      helpers.setValue(Formatter.formatNumber(Number(field.value.replaceAll(' ', ''))))
     }
   }, [])
 

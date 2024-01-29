@@ -41,6 +41,10 @@ export default function CvAbout(props: Props) {
     <DateField 
     styleType={'default'} 
     name={'birthday'} 
+    dateFormat='dd/MM/yyyy'
+    formatOptions={{
+      formatMatcher: 'best fit', year: 'numeric', month: '2-digit', day: '2-digit'
+    }}
     visibleYearSelector 
     label='Дата рождения'
     className={styles.dateField}

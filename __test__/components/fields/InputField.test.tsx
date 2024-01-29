@@ -70,6 +70,15 @@ describe('PriceInput', () => {
     cleanup()
   })
 
+  it('wright format string', () => {
+    render(<FormTestingPriceFormattingNode price={'3 213 212'}/>)
+    const input = screen.getByRole('textbox')
+    expect(input).toBeInTheDocument()
+    expect(input).toBeVisible()
+    expect(input).toHaveValue('3 213 212')
+    cleanup()
+  })
+
   // it('allow 12 to price input', async() => {
   //   render(<FormTestingPriceFormattingNode price={''}/>)
   //   const input = screen.getByRole('textbox')
