@@ -46,7 +46,6 @@ export default function SpecializationModal(props: Props) {
       appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       return
     }
-    debugger
     cvContext.setActiveSubcategory([data.specialization])
     cvContext.setActiveCategory(null)
     args.onSubmit&&args?.onSubmit(data.specialization)

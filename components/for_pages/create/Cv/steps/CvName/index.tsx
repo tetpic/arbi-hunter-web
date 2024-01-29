@@ -8,6 +8,7 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
 import { ISpecializationCategory } from 'data/interfaces/Common'
+import LoupeSvg from '@/components/svg/LoupeSvg'
 
 interface Props {
 }
@@ -48,44 +49,47 @@ export default function CvName(props: Props) {
     }
   }, [formikContext.values.searchPosition])
 
-  // useEffect(()=>{
-  //   [...cvCreateContext.categories.keys()].forEach(el=>cvCreateContext.setSubCategories(el))    
-  // }, [cvCreateContext.categories])
+
 
   return (
     <div className={styles.root}> 
       <div className={styles.inputWrapper} ref={inputRef}>
-        <InputField styleType={'default'} color={'default'} name={'searchPosition'} placeholder='Поиск профессии'/>
+        <InputField 
+        prefix={<LoupeSvg/>}
+        name={'searchPosition'} 
+        styleType={'default'} 
+        color={'default'} 
+        placeholder='Поиск профессии'/>
         {cvCreateContext.subCategories.size > 0 &&
         <div className={classNames(styles.suggestions, !isActive&&styles.disabled)}>
           <div className={styles.suggestionsWrapper}>
             {[...cvCreateContext.subCategories.values()].map(subCategory => {
-              return <p className={styles.category} onClick={() => onSuggestClick(subCategory)}>{subCategory.name}</p>
+              return <p className={styles.category} key={subCategory.id} onClick={() => onSuggestClick(subCategory)}>{subCategory.name}</p>
             })}
           </div>
         </div>
         }
       </div>
       <p className={styles.categoryName}>{cvCreateContext.activeSubCategory[0]?.name}</p>
-      {taglist.length>0 && 
+      { taglist.length>0 && 
         <TagList 
         title={'Тэги'} 
-        tags={
-          taglist.slice(0, 15).map(el=>(
-            {
-              name: el.name, 
-              isActive: el.id === cvCreateContext.activeSubCategory?.[0]?.id , 
-              onClick: ()=>{
-                cvCreateContext.setActiveSubcategory([el])
-                let helpObject = {...cvCreateContext.helpObjects}
-                helpObject.categoryIds = [el]
-                cvCreateContext.setHelpObjects(helpObject)
-              }
-            }))
-        } 
+        tags={taglist.slice(0, 15).map(el => {
+          return {
+            name: el.name, 
+            isActive: el.id === cvCreateContext.activeSubCategory?.[0]?.id , 
+            onClick: ()=>{
+              cvCreateContext.setActiveSubcategory([el])
+              let helpObject = {...cvCreateContext.helpObjects}
+              helpObject.categoryIds = [el]
+              cvCreateContext.setHelpObjects(helpObject)
+            }
+          }
+        })} 
         titleClassName={styles.tagsTitle}
         />
       }
     </div>
   )
+  
 }

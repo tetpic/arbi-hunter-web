@@ -159,7 +159,7 @@ export default function MainPageEmployee() {
         <div className={styles.cvs}>
           {cvContext.savedCvs.length > 0 && !load && cvContext.savedCvs.slice(0, 2).map(cv=> {
             return (
-              <Link href={'/profile?page=cvs'} className={styles.cv}>
+              <Link href={'/profile?page=cvs'} key={cv.id} className={styles.cv}>
                 <CVItem cardMode  cv={cv}/>
               </Link>
             )

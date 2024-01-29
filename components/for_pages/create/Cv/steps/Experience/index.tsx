@@ -69,7 +69,7 @@ export default function Experience(props: Props) {
           key={index}
         className={styles.experienceWrapper} 
         >
-          <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
+          <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по н.в.'}</p>
           <p className={styles.companyName}>{el.company}</p>
           <p className={styles.description}>{el.description}</p>
           <Button type='button' className={styles.trashButton} onClick={()=>removeExp(el)}><TrashBasketSvg/></Button>

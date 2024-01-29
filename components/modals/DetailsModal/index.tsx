@@ -12,6 +12,7 @@ import SwitchField from '@/components/fields/SwitchField'
 import { ICVCreate } from 'data/interfaces/ICV'
 import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
+import Validator from 'utils/Validator'
 
 
 interface Props {
@@ -35,6 +36,8 @@ export default function DetailsModal(props: Props) {
     onSubmit: args.onSubmit
   })
 
+
+
   const experienceInfoForm = (<>
     <SectionSubtitle text={'Период работы'} title='Укажите место работы' className={styles.title}/>
     <div className={styles.period}>
@@ -42,6 +45,7 @@ export default function DetailsModal(props: Props) {
       name={'experienceInfo[0].fromDate'} 
       styleType={'default'} 
       label='Начало работы' 
+      dateFormat='MM/yyyy'
       className={styles.dateField}
       />
       {!formik.values?.experienceInfo?.[0].toPresent &&
@@ -49,6 +53,7 @@ export default function DetailsModal(props: Props) {
         name={'experienceInfo[0].toDate'} 
         styleType={'default'} 
         label='Окончание работы' 
+        dateFormat='MM/yyyy'
         className={styles.dateField}
         />
       }
@@ -66,6 +71,8 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Название компании' 
       labelType='top'
+      validate={Validator.required}
+
       />
       <InputField 
       name={'experienceInfo[0].position'} 
@@ -73,6 +80,7 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Должность' 
       labelType='top'
+      validate={Validator.required}
       />
     </div>
     <SectionSubtitle text={'Обязанности и достижения'} className={styles.title} />
@@ -86,6 +94,7 @@ export default function DetailsModal(props: Props) {
       name={'educationInfo[0].fromDate'} 
       styleType={'default'} 
       label='Начало обучения' 
+      dateFormat='MM/yyyy'
       className={styles.dateField}
       />
       {!formik.values.educationInfo?.[0].toPresent &&
@@ -109,6 +118,7 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Название учебного заведения' 
       labelType='top'
+      validate={Validator.required}
       />
       <InputField 
       name={'educationInfo[0].faculity'} 
@@ -123,6 +133,7 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Специальность' 
       labelType='top'
+      validate={Validator.required}
       />
     </div>
   </>)
@@ -149,6 +160,7 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Название учреждения:' 
       labelType='top'
+      validate={Validator.required}
       />
       <InputField 
       name={'coursesInfo[0].location'} 
@@ -156,6 +168,7 @@ export default function DetailsModal(props: Props) {
       color={'default'} 
       label='Название курсов:' 
       labelType='top'
+      validate={Validator.required}
       />
     </div>
   </>)

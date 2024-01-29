@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { IField, InputStyleType } from 'types/types'
 import { useField } from 'formik'
 import { useIMask } from 'react-imask'
@@ -8,7 +10,6 @@ import { ChangeEvent, MouseEventHandler, ReactElement, useEffect, useState } fro
 import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
-import styles from './index.module.scss'
 import Formatter from 'utils/formatter'
 
 type FormatType = 'phone'
@@ -23,6 +24,7 @@ interface Props extends IField<string> {
   color: 'default'|'white' | 'purple' | 'darkPurple'
   suffixIcon?: ReactElement
   onSuffixClick?: () => void
+  prefix?: JSX.Element|JSX.Element[]|null
   className?: string
   errorClassName?: string
   value?: any
@@ -42,6 +44,8 @@ interface Props extends IField<string> {
   backgroundColor?: string
 }
 
+
+//TODO: отрефакторить на несколько разных компонентов: InputField, PriceInputField, PhoneInputField, NumberInputField например
 export default function InputField(props: Props) {  
   const [wrapperRef, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)
@@ -98,6 +102,7 @@ export default function InputField(props: Props) {
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
       <div className={classNames(styles.wrapper, props.styleType === 'bottomBorder' && styles.wrapperBottomBorder)} ref={wrapperRef}>
+        {props.prefix}
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         <input
@@ -142,9 +147,5 @@ export default function InputField(props: Props) {
       <FieldError className={props.errorClassName} showError={showError}>{props.error||meta.error}</FieldError>
     </div>
   )
-}
-
-function setTouched(arg0: boolean) {
-  throw new Error('Function not implemented.')
 }
 

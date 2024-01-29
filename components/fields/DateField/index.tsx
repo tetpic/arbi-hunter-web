@@ -5,14 +5,13 @@ import DatePicker from 'react-datepicker'
 import ru from 'date-fns/locale/ru'
 import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
-// import FieldIconSvg from 'components/svg/FieldIconSvg'
 import FieldError from 'components/ui/FieldError'
-import { format } from 'date-fns'
-import 'react-datepicker/dist/react-datepicker.css'
+// import { format } from 'date-fns'
 import { useState } from 'react'
 import FieldLabel from 'components/ui/FieldLabel'
 import InputField from '../InputField'
 import CalendarSvg from 'components/svg/CalendarSvg'
+import 'react-datepicker/dist/react-datepicker.css'
 
 interface Props extends IField<string> {
   styleType: InputStyleType
@@ -32,26 +31,36 @@ export default function DateField(props: Props) {
   const showError = meta.touched && !!meta.error
   const [date, setDate] = useState<Date | null>(null)
 
+
+  const onChangeDate = (d : Date) => {
+    const date = new Date(d)
+    const dateFormatter = new Intl.DateTimeFormat('ru', {formatMatcher: 'best fit', year: 'numeric', month: '2-digit'})
+    const formattedDate =  dateFormatter.format(date) 
+    helpers.setValue(formattedDate, true) 
+  }
+
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
       <FieldLabel>{props.label}</FieldLabel>
       <div className={styles.wrapper} ref={wrapperRef}>
         <DatePicker
           name={props.name}
-          // selected={field.value ? parse(field.value, 'yyyy-MM-dd', new Date()) : null}
           className={classNames({
             [styles.input]: true,
             [styles.error]: showError,
             [styles.withIcon]: props.iconName,
             [styles.press]: press,
-          }, /*styles[props.styleType]*/)}
+          },)}
           locale={ru}
+          onChange={(date)=> {onChangeDate(date)}} 
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
           forceShowMonthNavigation={false}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
           showMonthDropdown={props.visibleMonthSelector}
+          // dateFormat="MM/yyyy"
+          showMonthYearPicker
           dropdownMode="select"
           maxDate={props.maxDate}
           customInput={
@@ -59,7 +68,6 @@ export default function DateField(props: Props) {
             autocompleteOff={true} 
             className={classNames(styles.input, props.inputClassName)}  
             value={field.value} 
-            // labelType={'top'} 
             name={field.name} 
             styleType={'default'} 
             type="text" 
@@ -70,14 +78,7 @@ export default function DateField(props: Props) {
           }
           minDate={props.minDate}
           excludeDates={props.excludeDates}
-          onChange={(date) => {
-            debugger
-            if (date) {
-             helpers.setValue(format(date, 'dd.MM.yyyy'))
-            } else {
-              helpers.setValue('')
-            }
-          }}
+         
         />
         {props.styleType === 'default' && (
           <div className={classNames({
