@@ -7,7 +7,7 @@ import Checkbox from '../CheckboxListField/Checkbox'
 
 
 
-interface Props extends IField<boolean> {
+interface Props<T> extends IField<T> {
   label?: string
   itemClassName?: string
   activeClassName?: string
@@ -20,36 +20,34 @@ interface Props extends IField<boolean> {
 
 
 /**
- * @options IOption<T>[],
- * @restrictedValues  T[],
- * @grid  number
  * @label  string
  * @itemClassName  string
  * @activeClassName  string
  * @itemLabelClassName  string
  * @circleClassName  string
  * @labelClassName  string
- * @flex  boolean
  * @rootClass  string,
  * @wrapperClassName : string
  */
-export default function CheckboxField(props: Props) {
+export default function CheckboxField<T>(props: Props<T>) {
   const { label, type, ...rest} = props
-  const [field, meta, helpers] = useField<boolean>(props as any)
+  const [field, meta, helpers] = useField<T>(props as any)
   const {value} = field
 
-  const handleCheckboxChanged = (val: boolean) => {
-    helpers.setValue(!val)
+  const handleCheckboxChanged = (val: T) => {
+    props.value
+    debugger
+    helpers.setValue(!val?props.value:undefined)
   }
 
   return (
     <div className={classNames(styles.root, props.rootClass)}>
-          <Checkbox<boolean>
+          <Checkbox<T>
             circleClassName={props.circleClassName}
             className={classNames(props.itemClassName)}
             labelClassName={props.itemLabelClassName}
             activeClassName={props.activeClassName}
-            value={value} isActive={value} label={label}
+            value={value} isActive={value === props.value} label={label}
             onChange={(v) => handleCheckboxChanged(v)}
           />
     </div>

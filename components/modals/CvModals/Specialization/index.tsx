@@ -41,14 +41,14 @@ export default function SpecializationModal(props: Props) {
 
   const scrollBar = useRef<Scrollbars>(null!)
 
-  const submit = (data: {specialization: ISpecializationCategory}) => {
+  const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
     if(!data.specialization) {
       appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
       return
     }
-    cvContext.setActiveSubcategory([data.specialization])
+    cvContext.setActiveSubcategory(Array.isArray(data.specialization)?data.specialization: [data.specialization])
     cvContext.setActiveCategory(null)
-    args.onSubmit&&args?.onSubmit(data.specialization)
+    args?.onSubmit?.(Array.isArray(data.specialization)?data.specialization: [data.specialization])
     args.onClose?args.onClose():props.onClose()
   } 
 

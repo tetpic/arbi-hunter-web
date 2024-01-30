@@ -213,6 +213,8 @@ export interface IPaginationRequest {
 export interface IVacancyCvSearchParams {
   search?: string,
   categories?: number[] // "1,2,3"
+  geos?: number[] // "1,2,3"
+  verticals?: number[] // "1,2,3"
   cities?: number[] // '1,2,3'
   employment?: EmploymentType[],
   schedule?: ScheduleType[],

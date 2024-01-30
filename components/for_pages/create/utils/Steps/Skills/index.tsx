@@ -144,7 +144,6 @@ export default function Skills(props: Props) {
   const onAddPortfolioClick = () => {
     const portfolioProps: IPortfolioModal = {
       onSubmit: (data) => {
-        debugger
         setFieldValue('portfolio', data.portfolio)
         setFieldValue('assetsIds', data.assetsIds)
       },

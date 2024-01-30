@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import {  CompensationTypeTranslated, EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
+import {  CompensationType,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
 // import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
@@ -14,11 +14,14 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import Accordeon from 'components/ui/Accordeon'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
+import CheckboxField from '@/components/fields/CheckboxField'
+import { TranslateCompensationType } from 'utils/enumsTranslations'
+import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -37,7 +40,8 @@ export default function Filters(props: Props) {
       compensation: undefined,
       forLastNumberOfDays: undefined,
       languageKnowledges: [],
-      experience: []
+      experience: [],
+      categories: [],
     },
     onSubmit: null
   })
@@ -59,22 +63,32 @@ export default function Filters(props: Props) {
     if(isTabletWidth) {
       appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, {
         manyItems: true,
+        onSubmit: (data)=>{
+          formik.setFieldValue('categories', data.map(el=> el.id))
+        },
         onClose: ()=>appContext.hideBottomSheet()
       }, 0.9)
       return
     } 
     appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
-      manyItems: true})
+      manyItems: true,
+      onSubmit: (data)=>{
+        formik.setFieldValue('categories', data.map(el=> el.id))
+      },
+    })
   }
 
   const openSourcesModal = () => {
     if (isTabletWidth) {
-      appContext.showBottomSheet(ModalType.SourcesModal, {
-        onClose: ()=>appContext.hideBottomSheet()
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, {
+        onClose: ()=>appContext.hideBottomSheet(),
+        type: 'sources'
       }, 0.4)
       return
     }
-    appContext.showModal(ModalType.SourcesModal)
+    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {
+      type: 'sources'
+    })
   }
 
   const openLangsModal = () => {
@@ -87,6 +101,11 @@ export default function Filters(props: Props) {
     appContext.showModal(ModalType.LanguageModal)    
   }
 
+  const onRemoveCategory = (category: ISpecializationCategory) => {
+    creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== category.id):state)
+    formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category.id))
+  }
+ 
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
@@ -101,7 +120,8 @@ export default function Filters(props: Props) {
       languageKnowledges: [...creationContext.helpObjects.languageKnowledges.values()],
       sources:  [...creationContext.helpObjects.activeSources.values()].map(el=> el.id),
     }
-    creationContext.activeSubCategory&&(values.categories = Array.isArray(creationContext.activeSubCategory)?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
+    creationContext.activeSubCategory&&
+    Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
@@ -124,11 +144,13 @@ export default function Filters(props: Props) {
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
 
-        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>Специализация</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
+            Специализация
+          </p>
           {Array.isArray(creationContext.activeSubCategory) && creationContext.activeSubCategory.length > 0 &&
             <div className={styles.itemsWrapper}>
               { creationContext.activeSubCategory.map(el=> {
-                return (<RemovableItem key={el.id} onClick={()=>creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== el.id):state)} text={el.name} />)
+                return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
               })}
             </div>
           }
@@ -140,10 +162,11 @@ export default function Filters(props: Props) {
           <span>Оплата</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 2} disabled={!isTabletWidth}>
-          <RadioListField 
-          rootClass={styles.radioField}
-          options={CompensationTypeTranslated.map(el=> {return {value: el[0], label: el[1]}})} 
-          name={'compensation'}
+          <CheckboxField 
+          itemClassName={styles.radioField} 
+          name={'compensation'} 
+          label={TranslateCompensationType(CompensationType.Contract)} 
+          value={CompensationType.Contract} 
           />
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -174,7 +197,7 @@ export default function Filters(props: Props) {
         } */}
 
         <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal()}>Источники</p>
-        {creationContext.helpObjects.sources.length > 0 &&
+        {creationContext.helpObjects.activeSources.size > 0 &&
           <div className={styles.itemsWrapper}>
            {creationContext.helpObjects && [...creationContext.helpObjects?.activeSources.entries()]
             .map(([key, value])=> 
