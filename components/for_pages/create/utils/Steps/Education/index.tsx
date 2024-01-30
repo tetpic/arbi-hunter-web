@@ -49,7 +49,7 @@ export default function Education(props: Props) {
   <RadioListField 
   wrapperClassName={styles.radiosWrapper}
   options={[
-    {label: 'Нет образования', value: 'no'},
+    {label: 'Нет образования', value: EducationTypes.No},
     {label: 'Среднее', value: EducationTypes.Secondary},
     {label: 'Средне специальное', value: EducationTypes.SecondarySpecial},
     {label: 'Неоконченное высшее', value: EducationTypes.IncompleteHigher},
@@ -75,6 +75,8 @@ export default function Education(props: Props) {
       </div>)
     }) 
   }
+  {values.education !== EducationTypes.No && values.education !== EducationTypes.Secondary &&
   <AddButton onClick={onAddButtonClick} text={'Добавить место учебы'}/>
+  }
   </>)
 }

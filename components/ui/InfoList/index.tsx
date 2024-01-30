@@ -16,7 +16,7 @@ export default function InfoList(props: Props) {
         return (
           <div className={styles.item} key={index}>
             <p className={styles.timeLine}>
-              c {el.fromDate} по {el.toDate} <br/>
+              c {el.fromDate} по {el.toDate||'н.в.'} <br/>
               {Formatter.fullTimeLine([[el.fromDate, el.toDate]])}
             </p>
             <p className={styles.name}>{el.name}</p>
@@ -25,5 +25,5 @@ export default function InfoList(props: Props) {
         )
       })}
     </div>
-    )
+  )
 }

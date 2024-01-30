@@ -13,11 +13,21 @@ import ReactPlayer from 'react-player'
 import classNames from 'classnames'
 
 interface Props extends IField<any>{
-  buttonName?: string
+  buttonName?: string|JSX.Element|JSX.Element[]
   getImages?: (files: IFile[]) => void
   initialImages?: IFile[]
+  className?: string
+  inputClassName?: string
 }
 
+
+/**
+ * @buttonName ? string
+ * @getImages ? (files: IFile[]) => void
+ * @initialImages ? IFile[]
+ * @className ? string
+ * @inputClassName ? string
+ */
 export default function FilesField(props: Props) {
   const [field, meta, helpers] = useField(props as any)
   const [controller, setController] = useState<AbortController|null>(null)
@@ -45,9 +55,9 @@ export default function FilesField(props: Props) {
     props.getImages&&props.getImages([...images.values()].filter(el=>el.loaded).map(el=> el.data))
   }, [images])
 
-  return ( <div className={styles.imagesField}>
+  return ( <div className={classNames(styles.imagesField, props.className)}>
     <label>
-      <div className={styles.imageButton}><span>{props.buttonName||'Добавить изображение'}</span></div>
+      <div className={classNames(styles.imageButton, props.inputClassName)}><span>{props.buttonName||'Добавить изображение'}</span></div>
       <FileInput getController={(c) => setController(c)}  setImages={(image) => setImages(state=>new Map([...state, [image.rawId, image]]))}/>
     </label>
     {images.size > 0 &&

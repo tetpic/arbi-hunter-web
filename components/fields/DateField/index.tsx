@@ -7,7 +7,6 @@ import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
 import FieldError from 'components/ui/FieldError'
 import { useState } from 'react'
-import FieldLabel from 'components/ui/FieldLabel'
 import InputField from '../InputField'
 import CalendarSvg from 'components/svg/CalendarSvg'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -43,7 +42,6 @@ export default function DateField(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
-      <FieldLabel>{props.label}</FieldLabel>
       <div className={styles.wrapper} ref={wrapperRef}>
         <DatePicker
           name={props.name}
@@ -74,6 +72,8 @@ export default function DateField(props: Props) {
             name={field.name} 
             styleType={'default'} 
             type="text" 
+            label={props.label}
+            labelType='top'
             color={'default'} 
             error={meta.error}
             suffix={<CalendarSvg className={classNames([styles.icon, styles[props.styleType]])}/>}

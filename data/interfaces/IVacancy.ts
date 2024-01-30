@@ -5,12 +5,7 @@ import { ICV,} from './ICV'
 import { IJob} from './IJob'
 import { IUserProfile } from './IUser'
 
-export enum ContactType {
-  Phone = 'phone',
-  Email = 'email',
-  Telegram = 'telegram',
-  Name = 'name'
-}
+
 
 export interface IVacancyCreate extends IJob {
   name : string,
@@ -23,13 +18,10 @@ export interface IVacancyCreate extends IJob {
   experience?: WorkExperience
   salaryMin?: number
   salaryMax?: number
-  contacts?: {
-    phone?: string,
-    email?: string,
-    telegramNickname?: string,
-    name?: string
-  },
-  contactsToShow?: ContactType[]
+  showContactName?: boolean
+  showEmail?: boolean
+  showPhone?: boolean
+  showTelegramNickname?: boolean
 }
 
 export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {

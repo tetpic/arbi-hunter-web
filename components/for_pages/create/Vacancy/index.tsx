@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
-import { Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
+import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
@@ -79,7 +79,7 @@ export default function Vacancy(props: Props) {
     name: props.vacancy?.name||'',
     description: props.vacancy?.description||initialDescription,
     experience: props.vacancy?.experience||WorkExperience.From1to3, 
-    contactName: props.vacancy?.contactName||userContext.currentProfile?.firstName, 
+    contactName: props.vacancy?.contactName||getContactName(), 
     company: props.vacancy?.company||userContext.currentProfile?.company, 
     isRemote: props.vacancy?.isRemote||false,
     compensation: props.vacancy?.compensation||undefined,
@@ -100,13 +100,11 @@ export default function Vacancy(props: Props) {
     employment: props.vacancy?.employment||EmploymentType.FullTime, 
     languageKnowledges: props.vacancy?.languageKnowledges|| null, 
     published: props.vacancy?.published||true,
-    contacts: {
-      name: getContactName(),
-      telegramNickname: props.vacancy?.profile.telegramNickname||userContext.currentProfile?.telegramNickname||'',
-      phone: props.vacancy?.profile.phone||userContext.currentProfile?.phone||'',
-      email: props.vacancy?.profile.email||userContext.currentProfile?.email||''
-    },
-    contactsToShow: []
+    showContactName: props.vacancy?.showContactName,
+    showEmail: props.vacancy?.showEmail,
+    showPhone: props.vacancy?.showPhone,
+    showTelegramNickname: props.vacancy?.showTelegramNickname,
+    verticals: [],
   }
 
   const submit = (data: IVacancyCreate) => {
@@ -119,10 +117,11 @@ export default function Vacancy(props: Props) {
     const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {
       ...data, 
+      salary: null,
       commission: (data.commission&&Number(data.commission))||null,
       skillsIds: [...skills.keys()], 
-      salaryMin: Number(data.salaryMin.toString().replaceAll(' ', '')),
-      salaryMax: Number(data.salaryMax.toString().replaceAll(' ', '')),
+      salaryMin: Number(data.salaryMin?.toString().replaceAll(' ', '')),
+      salaryMax: Number(data.salaryMax?.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: categoryIds.map(el=> el.id)
@@ -183,7 +182,7 @@ export default function Vacancy(props: Props) {
       case 5: 
         return [<VacancyExperience/>, VacancyNavigation.Experience]
       case 6: 
-        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true}}/>, VacancyNavigation.Skills]
+        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
       case 7:
         return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
       case 8: 
@@ -240,8 +239,16 @@ export default function Vacancy(props: Props) {
         setProgress(pageNumber||progress+1)
         return false
       case 3: 
-        const salaryNumber: number = Number(formik.values.salary?.toString().replaceAll(' ', ''))
-        setProgress(pageNumber||progress+1)
+
+        const salaryMinNumber: number = Number(formik.values.salaryMin?.toString().replaceAll(' ', ''))
+        const salaryMaxNumber: number = Number(formik.values.salaryMax?.toString().replaceAll(' ', ''))
+        if(!salaryMinNumber && !salaryMaxNumber && formik.values.compensation !== CompensationType.Contract) {
+          setErr('salaryMin')
+          setErr('salaryMax')
+        }
+        else {
+          setProgress(pageNumber||progress+1)
+        }
 
         // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
         //   setErr('salary')
@@ -375,7 +382,7 @@ export default function Vacancy(props: Props) {
               <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button isProcess={loading} spinner={loading} disabled={loading} className={styles.buttonYellow}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
+              <Button isProcess={formik.isSubmitting} spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonYellow}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
         </Form>

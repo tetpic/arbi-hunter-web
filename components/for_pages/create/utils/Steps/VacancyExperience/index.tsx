@@ -5,6 +5,7 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import AddButton from '@/components/ui/AddButton'
 import RemovableItem from '@/components/ui/RemovableItem'
+import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 
 interface Props {
 }
@@ -44,8 +45,8 @@ export default function VacancyExperience(props: Props) {
       <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-      text={'Источники трафика'}
+      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'sources'})}} 
+      text={'Добавить источники'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
       {cvContext.helpObjects?.activeSources?.size > 0 &&
@@ -60,8 +61,8 @@ export default function VacancyExperience(props: Props) {
       }
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-      text={'Гео'}
+      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'geos'})}} 
+      text={'Добавить гео'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
       {cvContext.helpObjects?.activeGeos?.size > 0 &&
@@ -74,25 +75,24 @@ export default function VacancyExperience(props: Props) {
           </div>
         </>
       }
-
-      <AddButton 
-      className={styles.addButton} 
-      onClick={()=>{appContext.showModal(ModalType.SourcesModal)}} 
-      text={'Вертикали'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
-      /> 
-      {cvContext.helpObjects?.activeSources?.size > 0 &&
-        <>
-        <div className={styles.itemsWrapper}>
-        {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
-        .map(([key, value])=> 
-        <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
-        )}
-        </div>
-        </>
-      }
       </>
     }
+
+    <AddButton 
+    className={styles.addButton} 
+    onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'verticals'})}} 
+    text={'Добавить Вертикали'}
+    title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+    /> 
+    {cvContext.helpObjects?.activeSources?.size > 0 &&<>
+      <div className={styles.itemsWrapper}>
+      {cvContext.helpObjects && cvContext.helpObjects?.activeVerticals &&[...cvContext.helpObjects?.activeVerticals?.entries()]
+      .map(([key, value])=> 
+      <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+      )}
+      </div>
+    </>}
+
   
   </div>)
 }

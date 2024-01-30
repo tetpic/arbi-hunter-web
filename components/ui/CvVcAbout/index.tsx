@@ -1,3 +1,4 @@
+import HtmlText from '../HtmlText'
 import styles from './index.module.scss'
 
 interface Props {
@@ -19,7 +20,9 @@ export default function CvVcAbout(props: Props) {
     {props.link &&     
       <a href={(props.link?.startsWith('http')?'':'https://')+props.link} target='_blank' className={styles.description}>{props.link}</a>
       ||
-      <p className={styles.description}>{props.text}</p>
+      <HtmlText className={styles.description} text={props.text}/>
+
+      // <div className={styles.description}>{props.text}</div>
     }
   </div>)
 }

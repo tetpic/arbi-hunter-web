@@ -35,15 +35,7 @@
     &::placeholder {
       color: $red !important;
     }
-  }
-
-
-
-
-// $fieldHeightDefault: 50px;
-// $fieldHeightDefaultExSmall: 38px;
-
-// .root {}
+}
 
 .wrapper {
   position: relative;
@@ -55,7 +47,6 @@
   height: 46px;
   column-gap: 10px;
   padding-left: 10px;
-
 }
 
 .static {
@@ -68,15 +59,21 @@
   top: unset;
   bottom: 4px;
   left: 0px;
-  position: static !important;
+  position: static;
 }
 
-.wrapperBottomBorder {
+.bottomBorder {
   align-items: flex-end;
   border: unset;
   border-bottom: 1px solid $grey; 
   padding: unset !important;
   border-radius: unset;
+}
+
+.blueBottomBorder {
+  @extend .bottomBorder;
+  border-bottom: 2px solid $blue;
+  padding-bottom: 8px !important;
 }
 
 .suffix {
@@ -87,4 +84,13 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+
+.topLabel {
+  position: absolute;
+}
+
+.fieldError {
+  bottom: -4px;
+  transform: translateY(100%);
 }

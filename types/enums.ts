@@ -133,6 +133,7 @@ export enum EducationTypes {
   Master= 'master',
   PhD= 'PhD',
   Doctor= 'doctor',
+  No= 'no'
 }
 
 export enum LanguagesLevel {

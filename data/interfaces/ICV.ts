@@ -25,7 +25,7 @@ export interface ICVCreate extends IJob {
   portfolio?: string
   experience?: WorkExperience
   searchPosition?: string
-  
+  assetsIds?: number[]
 }
 
 export interface ICVVC {

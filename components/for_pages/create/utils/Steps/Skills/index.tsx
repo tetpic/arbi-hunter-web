@@ -15,6 +15,7 @@ import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
+import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 
 
 type SkillsFields = {
@@ -101,45 +102,24 @@ export default function Skills(props: Props) {
     cvContext.setHelpObjects({...helperState, skills: new Map(filteredSkills.map(el=> [el.id, el]))})
   }
 
-  // const detailsFieldProps: DetailsFieldProps<CoursesInfo> = {
-  //   title:'Повышение квалификации и курсы',
-  //   set: activeDetails,
-  //   onSave: closeModalHandler,
-  //   onEditValidator: (fields) => {
-  //     const today = new Date()
-  //     const fromDate = new Date(fields.date)
-  //     if(fromDate > today) {
-  //       return {error: 'Дата начала не может быть в будущем'}
-  //     }
-  //     else {
-  //       return true
-  //     }
-  //   },
-  //   onClose: ()=> {
-  //     setCoursesDetails(false)
-  //     appContext.hideModal()
-  //   },
-  //   inputsSettings: [
-  //     {label: 'Название учреждения:', name: 'location', value: '', required: true, errorState: 'Введите название учреждения'},
-  //     {label: 'Название курсов:', name: 'name', value: '', required: true, errorState: 'Введите название курсов' }
-  //   ],
-  //   datePickerSettings:{
-  //       on: true,
-  //       formatter: {year: 'numeric'},
-  //       dates: [
-  //         {
-  //           format: 'yyyy',
-  //           pickerType: 'showYearPicker',
-  //           yearDropdown: true,
-  //           inputLabel: 'Год окончания:',
-  //           dateName: 'date',
-  //           dateValue: '',
-  //           required: true,
-  //           errorState: 'Укажите год окончания курсов'
-  //         }
-  //       ]
-  //     }
-  // }
+  const removeSource = (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeSources.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
+  
+  const removeGeo = (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeGeos.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
+
+
+  const removeVertical= (el: number) => {
+    const helperState = cvContext.helpObjects
+    helperState.activeVerticals.delete(el)
+    cvContext.setHelpObjects({...helperState})
+  }
 
   const onAddCoursesClick = () => {
     setCoursesDetails(true)
@@ -164,7 +144,9 @@ export default function Skills(props: Props) {
   const onAddPortfolioClick = () => {
     const portfolioProps: IPortfolioModal = {
       onSubmit: (data) => {
+        debugger
         setFieldValue('portfolio', data.portfolio)
+        setFieldValue('assetsIds', data.assetsIds)
       },
       portfolio: values.portfolio
     }
@@ -189,6 +171,63 @@ export default function Skills(props: Props) {
         }
       </div>
     } 
+
+    {
+      (cvContext?.activeSubCategory[0].withGeos || cvContext?.activeSubCategory[0].withSources) && !props.fieldToHide?.traffic &&
+      <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'sources'})}} 
+      text={'Добавить источники'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+      {cvContext.helpObjects?.activeSources?.size > 0 &&
+       <>
+         <div className={styles.itemsWrapper}>
+            {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
+              .map(([key, value])=> 
+              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+            )}
+          </div>
+        </>
+      }
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'geos'})}} 
+      text={'Добавить гео'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+      {cvContext.helpObjects?.activeGeos?.size > 0 &&
+        <>
+          <div className={styles.itemsWrapper}>
+            {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
+             .map(([key, value])=> 
+             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
+            )}
+          </div>
+        </>
+      }
+      </>
+    }
+
+    {!props.fieldToHide?.traffic && <>
+      <AddButton 
+      className={styles.addButton} 
+      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'verticals'})}} 
+      text={'Добавить вертикали'}
+      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      /> 
+      {cvContext.helpObjects?.activeVerticals?.size > 0 &&
+        <>
+        <div className={styles.itemsWrapper}>
+        {cvContext.helpObjects && [...cvContext.helpObjects?.activeVerticals.entries()]
+          .map(([key, value])=> 
+          <RemovableItem key={value.id} text={value.title} onClick={()=>removeVertical(key)}/>
+          )}
+          </div>
+          </>
+        }
+    </>}
 
     <AddButton 
     className={styles.addButton} 

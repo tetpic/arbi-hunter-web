@@ -5,7 +5,8 @@
 }
 
 .modalLayout {
-  max-width: 514px;
+  max-width: 430px;
+  background-color: $backgroundBlack;
 }
 
 .buttonsWrapper {
@@ -22,4 +23,34 @@
 
 .saveButton {
   @include buttonYellow;
+}
+
+.title {
+  font-size: $largeText !important;
+  font-weight: $semibold;
+  text-align: center;
+  color: $white;
+  justify-content: center;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: $mediumText;
+  font-weight: $medium;
+  color: $white;
+  margin-top: 16px;
+}
+
+.uploadButton {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $blue;
+}
+
+.filesInput {
+  margin-top: 24px;
+  border: 2px $blue dotted; 
+  height: 54px;
+  height: 54px !important;
 }

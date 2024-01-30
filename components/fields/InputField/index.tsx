@@ -54,7 +54,6 @@ export default function InputField(props: Props) {
   const [focused, setFocused] = useState(false)
   useEffect(() => {
     if (props.format === 'phone' && phoneRef.current && phoneRef.current.value) {
-      // set masked default value
       helpers.setValue(phoneRef.current.value)      
     }
   }, [phoneRef.current])
@@ -100,8 +99,13 @@ export default function InputField(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.className)} data-field={props.name}>
-      {props.labelType === 'top' ? <FieldLabel>{props.label}</FieldLabel> : null}
-      <div className={classNames(styles.wrapper, props.styleType === 'bottomBorder' && styles.wrapperBottomBorder)} ref={wrapperRef}>
+      {props.labelType === 'top' ? <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel> : null}
+      <div className={classNames(
+        styles.wrapper, 
+        styles[props.styleType],
+        showError&&styles.error
+
+        )} ref={wrapperRef}>
         {props.prefix}
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
@@ -134,7 +138,7 @@ export default function InputField(props: Props) {
             [styles.white]: props.color === 'white',
             [styles.purple]: props.color === 'purple',
             [styles.darkPurple]: props.color === 'darkPurple',
-          }, styles[props.styleType], styles[props.labelType],
+          },
             props.inputClassName
           )}
           placeholder={props.placeholder}
@@ -144,7 +148,7 @@ export default function InputField(props: Props) {
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}
       </div>
-      <FieldError className={props.errorClassName} showError={showError}>{props.error||meta.error}</FieldError>
+      <FieldError className={styles.fieldError} showError={showError}>{props.error||meta.error}</FieldError>
     </div>
   )
 }

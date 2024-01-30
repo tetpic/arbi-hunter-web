@@ -70,7 +70,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
       <div className={styles.wrapper}>
         <div className={classNames(styles.inputWrapper, { [styles.withLabel]: props.label })}>
           {props.label &&
-           <FieldLabel>{props.label}</FieldLabel>
+           <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel>
           }
           <div id={'phone-field'} className={classNames(styles.fieldWrapper, props.fieldWrapperClassName)}>
             <PhoneInputWithCountrySelect

@@ -8,7 +8,6 @@ interface Props {
 }
 
 export default function FieldError(props: Props) {
-  // const value = typeof props.children === 'string' ? props.children : isArray(props.children) ? props.children.filter(i => !!i)[0]['name'] : null : props.children
 
   if (props.showError && props.children) {
     return (

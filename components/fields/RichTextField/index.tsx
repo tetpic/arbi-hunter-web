@@ -115,7 +115,6 @@ export default function RichTextField(props: Props) {
       else {
         helpers.setValue(editor.getHTML())
       }
-      setFocus(false)
     },
     onFocus: () => {
       setFocus(true)

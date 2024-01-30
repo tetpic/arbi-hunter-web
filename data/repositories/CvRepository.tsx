@@ -39,6 +39,17 @@ export default class CvRepository {
     return res
   }
 
+  static async getVerticals(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/vertical',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
 
   /*
   передаю токен и профайл для удобного редактирования резюме - 

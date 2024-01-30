@@ -136,7 +136,8 @@ export default function Cv(props: Props) {
     published: props.cv?.published||true,
     portfolio: props.cv?.portfolio||'',
     businessTrips: props.cv?.businessTrips||Answer.No,
-    searchPosition: ''
+    searchPosition: '',
+    assetsIds: props.cv?.assetsIds||[]
   }
 
   const formik = useFormik({
@@ -190,7 +191,6 @@ export default function Cv(props: Props) {
     }
 
     switch(progress) {
-
       case 1:
         (()=> {
           const args: ICompensationModalArgs = {
@@ -219,39 +219,7 @@ export default function Cv(props: Props) {
             appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
           }
         })()
-      break
-      case 2: 
-        // if(formik.values.compensation === CompensationType.Salary && (!formik.values.salary||salaryNumber < 1)) {
-        //   setErr('salary')
-        //   return
-        // }
-        // else if(formik.values.compensation === CompensationType.Commission && (!formik.values.commission||formik.values.commission < 1)) {
-        //   setErr('commission')
-        //   return
-        // }
-        // else if(formik.values.compensation === CompensationType.Gybrid) {
-        //   if(!formik.values.commission||formik.values.commission < 1) {
-        //     setErr('commission')
-        //   }
-        //   if(!formik.values.salary||salaryNumber < 1) {
-        //     setErr('salary')
-        //   }
-        //   if(formik.values.commission > 0 && salaryNumber > 0) {
-        //     setProgress(pageNumber||progress+1)
-        //   }
-        // }
-        // else {
-        setProgress(pageNumber||progress+1)
-        // }
-      break
-      case 5: 
-        // if(formik.values.bio.trim().length < 1) {
-        //   setErr('bio', 'Напишите подробнее о себе')
-        // } else {
-          setProgress(pageNumber||progress+1)
-        // }
-      break
-
+        break
       default :
         setProgress(pageNumber||progress+1)
     }

@@ -33,6 +33,7 @@ export default function Compensation(props: Props) {
           label={'От'} 
           labelType={'static'}
           priceFormatting
+          error='Одно из полей должно быть заполнено'
           />
           <span> – </span>
           <InputField  
@@ -43,9 +44,10 @@ export default function Compensation(props: Props) {
           styleType={'bottomBorder'} 
           color={'default'} 
           name={'salaryMax'} 
-
           label={'До'} 
           priceFormatting
+          error='Одно из полей должно быть заполнено'
+
           />
         </div>
       </>

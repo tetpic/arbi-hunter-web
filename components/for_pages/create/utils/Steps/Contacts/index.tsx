@@ -1,9 +1,8 @@
-import CheckboxListField from '@/components/fields/CheckboxListField'
 import styles from './index.module.scss'
 import InputField from '@/components/fields/InputField'
-import { ContactType } from 'data/interfaces/IVacancy'
 import PhoneCountryField from '@/components/fields/PhoneCountryField'
 import SectionSubtitle from '../../SectionSubtitle'
+import CheckboxField from '@/components/fields/CheckboxField'
 
 interface Props {
 }
@@ -12,12 +11,13 @@ export default function Contacts(props: Props) {
 
   return (<div className={styles.root}> 
     <SectionSubtitle text={'Показывать в вакансии:'} className={styles.title}/>
-    <CheckboxListField options={[
-      {label: 'Контактное лицо', value: ContactType.Name},
-      {label: 'Email', value: ContactType.Email},
-      {label: 'Telegram', value: ContactType.Telegram},
-      {label: 'Телефон', value: ContactType.Phone},
-    ]} name={'contactsToShow'}/>
+
+    <div className={styles.checkboxWrapper}>
+      <CheckboxField name={'showContactName'} label='Контактное лицо'/>
+      <CheckboxField name={'showEmail'} label='Email'/>
+      <CheckboxField name={'showTelegramNickname'} label='Telegram'/>
+      <CheckboxField name={'showPhone'} label='Телефон'/>
+    </div>    
 
     <SectionSubtitle text={'Контакты:'} className={styles.title}/>
     <div className={styles.inputsWrapper}>
@@ -25,13 +25,13 @@ export default function Contacts(props: Props) {
       styleType={'default'} 
       label='Контактное лицо'
       labelType='top'
-      color={'default'} name={'contacts.name'}
+      color={'default'} name={'contactName'}
       />
 
       <InputField 
       styleType={'default'} 
       color={'default'} 
-      name={'contacts.email'}
+      name={'email'}
       labelType='top'
       label='Электронная почта'
       />
@@ -39,7 +39,7 @@ export default function Contacts(props: Props) {
       <InputField 
       styleType={'default'} 
       color={'default'} 
-      name={'contacts.telegram'} 
+      name={'telegramNickname'} 
       labelType='top'
       label='Telegram'
       />
@@ -48,7 +48,7 @@ export default function Contacts(props: Props) {
       styleType={'horizontal'} 
       disabled={true} 
       placeholder={'Телефон'} 
-      name={'contacts.phone'}
+      name={'phone'}
       label='Телефон'
       />
     </div>

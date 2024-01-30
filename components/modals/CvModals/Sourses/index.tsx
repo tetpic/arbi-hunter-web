@@ -17,37 +17,51 @@ interface Props {
   isBottomSheet?: boolean
 }
 
+export interface ISoursesModalArgs {
+  type: 'sources'|'geos'|'verticals'
+  onClose?: ()=> void
+}
+
 export default function SoursesModal(props: Props) {
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
-  const args: {onClose: ()=> void } = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
+  const args: ISoursesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
 
   const [sources, setSources] = useState<ISource[]>(cvContext?.helpObjects?.sources||[])
   const [geos, setGeos] = useState<ISource[]>(cvContext?.helpObjects?.geos||[])
+  const [verticals, setVerticals] = useState<ISource[]>(cvContext?.helpObjects?.verticals||[])
 
   const [choosenSources, setChoosenSources] = useState<Map<number, ISource>>(cvContext?.helpObjects?.activeSources||new Map())
   const [choosenGeos, setChoosenGeos] = useState<Map<number, ISource>>(cvContext?.helpObjects?.activeGeos||new Map())
+  const [choosenVerticals, setChoosenVerticals] = useState<Map<number, ISource>>(cvContext?.helpObjects?.activeVerticals||new Map())
 
   useEffect(()=>{
     if(cvContext?.helpObjects?.sources.length === 0) {
       CvRepository.sourcesList()
-      .then(res=> {
+      .then(res => {
         setSources(res.data)
         const cvHelpState = cvContext.helpObjects
         cvContext.setHelpObjects({...cvHelpState, sources: res.data})
       })
       CvRepository.getGeos()
-      .then(res=> {
+      .then(res => {
         setGeos(res.data)
         const cvHelpState = cvContext.helpObjects
         cvContext.setHelpObjects({...cvHelpState, geos: res.data})
       })
+      CvRepository.getVerticals()
+      .then(res =>{
+        setVerticals(res.data)
+        const cvHelpState = cvContext.helpObjects
+        cvContext.setHelpObjects({...cvHelpState, verticals: res.data})
+      })
+
     }
   }, [cvContext?.helpObjects?.sources])
 
   const saveSourcesHandler = () => {
     const cvHelpState = cvContext.helpObjects
-    cvContext.setHelpObjects({...cvHelpState, activeSources: choosenSources, activeGeos: choosenGeos})
+    cvContext.setHelpObjects({...cvHelpState, activeSources: choosenSources, activeGeos: choosenGeos, activeVerticals: choosenVerticals})
     args?.onClose?args?.onClose():props.onClose()
   }
 
@@ -74,12 +88,30 @@ export default function SoursesModal(props: Props) {
       })
     }
   }
+  
+  const onVerticalClickHandler = (e: ISource) => {
+    if(!choosenVerticals.has(e.id)) {
+      setChoosenVerticals(state =>  new Map(state.set(e.id, e)))
+    }
+    else {
+      setChoosenVerticals(state => {
+        state.delete(e.id)
+        return new Map(state)
+      })
+    }
+  }
 
   useEffect(()=>{
     if(cvContext?.helpObjects?.activeSources) {
       setChoosenSources(cvContext.helpObjects.activeSources)    
     }
   }, [cvContext?.helpObjects?.activeSources])
+
+  useEffect(()=>{
+    if(cvContext?.helpObjects?.activeVerticals) {
+      setChoosenVerticals(cvContext.helpObjects.activeVerticals)    
+    }
+  }, [cvContext?.helpObjects?.activeVerticals])
 
   useEffect(()=>{
     if(cvContext?.helpObjects?.activeGeos) {
@@ -94,36 +126,54 @@ export default function SoursesModal(props: Props) {
     onClose={props.onClose}
     onSave={saveSourcesHandler}
     >
-      {/* {props.isBottomSheet &&
-       <TitleForSection title={' '} onBackClick={args.onClose||props.onClose}/>  
-      } */}
-      <p className={styles.title}>Источники трафика:</p>
-     
-      <div className={styles.wrapper}>
-        {sources?.length>0&&sources
-        .map(el=> 
-          <p 
-          key={el.id}
-          className={classNames(styles.source, choosenSources.has(el.id)&&styles.source_active)} 
-          onClick={()=> {onSourceClickHandler(el)}}
-          >
-              {el.title}
-            </p>
-        )}
-      </div>
-      <p className={styles.title}>Гео:</p>
-      <div className={styles.wrapper}>
-        {geos?.length>0&&geos
-        .map(el=> 
+      {args.type === 'sources' && <>
+        <p className={styles.title}>Источники трафика:</p>
+        <div className={styles.wrapper}>
+          {sources?.length>0&&sources
+          .map(el=> 
+            <p 
+            key={el.id}
+            className={classNames(styles.source, choosenSources.has(el.id)&&styles.source_active)} 
+            onClick={()=> {onSourceClickHandler(el)}}
+            >
+                {el.title}
+              </p>
+          )}
+        </div>
+      </>}
+
+      {args.type === 'geos' && <>
+        <p className={styles.title}>Гео:</p>
+        <div className={styles.wrapper}>
+          {geos?.length>0&&geos
+          .map(el=> 
             <p 
             key={el.id}
             className={classNames(styles.source, choosenGeos.has(el.id)&&styles.source_active)} 
             onClick={()=> {onGeoClickHandler(el)}}
             >
-              {el.title}
-            </p>
-        )}
-      </div>
+                {el.title}
+              </p>
+          )}
+        </div>
+      </>}
+
+      {args.type === 'verticals' && <>
+        <p className={styles.title}>Вертикали:</p>
+        <div className={styles.wrapper}>
+          {verticals?.length>0&&verticals
+          .map(el=> 
+            <p 
+            key={el.id}
+            className={classNames(styles.source, choosenVerticals.has(el.id)&&styles.source_active)} 
+            onClick={()=> {onVerticalClickHandler(el)}}
+            >
+                {el.title}
+              </p>
+          )}
+        </div>
+      </>}
+
     </Body>
     </>
   )

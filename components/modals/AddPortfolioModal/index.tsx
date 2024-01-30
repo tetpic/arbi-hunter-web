@@ -10,45 +10,61 @@ import Button from 'components/ui/Button'
 import Validator from 'utils/Validator'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import FilesField from '@/components/fields/FilesField'
+import CloudSvg from '@/components/svg/CloudSvg'
+import { ICVCreate } from 'data/interfaces/ICV'
 
 interface Props {
   onClose: ()=> void
   isBottomSheet?: boolean
 }
 
+interface PortfolioFields extends Pick<ICVCreate, 'portfolio'|'assetsIds'> {
+
+}
+
 export interface IPortfolioModal {
-  onSubmit: (data: {portfolio: string}) => void
+  onSubmit: (data: PortfolioFields) => void
   portfolio?: string
 }
+
+
 
 
 export default function AddPortfolioModal(props: Props) {
   const appContext = useAppContext()
   const args:IPortfolioModal = appContext.modalArguments||appContext.bottomSheetArguments
 
-  const submit = (data: {portfolio: string}) => {
+  const submit = (data: PortfolioFields) => {
     args.onSubmit(data)
     appContext.hideModal()
   }
 
-  const formik = useFormik<{portfolio: string}>({
+  const formik = useFormik<PortfolioFields>({
     initialValues: {
-      portfolio: args.portfolio||''
+      portfolio: args.portfolio||'',
+      assetsIds: []
     },
     onSubmit: submit
   })
 
   const body = (<>
-    <Title title={'Добавить портфолио'}/>
+    <Title title={'Добавить портфолио'} className={styles.title}/>
+    <p className={styles.disclaimer}>
+      Прикрепите ссылку на портфолио <br/>
+      или загрузите фото, видео или PDF - файл
+    </p>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <InputField 
         styleType={'default'} 
         color={'default'} 
         name={'portfolio'} 
-        placeholder='Ссылка на портфолио'
+        label='Добавить ссылку на портфолио'
+        labelType='top'
         validate={Validator.combine([Validator.required, Validator.url])}
         />
+        <FilesField  name={'assetsIds'} className={styles.filesWrapper} inputClassName={styles.filesInput} buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} />
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>

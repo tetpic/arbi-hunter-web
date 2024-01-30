@@ -42,22 +42,18 @@
   }
 }
 
-
-
 .input {
   input {
     height: 30px !important;
   }
 }
 
-
-
 .inputsWrapper {
   margin-top: 16px;
   display: flex;
   align-items: center;
   column-gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 
   >span {
     color: $greyLight;

@@ -59,7 +59,7 @@ export default function CompensationModal(props: Props) {
       {formik.values.compensation !== CompensationType.Contract &&
       <>
         <InputField 
-        styleType={'bottomBorder'} 
+        styleType={'blueBottomBorder'} 
         label='Уровень дохода'
         labelClassName={styles.salaryLabel}
         inputClassName={styles.salaryInput}
