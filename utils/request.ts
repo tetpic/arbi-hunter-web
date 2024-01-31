@@ -48,7 +48,7 @@ async function request<T = any>(options: string | Options): Promise<T> {
 
   const correctUrl = `${HOST_INNER || HOST}${url}${(method === 'get' && data) ? `?${queryParams(data)}` : ''}`
   const needCache = !disableCache && CACHE_TIME_HOURS > 0 && isServer && method === 'get'
-
+    console.log("GetUrl", correctUrl)
   if (needCache) {
     const cachedData = nodeCache.get<T>(correctUrl)
     if (cachedData) {
