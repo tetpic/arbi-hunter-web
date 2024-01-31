@@ -20,7 +20,7 @@ interface IState {
   currentProfile: IUserProfile,
   profileType: ProfileType|undefined
   setProfileType: (t: ProfileType) => void,
-  editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<boolean>
+  editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<IUserProfile|false>
   removeCurrentProfile: () => void
   updateUser: (user?: IUser) => Promise<IUser> 
 }
@@ -105,10 +105,11 @@ export function UserWrapper(props: Props) {
 
 
 
-  const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<boolean> => {
+  const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<IUserProfile|false> => {
     return UserRepository.editProfileByType(data, currentProfile.profileType)
-    .then(_=> {
-      return true
+    .then(p=> {
+      setCurrentProfileState(p)
+      return p
     })
     .catch(_=> {
       return false

@@ -8,7 +8,6 @@ import languages from '@cospired/i18n-iso-languages'
 import classNames from 'classnames'
 import { LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { useAppContext } from 'context/state'
@@ -20,10 +19,14 @@ interface Props {
   isBottomSheet?: boolean
 }
 
+export interface ILangaugesModalArgs {
+  onClose?: ()=> void 
+  onSubmit?: (data: {language: Languages, level: LanguageKnowLevel})=>void
+}
+  
 export default function LangaugesModal(props: Props) {
-  const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
-  const args: {onClose: ()=> void } = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
+  const args: ILangaugesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
@@ -40,8 +43,7 @@ export default function LangaugesModal(props: Props) {
   }, [])
 
   const onSaveHandler = () => {
-    const lansgKnown = cvContext.helpObjects?.languageKnowledges||new Map
-    cvContext.setHelpObjects({languageKnowledges: new Map([...lansgKnown, [langRadioActive, {language: langRadioActive, level: levelRadioActive}]])})
+    args.onSubmit({language: langRadioActive, level: levelRadioActive})
     args?.onClose?args.onClose():props.onClose()
   }
 

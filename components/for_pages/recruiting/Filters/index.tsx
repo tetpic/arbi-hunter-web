@@ -20,8 +20,9 @@ import Accordeon from 'components/ui/Accordeon'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
+import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -53,9 +54,9 @@ export default function Filters(props: Props) {
     creationContext.setHelpObjects({...helperState, languageKnowledges: filteredLangs})
   }
 
-  const removeSource = (el: number) => {
+  const removeSource = (el: number, type: 'activeSources'|'activeGeos'|'activeVerticals') => {
     const helperState = creationContext.helpObjects
-    helperState.activeSources.delete(el)
+    helperState[type].delete(el)
     creationContext.setHelpObjects({...helperState})
   }
 
@@ -64,41 +65,54 @@ export default function Filters(props: Props) {
       appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, {
         manyItems: true,
         onSubmit: (data)=>{
+          creationContext.setActiveSubcategory(data)
           formik.setFieldValue('categories', data.map(el=> el.id))
         },
-        onClose: ()=>appContext.hideBottomSheet()
+        onClose: ()=>appContext.hideBottomSheet(),
       }, 0.9)
       return
     } 
     appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
       manyItems: true,
       onSubmit: (data)=>{
+        creationContext.setActiveSubcategory(data)
         formik.setFieldValue('categories', data.map(el=> el.id))
       },
     })
   }
 
-  const openSourcesModal = () => {
+  const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
+    const dataToSet:ISoursesModalArgs = {
+      type: t.type,
+      onClose: (activeSources)=>{
+        const newObject = {...creationContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
+        creationContext.setHelpObjects(newObject)
+        appContext.hideModal()
+      },
+      data: creationContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      choosenElements: creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
+    }
     if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, {
-        onClose: ()=>appContext.hideBottomSheet(),
-        type: 'sources'
-      }, 0.4)
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
       return
     }
-    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {
-      type: 'sources'
-    })
+    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
   }
 
   const openLangsModal = () => {
+    const args: ILangaugesModalArgs = {
+      onSubmit: (data) => {
+        const lansgKnown = creationContext.helpObjects?.languageKnowledges||new Map
+        lansgKnown.set(data.language, data)
+        creationContext.setHelpObjects({languageKnowledges: new Map(lansgKnown)})
+        appContext.hideModal()
+      }
+    }
     if (isTabletWidth) {
-      appContext.showBottomSheet(ModalType.LanguageModal, {
-        onClose: ()=>appContext.hideBottomSheet()
-      }, 0.9)
+      appContext.showBottomSheet<ILangaugesModalArgs>(ModalType.LanguageModal, args, 0.9)
       return
     }
-    appContext.showModal(ModalType.LanguageModal)    
+    appContext.showModal<ILangaugesModalArgs>(ModalType.LanguageModal, args)    
   }
 
   const onRemoveCategory = (category: ISpecializationCategory) => {
@@ -118,7 +132,9 @@ export default function Filters(props: Props) {
     const values = {
       ...formik.values,
       languageKnowledges: [...creationContext.helpObjects.languageKnowledges.values()],
-      sources:  [...creationContext.helpObjects.activeSources.values()].map(el=> el.id),
+      sources:  [...creationContext.helpObjects?.activeSources?.values()].map(el=> el.id),
+      geos:  [...creationContext.helpObjects?.activeGeos?.values()].map(el=> el.id),
+      verticals:  [...creationContext.helpObjects?.activeVerticals?.values()].map(el=> el.id),
     }
     creationContext.activeSubCategory&&
     Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
@@ -196,17 +212,43 @@ export default function Filters(props: Props) {
           </>
         } */}
 
-        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal()}>Источники</p>
-        {creationContext.helpObjects.activeSources.size > 0 &&
+        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>Источники</p>
+        {creationContext.helpObjects?.activeSources?.size > 0 &&
           <div className={styles.itemsWrapper}>
            {creationContext.helpObjects && [...creationContext.helpObjects?.activeSources.entries()]
             .map(([key, value])=> 
-            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
             )}
           </div>
         }
         {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal()}/>
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'sources'})}/>
+        }
+
+        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>Гео</p>
+        {creationContext.helpObjects?.activeGeos?.size > 0 &&
+          <div className={styles.itemsWrapper}>
+           {creationContext.helpObjects && [...creationContext.helpObjects?.activeGeos?.entries()]
+            .map(([key, value])=> 
+            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
+            )}
+          </div>
+        }
+        {!isTabletWidth &&
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'geos'})}/>
+        }
+
+        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
+        {creationContext.helpObjects?.activeVerticals?.size > 0 &&
+          <div className={styles.itemsWrapper}>
+           {creationContext.helpObjects && [...creationContext.helpObjects?.activeVerticals?.entries()]
+            .map(([key, value])=> 
+            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
+            )}
+          </div>
+        }
+        {!isTabletWidth &&
+          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
         }
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
@@ -244,7 +286,7 @@ export default function Filters(props: Props) {
         {creationContext.helpObjects?.languageKnowledges?.size > 0 &&
           <div className={styles.itemsWrapper}>
             {creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
-            .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={`${languages.getName(el.language, 'ru')}, ${el.level}`} /> )
+            .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={`${languages.getName(el.language, 'ru')}, ${TranslateLanguageKnowLevel(el.level)}`} /> )
             }
           </div>
         } 

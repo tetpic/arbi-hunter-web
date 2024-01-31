@@ -157,13 +157,13 @@ export default function VacancyPage(props: Props) {
           {currentVacancy.skills.length > 0 &&
             <TagList title={'Навыки'} tags={currentVacancy.skills.map(el=>({name: el.title}))} titleClassName={styles.title}/>
           }
-          {currentVacancy.languageKnowledges.length > 0 &&
+          {currentVacancy.languageKnowledges?.length > 0 &&
             <TagList title={'Языки'} tags={currentVacancy.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
           }
-          {currentVacancy.geos.length > 0 &&
-            <TagList title={'Гео'} tags={currentVacancy.geos.map(el=>({name:el.title}))} titleClassName={styles.title}/>
+          {currentVacancy.geos?.length > 0 &&
+            <TagList title={'Гео'} tags={currentVacancy.geos?.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
-          {currentVacancy.sources.length > 0 &&
+          {currentVacancy.sources?.length > 0 &&
             <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
           }
         </ContentItem>

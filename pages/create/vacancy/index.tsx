@@ -1,5 +1,6 @@
 import Vacancy from 'components/for_pages/create/Vacancy'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { CookiesType } from 'types/enums'
@@ -40,7 +41,9 @@ export default function VacancyCreate(props: Props) {
 
   return  (
     <ContentLayout hideMobileHeader title={'Редактирование Вакансии'}>
-      <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
+      <CreateVcCvWrapper>
+        <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
+      </CreateVcCvWrapper>
     </ContentLayout>
   )
 

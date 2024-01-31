@@ -3,6 +3,7 @@ import RecruitingHirer from 'components/for_pages/recruiting/RecruitingHirer'
 import RecruitingPageEmployee from 'components/for_pages/recruiting/RecruitingPageEmployee'
 import RecruitingPageHirer from 'components/for_pages/recruiting/RecruitingPageHirer'
 import ContentLayout from 'components/layout/ContentLayout'
+import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { useUserContext } from 'context/user_state'
 import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -40,6 +41,8 @@ export default function Recruiting(props: Props) {
   const profileType = userContext.profileType
 
   return (<ContentLayout withFooter hideMobileHeader  title='Рекрутинг'>
+    <CreateVcCvWrapper>
+      
     {!props.auth&&((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
       <RecruitingEmployee vacancies={props.vacancies} />
       ||
@@ -51,7 +54,8 @@ export default function Recruiting(props: Props) {
       <RecruitingPageEmployee />
       ||
       props.auth && props.profileType === ProfileType.Hirer &&
-        <RecruitingPageHirer vcId={Number(props.vcId)} />
+      <RecruitingPageHirer vcId={Number(props.vcId)} />
     }
+    </CreateVcCvWrapper>
   </ContentLayout>)
 }

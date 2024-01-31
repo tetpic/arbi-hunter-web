@@ -6,7 +6,7 @@ import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
 import { Answer, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
+import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
 import { useRouter } from 'next/router'
 import Experience from './steps/Experience'
@@ -209,7 +209,10 @@ export default function Cv(props: Props) {
           else {
             appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
               manyItems: false,
-              onSubmit: ()=>{
+              onSubmit: (data)=>{
+                creationContext.setActiveSubcategory(data)
+                creationContext.setActiveCategory(null)
+            
                 appContext.hideModal()
                 isTabletWidth?
                 appContext.showBottomSheet<ICompensationModalArgs>(ModalType.CompensationModal, args, 420):

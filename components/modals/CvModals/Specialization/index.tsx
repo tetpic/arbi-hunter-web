@@ -4,9 +4,9 @@ import classnames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { CreateVcCvWrapper,  useCreateVcCvContext,} from 'context/createVcCv_state'
 import { ISpecializationCategory } from 'data/interfaces/Common'
-import {  useEffect, useRef, useState } from 'react'
+import {  useRef, useState } from 'react'
 import Body from '../Body'
 import Scrollbars from 'react-custom-scrollbars-2'
 import { useAppContext } from 'context/state'
@@ -26,18 +26,22 @@ interface Props {
 
 export interface ISpecializationModalProps {
   manyItems?: boolean
+  activeSubCategories?: ISpecializationCategory[]
   onSubmit?: (specialization: ISpecializationCategory[])=>void
   onClose?: ()=>void
 }
 
 
-export default function SpecializationModal(props: Props) {
-  const cvContext = useCreateVcCvContext()
-  const {activeCategory, activeSubCategory, setActiveCategory, setActiveSubcategory} = cvContext
+function SpecializationModalInner(props: Props) {
   const appContext = useAppContext()
-  const args = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments as ISpecializationModalProps
+  const args:ISpecializationModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
+  const cvContext = useCreateVcCvContext()
+  const {activeCategory, setActiveCategory} = cvContext
   const [chooseAll, setChooseAll] = useState<boolean>(false)
-  const [load, setLoad] = useState<boolean>(false)
+
+  // useEffect(()=>{
+  //   setActiveCategory(args.activeSubCategories)  
+  // }, [])
 
   const scrollBar = useRef<Scrollbars>(null!)
 
@@ -52,9 +56,9 @@ export default function SpecializationModal(props: Props) {
     args.onClose?args.onClose():props.onClose()
   } 
 
-  const formik = useFormik<{specialization: ISpecializationCategory}>({
+  const formik = useFormik<{specialization: ISpecializationCategory[]}>({
     initialValues: {
-      specialization: undefined,
+      specialization: [],
     },
     onSubmit: submit
   })
@@ -82,13 +86,6 @@ export default function SpecializationModal(props: Props) {
     }
   }
 
-
-  useEffect(()=>{
-    cvContext.setCategories()
-    .then(_=>setLoad(true))
-  }, [])
-
-
   const body = (
     <Body 
     onClose={props.onClose} 
@@ -100,7 +97,7 @@ export default function SpecializationModal(props: Props) {
         <Form>
         <div className={styles.categoriesWrapper}>
         <Scrollbars ref={scrollBar} style={{height: '100%'}} autoHide universal>
-        {cvContext.categories && load && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
+        {cvContext.categories  && Array.from(cvContext.categories.entries()).map(([category, subCategories],index)=> {
           const isActive = activeCategory === category
           return (
             <div className={styles.category} key={category.id}>
@@ -165,4 +162,10 @@ export default function SpecializationModal(props: Props) {
       </ModalBody>
     </ModalLayout>
   )
+}
+
+export default function SpecializationModal(props: Props) {
+  return <CreateVcCvWrapper>
+    <SpecializationModalInner {...props} />
+  </CreateVcCvWrapper>
 }

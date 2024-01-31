@@ -62,7 +62,7 @@ export default function AddPortfolioModal(props: Props) {
         name={'portfolio'} 
         label='Добавить ссылку на портфолио'
         labelType='top'
-        validate={Validator.combine([Validator.required, Validator.url])}
+        validate={Validator.url}
         />
         <FilesField  name={'assetsIds'} className={styles.filesWrapper} inputClassName={styles.filesInput} buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} />
       </Form>

@@ -15,7 +15,6 @@ import Snackbar from 'components/layout/Snackbar'
 import { UserWrapper } from 'context/user_state'
 import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
-import { CreateVcCvWrapper} from 'context/createVcCv_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
@@ -64,7 +63,6 @@ function MyApp({Component, pageProps}: AppProps) {
       <AppWrapper isMobile={pageProps.isMobile}>
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
           <ManagerWrapper>
-          <CreateVcCvWrapper>
           {/* <VacancyWrapper> */}
           <CvWrapper>
           <PatternWrapper>
@@ -91,7 +89,6 @@ function MyApp({Component, pageProps}: AppProps) {
           </PatternWrapper>
           </CvWrapper>
           {/* </VacancyWrapper> */}
-          </CreateVcCvWrapper>
           </ManagerWrapper>
         </UserWrapper>
       </AppWrapper>

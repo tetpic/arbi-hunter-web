@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, createContext, useContext, useEffect, useStat
 import { useUserContext } from './user_state'
 
 
-interface HelpObject {
+export interface HelpObject {
   skills?: Map<number, ISource>,
   languageKnowledges?: Map<string, ILanguageKnowledge>,
   sources?: ISource[]
@@ -24,7 +24,7 @@ interface HelpObject {
 
 
 
-interface IState {
+export interface ICreationState {
   currentCv: ICVCreate,
   setCurrentCv: (v: ICVCreate) => void
   getCurrentCv: (id: number, cv?: ICV) => void
@@ -55,7 +55,7 @@ interface IState {
 }
 
 
-const CreateVcCvContext = createContext<Partial<IState>>({})
+const CreateVcCvContext = createContext<Partial<ICreationState>>({})
 
 interface Props {
   children: React.ReactNode
@@ -67,10 +67,12 @@ export function CreateVcCvWrapper(props: Props) {
   const initialHelpObject: HelpObject = {
     activeSources: new Map,
     activeGeos: new Map,
+    activeVerticals: new Map,
     geos: [],
+    sources: [],
+    verticals: [],
     skills: new Map,
     languageKnowledges: new Map,
-    sources: [],
     cityId: userContext.currentProfile?.cityId,
     countryId: userContext.currentProfile?.countryId,
     categoryIds: [],
@@ -135,7 +137,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setSubcategoriesToCategory = (s: ISpecializationCategory) => {
-      if(!categories.get(s)) {
+    if(!categories.get(s)) {
       CvRepository.getSubCategoriesByCategoryId(s.id)
       .then(res => {
         setCategoriesState(state => {
@@ -211,14 +213,25 @@ export function CreateVcCvWrapper(props: Props) {
     setVc(null)
   }
 
+  const initSources = async () => {
+    const [s, g, v] = await Promise.all([CvRepository.sourcesList(), CvRepository.getGeos(), CvRepository.getVerticals()])
+    const cvHelpState = helpObjects
+    setHelpObjects({...cvHelpState,  geos: g.data, verticals: v.data, sources: s.data})
+  }
+
   useEffect(()=>{
     if(currentCv && subCategories && activeSubCategory.length === 0) {
       setActiveSubcategory([currentCv.categories.find(el => subCategories.has(el.id))] || [])
     }
   }, [currentCv, subCategories])
+
+  useEffect(()=>{
+    initSources()
+    setCategories()    
+  }, [])
   
 
-  const value: IState = {
+  const value: ICreationState = {
     currentCv,
     setCurrentCv,
     getCurrentCv,

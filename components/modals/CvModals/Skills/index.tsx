@@ -2,7 +2,6 @@ import { useThrottleFn } from '@react-cmpt/use-throttle'
 import classnames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
 import { ISource } from 'data/interfaces/Common'
 import SkillsRepository from 'data/repositories/SkillsRepository'
@@ -17,13 +16,19 @@ interface Props {
   onClose: () => void
 }
 
+export interface ISkillModalProps {
+  onSubmit?: (data: Map<number, ISource>)=>void
+  onClose?: ()=>void
+  choosenSkills?:  Map<number, ISource>
+}
+
 export default function SkillsModal(props: Props) {
   
-  const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
+  const args: ISkillModalProps = appContext.modalArguments
 
   const [skills, setSkills] = useState<ISource[]>([])
-  const [choosenSkill, setChoosenSkill] = useState<ISource[]>([])
+  const [choosenSkills, setChoosenSkills] = useState<Map<number, ISource>>(new Map)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
 
@@ -35,7 +40,7 @@ export default function SkillsModal(props: Props) {
     } else {
       SkillsRepository.findSkill(e.target.value)
       .then(res => {
-        const filtered = res.data.filter(el=>!cvContext.helpObjects.skills.has(el.id))
+        const filtered = res.data.filter(el=>!args.choosenSkills.get(el.id))
         setSkills(filtered)  
         setPage(1)   
         setTotal(filtered.length)
@@ -48,13 +53,12 @@ export default function SkillsModal(props: Props) {
   const withTrottle = useThrottleFn(onChangeHandler, 300)
 
   const setSkillHandler = () => {
-    if(!choosenSkill&&choosenSkill.length === 0) {
-      appContext.showSnackbar('Выберите специализацию из списка', SnackbarType.error)
+    if(!choosenSkills&&choosenSkills.size === 0) {
+      appContext.showSnackbar('Выберите навык из списка', SnackbarType.error)
       return
     }
-    const helperSkills = cvContext.helpObjects?.skills||new Map
-    cvContext.setHelpObjects({skills: new Map([...helperSkills.values(), ...choosenSkill].map(el=>[el.id, el]))})
-    setChoosenSkill([])
+    args.onSubmit(choosenSkills)
+    setChoosenSkills(new Map)
     props.onClose()
   }
 
@@ -70,13 +74,22 @@ export default function SkillsModal(props: Props) {
   }, [page])
 
   const onClickHandler = (el: ISource) => {
-    setChoosenSkill(state => {
-      const indexFound = state.findIndex(e=> e===el)
-      if(indexFound >= 0) {
-        return state.filter(e => el !== e)
-      } else {
-        return [...state, el]
+    let clicked: boolean = true
+    setChoosenSkills(state => {
+      if(clicked) {
+        if(state.has(el.id)) {
+        state.delete(el.id)
+        }
+        else {
+          state.set(el.id, el)      
+        }
+        clicked = false
+        return new Map(state)
       }
+      else {
+        return new Map(state)
+      }
+    
     })
   }
 
@@ -97,8 +110,8 @@ export default function SkillsModal(props: Props) {
         dataLength={skills.length}  
         >
           <div className={styles.categories}>
-            {skills&&skills.length > 0&&skills.filter(s=> !cvContext.helpObjects.skills.has(s.id)).map((el, index)=>{
-              return (<p key={index} className={classnames(styles.position, choosenSkill.findIndex(e => el === e)>=0&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
+            {skills&&skills.length > 0&&skills.filter(s=> !args.choosenSkills.get(s.id)).map((el, index)=>{
+              return (<p key={index} className={classnames(styles.position, choosenSkills.has(el.id)&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)
             })}
           </div>
         </InfiniteScroll>

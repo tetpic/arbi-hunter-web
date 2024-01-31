@@ -15,13 +15,19 @@ export default function Specialization(props: Props) {
   const appContext = useAppContext()
   const cvContext = useCreateVcCvContext()
 
-  const onModalSubmit = (data: ISpecializationCategory | ISpecializationCategory[]) => {
+  const onModalSubmit = (data: ISpecializationCategory[]) => {
+    cvContext.setActiveSubcategory(data)
+    cvContext.setActiveCategory(null)
+
     const helperCv = cvContext.helpObjects
-    cvContext.setHelpObjects({...helperCv, categoryIds: [!Array.isArray(data)&&data]})
+    cvContext.setHelpObjects({...helperCv, categoryIds: data})
   }
 
   const openModalHandler = () => {
-    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {onSubmit: onModalSubmit, manyItems: false})
+    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
+      onSubmit: (data) => onModalSubmit(data), 
+      manyItems: false
+    })
   }
 
   return ( 

@@ -16,6 +16,8 @@ import { ICVCreate } from 'data/interfaces/ICV'
 import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
+import { ISkillModalProps } from '@/components/modals/CvModals/Skills'
+import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 
 
 type SkillsFields = {
@@ -102,24 +104,32 @@ export default function Skills(props: Props) {
     cvContext.setHelpObjects({...helperState, skills: new Map(filteredSkills.map(el=> [el.id, el]))})
   }
 
-  const removeSource = (el: number) => {
+  const removeSource = (el: number, type: 'activeSources' | 'activeGeos'| 'activeVerticals') => {
     const helperState = cvContext.helpObjects
-    helperState.activeSources.delete(el)
+    helperState[type].delete(el)
     cvContext.setHelpObjects({...helperState})
   }
+
+  const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
+    const dataToSet:ISoursesModalArgs = {
+      type: t.type,
+      onClose: (activeSources)=>{
+        const newObject = {...cvContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
+        cvContext.setHelpObjects(newObject)
+        appContext.hideModal()
+      },
+      data: cvContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      choosenElements: cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
+    }
+    if (isTabletWidth) {
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      return
+    }
+    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
+  }
+
   
-  const removeGeo = (el: number) => {
-    const helperState = cvContext.helpObjects
-    helperState.activeGeos.delete(el)
-    cvContext.setHelpObjects({...helperState})
-  }
 
-
-  const removeVertical= (el: number) => {
-    const helperState = cvContext.helpObjects
-    helperState.activeVerticals.delete(el)
-    cvContext.setHelpObjects({...helperState})
-  }
 
   const onAddCoursesClick = () => {
     setCoursesDetails(true)
@@ -160,7 +170,14 @@ export default function Skills(props: Props) {
   return ( <div className={styles.root}>
     <AddButton 
     className={styles.addButton} 
-    onClick={()=>appContext.showModal(ModalType.SkillsModal)} 
+    onClick={()=>appContext.showModal<ISkillModalProps>(ModalType.SkillsModal, {
+      choosenSkills: cvContext.helpObjects?.skills,
+      onSubmit: (data) => {
+        const helpSkills = cvContext.helpObjects?.skills
+        cvContext.setHelpObjects({...cvContext.helpObjects, skills: new Map([...helpSkills, ...data])})
+        appContext.hideModal()
+      }
+    })} 
     text={'Добавить навык'}
     />
     {cvContext.helpObjects?.skills?.size > 0 &&
@@ -172,11 +189,11 @@ export default function Skills(props: Props) {
     } 
 
     {
-      (cvContext?.activeSubCategory[0].withGeos || cvContext?.activeSubCategory[0].withSources) && !props.fieldToHide?.traffic &&
+      (cvContext?.activeSubCategory[0]?.withGeos || cvContext?.activeSubCategory[0]?.withSources) && !props.fieldToHide?.traffic &&
       <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'sources'})}} 
+      onClick={()=>{openSourcesModal({type: 'sources'})}} 
       text={'Добавить источники'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
@@ -185,14 +202,14 @@ export default function Skills(props: Props) {
          <div className={styles.itemsWrapper}>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
               .map(([key, value])=> 
-              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
             )}
           </div>
         </>
       }
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'geos'})}} 
+      onClick={()=>{openSourcesModal({type: 'geos'})}} 
       text={'Добавить гео'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
@@ -201,7 +218,7 @@ export default function Skills(props: Props) {
           <div className={styles.itemsWrapper}>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
              .map(([key, value])=> 
-             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
+             <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
             )}
           </div>
         </>
@@ -212,7 +229,7 @@ export default function Skills(props: Props) {
     {!props.fieldToHide?.traffic && <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'verticals'})}} 
+      onClick={()=>{openSourcesModal({type: 'verticals'})}} 
       text={'Добавить вертикали'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
@@ -221,7 +238,7 @@ export default function Skills(props: Props) {
         <div className={styles.itemsWrapper}>
         {cvContext.helpObjects && [...cvContext.helpObjects?.activeVerticals.entries()]
           .map(([key, value])=> 
-          <RemovableItem key={value.id} text={value.title} onClick={()=>removeVertical(key)}/>
+          <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
           )}
           </div>
           </>
@@ -230,7 +247,14 @@ export default function Skills(props: Props) {
 
     <AddButton 
     className={styles.addButton} 
-    onClick={()=>{appContext.showModal(ModalType.LanguageModal)}} 
+    onClick={()=>{appContext.showModal<ILangaugesModalArgs>(ModalType.LanguageModal, {
+      onSubmit: (data) => {
+        const lansgKnown = cvContext.helpObjects?.languageKnowledges||new Map
+        lansgKnown.set(data.language, data)
+        cvContext.setHelpObjects({languageKnowledges: new Map(lansgKnown)})
+        appContext.hideModal()
+      },
+    })}} 
     text={'Иностранные языки'}
     />
     {cvContext.helpObjects?.languageKnowledges?.size > 0 &&

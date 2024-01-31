@@ -47,6 +47,9 @@ export default function PersonalCard(props: Props) {
   const openUserImageModal = () => {
     appContext.showModal<IUserImageModalProps>(ModalType.UserImageModal, {onSave: (data) => {
       userContext.editCurrentProfile({imageId: data?.image?.data?.id, useOwnLogo: data.type === 'logo'?true: false})
+      .then(res => {
+        res&&personalContext.setCurrentProfile(res)
+      })
     }})
   }
 

@@ -22,6 +22,7 @@ interface IState {
   transport: IBackground
   loading: boolean  
   setBackgrounds: (profile: IUserProfile) => Promise<[] | IBackground[]>
+  setCurrentProfile: Dispatch<SetStateAction<IUserProfile>>
 }
 
 const PersonalContext = createContext<Partial<IState>>({})
@@ -157,7 +158,8 @@ export function PersonalWrapper(props: Props) {
     weather,
     transport,
     loading,
-    setBackgrounds
+    setBackgrounds,
+    setCurrentProfile
   }
 
   return (

@@ -36,7 +36,6 @@ export default function CheckboxField<T>(props: Props<T>) {
 
   const handleCheckboxChanged = (val: T) => {
     props.value
-    debugger
     helpers.setValue(!val?props.value:undefined)
   }
 

@@ -13,18 +13,33 @@ interface Props {
 export default function VacancyExperience(props: Props) {
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
-  const removeSource = (el: number) => {
+  const removeSource = (el: number, type: 'activeSources'|'activeGeos'|'activeVerticals') => {
     const helperState = cvContext.helpObjects
-    helperState.activeSources.delete(el)
+    helperState[type].delete(el)
     cvContext.setHelpObjects({...helperState})
   }
+
+  const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
+    const dataToSet:ISoursesModalArgs = {
+      type: t.type,
+      onClose: (activeSources)=>{
+        const newObject = {...cvContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
+        cvContext.setHelpObjects(newObject)
+        appContext.hideModal()
+      },
+      data: cvContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      choosenElements: cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
+    }
+    if (isTabletWidth) {
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      return
+    }
+    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
+  }
+
   
-  const removeGeo = (el: number) => {
-    const helperState = cvContext.helpObjects
-    helperState.activeGeos.delete(el)
-    cvContext.setHelpObjects({...helperState})
-  }
 
   return ( <div className={styles.root}>
 
@@ -45,7 +60,7 @@ export default function VacancyExperience(props: Props) {
       <>
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'sources'})}} 
+      onClick={()=>openSourcesModal({type: 'sources'})} 
       text={'Добавить источники'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
@@ -54,14 +69,15 @@ export default function VacancyExperience(props: Props) {
          <div className={styles.itemsWrapper}>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
               .map(([key, value])=> 
-              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
             )}
           </div>
         </>
       }
+
       <AddButton 
       className={styles.addButton} 
-      onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'geos'})}} 
+      onClick={()=>openSourcesModal({type: 'geos'})} 
       text={'Добавить гео'}
       title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
       /> 
@@ -70,7 +86,7 @@ export default function VacancyExperience(props: Props) {
           <div className={styles.itemsWrapper}>
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
              .map(([key, value])=> 
-             <RemovableItem key={value.id} text={value.title} onClick={()=>removeGeo(key)}/>
+             <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
             )}
           </div>
         </>
@@ -80,15 +96,15 @@ export default function VacancyExperience(props: Props) {
 
     <AddButton 
     className={styles.addButton} 
-    onClick={()=>{appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, {type: 'verticals'})}} 
+    onClick={()=>openSourcesModal({type: 'verticals'})} 
     text={'Добавить Вертикали'}
     title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
     /> 
-    {cvContext.helpObjects?.activeSources?.size > 0 &&<>
+    {cvContext.helpObjects?.activeVerticals?.size > 0 &&<>
       <div className={styles.itemsWrapper}>
       {cvContext.helpObjects && cvContext.helpObjects?.activeVerticals &&[...cvContext.helpObjects?.activeVerticals?.entries()]
       .map(([key, value])=> 
-      <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key)}/>
+      <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
       )}
       </div>
     </>}

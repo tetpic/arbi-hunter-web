@@ -67,6 +67,9 @@ export default class Validator {
   }
 
   static url = (value: string): string | undefined => {
+    if (!value) {
+      return undefined
+    }
     let url
     const errorText = 'Неверный формат ссылки'
     try {
