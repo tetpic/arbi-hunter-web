@@ -91,7 +91,7 @@ export default function VacancyName(props: Props) {
       <div className={styles.tags}>
         {
           tags.map(s=> {
-            return <Tag text={s.name} onClick={()=>onSuggestionClick(s.name)}/>
+            return <Tag text={s.name} onClick={()=>onSuggestionClick(s.name)} isActive={s.name === values.name}/>
           })
         }
       </div>

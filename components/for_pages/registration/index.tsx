@@ -117,6 +117,14 @@ export default function Registration() {
         formik.setFieldError(val, err||' ')
       })
     }
+
+    const validateValues = async(strArr: string[]) => {
+      const errors = await Promise.all(strArr.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
+      const filteredErrors = errors.filter(el=> el[1] !== undefined)
+      filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
+      filteredErrors.length === 0 && setProgress(page||progress+1)
+    }
+
     switch(page||progress) {
       case 1: (async() => {
         const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
@@ -133,28 +141,19 @@ export default function Registration() {
         }
       })()
       break
-      case 2:(async() => {   
+      case 2:(() => {   
         const values = loginType === LoginType.Phone? ['email'] : ['phone']
-        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const filteredErrors = errors.filter(el=> el[1] !== undefined)
-        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-        filteredErrors.length === 0 && setProgress(page||progress+1)
+        validateValues(values)
       })()
       break
-      case 3:(async() => {   
+      case 3:(() => {   
         const values = ['firstName', 'lastName']
-        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const filteredErrors = errors.filter(el=> el[1] !== undefined)
-        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-        filteredErrors.length === 0 && setProgress(page||progress+1)
+        validateValues(values)
       })()
       break
-      case 4:(async() => {
+      case 4:(() => {
         const values = ['cityId', 'countryId']
-        const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const filteredErrors = errors.filter(el=> el[1] !== undefined)
-        filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-        filteredErrors.length === 0 && submit(formik.values)
+        validateValues(values)
       })()
     }
   }
@@ -332,7 +331,9 @@ export default function Registration() {
           Уже есть аккаунт? 
           <Link className={styles.loginLink} href={'/login'}>Войти</Link>
         </p>
+        {progress > 1 &&
         <ProgressBar fullWidth progress={progress} pointsCount={stepsCount}/>
+        }
 
         <FormikProvider value={formik} >
           <Form className={styles.form} autoComplete={'false'} >

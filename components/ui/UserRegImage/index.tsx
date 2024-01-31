@@ -17,6 +17,7 @@ export default function UserRegImage(props: Props) {
 
   const userContext = useUserContext()
 
+
   // const memoedRive = useMemo(()=>{
   //   const src = userContext.profileType===ProfileType.Hirer?'/rive/login/company.riv':'/rive/login/user.riv'
   //   return <Rive src={src} key={src} className={styles.regImage}/>
@@ -24,8 +25,8 @@ export default function UserRegImage(props: Props) {
 
   const emptyImages = (<>
     {props.type === ProfileType.Employee
-    ? <Rive src={'/rive/login/user.riv'} key={1} className={styles.regImage}/>
-    : <Rive src={'/rive/login/company.riv'} key={2} className={styles.regImage}/>
+    ? <Rive src={'/rive/login/user.riv'} key={1} className={styles.regImage} artboard={'UA'}/>
+    : <Rive src={'/rive/login/company.riv'} key={2} className={styles.regImage} />
       // ? <Image className={styles.empImage} src={employeeImage} alt={'employeeImage'} width={566} height={527}/>
       // : <Image className={styles.empImage} src={hirerImage} alt={'employeeImage'} width={566} height={527}/>
     
@@ -36,9 +37,12 @@ export default function UserRegImage(props: Props) {
   // </>)
 
   return ( 
+    <>
     <div className={classNames(styles.root, props.className)}>
+    {/* <RiveComponent/> */}
       {emptyImages}  
       
     </div>
+    </>
   )
 }

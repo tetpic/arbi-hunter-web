@@ -4,7 +4,7 @@ import Spinner from 'components/ui/Spinner'
 import UserPic from 'components/ui/UserPic'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { colors } from 'styles/variables'
-import { FILES } from 'types/constants'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   members: IUserProfile[]
@@ -21,7 +21,7 @@ export default function CommunityMembers(props: Props) {
     props.members.slice(0, 8).map(user=> {
       return(
         <div className={styles.user} key={user.id}>
-          <UserPic image={user.image&&FILES+user.image.source} size={60}/>
+          <UserPic image={getUserImageSource(user)} size={60}/>
           <p className={styles.name}>{user.firstName}</p>
         </div>
       )
