@@ -9,7 +9,7 @@ const nextConfig = {
 
   publicRuntimeConfig: {
     HOST: process.env.HOST,
-    HOST_INNER: process.env.HOST,
+    HOST_INNER: process.env.HOST_INNER,
     NODE_ENV: process.env.NODE_ENV || 'development',
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
@@ -17,7 +17,7 @@ const nextConfig = {
   },
   serverRuntimeConfig: {
     HOST: process.env.HOST,
-    HOST_INNER: process.env.HOST,
+    HOST_INNER: process.env.HOST_INNER,
     NODE_ENV: process.env.NODE_ENV || 'development',
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
