@@ -15,6 +15,8 @@ services:
         image: ${APP_IMAGE}
         container_name: arbi-hunter-front-app
         restart: ${DK_RESTART}
+        extra_hosts:
+          - "arbi-hunter.dev.glob-com.ru:192.168.1.1"
         logging:
           driver: 'json-file'
           options:
