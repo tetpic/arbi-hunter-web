@@ -14,7 +14,7 @@ COPY . .
 
 ARG ENV_FILE=.env
 COPY enviroments/${ENV_FILE} ./.env
-export NODE_TLS_REJECT_UNAUTHORIZED=0
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 # Building app
 RUN npm run build
 EXPOSE 8080/tcp
