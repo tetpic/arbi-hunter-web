@@ -11,23 +11,17 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import LoupeSvg from '@/components/svg/LoupeSvg'
 
 interface Props {
-  onSuggestClick: () => void
+  onSuggestionClick: (activeSubCategory: ISpecializationCategory[]) => void
 }
 
 export default function CvName(props: Props) {
   const cvCreateContext = useCreateVcCvContext()
   const [taglist, setTaglist] = useState([])
-  const formikContext = useFormikContext<{searchPosition: string}>()
+  const formikContext = useFormikContext<{searchPosition: string, categoriesIds: ISpecializationCategory[]}>()
   const inputRef = useRef(null!)
   const [isActive, setIsActive ]= useDetectOutsideClick(inputRef, false)
   const isDisable = useRef<boolean>(true)
   
-  useEffect(()=>{
-    cvCreateContext.setSubCategories('', 1)
-    .then(res => {
-      setTaglist(res)
-    })
-  }, [])
 
   const search = useThrottleFn((s: string)=>{
     cvCreateContext.setSubCategories(s, 1)
@@ -38,8 +32,13 @@ export default function CvName(props: Props) {
     setIsActive(false)
     formikContext.setFieldValue('searchPosition', '')
     isDisable.current = true
-    props.onSuggestClick()
   }
+  
+  useEffect(()=>{
+    if(cvCreateContext.activeSubCategory.length > 0) {
+      props.onSuggestionClick(cvCreateContext.activeSubCategory)
+    }
+  }, [cvCreateContext.activeSubCategory])
 
   useEffect(()=>{
     if(!isDisable.current) {
@@ -50,6 +49,14 @@ export default function CvName(props: Props) {
       isDisable.current = false
     }
   }, [formikContext.values.searchPosition])
+
+  useEffect(()=>{
+    cvCreateContext.setSubCategories('', 1)
+    .then(res => {
+      setTaglist(res)
+    })
+  }, [])
+
 
   return (
     <div className={styles.root}> 

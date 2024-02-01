@@ -13,7 +13,7 @@ import LoupeSvg from '@/components/svg/LoupeSvg'
 
 
 interface Props {
-  onSuggestClick?: () => void
+  onSuggestClick?: (value?: string) => void
 }
 
 export default function VacancyName(props: Props) {
@@ -48,7 +48,7 @@ export default function VacancyName(props: Props) {
     setFieldValue('name', name)
     setIsActive(false)
     isClicked.current = true
-    
+    props.onSuggestClick()
   }
   
   const onChangeThrottle = useThrottleFn(onInputChange, 300)
@@ -84,7 +84,6 @@ export default function VacancyName(props: Props) {
             suggestions.map(s=> {
               return <p onClick={() => {
                 onSuggestionClick(s.name)
-                props.onSuggestClick?.()
               }}>{s.name}</p>
             })
           }
@@ -96,7 +95,9 @@ export default function VacancyName(props: Props) {
       <div className={styles.tags}>
         {
           tags.map(s=> {
-            return <Tag text={s.name} onClick={()=>{onSuggestionClick(s.name)}} isActive={s.name === values.name}/>
+            return <Tag text={s.name} onClick={()=>{
+              onSuggestionClick(s.name)
+            }} isActive={s.name === values.name}/>
           })
         }
       </div>

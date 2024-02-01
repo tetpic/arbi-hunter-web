@@ -169,53 +169,6 @@ export default function Vacancy(props: Props) {
     onSubmit: submit
   })
 
-  const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
-    switch (progress) {
-      case 1:
-        return [<VacancyName onSuggestClick={()=>nextPageValidator()}/>, VacancyNavigation.Name] 
-      case 2: 
-        return [<Specialization/>, VacancyNavigation.Specialization]
-      case 3: 
-        return [<Compensation/>, VacancyNavigation.Salary]
-      case 4:
-        return [<Busyness/>, VacancyNavigation.Busyness]
-      case 5: 
-        return [<VacancyExperience/>, VacancyNavigation.Experience]
-      case 6: 
-        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
-      case 7:
-        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
-      case 8: 
-        return [<Contacts/>, VacancyNavigation.Contacts]
-
-    }
-  }
-
-  const getTitle = (t: VacancyNavigation): string => {
-    switch(t) {
-      case VacancyNavigation.Specialization: 
-        return 'Категория и специализация'
-      case VacancyNavigation.Name:
-        return 'Название вакансии'
-      case VacancyNavigation.Salary:
-        return 'Уровень дохода'
-      case VacancyNavigation.WorkPlace:
-        return 'Место работы'
-      case VacancyNavigation.Experience:
-        return 'Опыт работы'
-      case VacancyNavigation.Education:
-        return 'Образование'
-      case VacancyNavigation.About:
-        return 'Описание'
-      case VacancyNavigation.Skills:
-        return 'Навыки и инструменты'
-      case VacancyNavigation.Busyness:
-        return 'Занятость'
-      case VacancyNavigation.Contacts:
-        return 'Контактная информация'
-    }
-  }
-
   const nextPageValidator = (pageNumber?: number):boolean => {
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
@@ -297,6 +250,53 @@ export default function Vacancy(props: Props) {
     }
   } 
 
+  const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
+    switch (progress) {
+      case 1:
+        return [<VacancyName onSuggestClick={(val)=> {setTimeout(()=>nextPageValidator(), 100)}}/>, VacancyNavigation.Name] 
+      case 2: 
+        return [<Specialization/>, VacancyNavigation.Specialization]
+      case 3: 
+        return [<Compensation/>, VacancyNavigation.Salary]
+      case 4:
+        return [<Busyness/>, VacancyNavigation.Busyness]
+      case 5: 
+        return [<VacancyExperience/>, VacancyNavigation.Experience]
+      case 6: 
+        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
+      case 7:
+        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
+      case 8: 
+        return [<Contacts/>, VacancyNavigation.Contacts]
+
+    }
+  }
+
+  const getTitle = (t: VacancyNavigation): string => {
+    switch(t) {
+      case VacancyNavigation.Specialization: 
+        return 'Категория и специализация'
+      case VacancyNavigation.Name:
+        return 'Название вакансии'
+      case VacancyNavigation.Salary:
+        return 'Уровень дохода'
+      case VacancyNavigation.WorkPlace:
+        return 'Место работы'
+      case VacancyNavigation.Experience:
+        return 'Опыт работы'
+      case VacancyNavigation.Education:
+        return 'Образование'
+      case VacancyNavigation.About:
+        return 'Описание'
+      case VacancyNavigation.Skills:
+        return 'Навыки и инструменты'
+      case VacancyNavigation.Busyness:
+        return 'Занятость'
+      case VacancyNavigation.Contacts:
+        return 'Контактная информация'
+    }
+  }
+
   const changeComponent = (p: number) => {
     const [element, type] = getComponent(p)
     setTitle(getTitle(type))   
@@ -342,7 +342,8 @@ export default function Vacancy(props: Props) {
     if(creationContext.currentVc) {
       formik.setValues(initialValues)
     }
-  }, [userContext.currentProfile])
+  }, [userContext.currentProfile])  
+
 
   useEffect(()=>{
     if(props.id) {

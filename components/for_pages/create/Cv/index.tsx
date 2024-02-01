@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
@@ -145,44 +145,6 @@ export default function Cv(props: Props) {
     onSubmit: submit
   })
 
-  const getComponent = (progress: number): [JSX.Element, CvNavigation] => {
-    switch (progress) {
-      case 1: 
-        return [<CvName onSuggestClick={nextPageValidator}/>, CvNavigation.Specialization]
-      case 2: 
-        return [<CvAbout/>, CvNavigation.About]
-      case 3: 
-        return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
-      case 4:
-        return [<Education name={'educationInfo'}/>, CvNavigation.Education]
-      case 5: 
-        return [<Skills/>, CvNavigation.Skills]
-      case 6: 
-        return [<CvBusyness/>, CvNavigation.Busyness]
-    }
-  }
-
-  const getTitle = (t: CvNavigation): string => {
-    switch(t) {
-      case CvNavigation.Specialization: 
-        return 'Специализация'
-      case CvNavigation.Salary:
-        return 'Уровень дохода'
-      case CvNavigation.Experience:
-        return 'Опыт работы'
-      case CvNavigation.Education:
-        return 'Образование'
-      case CvNavigation.About:
-        return 'Описание'
-      case CvNavigation.Skills:
-        return 'Навыки и инструменты'
-      case CvNavigation.Busyness:
-        return 'Занятость'
-    }
-  }
-
-  const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
-
   const nextPageValidator = (pageNumber?: number) => {
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
@@ -212,7 +174,6 @@ export default function Cv(props: Props) {
               onSubmit: (data)=>{
                 creationContext.setActiveSubcategory(data)
                 creationContext.setActiveCategory(null)
-            
                 appContext.hideModal()
                 isTabletWidth?
                 appContext.showBottomSheet<ICompensationModalArgs>(ModalType.CompensationModal, args, 420):
@@ -226,7 +187,54 @@ export default function Cv(props: Props) {
       default :
         setProgress(pageNumber||progress+1)
     }
-  } 
+  }
+
+  useEffect(()=>{
+    if(creationContext.activeSubCategory.length > 0) {
+      nextPageValidator()
+    }
+  }, [creationContext.activeSubCategory])
+
+
+  const getComponent = useCallback((progress: number): [JSX.Element, CvNavigation] => {
+    switch (progress) {
+      case 1: 
+        return [<CvName onSuggestionClick={(data)=> {
+          creationContext.setActiveSubcategory(data)
+        }}/>, CvNavigation.Specialization]
+      case 2: 
+        return [<CvAbout/>, CvNavigation.About]
+      case 3: 
+        return [<Experience name={'experienceInfo'}/>, CvNavigation.Experience]
+      case 4:
+        return [<Education name={'educationInfo'}/>, CvNavigation.Education]
+      case 5: 
+        return [<Skills/>, CvNavigation.Skills]
+      case 6: 
+        return [<CvBusyness/>, CvNavigation.Busyness]
+    }
+  }, [creationContext])
+
+  const getTitle = (t: CvNavigation): string => {
+    switch(t) {
+      case CvNavigation.Specialization: 
+        return 'Специализация'
+      case CvNavigation.Salary:
+        return 'Уровень дохода'
+      case CvNavigation.Experience:
+        return 'Опыт работы'
+      case CvNavigation.Education:
+        return 'Образование'
+      case CvNavigation.About:
+        return 'Описание'
+      case CvNavigation.Skills:
+        return 'Навыки и инструменты'
+      case CvNavigation.Busyness:
+        return 'Занятость'
+    }
+  }
+
+  const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
 
   const changeComponent = (p: number) => {
     const [element, type] = getComponent(p)
