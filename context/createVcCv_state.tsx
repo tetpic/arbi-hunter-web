@@ -1,4 +1,4 @@
-import { ISpecializationCategory, ISource } from 'data/interfaces/Common'
+import { ISpecializationCategory, ISource, IFile } from 'data/interfaces/Common'
 import { ICVCreate, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
@@ -20,6 +20,7 @@ export interface HelpObject {
   cityId?: number
   countryId?: number,
   categoryIds?: ISpecializationCategory[]
+  assets?: IFile[]
 }
 
 
@@ -76,6 +77,7 @@ export function CreateVcCvWrapper(props: Props) {
     cityId: userContext.currentProfile?.cityId,
     countryId: userContext.currentProfile?.countryId,
     categoryIds: [],
+    assets: []
   }
 
   const [currentCv, setCv] = useState<ICVCreate>()
@@ -108,18 +110,17 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setCategories =():Promise<boolean> => {
-      return CvRepository.getCategories()
-      .then(res => {
-        setCategoriesState(()=> {
-          let map = new Map()
-          res.forEach(el=> {
-            map.set(el, null)
-          })
-          return map
+    return CvRepository.getCategories()
+    .then(res => {
+      setCategoriesState(()=> {
+        let map = new Map()
+        res.forEach(el=> {
+          map.set(el, null)
         })
-        return true
+        return map
       })
-    // }
+      return true
+    })
   }
 
   const setSubCategories = (s: string, page: number): Promise<ISpecializationCategory[]> => {
@@ -207,7 +208,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const reset = () => {
-    handleProgress(1)
+    handleProgress(5)
     setHelp(initialHelpObject)
     setCv(null)
     setVc(null)
@@ -221,7 +222,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   useEffect(()=>{
     if(currentCv && subCategories && activeSubCategory.length === 0) {
-      setActiveSubcategory([currentCv.categories.find(el => subCategories.has(el.id))] || [])
+      setActiveSubcategory([currentCv.categories?.find(el => subCategories.has(el.id))] || [])
     }
   }, [currentCv, subCategories])
 

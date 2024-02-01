@@ -5,7 +5,7 @@ import AddButton from 'components/ui/AddButton'
 import RemovableItem from 'components/ui/RemovableItem'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { useAppContext } from 'context/state'
-import { CoursesInfo, ISource } from 'data/interfaces/Common'
+import { CoursesInfo, ISource, PreviewImage } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
 import { Answer, ModalType } from 'types/enums'
@@ -18,6 +18,7 @@ import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ISkillModalProps } from '@/components/modals/CvModals/Skills'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
+import FilesList from '@/components/ui/FilesList'
 
 
 type SkillsFields = {
@@ -128,9 +129,6 @@ export default function Skills(props: Props) {
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
   }
 
-  
-
-
   const onAddCoursesClick = () => {
     setCoursesDetails(true)
     appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
@@ -153,11 +151,13 @@ export default function Skills(props: Props) {
 
   const onAddPortfolioClick = () => {
     const portfolioProps: IPortfolioModal = {
-      onSubmit: (data) => {
+      onSubmit: (data, fs) => {
         setFieldValue('portfolio', data.portfolio)
         setFieldValue('assetsIds', data.assetsIds)
+        cvContext.setHelpObjects({...cvContext.helpObjects, assets: fs})
       },
-      portfolio: values.portfolio
+      portfolio: values.portfolio,
+      initialFiles: cvContext.helpObjects?.assets
     }
     if(isTabletWidth) {
       appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 240)
@@ -311,6 +311,13 @@ export default function Skills(props: Props) {
           <RemovableItem text={values.portfolio} onClick={()=>setFieldValue('portfolio', '')}/>
         </div>
       }
+      <FilesList 
+      previews={cvContext.helpObjects.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]} 
+      onRemove={(rawId, id)=>{
+        cvContext.setHelpObjects({...cvContext.helpObjects, assets: cvContext.helpObjects.assets.filter(el=> el.id !== Number(id))})
+
+      }}
+      />
     </>}
   </div>)
 }

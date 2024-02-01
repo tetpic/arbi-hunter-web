@@ -80,7 +80,7 @@ export default function CvAbout(props: Props) {
     color={'default'} 
     name={'linkedin'} 
     label='LinkedIn' 
-    prefix={<Image src={'/icons/linkedinLogo.png'} width={20} height={20} alt='linkedin'/>}
+    prefix={<Image src={'/icons/LILogo.png'} width={20} height={20} alt='linkedin'/>}
     labelType='top'/>
 
     <InputField 

@@ -13,6 +13,8 @@ import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import FilesField from '@/components/fields/FilesField'
 import CloudSvg from '@/components/svg/CloudSvg'
 import { ICVCreate } from 'data/interfaces/ICV'
+import { IFile } from 'data/interfaces/Common'
+import { useState } from 'react'
 
 interface Props {
   onClose: ()=> void
@@ -24,8 +26,9 @@ interface PortfolioFields extends Pick<ICVCreate, 'portfolio'|'assetsIds'> {
 }
 
 export interface IPortfolioModal {
-  onSubmit: (data: PortfolioFields) => void
+  onSubmit: (data: PortfolioFields, files?: IFile[]) => void
   portfolio?: string
+  initialFiles?: IFile[]
 }
 
 
@@ -34,9 +37,10 @@ export interface IPortfolioModal {
 export default function AddPortfolioModal(props: Props) {
   const appContext = useAppContext()
   const args:IPortfolioModal = appContext.modalArguments||appContext.bottomSheetArguments
+  const [files, setFiles] = useState<IFile[]>([])
 
   const submit = (data: PortfolioFields) => {
-    args.onSubmit(data)
+    args.onSubmit(data, files)
     appContext.hideModal()
   }
 
@@ -64,7 +68,7 @@ export default function AddPortfolioModal(props: Props) {
         labelType='top'
         validate={Validator.url}
         />
-        <FilesField  name={'assetsIds'} className={styles.filesWrapper} inputClassName={styles.filesInput} buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} />
+        <FilesField initialImages={args.initialFiles} getImages={(setFiles)}  name={'assetsIds'} className={styles.filesWrapper} inputClassName={styles.filesInput} buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} />
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>

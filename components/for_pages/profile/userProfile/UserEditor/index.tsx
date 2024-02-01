@@ -32,15 +32,14 @@ export default function UserEditor(props: Props) {
   const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
 
   const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
-    {type: ModelActions.Joy, duration: 1600},
-    {type: ModelActions.Sadness, duration: 3000},
-    {type: ModelActions.Shrug, duration: 1600},
-    {type: ModelActions.Action_test, duration: 4800},
+    {type: ModelActions.Joy, duration: ~~(characterContext.durations[ModelActions.Joy]*1000)},
+    {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
+    {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
+    {type: ModelActions.Action_test, duration: ~~(characterContext.durations[ModelActions.Action_test]*1000)},
   ]
+
   const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
   const [disableClick, setDisableClick] = useState<boolean>(false)
-
-
 
   const showNextAnimation = () => {
     setDisableClick(true)
@@ -55,7 +54,6 @@ export default function UserEditor(props: Props) {
   const onNavClick = (n: number) => {
     const key = [...categories.keys()].find(el=> el.id === n)
     setActiveSet([key, categories.get(key)])
-
   }
   
   useEffect(()=>{
