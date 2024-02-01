@@ -41,6 +41,8 @@ export const TranslateCurrency = (c: Currency) => {
       return '₽'
     case Currency.USD:
       return '$'
+    case Currency.GRN:
+      return '₴'
   }
   
 }

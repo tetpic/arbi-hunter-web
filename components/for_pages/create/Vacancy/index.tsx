@@ -172,7 +172,7 @@ export default function Vacancy(props: Props) {
   const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
     switch (progress) {
       case 1:
-        return [<VacancyName/>, VacancyNavigation.Name] 
+        return [<VacancyName onSuggestClick={()=>nextPageValidator()}/>, VacancyNavigation.Name] 
       case 2: 
         return [<Specialization/>, VacancyNavigation.Specialization]
       case 3: 

@@ -13,10 +13,10 @@ export default function Contacts(props: Props) {
     <SectionSubtitle text={'Показывать в вакансии:'} className={styles.title}/>
 
     <div className={styles.checkboxWrapper}>
-      <CheckboxField name={'showContactName'} label='Контактное лицо'/>
-      <CheckboxField name={'showEmail'} label='Email'/>
-      <CheckboxField name={'showTelegramNickname'} label='Telegram'/>
-      <CheckboxField name={'showPhone'} label='Телефон'/>
+      <CheckboxField name={'showContactName'} label='Контактное лицо' value={true}/>
+      <CheckboxField name={'showEmail'} label='Email' value={true} />
+      <CheckboxField name={'showTelegramNickname'} label='Telegram' value={true} />
+      <CheckboxField name={'showPhone'} label='Телефон' value={true} />
     </div>    
 
     <SectionSubtitle text={'Контакты:'} className={styles.title}/>

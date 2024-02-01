@@ -7,6 +7,7 @@ import Checkbox from '@/components/fields/CheckboxListField/Checkbox'
 import classNames from 'classnames'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import TagsRadioList from '../../TagsRadioList'
+import { TranslateCurrency } from 'utils/enumsTranslations'
 
 interface Props {
 }
@@ -34,6 +35,7 @@ export default function Compensation(props: Props) {
           labelType={'static'}
           priceFormatting
           error='Одно из полей должно быть заполнено'
+          suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
           />
           <span> – </span>
           <InputField  
@@ -47,6 +49,7 @@ export default function Compensation(props: Props) {
           label={'До'} 
           priceFormatting
           error='Одно из полей должно быть заполнено'
+          suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
 
           />
         </div>
@@ -76,3 +79,6 @@ export default function Compensation(props: Props) {
     </div>
   )
 }
+
+
+

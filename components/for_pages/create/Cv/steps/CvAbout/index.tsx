@@ -12,6 +12,7 @@ import { useState } from 'react'
 import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import classNames from 'classnames'
 import DateField from '@/components/fields/DateField'
+import Image from 'next/image'
 
 interface Props {
 }
@@ -66,10 +67,37 @@ export default function CvAbout(props: Props) {
   text={<>Добавить другие способы связи <ArrowDownSvg className={isActive&&styles.rotated} /></>}
   />
   <div className={classNames(styles.inputsWrapper, !isActive&&styles.disabled)}>
-    <InputField styleType={'default'} color={'default'} name={'whatsapp'} label='WhatsApp' labelType='top'/>
-    <InputField styleType={'default'} color={'default'} name={'linkedin'} label='LinkedIn' labelType='top'/>
-    <InputField styleType={'default'} color={'default'} name={'viber'} label='Viber' labelType='top'/>
-    <InputField styleType={'default'} color={'default'} name={'skype'} label='Skype' labelType='top'/>
+    <InputField 
+    styleType={'default'} 
+    color={'default'} 
+    name={'whatsapp'} 
+    label='WhatsApp' 
+    prefix={<Image src={'/icons/whatsappLogo.png'} width={20} height={20} alt='whatsapp'/>}
+    labelType='top'/>
+
+    <InputField 
+    styleType={'default'} 
+    color={'default'} 
+    name={'linkedin'} 
+    label='LinkedIn' 
+    prefix={<Image src={'/icons/linkedinLogo.png'} width={20} height={20} alt='linkedin'/>}
+    labelType='top'/>
+
+    <InputField 
+    styleType={'default'} 
+    color={'default'} 
+    name={'viber'} 
+    label='Viber' 
+    prefix={<Image src={'/icons/viberLogo.png'} width={20} height={20} alt='viber'/>}
+    labelType='top'/>
+
+    <InputField 
+    styleType={'default'} 
+    color={'default'} 
+    name={'skype'} 
+    label='Skype' 
+    prefix={<Image src={'/icons/skypeLogo.png'} width={20} height={20} alt='skype'/>}
+    labelType='top'/>
   </div>
 
   <SectionSubtitle text='Добавить текст о себе'/>

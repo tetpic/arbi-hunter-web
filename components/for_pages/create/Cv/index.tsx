@@ -148,7 +148,7 @@ export default function Cv(props: Props) {
   const getComponent = (progress: number): [JSX.Element, CvNavigation] => {
     switch (progress) {
       case 1: 
-        return [<CvName/>, CvNavigation.Specialization]
+        return [<CvName onSuggestClick={nextPageValidator}/>, CvNavigation.Specialization]
       case 2: 
         return [<CvAbout/>, CvNavigation.About]
       case 3: 

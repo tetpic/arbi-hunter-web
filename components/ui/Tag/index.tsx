@@ -14,7 +14,10 @@ interface Props {
 
 /**
  * @onClick ? ()=>void
+ * @link ?: string
  * @text string
+ * @className ?: string
+ * @isActive ?: boolean
  */
 export default function Tag(props: Props) {
 

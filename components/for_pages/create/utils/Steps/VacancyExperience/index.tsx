@@ -97,7 +97,7 @@ export default function VacancyExperience(props: Props) {
     <AddButton 
     className={styles.addButton} 
     onClick={()=>openSourcesModal({type: 'verticals'})} 
-    text={'Добавить Вертикали'}
+    text={'Добавить вертикали'}
     title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
     /> 
     {cvContext.helpObjects?.activeVerticals?.size > 0 &&<>

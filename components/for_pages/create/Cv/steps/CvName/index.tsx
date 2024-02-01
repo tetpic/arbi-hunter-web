@@ -11,6 +11,7 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import LoupeSvg from '@/components/svg/LoupeSvg'
 
 interface Props {
+  onSuggestClick: () => void
 }
 
 export default function CvName(props: Props) {
@@ -37,6 +38,7 @@ export default function CvName(props: Props) {
     setIsActive(false)
     formikContext.setFieldValue('searchPosition', '')
     isDisable.current = true
+    props.onSuggestClick()
   }
 
   useEffect(()=>{
@@ -48,8 +50,6 @@ export default function CvName(props: Props) {
       isDisable.current = false
     }
   }, [formikContext.values.searchPosition])
-
-
 
   return (
     <div className={styles.root}> 

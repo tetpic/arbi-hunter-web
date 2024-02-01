@@ -174,7 +174,7 @@ export default function Skills(props: Props) {
       choosenSkills: cvContext.helpObjects?.skills,
       onSubmit: (data) => {
         const helpSkills = cvContext.helpObjects?.skills
-        cvContext.setHelpObjects({...cvContext.helpObjects, skills: new Map([...helpSkills, ...data])})
+        cvContext.setHelpObjects({...cvContext.helpObjects, skills: new Map([...data])})
         appContext.hideModal()
       }
     })} 

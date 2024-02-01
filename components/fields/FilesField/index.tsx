@@ -11,6 +11,7 @@ import Button from 'components/ui/Button'
 import { FILES } from 'types/constants'
 import ReactPlayer from 'react-player'
 import classNames from 'classnames'
+import Image from 'next/image'
 
 interface Props extends IField<any>{
   buttonName?: string|JSX.Element|JSX.Element[]
@@ -50,6 +51,18 @@ export default function FilesField(props: Props) {
     setImages(newImages)
   }
 
+  const getDefaultImage = (mimeType: string) => {
+    if(mimeType.includes('pdf')) {
+      return '/icons/pdfIcon.png'
+    }
+    else if(mimeType.includes('doc')) {
+      return '/icons/wordIcon.png'
+    }
+    else {
+      return '/icons/fileIcon.png'
+    }
+  }
+
   useEffect(()=>{
     helpers.setValue([...images.values()].filter(el=>el.loaded).map(el=> el.id))
     props.getImages&&props.getImages([...images.values()].filter(el=>el.loaded).map(el=> el.data))
@@ -72,6 +85,12 @@ export default function FilesField(props: Props) {
                }
                {(el.image?.type.includes('video')||el.data?.type === 'VIDEO') &&
                  <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} controls/>
+               }
+               {el.data?.type === 'BINARY' &&
+               <>
+                <Image key={i} src={getDefaultImage(el.image.type)} width={120} height={120} alt={'fileImage'}/>
+                <p className={styles.fileName}>{el.image?.name}</p> 
+               </>
                }
             </div>
           )

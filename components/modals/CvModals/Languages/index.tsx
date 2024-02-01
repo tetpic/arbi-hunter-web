@@ -29,9 +29,10 @@ export default function LangaugesModal(props: Props) {
   const args: ILangaugesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
-  const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
+  const [activeDropDown, setActiveDropDown] = useState<'langs'|'levels'|undefined>('langs')
+  // const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
+  // const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
   const [langRadioActive, setLangRadioActive] = useState<Languages>(null)
-  const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
   const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
   
   useEffect(()=>{
@@ -56,8 +57,14 @@ export default function LangaugesModal(props: Props) {
     disabledButton={!langRadioActive || !levelRadioActive}
     >
       <div className={styles.wrapper}>
-        <p className={styles.title} onClick={()=>{setLangsActive(!langsDropdownActive)}}>Язык <ArrowDownSvg className={langsDropdownActive&&styles.arrow_active}/></p>
-        <div className={classNames(styles.list, langsDropdownActive&&styles.list_active)}>
+        <p className={styles.title} 
+        onClick={()=>{
+          activeDropDown==='langs'?setActiveDropDown(undefined):setActiveDropDown('langs')
+        }}
+        >
+          Язык <ArrowDownSvg className={activeDropDown==='langs'&&styles.arrow_active}/>
+        </p>
+        <div className={classNames(styles.list, activeDropDown==='langs'&&styles.list_active)}>
           {langs&&langs.map((el, index) => {
               return (
                 <Radio 
@@ -73,8 +80,15 @@ export default function LangaugesModal(props: Props) {
         </div>
       </div>
       <div className={styles.wrapper}>
-        <p className={styles.title} onClick={()=>{setLevelsActive(!levelsDropdownActive)}} >Уровень владения <ArrowDownSvg className={levelsDropdownActive&&styles.arrow_active}/></p>
-        <div className={classNames(styles.list, levelsDropdownActive&&styles.list_active)}>
+        <p className={styles.title} 
+        onClick={()=>{
+          activeDropDown==='levels'?setActiveDropDown(undefined):setActiveDropDown('levels')
+        }} 
+        >
+          Уровень владения 
+          <ArrowDownSvg className={activeDropDown==='levels'&&styles.arrow_active}/>
+        </p>
+        <div className={classNames(styles.list, activeDropDown==='levels'&&styles.list_active)}>
           {Object.values(LanguageKnowLevel).map((el, index)=> {
             return (
               <Radio 

@@ -167,6 +167,7 @@ export interface PreviewImage {
   id: string|number
   rawId?: string
   data?: IFile
+  mimeType?: string
 }
 
 
