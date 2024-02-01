@@ -22,7 +22,6 @@ services:
             max-size: '100m'
         networks:
           - app
-          - nginx-proxy
     nginx:
         build:
           context: .
