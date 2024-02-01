@@ -169,13 +169,13 @@ export default function Vacancy(props: Props) {
     onSubmit: submit
   })
 
-  const nextPageValidator = (pageNumber?: number):boolean => {
-    const setErr = (val: string, err?: string) => {
-      formik.setFieldTouched(val, true).then(_=>{
-        formik.setFieldError(val, err||' ')
-      })
-    }
+  const setErr = (val: string, err?: string) => {
+    formik.setFieldTouched(val, true).then(_=>{
+      formik.setFieldError(val, err||' ')
+    })
+  }
 
+  const nextPageValidator = (pageNumber?: number):boolean => {
     switch(progress) {
       case 1:
         if(formik.values.name.trim().length < 1) {
@@ -192,7 +192,6 @@ export default function Vacancy(props: Props) {
         setProgress(pageNumber||progress+1)
         return false
       case 3: 
-
         const salaryMinNumber: number = Number(formik.values.salaryMin?.toString().replaceAll(' ', ''))
         const salaryMaxNumber: number = Number(formik.values.salaryMax?.toString().replaceAll(' ', ''))
         if(!salaryMinNumber && !salaryMaxNumber && formik.values.compensation !== CompensationType.Contract) {
@@ -253,7 +252,9 @@ export default function Vacancy(props: Props) {
   const getComponent = (progress: number): [JSX.Element, VacancyNavigation] => {
     switch (progress) {
       case 1:
-        return [<VacancyName onSuggestClick={(val)=> {setTimeout(()=>nextPageValidator(), 100)}}/>, VacancyNavigation.Name] 
+        return [<VacancyName onSuggestClick={(val)=> {
+          setProgress(2)
+        }}/>, VacancyNavigation.Name] 
       case 2: 
         return [<Specialization/>, VacancyNavigation.Specialization]
       case 3: 
