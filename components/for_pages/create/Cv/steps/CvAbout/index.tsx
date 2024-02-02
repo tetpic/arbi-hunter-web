@@ -13,21 +13,23 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import classNames from 'classnames'
 import DateField from '@/components/fields/DateField'
 import Image from 'next/image'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
 
 export default function CvAbout(props: Props) {
   const {values, setFieldValue} = useFormikContext<ICVCreate>()
+  const userContext = useUserContext()
 
   const [isActive, setIsActive] = useState<boolean>(true)
 
   return (<div className={styles.root}> 
   <SectionSubtitle text='Основная информация:'/>
   <div className={styles.inputsWrapper}>
-    <InputField styleType={'default'} disabled={values.firstName?.length>0} color={'default'} name={'firstName'} label='Имя' labelType='top'/>
-    <InputField styleType={'default'} disabled={values.lastName?.length>0} color={'default'} name={'lastName'} label='Фамилия' labelType='top'/>
-    <InputField styleType={'default'} disabled={values.patronymic?.length>0} color={'default'} name={'patronymic'} label='Отчество' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.firstName)} color={'default'} name={'firstName'} label='Имя' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.lastName)} color={'default'} name={'lastName'} label='Фамилия' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.patronymic)} color={'default'} name={'patronymic'} label='Отчество' labelType='top'/>
   </div>
 
   <TagsRadioList<string> 
