@@ -15,6 +15,7 @@ import { useAppContext } from 'context/state'
 import Validator from 'utils/Validator'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import { TranslateCurrency } from 'utils/enumsTranslations'
 
 interface Props {
   onClose?: () => void
@@ -68,6 +69,7 @@ export default function CompensationModal(props: Props) {
         color={'white'} 
         priceFormatting
         name={'salary'}
+        suffix={<span className={styles.suffix}>{TranslateCurrency(formik.values.currency)}</span>}
         validate={Validator.required}
         />      
         <TagsRadioList 

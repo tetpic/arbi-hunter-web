@@ -69,7 +69,7 @@ export default function Cv(props: Props) {
       ...data, 
       commission: Number(data.commission),
       skillsIds: [...skills.keys()], 
-      salary: Number(data.salary.toString().replaceAll(' ', '')),
+      salary: Number(data.salary?.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
       categoriesIds: [creationContext.activeSubCategory[0].id],
@@ -105,7 +105,7 @@ export default function Cv(props: Props) {
   const initialValues:ICVCreate  = {
     firstName: userContext.currentProfile?.firstName,
     lastName: userContext.currentProfile?.lastName,
-    patronymic: userContext.currentProfile?.patronymic||'unset',
+    patronymic: userContext.currentProfile?.patronymic,
     birthday: userContext.currentProfile?.birthday,
     compensation: props.cv?.compensation||undefined,
     phone: userContext.currentProfile?.phone,
