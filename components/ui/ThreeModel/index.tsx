@@ -34,6 +34,7 @@ export function ThreeModel(props: IThreeModelProps) {
   const { actions } = useAnimations(animations, mesh)
 
   useEffect(()=>{   
+    
     if(!actions[currentAction.current]) {
       return
     }
@@ -57,6 +58,8 @@ export function ThreeModel(props: IThreeModelProps) {
     })
   
   }, [animations])
+  
+
 
   if(props.model === 'woman') {
     return (
@@ -70,17 +73,17 @@ export function ThreeModel(props: IThreeModelProps) {
             material={materials[`Body_${props.color||'0'}`]} 
             skeleton={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].skeleton} />     
 
-            {props.chain &&
-              <skinnedMesh name={`Chain_${props.chain}_${props.body}`} geometry={nodes[`Chain_${props.chain}_${props.body}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body}`].skeleton} />
+            {props.chain !== undefined &&
+              <skinnedMesh name={`Chain_${props.chain}_${props.body||'0'}`} geometry={nodes[`Chain_${props.chain}_${props.body||'0'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body||'0'}`].skeleton} />
             }        
             <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
-            {props.face && 
+            {props.face !== undefined && 
               <skinnedMesh name={`Face_${props.face||'0'}`} geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} skeleton={nodes[`Face_${props.face||'0'}`].skeleton} />
             }        
-            {props.glasses &&
+            {props.glasses !== undefined &&
               <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
             }        
-            {props.hair && 
+            {props.hair !== undefined && 
                 <skinnedMesh name={`Hair_${props.cap||props.hair||'0'}`} geometry={nodes[`Hair_${props.cap||props.hair||'0'}`].geometry} material={materials[`Hair_${props.cap||props.hair||'0'}`]} skeleton={nodes[`Hair_${props.cap||props.hair||'0'}`].skeleton} />
             }        
             <skinnedMesh name={`Head_${props.face !== '1' &&props.emotion||'0'}_${props.face !== '1' &&props.emotion||'0'}`} geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
@@ -105,17 +108,17 @@ export function ThreeModel(props: IThreeModelProps) {
           {props.cap && props.model === 'man' &&
             <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
           }
-          {props.chain &&
-          <skinnedMesh name={`Chain_${props.chain}_${props.body}`} geometry={nodes[`Chain_${props.chain}_${props.body}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body}`].skeleton} />
+          {props.chain !== undefined &&
+          <skinnedMesh name={`Chain_${props.chain}_${props.body||'0'}`} geometry={nodes[`Chain_${props.chain}_${props.body||'0'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body||'0'}`].skeleton} />
           }
           <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
-          {props.face && 
+          {props.face !== undefined && 
           <skinnedMesh name={`Face_${props.face||'0'}`} geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} skeleton={nodes[`Face_${props.face||'0'}`].skeleton} />
           }
-          {props.glasses &&
+          {props.glasses !== undefined &&
             <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
           }
-          {props.hair && 
+          {props.hair !== undefined && 
             <skinnedMesh name={`Hair_${!props.cap&&props.hair||'0'}`} geometry={nodes[`Hair_${!props.cap&&props.hair||'0'}`].geometry} material={materials[`Hair_${!props.cap&&props.hair||'0'}`]} skeleton={nodes[`Hair_${!props.cap&&props.hair||'0'}`].skeleton} />
           }
           <skinnedMesh name={`Head_${props.face !== '1' &&props.emotion||'0'}_${props.face !== '1' &&props.emotion||'0'}`} geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />

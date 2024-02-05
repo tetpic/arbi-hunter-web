@@ -16,8 +16,11 @@ interface Props {
 export enum ModelActions {
   Idle= 'Idle',
   Action_test = 'Action_test',
-  Joy ='Joy',
+  // Joy ='Joy',
   Laughter='Laughter',
+  Laughter2='[Размещённое действие]',
+  Laughter3='[Размещённое действие].001',
+  Laughter4='Laughter_4',
   Sadness='Sadness',
   Shrug='Shrug',
   LongAnimation='Long_animation_test'
@@ -31,25 +34,25 @@ export default function UserEditor(props: Props) {
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
   const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
 
-  const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
-    {type: ModelActions.Joy, duration: ~~(characterContext.durations[ModelActions.Joy]*1000)},
-    {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
-    {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
-    {type: ModelActions.Action_test, duration: ~~(characterContext.durations[ModelActions.Action_test]*1000)},
-  ]
+  // const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
+  //   {type: ModelActions.Laughter2, duration: ~~(characterContext.durations[ModelActions.Laughter2]*1000)||1600},
+  //   {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
+  //   {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
+  //   {type: ModelActions.Action_test, duration: ~~(characterContext.durations[ModelActions.Action_test]*1000)},
+  // ]
 
-  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
+  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(undefined)
   const [disableClick, setDisableClick] = useState<boolean>(false)
 
-  const showNextAnimation = () => {
-    setDisableClick(true)
-    setAction(temporaryAnimation.type)
-    setTimeout(()=> {
-      setAction(ModelActions.LongAnimation)
-      setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
-      setDisableClick(false)      
-    }, temporaryAnimation.duration)
-  }
+  // const showNextAnimation = () => {
+  //   setDisableClick(true)
+  //   setAction(temporaryAnimation.type)
+  //   setTimeout(()=> {
+  //     setAction(ModelActions.LongAnimation)
+  //     setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
+  //     setDisableClick(false)      
+  //   }, temporaryAnimation.duration)
+  // }
 
   const onNavClick = (n: number) => {
     const key = [...categories.keys()].find(el=> el.id === n)
@@ -77,9 +80,9 @@ export default function UserEditor(props: Props) {
       <ItemNavigation activeItem={activeSet[0]?.id} items={[...categories.keys()].map(el=> {return {name: el.name, type: el.id}})} onClick={(n)=> onNavClick(n)}/>
       }
 
-      <div className={classnames(styles.model, disableClick&&styles.model_disabled)} onClick={()=> showNextAnimation()} > 
+      <div className={classnames(styles.model, disableClick&&styles.model_disabled)} onClick={()=> {}} > 
         {dataLoaded && variant &&
-          <ThreeModelVariant data={variant} r={4} actions={action}/>
+          <ThreeModelVariant data={variant} r={4} />
           ||
           <Spinner size={32} />
         }
