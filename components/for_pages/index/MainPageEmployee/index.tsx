@@ -35,13 +35,14 @@ export default function MainPageEmployee() {
 
   const actionsAllowedMap: {type: ModelActions, duration: number}[] = characterContext.variant.model === 'man'?
   [
+    {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
-    {type: ModelActions.Laughter2, duration: ~~(characterContext.durations[ModelActions.Laughter2]*1000)},
-    {type: ModelActions.Laughter3, duration: ~~(characterContext.durations[ModelActions.Laughter3]*1000)},
-    {type: ModelActions.Laughter4, duration: ~~(characterContext.durations[ModelActions.Laughter4]*1000)},
-    {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
+    {type: ModelActions.New, duration: ~~(characterContext.durations[ModelActions.New]*1000)},
+    {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
+    {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
-    {type: ModelActions.Action_test, duration: ~~(characterContext.durations[ModelActions.Action_test]*1000)},
+    {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
+    {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
   ]:
   [
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},

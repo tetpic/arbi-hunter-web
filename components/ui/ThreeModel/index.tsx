@@ -99,7 +99,6 @@ export function ThreeModel(props: IThreeModelProps) {
       <group name={'Scene'}>
         <group name={'Арматура'} key={2}>
           <primitive object={nodes.Spine} />
-          <primitive object={nodes.neutral_bone} />
           <skinnedMesh 
           name={`Body_${props.body||'0'}${props.body||'_0'}`} 
           geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} 

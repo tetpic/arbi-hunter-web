@@ -14,16 +14,18 @@ interface Props {
 }
 
 export enum ModelActions {
-  Idle= 'Idle',
   Action_test = 'Action_test',
-  // Joy ='Joy',
-  Laughter='Laughter',
-  Laughter2='[Размещённое действие]',
-  Laughter3='[Размещённое действие].001',
-  Laughter4='Laughter_4',
-  Sadness='Sadness',
-  Shrug='Shrug',
-  LongAnimation='Long_animation_test'
+  Appearance = 'Appearance',
+  Idle = 'Idle',
+  Laughter ='Laughter',
+  New = 'New',
+  No = 'No',  
+  Sadness = 'Sadness',
+  ShakesHead = 'Shakes_head',
+  Shrug = 'Shrug',
+  TurnsAway = 'Turns_away',
+  LongAnimation = 'Long_animation_test',
+  Yes = 'Yes'
 } 
 
 
