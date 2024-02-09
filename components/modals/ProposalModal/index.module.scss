@@ -16,10 +16,10 @@
   padding-left: unset;
 }
 
-.buttonYellow {
+.buttonGradient {
   margin-top: 16px;
   width: 100%;
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     position: absolute;
     bottom: 16px;

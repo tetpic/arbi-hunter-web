@@ -155,7 +155,7 @@ export default function CurrentCourse(props: Props) {
               {Formatter.formatPrice(course.price)}
             </p>
             <div className={styles.buttonsWrapper}>
-              <Button className={styles.buttonYellow}>Купить курс</Button>
+              <Button className={styles.buttonGradient}>Купить курс</Button>
               <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
             </div>
           </>}
@@ -221,7 +221,7 @@ export default function CurrentCourse(props: Props) {
 
     {isTabletWidth &&
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.buttonYellow}>Купить курс</Button>
+        <Button className={styles.buttonGradient}>Купить курс</Button>
         <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
       </div>
     }

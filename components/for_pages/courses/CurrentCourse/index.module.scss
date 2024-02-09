@@ -221,8 +221,8 @@
   }
 }
 
-.buttonYellow {
-  @include buttonYellow;
+.buttonGradient {
+  @include buttonGradient;
   font-size: $largeText;
   font-weight: $semibold;
   padding: 16px 32px;

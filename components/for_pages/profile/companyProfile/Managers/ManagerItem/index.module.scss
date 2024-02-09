@@ -49,6 +49,6 @@
 
   .setAdmin {
     align-self: flex-start;
-    @include buttonBlack;
+    @include buttonBorderGradient;
   }
 }

@@ -46,14 +46,14 @@
   width: 100%;
   row-gap: 16px;
 
-  .buttonYellow {
+  .buttonGradient {
     width: 100%;
-    @include buttonYellow;
+    @include buttonGradient;
   }
 
-  .buttonBlack {
+  .buttonBorderGradient {
     width: 100%;
-    @include buttonBlack;
+    @include buttonBorderGradient;
   }
 }
 

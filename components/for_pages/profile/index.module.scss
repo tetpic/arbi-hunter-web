@@ -15,7 +15,7 @@
 
 .saveCharButton {
   @include mq($TabletWidth, min) {
-    @include buttonYellow;
+    @include buttonGradient;
   }
   @include mq($TabletWidth, max) {
     font-size: $mediumText;

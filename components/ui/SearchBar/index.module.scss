@@ -1,12 +1,12 @@
 @import 'styles/index';
 
 .root {
-  @include buttonBlack;
-  padding: 8px 8px 8px 16px;
+  // @include buttonBorderGradient;
+  padding: 8px 0px;
   height: unset;
   display: flex;
   justify-content: space-between;
-  column-gap: 16px;
+  column-gap: 8px;
   cursor: default;
   max-width: 764px;
   margin-inline: auto;
@@ -19,10 +19,12 @@
 
 
   .button {
-    @include buttonYellow;
+    @include buttonBlack;
     position: relative;
     z-index: 4;
     height: 40px;
+    border: 2px $blue solid;
+    padding: 8px 16px;
     @include mq($TabletWidth, max) {
       width: 100%;
     }
@@ -34,9 +36,12 @@
     font-weight: $medium;
     position: relative;
     z-index: 4;
-    width: calc(100% - 160px);
+    width: calc(100% - 130px);
     min-width: 258px;
     background-color: transparent;
+    height: 40px;
+    background-color: $grey;
+    border-radius: 10px;
     @include mq($TabletWidth, max) {
       width: 100%;
       min-width: unset;
@@ -51,13 +56,14 @@
   }
 
   .filterButton {
-    margin-left: auto;
     cursor: pointer;
     border-radius: 6px;
     overflow: hidden;
     border-radius: 6px;
     padding: 4px;
     flex-shrink: 0;
+    @include buttonBlack;
+    padding: 8px;
 
     &_active {
       svg {

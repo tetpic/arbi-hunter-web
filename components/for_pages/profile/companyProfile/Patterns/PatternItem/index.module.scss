@@ -47,7 +47,7 @@
 }
 
 .button {
-  @include buttonYellow;
+  @include buttonGradient;
   margin-top: 16px;
   @include mq($TabletWidth, max) {
     width: 100%;

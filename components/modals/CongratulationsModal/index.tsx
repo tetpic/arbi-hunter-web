@@ -39,8 +39,8 @@ export default function CongratulationsModal(props: Props) {
       <p className={styles.info}>Скачайте сертификат о прохождении курса</p>
       
       <div className={styles.buttonsWrapper}>
-        <Link target='_blank'  download rel="noopener noreferrer" href={FILES + args.course.certificate.source} className={styles.buttonYellow}>Скачать сертификат</Link>
-        <Button className={styles.buttonBlack} onClick={openFeedbacks} >Оставить отзыв</Button>
+        <Link target='_blank'  download rel="noopener noreferrer" href={FILES + args.course.certificate.source} className={styles.buttonGradient}>Скачать сертификат</Link>
+        <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >Оставить отзыв</Button>
       </div>
     </div>
   )

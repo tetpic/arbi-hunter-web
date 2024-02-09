@@ -182,7 +182,7 @@
 
   .buyButton {
     grid-area: c;
-    @include buttonYellow;
+    @include buttonGradient;
     height: 32px;
     width: 100%;
   }

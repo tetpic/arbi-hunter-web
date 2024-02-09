@@ -108,7 +108,7 @@
 }
 
 .action {
-  @include buttonYellow;
+  @include buttonGradient;
   width: unset;
   padding: 8px;
 }

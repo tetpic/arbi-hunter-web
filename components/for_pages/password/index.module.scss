@@ -96,7 +96,7 @@
   font-size: $mediumText;
   font-weight: $medium;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
   cursor: pointer;
 
   &_active {

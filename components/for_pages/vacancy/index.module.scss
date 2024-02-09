@@ -32,7 +32,7 @@
   row-gap: 16px;
 
   .button {
-    @include buttonYellow;
+    @include buttonGradient;
     width: 100%;
   }  
 }
@@ -116,7 +116,7 @@
 
 
   .responseButton {
-    @include buttonYellow;
+    @include buttonGradient;
     width: 100%;
   }
 }

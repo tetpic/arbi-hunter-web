@@ -58,7 +58,7 @@ export default function UserImageModal(props: Props) {
         <Button className={styles.button} onClick={props.onClose}>
           Отмена
         </Button>
-        <Button className={styles.buttonYellow} onClick={()=>onSave()}>
+        <Button className={styles.buttonGradient} onClick={()=>onSave()}>
           Применить
         </Button>
       </div>

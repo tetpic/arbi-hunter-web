@@ -113,7 +113,7 @@
 .createBtn {
   margin-top: 32px;
   margin-inline: auto;
-  @include buttonYellow;
+  @include buttonGradient;
 
   p {
     display: flex;

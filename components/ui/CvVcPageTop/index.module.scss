@@ -64,6 +64,6 @@
 
   .showContacts {
     grid-area: cont;
-    @include buttonYellow;
+    @include buttonGradient;
   }
 }

@@ -95,7 +95,7 @@ export default function ProposalModal(props: Props) {
         ||
         loading && <Spinner size={24}/>
         }
-        <Button type='button' onClick={formik.submitForm} className={styles.buttonYellow}>Продолжить</Button>
+        <Button type='button' onClick={formik.submitForm} className={styles.buttonGradient}>Продолжить</Button>
       </Form>
     </FormikProvider>
   )

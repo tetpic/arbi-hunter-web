@@ -19,6 +19,9 @@ import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { getUserImageSource } from 'utils/helpers'
+import SearchBar from '@/components/ui/SearchBar'
+import NotificationSvg from '@/components/svg/NotificationSvg'
+import HeartSvg from '@/components/svg/HeartSvg'
 
 const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
@@ -71,9 +74,11 @@ export default function Header(props: Props) {
 
   return ( 
     <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
+      {(!userContext.isLogged || !userContext.currentProfile) &&
       <Link href={userContext.currentProfile?'/profile':'/'} className={styles.logo}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       </Link>
+      }
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
           <Modes 
@@ -85,15 +90,16 @@ export default function Header(props: Props) {
           onSet={(type)=>setProfileType(type)}/>  
         }
 
-        {!isTabletWidth &&
+        {!isTabletWidth && userContext.isLogged && userContext.currentProfile?.profileType &&
           <div className={styles.linksWrapper}>
-            <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
+            <SearchBar onFilterClick={()=> {}}/>
+            {/* <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
             <Link className={styles.link} href={'/media'}>Медиа</Link>
-            <Link className={styles.link} href={'/courses'}>Онлайн обучение</Link>
+            <Link className={styles.link} href={'/courses'}>Онлайн обучение</Link> */}
           </div>
         }
         
-        {!isTabletWidth &&
+        {!isTabletWidth && 
           <div className={styles.userWrapper}>
             {!userContext.currentProfile && <>
               <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}><span>Регистрация</span></Link>
@@ -103,6 +109,12 @@ export default function Header(props: Props) {
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
             <>
               <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
+              <Button className={styles.iconButton}>
+                <NotificationSvg/>
+              </Button>
+              <Button  className={styles.iconButton}>
+                <HeartSvg/>
+              </Button>
               <UserPic 
               key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
               image={getUserImageSource(userContext.currentProfile)} 
@@ -114,6 +126,12 @@ export default function Header(props: Props) {
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
             <>
               <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
+              <Button  className={styles.iconButton}>
+                <NotificationSvg/>
+              </Button>
+              <Button  className={styles.iconButton}>
+                <HeartSvg/>
+              </Button>
               <UserPic 
               key={1} 
               image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 

@@ -21,7 +21,7 @@ export default class VacancyRepository {
   static async getArchiveVacancies(): Promise<IVacancy[]|null> {
     const res = await request({
       method: 'get',
-      url: '/api/vacancy/currentUser?s={"published": false}',
+      url: '/api/vacancy/currentUser?s={"published": false}&sort=updatedAt,DESC',
     })
     if(res.err) {
       return null

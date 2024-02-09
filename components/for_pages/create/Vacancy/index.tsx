@@ -313,7 +313,7 @@ export default function Vacancy(props: Props) {
       case 3: 
         return {src: '/rive/vacancyCreate/3.riv', animations: ['Text']}
       case 4: 
-        return {src: '/rive/vacancyCreate/4.riv', animations: ['Text']}
+        return {src: '/rive/vacancyCreate/4.riv', animations: ['Text1', 'Text2']}
       case 5: 
         return {src: '/rive/vacancyCreate/5.riv', animations: ['Man1','Man2', 'Man1Head']}
       case 6: 
@@ -327,7 +327,7 @@ export default function Vacancy(props: Props) {
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
+    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{
@@ -364,7 +364,7 @@ export default function Vacancy(props: Props) {
     <div className={styles.content}>    
       <p className={styles.title}>
         {isPhoneWidth &&
-          <Button className={styles.buttonBlackSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
+          <Button className={styles.buttonBorderGradientSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
         }
         {title}
       </p>
@@ -378,13 +378,13 @@ export default function Vacancy(props: Props) {
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
+              <Button className={styles.buttonBorderGradient} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
+              <Button className={styles.buttonGradient} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button isProcess={formik.isSubmitting} spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonYellow}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
+              <Button isProcess={formik.isSubmitting} spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonGradient}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
         </Form>

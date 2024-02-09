@@ -50,7 +50,7 @@
     line-height: 170%;
     cursor: pointer;
     @include transitionDefault;
-    @include hoverButtonBlack;
+    @include hoverbuttonBorderGradient;
   }
 }
 

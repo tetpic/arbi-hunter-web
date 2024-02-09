@@ -1,4 +1,4 @@
-import {formatRelative, subDays} from 'date-fns'
+import {formatRelative, subDays, formatDistanceStrict, formatDistance} from 'date-fns'
 import {ru} from 'date-fns/locale'
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat
@@ -22,6 +22,17 @@ export default class Formatter {
     return phone
   }
 
+  static formatDate(date: string|Date, options?:{plusDays?: number, timeOptions?: Intl.DateTimeFormatOptions}){
+    const recievedDate = new Date(date)
+    recievedDate.setDate(recievedDate.getDate()+(options?.plusDays||0))
+
+    return new Intl.DateTimeFormat('ru', {
+      day: 'numeric',
+      month: 'long',
+      ...options.timeOptions
+    }).format(new Date(recievedDate))
+  }
+
   static formatDateRelative(date: string | Date) {
     const formatRelativeLocale: { [key: string]: string } = {
       'yesterday': 'Вчера в HH:mm',
@@ -42,11 +53,14 @@ export default class Formatter {
     return formatRelative(subDays(new Date(date), 0) , new Date(), {locale})
   }
 
-  // static formatDistanceToNow(date: string | Date) {
-  //   const dt = formatDistance(subDays(new Date(), 0), new Date(date), { locale: ru })
-  //   console.log(dt)
-  //   return dt
-  // }
+  static formatDistanceToNow(date: string | Date, options?:{plusDistance?: number, strict?: boolean}) {
+    const recievedDate = new Date(date)
+    recievedDate.setDate(recievedDate.getDate()+(options?.plusDistance||0))
+    const dt = options?.strict
+    ?formatDistanceStrict(new Date(), new Date(recievedDate),  { locale: ru, roundingMethod: 'round' })
+    :formatDistance(subDays(new Date(), 0), new Date(recievedDate), { locale: ru })
+    return dt
+  }
 
   /** get formatted phone number +79999999999, return +7 999 999-99-99 */
   static formatPhone(phone: string):string {

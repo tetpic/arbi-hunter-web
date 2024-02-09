@@ -25,7 +25,7 @@
 }
 
 .addButton {
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     margin-left: unset;
     position: fixed;

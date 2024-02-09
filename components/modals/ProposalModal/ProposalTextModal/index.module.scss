@@ -14,9 +14,9 @@
   margin-top: 24px;
 }
 
-.buttonYellow {
+.buttonGradient {
   margin-top: 16px;
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($PhoneWidth, max) {
     position: absolute;
     bottom: 16px;

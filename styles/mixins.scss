@@ -235,7 +235,7 @@
   }
 }
 
-@mixin hoverButtonBlack {
+@mixin hoverbuttonBorderGradient {
   @include hover {
     background-color: $greyLight;
     // &:before {
@@ -256,7 +256,7 @@
   transition: .3s ease-in-out;
 }
 
-@mixin hoverButtonYellow {
+@mixin hoverbuttonGradient {
   @include hover {
     background-position: 100%;
     // color: $black;
@@ -308,20 +308,20 @@
   }
 }
 
-@mixin buttonYellow {
+@mixin buttonGradient {
   background: $gradient;
   background-size: 200%;
   color: $white;
   @include buttonDefault;
-  @include hoverButtonYellow;
+  @include hoverbuttonGradient;
 }
 
-@mixin buttonBlack {
+@mixin buttonBorderGradient {
   background-size: 100%;
   background-color: $grey;
   position: relative;
   @include buttonDefault;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
   display: flex;
   align-items: center;
   &:after {
@@ -359,6 +359,21 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+}
+
+@mixin buttonBlack {
+  @include buttonDefault;
+  background-color: $grey;
+  position: relative;
+  span {
+    color: $blue;
+  }
+
+  @include hover {
+    span{
+      color: $white;
+    }
   }
 }
 

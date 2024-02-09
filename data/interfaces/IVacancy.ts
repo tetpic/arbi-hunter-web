@@ -1,4 +1,4 @@
-import { WorkExperience } from 'types/enums'
+import { TariffType, WorkExperience } from 'types/enums'
 import { ISource } from './Common'
 import { IApplication } from './IApplication'
 import { ICV,} from './ICV'
@@ -24,6 +24,8 @@ export interface IVacancyCreate extends IJob {
   showTelegramNickname?: boolean
 }
 
+
+
 export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   contactName: string,
   schedulePublishAt: null,
@@ -33,6 +35,9 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   skills: ISource[],
   sources: ISource[]
   applicationByCurrentUser: IApplication
+  tariff: TariffType
+  topPurchasedAt: string|null
+  publishedAt: string|null
 }
 
 

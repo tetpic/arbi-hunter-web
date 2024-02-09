@@ -2,15 +2,16 @@ import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
-import { useCreateVcCvContext } from './createVcCv_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { ModerationStatusType } from 'types/enums'
 
 interface IState {
   currentVacancy: IVacancy
   setCurrentVacancy: (id: number)=> void
 
+  draftVacancies: Map<number, IVacancy>
   archiveVacancies: Map<number, IVacancy>
-  setArchiveVacancies: ()=>Promise<boolean>
+  setInactiveVacancies: ()=>Promise<boolean>
 
   activeVacancies: Map<number, IVacancy>,
   setActiveVacancies: ()=>Promise<boolean>,
@@ -44,9 +45,9 @@ interface Props {
 
 export function VacancyWrapper(props: Props) {
   const router = useRouter()
-  const createVcCvContext = useCreateVcCvContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
+  const [draftVacancies, setDraftVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>(null)
   const [foundVacancies, setFoundVacancies] = useState<Map<number, IVacancy>>(new Map)
   const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
@@ -54,12 +55,21 @@ export function VacancyWrapper(props: Props) {
   const [total, setTotal] = useState<number>(undefined)
 
 
-  const setArchiveVacancies = async(): Promise<boolean> => {
+  const setInactiveVacancies = async(): Promise<boolean> => {
     return VacancyRepository.getArchiveVacancies()
     .then(res=> {
+      const _drafts = res.filter(e=> e.moderationStatus !== ModerationStatusType.Approved)
+      const _archive = res.filter(e=> e.moderationStatus === ModerationStatusType.Approved)
       setArchiveVacanciesState(state=> {
         state.clear()
-        res.forEach(e=> {
+        _archive.forEach(e=> {
+          state.set(e.id, e)
+        })
+        return new Map(state)
+      })
+      setDraftVacanciesState(state=> {
+        state.clear()
+        _drafts.forEach(e=> {
           state.set(e.id, e)
         })
         return new Map(state)
@@ -111,7 +121,7 @@ export function VacancyWrapper(props: Props) {
   const removeVacancy = (id: number, published: boolean) =>{
     VacancyRepository.removeVacancy(id)
     .then(res=> {
-      published?setActiveVacancies():setArchiveVacancies()
+      published?setActiveVacancies():setInactiveVacancies()
     })
   }
 
@@ -119,7 +129,7 @@ export function VacancyWrapper(props: Props) {
     return VacancyRepository.editVacancyById(v, id)
     .then(_=>{
       if(published !==undefined) {
-        published==='active'?setActiveVacancies():setArchiveVacancies()
+        published==='active'?setActiveVacancies():setInactiveVacancies()
       }
       return true
     })
@@ -127,7 +137,6 @@ export function VacancyWrapper(props: Props) {
   }
 
   const editVcInEditor = (vc: IVacancy) => {
-    createVcCvContext.setEditedItem(vc, 'vc')
     router.push(`/create/vacancy?id=${vc.id}`)
   }
 
@@ -154,9 +163,10 @@ export function VacancyWrapper(props: Props) {
 
   const value: IState = {
     archiveVacancies,
+    draftVacancies,
     foundVacancies,
     findVacancies,
-    setArchiveVacancies,
+    setInactiveVacancies,
     activeVacancies,
     setActiveVacancies,
     editVacancy,

@@ -91,7 +91,7 @@
 }
 
 .submitButton {
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($PhoneWidth, max) {
     width: 100%;
     margin-top: auto;

@@ -38,7 +38,7 @@ export interface ICVVC {
 export interface ICV extends ICVCreate, IUserProfile{
   portfolio: string|null,
   profileId: number,
-  moderationStatus: string,  // "approved"add enums
+  moderationStatus: string,  // "approved/manualModeration"add enums
   moderationRejectReason: string|null,
   published: boolean,
   totalViews: string|null,

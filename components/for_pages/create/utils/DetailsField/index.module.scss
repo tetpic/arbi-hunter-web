@@ -70,7 +70,7 @@
 }
 
 .buttonSave {
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     margin-top: auto;
   }

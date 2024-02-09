@@ -1,5 +1,6 @@
 import Formatter from '../../utils/formatter'
 
+
 describe('Formatter.fulltimeLime', () => {
   it('show 1 month if dates gap is 1', () => {
     expect(Formatter.fullTimeLine([['01.2020', '02.2020']])).toBe('1 месяц')
@@ -97,3 +98,40 @@ describe('Formatter.formatPhone', () => {
     expect(Formatter.formatPhone('')).toBe('')
   })
 })
+
+describe('Formatter.formatDistanceToNow', () => {
+  const dateNow = '2024-02-01T05:00:00.000Z'
+  jest.useFakeTimers({
+    now: new Date(dateNow).getTime()
+  })
+  
+  it('should return 1 day', () => {
+    expect(Formatter.formatDistanceToNow('2024-02-02T05:00:00.000Z')).toBe('1 день')
+  })
+
+  it('should not show suffixex', ()=> {
+    expect(Formatter.formatDistanceToNow('2024-02-02T01:00:00.000Z', {plusDistance: 2})).toBe('3 дня')
+  })
+
+  it('should be strict 1 day', ()=> {
+    expect(Formatter.formatDistanceToNow(dateNow, {plusDistance: 1, strict: true})).toBe('1 день')
+  })
+
+  it('should be strict 2 days', ()=> {
+    expect(Formatter.formatDistanceToNow(dateNow, {plusDistance: 2, strict: true})).toBe('2 дня')
+  })
+
+  it('should be strict 1 hour', ()=> {
+    expect(Formatter.formatDistanceToNow('2024-02-01T06:00:00.000Z', {strict: true})).toBe('1 час')
+  })
+
+  it('should be strict 30 munutes', ()=> {
+    expect(Formatter.formatDistanceToNow('2024-02-01T05:30:00.000Z', {strict: true})).toBe('30 минут')
+  })
+
+
+  jest.restoreAllMocks()
+})
+
+
+

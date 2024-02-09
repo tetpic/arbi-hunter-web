@@ -44,7 +44,7 @@
     border-radius: 16px;
     justify-content: center;
     @include transitionDefault;
-    @include hoverButtonBlack;
+    @include hoverbuttonBorderGradient;
     @include hover {
       background-color: $blue;
       // *{
@@ -75,7 +75,7 @@
   }
 
   .answerButton {
-    @include buttonYellow;
+    @include buttonGradient;
     @include mq($TabletWidth, max) {
       width: 100%;
     }

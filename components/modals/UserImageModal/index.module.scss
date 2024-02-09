@@ -39,8 +39,8 @@
   width: 100%;
   margin-top: 45px;
 
-  .buttonYellow {
-    @include buttonYellow;
+  .buttonGradient {
+    @include buttonGradient;
     width: calc(50% - 8px);
   }
 

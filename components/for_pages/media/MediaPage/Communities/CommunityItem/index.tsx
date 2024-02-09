@@ -54,7 +54,7 @@ export default function CommunityItem({community}: Props) {
       ||
       !isAdmin &&
       <Button 
-      className={isSubscribed?styles.buttonYellow:styles.buttonBlack}
+      className={isSubscribed?styles.buttonGradient:styles.buttonBorderGradient}
       onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
 
       >

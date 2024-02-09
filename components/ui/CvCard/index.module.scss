@@ -80,15 +80,15 @@
 .button {
   margin-top: 16px;
   align-self: flex-end;
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     width: 100%;
     max-width: 360px;
   }
 }
 
-.buttonBlack {
+.buttonBorderGradient {
   @extend .button;
-  @include buttonBlack;
+  @include buttonBorderGradient;
 }
 

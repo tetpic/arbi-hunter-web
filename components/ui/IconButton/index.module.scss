@@ -1,7 +1,7 @@
 @import "styles/index";
 
 .root {
-  @include buttonBlack;
+  @include buttonBorderGradient;
   padding: 8px; 
 }
 

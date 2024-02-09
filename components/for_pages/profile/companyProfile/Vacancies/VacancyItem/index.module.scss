@@ -11,9 +11,8 @@
   align-items: flex-start;
 
   .top {
-    display: grid;
-    grid-template-areas: 'n d' 'p d';
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-direction: column;
     row-gap: 16px;
     align-items: flex-start;
     width: 100%;
@@ -27,14 +26,12 @@
   }
 
   .name {
-    grid: n;
     font-size: $largeText;
     font-weight: $semibold;
     color: $white;
   }
   
   .price {
-    grid-area: p;
     color: $blue;
     font-size: $largeText;
     font-weight: $semibold;
@@ -44,7 +41,10 @@
   }
 
   .dots {
-    grid-area: d;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    
   }
 }
 
@@ -54,9 +54,8 @@
 .buttonsWrapper {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  column-gap: 8px;
   flex-wrap: wrap;
-  row-gap: 8px;
 }
 
 .button {
@@ -64,6 +63,10 @@
   @include mq($TabletWidth, max) {
     width: 100%;
   }
+}
+
+.buttonBlue {
+  @include buttonGradient;
 }
 
 .option {
@@ -100,4 +103,37 @@
     left: 0;
   }
 }
+
+.timeRemains {
+  font-size: $smallText;
+  color: $green;
+  background-color: $greenLight;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: block;
+  justify-self: flex-start;
+  grid-area: r;
+}
+
+.timeSaved {
+  @extend .timeRemains;
+  color: $white;
+  background-color: $grey;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.tariff {
+  font-size: $mediumText;
+  font-weight: $semibold;
+  color: $white;
+  background-color: $blue;
+  padding: 4px 8px;
+  border-radius: 8px;
+
+  &_vip {
+    background: $goldGradient;
+  }
+}
+
 

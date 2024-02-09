@@ -4,6 +4,7 @@ import { useAppContext } from 'context/state'
 import { useResize } from 'components/hooks/useResize'
 import { useEffect } from 'react'
 import { useUserContext } from 'context/user_state'
+import styles from './index.module.scss'
 
 interface Props {
   title?: string,
@@ -48,12 +49,15 @@ export default function ContentLayout(props: Props) {
         <meta name='description' content={props.description||props.title}/>
       </Head>
     }
-    <div className='contentWrapper'> 
-      {props.children}
+    <div className={styles.wrapper}>
+      <div className='contentWrapper'> 
+        {props.children}
+      </div>
+      {props.withFooter &&
+        <Footer/>
+      }
     </div>
-    {props.withFooter &&
-      <Footer/>
-    }
+
   </>
   )
 }

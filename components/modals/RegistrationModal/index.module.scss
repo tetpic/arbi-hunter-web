@@ -61,7 +61,7 @@
   font-size: $mediumText;
   font-weight: $medium;
   cursor: pointer;
-  @include hoverButtonYellow;
+  @include hoverbuttonGradient;
   @include transitionDefault;
 }
 
@@ -121,13 +121,13 @@
     &_black {
       background-color: $grey;
       color: $blue;
-      @include hoverButtonBlack;
+      @include hoverbuttonBorderGradient;
     }
 
     &_yellow {
       background-color: $blue;
       color: $black;
-      @include hoverButtonYellow;
+      @include hoverbuttonGradient;
     }
   }
  }

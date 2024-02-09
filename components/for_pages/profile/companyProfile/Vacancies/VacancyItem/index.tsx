@@ -9,7 +9,7 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useRouter } from 'next/router'
-import { ModalType } from 'types/enums'
+import { ModalType, TariffType} from 'types/enums'
 import Formatter from 'utils/formatter'
 
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -20,12 +20,15 @@ import Link from 'next/link'
 import OptionsList from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
+import { TranslateTariffType } from 'utils/enumsTranslations'
+import classNames from 'classnames'
 
 interface Props {
   vacancy: IVacancy
   isActive?: boolean
   isLast?: boolean
   cardMode?: boolean
+  type?: 'drafts' | 'archive'
 }
 
 export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props) {
@@ -39,11 +42,11 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
   const setActiveHandler = () => {
     vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
-    .then(res=> res&&vacancyContext.setArchiveVacancies())
+    .then(res=> res&&vacancyContext.setInactiveVacancies())
   }
 
   const archiveHandler =()=> {
-    vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salary: Number(vacancy.salary)}, vacancy.id, vacancy.published?'active':'archive')
+    vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salaryMin: Number(vacancy.salaryMin), salaryMax: Number(vacancy.salaryMax)}, vacancy.id, vacancy.published?'active':'archive')
   }
 
   const editHandler =() => {
@@ -82,6 +85,15 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
   return (<div className={styles.item}> 
       <div className={styles.top}>
+        {vacancy.publishedAt && vacancy.published &&
+          <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
+        }
+        {props.type === 'drafts' && vacancy.updatedAt &&
+          <p className={styles.timeSaved}>Сохранен {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</p>
+        }
+        {props.type === 'archive' && vacancy.updatedAt &&
+          <p className={styles.timeSaved}>В архиве {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</p>
+        }
         <p className={styles.name}>{vacancy.name}</p>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
@@ -90,6 +102,9 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           <p className={styles.city}>Удаленно</p>
         }
         <SalaryItem vacancy={vacancy}/>
+
+        <p className={classNames(styles.tariff, vacancy.tariff === TariffType.Vip && styles.tariff_vip)}>{TranslateTariffType(vacancy.tariff)}</p>
+
         <ThreeDotsButton  onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth && 
           <OptionsDropDown 
@@ -111,12 +126,12 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
       
       {!props.cardMode &&
       <div className={styles.buttonsWrapper}>
+        <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.buttonBlue}>Смотреть отклики {/*vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')*/}</Button>
         {!isActive && 
           <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
         ||
-          <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Пригласить подходящих</span></Link>
+          <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Подходящие резюме</span></Link>
         }       
-        <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.button}>Посмотреть {vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')}</Button>
       </div>
       }
 

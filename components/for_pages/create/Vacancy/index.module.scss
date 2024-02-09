@@ -76,15 +76,15 @@
   }
 }
 
-.buttonBlack {
+.buttonBorderGradient {
   background-color: $grey;
   color: $blue;
   @extend .button;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
 }
 
-.buttonBlackSmall {
-  @extend .buttonBlack;
+.buttonBorderGradientSmall {
+  @extend .buttonBorderGradient;
   padding: 10px;
   width: unset !important;
   .arrow {
@@ -92,8 +92,8 @@
   }
 }
 
-.buttonYellow {
-  @include buttonYellow;
+.buttonGradient {
+  @include buttonGradient;
 }
 
 .regImage  {

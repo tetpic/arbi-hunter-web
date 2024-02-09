@@ -11,15 +11,8 @@
   z-index: 10;
   transform: translateY(0);
   transition: .7s linear;
-  &:after {
-    content: '';
-    width: 50px;
-  }
   @include mq($SmDesktopWidth, max) {
     justify-content: space-between;
-    &:after {
-      display: none;
-    }
   }
 }
 
@@ -43,7 +36,7 @@
 
 .linksWrapper {
   display: flex;
-  width: Max(320px, 40%);
+  width: Max(570px, 50%);
   justify-content: space-between;
   height: 44px;
   align-items: center;
@@ -70,7 +63,7 @@
 }
 
 .userLink {
-  @include buttonBlack;
+  @include buttonGradient;
 }
 
 .dropdown {
@@ -109,5 +102,14 @@
   transform: translateY(-100%)
 }
 
+.iconButton {
+  @include buttonGray;
+  padding: 8px !important;
+  
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
 
 

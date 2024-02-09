@@ -39,10 +39,10 @@
     column-gap: 8px;
     border-radius: 14px;
     @include transitionDefault;
-    @include hoverButtonBlack;
+    @include hoverbuttonBorderGradient;
 
     span {
-      @include buttonYellow;
+      @include buttonGradient;
       padding: 8px;
       width: unset;
       height: 32px;
@@ -62,7 +62,7 @@
     align-items: center;
     position: relative;
     @include transitionDefault;
-    @include hoverButtonYellow;
+    @include hoverbuttonGradient;
     .side {
       width: 2px;
       height: 18px;

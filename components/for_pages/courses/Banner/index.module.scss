@@ -32,7 +32,7 @@
 }
 
 .button {
-  @include buttonYellow;
+  @include buttonGradient;
   background: $white;
   color: $black;
   margin-right: auto;

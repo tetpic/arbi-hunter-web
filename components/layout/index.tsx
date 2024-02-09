@@ -25,10 +25,12 @@ export default function Layout(props: Props) {
           </div>}
       </Sticky>
       }
+      <div className={styles.content}>
       {userContext.isLogged &&
         <NavBar/>
       }
       {props.children}
+      </div>
     </StickyContainer>
   </div>
 

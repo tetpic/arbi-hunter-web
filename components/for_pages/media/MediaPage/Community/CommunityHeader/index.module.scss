@@ -31,7 +31,7 @@
 }
 
 .createButton {
-  @include buttonBlack;
+  @include buttonBorderGradient;
 }
 
 .background {
@@ -118,7 +118,7 @@
 
   .button {
     grid-area: b;
-    @include buttonYellow;
+    @include buttonGradient;
   }
 
   .name {

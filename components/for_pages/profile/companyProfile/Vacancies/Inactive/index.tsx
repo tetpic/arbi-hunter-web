@@ -6,21 +6,25 @@ import { useEffect, useState } from 'react'
 import VacancyItem from '../VacancyItem'
 
 interface Props {
+  type: 'drafts' | 'archive'
+
 }
 
-export default function VacanciesArchive(props: Props) {
+export default function VacanciesInactive(props: Props) {
 
   const vacancyContext = useVacancyContext()
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
+  const vacancies = props.type === 'archive' ? [...vacancyContext.archiveVacancies.values()] : [...vacancyContext.draftVacancies.values()]
+
   useEffect(()=>{
-    vacancyContext.setArchiveVacancies().then(res=>res&&setIsLoaded(res))
+    vacancyContext.setInactiveVacancies().then(res=>res&&setIsLoaded(res))
   }, [])
 
   return (<div className={styles.root}> 
-  {isLoaded&&vacancyContext.archiveVacancies && vacancyContext.archiveVacancies.size > 0 &&
-    [...vacancyContext.archiveVacancies.values()].map((el, index)=>{
-      return <VacancyItem isLast={vacancyContext.archiveVacancies.size > 2&&vacancyContext.archiveVacancies.size-1 === index} vacancy={el} key={el.id} isActive={false}/>
+  {isLoaded&&vacancies && vacancies.length > 0 &&
+    vacancies.map((el, index)=>{
+      return <VacancyItem type={props.type} isLast={vacancyContext.archiveVacancies.size > 2&&vacancyContext.archiveVacancies.size-1 === index} vacancy={el} key={el.id} isActive={false}/>
     })
     ||
     isLoaded&&vacancyContext.archiveVacancies.size === 0 &&

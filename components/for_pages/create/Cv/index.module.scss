@@ -56,13 +56,13 @@
   }
 }
 
-.buttonBlack {
-  @include buttonBlack;
+.buttonBorderGradient {
+  @include buttonBorderGradient;
   @extend .button;
 }
 
-.buttonBlackSmall {
-  @extend .buttonBlack;
+.buttonBorderGradientSmall {
+  @extend .buttonBorderGradient;
   padding: Clamp(7px, 2vw, 10px);
   width: unset !important;
   .arrow {
@@ -70,8 +70,8 @@
   }
 }
 
-.buttonYellow {
-  @include buttonYellow;
+.buttonGradient {
+  @include buttonGradient;
   @extend .button;
 }
 

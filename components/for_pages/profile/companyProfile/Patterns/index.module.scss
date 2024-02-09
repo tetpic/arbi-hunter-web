@@ -12,7 +12,7 @@
 }
 
 .createNew {
-  @include buttonYellow;
+  @include buttonGradient;
   align-self: flex-end;
 
   @include mq($TabletWidth, max) {

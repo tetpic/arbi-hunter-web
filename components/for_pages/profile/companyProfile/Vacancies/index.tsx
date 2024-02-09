@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import ItemNavigation from '../../ItemNavigation'
 import VacanciesActive from './Active'
-import VacanciesArchive from './Archive'
 import styles from './index.module.scss'
+import VacanciesInactive from './Inactive'
 
 interface Props {
 }
 
 enum VacanciesNavigation {
   Active =  'active',
+  Drafts = 'drafts',
   Archive = 'archive',
 }
 
@@ -18,6 +19,8 @@ function translate (n: VacanciesNavigation) {
       return 'Активные'
     case VacanciesNavigation.Archive:
       return 'Архив'
+    case VacanciesNavigation.Drafts:
+      return 'Черновики'
   }
 }
 
@@ -32,7 +35,9 @@ export default function Vacancies(props: Props) {
     {
       activeItem === VacanciesNavigation.Active && <VacanciesActive/>
       ||
-      activeItem === VacanciesNavigation.Archive && <VacanciesArchive/>
+      activeItem === VacanciesNavigation.Archive && <VacanciesInactive type='archive'/>
+      ||
+      activeItem === VacanciesNavigation.Drafts && <VacanciesInactive type='drafts'/>
     }
   </div>)
 }

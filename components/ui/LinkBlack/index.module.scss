@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .link {
-  // @include buttonBlack;
+  // @include buttonBorderGradient;
   @include watchAllButton;
   margin-inline: auto;
   justify-self: center;

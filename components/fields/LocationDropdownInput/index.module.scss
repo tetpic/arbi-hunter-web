@@ -31,7 +31,7 @@
   padding: 8px 16px;
   border-radius: 10px;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
   @include exeptLast {
     margin-bottom: 16px;
   }

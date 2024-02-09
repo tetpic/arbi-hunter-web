@@ -85,7 +85,7 @@
 }
 
 .filterButton {
-  @include buttonYellow;
+  @include buttonGradient;
   padding: 8px;
   width: 40px;
   flex-shrink: 0;

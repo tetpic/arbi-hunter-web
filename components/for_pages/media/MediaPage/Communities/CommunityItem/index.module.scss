@@ -39,18 +39,18 @@
 
   .button {
     grid-area: b;
-    @include buttonBlack;
+    @include buttonBorderGradient;
   }
 }
 
-.buttonYellow {
-  @include buttonBlack;
+.buttonGradient {
+  @include buttonBorderGradient;
   padding: 4px;
   height: 40px;
   width: 40px;
 }
 
-.buttonBlack {
+.buttonBorderGradient {
   border-radius: 10px;
   background-color: $grey;
   padding: 4px;

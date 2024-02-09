@@ -80,7 +80,7 @@
 
   .showContacts {
     grid-area: cont;
-    @include buttonYellow;
+    @include buttonGradient;
   }
 }
 
@@ -160,7 +160,7 @@
   .openProfile {
     width: 100%;
     @include mq($TabletWidth, min) {
-      @include buttonYellow;      
+      @include buttonGradient;      
     }
     @include mq($TabletWidth, max) {
       @include buttonGray;
@@ -212,7 +212,7 @@
 
 
   .responseButton {
-    @include buttonYellow;
+    @include buttonGradient;
     width: 100%;
   }
 }   

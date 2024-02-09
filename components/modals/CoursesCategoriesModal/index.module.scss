@@ -26,7 +26,7 @@
     .counter {
       width: 48%;
       align-self: flex-end;
-      @include buttonBlack;
+      @include buttonBorderGradient;
       font-size: $smallText;
       margin-top: 16px;
       span {

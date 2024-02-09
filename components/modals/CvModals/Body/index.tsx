@@ -57,7 +57,7 @@ export default function Body(props: Props) {
     {!isPhoneWidth && 
       <Button className={styles.buttonDefault} onClick={props.onClose} >Отменить</Button>
     }
-    <Button className={classNames(styles.buttonYellow, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
+    <Button className={classNames(styles.buttonGradient, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
   </div>
   </>)
 }

@@ -11,11 +11,11 @@
 }
 
 .blackButton {
-  @include buttonBlack;
+  @include buttonBorderGradient;
 }
 
 .yellowButton {
-  @include buttonYellow;
+  @include buttonGradient;
 }
 
 .form {

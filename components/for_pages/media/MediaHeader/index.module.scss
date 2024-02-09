@@ -43,7 +43,7 @@
   }
   
   .registerButton {
-    @include buttonYellow;
+    @include buttonGradient;
     grid-area: btn;
     font-weight: $semibold !important;
     font-size: $mediumText !important;

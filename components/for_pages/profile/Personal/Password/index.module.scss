@@ -13,7 +13,7 @@
 
 .button {
   align-self: flex-start;
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     order: 3;
     width: 100%;

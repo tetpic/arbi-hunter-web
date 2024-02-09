@@ -121,7 +121,7 @@
 }
 
 .yellowButton {
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     margin-top: auto;
     width: 100%;

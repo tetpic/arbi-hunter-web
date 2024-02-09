@@ -91,12 +91,12 @@
 
 .submitButton {
   @include mq($PhoneWidth, min) {
-    @include buttonBlack;
+    @include buttonBorderGradient;
   }
   padding: 10px 24px;
   // display: inline-block;
   @include mq($PhoneWidth, max) {
-    @include buttonYellow;
+    @include buttonGradient;
     width: 100%;
     margin-top: auto;
   }
@@ -117,7 +117,7 @@
   font-size: $mediumText;
   font-weight: $medium;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
   cursor: pointer;
 
   &_active {

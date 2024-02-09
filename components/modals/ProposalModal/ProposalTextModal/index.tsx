@@ -95,7 +95,7 @@ export default function ProposalTextModal(props: Props) {
       <FormikProvider value={formik} >
         <Form className={styles.form}>
             <RichTextField name={'coverLetter'} value={pattern?.template}/>
-          <Button className={styles.buttonYellow} type='button' onClick={formik.submitForm}>Отправить</Button>
+          <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>Отправить</Button>
         </Form>
       </FormikProvider>
     </>

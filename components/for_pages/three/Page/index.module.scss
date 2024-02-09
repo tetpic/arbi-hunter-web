@@ -18,7 +18,7 @@
   margin-left: 24px;
 
   .btn {
-    @include buttonBlack;
+    @include buttonBorderGradient;
   }
 
 }

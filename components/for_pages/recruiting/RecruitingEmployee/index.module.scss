@@ -104,7 +104,7 @@
   }
 
   .createLink {
-    @include buttonYellow;
+    @include buttonGradient;
     max-width: 224px;
     @include mq($TabletWidth, max) {
       display: none;

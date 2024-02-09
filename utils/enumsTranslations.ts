@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, LanguageKnowLevel, PatternTypes, ProposalRequestType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, LanguageKnowLevel, PatternTypes, ProposalRequestType, TariffType, WorkExperience } from 'types/enums'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
   return [...Object.values(k)]
@@ -180,6 +180,13 @@ export const TranslateProposalRequestType = (p: ProposalRequestType) => {
   }
 }
 
-
-
-
+export const TranslateTariffType = (t: TariffType) => {
+  switch(t) {
+    case TariffType.Standard:
+      return 'Тариф стандарт'
+    case TariffType.StandardPlus:
+      return 'Тариф Стандарт+'
+    case TariffType.Vip:
+      return 'Тариф VIP'
+  }
+}

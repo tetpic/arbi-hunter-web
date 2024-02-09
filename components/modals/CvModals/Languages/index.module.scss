@@ -17,7 +17,7 @@
   background-color: $grey;
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonBlack;
+  @include hoverbuttonBorderGradient;
   &_active {
     background-color: $blue;
     color: $black;

@@ -109,7 +109,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser||application.proposals.length > 0?'Пригласить повторно':'Пригласить'}</Button>
       {chat&& 
-        <Button className={styles.buttonBlack} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
+        <Button className={styles.buttonBorderGradient} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }
     </div>
   </div>

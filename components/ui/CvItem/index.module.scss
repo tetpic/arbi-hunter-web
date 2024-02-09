@@ -10,7 +10,7 @@
 }
 
 .button {
-  @include buttonYellow;
+  @include buttonGradient;
   @include mq($TabletWidth, max) {
     width: 100%;
   }

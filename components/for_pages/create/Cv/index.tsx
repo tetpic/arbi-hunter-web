@@ -306,13 +306,13 @@ export default function Cv(props: Props) {
           {page} 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBlack} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
+              <Button className={styles.buttonBorderGradient} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonYellow} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
+              <Button className={styles.buttonGradient} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button isProcess={loading} spinner={loading} disabled={loading} className={classNames(styles.buttonYellow, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+              <Button isProcess={loading} spinner={loading} disabled={loading} className={classNames(styles.buttonGradient, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
             }
           </div>
         </Form>

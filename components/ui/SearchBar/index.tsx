@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import Button from 'components/ui/Button'
-import SettingsThreeSlidersSvg from 'components/svg/SettingsThreeSlidersSvg'
 import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import LoupeSvg from 'components/svg/LoupeSvg'
@@ -10,6 +9,10 @@ import { ModalType } from 'types/enums'
 import {  useState } from 'react'
 import { ISearchFilterModalProps } from 'components/modals/SearchFilterModal'
 import { ICategory } from 'data/interfaces/Common'
+import InputField from '@/components/fields/InputField'
+import { Form, FormikProvider, useFormik } from 'formik'
+import { colors } from 'styles/variables'
+import SettingsTwoSlidersSvg from '@/components/svg/SettingsTwoSlidersSvg'
 
 export interface ISearchBarReturnParams {
   activeCategories?: number[]
@@ -81,26 +84,36 @@ export default function SearchBar(props: Props) {
     appContext.showModal<ISearchFilterModalProps>(ModalType.SearchFilterModal, options)
   }
 
+  const formik = useFormik({
+    initialValues: {
+      search: ''
+    },
+    onSubmit: (data)=>{
+    }
+  })
+
   return (
     <div className={classNames(styles.container, props.fullWidth&&styles.container_wide)}>
-      <div className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
-        <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||'Поиск'} /> 
-        {props.onFilterClick &&
-        <Button 
-        title='filter button' 
-        onClick={openFilters} 
-        className={classNames(styles.filterButton, (activeCategories.size>0||activePeriod)&&styles.filterButton_active)}>
-          <SettingsThreeSlidersSvg/>
-        </Button>
-        }
-
-        <Button 
-        title='search button' 
-        onClick={()=> submit()} 
-        className={!isTabletWidth&&styles.button}>
-          {isTabletWidth&&<LoupeSvg/>||'Найти'}
-        </Button>
-      </div>
+        <FormikProvider value={formik}>
+          <Form className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
+            <InputField className={styles.input}  styleType={'default'} color={'default'} name={'search'} prefix={<LoupeSvg color={colors.greyLight}/>} placeholder='Поиск'/>
+            {/* <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||'Поиск'} />  */}
+            <Button 
+            title='search button' 
+            onClick={()=> submit()} 
+            className={!isTabletWidth&&styles.button}>
+              {isTabletWidth&&<LoupeSvg color={colors.greyLight}/>||'Найти'}
+            </Button>
+            {props.onFilterClick &&
+              <Button 
+              title='filter button' 
+              onClick={openFilters} 
+              className={classNames(styles.filterButton, (activeCategories.size>0||activePeriod)&&styles.filterButton_active)}>
+                <SettingsTwoSlidersSvg/>
+              </Button>
+            }
+          </Form>
+        </FormikProvider>
     </div>
   )
 }

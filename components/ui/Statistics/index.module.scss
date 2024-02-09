@@ -3,13 +3,16 @@
 .stats {
   display: flex;
   row-gap: 8px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  
+  padding: 16px;
+  background-color: $grey;
+  border-radius: 16px;
 
   &_title {
     font-size: $mediumText;
     font-weight: $medium;
     color: $white;
-    width: 100%;
   }
 
   &_desc {
@@ -19,22 +22,27 @@
     margin-bottom: 8px;
   }
 
+  .items {
+    display: flex;
+    column-gap: 64px;
+  }
+
   &_item {
-    padding: 10px 20px;
-    border-top: 2px $grey solid;
+    padding: 10px 0px;
+    // border-top: 2px $grey solid;
     position: relative;
-    @include exeptLast {
-      &:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 0;
-        width: 2px;
-        height: 70%;
-        background-color: $grey;
-      }
-    }
+    // @include exeptLast {
+    //   &:after {
+    //     content: '';
+    //     position: absolute;
+    //     top: 50%;
+    //     transform: translateY(-50%);
+    //     right: 0;
+    //     width: 2px;
+    //     height: 70%;
+    //     background-color: $grey;
+    //   }
+    // }
   }
 
   &_count {

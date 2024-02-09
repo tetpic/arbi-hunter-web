@@ -115,7 +115,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
         }
         <Button className={styles.button}>Поднять в поиске</Button>
         <Button 
-        className={styles.buttonBlack} 
+        className={styles.buttonBorderGradient} 
         onClick={showFeedbacksForVacancy}
         >
           {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}

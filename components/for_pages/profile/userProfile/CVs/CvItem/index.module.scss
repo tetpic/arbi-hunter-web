@@ -26,11 +26,11 @@
 }
 
 .button {
-  @include buttonYellow;
+  @include buttonGradient;
 }
 
-.buttonBlack {
-  @include buttonBlack;
+.buttonBorderGradient {
+  @include buttonBorderGradient;
 }
 
 .buttonsWrapper {

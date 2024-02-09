@@ -85,7 +85,7 @@
 }
 
 .nextButton {
-  @include buttonYellow;
+  @include buttonGradient;
   width: calc(50% - 8px);
 }
 

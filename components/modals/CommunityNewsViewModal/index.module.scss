@@ -47,7 +47,7 @@
 
   .yellowButton {
     grid-area: b;
-    @include buttonYellow;
+    @include buttonGradient;
   }
 }
 

@@ -307,3 +307,16 @@ export enum LoginType {
   Email = 'email'
 }
 
+export enum TariffType {
+  Standard='standard',
+  StandardPlus = 'standard_plus',
+  Vip='vip',
+}
+
+export enum ModerationStatusType {
+  Moderation = 'moderation',
+  ManualModeration = 'manualModeration',
+  Rejected = 'rejected',
+  Approved = 'approved'
+}
+
