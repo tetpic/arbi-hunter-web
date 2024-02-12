@@ -26,6 +26,7 @@ interface Props {
   isLast?: boolean
   className?: string
   cardMode?: boolean
+  image?: string
 }
 
 export default function CVItem({cv, isLast, ...props}: Props) {
@@ -86,7 +87,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
 
   return (<div className={classNames(styles.root, props.className)}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic}/>
+      <UserPic className={styles.userPic} image={props.image}/>
       <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={isTabletWidth&&openModal}/>
@@ -103,6 +104,7 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     title={'Статистика за неделю'}
     className={styles.stats}
     items={[
+      {name: 'Показы ', count: cv.totalShows.toString()},
       {name: 'Просмотры', count: cv.totalViews},
       {name: 'Приглашения', count: cv.totalProposals},
     ]} 

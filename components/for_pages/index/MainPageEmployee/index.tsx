@@ -19,8 +19,14 @@ import { useAppContext } from 'context/state'
 import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
 import { FILES } from 'types/constants'
 
-
 export default function MainPageEmployee() {
+
+  return (<></>)
+
+}
+
+
+function MainPageEmployeeOld() {
   const characterContext = useCharacterContext()
   const appContext = useAppContext()
   const cvContext = useCvContext()

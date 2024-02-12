@@ -1,11 +1,11 @@
 import styles from './index.module.scss'
 import { useState } from 'react'
-import ItemNavigation from '../ItemNavigation'
-import ChangePassword from './Password'
-import PersonalInformation from './PersonalInformation'
+import ChangePassword from '../../settings/Password'
+import PersonalInformation from '../../settings/PersonalInformation'
 // import Rooms from './Rooms'
 // import Buildings from './Buildings'
 import { useUserContext } from 'context/user_state'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 // import { ProfileType } from 'data/interfaces/IRegistration'
 
 

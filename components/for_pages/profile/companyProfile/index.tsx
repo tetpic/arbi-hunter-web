@@ -1,6 +1,6 @@
 import Title from 'components/ui/TitleForSection'
 import Managers from './Managers'
-import Patterns from './Patterns'
+import Patterns from '../../settings/Patterns'
 import Personal from '../Personal'
 import Saved from './Saved'
 import Shop from './Shop'

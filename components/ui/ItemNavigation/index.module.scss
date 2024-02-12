@@ -5,23 +5,38 @@
   min-width: 100%;
   overflow: auto;
   display: flex;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
 }
 
 .wrapper {
   min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .items {
   display: flex;
-  column-gap: clamp(30px, 10%, 120px);
 
+  // column-gap: clamp(30px, 7%, 120px);
+  
   .item {
     color: $greyLight;
     font-size: $largeText;
     font-weight: $semibold;
     cursor: pointer;
     white-space: nowrap;
+    display: block;
+    flex-shrink: 0;
     @include transitionDefault;
+    @include exeptLast {
+      margin-right: clamp(30px, 5vw, 120px);
+    }
     @include hover {
       color: $white;
     }
@@ -41,6 +56,7 @@
   background-color: $grey;
   height: 2px;
   margin-top: 16px;
+  min-width: 100%;
 }
 
 .line {

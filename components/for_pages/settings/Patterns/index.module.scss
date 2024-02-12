@@ -2,12 +2,11 @@
 
 .root {
   margin-top: 24px;
-  min-height: calc(100vh - 175px);
-  min-height: calc(100dvh - 175px);
+  max-width: 518px;
   // overflow: auto;
    @include mq($TabletWidth, max) {
-    min-height: calc(100vh - 195px);
-    min-height: calc(100dvh - 195px);
+    // min-height: calc(100vh - 195px);
+    // min-height: calc(100dvh - 195px);
   }
 }
 

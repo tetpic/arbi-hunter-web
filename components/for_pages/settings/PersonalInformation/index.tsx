@@ -1,3 +1,4 @@
+import PhoneCountryField from '@/components/fields/PhoneCountryField'
 import styles from './index.module.scss'
 import InputField from 'components/fields/InputField'
 import Button from 'components/ui/Button'
@@ -5,10 +6,8 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { Form, FormikProvider, useFormik } from 'formik'
-// import Scrollbars from 'rc-scrollbars'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
-import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 
 interface Props {
 }
@@ -33,7 +32,8 @@ export default function PersonalInformation(props: Props) {
       firstName: userContext.currentProfile?.firstName,
       lastName: userContext.currentProfile?.lastName,
       patronymic: userContext.currentProfile?.patronymic,
-      email: userContext.currentProfile?.email
+      email: userContext.currentProfile?.email,
+      phone: userContext.currentProfile?.phone
     },
     onSubmit: submitData
   })
@@ -76,11 +76,18 @@ export default function PersonalInformation(props: Props) {
           name={'email'} 
           validate={Validator.combine([Validator.required, Validator.email])}
           />
-        </div>
-      {/* </Scrollbars> */}
 
+          <PhoneCountryField 
+          styleType={'horizontal'} 
+          disabled={false} 
+          placeholder={'000 000 00 00'} 
+          name={'phone'}  
+          className={styles.input} 
+          defaultCountry={'RU'}
+          label={'Телефон:'}
+          />
+        </div>
         <Button className={styles.button}>Сохранить</Button>
-        <Button onClick={userContext.removeCurrentProfile} type='button' className={styles.deleteAccountButton}><TrashBasketSvg/>Удалить аккаунт</Button>
       </Form>
     </FormikProvider>
   )

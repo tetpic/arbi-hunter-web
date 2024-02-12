@@ -47,7 +47,6 @@ export default function ChangePassword(props: Props) {
   })
 
 
-  //todo: change to passwordInput
   return (
     <FormikProvider value={passwordFormik}>
       <Form className={styles.root}>
@@ -64,14 +63,10 @@ export default function ChangePassword(props: Props) {
         onSuffixClick={passwordHandler}
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
-        <Button className={styles.button}>Сохранить</Button>
-        {/* <Button 
-        onClick={userContext.removeCurrentProfile} 
-        type='button' 
-        className={styles.deleteAccountButton}
-        >
-          <TrashBasketSvg/>Удалить аккаунт
-        </Button> */}
+        <div className={styles.buttonsWrapper}>
+          <Button className={styles.button} type='submit'>Сохранить</Button>
+          <Button type='button' onClick={userContext.removeCurrentProfile} className={styles.blackButton}>Удалить аккаунт</Button>
+        </div>
       </Form>
     </FormikProvider>
   )

@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useResize } from 'components/hooks/useResize'
 import BookMarkSvg from 'components/svg/BookMarkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
@@ -31,6 +30,7 @@ import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { SnackbarType } from 'types/enums'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 interface Props {
   id: number

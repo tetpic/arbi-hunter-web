@@ -196,6 +196,7 @@
   }
 }
 
+
 .statsAll {
   width: 100%;
  
@@ -217,4 +218,31 @@
     }
   }
 }
+
+.cards {
+  display: flex;
+}
+
+.statsWeek {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 4;
+
+  .card {
+    background-color: #737389b3;
+    backdrop-filter: blur(3px);
+    width: calc(33% - 10px);
+    
+    .desc {
+      color: $white;
+    }
+  }
+}
+
+.top {
+  position: relative;
+}
+
+
 

@@ -14,12 +14,116 @@ import UserRepository from 'data/repositories/UserRepository'
 import { IStats } from 'data/interfaces/IUser'
 import { FILES } from 'types/constants'
 import classnames from 'classnames'
+import Buildings from '../../profile/Personal/Buildings'
+import { usePersonalContext } from 'context/personal_state'
+import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 
-interface Props {
+
+export default function MainPageHirer() {
+  const userContext = useUserContext()
+  const personalContext = usePersonalContext()
+  const vacancyContext = useVacancyContext()
+  const [load, setLoad] = useState<boolean>(true)
+  const [messagesCount, setMessagesCount] = useState<string>(null)
+  const [stats, setStats] = useState<IStats>()
+
+
+  useEffect(()=>{
+    personalContext.setPersonalPage({profileId: userContext.currentProfile.id}) 
+    .then(res => {
+      personalContext.setBackgrounds(res)
+    })
+  }, [])
+
+  useEffect(()=>{
+    ChatRepository.getChatList({})
+    .then(res=>{
+      if(!res?.data|| res?.data?.length === 0) {
+        setMessagesCount('0')
+      }
+      else {
+        const counter = res.data.map(el=>el.totalUnread).reduce((p, c) =>  p + c, 0)
+        setMessagesCount(counter.toString())
+      }
+    })
+    UserRepository.getStats()
+    .then(res=> {
+      setStats(res)
+    })
+    vacancyContext.setActiveVacancies()
+    .then(_=>{
+      setLoad(false)
+    })   
+
+    document.body.style.overflowX = 'hidden'
+    return ()=>{
+      document.body.style.overflowX = 'hidden'
+    }
+  }, [])
+
+  return (
+    <div className={styles.top}>
+    {personalContext.backgrounds &&
+      <Buildings profile={userContext.currentProfile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
+    }
+      <div className={styles.statsWeek}>
+        <div className={styles.cards}>
+          <div className={styles.card}>
+            <p className={styles.desc}>Отклики</p>
+            <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+            {!stats && <Spinner className={styles.count} size={22}/>
+            ||
+            <p className={styles.count}>
+              {stats?.responsesCount.responses_count_prev_interval}
+              { Number(stats?.responsesCount.responses_count_interval)>0 &&
+                <span>
+                  {' + '+ stats?.responsesCount.responses_count_interval}
+                </span>
+              }
+            </p>
+            }
+          </div>
+          <div className={styles.card}>
+            <p className={styles.desc}>Просмотры вакансий</p>
+            <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+            {!stats && <Spinner className={styles.count} size={22}/>
+            ||
+            <p className={styles.count}>
+              {stats?.viewsCount.views_count_prev_interval}
+              { Number(stats?.viewsCount.views_count_interval)>0 &&
+                <span>
+                  {' + '+ stats?.viewsCount.views_count_interval}
+                </span>
+              }
+            </p>
+            }
+          </div>
+          <div className={styles.card}>
+            <p className={styles.desc}>Подходящие резюме</p>
+            <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+            {!stats && <Spinner className={styles.count} size={22}/>
+            ||
+            <p className={styles.count}>
+              {stats?.viewsCount.views_count_prev_interval}
+              { Number(stats?.viewsCount.views_count_interval)>0 &&
+                <span>
+                  {' + '+ stats?.viewsCount.views_count_interval}
+                </span>
+              }
+            </p>
+            }
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  )
 }
 
-export default function MainPageHirer(props: Props) {
+
+function MainPageHirerOld() {
   const vacancyContext = useVacancyContext()
   const userContext = useUserContext()
   const [load, setLoad] = useState<boolean>(true)

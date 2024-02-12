@@ -1,0 +1,20 @@
+@import 'styles/index';
+
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  margin-top: 32px;
+}
+
+.greyBtn {
+  @include buttonGray;
+}
+
+.blueBtn {
+  @include buttonGradient;
+}
+
+.title {
+  margin-bottom: 24px;
+}

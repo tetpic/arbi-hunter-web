@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import ItemNavigation from '../../ItemNavigation'
 import VacanciesActive from './Active'
 import styles from './index.module.scss'
 import VacanciesInactive from './Inactive'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 interface Props {
 }

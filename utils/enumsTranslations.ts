@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, LanguageKnowLevel, PatternTypes, ProposalRequestType, TariffType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, TariffType, WorkExperience } from 'types/enums'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
   return [...Object.values(k)]
@@ -188,5 +188,16 @@ export const TranslateTariffType = (t: TariffType) => {
       return 'Тариф Стандарт+'
     case TariffType.Vip:
       return 'Тариф VIP'
+  }
+}
+
+export const TranslateInterfaceLanguage = (t: InterfaceLanguage) => {
+  switch(t) {
+    case InterfaceLanguage.English:
+      return 'English'
+    case InterfaceLanguage.Russian: 
+      return 'Русский'
+    case InterfaceLanguage.Ukranian:
+      return 'Українська'
   }
 }

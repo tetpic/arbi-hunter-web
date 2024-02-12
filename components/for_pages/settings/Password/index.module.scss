@@ -4,12 +4,20 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
+  max-width: 495px;
   @include mq($TabletWidth, max) {
     height: calc(100vh - 220px);
     height: calc(100dvh - 220px);
   }
 
 }
+
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
 
 .button {
   align-self: flex-start;
@@ -19,6 +27,11 @@
     width: 100%;
     margin-top: auto;
   }
+}
+
+.blackButton {
+  @include buttonGray;
+  color: $red;
 }
 
 .deleteAccountButton {

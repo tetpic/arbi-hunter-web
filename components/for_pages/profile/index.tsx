@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import classNames from 'classnames'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CompanyProfile from './companyProfile'
-import Navigation from '../../ui/Navigation'
 import UserProfile from './userProfile'
 import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import Button from 'components/ui/Button'
@@ -50,7 +49,7 @@ export default function Profile() {
         profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
-      {((showNav && isTabletWidth) || !isTabletWidth) &&
+      {/* {((showNav && isTabletWidth) || !isTabletWidth) &&
         <Navigation 
         wrapperClassName={styles.nav} 
         bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && !isTabletWidth&& saveCharButton} 
@@ -58,7 +57,7 @@ export default function Profile() {
         navSet={navSet()} 
         setPage={(p)=> {router.push(`/profile?page=${p}`)}} 
         onClickHandler={()=>setShowNav(false)}/>
-      }
+      } */}
     </div>
   )
 }

@@ -1,0 +1,22 @@
+@import 'styles/index';
+
+.switch {
+  max-width: 342px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.label {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+}
+
+.wrapper {
+  margin-top: 32px;
+}
+
+.saveButton {
+  @include buttonGradient;
+  margin-top: 32px;
+}

@@ -8,7 +8,7 @@ import Spinner from 'components/ui/Spinner'
 import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
-import ItemNavigation from '../../ItemNavigation'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 interface Props {
 }

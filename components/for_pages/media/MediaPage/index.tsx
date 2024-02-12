@@ -4,7 +4,6 @@ import Navigation from 'components/ui/Navigation'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useEffect, useState } from 'react'
 import { useResize } from 'components/hooks/useResize'
-import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import { useRouter } from 'next/router'
 import { ICategory } from 'data/interfaces/Common'
 import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
@@ -22,6 +21,7 @@ import Subscriptions from './Subscriptions'
 import SubCategories from 'components/ui/SubNavigationSet'
 import { useUserContext } from 'context/user_state'
 import { CommunityWrapper } from 'context/community_state'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 

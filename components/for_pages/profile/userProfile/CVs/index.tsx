@@ -1,10 +1,12 @@
 import { useCvContext } from 'context/cv_state'
 import { ICV } from 'data/interfaces/ICV'
 import { useEffect, useState } from 'react'
-import ItemNavigation from '../../ItemNavigation'
 import CVItem from './CvItem'
 import styles from './index.module.scss'
 import Spacer from 'components/ui/Spacer'
+import ItemNavigation from '@/components/ui/ItemNavigation'
+import { useUserContext } from 'context/user_state'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
 }
@@ -28,6 +30,7 @@ function translate (n: CVNavigation) {
 
 export default function CVs(props: Props) {
   const cvContext = useCvContext()
+  const userContext = useUserContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
   const items = Object.values(CVNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
@@ -61,7 +64,7 @@ export default function CVs(props: Props) {
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
       {
       filteredCvs?.length > 0 && 
-      filteredCvs.map((el, index) => <CVItem  isLast={index===filteredCvs.length -1} cv={el} key={index}/>)
+      filteredCvs.map((el, index) => <CVItem image={getUserImageSource(userContext.currentProfile)}  isLast={index===filteredCvs.length -1} cv={el} key={index}/>)
       ||
       <p className={'empty'}>Нет созданных резюме</p>
       }

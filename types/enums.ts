@@ -39,6 +39,7 @@ export enum ModalType {
   NewPasswordModal = 'newPasswordModal',
   ProfileTypeSwitcher = 'profileTypeSwitcher',
   CompensationModal = 'compensationModal',
+  ChangeLanguageModal= 'changeLanguageModal'
 }
 
 export enum SnackbarType {
@@ -318,5 +319,11 @@ export enum ModerationStatusType {
   ManualModeration = 'manualModeration',
   Rejected = 'rejected',
   Approved = 'approved'
+}
+
+export enum InterfaceLanguage {
+  English= 'en',
+  Russian='ru',
+  Ukranian='ua'
 }
 

@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import ItemNavigation from 'components/for_pages/profile/ItemNavigation'
 import ChatSearchBar from './ChatSearchBar'
 import {useEffect, useRef, useState } from 'react'
 import ChatItem from './ChatItem'
@@ -8,6 +7,7 @@ import IChat from 'data/interfaces/IChat'
 import { useChatContext } from 'context/chat_state'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 interface Props {
   chats: IChat[]

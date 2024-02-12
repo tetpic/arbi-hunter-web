@@ -64,8 +64,7 @@ export default function NavBar(props: Props) {
       icon: <ShopSmallSvg className={styles.linkSvg}/>
     },
     settings: {
-      path: '/profile',
-      query: {page: 'personal'},
+      path: '/settings',
       text: 'Настройки',
       icon: <SettingSvg className={styles.linkSvg}/>
     },
@@ -99,7 +98,7 @@ export default function NavBar(props: Props) {
   ]
   const hirerLinks = [
     linksSet.vacancies, 
-    linksSet.feedBacksHir, 
+    // linksSet.feedBacksHir, 
     linksSet.messages, 
     linksSet.shop, 
     linksSet.settings, 

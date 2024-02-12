@@ -25,20 +25,26 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
 
   const itemsRef = useRef<Map<string|number, HTMLParagraphElement>>(new Map())
   const wrapperRef = useRef<HTMLDivElement>()
+  const itemsListRef = useRef<HTMLDivElement>()
 
   useEffect(()=>{
     if(props.activeItem) {
       let box = wrapperRef.current.getBoundingClientRect()
-      let activeItem = itemsRef.current.get(props.activeItem)?.getBoundingClientRect()
-      setActiveWidth(activeItem?.width)
-      setTransition(activeItem?.left - box.left)
+      let activeItem = itemsRef.current.get(props.activeItem)
+      let activeItemSize = activeItem.getBoundingClientRect()
+      activeItem.scrollIntoView({inline: 'center', behavior: 'smooth', block: 'nearest'})
+      setActiveWidth(activeItemSize?.width)
+      setTransition(activeItemSize?.left - box.left)
     }
   }, [props.activeItem])  
 
+
+
   return (
-      <div className={classNames(styles.root, props.className) } > 
-        <div className={styles.wrapper} ref={wrapperRef}>
-          <div className={styles.items}>
+      <div className={classNames(styles.root, props.className) }> 
+
+        <div className={styles.wrapper} ref={wrapperRef} >
+          <div className={styles.items} ref={itemsListRef}>
             {props.items.length > 0 && props.items
               .map((el, index)=> {
                 return (
@@ -53,7 +59,7 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
               })
             }
           </div>
-          <div className={classNames(styles.bottomString, props.bottomStringClass)}>
+          <div className={classNames(styles.bottomString, props.bottomStringClass)}  style={{width: itemsListRef.current?.clientWidth}}>
             <div className={styles.line} style={{transform: `translateX(${transition}px)`, width: activeWidth}}></div>
           </div>
         </div>

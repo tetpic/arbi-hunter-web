@@ -41,6 +41,7 @@ import BackgroundPickModal from 'components/modals/BackgroundPickModal'
 import NewPasswordModal from 'components/modals/NewPasswordModal'
 import ProfileTypeSwitcher from 'components/modals/ProfileTypeSwitcher'
 import CompensationModal from '@/components/modals/CompensationModal'
+import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
 
 
 interface Props { }
@@ -203,7 +204,10 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings} >
         <CompensationModal onClose={commonSettings.onRequestClose}/>
       </Modal>
-
+      case ModalType.ChangeLanguageModal:
+        return <Modal isOpen {...commonSettings} >
+        <ChangeLanguageModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
     }
   })()
 

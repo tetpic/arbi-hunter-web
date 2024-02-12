@@ -55,5 +55,6 @@ export interface ICV extends ICVCreate, IUserProfile{
   skills?: ISource[],
   sources?: ISource[],
   geos?: ISource[],
-  isRemote?:boolean
+  isRemote?:boolean,
+  totalShows?: number
 }

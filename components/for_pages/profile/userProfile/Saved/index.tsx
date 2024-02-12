@@ -2,11 +2,11 @@ import styles from './index.module.scss'
 
 import { useState } from 'react'
 import SavedMedia from '../../Media'
-import ItemNavigation from '../../ItemNavigation'
 import SavedVacancies from './Vacancies'
 import SavedCourses from '../../companyProfile/Courses'
 import { MediaWrapper } from 'context/media_state'
 import { CoursesWrapper } from 'context/courses_state'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 interface Props {
 }

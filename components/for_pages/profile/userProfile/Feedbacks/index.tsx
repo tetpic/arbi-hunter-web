@@ -3,11 +3,11 @@ import styles from './index.module.scss'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
 import { ApplicationStatus, ProposalRequestType } from 'types/enums'
-import ItemNavigation from '../../ItemNavigation'
 import VacancyItem from '../Saved/Vacancies/VacancyItem'
 import { IProposal } from 'data/interfaces/IProposal'
 import Spinner from 'components/ui/Spinner'
 import Formatter from 'utils/formatter'
+import ItemNavigation from '@/components/ui/ItemNavigation'
 
 enum ReviewsNavigation {
   Any = 'any',

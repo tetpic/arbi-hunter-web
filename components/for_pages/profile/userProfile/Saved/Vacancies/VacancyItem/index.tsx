@@ -19,6 +19,7 @@ import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   vc: IVacancy
@@ -77,38 +78,38 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   }
 
   return (<div className={styles.root}> 
-  <div className={styles.top}>
-    <UserPic className={styles.userPic} size={44}/>
-    <p className={styles.company}>{vc.company||vc.contactName}</p>
-    
-    <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
-    <ThreeDotsButton onMouseEnter={openModalHandler} className={styles.heartButton}/>
-    {!isTabletWidth &&
-      <OptionsDropDown 
-      options={options} 
-      active={dropDown} 
-      getRef={(r)=>dropRef.current=r} 
-      onClose={()=>openDropDown(false)}/>       
-    }
+    <div className={styles.top}>
+      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc.profile)}/>
+      <p className={styles.company}>{vc.company||vc.contactName}</p>
 
-  </div>
-  <p className={styles.vcName}>{vc.name}</p>
+      <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
+      <ThreeDotsButton onMouseEnter={openModalHandler} className={styles.heartButton}/>
+      {!isTabletWidth &&
+        <OptionsDropDown 
+        options={options} 
+        active={dropDown} 
+        getRef={(r)=>dropRef.current=r} 
+        onClose={()=>openDropDown(false)}/>       
+      }
+
+    </div>
+    <p className={styles.vcName}>{vc.name}</p>
   
-  <SalaryItem vacancy={vc}/>
+    <SalaryItem vacancy={vc}/>
   
-   {proposal &&
-    <p className={classNames(styles.status, styles[
-      proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status    ])}>
-      {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
-      </p>
-   }
-  <div className={styles.bottom}>
-    <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
     {proposal &&
-    <Button className={styles.button} onClick={()=> {proposal?.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
-    ||
-    <Button className={styles.button}>Откликнуться</Button>
+     <p className={classNames(styles.status, styles[
+       proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status    ])}>
+       {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
+       </p>
     }
-  </div>
+    <div className={styles.bottom}>
+      <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
+      {proposal &&
+      <Button className={styles.button} onClick={()=> {proposal?.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
+      ||
+      <Button className={styles.button}>Откликнуться</Button>
+      }
+    </div>
   </div>)
 }

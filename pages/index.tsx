@@ -3,6 +3,7 @@ import MainPageEmployee from 'components/for_pages/index/MainPageEmployee'
 import MainPageHirer from 'components/for_pages/index/MainPageHirer'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CharacterWrapper } from 'context/character_state'
+import { PersonalWrapper } from 'context/personal_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
@@ -33,7 +34,9 @@ export default function Page(props: Props) {
         </CharacterWrapper>
         ||
         props?.profile === ProfileType.Hirer &&
+        <PersonalWrapper>
           <MainPageHirer/>
+        </PersonalWrapper>
         ||
         <MainLanding/>
       }
