@@ -8,6 +8,8 @@
   padding: 16px;
   background-color: $grey;
   border-radius: 16px;
+  width: 100%;
+  max-width: 370px;
 
   &_title {
     font-size: $mediumText;
@@ -24,7 +26,8 @@
 
   .items {
     display: flex;
-    column-gap: 64px;
+    justify-content: space-between;
+    width: 100%;
   }
 
   &_item {

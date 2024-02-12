@@ -10,9 +10,15 @@
   position: relative;
   z-index: 10;
   transform: translateY(0);
-  transition: .7s linear;
+  @include transitionDefault;
   @include mq($SmDesktopWidth, max) {
     justify-content: space-between;
+  }
+}
+
+.hoveredNavBar {
+  @include mq($LargeDesktopWidth, max) {
+    margin-left: 100px;
   }
 }
 
@@ -105,6 +111,10 @@
 .iconButton {
   @include buttonGray;
   padding: 8px !important;
+
+  &_active {
+    @include buttonGradient;
+  }
   
   svg {
     width: 24px;

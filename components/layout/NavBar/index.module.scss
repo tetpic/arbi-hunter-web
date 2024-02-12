@@ -35,7 +35,7 @@
       width: 100px;
     }
     .wrapper {
-      width: 162px;
+      width: 200px;
     }
     .linkText {      
       max-width: 100%;
@@ -49,11 +49,15 @@
 .wrapper {
   position: fixed;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  row-gap: 24px;
   background-color: $backgroundBlack;
   top: 0;
   left: 0;
-  width: 80px;
-  padding: 140px 16px;
+  width: 74px;
+  padding: 140px 16px 24px;
   height: 100vh;
   @include transitionDefault;
   border-right: 2px $grey solid;
@@ -67,9 +71,6 @@
   column-gap: 8px;
   perspective: 400px;
   @include transitionDefault;
-  @include exeptLast{
-    margin-bottom: 20px; 
-  }
   @include mq($MdDesktopWidth, max) {
     margin-bottom: 20px !important;
   }
@@ -93,6 +94,11 @@
   transform: translate3d(0,0,0);
   transition: background-color .2s linear ;
   @include transitionDefault;  
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .active {
@@ -110,8 +116,8 @@
   &:after {
     content: '';
     position: absolute;
-    width: 127%;
-    max-width: 160px;
+    width: 154%;
+    max-width: 200px;
     height: 2px;
     background-color: $grey;
     bottom: -22px;
@@ -137,7 +143,28 @@
   white-space: nowrap;
   transform: rotateY(90deg);
   transform-origin: left;
+}
 
+.coloredLink {
+  background: $gradientIndigo;
+  border-radius: 12px;
+  margin-bottom: 32px !important;
+
+  .coloredIcon {
+    background-color: unset !important;
+  }
+
+  .money {
+    font-size: $mediumText;
+    font-weight: $medium;
+  }
+}
+
+.themeSwitcher {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  column-gap: 8px
 }
 
 @include animationJello;

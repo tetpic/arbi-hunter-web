@@ -24,6 +24,8 @@ interface IState {
   hideBottomSheet: () => void
   hideHeader: boolean
   setHideHeader: Dispatch<SetStateAction<boolean>>
+  isNavBarActive: boolean
+  setNavBarActive: Dispatch<SetStateAction<boolean>>
 
   isOverlayShown?: boolean
   showOverlay: () => void
@@ -55,6 +57,7 @@ export function AppWrapper(props: Props) {
   const [modalNonSkippable, setModalNonSkippable] = useState<boolean>(false)
   const [hideHeader, setHideHeader] = useState<boolean>(false)
   const [snapPoints, setSnapPoints] = useState<number>(null)
+  const [isNavBarActive, setNavBarActive] = useState<boolean>(false)
   const size = useResize()
 
 
@@ -123,6 +126,8 @@ export function AppWrapper(props: Props) {
 
     hideHeader,
     setHideHeader,
+    isNavBarActive,
+    setNavBarActive,
 
     isOverlayShown,
     showOverlay: () => {
@@ -131,7 +136,8 @@ export function AppWrapper(props: Props) {
     hideOverlay: () => {
       setIsOverlayShown(false)
     },
-    size
+    size,
+
   }
 
 

@@ -49,6 +49,7 @@ export default function Header(props: Props) {
   }, [userContext.currentProfile])
 
   const router = useRouter()
+  const activePath = router.asPath
   const regPath = '/registration'
   const loginPath = '/login'
 
@@ -73,7 +74,7 @@ export default function Header(props: Props) {
 
 
   return ( 
-    <div className={classnames(styles.root, styles[direction])} ref={dropdownRef}>
+    <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar)} ref={dropdownRef}>
       {(!userContext.isLogged || !userContext.currentProfile) &&
       <Link href={userContext.currentProfile?'/profile':'/'} className={styles.logo}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
@@ -126,12 +127,12 @@ export default function Header(props: Props) {
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
             <>
               <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-              <Button  className={styles.iconButton}>
+              <Link  className={styles.iconButton} href={'/notifications'}>
                 <NotificationSvg/>
-              </Button>
-              <Button  className={styles.iconButton}>
+              </Link>
+              <Link className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} href={{pathname: 'profile', query: {page: 'saved'}}}>
                 <HeartSvg/>
-              </Button>
+              </Link>
               <UserPic 
               key={1} 
               image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 

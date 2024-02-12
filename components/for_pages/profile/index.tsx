@@ -10,7 +10,8 @@ import Button from 'components/ui/Button'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 
 export default function Profile() {
@@ -30,6 +31,10 @@ export default function Profile() {
     {isTabletWidth?'Готово':'Сохранить'}
   </Button>
   </>)
+
+  useEffect(()=>{
+    pager(router.query?.page as ProfilePages)
+  }, [router])
 
 
 
@@ -51,7 +56,7 @@ export default function Profile() {
         bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && !isTabletWidth&& saveCharButton} 
         currentPage={page} 
         navSet={navSet()} 
-        setPage={pager} 
+        setPage={(p)=> {router.push(`/profile?page=${p}`)}} 
         onClickHandler={()=>setShowNav(false)}/>
       }
     </div>

@@ -22,7 +22,7 @@ export default function Layout(props: Props) {
       <Sticky>
         {({style, distanceFromTop}) => <div className={styles.headerWrapper}  style={style}>
           <Header distanceFromTop={distanceFromTop}  />
-          </div>}
+        </div>}
       </Sticky>
       }
       <div className={styles.content}>

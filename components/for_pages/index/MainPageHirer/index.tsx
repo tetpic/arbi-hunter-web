@@ -55,12 +55,6 @@ export default function MainPageHirer(props: Props) {
 
 
   return (<div className={styles.root}> 
-    {/* <div className={styles.background}>
-      <Image src={'/images/cities/moscow.png'} alt={''}  width={770} height={170}/>
-      <Rive className={styles.rive}  src={'/rive/header_airplain.riv'}/>
-      <Rive className={styles.rive}  src={'/rive/header_particles2.riv'}/>
-    </div> */}
-    
     <div className={classnames(styles.content, !userContext?.currentProfile?.image&&styles.content_wide)}>
       <div className={styles.balance}>
         <p className={styles.title}>Баланс счета</p>

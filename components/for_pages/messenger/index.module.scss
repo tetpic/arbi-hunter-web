@@ -1,10 +1,11 @@
 @import 'styles/index';
 
 .root {
-  padding-left: 90px;
+  padding-left: 74px;
   display: flex;
   height: calc(100vh - 78px);
   overflow: auto;
+  width: 100%;
   @include mq($TabletWidth, max) {
     padding-left: unset;
     height: unset;
