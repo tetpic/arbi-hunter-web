@@ -124,9 +124,9 @@ export interface ISpecializationCategory extends TimeStamp {
 
 
 export interface CategoryTranslation extends TimeStamp {
-  id: number,
+  id?: number,
   languageCode: Languages,
-  name: string,
+  name?: string,
   baseId: number,
   priceDescription: string,
   shortDescription: string,
@@ -144,9 +144,9 @@ export interface ICategory extends TimeStamp, CategoryTranslation {
   description: string|null,
   color: string|null,
   imageId: number|null,
-  articlesCount: string, //number
+  articlesCount?: string, //number
   deletedAt: string|null,
-  image: IFile|null,
+  image?: IFile|null,
   translations: CategoryTranslation[],
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,

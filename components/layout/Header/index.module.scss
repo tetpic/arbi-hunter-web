@@ -68,10 +68,6 @@
   }
 }
 
-.userLink {
-  @include buttonGradient;
-}
-
 .dropdown {
   position: absolute;
   bottom: -20px;
@@ -109,16 +105,8 @@
 }
 
 .iconButton {
-  @include buttonGray;
-  padding: 8px !important;
-
   &_active {
     @include buttonGradient;
-  }
-  
-  svg {
-    width: 24px;
-    height: 24px;
   }
 }
 

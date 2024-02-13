@@ -9,12 +9,12 @@
   margin-top: auto;
 }
 
-.button {
-  @include buttonGradient;
-  @include mq($TabletWidth, max) {
-    width: 100%;
-  }
-}
+// .button {
+//   @include buttonGradient;
+//   @include mq($TabletWidth, max) {
+//     width: 100%;
+//   }
+// }
 
 .item {
   border-radius: 16px;
@@ -165,12 +165,6 @@
   column-gap: 8px;
   color: $greyLight;
   font-size: $smallText;
-}
-
-.buttonDisabled {
-  @include buttonGray;
-  opacity: .6;
-  pointer-events: none;
 }
 
 .heartButton {

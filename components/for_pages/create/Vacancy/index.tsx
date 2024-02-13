@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
@@ -55,6 +55,7 @@ export default function Vacancy(props: Props) {
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
+  const maxProgress = useRef<number>(props.vacancy.completedSteps.length||1)
 
   const CVItemsCount = 8
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
@@ -185,7 +186,7 @@ export default function Vacancy(props: Props) {
         setProgress(pageNumber||progress+1)
         return false
       case 2:
-        if(creationContext.helpObjects.categoryIds.length === 0) {
+        if(creationContext.activeSubCategory.length === 0) {
           appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
           return false
         }
@@ -337,6 +338,23 @@ export default function Vacancy(props: Props) {
       return
     }
     changeComponent(progress)
+    if(maxProgress.current > progress || props.vacancy.completedSteps.length === CVItemsCount) return 
+    maxProgress.current < progress && (maxProgress.current = progress)
+    debugger
+    if(progress > 1 && creationContext.activeSubCategory.length > 0) {
+      const formikCleared = {
+        ...formik.values, 
+        categoriesIds: [creationContext.activeSubCategory[0]?.id],
+        salaryMin: Number(formik.values.salaryMin?.toString().replaceAll(' ', '')),
+        salaryMax: Number(formik.values.salaryMax?.toString().replaceAll(' ', '')),
+        published: false,
+      }
+      Object.entries(formikCleared).forEach((entry) => {
+        //@ts-ignore
+        !Boolean(entry[1])&&(delete formikCleared[entry[0]])
+      })
+      creationContext.saveDraft({vacancy: {...formikCleared, completedSteps: new Array(maxProgress.current).fill(true).map((e, i) => i)}})
+    }
   }, [progress])
 
   useEffect(()=>{

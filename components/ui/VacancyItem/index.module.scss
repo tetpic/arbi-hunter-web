@@ -28,18 +28,6 @@
   .city {
     grid-area: c;
   }
-
-}
-
-.button {
-  @include buttonGradient;
-  @include mq($TabletWidth, max) {
-    width: 100%;
-  }
-
-  &_wide {
-    width: 100%;
-  }
 }
 
 .item {

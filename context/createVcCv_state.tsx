@@ -4,7 +4,7 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
 
 
@@ -39,6 +39,8 @@ export interface ICreationState {
 
   progress: number
   setProgress: (p: number) => void
+
+  saveDraft: (data: {cv?: ICVCreate, vacancy?: IVacancyCreate}) => void
 
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
   subCategories: Map<number, ISpecializationCategory>
@@ -88,6 +90,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [subCategories, setSubCategoriesState] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [activeCategory, setActiveCategory] = useState<ISpecializationCategory>()
   const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory[]>([])
+  const draftId = useRef<number>()
 
 
   const setCurrentCv = (v: ICVCreate) => {
@@ -153,7 +156,28 @@ export function CreateVcCvWrapper(props: Props) {
         })
       })
     }
+  }
 
+  const saveDraft = (data: {cv?: ICVCreate, vacancy?: IVacancyCreate}) => {
+    debugger
+    if(data.cv) {
+      CvRepository.createCV(data.cv)
+      .then(res => {
+        debugger
+      })
+    }
+    else if(data.vacancy ) {
+      if(!draftId.current) {
+        VacancyRepository.createVacancy(data.vacancy)
+        .then(res => {
+          debugger
+          draftId.current = res.id
+        })
+      }
+      else if(draftId.current){
+        VacancyRepository.editVacancyById(data.vacancy, draftId.current)
+      }
+    }
   }
 
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
@@ -188,11 +212,15 @@ export function CreateVcCvWrapper(props: Props) {
   const getCurrentVc = (id: number, vacancy?: IVacancy) => {
     if(vacancy) {
       setEditedItem(vacancy, 'vc')
+      setActiveSubcategory(vacancy.categories)
+      draftId.current = vacancy.id
       return
     }
     VacancyRepository.getVacancyById(id, userContext.currentProfile?.profileType)
     .then(res=> {
       setEditedItem(res, 'vc')
+      setActiveSubcategory(res.categories)
+      draftId.current = res.id
     })
   }
 
@@ -246,6 +274,8 @@ export function CreateVcCvWrapper(props: Props) {
 
     progress,
     setProgress,
+
+    saveDraft,
 
     categories,
     subCategories,

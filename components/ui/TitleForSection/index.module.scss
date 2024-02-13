@@ -13,15 +13,6 @@
   }
 }
 
-.backButton {
-  padding: 8px;
-  border-radius: 10px;
-  background-color: $grey;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hoverButtonSmooth;
-}
-
 .filler {
   width: 24px;
 }

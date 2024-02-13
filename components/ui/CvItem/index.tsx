@@ -74,7 +74,7 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   return (<Link className={styles.item} href={'cv/'+cv.id}> 
-    <LikeButton  className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
+    <LikeButton className={styles.heartButton} active={cv.isSavedByCurrentProfile} onClick={likeHandler}/>
     <Image 
     className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
     src={userImage||defaultImage} 
@@ -119,9 +119,9 @@ export default function CvItem({cv, ...props}: Props) {
     </div>
     <div className={styles.buttonsWrapper}>
       {(!cv.proposalByCurrentUser || cv.proposalByCurrentUser.status === ApplicationStatus.Rejected || cv.proposalByCurrentUser.vacancyId !== props.initialVacancy?.id) &&
-      <Button className={styles.button} onClick={respondHandler}>Пригласить</Button>
+      <Button styleType={['gradient', 'phoneWide']} onClick={respondHandler}>Пригласить</Button>
       ||
-      <Button className={styles.buttonDisabled}>Приглашение выслано</Button>
+      <Button styleType={['gradient', 'phoneWide']} disabled>Приглашение выслано</Button>
       }
     </div>
   </Link>)

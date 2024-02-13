@@ -14,15 +14,24 @@ import { useUserContext } from 'context/user_state'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
 import Rive from '@rive-app/react-canvas'
+import ThreeModelVariant from '../../three'
+import classNames from 'classnames'
+import { useCharacterContext } from 'context/character_state'
+import Spinner from '@/components/ui/Spinner'
+import { ModelActions } from '../../profile/userProfile/UserEditor'
 
 interface Props {
   isEditing?: boolean
+  useModel?: boolean
+  showNextAnimation?: () => void
+  action?: ModelActions 
 }
 
 export default function PersonalHeader(props: Props) {
   const appContext = useAppContext()
   const personalContext = usePersonalContext()
   const userContext = useUserContext()
+  const characterContext = useCharacterContext()
   const currentProfile = useUserContext().currentProfile
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
@@ -98,7 +107,7 @@ export default function PersonalHeader(props: Props) {
     }
     {backImage && personalContext.transport && transportRive}
     {backImage && personalContext.weather && weatherRive}
-    <div className={styles.personalImageWrapper}>
+    <div className={props.useModel?styles.personalModel:styles.personalImageWrapper}>
       {
       personalContext.currentProfile.profileType === ProfileType.Hirer 
       && building
@@ -119,7 +128,7 @@ export default function PersonalHeader(props: Props) {
         />
       </>
       }
-      {personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo &&
+      {personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && !props.useModel &&
         <Image
         className={styles.userLogo}
         src={FILES + personalContext.currentProfile.logo.source}
@@ -127,6 +136,19 @@ export default function PersonalHeader(props: Props) {
         width={300}
         height={300}
         />
+        ||
+        personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && props.useModel &&
+        <div className={styles.modelWrapper} >
+          {!characterContext.modelLoaded && 
+            <Spinner className={styles.modelSpinner} size={52}/>
+          } 
+          <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
+          {characterContext.variant &&  characterContext.dataLoaded &&
+            <ThreeModelVariant disableControls data={characterContext.variant } actions={props.action}  r={4}/> 
+          }
+        </div>
+      </div>
+  
       }
 
 

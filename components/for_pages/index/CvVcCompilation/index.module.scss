@@ -1,0 +1,51 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 16px;
+}
+
+.button {
+  height: 32px;
+  padding: 8px 16px;
+}
+
+.card {
+  width: calc(33% - 8px);
+  padding: 16px;
+  background-color: $blue;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  align-items: flex-start;
+  position: relative;
+  &_purple {
+    background: linear-gradient(100deg, #586DE4, #AC6CDB );
+  }
+
+  &_green {
+    background: linear-gradient(100deg, #4E81F3, #2CC66D );
+  }
+
+  &_orange {
+    background: linear-gradient(100deg, #F3CE7B, #E76056 );
+  }
+
+  &_red {
+    background: linear-gradient(100deg, #670418, #85061d );
+  }
+
+  p {
+    max-width: 55%;
+  }
+
+  .image {
+    position: absolute;
+    bottom: 16px;
+    right: 0;
+  }
+
+}

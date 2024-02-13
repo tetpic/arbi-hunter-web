@@ -103,17 +103,41 @@ export default function Header(props: Props) {
         {!isTabletWidth && 
           <div className={styles.userWrapper}>
             {!userContext.currentProfile && <>
-              <Link className={classnames(styles.userLink, router.pathname === regPath&&styles.userLink_active)} href={'/registration'}><span>Регистрация</span></Link>
-              <Link className={classnames(styles.userLink, router.pathname === loginPath&&styles.userLink_active)} href={'/login'}><span>Вход</span></Link>
+              <Button 
+              styleType={['gradient']}
+              href={regPath}
+              disabled={activePath === regPath}
+              >
+                Регистрация
+              </Button>
+
+              <Button 
+              styleType={['gradient']}
+              disabled={activePath === loginPath}
+              href={loginPath}
+              >
+                Вход
+              </Button>
             </>}
 
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
             <>
-              <Link href={'/create/cv'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать резюме</span></Link>
-              <Button className={styles.iconButton}>
+              <Button 
+              href={'/create/cv'} 
+              styleType={['gradient']}
+              >
+                Создать резюме
+              </Button>
+              <Button               
+              styleType={['icon', 'black']} 
+              className={styles.iconButton}
+              >
                 <NotificationSvg/>
               </Button>
-              <Button  className={styles.iconButton}>
+              <Button  
+              styleType={['icon', 'black', 'svg24']} 
+              className={styles.iconButton}
+              >
                 <HeartSvg/>
               </Button>
               <UserPic 
@@ -126,13 +150,26 @@ export default function Header(props: Props) {
 
             {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
             <>
-              <Link href={'/create/vacancy'} className={classnames(styles.userLink, styles.userLink_create)}><span>Создать вакансию</span></Link>
-              <Link  className={styles.iconButton} href={'/notifications'}>
+              <Button 
+              href={'/create/vacancy'} 
+              styleType={['gradient']}
+              >
+                Создать вакансию
+              </Button>
+              <Button 
+              href={'/notifications'}
+              styleType={['icon', 'black']} 
+              className={styles.iconButton} 
+              >
                 <NotificationSvg/>
-              </Link>
-              <Link className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} href={{pathname: 'profile', query: {page: 'saved'}}}>
+              </Button>
+              <Button 
+              styleType={['icon', 'black', 'svg24']} 
+              className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} 
+              href={{pathname: 'profile', query: {page: 'saved'}}}
+              >
                 <HeartSvg/>
-              </Link>
+              </Button>
               <UserPic 
               key={1} 
               image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 

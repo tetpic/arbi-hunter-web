@@ -2,7 +2,7 @@
 
 .root {
   display: grid;
-  grid-template-areas: 's m' 's v';
+  grid-template-areas: 's m' 's save' 's v' ;
   grid-template-rows: auto 1fr;
   margin-top: 32px;
   @include mq($SmDesktopWidth, max) {
@@ -111,4 +111,10 @@
   @include buttonGradient;
   width: unset;
   padding: 8px;
+}
+
+.saveButton {
+  grid-area: save;
+  justify-self: flex-end;
+  margin-top: 16px;
 }

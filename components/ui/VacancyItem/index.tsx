@@ -80,7 +80,12 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         </p>
       }
       <div className={styles.buttonsWrapper}>
-        <Button className={classNames(styles.button, smallCard&&styles.button_wide)} onClick={respondHandler}>Откликнуться</Button>
+        <Button 
+        styleType={['gradient', 'phoneWide']}
+        onClick={respondHandler}
+        >
+          Откликнуться
+        </Button>
       </div>
     </div>
     {!smallCard &&

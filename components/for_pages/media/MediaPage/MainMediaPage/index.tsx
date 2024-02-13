@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import Stories from 'components/ui/Stories'
-import MediaCategories from '../../MediaCategories'
+import MediaCategories from '../../../../ui/CategoriesList'
 import { ICategory } from 'data/interfaces/Common'
 import { useMediaContext } from 'context/media_state'
 import NewsList from '../NewsList'
@@ -26,7 +26,7 @@ export default function MainMediaPage(props: Props) {
       </>
     } 
     <p className={styles.title}><span>Рубрики</span> <span>Все</span></p>
-    <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav/>
+    <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav articlesCounter/>
   </>)
 
   const search = (data: ISearchBarReturnParams) => {

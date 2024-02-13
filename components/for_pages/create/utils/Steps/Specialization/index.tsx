@@ -35,8 +35,8 @@ export default function Specialization(props: Props) {
       <p className={styles.title}>Выберите специализацию <Image src={'/icons/book.png'} alt={'напишите'} width={24} height={24}/></p>
 
       <div className={styles.positionWrapper}>
-        {cvContext.helpObjects?.categoryIds && cvContext.helpObjects?.categoryIds?.length > 0 && 
-          <p className={styles.position}>{cvContext.helpObjects.categoryIds[0].name}</p>
+        {cvContext.activeSubCategory.length > 0 && 
+          <p className={styles.position}>{cvContext.activeSubCategory[0].name}</p>
         }
         <p 
         className={styles.link} 

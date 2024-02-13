@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { ICategory } from 'data/interfaces/Common'
+// import { IFile } from 'data/interfaces/Common'
 import Image from 'next/image'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import {Autoplay} from 'swiper/modules'
@@ -15,15 +15,16 @@ import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import { FILES } from 'types/constants'
 
-interface Props {
-  categories: ICategory[]
+interface Props<T> {
+  categories: T[]
   hideNav?: boolean
   className?: string
   title?: string
+  articlesCounter?:boolean
 }
 
 
-export default function MediaCategories(props: Props) {
+export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
   const swiper= useRef<SwiperRef>(null!)
   const {isTabletWidth} = useResize()
 
@@ -44,17 +45,19 @@ export default function MediaCategories(props: Props) {
         <SwiperSlide className={styles.swiperSlide} key={category.id}>
           <Link href={`/media/page?page=categories&category=${category.id}`} replace={true} className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
-                <Image 
-                src={FILES + category.image.source}
-                alt={category.name+ ' image'} 
-                width={100} 
-                height={100}
-                style={{objectFit:'cover', width: '100%', height: '100%'}}
-                className={styles.image}
-                />
+              <Image 
+              src={FILES + category.image.source}
+              alt={category.name+ ' image'} 
+              width={100} 
+              height={100}
+              style={{objectFit:'cover', width: '100%', height: '100%'}}
+              className={styles.image}
+              />
             </div>
             <p className={styles.name} title={category.name}>{category.name}</p>
-            <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></div>
+            {props.articlesCounter && category.articlesCount &&
+              <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></div>
+            }
           </Link>
         </SwiperSlide>
       )

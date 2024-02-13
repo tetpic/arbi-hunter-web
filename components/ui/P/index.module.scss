@@ -1,0 +1,54 @@
+@import 'styles/index';
+
+.p {
+  color: $white;
+}
+
+.small{
+  font-size: $smallText;
+
+}
+.medium{
+  font-size: $mediumText;
+
+}
+.large{
+  font-size: $largeText;
+}
+
+.huge{
+  font-size: $hugeText;
+}
+
+
+
+
+.w500{
+  font-weight: $medium;
+}
+.w600{
+  font-weight: $semibold;
+}
+.w700{
+  font-weight: $bold;
+}
+
+.fs32{
+  font-size: $text32;
+}
+.f36{
+  font-size: $text36;
+}
+.f20{
+  font-size: $text20;
+}
+
+.white{
+  color: $white;
+}
+.grey{
+  color: $grey;
+}
+.greyLight{
+  color: $greyLight;
+}

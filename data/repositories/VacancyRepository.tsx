@@ -15,7 +15,7 @@ export default class VacancyRepository {
     if (res.err) {
       return null
     }
-    return res.data
+    return res
   }
   
   static async getArchiveVacancies(): Promise<IVacancy[]|null> {

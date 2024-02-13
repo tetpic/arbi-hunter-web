@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import MediaPageHeader from '../MediaHeader'
 import { ICategory } from 'data/interfaces/Common'
-import MediaCategories from '../MediaCategories'
+import MediaCategories from '../../../ui/CategoriesList'
 import MediaNewsSection from '../MediaNewsSection'
 import { useUserContext } from 'context/user_state'
 import ICommunity from 'data/interfaces/ICommunity'
@@ -40,7 +40,7 @@ export default function MediaLanding(props: Props) {
       title={isTabletWidth?'Категории':'Все категории'} 
       link={'/media/page?page=categories'}
       />
-      <MediaCategories categories={props.categories} title={isTabletWidth&&'Категории'}/>
+      <MediaCategories categories={props.categories} title={isTabletWidth&&'Категории'} articlesCounter/>
 
       <Title 
       className={styles.title}

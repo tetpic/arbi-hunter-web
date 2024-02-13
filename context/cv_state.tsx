@@ -114,7 +114,7 @@ export function CvWrapper(props: Props) {
   }
 
   const editCv = (cv: ICV) => {
-    createVcCvContext.setEditedItem(cv, 'cv')
+    // createVcCvContext.setEditedItem(cv, 'cv')
     router.push(`/create/cv?id=${cv.id}`)
   }
 

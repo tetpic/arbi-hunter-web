@@ -50,6 +50,8 @@ export function ThreeModel(props: IThreeModelProps) {
   }, [nodes, characterContext.dataLoaded])
 
   useEffect(()=>{
+    // console.log(nodes, materials, animations)
+    
     characterContext.setDurations(state=> {
       (animations as {name: string, duration: number}[]).map((animation)=>{
         state[animation.name] = animation.duration

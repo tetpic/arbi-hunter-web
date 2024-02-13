@@ -5,7 +5,6 @@ import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import {  CompensationType,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
-// import InputField from 'components/fields/InputField'
 import RadioListField from 'components/fields/RadioListField'
 import AddButton from 'components/ui/AddButton'
 import { useAppContext } from 'context/state'
@@ -308,7 +307,13 @@ export default function Filters(props: Props) {
 
       </Form> 
     </FormikProvider>
-    <Button className={styles.resetButton} onClick={formik.handleReset}>Сбросить всё</Button>
+    <Button 
+    styleType={['grey', 'wide']} 
+    onClick={formik.handleReset}
+    className={styles.resetButton}
+    >
+      Сбросить всё
+    </Button>
 
   </div>)
 }

@@ -1,7 +1,6 @@
 @import 'styles/index';
 
 .root {
-  // @include buttonBorderGradient;
   padding: 8px 0px;
   height: unset;
   display: flex;
@@ -19,12 +18,7 @@
 
 
   .button {
-    @include buttonBlack;
-    position: relative;
-    z-index: 4;
-    height: 40px;
     border: 2px $blue solid;
-    padding: 8px 16px;
     @include mq($TabletWidth, max) {
       width: 100%;
     }
@@ -56,15 +50,6 @@
   }
 
   .filterButton {
-    cursor: pointer;
-    border-radius: 6px;
-    overflow: hidden;
-    border-radius: 6px;
-    padding: 4px;
-    flex-shrink: 0;
-    @include buttonBlack;
-    padding: 8px;
-
     &_active {
       svg {
         path {
@@ -73,13 +58,11 @@
       }
     }
   }
-
 }
 
 .container {
   width: 100%;
   @include container;
-
 
   &_wide {
     @include mq($TabletWidth, max) {

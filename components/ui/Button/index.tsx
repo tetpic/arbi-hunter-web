@@ -8,11 +8,27 @@ import usePressAndHover from 'hooks/usePressAndHover'
 import { MouseEventHandler, ReactElement, RefObject } from 'react'
 import useStopPropagation from 'hooks/useStopPropagation'
 
+type ButtonStyle = 
+'black'|
+'grey'|
+'gradient'|
+'blue'|
+'borderGradient'|
+'fontSmall'|
+'fontMedium'|
+'fontLarge'|
+'icon'|
+'svg24'|
+'svg32'|
+'whiteTransparent'|
+'phoneWide'|
+'wide'
+
+
 interface Props extends IButton {
   children: React.ReactNode
-  styleType?: 'outlinedPurple' | 'outlinedWhite' | 'filledGrey' | 'filledGreen' | 'filledWhite' | 'icon';
-  font?: 'normal12' | 'normalBold' | 'semibold14' | 'semibold16' | 'semibold18'
   className?: string
+  styleType?: ButtonStyle[]
   arrow?: boolean
   fluid?: boolean
   buttonRef?: RefObject<any>
@@ -25,43 +41,47 @@ interface Props extends IButton {
   onMouseEnter?: MouseEventHandler
 }
 
+
+/**
+ * @param styleType [] : 'black'|'grey'|'gradient'|'blue'|'borderGradient'|'fontSmall'|'fontMedium'|'fontLarge'|'icon'|'svg24'|'svg32'|'whiteTransparent'|'phoneWide'|'wide'
+ */
 export default function Button(props: Props) {
   const [ref, press, hover] = usePressAndHover()
   useStopPropagation(ref, !props.stopPropagation)
 
-  const cn = classNames({
-    [styles.root]: true,
-    [styles[props.styleType]]: true,
-    ...(props.font ? {[styles[props.font]]: true} : {}),
-    [styles.disabled]: props.disabled,
-    [styles.fluid]: props.fluid,
-    [styles.press]: props.press ?? press,
-    [styles.hover]: props.hover ?? hover,
-    [styles.withIcon]: !!props.icon
-  }, props.className)
+  const cn = classNames(
+    {
+      [styles.root]: true,
+      [styles.disabled]: props.disabled,
+      [styles.fluid]: props.fluid,
+      [styles.press]: props.press ?? press,
+      [styles.hover]: props.hover ?? hover,
+      [styles.withIcon]: !!props.icon
+    }, props.className,
+    props.styleType?.map(s => styles[s]),
+  )
 
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if(!props.onClick) return
     e.preventDefault()
     e.stopPropagation()
-    props.onClick(e)
+    props?.onClick(e)
   }
 
 
   if (props.href) {
     return (
-      <Link href={props.href}>
-        <a
-          ref={props.buttonRef ?? ref}
-          className={classNames(cn)}
-          target={props.isExternalHref ? '_blank' : ''}
-          rel={props.isExternalHref ? 'noreferrer' : ''}
-          onClick={(e)=>{clickHandler(e)}}
-        >
-           <span className={classNames({
-             [styles.text]: true,
-             [styles.textHidden]: props.spinner,
-           })}>  {props.icon}{props.children}</span>
-        </a>
+      <Link href={props.href}
+      ref={props.buttonRef ?? ref}
+      className={classNames(cn)}
+      target={props.isExternalHref ? '_blank' : ''}
+      rel={props.isExternalHref ? 'noreferrer' : ''}
+      onClick={(e)=>{clickHandler(e)}}
+      >
+        <span className={classNames({
+          [styles.text]: true,
+          [styles.textHidden]: props.spinner,
+        })}>  {props.icon}{props.children}</span>
       </Link>
     )
   }

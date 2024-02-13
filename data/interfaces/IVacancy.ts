@@ -22,6 +22,7 @@ export interface IVacancyCreate extends IJob {
   showEmail?: boolean
   showPhone?: boolean
   showTelegramNickname?: boolean
+  completedSteps?: number[]
 }
 
 

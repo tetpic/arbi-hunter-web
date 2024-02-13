@@ -16,12 +16,13 @@ import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
-import Link from 'next/link'
+// import Link from 'next/link'
 import OptionsList from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import { TranslateTariffType } from 'utils/enumsTranslations'
 import classNames from 'classnames'
+import Progress from './Progress'
 
 interface Props {
   vacancy: IVacancy
@@ -115,26 +116,30 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
         }
       </div>
 
-      <Statistics 
-      title='Статистика за неделю'
-      items={[
-        {name: 'Показы', count: vacancy.totalProposals},
-        {name: 'Просмотры', count: vacancy.totalViews},
-        {name: 'Отклики', count: vacancy.totalApplications},
-      ]}
-      />
+      {props.type !== 'drafts' &&
+        <Statistics 
+        title='Статистика за неделю'
+        items={[
+          {name: 'Показы', count: vacancy.totalProposals},
+          {name: 'Просмотры', count: vacancy.totalViews},
+          {name: 'Отклики', count: vacancy.totalApplications},
+        ]}
+        />
+        ||
+        vacancy.completedSteps &&
+        <Progress progress={vacancy.completedSteps}/>
+      }
       
       {!props.cardMode &&
-      <div className={styles.buttonsWrapper}>
-        <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} className={styles.buttonBlue}>Смотреть отклики {/*vacancy.totalApplications} {Formatter.pluralize(+vacancy.totalApplications, 'отклик', 'отклика', 'откликов')*/}</Button>
-        {!isActive && 
-          <Button className={styles.button} onClick={setActiveHandler}>Сделать активной</Button>
-        ||
-          <Link href={`recruiting?vcId=${vacancy.id}`}  className={styles.button}><span>Подходящие резюме</span></Link>
-        }       
-      </div>
+        <div className={styles.buttonsWrapper}>
+          <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} styleType={['gradient']}>Смотреть отклики</Button>
+          {!isActive && 
+            <Button styleType={['black']}  onClick={setActiveHandler}>Сделать активной</Button>
+          ||
+            <Button href={`recruiting?vcId=${vacancy.id}`} styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
+          }       
+        </div>
       }
-
   </div>)
 }
 

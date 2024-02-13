@@ -27,6 +27,7 @@ export default function Page(props: Props) {
   return (
     <ContentLayout withFooter>
       <VacancyWrapper>
+        <PersonalWrapper>
       {
         props?.profile === ProfileType.Employee &&
         <CharacterWrapper>
@@ -34,12 +35,11 @@ export default function Page(props: Props) {
         </CharacterWrapper>
         ||
         props?.profile === ProfileType.Hirer &&
-        <PersonalWrapper>
           <MainPageHirer/>
+          ||
+          <MainLanding/>
+        }
         </PersonalWrapper>
-        ||
-        <MainLanding/>
-      }
       </VacancyWrapper>
     </ContentLayout>
   )

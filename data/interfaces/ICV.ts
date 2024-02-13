@@ -1,5 +1,5 @@
 import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
-import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource} from './Common'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource, TimeStamp} from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
 import { IProposal } from './IProposal'
@@ -26,6 +26,7 @@ export interface ICVCreate extends IJob {
   experience?: WorkExperience
   searchPosition?: string
   assetsIds?: number[]
+  completedSteps?: number[]
 }
 
 export interface ICVVC {
@@ -35,7 +36,19 @@ export interface ICVVC {
 }
 
 
-export interface ICV extends ICVCreate, IUserProfile{
+export interface ICV extends ICVCreate, TimeStamp,
+Pick<IUserProfile, 
+'lastName'|
+'firstName'|
+'email'|
+'telegramNickname'|
+'id'|
+'countryId'|
+'cityId'|
+'city'|
+'country'
+>
+{
   portfolio: string|null,
   profileId: number,
   moderationStatus: string,  // "approved/manualModeration"add enums

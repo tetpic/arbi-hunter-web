@@ -104,9 +104,9 @@ export default function CVItem({cv, isLast, ...props}: Props) {
     title={'Статистика за неделю'}
     className={styles.stats}
     items={[
-      {name: 'Показы ', count: cv.totalShows.toString()},
-      {name: 'Просмотры', count: cv.totalViews},
-      {name: 'Приглашения', count: cv.totalProposals},
+      {name: 'Показы ', count: cv?.totalShows?.toString()},
+      {name: 'Просмотры', count: cv?.totalViews},
+      {name: 'Приглашения', count: cv?.totalProposals},
     ]} 
     />
 
@@ -115,9 +115,13 @@ export default function CVItem({cv, isLast, ...props}: Props) {
         {cv.moderationStatus !== 'approved' &&
           <p className={styles.refreshed}>На модерации</p>
         }
-        <Button className={styles.button}>Поднять в поиске</Button>
+        <Button
+        styleType={['gradient']}
+        >
+          Поднять в поиске
+        </Button>
         <Button 
-        className={styles.buttonBorderGradient} 
+        styleType={['borderGradient']}
         onClick={showFeedbacksForVacancy}
         >
           {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}

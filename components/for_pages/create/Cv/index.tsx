@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
@@ -53,9 +53,11 @@ export default function Cv(props: Props) {
 
   const router = useRouter()
   const {progress, setProgress} = creationContext
+  // const maxProgress = useRef<number>(1)
   const CVItemsCount = 6
 
   const submit = (data: ICVCreate) => {
+    debugger
     setLoading(true)
     const {activeSources, languageKnowledges, skills,  activeGeos} = creationContext?.helpObjects
 
@@ -195,6 +197,25 @@ export default function Cv(props: Props) {
     }
   }, [creationContext.activeSubCategory])
 
+  // useEffect(()=>{
+  //   console.log(maxProgress.current)
+  //   maxProgress.current < progress && (maxProgress.current = progress)
+  //   if(progress > 1) {
+  //     const formikCleared = {
+  //       ...formik.values, 
+  //       categoriesIds: [creationContext.activeSubCategory[0].id],
+  //       published: false,
+  //     }
+  //     Object.entries(formikCleared).forEach((entry) => {
+  //       //@ts-ignore
+  //       !Boolean(entry[1])&&(delete formikCleared[entry[0]])
+  //     })
+  //     console.log(formikCleared)
+      
+  //     debugger
+  //     creationContext.saveDraft({cv: {...formikCleared, completedSteps: new Array(maxProgress.current).fill(true).map((e, i) => i)}})
+  //   }
+  // }, [progress])
 
   const getComponent = useCallback((progress: number): [JSX.Element, CvNavigation] => {
     switch (progress) {

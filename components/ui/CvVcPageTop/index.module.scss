@@ -31,15 +31,15 @@
   }
 
   .button {
-    @include buttonGray;
+    // @include buttonGray;
     width: 40px;
     height: 40px;
-    padding: unset;
+    // padding: unset;
 
-    svg {
-      width: 24px;
-      height: 24px;
-    }
+    // svg {
+    //   width: 24px;
+    //   height: 24px;
+    // }
   }
 
   .share {

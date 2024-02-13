@@ -25,14 +25,6 @@
   }
 }
 
-.button {
-  @include buttonGradient;
-}
-
-.buttonBorderGradient {
-  @include buttonBorderGradient;
-}
-
 .buttonsWrapper {
   margin-top: 24px;
   display: flex;

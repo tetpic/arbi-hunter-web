@@ -1,0 +1,30 @@
+@import 'styles/index';
+
+.root {
+  width: 100%;
+  max-width: 500px;
+  background-color: $grey;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.progressLine {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+  width: 100%;
+}
+
+.progressItem {
+  flex: 1 1;
+  background-color: $blue;
+  height: 6px;
+  border-radius: 6px;
+}
+
+.active {
+  background-color: $red;
+}

@@ -101,14 +101,17 @@ export default function SearchBar(props: Props) {
             <Button 
             title='search button' 
             onClick={()=> submit()} 
-            className={!isTabletWidth&&styles.button}>
-              {isTabletWidth&&<LoupeSvg color={colors.greyLight}/>||'Найти'}
+            styleType={['black']}
+            className={!isTabletWidth&&styles.button}
+            >
+              Найти
             </Button>
             {props.onFilterClick &&
               <Button 
+              styleType={['icon', 'black']}
               title='filter button' 
               onClick={openFilters} 
-              className={classNames(styles.filterButton, (activeCategories.size>0||activePeriod)&&styles.filterButton_active)}>
+              className={(activeCategories.size>0||activePeriod)&&styles.filterButton_active}>
                 <SettingsTwoSlidersSvg/>
               </Button>
             }

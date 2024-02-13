@@ -9,6 +9,7 @@ import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import Button from '@/components/ui/Button'
 
 interface Props {
 }
@@ -56,6 +57,18 @@ export default function UserEditor(props: Props) {
   //   }, temporaryAnimation.duration)
   // }
 
+  const saveCharButton = (<>
+    <Button 
+    isProcess={characterContext.savingProcess}  
+    disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
+    onClick={()=>characterContext.saveCurrentSet()}  
+    styleType={['gradient']}
+    className={styles.saveButton}
+    >
+      {isTabletWidth?'Готово':'Сохранить'}
+    </Button>
+    </>)
+
   const onNavClick = (n: number) => {
     const key = [...categories.keys()].find(el=> el.id === n)
     setActiveSet([key, categories.get(key)])
@@ -89,6 +102,7 @@ export default function UserEditor(props: Props) {
           <Spinner size={32} />
         }
       </div>
+      {saveCharButton}
       <div className={styles.variants}>
        {activeSet[1] && activeSet[1].map(item=> {
         return (

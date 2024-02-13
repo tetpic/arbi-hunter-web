@@ -14,7 +14,7 @@ interface Props {
 
 export default function SalaryItem({vacancy, cv}: Props) {
 
-  const salary = cv&&Formatter.formatNumber(Number(cv?.salary))||vacancy&&['от '+ Formatter.formatNumber(vacancy?.salaryMin), 'до '+Formatter.formatNumber(vacancy?.salaryMax)].join(' ')
+  const salary = cv&&Formatter.formatNumber(Number(cv?.salary))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax))].filter(Boolean).join(' ')
   const compensation = vacancy?.compensation||cv?.compensation
   const currency = vacancy?.currency||cv?.currency
   const commission = vacancy?.commission||cv?.commission
@@ -22,6 +22,10 @@ export default function SalaryItem({vacancy, cv}: Props) {
   const image =   <Image src={'/icons/money.png'} width={24} height={24} alt={'money icon'}/> 
 
 
+
+  if(!Boolean(salary.trim())) {
+    return null
+  }
 
   return (<p className={styles.salary}>
   {

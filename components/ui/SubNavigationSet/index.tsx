@@ -12,7 +12,7 @@ interface Props<T> {
 
 
 
-export default function SubNavigationSet<T extends {id: number, name: string}>(props: Props<T>) {
+export default function SubNavigationSet<T extends {id?: number, name?: string}>(props: Props<T>) {
   return (
     props.categories.map(el=> {
       const isCurrent = el.id === props.currentCategory?.id

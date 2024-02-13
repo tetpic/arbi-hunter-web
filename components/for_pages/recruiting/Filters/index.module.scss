@@ -13,9 +13,6 @@
     flex-direction: column;
     padding-bottom: 16px;
   }
-  // overflow: auto;
-  // height: calc(100vh - 32px);
-  // height: calc(100dvh - 32px);
 }
 
 .range {
@@ -28,8 +25,6 @@
 }
 
 .resetButton {
-  @include buttonGray;
-  width: 100%;
   margin-top: 24px;
   @include mq($TabletWidth, max) {
     margin-top: auto;

@@ -89,3 +89,42 @@
   z-index: 1;
 }
 
+.personalModel {
+  position: absolute;
+  bottom: 0;
+  right: 10%;
+  height: 100%;
+  display: flex;
+
+}
+
+.modelWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  @include mq($SmDesktopWidth, max) {
+   display: none;
+  }
+
+  >div {
+    width: 270px;
+    height: 270px;
+  }
+
+  .model {
+    @include transitionDefault;
+    filter: contrast(0) opacity(.2) blur(30px);
+    &_active {
+      filter: contrast(1) opacity(1) blur(0px);
+    }
+  }
+
+  .modelSpinner {
+    position: absolute;
+    width: 570px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
