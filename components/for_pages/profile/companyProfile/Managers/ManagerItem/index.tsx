@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import Button from 'components/ui/Button'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
@@ -8,7 +10,8 @@ import { useState } from 'react'
 import { HirerRole } from 'types/enums'
 import { TranslateHirerRole } from 'utils/enumsTranslations'
 import ManagerDropdownMenu from '../ManagerDropdown'
-import styles from './index.module.scss'
+import { useUserContext } from 'context/user_state'
+import P from '@/components/ui/P'
 
 
 interface ManagerProps {
@@ -19,11 +22,10 @@ interface ManagerProps {
 
 export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
   const managerContext = useManagerContext()
+  const userContext = useUserContext()
   const [loading, setIsLoading] = useState<boolean>(false)
   const [dropdownActive, setDropDown] = useState<boolean>()
 
-
-  //перенести в контекст!!!!!
   const setAdminHandler = () => {
     const changeRoleTo = manager.hirerRole === HirerRole.Admin&&HirerRole.Manager||manager.hirerRole === HirerRole.Manager&&HirerRole.Admin
     const data: IManagerCreate = {
@@ -43,13 +45,17 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
     })
   }
 
+  const canIEdit = (!userContext.currentProfile.hirerRole || userContext.currentProfile.hirerRole === HirerRole.Admin) && manager.id !== userContext.currentProfile.id
+
   return (
     <div className={styles.item}>
       <div className={styles.top}>
         <UserPic size={42} className={styles.userPic}/>
         <p className={styles.name}>{manager.firstName} {manager.lastName}</p>
         <p className={styles.role}>{TranslateHirerRole(manager.hirerRole)}</p>
-        <ThreeDotsButton onClick={()=>setDropDown(state=> state&&false||!state&&true)} className={styles.edit}/>
+        {canIEdit &&
+          <ThreeDotsButton onClick={()=>setDropDown(state=> state&&false||!state&&true)} className={styles.edit}/>
+        }
         {dropdownActive && 
           <ManagerDropdownMenu 
           onClose={()=>setDropDown(false)} 
@@ -58,12 +64,17 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
           />     
         }
       </div>
-      <p className={styles.stats}>367 просмотров за неделю</p>
-      <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>Сделать {
-      manager.hirerRole===HirerRole.Manager&&'администратором'
-      ||
-      manager.hirerRole===HirerRole.Admin&&'менеджером'
-      }</Button>
+      <P styleType={['medium', 'w500', 'greyLight']}>Количество вакансий <span className={styles.count}>0</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>Отклики <span className={styles.count}>0</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>Просмотрено <span className={styles.count}>0</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>Отвечено <span className={styles.count}>0</span></P>
+      {canIEdit &&
+        <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>Сделать {
+          manager.hirerRole===HirerRole.Manager&&'администратором'
+        ||
+        manager.hirerRole===HirerRole.Admin&&'менеджером'
+        }</Button>
+      }
     </div>
   )
 }

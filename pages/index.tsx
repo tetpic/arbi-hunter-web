@@ -15,6 +15,7 @@ interface Props {
 export const getServerSideProps = (async (context: {req: { cookies: { [x: string]: any } } }) => {
   const profile = context.req.cookies[CookiesType.profileType]
   const token = context.req.cookies[CookiesType.accessToken]
+
   if(profile && token) {
     return {props: {profile}}
   }

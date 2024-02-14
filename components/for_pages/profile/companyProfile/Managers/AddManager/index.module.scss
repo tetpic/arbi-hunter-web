@@ -7,7 +7,7 @@
   width: calc(100vw - 200px);
   min-width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 10;
   padding: 24px 0px 0px;
   overflow: auto;
   background-color: $backgroundBlack;
@@ -32,16 +32,9 @@
 
 .title {
   margin-top: 32px;
-  font-weight: $semibold;
-  font-size: $hugeText;
-  color: $white;
 }
 
-.subTitle {
-  font-size: $largeText;
-  font-weight: $semibold;
-  color: $white;
-}
+
 
 .radioCircle {
   display: none;
@@ -74,8 +67,9 @@
   }
 }
 
-.button {
-  @include buttonGradient;
-  margin-right: auto;
+.buttonsWrapper {
+  display: flex;
 }
+
+
 

@@ -2,9 +2,7 @@ import styles from './index.module.scss'
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useVacancyContext } from 'context/vacancy_state'
 import { useUserContext } from 'context/user_state'
-import ChatRepository from 'data/repositories/ChatRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { IStats } from 'data/interfaces/IUser'
 import Buildings from '../../profile/Personal/Buildings'
@@ -29,73 +27,63 @@ import CvRepository from 'data/repositories/CvRepository'
 export default function MainPageHirer() {
   const userContext = useUserContext()
   const personalContext = usePersonalContext()
-  const vacancyContext = useVacancyContext()
-  const [load, setLoad] = useState<boolean>(true)
-  const [messagesCount, setMessagesCount] = useState<string>(null)
+  const [load, setLoad] = useState<boolean>(false)
   const [stats, setStats] = useState<IStats>()
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
 
+  const init = async() => {
+    const [ stats, courses, categories, news, backs] = await Promise.all([
+      UserRepository.getStats(), 
+      CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
+      CvRepository.getCategories(),
+      ArticlesRepository.getNews(true),
+      personalContext.setPersonalPage({profileId: userContext.currentProfile.id}) 
+    ])
+    setStats(stats)
+    setPopularCourses(state => {
+      courses.data.forEach(c => {
+        state.set(c.id, c)
+      })
+      return state
+    })
+    setCategories(state=> {
+      categories.forEach(el=> {
+        state.set(el.id, el)
+      })
+      return new Map(state)
+    })
+    setNews(state => {
+      news.data.forEach(el => {
+        state.set(el.id, el)
+      })
+      return state
+    })
+    personalContext.setBackgrounds(backs)
+
+    setTimeout(()=> {
+      setLoad(true)
+    }, 200)
+  }
+
 
 
   useEffect(()=>{
-    personalContext.setPersonalPage({profileId: userContext.currentProfile.id}) 
-    .then(res => {
-      personalContext.setBackgrounds(res)
-    })
-  }, [])
-
-  useEffect(()=>{
-    ChatRepository.getChatList({})
-    .then(res=>{
-      if(!res?.data|| res?.data?.length === 0) {
-        setMessagesCount('0')
-      }
-      else {
-        const counter = res.data.map(el=>el.totalUnread).reduce((p, c) =>  p + c, 0)
-        setMessagesCount(counter.toString())
-      }
-    })
-    UserRepository.getStats()
-    .then(res=> {
-      setStats(res)
-    })
-    CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru)
-    .then(res=> {
-      setPopularCourses(state => {
-        res.data.forEach(c => {
-          state.set(c.id, c)
-        })
-        return state
-      })
-    })
-    CvRepository.getCategories()
-    .then(res=> {
-      setCategories(()=> {
-        let map = new Map()
-        res.forEach(el=> {
-          map.set(el.id, el)
-        })
-        return map
-      })
-    })
-    ArticlesRepository.getNews(true)
-    .then(r=> {
-      setNews(state => {
-        r.data.forEach(el => {
-          state.set(el.id, el)
-        })
-        return state
-      })
-    })
-
-
+    init()
     document.body.style.overflowX = 'hidden'
     return ()=>{
       document.body.style.overflowX = 'hidden'
     }
   }, [])
+
+  if(!load) {
+    return  (
+      <div className={styles.root}>
+        <Spinner size={32}/>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.root}>

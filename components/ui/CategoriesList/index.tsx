@@ -1,19 +1,10 @@
 import styles from './index.module.scss'
 
-// import { IFile } from 'data/interfaces/Common'
 import Image from 'next/image'
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
-import {Autoplay} from 'swiper/modules'
-import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
-import { useRef } from 'react'
-import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
-import ArrowRightSvg from 'components/svg/ArrowRightSvg'
-import LinkBlack from 'components/ui/LinkBlack'
 import Link from 'next/link'
-import classNames from 'classnames'
-import { useResize } from 'components/hooks/useResize'
 import { FILES } from 'types/constants'
+import SwiperList from '../SwiperList'
 
 interface Props<T> {
   categories: T[]
@@ -25,24 +16,13 @@ interface Props<T> {
 
 
 export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
-  const swiper= useRef<SwiperRef>(null!)
-  const {isTabletWidth} = useResize()
+  // const swiper= useRef<SwiperRef>(null!)
+  // const {isTabletWidth} = useResize()
 
   return (
-  <section className={classNames(styles.root, props.className)}> 
-  <Swiper
-  ref={swiper}
-  freeMode={true}
-  slidesPerView={'auto'}
-  spaceBetween={10}
-  autoplay={true}
-  loop={true}
-  modules={[Autoplay]}
-  className={styles.swiper}
-  >
-    {props.categories.length > 0 && props.categories.map(category=> {
-      return (
-        <SwiperSlide className={styles.swiperSlide} key={category.id}>
+    <SwiperList>
+      {props.categories && props.categories.map(category=> {
+        return (
           <Link href={`/media/page?page=categories&category=${category.id}`} replace={true} className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
               <Image 
@@ -59,19 +39,8 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
               <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></div>
             }
           </Link>
-        </SwiperSlide>
-      )
-    })}
-    </Swiper>
-    {/* {!props.hideNav && !isTabletWidth &&
-      <> */}
-        <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
-        <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
-      {/* </>
-    } */}
-    {!props.hideNav && !isTabletWidth &&
-      <LinkBlack href={'/media/page?page=categories'}>Смотреть все</LinkBlack>
-    }
-  </section>
+        )
+      })}
+    </SwiperList>   
   )
 }

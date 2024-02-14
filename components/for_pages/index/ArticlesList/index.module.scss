@@ -1,0 +1,51 @@
+@import 'styles/index';
+
+.slide {
+  width: calc(33% - 4px);
+  max-width: 372px;
+  min-width: 300px;
+}
+
+.news {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: $grey;
+  
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.title {
+  @include lineClamp(1);
+}
+
+.description {
+  @include lineClamp(3);
+  min-height: 54px;
+}
+
+.content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.tag {
+  padding: 4px 8px;
+  background-color: $red;
+  font-size: $largeText;
+  font-weight: $medium;
+  color: $white;
+  border-radius: 6px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -76,8 +76,7 @@ export default function NavBar(props: Props) {
       icon: <ManSvg className={styles.linkSvg}/>
     },
     managers: {
-      path: '/profile',
-      query: {page: 'managers'},
+      path: '/managers',
       text: 'Менеджеры',
       icon: <UserDoubleSvg className={styles.linkSvg}/>
     },
@@ -99,7 +98,6 @@ export default function NavBar(props: Props) {
   ]
   const hirerLinks = [
     linksSet.vacancies, 
-    // linksSet.feedBacksHir, 
     linksSet.messages, 
     linksSet.shop, 
     linksSet.settings, 
@@ -139,7 +137,7 @@ export default function NavBar(props: Props) {
             )
           })
         }
-        <Button styleType={['black']} href={'/recruiting'}>Рекрутинг</Button>
+        <Button styleType={['black', 'icon']} href={'/recruiting'}>R</Button>
 
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>
@@ -152,7 +150,6 @@ export default function NavBar(props: Props) {
           onHandleColor={colors.white}
           width={50}
           />
-
         </div>
     </div>
   </div>

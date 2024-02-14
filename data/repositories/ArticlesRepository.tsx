@@ -55,7 +55,7 @@ export default class ArticlesRepository {
     return res
   }
 
-  static async getNews(full: boolean, data?: {categories?: [number], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number, articleType?: CategoryType}): Promise<IPagination<IArticle>|null> {
+  static async getNews(full: boolean, data?: {categories?: number[], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number, articleType?: CategoryType}): Promise<IPagination<IArticle>|null> {
     const dataToSend: any = {
       isTop: true,
       articleType: 'news',

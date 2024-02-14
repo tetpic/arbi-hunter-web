@@ -6,7 +6,7 @@ import usePressAndHover from 'hooks/usePressAndHover'
 import classNames from 'classnames'
 import React, { ChangeEvent, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
+import FieldLabel from '@/components/ui/FieldLabel'
 
 const TextAreaInner = (props: any) => {
 
@@ -40,7 +40,8 @@ export default function TextAreaField(props: Props) {
 
   return (
     <div className={styles.root} ref={ref} data-field={props.name}>
-      {props.label && <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel>}
+      {/* {props.label && <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel>} */}
+      {props.label && <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel>}
       <TextAreaInner
         {...field}
         autoSize={props.autoSize}

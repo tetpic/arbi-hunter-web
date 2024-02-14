@@ -1,5 +1,5 @@
-import { HirerRole, HirerRolePermission } from "types/enums";
-import { IUser, IUserProfile } from "./IUser";
+import { HirerRole, HirerRolePermission } from 'types/enums'
+import { IUser, IUserProfile } from './IUser'
 
 export interface IManagerCreate {
   hirerRole: HirerRole,
@@ -7,9 +7,12 @@ export interface IManagerCreate {
   lastName : string,
   position: string,
   password?: string,
+  passwordConfirm?: string
   email: string,
   phone: string,
-  permissions?: HirerRolePermission[]
+  permissions?: HirerRolePermission[],
+  patronymic?: string,
+  comment?: string
 }
 
 export interface IManager extends IUserProfile {

@@ -48,7 +48,7 @@
 
 .wrapper {
   position: fixed;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -143,6 +143,7 @@
   white-space: nowrap;
   transform: rotateY(90deg);
   transform-origin: left;
+  flex-shrink: 0
 }
 
 .coloredLink {

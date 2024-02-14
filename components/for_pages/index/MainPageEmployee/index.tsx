@@ -6,10 +6,8 @@ import Image from 'next/image'
 import { useCvContext } from 'context/cv_state'
 import Spinner from 'components/ui/Spinner'
 import { useUserContext } from 'context/user_state'
-import { useVacancyContext } from 'context/vacancy_state'
 import { IStats } from 'data/interfaces/IUser'
 import UserRepository from 'data/repositories/UserRepository'
-import { useAppContext } from 'context/state'
 import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
 import PersonalHeader from '../../personal/PersonalHeader'
 import { usePersonalContext } from 'context/personal_state'
@@ -22,18 +20,17 @@ import CoursesRepository from 'data/repositories/CoursesRepository'
 import {  Languages } from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import MediaNewsSection from '../../media/MediaNewsSection'
 import { IArticle } from 'data/interfaces/IArticle'
 import CvVcCompilation from '../CvVcCompilation'
+import ArticlesList from '../ArticlesList'
 
 export default function MainPageEmployee() {
 
   const personalContext = usePersonalContext()
   const characterContext = useCharacterContext()
   const userContext  = useUserContext()
-  const appContext = useAppContext()
   const cvContext = useCvContext()
-  const vacancyContext = useVacancyContext()
+  const [load, setLoad] = useState<boolean>(false)
   const [stats, setStats] = useState<IStats>(null)
   const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
@@ -68,9 +65,6 @@ export default function MainPageEmployee() {
   const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
   const [disableClick, setDisableClick] = useState<boolean>(false)
 
-  useEffect(()=>{
-    setTemporaryAnimation(actionsAllowedMap[0])
-  }, [characterContext.durations])
 
   const showNextAnimation = () => {
     setDisableClick(true)
@@ -82,50 +76,59 @@ export default function MainPageEmployee() {
     }, temporaryAnimation.duration)
   }
 
+  const init = async() => {
+    const [stats, categories, courses, news, backs] = await Promise.all([
+      UserRepository.getStats(),
+      CvRepository.getCategories(),
+      CoursesRepository.getCourses({page: 1, limit: 20, categories: [30]},Languages.ru),
+      ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
+      personalContext.setPersonalPage({profileId: userContext.currentProfile.id})
+    ])
+    setStats(stats)
+    setCategories(state=> {
+      categories.forEach(el=> {
+        state.set(el.id, el)
+      })
+      return new Map(state)
+    })
+    setPopularCourses(state => {
+      courses.data.forEach(c => {
+        state.set(c.id, c)
+      })
+      return state
+    })
+    setNews(state => {
+      news.data.forEach(el => {
+        state.set(el.id, el)
+      })
+      return state
+    })
+    personalContext.setBackgrounds(backs)
+
+    setTimeout(()=> {
+      setLoad(true)
+    }, 200)
+  }
+
+
+
   useEffect(()=>{
     characterContext.init()
     cvContext.setSavedCvs()
-    UserRepository.getStats()
-    .then(res=> {
-      setStats(res)
-    })
-    CvRepository.getCategories()
-    .then(res=> {
-      setCategories(()=> {
-        let map = new Map()
-        res.forEach(el=> {
-          map.set(el.id, el)
-        })
-        return map
-      })
-    })
-    CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru)
-    .then(res=> {
-      setPopularCourses(state => {
-        res.data.forEach(c => {
-          state.set(c.id, c)
-        })
-        return state
-      })
-    })
-    ArticlesRepository.getNews(true)
-    .then(r=> {
-      setNews(state => {
-        r.data.forEach(el => {
-          state.set(el.id, el)
-        })
-        return state
-      })
-    })
+    init()
   }, [])
-
 
   useEffect(()=>{
-    personalContext.setPersonalPage({profileId: userContext.currentProfile.id}) 
-    .then(res => {
-      personalContext.setBackgrounds(res)
-    })
-  }, [])
+    setTemporaryAnimation(actionsAllowedMap[0])
+  }, [characterContext.durations])
+
+  if(!load) {
+    return(
+      <div className={styles.root}>
+        <Spinner size={32}/>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.root}>
@@ -185,14 +188,14 @@ export default function MainPageEmployee() {
       </div>
 
       <Title title={'Категории'} className={styles.title}/>
-      <CategoriesList categories={[...categories.values()].filter(e=> e.image)}/>
+      <CategoriesList hideNav categories={[...categories.values()].filter(e=> e.image)}/>
 
       <Title title={'Подборки лучших вакансий'} className={styles.title}/>
       <CvVcCompilation/>
 
       <Title title={'Статьи'} className={styles.title}/>
       {news.size > 0 &&
-        <MediaNewsSection news={[...news.values()].slice(0, 4)}/>
+        <ArticlesList news={[...news.values()]}/>
       }
 
       <Title title={'Бесплатные курсы'} className={styles.title}/>

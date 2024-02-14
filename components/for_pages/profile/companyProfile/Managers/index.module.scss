@@ -2,7 +2,8 @@
 
 
 .root {
-  margin-top: 16px;
+  position: relative;
+  margin-top: 48px;
   @include mq($TabletWidth, max) {
     margin-top: unset;
   }
@@ -54,12 +55,6 @@
 
 .managers {
   margin-top: 16px;
-  height: calc(100vh - 278px);
-  height: calc(100dvh - 278px);
-  @include mq($SmDesktopWidth, max) {
-    height: calc(100vh - 340px);
-    height: calc(100dvh - 340px);
-  }
   @include mq($TabletWidth, max) {
     display: flex;
     flex-direction: column;

@@ -6,7 +6,6 @@ import CheckboxListField from 'components/fields/CheckboxListField'
 import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
-// import AddButton from 'components/ui/AddButton'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
@@ -15,7 +14,6 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
-// import Accordeon from 'components/ui/Accordeon'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
@@ -157,7 +155,7 @@ export default function Filters(props: Props) {
           <Title title={'Поиск резюме'}/>
           <MainSearchBar/>
         </div>
-        
+
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
             Специализация:

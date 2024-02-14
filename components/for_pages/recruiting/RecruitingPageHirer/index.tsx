@@ -34,7 +34,7 @@ export default function RecruitingPageHirer(props: Props) {
   const categories = useRef<number[]>([])
   const appContext = useAppContext()
   const router = useRouter()
-  const [page, setPage] = useState<'filters' | 'cvs'>('filters')
+  const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
 
   const {isTabletWidth} = appContext.size
 

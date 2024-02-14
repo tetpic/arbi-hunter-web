@@ -1,5 +1,10 @@
 @import 'styles/index';
 
+
+.root {
+  min-height: 150vh;
+  min-height: 150dvh;
+}
 // .root {
 //   display: flex;
 //   align-items: flex-start;
@@ -12,6 +17,7 @@
 
 .root {
   margin-bottom: 32px;
+  margin-top: 32px;
 }
 
 .content {
