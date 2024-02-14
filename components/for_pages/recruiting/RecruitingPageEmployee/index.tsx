@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 import { useEffect,  useRef,  useState } from 'react'
 import Formatter from 'utils/formatter'
-import Filters from '../Filters'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import { useCvContext } from 'context/cv_state'
@@ -22,6 +21,7 @@ import employee from 'images/recruiting/job_back.jpg'
 import Spinner from 'components/ui/Spinner'
 import VacancyItem from 'components/ui/VacancyItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import FiltersEmployee from '../FiltersEmployee'
 
 
 export default function RecruitingPageEmployee() {
@@ -105,7 +105,7 @@ function RecruitingPageEmployeeInner() {
     {!isTabletWidth &&
       <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
         <div className={styles.filter}>
-          <Filters onFilterChange={onFilterChange}/>
+          <FiltersEmployee onFilterChange={onFilterChange}/>
         </div>
       </StickyBox>
     }

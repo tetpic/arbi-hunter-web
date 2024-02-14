@@ -3,10 +3,10 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import {  CompensationType,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
+import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
-import AddButton from 'components/ui/AddButton'
+// import AddButton from 'components/ui/AddButton'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
@@ -15,13 +15,18 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
-import Accordeon from 'components/ui/Accordeon'
+// import Accordeon from 'components/ui/Accordeon'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { TranslateCompensationType,  TranslateCurrency,  TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
+import P from '@/components/ui/P'
+import InputField from '@/components/fields/InputField'
+import TagsRadioList from '../../create/utils/TagsRadioList'
+import MainSearchBar from '@/components/ui/MainSearchBar'
+import Title from '@/components/ui/TitleForSection'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -42,6 +47,14 @@ export default function Filters(props: Props) {
       languageKnowledges: [],
       experience: [],
       categories: [],
+      salaryMax: undefined,
+      salaryMin: undefined,
+      currency: Currency.RUB,
+      lookType: undefined,
+      countryIds: [],
+      cityIds: [],
+      education: undefined,
+      search: undefined
     },
     onSubmit: null
   })
@@ -123,9 +136,6 @@ export default function Filters(props: Props) {
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
 
-  useEffect(()=>{
-    props.onFilterChange(formik.values)
-  }, [formik.values])
 
   useEffect(()=>{
     const values = {
@@ -143,177 +153,314 @@ export default function Filters(props: Props) {
   return (<div className={styles.root}> 
     <FormikProvider value={formik}>
       <Form>
-        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-          <span>Показать период</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
-        </p>
-        <Accordeon isActive={activeAccordeon === 1} disabled={!isTabletWidth}>
-          <RadioListField 
-          rootClass={styles.radioField}
-          options={[
-            {value: null, label: 'За все время'},
-            ...periods.map(el=>{
-              return {value: el.value, label: el.name}
-            })         
-          ]} 
-          name={'forLastNumberOfDays'}/>
-          {isTabletWidth&&<Spacer basis={4}/>}
-        </Accordeon>
-
+        <div className={styles.top}>
+          <Title title={'Поиск резюме'}/>
+          <MainSearchBar/>
+        </div>
+        
+        <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Специализация
+            Специализация:
           </p>
-          {Array.isArray(creationContext.activeSubCategory) && creationContext.activeSubCategory.length > 0 &&
-            <div className={styles.itemsWrapper}>
-              { creationContext.activeSubCategory.map(el=> {
-                return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
-              })}
-            </div>
+          <div className={styles.itemContent}>
+          {creationContext.activeSubCategory.length === 0 && 
+            <P styleType={['medium', 'w500']}>
+              Любая
+            </P>
           }
-        {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
-        }
+          {creationContext.activeSubCategory.length > 0 &&
+            creationContext.activeSubCategory.map(el=> {
+              return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
+            })
+          }
+          {!isTabletWidth &&
+            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
+            <P 
+            styleType={['medium', 'w500', 'underlined', 'blue']}
+            onClick={()=>openSpecializationModal()}
+            >
+              Указать специализации
+            </P>
+          }
+          </div>
+        </div>
 
-        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Оплата</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
-        </p>
-        <Accordeon isActive={activeAccordeon === 2} disabled={!isTabletWidth}>
-          <CheckboxField 
-          itemClassName={styles.radioField} 
-          name={'compensation'} 
-          label={TranslateCompensationType(CompensationType.Contract)} 
-          value={CompensationType.Contract} 
-          />
-          {isTabletWidth&&<Spacer basis={4}/>}
-        </Accordeon>
-        {/* {(formik.values.compensation === CompensationType.Commission || formik.values.compensation === CompensationType.Gybrid) &&
-          <>
-            <p className={styles.fieldTitle}>Комиссия</p>
-            <div className={styles.range}>
-              {formik.values.compensation === CompensationType.Gybrid && <>
-                <InputField styleType={'default'} placeholder='От' color={'white'} name={'gybridCommissionMin'}/>
-                <InputField styleType={'default'} placeholder='До' color={'white'} name={'gybridCommissionMax'}/>
-              </>}
-              {formik.values.compensation === CompensationType.Commission && <>
-                <InputField styleType={'default'} placeholder='От' color={'white'} name={'commissionMin'}/>
-                <InputField styleType={'default'} placeholder='До' color={'white'} name={'commissionMax'}/>
-              </>}
+        <div className={styles.item}>
+          <p className={styles.fieldTitle}>
+            Зарплата:
+          </p>
+          <div className={styles.itemContent}>
+            <div className={styles.inputsWrapper}>
+              <InputField  
+              isNumbersOnly
+              maxLength={12} 
+              className={styles.input} 
+              styleType={'default'} 
+              color={'default'} 
+              name={'salaryMin'} 
+              label={'oт'} 
+              labelType={'static'}
+              labelClassName={styles.label}
+              priceFormatting
+              error='Одно из полей должно быть заполнено'
+              suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
+              />
+              <span> – </span>
+              <InputField  
+              isNumbersOnly
+              labelType={'static'}
+              labelClassName={styles.label}
+              maxLength={12} 
+              className={styles.input} 
+              styleType={'default'} 
+              color={'default'} 
+              name={'salaryMax'} 
+              label={'до'} 
+              priceFormatting
+              error='Одно из полей должно быть заполнено'
+              suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
+              />
             </div>
-          </>
-        }
-        {(formik.values.compensation === CompensationType.Salary || formik.values.compensation === CompensationType.Gybrid) &&
-          <>
-            <p className={styles.fieldTitle}>Оклад</p>
-            <div className={styles.range}>
-              <InputField styleType={'default'} placeholder='От'  color={'white'} name={'salaryMin'}/>
-              -
-              <InputField styleType={'default'} placeholder='До' color={'white'} name={'salaryMax'}/>
-            </div>
-          </>
-        } */}
 
-        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>Источники</p>
-        {creationContext.helpObjects?.activeSources?.size > 0 &&
-          <div className={styles.itemsWrapper}>
-           {creationContext.helpObjects && [...creationContext.helpObjects?.activeSources.entries()]
-            .map(([key, value])=> 
-            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
-            )}
+            <TagsRadioList className={styles.tags} name={'currency'} options={[
+              {value: Currency.RUB, label: 'Руб'},
+              {value: Currency.USD, label: Currency.USD},
+              {value: Currency.EUR, label: 'Euro'},
+              {value: Currency.GRN, label: 'Гривны'},
+            ]}/>
+            
+            <CheckboxField 
+            itemClassName={styles.radioField} 
+            name={'compensation'} 
+            label={TranslateCompensationType(CompensationType.Contract)} 
+            value={CompensationType.Contract} 
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
           </div>
-        }
-        {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'sources'})}/>
-        }
+        </div>
 
-        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>Гео</p>
-        {creationContext.helpObjects?.activeGeos?.size > 0 &&
-          <div className={styles.itemsWrapper}>
-           {creationContext.helpObjects && [...creationContext.helpObjects?.activeGeos?.entries()]
-            .map(([key, value])=> 
-            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
-            )}
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
+            <span>Показать период</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+          </p>
+            <RadioListField 
+            name={'forLastNumberOfDays'}
+            rootClass={styles.radioField}
+            options={[
+              {value: null, label: 'Все время'},
+              ...periods.map(el=>{
+                return {value: el.value, label: el.name}
+              })         
+            ]} 
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
+            <span>Статус поиска</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+          </p>
+            <RadioListField 
+            name={'lookType'}
+            rootClass={styles.radioField}
+            options={[
+              // {value: undefined, label: 'Без статуса поиска'},
+              {value: VacancyLookType.NotLooking, label: 'Не ищет работу'},
+              {value: VacancyLookType.ActivelyLooking, label: 'Активно ищет работу'},
+              {value: VacancyLookType.PassivelyLooking, label: 'Рассматривает предложения'},
+            ]} 
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
+            Страна:
+          </p>
+          <div className={styles.itemContent}>
+          {!isTabletWidth &&
+            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
+            <P 
+            styleType={['medium', 'w500', 'underlined', 'blue']}
+            >
+              Добавить страну
+            </P>
+          }
           </div>
-        }
-        {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'geos'})}/>
-        }
+        </div>
 
-        <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
-        {creationContext.helpObjects?.activeVerticals?.size > 0 &&
-          <div className={styles.itemsWrapper}>
-           {creationContext.helpObjects && [...creationContext.helpObjects?.activeVerticals?.entries()]
-            .map(([key, value])=> 
-            <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
-            )}
-          </div>
-        }
-        {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
-        }
-
-        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-          <span>Занятость</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
-        </p>
-        <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
-          <CheckboxListField 
-          rootClass={styles.radioField}
-          name={'employment'} 
-          options={[
-            {value: EmploymentType.FullTime, label: 'Полная'},
-            {value: EmploymentType.PartTime, label: 'Частичная'},
-            {value: EmploymentType.Project, label: 'Проектная'}
-          ]}/>
-          {isTabletWidth&&<Spacer basis={4}/>}
-        </Accordeon>
-
-        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
-          <span>Тип работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>}
-        </p>
-        <Accordeon  isActive={activeAccordeon === 4} disabled={!isTabletWidth}>
-          <CheckboxListField 
-          rootClass={styles.radioField}
-          name={'schedule'}
-          options={[
-            {value: ScheduleType.Flexible, label: 'Гибкий график'},
-            {value: ScheduleType.FullDay, label: 'Полный день'},
-            {value: ScheduleType.Remote, label: 'Удаленная работа'}
-          ]} 
-          />
-          {isTabletWidth&&<Spacer basis={4}/>}
-        </Accordeon>
-
-        <p className={styles.fieldTitle}>Знания языков</p>
-        {creationContext.helpObjects?.languageKnowledges?.size > 0 &&
-          <div className={styles.itemsWrapper}>
-            {creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
-            .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={`${languages.getName(el.language, 'ru')}, ${TranslateLanguageKnowLevel(el.level)}`} /> )
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
+          <div className={styles.itemContent}>
+            {creationContext.helpObjects?.activeVerticals?.size > 0 &&
+              <div className={styles.itemsWrapper}>
+               {creationContext.helpObjects && [...creationContext.helpObjects?.activeVerticals?.entries()]
+                .map(([key, value])=> 
+                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
+                )}
+              </div>
+            }
+            {!isTabletWidth &&
+              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
+              <P 
+              styleType={['medium', 'w500', 'underlined', 'blue']}
+              onClick={()=>openSourcesModal({type: 'verticals'})}              
+              >
+                Добавить вертикали
+              </P>
             }
           </div>
-        } 
-        {!isTabletWidth &&
-          <AddButton className={styles.addButton} title='Добавить' onClick={()=>openLangsModal()}/>
-        }
+        </div>
 
-        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-          <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
-        </p>
-        <Accordeon isActive={activeAccordeon === 5} disabled={!isTabletWidth}>
-          <CheckboxListField 
-          name={'experience'} 
-          rootClass={styles.radioField}
-          options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
-          />
-          {isTabletWidth&&<Spacer basis={4}/>}
-        </Accordeon>
 
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>Источники трафика:</p>
+          <div className={styles.itemContent}>
+            {creationContext.helpObjects?.activeSources?.size > 0 && creationContext.helpObjects && 
+              [...creationContext.helpObjects?.activeSources.entries()]
+              .map(([key, value])=> 
+                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
+              )
+            }
+            {!isTabletWidth &&
+              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'sources'})}/>
+              <P 
+              styleType={['medium', 'w500', 'underlined', 'blue']}
+              onClick={()=>openSourcesModal({type: 'sources'})}
+              >
+                Добавить источники трафика
+              </P>
+            }
+          </div>
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>Гео</p>
+          <div className={styles.itemContent}>
+            {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
+                [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
+                  <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
+                )
+            }
+            {!isTabletWidth &&
+              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'geos'})}/>
+              <P 
+              styleType={['medium', 'w500', 'underlined', 'blue']}
+              onClick={()=>openSourcesModal({type: 'geos'})}            
+              >
+                Добавить гео
+              </P>
+            }
+          </div>
+        </div>
+
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
+            Тип занятости
+          </p>
+            <CheckboxListField 
+            rootClass={styles.radioField}
+            name={'employment'} 
+            options={[
+              {value: EmploymentType.FullTime, label: 'Полная занятость'},
+              {value: EmploymentType.PartTime, label: 'Частичная занятость'},
+              {value: EmploymentType.Project, label: 'Проектная работа'}
+            ]}/>
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
+            <span>График работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>}
+          </p>
+            <CheckboxListField 
+            rootClass={styles.radioField}
+            name={'schedule'}
+            options={[
+              {value: ScheduleType.Flexible, label: 'Гибкий график'},
+              {value: ScheduleType.FullDay, label: 'Полный день'},
+              {value: ScheduleType.Remote, label: 'Удаленная работа'}
+            ]} 
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
+            <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+          </p>
+            <CheckboxListField 
+            name={'experience'} 
+            rootClass={styles.radioField}
+            options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
+            Образование
+          </p>
+            <CheckboxListField 
+            name={'education'} 
+            rootClass={styles.radioField}
+            options={[
+              {label: 'Нет образования', value: EducationTypes.No},
+              {label: 'Среднее', value: EducationTypes.Secondary},
+              {label: 'Средне специальное', value: EducationTypes.SecondarySpecial},
+              {label: 'Неоконченное высшее', value: EducationTypes.IncompleteHigher},
+              {label: 'Высшее', value: EducationTypes.Higher},
+              {label: 'Бакалавр', value: EducationTypes.Bachelor},
+              {label: 'Магистр', value:EducationTypes.Master},
+              {label: 'Кандидат наук', value:EducationTypes.PhD},
+              {label: 'Доктор наук', value: EducationTypes.Doctor},
+            ]} 
+            />
+            {isTabletWidth&&<Spacer basis={4}/>}
+        </div>
+
+        <div className={styles.item}>
+          <p className={styles.fieldTitle}>Знания языков</p>
+          <div className={styles.itemContent}>
+            {creationContext.helpObjects?.languageKnowledges?.size > 0 
+            && creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
+              .map((el)=> 
+                <RemovableItem 
+                key={el.language} 
+                onClick={()=>removeLanguage(el)} 
+                text={`${languages.getName(el.language, 'ru')}, ${TranslateLanguageKnowLevel(el.level)}`} 
+                /> 
+              )
+            } 
+            {!isTabletWidth &&
+              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openLangsModal()}/>
+              <P 
+              styleType={['medium', 'w500', 'underlined', 'blue']}
+              onClick={()=>openLangsModal()}            
+              >
+                Добавить язык
+              </P>
+            }
+          </div>
+        </div>
       </Form> 
     </FormikProvider>
-    <Button 
-    styleType={['grey', 'wide']} 
-    onClick={formik.handleReset}
-    className={styles.resetButton}
-    >
-      Сбросить всё
-    </Button>
+    <div className={styles.buttonsWrapper}>
+      <Button 
+      styleType={['grey']} 
+      onClick={formik.handleReset}
+      className={styles.resetButton}
+      >
+        Сбросить всё
+      </Button>
 
+      <Button
+      styleType={['gradient']}
+      onClick={()=>props.onFilterChange(formik.values)}
+      >
+        Найти
+      </Button>
+    </div>
   </div>)
 }

@@ -18,6 +18,7 @@ import ManSvg from '@/components/svg/ManSvg'
 import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
+import Button from '@/components/ui/Button'
 
 interface Props {
 }
@@ -127,9 +128,9 @@ export default function NavBar(props: Props) {
         {(profileType === ProfileType.Employee && employeeLinks
           ||
           profileType === ProfileType.Hirer && hirerLinks)
-          .map(el=> {
+          .map((el, i)=> {
             return (
-              <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path+el.query}>
+              <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path + i}>
                 <div className={classNames(styles.icon, activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)}>
                   {el.icon}
                 </div>
@@ -138,6 +139,7 @@ export default function NavBar(props: Props) {
             )
           })
         }
+        <Button styleType={['black']} href={'/recruiting'}>Рекрутинг</Button>
 
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>

@@ -1,17 +1,20 @@
 import classNames from 'classnames'
 import styles from './index.module.scss'
+import { DetailedHTMLProps, HTMLAttributes } from 'react'
 
-export type ParagraphStyleType = 'small'|'medium'|'large'|'huge'|'w500'|'w600'|'w700'|'fs32'|'f36'|'f20'|'white'|'grey'|'greyLight'
+export type ParagraphStyleType = 'small'|'medium'|'large'|'huge'|'w500'|'w600'|'w700'|'fs32'|'f36'|'f20'|'white'|'grey'|'greyLight'|'blue'|'underlined'
 
-interface Props {
+interface Props extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>, 'className'|'styleType'>{
   styleType?: ParagraphStyleType[]
-  children?: JSX.Element|JSX.Element[]|string[]|string
+  children?: any
+  className?: string
 }
 
 export default function P(props: Props) {
+  const {styleType, className, ...rest} = props
 
   return (
-    <p className={classNames(props.styleType?.map(el=> styles[el]), styles.p)}>
+    <p {...rest} className={classNames(styleType?.map(el=> styles[el]), styles.p, className)} >
       {props.children}
     </p>
   )

@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import SearchBar from 'components/ui/SearchBar'
 import { useEffect, useRef, useState } from 'react'
 import { useCvContext } from 'context/cv_state'
 import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
@@ -11,7 +10,6 @@ import Spinner from 'components/ui/Spinner'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
-import StickyBox from 'react-sticky-box'
 import hirer from 'images/recruiting/vacancy_back.jpg'
 import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
@@ -20,6 +18,8 @@ import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFilter
 import { ModalType } from 'types/enums'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import P from '@/components/ui/P'
+import MainSearchBar from '@/components/ui/MainSearchBar'
 
 
 interface Props {
@@ -34,6 +34,7 @@ export default function RecruitingPageHirer(props: Props) {
   const categories = useRef<number[]>([])
   const appContext = useAppContext()
   const router = useRouter()
+  const [page, setPage] = useState<'filters' | 'cvs'>('filters')
 
   const {isTabletWidth} = appContext.size
 
@@ -44,7 +45,10 @@ export default function RecruitingPageHirer(props: Props) {
   }
 
   const onFilterClick = ()=>{
-    if(!isTabletWidth) {return}
+    if(!isTabletWidth) {
+      setPage('filters')
+      return 
+    }
     appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
       onFilterChange: (data)=>onFilterChange(data)
     })
@@ -53,6 +57,7 @@ export default function RecruitingPageHirer(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
+    setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
     currentFilters.current = data
@@ -79,16 +84,22 @@ export default function RecruitingPageHirer(props: Props) {
   useEffect(()=>{
   }, [cvContext.foundCvs])
 
+  if(page === 'filters'){
+    return <Filters onFilterChange={onFilterChange}/>
+  }
+
   return (<div className={styles.root}> 
     {!isTabletWidth &&
       <div className={styles.top}>
         <div className={styles.back}>
           <Image className={styles.backImage} src={hirer} alt={'rec image'} />
         </div>
-        <p className={styles.title}>Найти работу в ArbiHunter</p>
-        <p className={styles.description}>
-          Ежедневно более 1000 людей находят работу в&nbsp;ArbiHunter <br/> которая позволяет им&nbsp;расти и&nbsp;становиться успешными!    
-        </p>
+        <P styleType={['huge', 'w700']}>
+          Разместите вакансию в ArbiHunter
+        </P>
+        <P styleType={['large']} className={styles.description}>
+          46% трудоспособного населения России — зарегистрированы на ArbiHunter        
+        </P>
         <Link className={styles.createLink} href={'/create/vacancy'}>Разместить вакансию</Link>
       </div>
     }
@@ -96,25 +107,25 @@ export default function RecruitingPageHirer(props: Props) {
     {isTabletWidth && 
       <TitleForSection title={' '} onBackClick={router.back}/>
     }
-    <SearchBar placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
-    onChange={(s)=>onFilterChange({...currentFilters, search: s})}
-    onFilterClick={isTabletWidth&&onFilterClick}
-    />
-    {!loading &&
-      <p className={styles.found}>Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ currentVacancy.current.name:''}</p>
-      ||
-      <Spacer basis={88}/>
-    }
+    <MainSearchBar
+     placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
+     onChange={(s)=>onFilterChange({...currentFilters, search: s})}
+     onFilterClick={onFilterClick}/>
+
+    <div className={styles.header}>
+      {!loading &&
+        <P 
+        styleType={['huge', 'w600']} 
+        className={styles.found}
+        >
+          Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ currentVacancy.current.name:''}
+        </P>
+        ||
+        <Spacer basis={88}/>
+      }
+    </div>
   
     <div className={styles.content}>
-      {!isTabletWidth &&
-        <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
-          <div className={styles.filter}>
-            <Filters onFilterChange={onFilterChange}/>
-          </div>
-        </StickyBox>
-      }
-  
       <div className={styles.vacancies}>
         <InfiniteScroll 
         next={()=>{cvContext.setPage(p=> p+1)}} 
@@ -136,3 +147,11 @@ export default function RecruitingPageHirer(props: Props) {
     </div>
     </div>)
   }
+
+  // {!isTabletWidth &&
+  //   <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
+  //     <div className={styles.filter}>
+  //       <Filters onFilterChange={onFilterChange}/>
+  //     </div>
+  //   </StickyBox>
+  // }

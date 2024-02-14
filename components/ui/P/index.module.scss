@@ -52,3 +52,14 @@
 .greyLight{
   color: $greyLight;
 }
+.blue {
+  color: $blue;
+}
+.underlined {
+  text-decoration: underline;
+  cursor: pointer;
+  @include transitionDefault;
+  @include hover {
+    color: $white;
+  }
+}

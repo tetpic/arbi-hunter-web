@@ -6,11 +6,12 @@ interface Props<T> {
   name: string
   options: IOption<T>[]
   label?: string
+  className?: string
 }
 
 export default function TagsRadioList<T>(props: Props<T>) {
 
-  return (<div>
+  return (<div className={props.className}>
     {props.label &&
       <p className={styles.label}>{props.label}</p>
     }

@@ -32,25 +32,12 @@
       object-fit: contain;
     }
   }
-
-  .title  {
-    color: $white;
-    font-size: $hugeText;
-    font-weight: $bold;
-  }
-
-  .description {
-    color: $white;
-    font-size: $largeText;
-  }
   
   .createLink {
     @include buttonWhite;
     max-width: 224px;
     margin-top: 4px;
   }
-
-
 }
 
 .searchBar {
@@ -78,6 +65,12 @@
   min-height: 150vh;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .vacanciesWrapper {
   display: flex;
   flex-direction: column;
@@ -85,10 +78,11 @@
 }
 
 .found {
-  color: $white;
-  font-size: $hugeText;
-  font-weight: $semibold;
   margin-top: 42px;
   margin-bottom: 16px;
+}
+
+.description {
+  max-width: 40%;
 }
 
