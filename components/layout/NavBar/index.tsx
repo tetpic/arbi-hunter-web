@@ -27,7 +27,7 @@ export default function NavBar(props: Props) {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
-  const profileType = userContext.currentProfile.profileType
+  const profileType = userContext.currentProfile?.profileType
 
   const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element}} = {
     cvs: {
@@ -107,6 +107,10 @@ export default function NavBar(props: Props) {
   
   const activePath = router.pathname
   const activeQuery = router.query
+
+  if(!userContext.currentProfile) {
+    return null
+  }
 
 
   return ( <div className={styles.root} onMouseEnter={()=>appContext.setNavBarActive(true)} onMouseLeave={()=>appContext.setNavBarActive(false)}>

@@ -66,7 +66,7 @@ export default function Vacancy(props: Props) {
       return arr.filter(Boolean).join(' ')
     }
     else if(userContext.currentProfile) {
-      const arr = [userContext.currentProfile.firstName, userContext.currentProfile.lastName, userContext.currentProfile.patronymic]
+      const arr = [userContext.currentProfile?.firstName, userContext.currentProfile?.lastName, userContext.currentProfile?.patronymic]
       return arr.filter(Boolean).join(' ')
     }
     else {

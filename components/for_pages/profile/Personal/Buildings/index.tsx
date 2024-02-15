@@ -13,6 +13,7 @@ import Rive from '@rive-app/react-canvas'
 interface Props {
   profile?: IUserProfile
   background?: IBackground
+  useDefaultImage?: boolean
 }
 
 export default function Buildings(props: Props) {
@@ -33,8 +34,8 @@ export default function Buildings(props: Props) {
   return (
   <div className={styles.imageSettings}>
 
-    {props.background &&
-      <Image className={styles.background} src={FILES + props.background.image.source} alt={'back'} width={770} height={300} />
+    {(props.background || props.useDefaultImage) &&
+      <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/companyDefaultBack.png'} alt={'back'} width={770} height={300} />
     }
     {
       props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer &&

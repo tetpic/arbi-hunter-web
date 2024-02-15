@@ -67,7 +67,7 @@ export default function AddManager(props: Props) {
   })
 
   const page1 = (<>
-    {!userContext.currentProfile.hirerRole &&
+    {!userContext.currentProfile?.hirerRole &&
     <>
       <P styleType={['large', 'w600']}>Статус</P>     
       <RadioListField 

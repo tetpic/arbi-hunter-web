@@ -27,9 +27,9 @@ export default function CvAbout(props: Props) {
   return (<div className={styles.root}> 
   <SectionSubtitle text='Основная информация:'/>
   <div className={styles.inputsWrapper}>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.firstName)} color={'default'} name={'firstName'} label='Имя' labelType='top'/>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.lastName)} color={'default'} name={'lastName'} label='Фамилия' labelType='top'/>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile.patronymic)} color={'default'} name={'patronymic'} label='Отчество' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.firstName)} color={'default'} name={'firstName'} label='Имя' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.lastName)} color={'default'} name={'lastName'} label='Фамилия' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.patronymic)} color={'default'} name={'patronymic'} label='Отчество' labelType='top'/>
   </div>
 
   <TagsRadioList<string> 

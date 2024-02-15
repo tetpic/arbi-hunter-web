@@ -45,7 +45,7 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
     })
   }
 
-  const canIEdit = (!userContext.currentProfile.hirerRole || userContext.currentProfile.hirerRole === HirerRole.Admin) && manager.id !== userContext.currentProfile.id
+  const canIEdit = (!userContext.currentProfile?.hirerRole || userContext.currentProfile?.hirerRole === HirerRole.Admin) && manager.id !== userContext.currentProfile?.id
 
   return (
     <div className={styles.item}>

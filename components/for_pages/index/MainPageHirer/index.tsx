@@ -39,7 +39,7 @@ export default function MainPageHirer() {
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
       CvRepository.getCategories(),
       ArticlesRepository.getNews(true),
-      personalContext.setPersonalPage({profileId: userContext.currentProfile.id}) 
+      personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 
     ])
     setStats(stats)
     setPopularCourses(state => {
@@ -86,9 +86,9 @@ export default function MainPageHirer() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        {personalContext.backgrounds &&
-          <Buildings profile={userContext.currentProfile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
-        }
+        {/* {personalContext.backgrounds && */}
+          <Buildings useDefaultImage profile={userContext.currentProfile} background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}/>
+        {/* } */}
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <div className={styles.card}>

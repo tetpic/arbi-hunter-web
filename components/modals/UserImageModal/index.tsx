@@ -25,7 +25,7 @@ export default function UserImageModal(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const args: IUserImageModalProps = appContext.modalArguments
-  const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile.useOwnLogo? 'logo' :'image')
+  const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile?.useOwnLogo? 'logo' :'image')
   const [image, setImage] = useState<PreviewImage>()
 
   const onSave = () => {

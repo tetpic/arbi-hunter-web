@@ -82,7 +82,7 @@ export default function MainPageEmployee() {
       CvRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20, categories: [30]},Languages.ru),
       ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
-      personalContext.setPersonalPage({profileId: userContext.currentProfile.id})
+      personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])
     setStats(stats)
     setCategories(state=> {

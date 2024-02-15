@@ -66,7 +66,7 @@ export default function Managers() {
       }
     </div>
     <div className={styles.head}>
-      {!isTabletWidth && (userContext.currentProfile.hirerRole === HirerRole.Admin || !userContext.currentProfile.hirerRole) &&
+      {!isTabletWidth && (userContext.currentProfile?.hirerRole === HirerRole.Admin || !userContext.currentProfile?.hirerRole) &&
         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>Добавить менеджера</Button>
       }
     </div>
