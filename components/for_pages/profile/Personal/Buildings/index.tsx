@@ -35,7 +35,7 @@ export default function Buildings(props: Props) {
   <div className={styles.imageSettings}>
 
     {(props.background || props.useDefaultImage) &&
-      <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/companyDefaultBack.png'} alt={'back'} width={770} height={300} />
+      <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/newyork.png'} alt={'back'} width={770} height={300} />
     }
     {
       props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer &&

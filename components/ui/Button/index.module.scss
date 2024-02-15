@@ -53,6 +53,14 @@
   @include buttonBorderGradient;
 }
 
+.borderWhite {
+  border: 1px white solid;
+}
+
+.borderBlue {
+  border: 1px $blue solid;
+}
+
 .fontSmall{
   font-size: $smallText;
   font-weight: $medium;
@@ -92,6 +100,10 @@
   background-color: rgba(255, 255, 255, 0.325);
   color: $white;
   backdrop-filter: blur(2px);
+}
+
+.backTransparent {
+  background-color: transparent;
 }
 
 .wide {

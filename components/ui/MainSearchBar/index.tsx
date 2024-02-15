@@ -33,7 +33,7 @@ interface Props {
  * @onChange ?: (s: string)=>void
  * @placeholder ?: string
  */
-export default function SearchBar(props: Props) {
+export default function MainSearchBar(props: Props) {
   const {isTabletWidth} = useResize()
   const appContext = useAppContext()
 

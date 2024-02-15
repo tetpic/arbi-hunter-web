@@ -16,7 +16,7 @@ interface Props {
 export default function ChatItem(props: Props) {
   const chat = props.chat
 
-  const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
+  const collocutor = chat.profiles[0]?.role === 'admin'?chat.participant:chat.profile
 
   const onClickHandler = () => {
     props.onClick(chat)

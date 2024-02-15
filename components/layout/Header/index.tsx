@@ -22,6 +22,7 @@ import { getUserImageSource } from 'utils/helpers'
 import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
+import StarSvg from '@/components/svg/StarSvg'
 
 const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
@@ -104,7 +105,8 @@ export default function Header(props: Props) {
           <div className={styles.userWrapper}>
             {!userContext.currentProfile && <>
               <Button 
-              styleType={['gradient']}
+              styleType={['black', 'borderBlue', 'backTransparent']}
+
               href={regPath}
               disabled={activePath === regPath}
               >
@@ -112,9 +114,9 @@ export default function Header(props: Props) {
               </Button>
 
               <Button 
-              styleType={['gradient']}
               disabled={activePath === loginPath}
               href={loginPath}
+              styleType={['grey', 'borderWhite', 'backTransparent']}
               >
                 Вход
               </Button>
@@ -169,7 +171,7 @@ export default function Header(props: Props) {
               className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} 
               href={'/favorites'}
               >
-                <HeartSvg/>
+                <StarSvg/>
               </Button>
               <UserPic 
               key={1} 
@@ -187,9 +189,7 @@ export default function Header(props: Props) {
             }
           </div>
           ||
-          <>
           <Button onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg/></Button>
-          </>
         }
       </div>
     </div>

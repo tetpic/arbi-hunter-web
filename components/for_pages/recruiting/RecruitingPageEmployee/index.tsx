@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import SearchBar from 'components/ui/SearchBar'
 import Link from 'next/link'
 import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 import { useEffect,  useRef,  useState } from 'react'
@@ -21,7 +20,8 @@ import employee from 'images/recruiting/job_back.jpg'
 import Spinner from 'components/ui/Spinner'
 import VacancyItem from 'components/ui/VacancyItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import FiltersEmployee from '../FiltersEmployee'
+import FiltersEmployee from '../SideFilters'
+import MainSearchBar from '@/components/ui/MainSearchBar'
 
 
 export default function RecruitingPageEmployee() {
@@ -91,7 +91,7 @@ function RecruitingPageEmployeeInner() {
   <TitleForSection title={' '} onBackClick={router.back}/>
   }
 
-  <SearchBar placeholder={'Поиск вакансий'} fullWidth className={styles.searchBar} 
+  <MainSearchBar placeholder={'Поиск вакансий'} fullWidth className={styles.searchBar} 
   onChange={(s)=>onFilterChange({...currentFilters.current,  ...s})}
   onFilterClick={isTabletWidth&&onFilterClick}
   />

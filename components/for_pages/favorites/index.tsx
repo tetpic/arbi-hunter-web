@@ -85,10 +85,12 @@ export default function FavoritesPage(props: Props) {
       loader={<Spinner size={24}/>} 
       dataLength={total}
       >
-        {profileType === ProfileType.Hirer ?
-          [...cvs.values()].map(el=> <CvItem key={el.id} cv={el} />)
-          : [...vacancies.values()].map(el=> <FavoritesVacancyItem key={el.id} vacancy={el} onLikeClick={onVacancyRemove}/>)
-        }
+        <div className={styles.itemList}>
+          {profileType === ProfileType.Hirer ?
+            [...cvs.values()].map(el=> <CvItem key={el.id} cv={el} />)
+            : [...vacancies.values()].map(el=> <FavoritesVacancyItem key={el.id} vacancy={el} onLikeClick={onVacancyRemove}/>)
+          }
+        </div>
       </InfiniteScroll>
     </div>
   )

@@ -1,4 +1,4 @@
-import { CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
+import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
 import { ILanguageKnowledge } from './IJob'
 
 export interface TimeStamp {
@@ -242,6 +242,11 @@ export interface IVacancyCvSearchParams {
   lookType?: VacancyLookType,
   countryIds?: number[],
   cityIds?: number[],
-  education?: EducationTypes
+  education?: EducationTypes,
+  gender?: Genders[],
+  vacancyLookType?: VacancyLookType[]
+  relocation?: Answer[],
+  ageMin?: number,
+  ageMax?: number
 
 }

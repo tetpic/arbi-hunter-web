@@ -20,6 +20,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import P from '@/components/ui/P'
 import MainSearchBar from '@/components/ui/MainSearchBar'
+import StickyBox from 'react-sticky-box'
+import SideFilters from '../SideFilters'
 
 
 interface Props {
@@ -126,6 +128,13 @@ export default function RecruitingPageHirer(props: Props) {
     </div>
   
     <div className={styles.content}>
+      {!isTabletWidth &&
+        <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
+          <div className={styles.filter}>
+            <SideFilters onFilterChange={onFilterChange}/>
+          </div>
+        </StickyBox>
+      }
       <div className={styles.vacancies}>
         <InfiniteScroll 
         next={()=>{cvContext.setPage(p=> p+1)}} 

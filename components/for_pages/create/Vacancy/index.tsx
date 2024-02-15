@@ -55,7 +55,7 @@ export default function Vacancy(props: Props) {
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
-  const maxProgress = useRef<number>(props.vacancy.completedSteps.length||1)
+  const maxProgress = useRef<number>(props.vacancy?.completedSteps?.length||1)
 
   const CVItemsCount = 8
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
@@ -338,7 +338,7 @@ export default function Vacancy(props: Props) {
       return
     }
     changeComponent(progress)
-    if(maxProgress.current > progress || props.vacancy.completedSteps.length === CVItemsCount) return 
+    if(maxProgress.current > progress || props.vacancy?.completedSteps?.length === CVItemsCount) return 
     maxProgress.current < progress && (maxProgress.current = progress)
     
     if(progress > 1 && creationContext.activeSubCategory.length > 0) {

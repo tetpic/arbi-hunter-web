@@ -14,6 +14,8 @@ type ButtonStyle =
 'gradient'|
 'blue'|
 'borderGradient'|
+'borderWhite'|
+'borderBlue'|
 'fontSmall'|
 'fontMedium'|
 'fontLarge'|
@@ -21,6 +23,7 @@ type ButtonStyle =
 'svg24'|
 'svg32'|
 'whiteTransparent'|
+'backTransparent'|
 'phoneWide'|
 'wide'
 

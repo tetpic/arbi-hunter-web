@@ -3,6 +3,7 @@
 .root {
   margin-top: 48px;
   max-width: 556px;
+  margin-bottom: 42px;
 }
 
 .top {
@@ -12,4 +13,10 @@
   justify-content: space-between;
   margin-top: 24px;
   margin-bottom: 16px;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
 }
