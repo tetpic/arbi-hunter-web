@@ -42,40 +42,13 @@
     }
   }
 
-  .top {
-    display: grid;
-    grid-template-areas: 'u s' 'u n';
-    row-gap: 8px;
-    grid-template-columns: auto 1fr;
-  }
+
   
-  .userPic {
-    grid-area: u;
-    margin-right: 8px;
-    flex-shrink: 0;
-    align-self: flex-start;
-  }
 
-  .sub {
-    grid-area: s;
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $greyLight;
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
 
-    &_white {
-      color: $white;
-    }
-  }
 
-  .name {
-    grid-area: n;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
-  }
+
+
   
   .price {
     grid-area: p;
@@ -102,10 +75,6 @@
       color: $green;
       background-color: #339B6250;
     }
-  }
-
-  .dots {
-    grid-area: d;
   }
 }
 

@@ -20,6 +20,7 @@ import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import OptionsList from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
+import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
 
 interface Props {
   cv: ICV
@@ -27,9 +28,10 @@ interface Props {
   className?: string
   cardMode?: boolean
   image?: string
+  type?: 'drafts' | 'archive'
 }
 
-export default function CVItem({cv, isLast, ...props}: Props) {
+export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const appContext = useAppContext()
   const profilePageContext = useProfilePageContext()
   const feedBackContext = useFeedbacksContext()
@@ -94,21 +96,27 @@ export default function CVItem({cv, isLast, ...props}: Props) {
       {!isTabletWidth &&
        <OptionsDropDown 
        options={options}
+       isLast={isLast}
        getRef={(r) => {dropRef.current = r}} 
        active={dropDown} 
        onClose={()=>openDropDown(false)}/>       
       }
     </div>
 
-    <Statistics 
-    title={'Статистика за неделю'}
-    className={styles.stats}
-    items={[
-      {name: 'Показы ', count: cv?.totalShows?.toString()},
-      {name: 'Просмотры', count: cv?.totalViews},
-      {name: 'Приглашения', count: cv?.totalProposals},
-    ]} 
-    />
+    {(props.type !== 'drafts' || !cv.completedSteps) &&
+      <Statistics 
+      title='Статистика за неделю'
+      className={styles.stats}
+      items={[
+        {name: 'Показы', count: cv.totalProposals},
+        {name: 'Просмотры', count: cv.totalViews},
+        {name: 'Отклики', count: cv.totalApplications},
+      ]}
+      />
+      ||
+      cv.completedSteps &&
+      <Progress stepsCount={7} className={styles.stats} progress={cv.completedSteps}/>
+    }
 
     {!props.cardMode &&    
       <div className={styles.buttonsWrapper}>

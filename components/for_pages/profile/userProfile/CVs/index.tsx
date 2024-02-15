@@ -1,12 +1,12 @@
 import { useCvContext } from 'context/cv_state'
 import { ICV } from 'data/interfaces/ICV'
 import { useEffect, useState } from 'react'
-import CVItem from './CvItem'
 import styles from './index.module.scss'
 import Spacer from 'components/ui/Spacer'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
+import ProfileCvItem from './ProfileCvItem'
 
 interface Props {
 }
@@ -64,7 +64,15 @@ export default function CVs(props: Props) {
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
       {
       filteredCvs?.length > 0 && 
-      filteredCvs.map((el, index) => <CVItem image={getUserImageSource(userContext.currentProfile)}  isLast={index===filteredCvs.length -1} cv={el} key={index}/>)
+      filteredCvs.map((el, index) => 
+        <ProfileCvItem  
+        cv={el} 
+        key={index}
+        isLast={index===filteredCvs.length -1} 
+        image={getUserImageSource(userContext.currentProfile)}  
+        type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
+        />
+      )
       ||
       <p className={'empty'}>Нет созданных резюме</p>
       }

@@ -1,4 +1,4 @@
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
+import { Swiper, SwiperProps, SwiperRef, SwiperSlide } from 'swiper/react'
 import styles from './index.module.scss'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
@@ -15,6 +15,7 @@ interface Props {
   className?: string
   hideNav?: boolean
   slideClassName?: string
+  swiperProps?: SwiperProps
 }
 
 export default function SwiperList(props: Props) {
@@ -34,6 +35,7 @@ export default function SwiperList(props: Props) {
     loop={true}
     modules={[Autoplay]}
     className={styles.swiper}
+    {...props.swiperProps}
     >
       {props.children.length > 0 && props.children.map(item=> {
         return (

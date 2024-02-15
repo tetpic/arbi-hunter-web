@@ -15,7 +15,6 @@ import Title from '@/components/ui/TitleForSection'
 import CategoriesList from '@/components/ui/CategoriesList'
 import {  ISpecializationCategory } from 'data/interfaces/Common'
 import CvRepository from 'data/repositories/CvRepository'
-import CoursesBlock from '../../courses/CoursesBlock'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import {  Languages } from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
@@ -23,6 +22,7 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { IArticle } from 'data/interfaces/IArticle'
 import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
+import CoursesList from '../CoursesList'
 
 export default function MainPageEmployee() {
 
@@ -107,7 +107,7 @@ export default function MainPageEmployee() {
 
     setTimeout(()=> {
       setLoad(true)
-    }, 200)
+    }, 100)
   }
 
 
@@ -200,7 +200,7 @@ export default function MainPageEmployee() {
 
       <Title title={'Бесплатные курсы'} className={styles.title}/>
       {popularCourses.size > 0 &&
-        <CoursesBlock courses={[...popularCourses.values()]}/>
+        <CoursesList courses={[...popularCourses.values()]}/>
       }
 
     </div>

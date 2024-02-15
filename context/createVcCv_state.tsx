@@ -159,18 +159,21 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const saveDraft = (data: {cv?: ICVCreate, vacancy?: IVacancyCreate}) => {
-    debugger
     if(data.cv) {
-      CvRepository.createCV(data.cv)
-      .then(res => {
-        debugger
-      })
+      if(!draftId.current) {      
+        CvRepository.createCV(data.cv)
+        .then(res => {
+          draftId.current = res.id
+        })
+      }
+      else if(draftId.current) {
+        CvRepository.updateCV(draftId.current, data.cv)
+      }
     }
     else if(data.vacancy ) {
       if(!draftId.current) {
         VacancyRepository.createVacancy(data.vacancy)
         .then(res => {
-          debugger
           draftId.current = res.id
         })
       }
@@ -227,11 +230,15 @@ export function CreateVcCvWrapper(props: Props) {
   const getCurrentCv = (id: number, cv?: ICV) => {
     if(cv) {
       setEditedItem(cv, 'cv')
+      setActiveSubcategory(cv.categories)
+      draftId.current = cv.id
       return
     }
     CvRepository.getById(id)
     .then(res=> {
       setEditedItem(res, 'cv')
+      setActiveSubcategory(res.categories)
+      draftId.current = res.id
     })
   }
 

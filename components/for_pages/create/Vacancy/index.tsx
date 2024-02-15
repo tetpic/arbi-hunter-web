@@ -340,7 +340,7 @@ export default function Vacancy(props: Props) {
     changeComponent(progress)
     if(maxProgress.current > progress || props.vacancy.completedSteps.length === CVItemsCount) return 
     maxProgress.current < progress && (maxProgress.current = progress)
-    debugger
+    
     if(progress > 1 && creationContext.activeSubCategory.length > 0) {
       const formikCleared = {
         ...formik.values, 

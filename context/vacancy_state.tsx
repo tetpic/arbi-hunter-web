@@ -98,7 +98,7 @@ export function VacancyWrapper(props: Props) {
   const setSavedVacancies = ():Promise<boolean> => {
     return VacancyRepository.getSavedFromCurrentProfile()
     .then(res=> {
-      setSavedVCState(res)
+      setSavedVCState(res.data)
       return true
     })
     .catch(_=> false)

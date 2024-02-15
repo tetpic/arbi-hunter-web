@@ -4,14 +4,16 @@ import classNames from 'classnames'
 
 interface Props {
   progress: number[]
+  className?: string
+  stepsCount?: number
 }
 
 export default function Progress(props: Props) {
 
-  return (<div className={styles.root}> 
-    <P styleType={['medium', 'w500']}>Вакансия заполнена на {props.progress?.length.toString()}/9</P>
+  return (<div className={classNames(styles.root, props.className)}> 
+    <P styleType={['medium', 'w500']}>Вакансия заполнена на {props.progress?.length.toString()}/{props.stepsCount||9}</P>
     <div className={styles.progressLine}>
-      {new Array(9).fill(true).map((el, i) => {
+      {new Array(props.stepsCount||9).fill(true).map((el, i) => {
         return <div className={classNames(styles.progressItem, i+1===props.progress?.length && styles.active)}></div>
       })}
     </div>

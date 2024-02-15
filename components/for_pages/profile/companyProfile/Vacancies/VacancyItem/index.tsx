@@ -112,6 +112,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           options={options}
           getRef={(r) => {dropRef.current = r}} 
           active={dropDown} 
+          isLast={isLast}
           onClose={()=>openDropDown(false)}/>        
         }
       </div>

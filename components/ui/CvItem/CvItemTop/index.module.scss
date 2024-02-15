@@ -1,0 +1,30 @@
+@import 'styles/index';
+
+.top {
+  display: grid;
+  grid-template-areas: 'u s' 'u n';
+  row-gap: 8px;
+  grid-template-columns: auto 1fr;
+}
+
+.userPic {
+  grid-area: u;
+  margin-right: 8px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.name {
+  grid-area: n;
+}
+
+.sub {
+  grid-area: s;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+
+  &_white {
+    color: $white;
+  }
+}

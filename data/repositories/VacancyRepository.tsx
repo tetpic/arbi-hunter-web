@@ -73,10 +73,15 @@ export default class VacancyRepository {
     return res
   }
 
-  static async getSavedFromCurrentProfile(): Promise<IVacancy[]|null> {
+  static async getSavedFromCurrentProfile(page?: number, limit?: number): Promise<IPagination<IVacancy>|null> {
     const res = await request({
       method: 'get',
-      url: '/api/vacancy?savedByCurrentProfile=true',
+      url: '/api/vacancy',
+      data: {
+        savedByCurrentProfile: true,
+        page,
+        limit
+      }
     })
     if(res.err) {
       return null

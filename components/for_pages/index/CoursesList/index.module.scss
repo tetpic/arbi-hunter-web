@@ -1,0 +1,54 @@
+@import 'styles/index';
+
+.title {
+  @include lineClamp(2);
+}
+
+.item {
+  display: flex;
+  background-color: $grey;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 10px 8px;
+  display: flex;
+  column-gap: 16px;
+  height: 205px;
+}
+
+.slide {
+  width: calc(50% - 16px);
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.textLine {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.bottom {
+  display: flex;
+  width: 100%;
+  justify-self: flex-end;
+  margin-top: auto;
+  column-gap: 16px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding-block: 16px;
+  row-gap: 16px;
+}
+
+.itemPack {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}

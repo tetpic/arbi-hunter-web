@@ -17,6 +17,7 @@ export default function ArticlesList(props: Props) {
 
   return (
     <SwiperList
+    hideNav
     slideClassName={styles.slide}
     >
       {props.news && props.news.map(el=>{
@@ -31,7 +32,6 @@ export default function ArticlesList(props: Props) {
                 <P styleType={['medium', 'w500']}>{Formatter.formatDistanceToNow(el.createdAt)} назад</P>
               </div>
             </div>
-
           </div>
         )
       })}

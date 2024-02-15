@@ -36,6 +36,7 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   skills: ISource[],
   sources: ISource[]
   applicationByCurrentUser: IApplication
+  applicationsByCurrentUser: IApplication[]
   tariff: TariffType
   topPurchasedAt: string|null
   publishedAt: string|null

@@ -15,8 +15,8 @@ import LikeButton from '../LikeButton'
 import CvRepository from 'data/repositories/CvRepository'
 import Link from 'next/link'
 import useAbortController from 'components/hooks/useAbortController'
-import UserPic from '../UserPic'
 import { getUserImageSource } from 'utils/helpers'
+import CvItemTop from './CvItemTop'
 
 interface Props {
   cv: ICV
@@ -82,15 +82,7 @@ export default function CvItem({cv, ...props}: Props) {
     />
 
     <div className={styles.content}>
-      <div className={styles.top}>
-        {isTabletWidth && !cv.profile?.useOwnLogo &&
-          <UserPic className={styles.userPic} image={userImage} size={60}/>
-        }
-        {cv.categories.length > 0 &&
-          <p className={styles.name}>{cv.categories[0].name}</p>
-        }
-        <p className={styles.sub}>{cv.profile?.firstName} {cv.profile?.lastName} {cv.age&&cv.age +' '+ Formatter.pluralize(cv.age, 'год', 'года', 'лет')} </p>
-      </div>
+      <CvItemTop cv={cv} userImage={userImage}/>
 
       {cv.city && cv.city.locName && !cv.isRemote &&
         <p className={styles.sub}>г. {cv.city?.locName}</p>

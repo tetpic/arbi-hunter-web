@@ -9,7 +9,10 @@
 
   &_active {
     svg {
-      fill: $white;
+      fill: $red;
+      path {
+        stroke: $red;
+      }
     }
   }
  

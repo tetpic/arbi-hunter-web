@@ -137,6 +137,7 @@ export default function Header(props: Props) {
               <Button  
               styleType={['icon', 'black', 'svg24']} 
               className={styles.iconButton}
+              href={'/favorites'}
               >
                 <HeartSvg/>
               </Button>
@@ -166,7 +167,7 @@ export default function Header(props: Props) {
               <Button 
               styleType={['icon', 'black', 'svg24']} 
               className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} 
-              href={{pathname: 'profile', query: {page: 'saved'}}}
+              href={'/favorites'}
               >
                 <HeartSvg/>
               </Button>

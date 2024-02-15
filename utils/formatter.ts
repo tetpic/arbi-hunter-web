@@ -29,7 +29,7 @@ export default class Formatter {
     return new Intl.DateTimeFormat('ru', {
       day: 'numeric',
       month: 'long',
-      ...options.timeOptions
+      ...options?.timeOptions
     }).format(new Date(recievedDate))
   }
 
