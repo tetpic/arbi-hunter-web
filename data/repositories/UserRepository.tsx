@@ -50,7 +50,7 @@ export default class UserRepository {
     return res
   }
 
-  static async editProfileByType(data: any, profile?: ProfileType): Promise<IUserProfile|null> {
+  static async editProfileByType(data: Partial<IUserProfile>, profile?: ProfileType): Promise<IUserProfile|null> {
     const res = await request({
       method: 'post',
       url: `/api/profile/${profile}`,

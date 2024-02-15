@@ -17,6 +17,7 @@ import Link from 'next/link'
 import useAbortController from 'components/hooks/useAbortController'
 import { getUserImageSource } from 'utils/helpers'
 import CvItemTop from './CvItemTop'
+import P from '../P'
 
 interface Props {
   cv: ICV
@@ -85,10 +86,10 @@ export default function CvItem({cv, ...props}: Props) {
       <CvItemTop cv={cv} userImage={userImage}/>
 
       {cv.city && cv.city.locName && !cv.isRemote &&
-        <p className={styles.sub}>г. {cv.city?.locName}</p>
+        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>г. {cv.city?.locName}</P>
       }
       {cv.isRemote &&
-        <p className={styles.sub}>Удаленно</p>
+        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>Удаленно</P>
       }
       <SalaryItem cv={cv}/>
       {cv?.profile?.activityStatus &&
@@ -103,7 +104,7 @@ export default function CvItem({cv, ...props}: Props) {
       </p>
       }
       {cv.experienceInfo && cv.experienceInfo.length > 0 &&
-        <p className={styles.sub}>Опыт работы <span className={styles.sub_white}>{Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}</span></p>
+        <P className={styles.sub}>Опыт работы <span className={styles.sub_white}>{Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}</span></P>
       }
       {cv.lastExperienceInfo &&
       <p className={styles.sub}>Последнее место работы <span className={styles.sub_white}>{cv.lastExperienceInfo.company}</span></p>

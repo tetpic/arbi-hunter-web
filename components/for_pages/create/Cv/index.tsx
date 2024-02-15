@@ -53,7 +53,7 @@ export default function Cv(props: Props) {
 
   const router = useRouter()
   const {progress, setProgress} = creationContext
-  const maxProgress = useRef<number>(props.cv.completedSteps?.length||1)
+  const maxProgress = useRef<number>(props?.cv?.completedSteps?.length||1)
   const CVItemsCount = 6
 
   const submit = (data: ICVCreate) => {

@@ -25,6 +25,7 @@ interface Props {
   useModel?: boolean
   showNextAnimation?: () => void
   action?: ModelActions 
+  allowDefaultBackground?: boolean
 }
 
 export default function PersonalHeader(props: Props) {
@@ -35,7 +36,7 @@ export default function PersonalHeader(props: Props) {
   const currentProfile = useUserContext().currentProfile
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
-  const building = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
+  const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -76,7 +77,9 @@ export default function PersonalHeader(props: Props) {
   })()
 
   useEffect(()=>{
-    setBackImage(personalContext.backgrounds.get(BackgroundCategoryType.Places))  
+    if(personalContext.backgrounds) {
+      setBackImage(personalContext.backgrounds?.get(BackgroundCategoryType.Places))  
+    }
   }, [personalContext.backgrounds])
 
   const transportRive = useMemo(()=>{

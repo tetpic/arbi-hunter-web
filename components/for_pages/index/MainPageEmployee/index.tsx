@@ -133,9 +133,9 @@ export default function MainPageEmployee() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        {personalContext.personalPage && personalContext.backgrounds &&
+        {/* {personalContext.personalPage && personalContext.backgrounds && */}
           <PersonalHeader action={action} showNextAnimation={showNextAnimation} useModel/>
-        }
+        {/* } */}
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <div className={styles.card}>

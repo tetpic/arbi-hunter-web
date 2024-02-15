@@ -26,7 +26,7 @@ export default function FavoritesPage(props: Props) {
   const [cvs, setCvs] = useState<Map<number, ICV>>(new Map)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
-  const profileType = userContext.currentProfile.profileType
+  const profileType = userContext.currentProfile?.profileType
 
 
   const getItems = () => {
