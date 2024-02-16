@@ -43,7 +43,7 @@ export interface IField<T> extends FieldConfig<T> {
   disabled?: boolean
 }
 export interface IOption<T> {
-  label: string
+  label: string|JSX.Element|JSX.Element[]
   value?: T
   disabled?: boolean
   description?: string

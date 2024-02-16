@@ -1,4 +1,4 @@
-import { ISpecializationCategory, ISource, IFile } from 'data/interfaces/Common'
+import { ISpecializationCategory, ISource, IFile, ICategorySearchParams } from 'data/interfaces/Common'
 import { ICVCreate, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
@@ -6,6 +6,7 @@ import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
+import CategoryRepository from 'data/repositories/CategoryRepository'
 
 
 export interface HelpObject {
@@ -47,7 +48,7 @@ export interface ICreationState {
   activeCategory: ISpecializationCategory
   activeSubCategory: ISpecializationCategory[]
   setCategories: ()=> Promise<boolean>
-  setSubCategories: (s: string, page: number)=>Promise<ISpecializationCategory[]>
+  setSubCategories: (data: Partial<ICategorySearchParams>|null, categories?: ISpecializationCategory[]) => Promise<ISpecializationCategory[]>
   setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
   setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory[]>>
   setSubcategoriesToCategory: (s: ISpecializationCategory) => void
@@ -71,9 +72,6 @@ export function CreateVcCvWrapper(props: Props) {
     activeSources: new Map,
     activeGeos: new Map,
     activeVerticals: new Map,
-    geos: [],
-    sources: [],
-    verticals: [],
     skills: new Map,
     languageKnowledges: new Map,
     cityId: userContext.currentProfile?.cityId,
@@ -113,7 +111,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setCategories =():Promise<boolean> => {
-    return CvRepository.getCategories()
+    return CategoryRepository.getCategories()
     .then(res => {
       setCategoriesState(()=> {
         let map = new Map()
@@ -126,12 +124,23 @@ export function CreateVcCvWrapper(props: Props) {
     })
   }
 
-  const setSubCategories = (s: string, page: number): Promise<ISpecializationCategory[]> => {
-    return CvRepository.getSubcategories({search: s, page, limit: 20})
+  const setSubCategories = (data: Partial<ICategorySearchParams>|null, categories?: ISpecializationCategory[]): Promise<ISpecializationCategory[]> => {
+    
+    if(categories && categories.length > 0) {
+      setSubCategoriesState(state => {
+        categories.forEach(el=> {
+          state.set(el.id, el)
+        })
+        return new Map(state)
+      })
+      return
+    }
+    
+    return CategoryRepository.getSubcategories({limit: 20, ...data})
     .then(res => {
       setSubCategoriesState(state => {
         state.clear()
-        res.forEach(el=> {
+        res.slice(0, data.limit||20).forEach(el=> {
           state.set(el.id, el)
         })
         return new Map(state)
@@ -142,7 +151,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   const setSubcategoriesToCategory = (s: ISpecializationCategory) => {
     if(!categories.get(s)) {
-      CvRepository.getSubCategoriesByCategoryId(s.id)
+      CategoryRepository.getSubCategoriesByCategoryId(s.id, {withCVsCount: true, withNewCVsCount: true})
       .then(res => {
         setCategoriesState(state => {
           state.set(s, res)
@@ -249,11 +258,7 @@ export function CreateVcCvWrapper(props: Props) {
     setVc(null)
   }
 
-  const initSources = async () => {
-    const [s, g, v] = await Promise.all([CvRepository.sourcesList(), CvRepository.getGeos(), CvRepository.getVerticals()])
-    const cvHelpState = helpObjects
-    setHelpObjects({...cvHelpState,  geos: g.data, verticals: v.data, sources: s.data})
-  }
+
 
   useEffect(()=>{
     if(currentCv && subCategories && activeSubCategory.length === 0) {
@@ -262,7 +267,6 @@ export function CreateVcCvWrapper(props: Props) {
   }, [currentCv, subCategories])
 
   useEffect(()=>{
-    initSources()
     setCategories()    
   }, [])
   

@@ -14,7 +14,7 @@ import { useAppContext } from 'context/state'
 import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
 import { ModalType } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import employee from 'images/recruiting/job_back.jpg'
 import Spinner from 'components/ui/Spinner'
@@ -22,17 +22,21 @@ import VacancyItem from 'components/ui/VacancyItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import FiltersEmployee from '../SideFilters'
 import MainSearchBar from '@/components/ui/MainSearchBar'
+// import { clearObject } from 'utils/helpers'
 
+interface Props {
+  filters: Partial<IVacancyCvSearchParams>
+}
 
-export default function RecruitingPageEmployee() {
+export default function RecruitingPageEmployee(props: Props) {
   return (
     <VacancyWrapper>
-      <RecruitingPageEmployeeInner/>
+      <RecruitingPageEmployeeInner {...props}/>
     </VacancyWrapper>
   )
 }
 
-function RecruitingPageEmployeeInner() {
+function RecruitingPageEmployeeInner(props: Props) {
   const router = useRouter()
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
@@ -40,7 +44,7 @@ function RecruitingPageEmployeeInner() {
 
   const {isTabletWidth} = appContext.size
   const [loading, setLoading] = useState<boolean>(true)
-  const currentFilters = useRef<IVacancyCvSearchParams>({})
+  const currentFilters = useRef<IVacancyCvSearchParams>(/*props.filters||*/{})
 
   const findVacancies = (data?: IVacancyCvSearchParams):void => {
     vacancyContext.findVacancies(currentFilters.current)
@@ -54,6 +58,8 @@ function RecruitingPageEmployeeInner() {
     vacancyContext.setPage(1)
     currentFilters.current = data
     findVacanciesThrottle.callback(currentFilters.current)
+    // const clearedObj = clearObject(currentFilters.current)
+    // router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
   useEffect(()=>{
@@ -105,7 +111,7 @@ function RecruitingPageEmployeeInner() {
     {!isTabletWidth &&
       <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
         <div className={styles.filter}>
-          <FiltersEmployee onFilterChange={onFilterChange}/>
+          <FiltersEmployee onFilterChange={onFilterChange} initialFields={currentFilters.current}/>
         </div>
       </StickyBox>
     }

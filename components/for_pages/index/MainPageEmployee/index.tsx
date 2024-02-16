@@ -14,7 +14,6 @@ import { usePersonalContext } from 'context/personal_state'
 import Title from '@/components/ui/TitleForSection'
 import CategoriesList from '@/components/ui/CategoriesList'
 import {  ISpecializationCategory } from 'data/interfaces/Common'
-import CvRepository from 'data/repositories/CvRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import {  Languages } from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
@@ -23,6 +22,7 @@ import { IArticle } from 'data/interfaces/IArticle'
 import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
+import CategoryRepository from 'data/repositories/CategoryRepository'
 
 export default function MainPageEmployee() {
 
@@ -79,7 +79,7 @@ export default function MainPageEmployee() {
   const init = async() => {
     const [stats, categories, courses, news, backs] = await Promise.all([
       UserRepository.getStats(),
-      CvRepository.getCategories(),
+      CategoryRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20, categories: [30]},Languages.ru),
       ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
@@ -188,7 +188,7 @@ export default function MainPageEmployee() {
       </div>
 
       <Title title={'Категории'} className={styles.title}/>
-      <CategoriesList hideNav categories={[...categories.values()].filter(e=> e.image)}/>
+      <CategoriesList hideNav categories={[...categories.values()].filter(e=> e.image)} link={'/recruiting?categories='}/>
 
       <Title title={'Подборки лучших вакансий'} className={styles.title}/>
       <CvVcCompilation/>

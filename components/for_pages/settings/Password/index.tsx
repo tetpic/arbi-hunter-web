@@ -15,7 +15,9 @@ interface Props {
 }
 
 interface PersonalPassword {
-  newPassword: string
+  newPassword: string,
+  oldPassword: string,
+  repeatPassword: string
 }
 
 export default function ChangePassword(props: Props) {
@@ -28,20 +30,27 @@ export default function ChangePassword(props: Props) {
     setPasswordOpen(!passwordIsOpen)
   }
 
-  const submitPassword = (data: PersonalPassword, helpers: FormikHelpers<PersonalPassword>) => {
+  const submitPassword = async(data: PersonalPassword, helpers: FormikHelpers<PersonalPassword>) => {
+    if(data.newPassword !== data.repeatPassword) {
+      appContext.showSnackbar('Пароли не совпадают', SnackbarType.error)
+      return
+    }
+    
     if(confirm('Изменить существующий пароль на новый?')) {
       UserRepository.passwordChangeConfirmation(data).then(res=>{
         userContext.setToken(res.accessToken)
         appContext.showSnackbar('Пароль успешно изменен', SnackbarType.success)
         helpers.resetForm()
       })
-      .catch(err=> alert(err.toString()))
+      .catch(err=> appContext.showSnackbar(err.message, SnackbarType.error))
     }
   }
 
   const passwordFormik = useFormik<PersonalPassword>({
     initialValues: {
-    newPassword: ''
+      oldPassword: '',
+      newPassword: '',
+      repeatPassword: ''
     },
     onSubmit: (values, helpers) => submitPassword(values, helpers)
   })
@@ -51,12 +60,38 @@ export default function ChangePassword(props: Props) {
     <FormikProvider value={passwordFormik}>
       <Form className={styles.root}>
         <InputField 
+        label={'Cтарый пароль:'}
+        className={styles.input} 
+        labelType='top' 
+        styleType={'default'} 
+        color={'default'} 
+        name={'oldPassword'} 
+        type={passwordIsOpen?'text':'password'}
+        suffix={'icon'}
+        suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
+        onSuffixClick={passwordHandler}
+        validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
+        />
+        <InputField 
         label={'Новый пароль:'}
         className={styles.input} 
         labelType='top' 
         styleType={'default'} 
         color={'default'} 
         name={'newPassword'} 
+        type={passwordIsOpen?'text':'password'}
+        suffix={'icon'}
+        suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
+        onSuffixClick={passwordHandler}
+        validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
+        />
+        <InputField 
+        label={'Подтвердите новый пароль:'}
+        className={styles.input} 
+        labelType='top' 
+        styleType={'default'} 
+        color={'default'} 
+        name={'repeatPassword'} 
         type={passwordIsOpen?'text':'password'}
         suffix={'icon'}
         suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}

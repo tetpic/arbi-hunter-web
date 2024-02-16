@@ -12,6 +12,7 @@ interface Props<T> {
   className?: string
   title?: string
   articlesCounter?:boolean
+  link?: string
 }
 
 
@@ -20,10 +21,10 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
   // const {isTabletWidth} = useResize()
 
   return (
-    <SwiperList>
+    <SwiperList hideNav={props.hideNav} className={props.className}>
       {props.categories && props.categories.map(category=> {
         return (
-          <Link href={`/media/page?page=categories&category=${category.id}`} replace={true} className={styles.categoryItem}>
+          <Link href={(props.link||'/media/page?page=categories&category=')+category.id} replace={true} className={styles.categoryItem}>
             <div className={styles.imageWrapper}>
               <Image 
               src={FILES + category.image.source}

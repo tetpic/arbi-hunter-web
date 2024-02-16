@@ -5,7 +5,7 @@ import CheckSvg from 'components/svg/CheckSvg'
 interface Props<T> {
   value: T,
   isActive: boolean
-  label?: string,
+  label?: string|JSX.Element|JSX.Element[],
   className?: string
   activeClassName?: string
   circleClassName?: string

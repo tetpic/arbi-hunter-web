@@ -38,10 +38,10 @@ export default class UserRepository {
     return res
   }
 
-  static async passwordChangeConfirmation(data: {newPassword: string}): Promise<IToken|null> {
+  static async passwordChangeConfirmation(data: {newPassword?: string, oldPassword?: string}): Promise<IToken|null> {
     const res = await request({
       method: 'post',
-      url: '/api/auth/passwordChangeConfirmation',
+      url: '/api/auth/resetPassByCurrentUser',
       data
     })
     if(res.err) {

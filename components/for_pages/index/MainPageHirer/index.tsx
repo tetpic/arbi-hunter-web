@@ -18,9 +18,9 @@ import Spinner from '@/components/ui/Spinner'
 import Title from '@/components/ui/TitleForSection'
 import CategoriesList from '@/components/ui/CategoriesList'
 import CvVcCompilation from '../CvVcCompilation'
-import CvRepository from 'data/repositories/CvRepository'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
+import CategoryRepository from 'data/repositories/CategoryRepository'
 
 
 
@@ -37,7 +37,7 @@ export default function MainPageHirer() {
     const [ stats, courses, categories, news, backs] = await Promise.all([
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
-      CvRepository.getCategories(),
+      CategoryRepository.getCategories(),
       ArticlesRepository.getNews(true),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 
     ])
@@ -86,9 +86,9 @@ export default function MainPageHirer() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        {/* {personalContext.backgrounds && */}
-          <Buildings useDefaultImage profile={userContext.currentProfile} background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}/>
-        {/* } */}
+
+        <Buildings useDefaultImage profile={userContext.currentProfile} background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}/>
+        
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <div className={styles.card}>
@@ -141,7 +141,7 @@ export default function MainPageHirer() {
       </div>
 
       <Title title={'Категории'} className={styles.title}/>
-      <CategoriesList categories={[...categories.values()].filter(e=> e.image)}/>
+      <CategoriesList hideNav link={'/recruiting?category='} categories={[...categories.values()].filter(e=> e.image)}/>
 
 
       <Title title={'Подборки лучших резюме'} className={styles.title}/>

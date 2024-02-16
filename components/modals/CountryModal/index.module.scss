@@ -1,0 +1,19 @@
+@import 'styles/index';
+
+.root {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 16px;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.modalLayout {
+  max-width: 514px;
+}

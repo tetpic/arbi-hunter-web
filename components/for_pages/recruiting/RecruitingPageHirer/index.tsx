@@ -13,7 +13,7 @@ import CvItem from 'components/ui/CvItem'
 import hirer from 'images/recruiting/vacancy_back.jpg'
 import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
 import { ModalType } from 'types/enums'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -22,27 +22,39 @@ import P from '@/components/ui/P'
 import MainSearchBar from '@/components/ui/MainSearchBar'
 import StickyBox from 'react-sticky-box'
 import SideFilters from '../SideFilters'
+import { clearObject } from 'utils/helpers'
+import { useLocationContext } from 'context/location_state'
 
 
 interface Props {
-  vcId: number
+  vcId: number  
+  filters: Partial<IVacancyCvSearchParams>
+
 }
+
 
 export default function RecruitingPageHirer(props: Props) {
   const cvContext = useCvContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const currentFilters = useRef<IVacancyCvSearchParams>({})
+  const currentFilters = useRef<IVacancyCvSearchParams>(props.filters||{})
   const currentVacancy = useRef<IVacancy>()
   const categories = useRef<number[]>([])
   const appContext = useAppContext()
   const router = useRouter()
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
+  const locationContext = useLocationContext()
 
   const {isTabletWidth} = appContext.size
 
   const findCvs = (data?: IVacancyCvSearchParams):void => {
     categories.current&&data&&(data.categories = categories.current)
-    cvContext.findCvs(data||currentFilters.current)
+    const clearedFilters:IVacancyCvSearchParams = {
+      ...data,
+      ...currentFilters.current,
+      salaryMin: Number(data?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters.current?.salaryMin?.toString().replaceAll(' ', ''))||null,
+      salaryMax: Number(data?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters.current?.salaryMax?.toString().replaceAll(' ', ''))||null
+    }
+    cvContext.findCvs(clearedFilters)
     .then(_=>setLoading(false))
   }
 
@@ -59,11 +71,14 @@ export default function RecruitingPageHirer(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
+    debugger
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
     currentFilters.current = data
     findVacanciesThrottle.callback(data)
+    const clearedObj = clearObject({...currentFilters.current})
+    router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
   useEffect(()=>{
@@ -87,7 +102,7 @@ export default function RecruitingPageHirer(props: Props) {
   }, [cvContext.foundCvs])
 
   if(page === 'filters'){
-    return <Filters onFilterChange={onFilterChange}/>
+    return <Filters onFilterChange={onFilterChange} initialFields={currentFilters.current}/>
   }
 
   return (<div className={styles.root}> 
@@ -131,7 +146,7 @@ export default function RecruitingPageHirer(props: Props) {
       {!isTabletWidth &&
         <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
           <div className={styles.filter}>
-            <SideFilters onFilterChange={onFilterChange}/>
+            <SideFilters onFilterChange={onFilterChange} initialFields={currentFilters.current}/>
           </div>
         </StickyBox>
       }

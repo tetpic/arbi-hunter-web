@@ -28,6 +28,7 @@ import Title from '@/components/ui/TitleForSection'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
+  initialFields?: IVacancyCvSearchParams
 }
 
 export default function Filters(props: Props) {
@@ -52,9 +53,10 @@ export default function Filters(props: Props) {
       countryIds: [],
       cityIds: [],
       education: undefined,
-      search: undefined
+      search: undefined,
+      ...props.initialFields
     },
-    onSubmit: null
+    onSubmit: props.onFilterChange
   })
 
   const removeLanguage = (l: ILanguageKnowledge) => {

@@ -1,0 +1,25 @@
+@import 'styles/index';
+
+.root {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  max-height: 80vh;
+  overflow: auto;
+  padding-bottom: 40px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 16px;
+  justify-content: flex-end;
+  margin-top: auto;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+}
+
+.modalLayout {
+  max-width: 514px;
+}

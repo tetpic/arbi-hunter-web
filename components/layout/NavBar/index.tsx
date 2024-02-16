@@ -142,6 +142,7 @@ export default function NavBar(props: Props) {
           })
         }
         <Button styleType={['black', 'icon']} href={'/recruiting'}>R</Button>
+        <Button styleType={['black', 'icon']} href={'/personal/my'}>PS</Button>
 
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>

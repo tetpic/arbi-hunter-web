@@ -39,7 +39,9 @@ export enum ModalType {
   NewPasswordModal = 'newPasswordModal',
   ProfileTypeSwitcher = 'profileTypeSwitcher',
   CompensationModal = 'compensationModal',
-  ChangeLanguageModal= 'changeLanguageModal'
+  ChangeLanguageModal= 'changeLanguageModal',
+  CountryModal = 'countryModal',
+  CityModal = 'cityModal',
 }
 
 export enum SnackbarType {

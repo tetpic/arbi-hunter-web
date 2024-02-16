@@ -20,13 +20,25 @@ export default function Buildings(props: Props) {
   const personalContext = usePersonalContext()
 
   const transportRive = useMemo(()=>{
-    if(!personalContext.transport) return null
-    return <Rive stateMachines={'State Machine 1'}  key={personalContext.transport.id} className={styles.transport} src={FILES + personalContext.transport.image.source} animations={personalContext.transport.riveKeys.map(el=> el.key)}/>
+    if(!personalContext.transport && !props.useDefaultImage) return null
+    return <Rive 
+    stateMachines={'State Machine 1'}  
+    key={personalContext?.transport?.id||'transport'} 
+    className={styles.transport} 
+    src={(FILES + personalContext.transport?.image?.source)||(props.useDefaultImage&&'/rive/header_airplane.riv')} 
+    animations={personalContext.transport?.riveKeys?.map(el=> el.key)}
+    />
   }, [personalContext.transport])
 
   const weatherRive = useMemo(()=>{
-    if(!personalContext.weather) return null
-    return <Rive stateMachines={'State Machine 1'} key={personalContext.weather.id} className={styles.rive} src={FILES + personalContext.weather.image.source} animations={personalContext.weather.riveKeys.map(el=> el.key)}/>
+    if(!personalContext.weather && !props.useDefaultImage) return null
+    return <Rive 
+    stateMachines={'State Machine 1'} 
+    key={personalContext?.weather?.id||'weather'} 
+    className={styles.rive} 
+    src={(FILES + personalContext.weather?.image?.source)||(props.useDefaultImage&&'/rive/header_particles1.riv')} 
+    animations={personalContext.weather?.riveKeys?.map(el=> el.key)}
+    />
   }, [personalContext.weather])
 
   

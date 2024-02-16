@@ -81,7 +81,7 @@ export default function UserEditor(props: Props) {
   return (<div className={styles.root}>
       {!isTabletWidth &&
       <div className={styles.settings}>
-        {[...categories.entries()].map(([el, val])=> {
+        {[...categories.entries()].reverse().map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
               <UserPic size={64} active={el === activeSet[0]} image={el.image&&FILES + el.image.source}/>

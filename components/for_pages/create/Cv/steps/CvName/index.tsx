@@ -24,7 +24,7 @@ export default function CvName(props: Props) {
   
 
   const search = useThrottleFn((s: string)=>{
-    cvCreateContext.setSubCategories(s, 1)
+    cvCreateContext.setSubCategories({search: s, page:1})
   }, 300)
 
   const onSuggestClick = (category: ISpecializationCategory) => {
@@ -51,7 +51,7 @@ export default function CvName(props: Props) {
   }, [formikContext.values.searchPosition])
 
   useEffect(()=>{
-    cvCreateContext.setSubCategories('', 1)
+    cvCreateContext.setSubCategories({search: '', page: 1})
     .then(res => {
       setTaglist(res)
     })

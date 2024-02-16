@@ -1,4 +1,4 @@
-import { IPaginationRequest } from "types/types"
+import { IPaginationRequest } from 'types/types'
 
 export interface IAlternatesGeoName {
   alternatenameid: number,
@@ -30,7 +30,7 @@ export interface ISearchCountryResult {
 
 export interface ISearchCountryRequest extends IPaginationRequest {
   search: string,
-  lang?: string
+  lang?: string,
 }
 
 export interface ISearchLocalyRequest extends IPaginationRequest{

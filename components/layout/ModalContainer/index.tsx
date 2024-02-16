@@ -42,6 +42,8 @@ import NewPasswordModal from 'components/modals/NewPasswordModal'
 import ProfileTypeSwitcher from 'components/modals/ProfileTypeSwitcher'
 import CompensationModal from '@/components/modals/CompensationModal'
 import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
+import CountryModal from '@/components/modals/CountryModal'
+import CityModal from '@/components/modals/CityModal'
 
 
 interface Props { }
@@ -207,6 +209,14 @@ export default function ModalContainer(props: Props) {
       case ModalType.ChangeLanguageModal:
         return <Modal isOpen {...commonSettings} >
         <ChangeLanguageModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.CountryModal:
+        return <Modal isOpen {...commonSettings} >
+        <CountryModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.CityModal:
+        return <Modal isOpen {...commonSettings} >
+        <CityModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

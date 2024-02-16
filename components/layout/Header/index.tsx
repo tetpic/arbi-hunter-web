@@ -11,7 +11,7 @@ import UserPic from 'components/ui/UserPic'
 import Spinner from 'components/ui/Spinner'
 import dynamic from 'next/dynamic'
 import { FILES } from 'types/constants'
-import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+// import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import Modes from 'components/ui/Modes'
 import { useResize } from 'components/hooks/useResize'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
@@ -39,15 +39,15 @@ export default function Header(props: Props) {
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
-  const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
+  // const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
 
   /*очень странный сайд эффект... 
   что при смене профиля, 
   когда появляется currentProfile, 
   useState становится почему-то true */
-  useEffect(()=>{
-    setDropDownOpen(false)
-  }, [userContext.currentProfile])
+  // useEffect(()=>{
+  //   setDropDownOpen(false)
+  // }, [userContext.currentProfile])
 
   const router = useRouter()
   const activePath = router.asPath
@@ -63,7 +63,7 @@ export default function Header(props: Props) {
       }
       else if(props.distanceFromTop < fromTop && props.distanceFromTop <= -40) {
         setDirection('down')
-        !isTabletWidth && setDropDownOpen(false)
+        // !isTabletWidth && setDropDownOpen(false)
         setFromTop(props.distanceFromTop)
       }
       else {
@@ -147,7 +147,7 @@ export default function Header(props: Props) {
               key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
               image={getUserImageSource(userContext.currentProfile)} 
               className={styles.userPic} 
-              onClick={()=>setDropDownOpen(state=> !state)}
+              // onClick={()=>setDropDownOpen(state=> !state)}
               />
             </>}
 
@@ -177,14 +177,14 @@ export default function Header(props: Props) {
               key={1} 
               image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 
               className={styles.userPic} 
-              onClick={()=>{setDropDownOpen(state=> !state)}}
+              // onClick={()=>{setDropDownOpen(state=> !state)}}
               />
             </>}
             {userContext.currentProfile &&
               <UserDropdownMenu       
               reference={(ref) => {dropdownRef.current = ref}}
-              className={classnames(styles.dropdown, isDropDownOpen&&styles.dropdown_active)} 
-              onClose={()=> {setDropDownOpen(false)}}
+              className={classnames(styles.dropdown, /*isDropDownOpen&&styles.dropdown_active*/)} 
+              // onClose={()=> {setDropDownOpen(false)}}
               />
             }
           </div>

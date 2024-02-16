@@ -1,8 +1,7 @@
 import { AxiosRequestConfig } from 'axios'
-import { ISpecializationCategory, IPosition, ISource, IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { IPosition, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ICV, ICVCreate, } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { Languages } from 'types/enums'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
@@ -28,33 +27,6 @@ export default class CvRepository {
     return res
   }
 
-  static async getGeos(): Promise<any|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/geo',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async getVerticals(): Promise<any|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/vertical',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-
-  /*
-  передаю токен и профайл для удобного редактирования резюме - 
-  поля сразу заполнены, пользователь не видит пустых полей, если вакансия еще не загрузилась
-  */
   static async getById(data: number, profile?: ProfileType, token?: string): Promise<ICV|null> {
     const res = await request({
       method: 'get',
@@ -96,61 +68,6 @@ export default class CvRepository {
     const res = await request({
       method: 'get',
       url: '/api/cv/currentUser',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async sourcesList(): Promise<{data: ISource[]}|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/source',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async getCategories(): Promise<ISpecializationCategory[]|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/service-category',
-      data: {
-        lang: Languages.ru
-      }
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async getSubcategories(data: {search?: string, page: number, limit?: number}): Promise<ISpecializationCategory[]|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/service-category',
-      data: {
-        ...data,
-        subcategoriesOnly: true
-      }
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-  static async getSubCategoriesByCategoryId(id: number): Promise<ISpecializationCategory[]|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/service-category',
-      data: {
-        lang: Languages.ru,
-        categoryId: id
-      }
     })
     if(res.err) {
       return null

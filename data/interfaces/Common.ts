@@ -23,6 +23,17 @@ export interface ISource extends TimeStamp {
   title: string,
 }
 
+export interface ICategorySearchParams {
+  withVacanciesCount: boolean,
+  withCVsCount: boolean,
+  withNewVacanciesCount: boolean,
+  withNewCVsCount: boolean,
+  intervalInDays: boolean,
+  search: string, 
+  page: number, 
+  limit: number
+}
+
 export interface ExperienceInfo extends TimeLine {
   company: string,
   position: string,
@@ -119,7 +130,8 @@ export interface ISpecializationCategory extends TimeStamp {
   minCVsSalary?: number|null,
   maxCVsSalary?: number|null,
   withGeos?: boolean,
-  withSources?: boolean
+  withSources?: boolean,
+  
 }
 
 
@@ -213,16 +225,18 @@ export interface IPaginationRequest {
 
 export interface IVacancyCvSearchParams {
   search?: string,
-  categories?: number[] // "1,2,3"
-  geos?: number[] // "1,2,3"
-  verticals?: number[] // "1,2,3"
-  cities?: number[] // '1,2,3'
+  categories?: number[] 
+  geos?: number[] 
+  verticals?: number[] 
+  sources?: number[],
+  cities?: number[] 
+  countries?: number[],
   employment?: EmploymentType[],
   schedule?: ScheduleType[],
   experience?: WorkExperience[],
   currency?: Currency,
-  salaryMin?: number,
-  salaryMax?: number,
+  salaryMin?: number|string,
+  salaryMax?: number|string,
   commissionMin?: number,
   commissionMax?: number,
   gybridCommissionMin?: number,
@@ -231,14 +245,12 @@ export interface IVacancyCvSearchParams {
   isRemote?: boolean,
   savedByCurrentProfile?: boolean,
   ids?: number[], // '1,2,3' по списку идентификаторов
-  countries?: number[],
   sort?: 'createdAt,DESC',
   compensation?: CompensationType,
   languageKnowledges?: ILanguageKnowledge[],
   withCharacter?: boolean,
   forLastNumberOfDays?: 1|7|30|365, 
   s?:string
-  sources?: number[],
   lookType?: VacancyLookType,
   countryIds?: number[],
   cityIds?: number[],

@@ -35,3 +35,12 @@ export const shareData = async(data: ShareData) => {
     console.log(err)
   }
 }
+
+export const clearObject = (obj: any) => {
+  
+  const clearedQuery: {[key: string]: any} = {...obj}
+  Object.entries(clearedQuery).forEach(([key, value]) => {
+    if(!Boolean(value)||value.length === 0||Object.keys(value).length === 0||Object.values(value).filter(Boolean).length === 0) delete clearedQuery[key]
+  })
+  return clearedQuery
+}
