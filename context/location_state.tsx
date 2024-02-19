@@ -5,9 +5,10 @@ import { createContext, useContext, useEffect, useState } from 'react'
 interface IState {
   cities: Map<number, ISearchCityResult>
   countries: Map<number, IGeoName>
-  getCountries: (data: Partial<ISearchCountryRequest>|null, countries?: IGeoName[])=> void
+  getCountries: (data: Partial<ISearchCountryRequest>|null, countries?: IGeoName[], selectedCountries?: IGeoName[])=> void
   getCities: (data: Partial<ISearchLocalyRequest>, countries: string[], cts?: ISearchCityResult[])=> void
   clearCities: ()=>void
+  getInitialGeonames: (data?: {countries?: number[];cities?: number[];}) => Promise<void>
 }
 
 
@@ -23,8 +24,6 @@ export function LocationWrapper(props: Props) {
   const [cities, setCities] = useState<Map<number, ISearchCityResult>>(new Map())
   const [countries, setCountries] = useState<Map<number, IGeoName>>(new Map())
 
-
-
   const getCities = async(data: Partial<ISearchLocalyRequest>, countries: string[], cts?: ISearchCityResult[]) => {
     if(cts && cts.length > 0) {
       setCities(state=> {
@@ -36,7 +35,7 @@ export function LocationWrapper(props: Props) {
       return
     }
 
-    const _cities:Map<number, ISearchCityResult> = new Map
+    const _cities:Map<number, ISearchCityResult> = new Map()
     const res = await Promise.all(countries.map(el=> LocationRepository.searchCity({...data, country: el})));
     
     [].concat(...res).forEach(c=> {
@@ -46,7 +45,8 @@ export function LocationWrapper(props: Props) {
     setCities(_cities)
   }
 
-  const getCountries = (data: Partial<ISearchCountryRequest>|null, countries?: IGeoName[]) => {
+  const getCountries = (data: Partial<ISearchCountryRequest>|null, countries?: IGeoName[], selectedCountries?: IGeoName[]) => {
+    
     if(countries && countries.length > 0) {
       setCountries(state=> {
         countries.forEach(el=> {
@@ -57,11 +57,23 @@ export function LocationWrapper(props: Props) {
       return
     }
     LocationRepository.searchCountry(data).then(res => {
-      setCountries(state => {
+      setCountries(_ => {
+        const _newMap = new Map()
+        // if(selectedCountries && selectedCountries.length > 0) {
+          
+        //   selectedCountries.forEach(el => {
+        //     _newMap.set(el.geonameid, el)
+        //   })
+        // }
+        console.log( selectedCountries)
         res.forEach(el=> {
-          state.set(el.geoname.geonameid, el.geoname)
+          _newMap.set(el.geoname.geonameid, el.geoname)
         })
-        return new Map(state)
+        selectedCountries?.forEach(el => {
+          _newMap.delete(el.geonameid)
+        })
+   
+        return new Map(_newMap)
       })
     })
   }
@@ -70,9 +82,11 @@ export function LocationWrapper(props: Props) {
     setCities(new Map())
   }
 
-  const getInitialGeonames = async() => {
-    if(props.initials?.countries?.length>0) {
-      const _countries = await Promise.all(props.initials.countries.map(el=> LocationRepository.getById(el)))
+  const getInitialGeonames = async(data?: {countries?: number[], cities?: number[]}) => {
+    
+    if(props.initials?.countries?.length>0||data?.countries?.length>0) {
+      const dCountries = props.initials.countries||data.countries
+      const _countries = await Promise.all(dCountries.map(el=> LocationRepository.getById(el)))
       const _arr: IGeoName[] = []
       setCountries(state=> {
         _arr.concat(..._countries).forEach(c=> {
@@ -81,8 +95,9 @@ export function LocationWrapper(props: Props) {
         return new Map(state)
       })
     }
-    if(props.initials?.cities?.length>0) {
-      const _cities = await Promise.all(props.initials.cities.map(el=> LocationRepository.getById(el)))
+    if(props.initials?.cities?.length>0||data?.cities?.length>0) {
+      const dCities = props.initials.cities||data.cities
+      const _cities = await Promise.all(dCities.map(el=> LocationRepository.getById(el)))
       const _arr: IGeoName[] = []
       setCities(state=> {
         _arr.concat(..._cities).forEach((c)=> {
@@ -94,19 +109,18 @@ export function LocationWrapper(props: Props) {
   }
 
   useEffect(()=>{
-    debugger
     if(props?.initials?.countries || props?.initials?.cities) {
       getInitialGeonames()
     }
-
-  }, [])
+  }, [props?.initials?.countries, props?.initials?.cities])
 
   const value: IState = {
     cities,
     countries,
     getCities,
     getCountries,
-    clearCities
+    clearCities,
+    getInitialGeonames
   }
 
   return (

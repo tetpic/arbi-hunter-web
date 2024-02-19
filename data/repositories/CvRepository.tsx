@@ -115,12 +115,11 @@ export default class CvRepository {
 
   static async findCvs(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<ICV>|null> {
     const dataToSend:any = {...data, page, limit}
-    data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
-    data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
-    data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
-    data?.experience&&data.experience.length>0&&(dataToSend.experience = data.experience.join(','))
-    data?.cities&&data.cities.length>0&&(dataToSend.cities = data.cities.join(','))
-    data?.schedule&&data.schedule.length>0&&(dataToSend.schedule = data.schedule.join(','))
+    Object.entries(dataToSend).forEach(([key, value]) => {
+      if(Array.isArray(value)) {
+        dataToSend[key] = value.join(',')
+      }
+    })
     data?.languageKnowledges&&data.languageKnowledges.length > 0&&(dataToSend.languageKnowledges = JSON.stringify(data.languageKnowledges.map(el=> {return {language: el.language, levels: [el.level]}} )))
     const res = await request({
       method: 'get',

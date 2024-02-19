@@ -10,7 +10,7 @@ export default class LocationRepository {
       url: '/api/location/country',
       data: {
         ...data,
-        lang: data.lang?data.lang:Languages.ru
+        lang: data?.lang?data.lang:Languages.ru
       },
       config
 

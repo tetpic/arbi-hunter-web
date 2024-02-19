@@ -2,7 +2,7 @@ import { ISource } from 'data/interfaces/Common'
 import SourceRepository from 'data/repositories/SourceRepository'
 import { createContext, useContext, useState } from 'react'
 
-export type SourceType = 'vertical' | 'geo' | 'source'
+export type SourceType = 'vertical' | 'geos' | 'source'
 
 interface IState {
   geos: Map<number, ISource>
@@ -25,7 +25,7 @@ export function SourcesWrapper(props: Props) {
 
   const getSources = async(type: SourceType) => {
     switch (type) {
-      case 'geo':
+      case 'geos':
         const geosList = await SourceRepository.getGeos()
         if(geosList) {
           setGeos(new Map(geosList.data.map(el=>[el.id, el])))

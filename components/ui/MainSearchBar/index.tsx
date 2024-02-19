@@ -21,10 +21,12 @@ interface Props {
   className?: string
   fullWidth?: boolean
   onChange?: (data: ISearchBarReturnParams)=>void
+  onSubmit?: (data: ISearchBarReturnParams)=>void
   placeholder?: string
   categories?: ICategory[]
   periods?: {name: string, value: number}[]
   onFilterClick?: ()=>void
+  initialSearch?: string
 }
 
 /**
@@ -39,7 +41,7 @@ export default function MainSearchBar(props: Props) {
 
   const [activeCategories, setActiveCategories] = useState<Map<number, ICategory>>(new Map())
   const [activePeriod, setActivePeriod] = useState<number>()
-  const [search, setSearchValue] = useState('')
+  const [search, setSearchValue] = useState(props.initialSearch||'')
 
   const setCategories = (data: ICategory[])=>{
     setActiveCategories(new Map(data.map(el=>[el.id, el])))

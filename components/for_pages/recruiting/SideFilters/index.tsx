@@ -26,7 +26,6 @@ interface Props {
   initialFields: IVacancyCvSearchParams
 }
 
-//TODO: получение категорий, вертикалей, источников, стран, городов, добавить возраст
 export default function SideFilters(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -55,7 +54,6 @@ export default function SideFilters(props: Props) {
       ageMin: undefined,
       countries: [],
       cities: [],
-      ...props.initialFields
     },
     onSubmit: null
   })
@@ -74,8 +72,10 @@ export default function SideFilters(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
+      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
-        formik.setFieldValue('countries', [...formik.values.countries, ...r.map(el => el.geonameid)])
+        
+        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
       },
     })
@@ -90,20 +90,32 @@ export default function SideFilters(props: Props) {
       },
     })
   }
+
+  const init = async() => {
+    sourcesContext.init(['source', 'vertical', 'geos'])
+    creationContext.setSubCategories({search: undefined, withCVsCount: true})   
+    locationContext.getCountries({page: 1, limit: 3})
+    locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
+    formik.setValues((v) => ({...v, ...props.initialFields}))
+  }
  
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-    sourcesContext.init(['source', 'vertical'])
-    creationContext.setSubCategories({search: undefined, page: 1, withCVsCount: true, limit: 3})
-    locationContext.getCountries({page: 1, limit: 3})
+    init()
   }, [])
 
   useEffect(()=>{
-    if(formik.values.countries.length > 0){
-      formik.setFieldValue('cities', [])
-      locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))      
+    if(formik.values.countries.length > 0) {
+      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))      
     }
-  }, [formik.values.countries])
+  }, [formik.values.countries, locationContext.countries])
+
+  useEffect(()=>{
+    creationContext.setActiveSubcategory(_=>{
+      const result = formik.values.categories.map(el=> creationContext.subCategories.get(el))
+      return result
+    })
+  }, [formik.values.categories, creationContext.subCategories])
 
   useEffect(()=>{
     props.onFilterChange(formik.values)
@@ -120,9 +132,13 @@ export default function SideFilters(props: Props) {
           rootClass={styles.radioField}
           name={'categories'} 
           itemLabelClassName={styles.categoryLabel}
-          options={[...creationContext.subCategories.values()].map(el=> {
-            return {value: el.id, label: <P className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
-          })}/>
+          options={
+            [...creationContext.activeSubCategory.filter(Boolean),
+              ...[...creationContext.subCategories.entries()].filter(([k, v])=> !formik.values.categories.includes(k)).map(el=> el[1]).slice(0, 3)
+            ].map(el=> {
+              return {value: el.id, label: <P className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
+            })
+          }/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
         <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
@@ -158,7 +174,7 @@ export default function SideFilters(props: Props) {
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'countries'} 
-          options={[...locationContext.countries.entries()].map(el=>{
+          options={[...locationContext.countries?.entries()].map(el=>{
             return {value: el[0], label: el[1].locName}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}

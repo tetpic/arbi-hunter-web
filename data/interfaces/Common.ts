@@ -254,7 +254,7 @@ export interface IVacancyCvSearchParams {
   lookType?: VacancyLookType,
   countryIds?: number[],
   cityIds?: number[],
-  education?: EducationTypes,
+  education?: EducationTypes[],
   gender?: Genders[],
   vacancyLookType?: VacancyLookType[]
   relocation?: Answer[],

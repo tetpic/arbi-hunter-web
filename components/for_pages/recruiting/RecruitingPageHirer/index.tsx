@@ -7,7 +7,6 @@ import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
 import Spacer from 'components/ui/Spacer'
 import Filters from '../Filters'
 import Spinner from 'components/ui/Spinner'
-import VacancyRepository from 'data/repositories/VacancyRepository'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
 import hirer from 'images/recruiting/vacancy_back.jpg'
@@ -23,37 +22,35 @@ import MainSearchBar from '@/components/ui/MainSearchBar'
 import StickyBox from 'react-sticky-box'
 import SideFilters from '../SideFilters'
 import { clearObject } from 'utils/helpers'
-import { useLocationContext } from 'context/location_state'
 
 
 interface Props {
   vcId: number  
   filters: Partial<IVacancyCvSearchParams>
-
 }
-
 
 export default function RecruitingPageHirer(props: Props) {
   const cvContext = useCvContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const currentFilters = useRef<IVacancyCvSearchParams>(props.filters||{})
+  const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
   const currentVacancy = useRef<IVacancy>()
-  const categories = useRef<number[]>([])
   const appContext = useAppContext()
   const router = useRouter()
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
-  const locationContext = useLocationContext()
+  const isInited = useRef<boolean>(false)
+  const [searchString, setSearchString] = useState<string>(props?.filters?.search||'')
 
   const {isTabletWidth} = appContext.size
 
   const findCvs = (data?: IVacancyCvSearchParams):void => {
-    categories.current&&data&&(data.categories = categories.current)
-    const clearedFilters:IVacancyCvSearchParams = {
+    
+    const _filters:IVacancyCvSearchParams = {
+      ...currentFilters,
       ...data,
-      ...currentFilters.current,
-      salaryMin: Number(data?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters.current?.salaryMin?.toString().replaceAll(' ', ''))||null,
-      salaryMax: Number(data?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters.current?.salaryMax?.toString().replaceAll(' ', ''))||null
+      salaryMin: Number(data?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
+      salaryMax: Number(data?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null
     }
+    const clearedFilters = clearObject({..._filters})
     cvContext.findCvs(clearedFilters)
     .then(_=>setLoading(false))
   }
@@ -71,27 +68,20 @@ export default function RecruitingPageHirer(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
-    debugger
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
-    currentFilters.current = data
+    setSearchString(data.search)
+    setCurrentFilters( data)
     findVacanciesThrottle.callback(data)
-    const clearedObj = clearObject({...currentFilters.current})
+    const clearedObj = clearObject({...data})
     router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
-  useEffect(()=>{
-    findCvs()  
-  }, [cvContext.page])
-
   const init = async() => {
-    const vc = props.vcId> 0?await VacancyRepository.getVacancyById(props.vcId):null
-    categories.current = vc&&vc.categories.map(e=> e.id)
-    currentVacancy.current = vc
-    cvContext.foundCvs?.size === 0 && cvContext.findCvs()
-    .then(_=>setLoading(false))
-    cvContext.foundCvs?.size > 0 &&setLoading(false)
+    setTimeout(()=>{
+      isInited.current = true      
+    }, 300)
   }
 
   useEffect(()=>{
@@ -99,10 +89,11 @@ export default function RecruitingPageHirer(props: Props) {
   }, [])
 
   useEffect(()=>{
-  }, [cvContext.foundCvs])
+    isInited.current && findCvs()  
+  }, [cvContext.page])
 
   if(page === 'filters'){
-    return <Filters onFilterChange={onFilterChange} initialFields={currentFilters.current}/>
+    return <Filters onFilterChange={onFilterChange} initialFields={currentFilters}/>
   }
 
   return (<div className={styles.root}> 
@@ -126,7 +117,8 @@ export default function RecruitingPageHirer(props: Props) {
     }
     <MainSearchBar
      placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
-     onChange={(s)=>onFilterChange({...currentFilters, search: s})}
+     onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
+     initialSearch={searchString}
      onFilterClick={onFilterClick}/>
 
     <div className={styles.header}>
@@ -146,7 +138,7 @@ export default function RecruitingPageHirer(props: Props) {
       {!isTabletWidth &&
         <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
           <div className={styles.filter}>
-            <SideFilters onFilterChange={onFilterChange} initialFields={currentFilters.current}/>
+            <SideFilters onFilterChange={onFilterChange} initialFields={currentFilters}/>
           </div>
         </StickyBox>
       }
@@ -160,7 +152,7 @@ export default function RecruitingPageHirer(props: Props) {
             {loading && <Spinner size={24}/>
               ||
               !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem cv={cv} initialVacancy={currentVacancy.current} onChangeItem={()=> findCvs()}/>
+                return <CvItem cv={cv} initialVacancy={currentVacancy.current} key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
               !loading && <p className='empty'>Нет найденных вакансий</p>
@@ -171,11 +163,3 @@ export default function RecruitingPageHirer(props: Props) {
     </div>
     </div>)
   }
-
-  // {!isTabletWidth &&
-  //   <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
-  //     <div className={styles.filter}>
-  //       <Filters onFilterChange={onFilterChange}/>
-  //     </div>
-  //   </StickyBox>
-  // }

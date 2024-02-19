@@ -12,7 +12,7 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
@@ -25,6 +25,9 @@ import InputField from '@/components/fields/InputField'
 import TagsRadioList from '../../create/utils/TagsRadioList'
 import MainSearchBar from '@/components/ui/MainSearchBar'
 import Title from '@/components/ui/TitleForSection'
+import { useSourcesContext } from 'context/sources_state'
+import { ICountryModalProps } from '@/components/modals/CountryModal'
+import { useLocationContext } from 'context/location_state'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -35,6 +38,8 @@ export default function Filters(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const creationContext = useCreateVcCvContext()
+  const sourcesContext = useSourcesContext()
+  const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
 
   const formik = useFormik<IVacancyCvSearchParams>({
@@ -48,11 +53,11 @@ export default function Filters(props: Props) {
       categories: [],
       salaryMax: undefined,
       salaryMin: undefined,
-      currency: Currency.RUB,
-      lookType: undefined,
-      countryIds: [],
-      cityIds: [],
-      education: undefined,
+      currency: undefined,
+      vacancyLookType: undefined,
+      countries: [],
+      cities: [],
+      education: [],
       search: undefined,
       ...props.initialFields
     },
@@ -101,7 +106,7 @@ export default function Filters(props: Props) {
         creationContext.setHelpObjects(newObject)
         appContext.hideModal()
       },
-      data: creationContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      data: [...sourcesContext[t.type].values()],
       choosenElements: creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
     }
     if (isTabletWidth) {
@@ -127,23 +132,60 @@ export default function Filters(props: Props) {
     appContext.showModal<ILangaugesModalArgs>(ModalType.LanguageModal, args)    
   }
 
+  const openCountryModal = () => {
+    appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
+      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
+      onSubmit: (r) => {
+        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
+        locationContext.getCountries(null, r)
+        creationContext.setHelpObjects({...creationContext.helpObjects, countries: r})
+      },
+    })
+  }
+
   const onRemoveCategory = (category: ISpecializationCategory) => {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== category.id):state)
     formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category.id))
   }
- 
+  
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
+
+  useEffect(()=>{
+      const _newGeos: Map<number, ISource> = new Map()
+      const _newVerticals: Map<number, ISource> = new Map()
+      const _newSources: Map<number, ISource> = new Map()
+      props.initialFields?.geos?.forEach(el => {
+        _newGeos.set(el, sourcesContext.geos.get(el))
+      })
+      props.initialFields?.verticals?.forEach(el => {
+        _newVerticals.set(el, sourcesContext.verticals.get(el))
+      })
+      props.initialFields?.sources?.forEach(el => {
+        _newSources.set(el, sourcesContext.sources.get(el))
+      })
+
+      creationContext.setHelpObjects(
+        {...creationContext.helpObjects, 
+          activeSources: _newSources,
+          activeGeos: _newGeos,
+          activeVerticals: _newVerticals,
+          countries: props.initialFields?.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+        }
+      )
+      
+  }, [props.initialFields])
 
 
   useEffect(()=>{
     const values = {
       ...formik.values,
       languageKnowledges: [...creationContext.helpObjects.languageKnowledges.values()],
-      sources:  [...creationContext.helpObjects?.activeSources?.values()].map(el=> el.id),
-      geos:  [...creationContext.helpObjects?.activeGeos?.values()].map(el=> el.id),
-      verticals:  [...creationContext.helpObjects?.activeVerticals?.values()].map(el=> el.id),
+      sources: [...creationContext.helpObjects.activeSources.keys()],
+      verticals: [...creationContext.helpObjects.activeVerticals.keys()],
+      geos: [...creationContext.helpObjects.activeGeos.keys()],
+      countries: creationContext.helpObjects?.countries?.map(el=> el.geonameid).filter(Boolean),
     }
     creationContext.activeSubCategory&&
     Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
@@ -151,13 +193,12 @@ export default function Filters(props: Props) {
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
   return (<div className={styles.root}> 
+    <div className={styles.top}>
+      <Title title={'Поиск резюме'}/>
+      <MainSearchBar initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
+    </div>
     <FormikProvider value={formik}>
       <Form>
-        <div className={styles.top}>
-          <Title title={'Поиск резюме'}/>
-          <MainSearchBar/>
-        </div>
-
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
             Специализация:
@@ -261,7 +302,7 @@ export default function Filters(props: Props) {
             <span>Статус поиска</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
           </p>
             <RadioListField 
-            name={'lookType'}
+            name={'vacancyLookType'}
             rootClass={styles.radioField}
             options={[
               // {value: undefined, label: 'Без статуса поиска'},
@@ -278,10 +319,16 @@ export default function Filters(props: Props) {
             Страна:
           </p>
           <div className={styles.itemContent}>
+          {creationContext.helpObjects?.countries?.length > 0 &&
+            creationContext.helpObjects.countries.map(el=> {
+              return (<RemovableItem key={el.geonameid} onClick={()=>{}} text={el.locName} />)
+            })
+          }
           {!isTabletWidth &&
             // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
+            onClick={openCountryModal}
             >
               Добавить страну
             </P>
@@ -292,13 +339,11 @@ export default function Filters(props: Props) {
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
           <div className={styles.itemContent}>
-            {creationContext.helpObjects?.activeVerticals?.size > 0 &&
-              <div className={styles.itemsWrapper}>
-               {creationContext.helpObjects && [...creationContext.helpObjects?.activeVerticals?.entries()]
-                .map(([key, value])=> 
-                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
-                )}
-              </div>
+            {creationContext.helpObjects?.activeVerticals?.size > 0 && creationContext.helpObjects && 
+              [...creationContext.helpObjects?.activeVerticals?.entries()]
+              .map(([key, value])=> 
+              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
+              )
             }
             {!isTabletWidth &&
               // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>

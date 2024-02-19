@@ -7,6 +7,7 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
 import CategoryRepository from 'data/repositories/CategoryRepository'
+import { IGeoName } from 'data/interfaces/ILocation'
 
 
 export interface HelpObject {
@@ -18,7 +19,8 @@ export interface HelpObject {
   activeSources?: Map<number, ISource>
   activeGeos?: Map<number, ISource>
   activeVerticals?: Map<number, ISource>
-  cityId?: number
+  cityId?: number,
+  countries?: IGeoName[],
   countryId?: number,
   categoryIds?: ISpecializationCategory[]
   assets?: IFile[]
@@ -77,7 +79,8 @@ export function CreateVcCvWrapper(props: Props) {
     cityId: userContext.currentProfile?.cityId,
     countryId: userContext.currentProfile?.countryId,
     categoryIds: [],
-    assets: []
+    assets: [],
+    countries: [],
   }
 
   const [currentCv, setCv] = useState<ICVCreate>()
