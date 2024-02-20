@@ -66,6 +66,7 @@ export function PersonalWrapper(props: Props) {
   const setBackgrounds =  async(profile: IUserProfile): Promise<[] | IBackground[]> => {
     setLoading(true)
     const backs = await BackgroundRepository.getBackground({profileId: profile?.id})
+    debugger
       
     profile?.profileType === ProfileType.Hirer 
     && setRives(backs)

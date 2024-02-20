@@ -21,6 +21,8 @@
   overflow: hidden;
   border-radius: 16px;
   border: 2px transparent solid;
+  height: 120px;
+  display: block;
 
   &_active {
     border: 2px $blue solid;

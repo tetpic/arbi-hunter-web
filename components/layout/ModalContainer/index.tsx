@@ -44,6 +44,7 @@ import CompensationModal from '@/components/modals/CompensationModal'
 import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
 import CountryModal from '@/components/modals/CountryModal'
 import CityModal from '@/components/modals/CityModal'
+import BackgroundSwitchModal from '@/components/modals/BackgroundSwitchModal'
 
 
 interface Props { }
@@ -217,6 +218,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.CityModal:
         return <Modal isOpen {...commonSettings} >
         <CityModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.BackgroundSwitchModal:
+        return <Modal isOpen {...commonSettings} >
+        <BackgroundSwitchModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

@@ -26,7 +26,7 @@ interface Props {
   initialFields: IVacancyCvSearchParams
 }
 
-export default function SideFilters(props: Props) {
+export default function SideFilterHirer(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const sourcesContext = useSourcesContext()
@@ -95,6 +95,7 @@ export default function SideFilters(props: Props) {
     sourcesContext.init(['source', 'vertical', 'geos'])
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
     locationContext.getCountries({page: 1, limit: 3})
+    locationContext.getCities({page: 1, limit: 3}, [])
     locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
     formik.setValues((v) => ({...v, ...props.initialFields}))
   }
@@ -187,7 +188,6 @@ export default function SideFilters(props: Props) {
 
         <div className={styles.divider}></div>
         
-        {formik.values.countries && formik.values.countries.length > 0 && <>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
             <span>Город</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
           </p>
@@ -206,9 +206,7 @@ export default function SideFilters(props: Props) {
           >
             Выбрать еще
           </P>
-
           <div className={styles.divider}></div>
-        </>}
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
           <span>Переезд</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}

@@ -1,0 +1,118 @@
+@import 'styles/index';
+
+.root {
+  padding: 24px;
+  border-radius: 16px;
+  width: calc(100% - 350px);
+  margin-bottom: 190px;
+
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    padding: unset;
+    margin-top: 16px;
+    min-height: calc(100% - 32px);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+  }
+}
+
+.item {
+  display: flex;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.itemContent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  color: $grey;
+  font-size: $hugeText;
+  margin-bottom: 24px;
+}
+
+.fieldTitle {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  width: 30%;
+  flex-shrink: 0;
+  svg {
+    @include transitionDefault;
+  }
+  
+  .active {
+    rotate: 180deg;
+  }
+}
+
+.addButton {
+  margin-top: unset !important;
+  margin-bottom: 24px !important;
+}
+
+.itemsWrapper {
+  display: flex;
+  row-gap: 8px;
+  column-gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+
+
+.inputsWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+
+  >span {
+    color: $greyLight;
+    font-size: $largeText;
+    font-weight: $semibold;
+  }
+}
+
+.input {
+  height: 38px;
+  width: 100%;
+}
+
+.label {
+  color: $white !important; 
+}
+
+.tags {
+  min-width: 100%;
+}
+
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  margin-top: 24px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  margin-bottom: 48px;
+}
+
+.subTitle {
+  width: 100%;
+}

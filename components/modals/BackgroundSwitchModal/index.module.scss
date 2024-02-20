@@ -1,0 +1,56 @@
+@import 'styles/index';
+
+.switcher {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-inline: 24px;
+}
+
+.item {
+  width: calc(50% - 8px);
+  padding: 16px;
+  background-color: $grey;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  row-gap: 40px;
+  border: 2px transparent solid;
+  color: $white;
+  font-weight: $medium;
+  font-size: $mediumText;
+}
+
+.active {
+  border: 2px $blue solid;
+  background-color: $black;
+}
+
+.modalLayout {
+  max-width: 440px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 45px;
+
+  .buttonGradient {
+    @include buttonGradient;
+    width: calc(50% - 8px);
+  }
+
+  .button {
+    @include buttonGray;
+    width: calc(50% - 8px);
+  }
+}
+
+.userPic {
+  background-color: #3E3E4D;
+  pointer-events: none;
+}

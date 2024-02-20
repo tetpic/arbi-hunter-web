@@ -22,7 +22,7 @@ import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import P from '@/components/ui/P'
 import InputField from '@/components/fields/InputField'
-import TagsRadioList from '../../create/utils/TagsRadioList'
+import TagsRadioList from '../../../create/utils/TagsRadioList'
 import MainSearchBar from '@/components/ui/MainSearchBar'
 import Title from '@/components/ui/TitleForSection'
 import { useSourcesContext } from 'context/sources_state'
@@ -34,7 +34,7 @@ interface Props {
   initialFields?: IVacancyCvSearchParams
 }
 
-export default function Filters(props: Props) {
+export default function FilterHirer(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const creationContext = useCreateVcCvContext()

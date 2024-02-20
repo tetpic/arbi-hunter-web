@@ -26,6 +26,7 @@ export default function PersonalPage(props: Props) {
   useEffect(()=>{
     personalContext.setPersonalPage({profileId: props.id}) 
     .then(res => {
+      debugger
       personalContext.setBackgrounds(res)
     })
   }, [])

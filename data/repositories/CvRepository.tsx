@@ -114,7 +114,7 @@ export default class CvRepository {
   }
 
   static async findCvs(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<ICV>|null> {
-    const dataToSend:any = {...data, page, limit}
+    const dataToSend:any = {...data, page, limit, sort: 'createdAt,DESC'}
     Object.entries(dataToSend).forEach(([key, value]) => {
       if(Array.isArray(value)) {
         dataToSend[key] = value.join(',')

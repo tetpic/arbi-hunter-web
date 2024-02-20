@@ -1,4 +1,5 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, TariffType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
   return [...Object.values(k)]
@@ -201,3 +202,5 @@ export const TranslateInterfaceLanguage = (t: InterfaceLanguage) => {
       return 'Українська'
   }
 }
+
+export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])

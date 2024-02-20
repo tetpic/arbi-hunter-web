@@ -64,6 +64,7 @@ export default function UserImageModal(props: Props) {
       </div>
     </div>    
   )
+  
 
 
   return (<ModalLayout className={styles.modalLayout}>

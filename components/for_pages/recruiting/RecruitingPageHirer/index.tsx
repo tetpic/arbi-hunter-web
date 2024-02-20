@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useCvContext } from 'context/cv_state'
 import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
 import Spacer from 'components/ui/Spacer'
-import Filters from '../Filters'
 import Spinner from 'components/ui/Spinner'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
@@ -20,8 +19,9 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import P from '@/components/ui/P'
 import MainSearchBar from '@/components/ui/MainSearchBar'
 import StickyBox from 'react-sticky-box'
-import SideFilters from '../SideFilters'
 import { clearObject } from 'utils/helpers'
+import FilterHirer from '../Filters/FilterHirer'
+import SideFilterHirer from '../SideFilters/SideFilterHirer'
 
 
 interface Props {
@@ -32,7 +32,7 @@ interface Props {
 export default function RecruitingPageHirer(props: Props) {
   const cvContext = useCvContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
+  const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
   const currentVacancy = useRef<IVacancy>()
   const appContext = useAppContext()
   const router = useRouter()
@@ -43,7 +43,6 @@ export default function RecruitingPageHirer(props: Props) {
   const {isTabletWidth} = appContext.size
 
   const findCvs = (data?: IVacancyCvSearchParams):void => {
-    
     const _filters:IVacancyCvSearchParams = {
       ...currentFilters,
       ...data,
@@ -81,7 +80,7 @@ export default function RecruitingPageHirer(props: Props) {
   const init = async() => {
     setTimeout(()=>{
       isInited.current = true      
-    }, 300)
+    }, 200)
   }
 
   useEffect(()=>{
@@ -93,7 +92,7 @@ export default function RecruitingPageHirer(props: Props) {
   }, [cvContext.page])
 
   if(page === 'filters'){
-    return <Filters onFilterChange={onFilterChange} initialFields={currentFilters}/>
+    return <FilterHirer onFilterChange={onFilterChange} initialFields={currentFilters}/>
   }
 
   return (<div className={styles.root}> 
@@ -119,7 +118,8 @@ export default function RecruitingPageHirer(props: Props) {
      placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
      onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
      initialSearch={searchString}
-     onFilterClick={onFilterClick}/>
+     onFilterClick={onFilterClick}
+     />
 
     <div className={styles.header}>
       {!loading &&
@@ -138,7 +138,7 @@ export default function RecruitingPageHirer(props: Props) {
       {!isTabletWidth &&
         <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
           <div className={styles.filter}>
-            <SideFilters onFilterChange={onFilterChange} initialFields={currentFilters}/>
+            <SideFilterHirer onFilterChange={onFilterChange} initialFields={currentFilters}/>
           </div>
         </StickyBox>
       }
@@ -155,7 +155,7 @@ export default function RecruitingPageHirer(props: Props) {
                 return <CvItem cv={cv} initialVacancy={currentVacancy.current} key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
-              !loading && <p className='empty'>Нет найденных вакансий</p>
+              !loading && <p className='empty'>Нет найденных резюме</p>
             }
           </div>
         </InfiniteScroll>

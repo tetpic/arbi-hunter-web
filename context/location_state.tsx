@@ -34,13 +34,17 @@ export function LocationWrapper(props: Props) {
       })
       return
     }
-
     const _cities:Map<number, ISearchCityResult> = new Map()
-    const res = await Promise.all(countries.map(el=> LocationRepository.searchCity({...data, country: el})));
-    
-    [].concat(...res).forEach(c=> {
-      _cities.set(c.id, c)
-    })
+    if(countries.length === 0) {
+      const res = await LocationRepository.searchCity({...data})
+      res.forEach(el=> _cities.set(el.id, el))
+    }
+    else {
+      const res = await Promise.all(countries.map(el=> LocationRepository.searchCity({...data, country: el}))); 
+      [].concat(...res).forEach(c=> {
+        _cities.set(c.id, c)
+      })
+    }
 
     setCities(_cities)
   }

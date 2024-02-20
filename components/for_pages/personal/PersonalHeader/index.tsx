@@ -8,7 +8,6 @@ import EditPencilSvg from 'components/svg/EditPencilSvg'
 import DownloadCloudSvg from 'components/svg/DownloadCloudSvg'
 import { useEffect, useMemo, useState } from 'react'
 import { usePersonalContext } from 'context/personal_state'
-import { IBackgroundPickModalArguments } from 'components/modals/BackgroundPickModal'
 import { ModalType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
@@ -19,6 +18,8 @@ import classNames from 'classnames'
 import { useCharacterContext } from 'context/character_state'
 import Spinner from '@/components/ui/Spinner'
 import { ModelActions } from '../../profile/userProfile/UserEditor'
+import { IBackgroundSwitchModalArgs } from '@/components/modals/BackgroundSwitchModal'
+import { IBackgroundPickModalArguments } from '@/components/modals/BackgroundPickModal'
 
 interface Props {
   isEditing?: boolean
@@ -37,26 +38,71 @@ export default function PersonalHeader(props: Props) {
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
+  const profileType = personalContext.currentProfile.profileType
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
     const cBuild = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
+    const cnt = personalContext
+    debugger
 
-    appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
-      currentBackground: cBack?.image|| null,
-      currentBuild: cBuild?.image || null,
-      hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
-      withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
-      onSave: (background, building) => {
-        BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
-        .then(_ => {
-          personalContext.refreshBackgrounds()
-        })
-        if(currentProfile.profileType === ProfileType.Hirer) {
-          userContext.editCurrentProfile({imageId: building?.image?.id||null})        
+    if(currentProfile.profileType === ProfileType.Employee) {
+      appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
+        currentBackground: cBack?.image|| null,
+        currentBuild: cBuild?.image || null,
+        hirerLogo: null,
+        withBuildPicker: false,
+        onSave: (background, building) => {
+          debugger
+          BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
+          .then(_ => {
+            personalContext.refreshBackgrounds()
+          })
+          if(currentProfile.profileType === ProfileType.Hirer) {
+            userContext.editCurrentProfile({imageId: building?.image?.id||null})        
+          }
         }
-      }
-    })
+      })
+    } 
+    else {
+      appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, {
+        onSave: (data) => {
+          debugger
+          if(data.type === 'city') {
+            setTimeout(()=> {
+              appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
+                currentBackground: cBack?.image|| null,
+                currentBuild: cBuild?.image || null,
+                hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
+                withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
+                onSave: (background, building) => {
+                  debugger
+                  BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
+                  .then(_ => {
+                    personalContext.refreshBackgrounds()
+                  })
+                  if(currentProfile.profileType === ProfileType.Hirer) {
+                    userContext.editCurrentProfile({imageId: building?.image?.id||null, useOwnLogo: false})        
+                  }
+                }
+              })
+            }, 100)
+          }
+          else if(data.type === 'custom' && data.image) {
+            personalContext.refreshBackgrounds()
+            userContext.editCurrentProfile({imageId: data.image?.data?.id, useOwnLogo: true})
+          }
+          // debugger
+          // BackgroundRepository.setBackgrounds({backgroundsIds: [data.image?.data?.id]}, currentProfile.profileType)
+          // .then(_ => {
+          //   personalContext.refreshBackgrounds()
+          // })
+          // if(currentProfile.profileType === ProfileType.Hirer) {
+          //   userContext.editCurrentProfile({imageId: data.image?.data?.id})        
+          // }
+        }
+      })
+    }
   }
 
   const editingButton = (()=>{
@@ -94,7 +140,7 @@ export default function PersonalHeader(props: Props) {
 
 
   return (<div className={styles.root}> 
-    {backImage &&
+    {backImage && !userContext.currentProfile.useOwnLogo && profileType===ProfileType.Hirer &&
     <Image 
     src={FILES + backImage.image.source} 
     className={styles.background} 
@@ -102,18 +148,46 @@ export default function PersonalHeader(props: Props) {
     width={1148} 
     height={300} />
     ||
+    personalContext.currentProfile.useOwnLogo && personalContext.currentProfile.image && profileType===ProfileType.Hirer &&
+    <Image 
+    src={FILES + personalContext.currentProfile.image.source} 
+    className={styles.background} alt={'moscow'} 
+    width={1148} 
+    height={300} />
+    ||
+    backImage && profileType===ProfileType.Employee &&
+    <Image 
+    src={FILES + backImage.image.source} 
+    className={styles.background} 
+    alt={'back'} 
+    width={1148} 
+    height={300} />
+    ||
+    // profileType===ProfileType.Hirer &&
     <Image 
     src={personalContext.currentProfile?.profileType===ProfileType.Hirer?'/images/cities/companyDefaultBack.png':'/images/rooms/coworking.png'} 
     className={styles.background} alt={'moscow'} 
     width={1148} 
     height={300} />
     }
-    {backImage && personalContext.transport && transportRive}
-    {backImage && personalContext.weather && weatherRive}
+
+    {backImage 
+    && personalContext.transport 
+    && profileType===ProfileType.Hirer 
+    && !personalContext.currentProfile.useOwnLogo
+    && transportRive}
+
+    {backImage 
+    && personalContext.weather 
+    && profileType===ProfileType.Hirer 
+    && !personalContext.currentProfile.useOwnLogo
+    && weatherRive}
+
     <div className={props.useModel?styles.personalModel:styles.personalImageWrapper}>
       {
       personalContext.currentProfile.profileType === ProfileType.Hirer 
       && building
+      && !personalContext.currentProfile.useOwnLogo
       && personalContext.currentProfile.logo &&
       <>
         <Image 

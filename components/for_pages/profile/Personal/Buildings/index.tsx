@@ -46,18 +46,22 @@ export default function Buildings(props: Props) {
   return (
   <div className={styles.imageSettings}>
 
-    {(props.background || props.useDefaultImage) &&
+    {(props.background || props.useDefaultImage) && props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
       <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/newyork.png'} alt={'back'} width={770} height={300} />
+      ||
+      props.profile.useOwnLogo && props.profile.profileType === ProfileType.Hirer && props.profile.image &&
+      <Image className={styles.background} src={FILES+ props.profile.image.source} alt={'back'} width={770} height={300} />
+
     }
     {
-      props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer &&
+      props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
       <div className={styles.buildingWrapper}>
         <Image className={styles.building} src={FILES + props.profile?.image.source} width={250} height={300} alt={''}/>
         <Image 
         className={styles.logo} 
         src={FILES + props.profile?.logo.source} 
         width={60} height={60} 
-        style={{top: props.profile?.image.focalPoint.y*100+'%', left: props.profile?.image.focalPoint.x*100+'%'}}
+        style={{top: props.profile?.image?.focalPoint?.y*100+'%', left: props.profile?.image?.focalPoint?.x*100+'%'}}
         alt={''}/>
       
       </div>
@@ -72,8 +76,8 @@ export default function Buildings(props: Props) {
     {
 
     }
-    {weatherRive}
-    {transportRive}
+    {props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&weatherRive}
+    {props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&transportRive}
   </div>
   )
 }

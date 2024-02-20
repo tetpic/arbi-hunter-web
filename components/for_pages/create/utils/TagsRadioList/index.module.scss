@@ -9,6 +9,7 @@
   display: flex !important;
   column-gap: 8px !important;
   flex-direction: row !important;
+  flex-wrap: wrap;
 }
 
 .currencyItem {

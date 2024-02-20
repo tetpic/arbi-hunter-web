@@ -42,6 +42,7 @@ export enum ModalType {
   ChangeLanguageModal= 'changeLanguageModal',
   CountryModal = 'countryModal',
   CityModal = 'cityModal',
+  BackgroundSwitchModal = 'backgroundSwitchModal',
 }
 
 export enum SnackbarType {
@@ -327,5 +328,10 @@ export enum InterfaceLanguage {
   English= 'en',
   Russian='ru',
   Ukranian='ua'
+}
+
+export enum SearchIn {
+  Name = 'name',
+  Company = 'company'
 }
 

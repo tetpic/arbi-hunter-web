@@ -125,7 +125,7 @@ export default class VacancyRepository {
   }
 
   static async searchVacancies(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<IVacancy>|null> {
-    const dataToSend:any = {...data, page, limit}
+    const dataToSend:any = {...data, page, limit, sort: 'createdAt,DESC'}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
     data?.sources&&data.sources.length>0&&(dataToSend.sources = data.sources.join(','))
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))

@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import { useAppContext } from 'context/state'
 import { useEffect, useState } from 'react'
-import { IFile } from 'data/interfaces/Common'
+import { IFile, PreviewImage} from 'data/interfaces/Common'
 import CrossSvg from 'components/svg/CrossSvg'
 import Button from 'components/ui/Button'
 import Image from 'next/image'
@@ -27,20 +27,20 @@ export interface IBackgroundPickModalArguments {
   onSave: (background: IBackground, building?: IBackground) => void
 }
 
-enum BackgroundCategory {
 
-}
  
 export default function BackgroundPickModal(props: Props) {
   
   const appContext = useAppContext()  
-  const {profileType} = useUserContext().currentProfile
+  const userContext = useUserContext()
+  const profileType = userContext.currentProfile.profileType
   const args: IBackgroundPickModalArguments = appContext.modalArguments
   const [page, setPage] = useState<'back'|'build'>('back')
   const [currentBackground, setCurrentBackground] = useState<IFile>(args.currentBackground)
   const [currentBuild, setCurrentBuild] = useState<IFile>(args.currentBuild)
   const [backgrounds, setBackgrounds] = useState<Map<number, IBackground>>(new Map)
   const [builds, setBuilds] = useState<Map<number, IBackground>>(new Map)
+  const [customBackground, setCustomBackground] = useState<PreviewImage>()
 
   useEffect(()=>{
     if(args.withBuildPicker) {
@@ -71,6 +71,12 @@ export default function BackgroundPickModal(props: Props) {
         setCurrentBackground(filtered[0].image)
       }
     })
+    // BackgroundRepository.getBackground({profileId: userContext.currentProfile.id})
+    // .then(res=> {
+    //   if(!backgrounds.has(res[0]?.id) ) {
+    //     setCustomBackground({data: res[0]?.image, loaded: true, id: res[0]?.id})
+    //   }
+    // })
   }, [])
 
   const onSave = () => {
@@ -138,6 +144,16 @@ export default function BackgroundPickModal(props: Props) {
           </SwiperSlide>
         )
       })}
+        {/* <SwiperSlide className={styles.slide} style={{width: 155}}>
+          <label 
+          className={styles.place}
+          onClick={() => customBackground&&setCurrentBackground(customBackground.data)}
+          >
+            <Image src={(customBackground?.image&&URL.createObjectURL(customBackground.image))||(customBackground?.data&&FILES+customBackground.data.source)||''} alt={' '} width={155} height={115}/>
+
+            <FileInput setImages={setCustomBackground} />
+          </label>
+        </SwiperSlide> */}
       </Swiper>
     </div>
   )

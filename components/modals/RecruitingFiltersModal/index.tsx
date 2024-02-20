@@ -1,7 +1,7 @@
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
 import ModalBody from 'components/layout/Modal/ModalBody'
-import Filters from 'components/for_pages/recruiting/Filters'
+import Filters from '@/components/for_pages/recruiting/Filters/FilterHirer'
 import { useAppContext } from 'context/state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import TitleForSection from 'components/ui/TitleForSection'
