@@ -55,6 +55,7 @@ export default function SideFilterEmployee(props: Props) {
       relocation: [],
       verticals: [],
       sources: [],
+      geos: [],
       ageMax: undefined,
       ageMin: undefined,
       countries: [],

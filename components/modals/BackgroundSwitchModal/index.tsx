@@ -10,6 +10,8 @@ import { PreviewImage } from 'data/interfaces/Common'
 import { FILES } from 'types/constants'
 import FileInput from '@/components/fields/FileInput'
 import Button from '@/components/ui/Button'
+import { IBackground } from 'data/interfaces/IBackground'
+import Image from 'next/image'
 
 interface Props {
   onClose: () => void
@@ -17,6 +19,7 @@ interface Props {
 
 export interface IBackgroundSwitchModalArgs {
   onSave: (data: {image: PreviewImage, type?: 'city'|'custom'}) => void
+  currentBackground?: IBackground
 }
 
 export default function BackgroundSwitchModal(props: Props) {
@@ -43,17 +46,26 @@ export default function BackgroundSwitchModal(props: Props) {
         <p>Индивидуальный фон</p>
       </div>
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
-            <FileInput setImages={setImage}/>
-            <UserPic
-            className={styles.userPic}
-            size={88}
-            image={image? 
-              (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) 
-              : userContext?.currentProfile?.image 
-              &&userContext.currentProfile.useOwnLogo
-              &&FILES+userContext?.currentProfile?.image.source}
-            />
-          <p>Загрузить фото</p>
+        <FileInput setImages={setImage}/>
+        <Image src={
+          image? 
+          (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) 
+          : userContext.currentProfile.useOwnLogo
+          &&FILES+args.currentBackground.image.source
+        } 
+        alt={'user custom background'}
+        width={160}
+        height={160}
+        />
+        <UserPic
+        className={styles.userPic}
+        size={88}
+        image={image? 
+          (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) 
+          : userContext.currentProfile.useOwnLogo
+          &&FILES+args.currentBackground.image.source}
+        />
+        <p>Загрузить фото</p>
       </label>
     </div>
     <div className={styles.buttonsWrapper}>

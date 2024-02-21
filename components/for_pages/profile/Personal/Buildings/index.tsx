@@ -46,7 +46,7 @@ export default function Buildings(props: Props) {
   return (
   <div className={styles.imageSettings}>
 
-    {(props.background || props.useDefaultImage) && props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
+    {(props.background || props.useDefaultImage) && props.profile.profileType === ProfileType.Hirer &&
       <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/newyork.png'} alt={'back'} width={770} height={300} />
       ||
       props.profile.useOwnLogo && props.profile.profileType === ProfileType.Hirer && props.profile.image &&
@@ -76,8 +76,8 @@ export default function Buildings(props: Props) {
     {
 
     }
-    {props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&weatherRive}
-    {props.profile.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&transportRive}
+    {props.profile.profileType === ProfileType.Hirer&&weatherRive}
+    {props.profile.profileType === ProfileType.Hirer&&transportRive}
   </div>
   )
 }

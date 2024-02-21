@@ -60,20 +60,19 @@ export default class ChatRepository {
     return res
   }
 
-  static async getChatByContactId(id: number): Promise<any|null> {
+  static async getChatByContactId(id: number, data?: {applicationId?: number, proposalId?: number}): Promise<any|null> {
     const res = await request({
       method: 'get',
       url: `/api/chat/dialog/${id}`,
+      data
     })
     if(res.err) {
-      
       return null
     }
     return res
   }
 
   static async moveChatToFolder(data: {chatFolderId: number, chatsIds: number[]}): Promise<any|null> {
-    
     const res = await request({
       method: 'post',
       url: '/api/chat/move',

@@ -181,7 +181,7 @@ export default function FilterEmployee(props: Props) {
           activeSources: _newSources,
           activeGeos: _newGeos,
           activeVerticals: _newVerticals,
-          countries: props.initialFields?.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+          countries: props.initialFields?.countries?.map(el => locationContext.countries?.get(el)).filter(Boolean),
         }
       )
       

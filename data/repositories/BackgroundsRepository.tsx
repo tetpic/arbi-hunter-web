@@ -28,4 +28,16 @@ export default class BackgroundRepository {
     }
     return res
   }
+
+  static async createBackground(data: {imageId?: number, categoryId?: BackgroundCategoryType, profileType?: ProfileType, backgroundType?: 'png'|'rive', riveKeys?: string[]}): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/background',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

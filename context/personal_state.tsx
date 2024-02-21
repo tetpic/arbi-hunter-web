@@ -44,7 +44,7 @@ export function PersonalWrapper(props: Props) {
   const setRives = async(backs: [] | IBackground[]) => {
     const weathersList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Weather})
     const transportList = await BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Transport})
-    const place = backs.find(el=> el.category.id === BackgroundCategoryType.Places)
+    const place = backs.find(el=> el.category?.id === BackgroundCategoryType.Places)
     setWeater(_=> {
       switch(place?.id) {
         case 6: return weathersList.find(el=> el.id === 20)
@@ -66,12 +66,12 @@ export function PersonalWrapper(props: Props) {
   const setBackgrounds =  async(profile: IUserProfile): Promise<[] | IBackground[]> => {
     setLoading(true)
     const backs = await BackgroundRepository.getBackground({profileId: profile?.id})
-    debugger
+    
       
     profile?.profileType === ProfileType.Hirer 
     && setRives(backs)
 
-    setBackgroundsState(new Map(backs.map(el=> [el.category.id , el])))
+    setBackgroundsState(new Map(backs.map(el=> [el.category?.id||null , el])))
     
     setLoading(false)    
     return backs

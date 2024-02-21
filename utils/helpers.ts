@@ -43,9 +43,12 @@ export const clearObject = (obj: any) => {
     if(!Boolean(value)
     ||value===0
     ||(Array.isArray(value) && value.length === 0)  
+    ||(typeof value === 'string' && value.trim().length === 0)
     // ||Object.keys(value).length === 0
     // ||Object.values(value).filter(Boolean).length === 0
     ) delete clearedQuery[key]
   })
+  console.log(clearedQuery)
+
   return clearedQuery
 }

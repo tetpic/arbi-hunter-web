@@ -6,7 +6,6 @@ import { useCvContext } from 'context/cv_state'
 import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
 import Spacer from 'components/ui/Spacer'
 import Spinner from 'components/ui/Spinner'
-import { IVacancy } from 'data/interfaces/IVacancy'
 import CvItem from 'components/ui/CvItem'
 import hirer from 'images/recruiting/vacancy_back.jpg'
 import { useAppContext } from 'context/state'
@@ -22,6 +21,7 @@ import StickyBox from 'react-sticky-box'
 import { clearObject } from 'utils/helpers'
 import FilterHirer from '../Filters/FilterHirer'
 import SideFilterHirer from '../SideFilters/SideFilterHirer'
+import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 
 
 interface Props {
@@ -30,10 +30,20 @@ interface Props {
 }
 
 export default function RecruitingPageHirer(props: Props) {
+  return (
+    <VacancyWrapper>
+      <RecruitingPageHirerInner {...props}/>
+    </VacancyWrapper>
+  )
+}
+
+
+
+function RecruitingPageHirerInner(props: Props) {
   const cvContext = useCvContext()
+  const vacancyContext = useVacancyContext()
   const [loading, setLoading] = useState<boolean>(true)
   const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
-  const currentVacancy = useRef<IVacancy>()
   const appContext = useAppContext()
   const router = useRouter()
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
@@ -78,6 +88,10 @@ export default function RecruitingPageHirer(props: Props) {
   }
 
   const init = async() => {
+    vacancyContext.setActiveVacancies()
+    if(props.vcId) {
+      vacancyContext.setCurrentVacancy(props.vcId)
+    }
     setTimeout(()=>{
       isInited.current = true      
     }, 200)
@@ -127,7 +141,7 @@ export default function RecruitingPageHirer(props: Props) {
         styleType={['huge', 'w600']} 
         className={styles.found}
         >
-          Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ currentVacancy.current.name:''}
+          Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ vacancyContext.currentVacancy.name:''}
         </P>
         ||
         <Spacer basis={88}/>
@@ -152,7 +166,7 @@ export default function RecruitingPageHirer(props: Props) {
             {loading && <Spinner size={24}/>
               ||
               !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem cv={cv} initialVacancy={currentVacancy.current} key={cv.id} onChangeItem={()=> findCvs()}/>
+                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy} key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
               !loading && <p className='empty'>Нет найденных резюме</p>

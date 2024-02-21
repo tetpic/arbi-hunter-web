@@ -47,8 +47,10 @@ Pick<IUserProfile,
 'cityId'|
 'city'|
 'country'
+
 >
 {
+  applicationsToCurrentUser: IProposal[]|null,
   portfolio: string|null,
   profileId: number,
   moderationStatus: string,  // "approved/manualModeration"add enums
@@ -62,6 +64,7 @@ Pick<IUserProfile,
   hash: string,
   profile: IUserProfile,
   savedByProfiles: IUserProfile[],
+  proposalsByCurrentUser: IProposal[]|null,
   proposalByCurrentUser: IProposal|null,
   age: number,
   lastExperienceInfo: ExperienceInfo,
@@ -69,5 +72,6 @@ Pick<IUserProfile,
   sources?: ISource[],
   geos?: ISource[],
   isRemote?:boolean,
-  totalShows?: number
+  totalShows?: number,
+  isContactsOpen?: boolean
 }

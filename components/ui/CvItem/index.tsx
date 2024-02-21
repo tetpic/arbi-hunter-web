@@ -6,7 +6,7 @@ import Image from 'next/image'
 import SalaryItem from 'components/ui/SalaryItem'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ActivityStatus, ApplicationBSSelectType, ApplicationStatus, ModalType, VacancyLookType } from 'types/enums'
+import { ActivityStatus, ApplicationBSSelectType,  ApplicationStatus,  ModalType, VacancyLookType } from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -18,6 +18,10 @@ import useAbortController from 'components/hooks/useAbortController'
 import { getUserImageSource } from 'utils/helpers'
 import CvItemTop from './CvItemTop'
 import P from '../P'
+import { useVacancyContext } from 'context/vacancy_state'
+import ChatRepository from 'data/repositories/ChatRepository'
+import { useRouter } from 'next/router'
+import FolderPlusSvg from '@/components/svg/FolderPlusSvg'
 
 interface Props {
   cv: ICV
@@ -29,9 +33,11 @@ export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const {getNewSignal} = useAbortController()
+  const vacancyContext = useVacancyContext()
 
   const defaultImage = '/icons/defaultUser.svg'
   const userImage = getUserImageSource(cv.profile)
+  const router = useRouter()
 
 
   const respondHandler = (e: React.MouseEvent) => {
@@ -51,9 +57,27 @@ export default function CvItem({cv, ...props}: Props) {
     appContext.showModal<IProposalModalProps>(
       ModalType.ProposalModal, 
       { cv, 
-        page: ProposalModalPager.OtherVacancy
+        page: ProposalModalPager.OtherVacancy,
+        activeVacancies: [...vacancyContext.activeVacancies.values()],
       }
     )
+  }
+
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const activeChat = cv.proposalsByCurrentUser.filter(el => el.status === ApplicationStatus.Accepted||el.status === ApplicationStatus.Applied)
+    if(activeChat[0]){
+      ChatRepository.getChatByContactId(cv.profile.id, {proposalId: activeChat[0].id})
+      .then(res=>{
+        if(res) {
+          router.push('/messenger?chat=' + res.id)
+        }
+      })
+
+    }
+
   }
 
   const likeHandler = () => {
@@ -111,11 +135,19 @@ export default function CvItem({cv, ...props}: Props) {
       }
     </div>
     <div className={styles.buttonsWrapper}>
-      {(!cv.proposalByCurrentUser || cv.proposalByCurrentUser.status === ApplicationStatus.Rejected || cv.proposalByCurrentUser.vacancyId !== props.initialVacancy?.id) &&
-      <Button styleType={['gradient', 'phoneWide']} onClick={respondHandler}>Пригласить</Button>
+      
+      {(cv.proposalsByCurrentUser.length === 0) &&
+      <Button styleType={['gradient', 'wide']}  onClick={respondHandler}>Пригласить</Button>
       ||
-      <Button styleType={['gradient', 'phoneWide']} disabled>Приглашение выслано</Button>
+      <Button styleType={['gradient', 'phoneWide']}  onClick={openChat}>Чат</Button>
       }
+      {cv.isContactsOpen && 
+        <Button styleType={['borderBlue', 'black', 'wide']}>Контакты</Button>
+      }
+      {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
+        <Button styleType={['icon', 'black']}><FolderPlusSvg/></Button>
+      }
+ 
     </div>
   </Link>)
 }

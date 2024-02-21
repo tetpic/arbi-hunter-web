@@ -60,22 +60,21 @@ function RecruitingPageEmployeeInner(props: Props) {
     const dataToSend = {...data}
     switch (dataToSend.searchIn) {
       case SearchIn.Name:
-        dataToSend.search = dataToSend.keywords + ' ' + dataToSend.search
+        dataToSend.search = [dataToSend.keywords, dataToSend.search].filter(Boolean).join(' ')
         break
       case SearchIn.Company:
-        dataToSend.searchCompany = dataToSend.keywords + ' ' + dataToSend.searchCompany
+        dataToSend.searchCompany = [dataToSend.keywords, dataToSend.searchCompany].filter(Boolean).join(' ')
         break
       default: 
-        dataToSend.search = dataToSend.keywords + ' ' + dataToSend.search
-
+        dataToSend.search = [dataToSend.keywords, dataToSend.search].filter(Boolean).join(' ')
     }
 
+    const clearedObj = clearObject({...dataToSend})
     setPage('vacancies')
     setLoading(true)
     vacancyContext.setPage(1)
-    setCurrentFilters(dataToSend)
-    findVacanciesThrottle.callback(currentFilters)
-    const clearedObj = clearObject({...dataToSend})
+    setCurrentFilters(clearedObj)
+    findVacanciesThrottle.callback(clearedObj)
     router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
@@ -90,6 +89,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   useEffect(()=>{
+    
     setTimeout(()=>{
       isInited.current = true      
     }, 200)
@@ -126,8 +126,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   <MainSearchBar placeholder={'Поиск вакансий'} fullWidth className={styles.searchBar} 
   onChange={(s)=>onFilterChange({...currentFilters,  ...s})}
   onFilterClick={onFilterClick}
-  initialSearch={searchString}
-
+  initialSearch= {currentFilters.search}
   />
   {!loading &&
     <p className={styles.found}>Найдено {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, 'вакансия', 'вакансии', 'вакансий')}</p>

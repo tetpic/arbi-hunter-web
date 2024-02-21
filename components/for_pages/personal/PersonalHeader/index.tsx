@@ -44,7 +44,7 @@ export default function PersonalHeader(props: Props) {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
     const cBuild = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
     const cnt = personalContext
-    debugger
+    
 
     if(currentProfile.profileType === ProfileType.Employee) {
       appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
@@ -53,7 +53,7 @@ export default function PersonalHeader(props: Props) {
         hirerLogo: null,
         withBuildPicker: false,
         onSave: (background, building) => {
-          debugger
+          
           BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
           .then(_ => {
             personalContext.refreshBackgrounds()
@@ -68,6 +68,7 @@ export default function PersonalHeader(props: Props) {
       appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, {
         onSave: (data) => {
           debugger
+          
           if(data.type === 'city') {
             setTimeout(()=> {
               appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
@@ -76,7 +77,7 @@ export default function PersonalHeader(props: Props) {
                 hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
                 withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
                 onSave: (background, building) => {
-                  debugger
+                  
                   BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
                   .then(_ => {
                     personalContext.refreshBackgrounds()
@@ -89,10 +90,18 @@ export default function PersonalHeader(props: Props) {
             }, 100)
           }
           else if(data.type === 'custom' && data.image) {
-            personalContext.refreshBackgrounds()
-            userContext.editCurrentProfile({imageId: data.image?.data?.id, useOwnLogo: true})
+            
+            BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
+            .then(res => {
+              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building.id]}, currentProfile.profileType)
+              .then(r=> {               
+                personalContext.refreshBackgrounds()
+                userContext.editCurrentProfile({useOwnLogo: true})        
+
+              })
+            })
           }
-          // debugger
+          // 
           // BackgroundRepository.setBackgrounds({backgroundsIds: [data.image?.data?.id]}, currentProfile.profileType)
           // .then(_ => {
           //   personalContext.refreshBackgrounds()
@@ -100,7 +109,8 @@ export default function PersonalHeader(props: Props) {
           // if(currentProfile.profileType === ProfileType.Hirer) {
           //   userContext.editCurrentProfile({imageId: data.image?.data?.id})        
           // }
-        }
+        },
+        currentBackground: cBack||null,
       })
     }
   }
@@ -140,7 +150,7 @@ export default function PersonalHeader(props: Props) {
 
 
   return (<div className={styles.root}> 
-    {backImage && !userContext.currentProfile.useOwnLogo && profileType===ProfileType.Hirer &&
+    {backImage && profileType===ProfileType.Hirer &&
     <Image 
     src={FILES + backImage.image.source} 
     className={styles.background} 
@@ -148,13 +158,13 @@ export default function PersonalHeader(props: Props) {
     width={1148} 
     height={300} />
     ||
-    personalContext.currentProfile.useOwnLogo && personalContext.currentProfile.image && profileType===ProfileType.Hirer &&
-    <Image 
-    src={FILES + personalContext.currentProfile.image.source} 
-    className={styles.background} alt={'moscow'} 
-    width={1148} 
-    height={300} />
-    ||
+    // personalContext.currentProfile.useOwnLogo && personalContext.currentProfile.image && profileType===ProfileType.Hirer &&
+    // <Image 
+    // src={FILES + personalContext.currentProfile.image.source} 
+    // className={styles.background} alt={'moscow'} 
+    // width={1148} 
+    // height={300} />
+    // ||
     backImage && profileType===ProfileType.Employee &&
     <Image 
     src={FILES + backImage.image.source} 
@@ -210,8 +220,8 @@ export default function PersonalHeader(props: Props) {
         className={styles.userLogo}
         src={FILES + personalContext.currentProfile.logo.source}
         alt={'logo'}
-        width={300}
-        height={300}
+        width={370}
+        height={370}
         />
         ||
         personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && props.useModel &&
