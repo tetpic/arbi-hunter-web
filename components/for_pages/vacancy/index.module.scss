@@ -14,6 +14,14 @@
   margin-bottom: 16px;
 }
 
+.vacancies {
+  background-color: unset !important;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: unset !important;
+}
+
 .title {
   font-size: $largeText;
   font-weight: $semibold;

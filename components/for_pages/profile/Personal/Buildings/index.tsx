@@ -51,7 +51,6 @@ export default function Buildings(props: Props) {
       ||
       props.profile.useOwnLogo && props.profile.profileType === ProfileType.Hirer && props.profile.image &&
       <Image className={styles.background} src={FILES+ props.profile.image.source} alt={'back'} width={770} height={300} />
-
     }
     {
       props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
@@ -73,9 +72,7 @@ export default function Buildings(props: Props) {
       className={styles.userLogo}
       />
     }
-    {
 
-    }
     {props.profile.profileType === ProfileType.Hirer&&weatherRive}
     {props.profile.profileType === ProfileType.Hirer&&transportRive}
   </div>

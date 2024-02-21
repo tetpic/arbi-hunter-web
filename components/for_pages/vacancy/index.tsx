@@ -170,7 +170,7 @@ export default function VacancyPage(props: Props) {
         {userContext?.currentProfile?.profileType === ProfileType.Employee && foundVacancies.size > 0 &&
         <>
           <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
-          <ContentItem>
+          <ContentItem className={styles.vacancies}>
             {
               [...foundVacancies.values()].slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
             }

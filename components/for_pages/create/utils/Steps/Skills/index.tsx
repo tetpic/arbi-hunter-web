@@ -265,7 +265,7 @@ export default function Skills(props: Props) {
       </div>
     } 
 
-    {!props.fieldToHide?.courses === true && <>
+    {/* {!props.fieldToHide?.courses === true && <>
       <AddButton 
       className={styles.addButton} 
       onClick={onAddCoursesClick} 
@@ -282,7 +282,7 @@ export default function Skills(props: Props) {
           )}
         </div>
       }
-    </>}
+    </>} */}
 
 
 

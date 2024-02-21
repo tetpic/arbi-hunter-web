@@ -46,30 +46,27 @@ export default function PersonalHeader(props: Props) {
     const cnt = personalContext
     
 
-    if(currentProfile.profileType === ProfileType.Employee) {
-      appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
-        currentBackground: cBack?.image|| null,
-        currentBuild: cBuild?.image || null,
-        hirerLogo: null,
-        withBuildPicker: false,
-        onSave: (background, building) => {
-          
-          BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
-          .then(_ => {
-            personalContext.refreshBackgrounds()
-          })
-          if(currentProfile.profileType === ProfileType.Hirer) {
-            userContext.editCurrentProfile({imageId: building?.image?.id||null})        
-          }
-        }
-      })
-    } 
-    else {
+    // if(currentProfile.profileType === ProfileType.Employee) {
+    //   appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
+    //     currentBackground: cBack?.image|| null,
+    //     currentBuild: cBuild?.image || null,
+    //     hirerLogo: null,
+    //     withBuildPicker: false,
+    //     onSave: (background, building) => {
+    //       BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
+    //       .then(_ => {
+    //         personalContext.refreshBackgrounds()
+    //       })
+    //       if(currentProfile.profileType === ProfileType.Hirer) {
+    //         userContext.editCurrentProfile({imageId: building?.image?.id||null})        
+    //       }
+    //     }
+    //   })
+    // } 
+    // else {
       appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, {
         onSave: (data) => {
-          debugger
-          
-          if(data.type === 'city') {
+          if(data.type === 'place') {
             setTimeout(()=> {
               appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
                 currentBackground: cBack?.image|| null,
@@ -90,13 +87,17 @@ export default function PersonalHeader(props: Props) {
             }, 100)
           }
           else if(data.type === 'custom' && data.image) {
+            debugger
             
             BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
             .then(res => {
-              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building.id]}, currentProfile.profileType)
+              debugger
+              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile.profileType)
               .then(r=> {               
                 personalContext.refreshBackgrounds()
-                userContext.editCurrentProfile({useOwnLogo: true})        
+                if(userContext.currentProfile.profileType === ProfileType.Hirer) {                  
+                  userContext.editCurrentProfile({useOwnLogo: true})        
+                }
 
               })
             })
@@ -112,7 +113,7 @@ export default function PersonalHeader(props: Props) {
         },
         currentBackground: cBack||null,
       })
-    }
+    // }
   }
 
   const editingButton = (()=>{

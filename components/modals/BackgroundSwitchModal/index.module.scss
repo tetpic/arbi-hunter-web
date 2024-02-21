@@ -18,10 +18,31 @@
   cursor: pointer;
   text-align: center;
   row-gap: 40px;
-  border: 2px transparent solid;
+  position: relative;
+  overflow: hidden;
+  // border: 2px transparent solid;
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
+
+  p {
+    position: relative;
+    margin-top: auto;
+    z-index: 2;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 125%;
+    height: 25%;
+    background-color: black;
+    display: block;
+    bottom: -4px;
+    left: -20px;
+    opacity: .2;
+    filter: blur(10px);
+  }
 }
 
 .active {
@@ -30,7 +51,7 @@
 }
 
 .modalLayout {
-  max-width: 440px;
+  max-width: 640px;
 }
 
 .buttonsWrapper {
@@ -53,4 +74,22 @@
 .userPic {
   background-color: #3E3E4D;
   pointer-events: none;
+}
+
+.customBack {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+}
+
+.emptyPhoto {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $greyAlt2;
+  border-radius: 50%;
 }
