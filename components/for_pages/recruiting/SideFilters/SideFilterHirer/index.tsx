@@ -92,7 +92,7 @@ export default function SideFilterHirer(props: Props) {
   }
 
   const init = async() => {
-    sourcesContext.init(['source', 'vertical', 'geos'])
+    sourcesContext.init(['sources', 'verticals', 'geos'])
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
     locationContext.getCountries({page: 1, limit: 3})
     locationContext.getCities({page: 1, limit: 3}, [])

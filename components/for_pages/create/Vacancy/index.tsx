@@ -105,7 +105,6 @@ export default function Vacancy(props: Props) {
     showEmail: props.vacancy?.showEmail,
     showPhone: props.vacancy?.showPhone,
     showTelegramNickname: props.vacancy?.showTelegramNickname,
-    verticals: [],
   }
 
   const submit = (data: IVacancyCreate) => {
@@ -115,7 +114,7 @@ export default function Vacancy(props: Props) {
     }
 
     setLoading(true)
-    const {activeSources, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
+    const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
     const sendData: IVacancyCreate = {
       ...data, 
       salary: null,
@@ -125,6 +124,8 @@ export default function Vacancy(props: Props) {
       salaryMax: Number(data.salaryMax?.toString().replaceAll(' ', '')),
       languageKnowledges: [...languageKnowledges.values()].map(el=>{return {language: el.language, level: el.level}}),
       sourcesIds: [...activeSources.keys()],
+      verticalsIds: [...activeVerticals.keys()],
+      geosIds: [...activeGeos.keys()],
       categoriesIds: categoryIds.map(el=> el.id)
     }
 
@@ -380,7 +381,7 @@ export default function Vacancy(props: Props) {
   return <div className={styles.root}>
     {!isTabletWidth && memoedRive}
     <div className={styles.content}>    
-      <p className={styles.title}>
+      <p className={styles.title}>  
         {isPhoneWidth &&
           <Button className={styles.buttonBorderGradientSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
         }

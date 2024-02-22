@@ -135,6 +135,7 @@ export function AuthWrapper(props: Props) {
     try {
       data = await RegistrationRepository.login(phone)
     } catch (err) {
+      
       if (err instanceof RequestError) {
         appContext.showSnackbar(err.message, SnackbarType.error)
       }

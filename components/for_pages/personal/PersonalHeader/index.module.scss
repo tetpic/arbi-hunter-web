@@ -77,7 +77,8 @@
 .rive {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 50%;
+  transform: translateX(50%);
   height: 105%;
   width: 140%;
   z-index: 3;

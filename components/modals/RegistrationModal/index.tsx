@@ -15,6 +15,8 @@ import { IRegistrationData } from 'data/interfaces/IRegistration'
 import useAbortController from 'components/hooks/useAbortController'
 
 interface Props {
+  onClose?: () => void
+
 }
 
 enum RegPages {
@@ -39,6 +41,11 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationData) => {
+    debugger
+    if(data.code.length < 4) {
+      authContext.showOtpError(true, 'Введите код')
+      return
+    }
     setLoading(true)
     authContext.confirmCode({phone: args.phone, code: data.code, email: args.email})
     .then(res=>{
@@ -111,15 +118,16 @@ export default function RegistrationModal(props: Props) {
     />
 
   <div className={styles.buttonsWrapper}>
-    <Button
+    {/* <Button
     className={classNames(styles.navButton, styles.navButton_yellow)} 
     type={'button'} 
-    onClick={()=>formik.submitForm()}
+    onClick={()=>authContext.showOtpError(true, 'Введите правильный код')  }
     spinner={loading}
     >
       Продолжить
-    </Button>
+    </Button> */}
     <Button 
+    onClick={props.onClose}
     className={classNames(styles.navButton, styles.navButton_black)} 
     type={'button'} 
     >

@@ -27,6 +27,10 @@ export interface ICVCreate extends IJob {
   searchPosition?: string
   assetsIds?: number[]
   completedSteps?: number[]
+  whatsapp?: string,
+  linkedin?: string,
+  viber?: string,
+  skype?: string,
 }
 
 export interface ICVVC {
@@ -74,4 +78,5 @@ Pick<IUserProfile,
   isRemote?:boolean,
   totalShows?: number,
   isContactsOpen?: boolean
+  verticals?: ISource[]
 }

@@ -205,7 +205,9 @@ export function CreateVcCvWrapper(props: Props) {
         categoryIds: vcItem.categories,   
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
         languageKnowledges: new Map(vcItem?.languageKnowledges?.map(el=>[el.language, el])),
-        activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el]))
+        activeSources: new Map(vcItem?.sources&&vcItem?.sources?.map(el=> [el.id, el])),
+        activeGeos: new Map(vcItem?.geos&&vcItem?.geos?.map(el=> [el.id, el])),
+        activeVerticals: new Map(vcItem?.verticals&&vcItem?.verticals?.map(el=> [el.id, el])),
       }})
       setVc(state=> {return {...state, ...item,
         categoriesIds: item.categories.map(el=> el.id),
@@ -218,7 +220,8 @@ export function CreateVcCvWrapper(props: Props) {
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),
         languageKnowledges: new Map(cvItem.languageKnowledges?.map(el=> [el.language, el])),
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el])),
-        activeGeos: new Map(cvItem?.geos&&cvItem?.geos?.map(el=> [el.id, el]))
+        activeGeos: new Map(cvItem?.geos&&cvItem?.geos?.map(el=> [el.id, el])),
+        activeVerticals: new Map(cvItem?.verticals&&cvItem?.verticals?.map(el=> [el.id, el])),
       }})
       setCv(state=> {return {...state, ...item,
         categoriesIds: item.categories.map(el=> el.id)

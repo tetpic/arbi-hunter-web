@@ -35,7 +35,7 @@ export default function FilesList(props: Props) {
            {!el.loaded && <Spinner className={styles.spinner} size={24}/>}
            <Button type='button' className={styles.removeButton} onClick={()=>{props.onRemove(el.rawId, el.id.toString())}}><CrossSvg/></Button>
            {(el.image?.type.includes('image')||el.data?.type === 'IMAGE') &&
-             <img key={i} src={(el?.source&&FILES+el?.source)||el.image&&URL.createObjectURL(el.image)} alt={''}/>
+             <img key={i} src={(el?.data?.source&&FILES+el?.data?.source)||el.image&&URL.createObjectURL(el.image)} alt={''}/>
            }
            {(el.image?.type.includes('video')||el.data?.type === 'VIDEO') &&
              <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} controls/>

@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import RadioListField from 'components/fields/RadioListField'
-import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
 import { ExperienceInfo } from 'data/interfaces/Common'
@@ -10,6 +9,8 @@ import { useFormikContext } from 'formik'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
+import P from '@/components/ui/P'
+import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 
 interface Props {
   name: string
@@ -25,7 +26,7 @@ export default function Experience(props: Props) {
     formikContext.setValues({...formikContext.values, experienceInfo: filtered})
   }
 
-  const onAddButtonClick = () => {
+  const onAddButtonClick = (initial?: ExperienceInfo, index?: number) => {
     appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
       type: 'experienceInfo', 
       values: {
@@ -35,12 +36,18 @@ export default function Experience(props: Props) {
           toDate: '',
           fromDate: '',
           toPresent: true,
-          description: ''
+          description: '',
+          ...initial
         }]
       },
       onSubmit: (data) => {
         const exp = formikContext.values.experienceInfo
-        exp.push(...data.experienceInfo)
+        if(index !== undefined) {
+          exp[index] = data.experienceInfo[0]
+        }
+        else {
+          exp.push(...data.experienceInfo)
+        }
         formikContext.setValues({...formikContext.values, ...exp})
         appContext.hideModal()
       }
@@ -67,18 +74,19 @@ export default function Experience(props: Props) {
       .map((el, index)=> {
         return (<div 
           key={index}
+          onClick={()=>onAddButtonClick(el, index)}
         className={styles.experienceWrapper} 
         >
-          <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по н.в.'}</p>
-          <p className={styles.companyName}>{el.company}</p>
-          <p className={styles.description}>{el.description}</p>
-          <Button type='button' className={styles.trashButton} onClick={()=>removeExp(el)}><TrashBasketSvg/></Button>
+          <P styleType={['large', 'w600']} >{el.position}</P>
+          <P styleType={['medium', 'w500']} >{el.company}</P>
+          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по н.в.'}</P>
+          <Button type='button' className={styles.trashButton} ><ArrowRightSvg/></Button>
         </div>)
       }) 
       }
 
       {values.workExperiencePresense === 'present' &&
-        <AddButton onClick={onAddButtonClick} text='Добавить место работы'/>
+        <AddButton onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
       }
     </div>
   )

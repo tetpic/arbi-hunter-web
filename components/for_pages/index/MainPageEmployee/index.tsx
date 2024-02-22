@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import { useCharacterContext } from 'context/character_state'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useCvContext } from 'context/cv_state'
 import Spinner from 'components/ui/Spinner'
 import { useUserContext } from 'context/user_state'
@@ -23,6 +22,8 @@ import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
+import MessageDownSvg from '@/components/svg/MessageDownSvg'
+import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 
 export default function MainPageEmployee() {
 
@@ -140,7 +141,7 @@ export default function MainPageEmployee() {
           <div className={styles.cards}>
             <div className={styles.card}>
               <p className={styles.desc}>Отклики и приглашения</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+              <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -155,7 +156,7 @@ export default function MainPageEmployee() {
             </div>
             <div className={styles.card}>
               <p className={styles.desc}>Просмотры резюме</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+             <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -170,7 +171,7 @@ export default function MainPageEmployee() {
             </div>
             <div className={styles.card}>
               <p className={styles.desc}>Вакансии</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+              <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>

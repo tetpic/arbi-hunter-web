@@ -8,42 +8,41 @@
 }
 
 .educationWrapper {
-  display: grid;
-  grid-template-areas: 'i c b' 'i d b';
+  position: relative;
+  cursor: pointer;
+
+  // display: grid;
+  // grid-template-areas: 'i c b' 'i d b';
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
   color: $white;
   row-gap: 16px;
   column-gap: 8px;
   grid-template-columns: 1fr 2fr 1fr;
   max-width: 500px;
-  margin-top: 48px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: $black;
   align-items: flex-start;
   @include mq($PhoneWidth, max) {
     grid-template-columns: 2fr 3fr;
   }
 }
 
-.time {
-  grid-area: i;
-  color: $greyLight;
-  font-size: $smallText;
-}
+.educationItems {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-top: 48px;
 
-.companyName {
-  grid-area: c;
-  font-size: $mediumText;
-  font-weight: $medium;
-}
 
-.description {
-  grid-area: d;
-  font-size: $smallText;
-  font-weight: $regular;
+
 }
 
 .trashButton {
-  grid-area: b;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: $black;
-  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
 }

@@ -56,7 +56,7 @@ export default function BackgroundSwitchModal(props: Props) {
         <p>Индивидуальный фон</p>
       </div>
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
-        <FileInput setImages={setImage}/>
+        <FileInput setImages={setImage} accept={['image/png', 'image/jpeg']}/>
         {(image?.data?.source) &&
            <Image src={
             image? 

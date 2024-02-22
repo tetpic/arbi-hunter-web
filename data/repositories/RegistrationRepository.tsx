@@ -68,5 +68,19 @@ export default class RegistrationRepository {
     }
     return res
   }
+
+  static async checkEmailOrPhoneExists(login: string): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/auth/checkLoginExists',
+      data: {
+        login
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }
 

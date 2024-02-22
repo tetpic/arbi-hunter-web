@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { useUserContext } from 'context/user_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IStats } from 'data/interfaces/IUser'
@@ -21,6 +20,8 @@ import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
+import MessageDownSvg from '@/components/svg/MessageDownSvg'
+import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 
 
 
@@ -93,7 +94,7 @@ export default function MainPageHirer() {
           <div className={styles.cards}>
             <div className={styles.card}>
               <p className={styles.desc}>Отклики</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+              <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -108,7 +109,7 @@ export default function MainPageHirer() {
             </div>
             <div className={styles.card}>
               <p className={styles.desc}>Просмотры вакансий</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -123,7 +124,7 @@ export default function MainPageHirer() {
             </div>
             <div className={styles.card}>
               <p className={styles.desc}>Подходящие резюме</p>
-              <Image className={styles.icon} src={'/images/down.svg'} alt='' width={24} height={24}/>
+              <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>

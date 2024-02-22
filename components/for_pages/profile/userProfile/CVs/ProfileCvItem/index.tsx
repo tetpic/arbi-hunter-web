@@ -21,6 +21,7 @@ import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import OptionsList from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
+import { useRouter } from 'next/router'
 
 interface Props {
   cv: ICV
@@ -39,6 +40,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const router = useRouter()
 
   const archiveHandler =()=> {
     cvContext.updateCv(cv.id, {...cv, published: !cv?.published, salary: Number(cv.salary)})
@@ -87,12 +89,16 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)
 
-  return (<div className={classNames(styles.root, props.className)}> 
+  return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
       <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
       <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
-      <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={isTabletWidth&&openModal}/>
+      <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
+        e.stopPropagation()
+        e.preventDefault()
+        isTabletWidth&&openModal()
+        }}/>
       {!isTabletWidth &&
        <OptionsDropDown 
        options={options}
@@ -130,7 +136,10 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         </Button>
         <Button 
         styleType={['borderGradient']}
-        onClick={showFeedbacksForVacancy}
+        onClick={(e)=> {
+          e.stopPropagation()
+          e.preventDefault()
+          showFeedbacksForVacancy()}}
         >
           {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
         </Button>

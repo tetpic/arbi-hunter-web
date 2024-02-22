@@ -61,7 +61,7 @@ export default function ModalContainer(props: Props) {
     switch(appContext.modal) {
       case ModalType.RegistrationModal:
         return <Modal isOpen {...commonSettings}>
-           <RegistrationModal/>
+           <RegistrationModal onClose={commonSettings.onRequestClose}/>
         </Modal>
       case ModalType.SpecializationModal: 
         return <Modal isOpen {...commonSettings}>

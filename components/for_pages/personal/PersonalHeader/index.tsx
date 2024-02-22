@@ -87,11 +87,11 @@ export default function PersonalHeader(props: Props) {
             }, 100)
           }
           else if(data.type === 'custom' && data.image) {
-            debugger
+            
             
             BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
             .then(res => {
-              debugger
+              
               BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile.profileType)
               .then(r=> {               
                 personalContext.refreshBackgrounds()

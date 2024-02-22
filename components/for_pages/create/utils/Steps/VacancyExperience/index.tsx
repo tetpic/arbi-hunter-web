@@ -6,6 +6,8 @@ import { useAppContext } from 'context/state'
 import AddButton from '@/components/ui/AddButton'
 import RemovableItem from '@/components/ui/RemovableItem'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
+import { useSourcesContext } from 'context/sources_state'
+import { useEffect } from 'react'
 
 interface Props {
 }
@@ -13,6 +15,7 @@ interface Props {
 export default function VacancyExperience(props: Props) {
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
+  const sourcesContext = useSourcesContext()
   const {isTabletWidth} = appContext.size
 
   const removeSource = (el: number, type: 'activeSources'|'activeGeos'|'activeVerticals') => {
@@ -29,7 +32,7 @@ export default function VacancyExperience(props: Props) {
         cvContext.setHelpObjects(newObject)
         appContext.hideModal()
       },
-      data: cvContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      data: [...sourcesContext[t.type].values()],
       choosenElements: cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
     }
     if (isTabletWidth) {
@@ -38,6 +41,12 @@ export default function VacancyExperience(props: Props) {
     }
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
   }
+
+  useEffect(()=>{
+    // if(cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) {
+      sourcesContext.init(['geos', 'sources', 'verticals'])
+    // }
+  }, [])
 
   
 

@@ -43,14 +43,17 @@ export default function Buildings(props: Props) {
 
   
 
+  //todo: отрефакторить условия
   return (
   <div className={styles.imageSettings}>
-
     {(props.background || props.useDefaultImage) && props.profile.profileType === ProfileType.Hirer &&
       <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/newyork.png'} alt={'back'} width={770} height={300} />
       ||
       props.profile.useOwnLogo && props.profile.profileType === ProfileType.Hirer && props.profile.image &&
       <Image className={styles.background} src={FILES+ props.profile.image.source} alt={'back'} width={770} height={300} />
+      ||props.profile.profileType === ProfileType.Employee && props.background &&
+      <Image className={styles.background} src={FILES+ props.background.image.source} alt={'back'} width={770} height={300} />
+
     }
     {
       props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
@@ -68,7 +71,7 @@ export default function Buildings(props: Props) {
       props.profile?.profileType === ProfileType.Employee && props.profile?.useOwnLogo && props.profile?.logo &&
       <Image 
       src={FILES + props.profile?.logo.source}
-      alt={''} width={300} height={300}
+      alt={''} width={370} height={370}
       className={styles.userLogo}
       />
     }

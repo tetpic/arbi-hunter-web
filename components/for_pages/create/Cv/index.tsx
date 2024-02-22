@@ -138,7 +138,12 @@ export default function Cv(props: Props) {
     portfolio: props.cv?.portfolio||'',
     businessTrips: props.cv?.businessTrips||Answer.No,
     searchPosition: '',
-    assetsIds: props.cv?.assetsIds||[]
+    assetsIds: props.cv?.assetsIds||[],
+    gender: props.cv.gender||undefined,
+    whatsapp: props.cv?.whatsapp||'',
+    viber: props.cv?.viber||'',
+    linkedin: props.cv?.linkedin||'',
+    skype: props.cv?.skype||'',
   }
 
   const formik = useFormik({
@@ -190,30 +195,6 @@ export default function Cv(props: Props) {
     }
   }
 
-  useEffect(()=>{
-    if(creationContext.activeSubCategory.length > 0) {
-      nextPageValidator()
-    }
-  }, [creationContext.activeSubCategory])
-
-  useEffect(()=>{
-    if(maxProgress.current > progress|| props.cv?.completedSteps?.length === CVItemsCount) return 
-
-    maxProgress.current < progress && (maxProgress.current = progress)
-    if(progress > 1 &&creationContext.activeSubCategory.length > 0) {
-      const formikCleared = {
-        ...formik.values, 
-        categoriesIds: [creationContext.activeSubCategory[0]?.id],
-        salary: Number(formik.values.salary?.toString().replaceAll(' ', '')),
-        published: false,
-      }
-      Object.entries(formikCleared).forEach((entry) => {
-        //@ts-ignore
-        !Boolean(entry[1])&&(delete formikCleared[entry[0]])
-      })
-      creationContext.saveDraft({cv: {...formikCleared, completedSteps: new Array(maxProgress.current).fill(true).map((e, i) => i)}})
-    }
-  }, [progress])
 
   const getComponent = useCallback((progress: number): [JSX.Element, CvNavigation] => {
     switch (progress) {
@@ -228,7 +209,7 @@ export default function Cv(props: Props) {
       case 4:
         return [<Education name={'educationInfo'}/>, CvNavigation.Education]
       case 5: 
-        return [<Skills/>, CvNavigation.Skills]
+        return [<Skills fieldToHide={{relocation: true}}/>, CvNavigation.Skills]
       case 6: 
         return [<CvBusyness/>, CvNavigation.Busyness]
     }
@@ -299,6 +280,13 @@ export default function Cv(props: Props) {
     }
   }, [])
 
+
+  useEffect(()=>{
+    if(creationContext.activeSubCategory.length > 0) {
+      nextPageValidator()
+    }
+  }, [creationContext.activeSubCategory])
+
   useEffect(()=>{
     if(progress < 1) {
       setProgress(1)
@@ -306,6 +294,25 @@ export default function Cv(props: Props) {
       return
     }
     changeComponent(progress)
+
+    if(maxProgress.current > progress|| props.cv?.completedSteps?.length === CVItemsCount) return 
+
+    maxProgress.current < progress && (maxProgress.current = progress)
+
+    if(progress > 1 &&creationContext.activeSubCategory.length > 0) {
+      const formikCleared = {
+        ...formik.values, 
+        categoriesIds: [creationContext.activeSubCategory[0]?.id],
+        salary: Number(formik.values.salary?.toString().replaceAll(' ', '')),
+        published: false,
+      }
+      Object.entries(formikCleared).forEach((entry) => {
+        //@ts-ignore
+        !Boolean(entry[1])&&(delete formikCleared[entry[0]])
+      })
+      
+      creationContext.saveDraft({cv: {...formikCleared, completedSteps: new Array(maxProgress.current).fill(true).map((e, i) => i)}})
+    }
   }, [progress])
 
   useEffect(()=>{

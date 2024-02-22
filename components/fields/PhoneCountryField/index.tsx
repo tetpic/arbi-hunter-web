@@ -11,6 +11,7 @@ import CountrySelect from './CountrySelect'
 import {AsYouType} from 'libphonenumber-js'
 import { IField } from 'types/types'
 import FieldLabel from '@/components/ui/FieldLabel'
+import FieldError from '@/components/ui/FieldError'
 
 // @ts-ignore
 const metadata = new Metadata(minMetadata)
@@ -103,6 +104,9 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
                 country
               }}
             />
+            <FieldError className={styles.error} showError={meta.touched && !focused}>
+              {meta.error}
+            </FieldError>
           </div>
         </div>
       </div>

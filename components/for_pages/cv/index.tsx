@@ -171,7 +171,7 @@ export default function CvPage(props: Props) {
 
         <CvVcAbout titleClassName={styles.title} title={'О себе'} text={currentCv?.bio}/>
 
-        <CvVcAbout titleClassName={styles.title} title='Образование' text={TranslateEducationType(currentCv.education)}/>
+        <CvVcAbout titleClassName={styles.title} title='Образование' text={TranslateEducationType(currentCv?.education)}/>
 
         {currentCv.experienceInfo?.length > 0 &&
           <InfoList 
@@ -201,20 +201,20 @@ export default function CvPage(props: Props) {
           })}/>        
         }
 
-        {currentCv.skills.length > 0 &&
-          <TagList title={'Навыки'} tags={currentCv.skills.map(el=>({name:el.title}))} titleClassName={styles.title}/>
+        {currentCv.skills?.length > 0 &&
+          <TagList title={'Навыки'} tags={currentCv.skills?.map(el=>({name:el.title}))} titleClassName={styles.title}/>
         }
-        {currentCv.languageKnowledges.length > 0 &&
+        {currentCv?.languageKnowledges?.length > 0 &&
           <TagList 
           title={'Языки'} 
           tags={currentCv.languageKnowledges
             .map(el=>({...el, language: el.language.slice(0, 2)}))
             .map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
         }
-        {currentCv.geos.length > 0 &&
+        {currentCv.geos?.length > 0 &&
           <TagList title={'Гео'} tags={currentCv.geos.map(el=>({name: el.title}))} titleClassName={styles.title}/>
         }
-        {currentCv.sources.length > 0 &&
+        {currentCv.sources?.length > 0 &&
           <TagList title={'Источники'} tags={currentCv.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
         }
         {currentCv.portfolio &&

@@ -57,6 +57,10 @@ export default function DetailsModal(props: Props) {
         name={'experienceInfo[0].toDate'} 
         styleType={'default'} 
         label='Окончание работы' 
+        showMonthYearPicker
+        formatOptions={{
+          formatMatcher: 'best fit', year: 'numeric', month: '2-digit'
+        }}
         dateFormat='MM/yyyy'
         className={styles.dateField}
         />
@@ -98,8 +102,11 @@ export default function DetailsModal(props: Props) {
       name={'educationInfo[0].fromDate'} 
       styleType={'default'} 
       label='Начало обучения' 
-      dateFormat='MM/yyyy'
-      showMonthYearPicker
+      dateFormat='yyyy'      
+      showYearPicker
+      formatOptions={{
+        year: 'numeric'
+      }}
       className={styles.dateField}
       />
       {!formik.values.educationInfo?.[0].toPresent &&
@@ -107,6 +114,11 @@ export default function DetailsModal(props: Props) {
         name={'educationInfo[0].toDate'} 
         styleType={'default'} 
         label='Окончание обучения' 
+        dateFormat='yyyy'        
+        showYearPicker
+        formatOptions={{
+          year: 'numeric'
+        }}
         className={styles.dateField}
         />
       }

@@ -84,6 +84,7 @@ export default function Registration() {
         }, 300)
       })
       .catch(err=> {
+        
         setDisableButton(false)
         appContext.showSnackbar('Такой email уже есть в системе', SnackbarType.error)
         return
@@ -129,15 +130,23 @@ export default function Registration() {
       case 1: (async() => {
         const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
+        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values[loginType])
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-        if(filteredErrors.length === 0) {
+        
+        if(filteredErrors.length === 0 && !isLoginExist) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
             [loginType]: formik.values[loginType],
             onComplete: () => {
               setProgress(page||progress+1)
             }
           })
+        }
+        else if(isLoginExist) {
+          setErr(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
+          // formik.setFieldError(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
+          // formik.setFieldTouched(loginType, true)
+          // appContext.showSnackbar(`Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`, SnackbarType.error)
         }
       })()
       break

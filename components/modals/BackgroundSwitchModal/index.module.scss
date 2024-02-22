@@ -32,15 +32,15 @@
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 125%;
-    height: 25%;
+    height: 50%;
     background-color: black;
     display: block;
-    bottom: -4px;
+    bottom: -25%;
     left: -20px;
-    opacity: .2;
+    opacity: 0.6;
     filter: blur(10px);
   }
 }

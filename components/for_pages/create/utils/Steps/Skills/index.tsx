@@ -19,6 +19,7 @@ import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ISkillModalProps } from '@/components/modals/CvModals/Skills'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import FilesList from '@/components/ui/FilesList'
+import { useSourcesContext } from 'context/sources_state'
 
 
 type SkillsFields = {
@@ -44,6 +45,7 @@ export default function Skills(props: Props) {
 
   const cvContext = useCreateVcCvContext()
   const appContext  = useAppContext()
+  const sourcesContext = useSourcesContext()
   const {isTabletWidth} = appContext.size
 
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
@@ -90,6 +92,10 @@ export default function Skills(props: Props) {
 
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+    if(cvContext?.activeSubCategory[0]?.withGeos || cvContext?.activeSubCategory[0]?.withSources) {
+      sourcesContext.init(['geos', 'sources', 'verticals'])
+    }
+
   }, [])
 
   const removeLanguage = (l: ILanguageKnowledge) => {
@@ -119,7 +125,7 @@ export default function Skills(props: Props) {
         cvContext.setHelpObjects(newObject)
         appContext.hideModal()
       },
-      data: cvContext.helpObjects[t.type === 'sources'? 'sources':t.type === 'geos'? 'geos':'verticals'],
+      data: [...sourcesContext[t.type].values()],
       choosenElements: cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
     }
     if (isTabletWidth) {
@@ -152,6 +158,7 @@ export default function Skills(props: Props) {
   const onAddPortfolioClick = () => {
     const portfolioProps: IPortfolioModal = {
       onSubmit: (data, fs) => {
+        
         setFieldValue('portfolio', data.portfolio)
         setFieldValue('assetsIds', data.assetsIds)
         cvContext.setHelpObjects({...cvContext.helpObjects, assets: fs})

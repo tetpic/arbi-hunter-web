@@ -56,7 +56,7 @@ export default function AddPortfolioModal(props: Props) {
     <Title title={'Добавить портфолио'} className={styles.title}/>
     <p className={styles.disclaimer}>
       Прикрепите ссылку на портфолио <br/>
-      или загрузите фото, видео или PDF - файл
+      или загрузите фото или PDF - файл
     </p>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
@@ -68,7 +68,15 @@ export default function AddPortfolioModal(props: Props) {
         labelType='top'
         validate={Validator.url}
         />
-        <FilesField initialImages={args.initialFiles} getImages={(setFiles)}  name={'assetsIds'} className={styles.filesWrapper} inputClassName={styles.filesInput} buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} />
+        <FilesField 
+        name={'assetsIds'} 
+        initialImages={args.initialFiles} 
+        accept={['image/*', '.doc', '.docx','application/msword', 'application/pdf']}
+        getImages={(setFiles)}  
+        className={styles.filesWrapper} 
+        inputClassName={styles.filesInput} 
+        buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} 
+        />
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>

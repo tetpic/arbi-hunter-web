@@ -2,7 +2,7 @@ import { ISource } from 'data/interfaces/Common'
 import SourceRepository from 'data/repositories/SourceRepository'
 import { createContext, useContext, useState } from 'react'
 
-export type SourceType = 'vertical' | 'geos' | 'source'
+export type SourceType = 'verticals' | 'geos' | 'sources'
 
 interface IState {
   geos: Map<number, ISource>
@@ -31,13 +31,13 @@ export function SourcesWrapper(props: Props) {
           setGeos(new Map(geosList.data.map(el=>[el.id, el])))
         }
         break
-      case 'vertical':
+      case 'verticals':
         const verticalsList = await SourceRepository.getVerticals()
         if(verticalsList) {
           setVerticals(new Map(verticalsList.data.map(el=>[el.id, el])))
         }
         break
-      case 'source':
+      case 'sources':
         const sourcesList = await SourceRepository.sourcesList()
         if(sourcesList) {
           setSources(new Map(sourcesList.data.map(el=>[el.id, el])))

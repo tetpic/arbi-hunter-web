@@ -99,7 +99,7 @@ export default function SideFilterEmployee(props: Props) {
   }
 
   const init = async() => {
-    sourcesContext.init(['source', 'vertical', 'geos'])
+    sourcesContext.init(['sources', 'verticals', 'geos'])
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
     locationContext.getCountries({page: 1, limit: 3})
     locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})

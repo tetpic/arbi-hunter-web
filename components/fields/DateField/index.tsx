@@ -23,6 +23,7 @@ interface Props extends IField<string> {
   dateFormat?: string
   formatOptions?: Intl.DateTimeFormatOptions
   showMonthYearPicker?: boolean
+  showYearPicker?: boolean
 }
 
 export default function DateField(props: Props) {
@@ -61,6 +62,7 @@ export default function DateField(props: Props) {
           showMonthDropdown={props.visibleMonthSelector}
           // dateFormat="MM/yyyy"
           showMonthYearPicker={props.showMonthYearPicker}
+          showYearPicker={props.showYearPicker}
           scrollableYearDropdown
           dropdownMode="select"
           maxDate={props.maxDate}

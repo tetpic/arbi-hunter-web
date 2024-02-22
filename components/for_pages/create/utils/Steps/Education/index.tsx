@@ -1,14 +1,16 @@
+import styles from './index.module.scss'
 import RadioListField from 'components/fields/RadioListField'
-import TrashBasketSvg from 'components/svg/TrashBasketSvg'
+// import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
 import { EducationInfo } from 'data/interfaces/Common'
 import { useFormikContext } from 'formik'
 import { EducationTypes, ModalType } from 'types/enums'
-import styles from './index.module.scss'
 import { useAppContext } from 'context/state'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
+import P from '@/components/ui/P'
+import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 
 interface Props {
   name: string
@@ -23,7 +25,7 @@ export default function Education(props: Props) {
     setFieldValue('educationInfo', values.educationInfo?.filter(el=> el !== e))
   }
 
-  const onAddButtonClick = () => {
+  const onAddButtonClick = (initial?: EducationInfo, index?: number) => {
     appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
       values: {
         educationInfo: [{
@@ -32,13 +34,20 @@ export default function Education(props: Props) {
           fromDate: '',
           toDate: '',
           toPresent: true,
-          faculity: ''
+          faculity: '',
+          ...initial
         }]
       },
       type: 'educationInfo',
       onSubmit: (data) => {
+        
         const educationInfo = values.educationInfo
-        educationInfo?.push(data.educationInfo[0])
+        if(index !== undefined) {
+          educationInfo[index] = data.educationInfo[0]
+        }
+        else {
+          educationInfo?.push(data.educationInfo[0])
+        }
         setFieldValue('educationInfo', educationInfo)
         appContext.hideModal()
       }
@@ -62,21 +71,24 @@ export default function Education(props: Props) {
   name={'education'} 
   />
 
-  {values.educationInfo&&values.educationInfo.length>0&&values.educationInfo.map(el=> {
-    return (
-      <div 
-      key={el.date} 
-      className={styles.educationWrapper} 
-      >
-        <p className={styles.time}>{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</p>
-        <p className={styles.companyName}>{el.institution}</p>
-        <p className={styles.description}>{el.speciality}</p>
-        <Button type={'button'} className={styles.trashButton} onClick={()=> removeItem(el)}><TrashBasketSvg/></Button>
-      </div>)
-    }) 
-  }
+  <div className={styles.educationItems}>
+    {values.educationInfo&&values.educationInfo.length>0&&values.educationInfo.map((el, index)=> {
+      return (
+        <div 
+        key={el.date} 
+        className={styles.educationWrapper} 
+        onClick={()=> onAddButtonClick(el, index)}
+        >
+          <P styleType={['large', 'w600']} >{el.institution}</P>
+          <P styleType={['medium', 'w500']} >{el.speciality}</P>
+          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</P>
+          <Button type={'button'} className={styles.trashButton}><ArrowRightSvg/></Button>
+        </div>)
+      }) 
+    }
+  </div>
   {values.education !== EducationTypes.No && values.education !== EducationTypes.Secondary &&
-  <AddButton onClick={onAddButtonClick} text={'Добавить место учебы'}/>
+  <AddButton onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
   }
   </>)
 }
