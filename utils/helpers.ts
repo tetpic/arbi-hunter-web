@@ -36,19 +36,25 @@ export const shareData = async(data: ShareData) => {
   }
 }
 
-export const clearObject = (obj: any) => {
-  
+export const clearObject = (obj: any, type?: 'string' | 'array') => {
   const clearedQuery: {[key: string]: any} = {...obj}
-  Object.entries(clearedQuery).forEach(([key, value]) => {
-    if(!Boolean(value)
-    ||value===0
-    ||(Array.isArray(value) && value.length === 0)  
-    ||(typeof value === 'string' && value.trim().length === 0)
-    // ||Object.keys(value).length === 0
-    // ||Object.values(value).filter(Boolean).length === 0
-    ) delete clearedQuery[key]
-  })
-  console.log(clearedQuery)
+  if(type === 'string') {
+    Object.entries(clearedQuery).forEach(([key, value]) => {
+      if(!Boolean(value) || (typeof value === 'string' && value.trim().length === 0)) delete clearedQuery[key]
+    })
+    
+  }
+  else{    
+    Object.entries(clearedQuery).forEach(([key, value]) => {
+      if(!Boolean(value)
+      ||value===0
+      ||(Array.isArray(value) && value.length === 0)  
+      ||(typeof value === 'string' && value.trim().length === 0)
+      // ||Object.keys(value).length === 0
+      // ||Object.values(value).filter(Boolean).length === 0
+      ) delete clearedQuery[key]
+    })
+  }
 
   return clearedQuery
 }

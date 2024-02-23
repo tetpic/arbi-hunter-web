@@ -95,6 +95,9 @@ export default function Skills(props: Props) {
     if(cvContext?.activeSubCategory[0]?.withGeos || cvContext?.activeSubCategory[0]?.withSources) {
       sourcesContext.init(['geos', 'sources', 'verticals'])
     }
+    else {
+      sourcesContext.init(['verticals'])
+    }
 
   }, [])
 

@@ -41,6 +41,7 @@ export default function Experience(props: Props) {
         }]
       },
       onSubmit: (data) => {
+        debugger
         const exp = formikContext.values.experienceInfo
         if(index !== undefined) {
           exp[index] = data.experienceInfo[0]
@@ -48,7 +49,7 @@ export default function Experience(props: Props) {
         else {
           exp.push(...data.experienceInfo)
         }
-        formikContext.setValues({...formikContext.values, ...exp})
+        formikContext.setValues({...formikContext.values, experienceInfo:  exp})
         appContext.hideModal()
       }
     })

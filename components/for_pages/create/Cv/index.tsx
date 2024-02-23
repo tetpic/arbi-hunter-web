@@ -22,6 +22,7 @@ import CvAbout from './steps/CvAbout'
 import CvBusyness from './steps/CvBusyness'
 import { ICompensationModalArgs } from '@/components/modals/CompensationModal'
 import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
+import { clearObject } from 'utils/helpers'
 
 
 interface Props {
@@ -79,7 +80,7 @@ export default function Cv(props: Props) {
     }
    
     if(props.id) {
-      CvRepository.updateCV(props.id, sendData)
+      CvRepository.updateCV(props.id, clearObject(sendData, 'string') as ICVCreate)
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         creationContext.reset()
@@ -90,7 +91,7 @@ export default function Cv(props: Props) {
       })
     }
     else {
-      CvRepository.createCV(sendData)
+      CvRepository.createCV(clearObject(sendData, 'string') as ICVCreate)
       .then(_ => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         creationContext.reset()
@@ -139,7 +140,7 @@ export default function Cv(props: Props) {
     businessTrips: props.cv?.businessTrips||Answer.No,
     searchPosition: '',
     assetsIds: props.cv?.assetsIds||[],
-    gender: props.cv.gender||undefined,
+    gender: props.cv?.gender||undefined,
     whatsapp: props.cv?.whatsapp||'',
     viber: props.cv?.viber||'',
     linkedin: props.cv?.linkedin||'',
@@ -346,3 +347,4 @@ export default function Cv(props: Props) {
     </div>
   </div>
 }
+
