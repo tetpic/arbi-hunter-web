@@ -29,10 +29,11 @@ export default function Compensation(props: Props) {
           maxLength={12} 
           className={styles.input} 
           styleType={'bottomBorder'} 
+
           color={'default'} 
           name={'salaryMin'} 
           label={'От'} 
-          labelType={'static'}
+          labelType={'underlined'}
           priceFormatting
           error='Одно из полей должно быть заполнено'
           suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
@@ -40,7 +41,7 @@ export default function Compensation(props: Props) {
           <span> – </span>
           <InputField  
           isNumbersOnly
-          labelType={'static'}
+          labelType={'underlined'}
           maxLength={12} 
           className={styles.input} 
           styleType={'bottomBorder'} 
@@ -74,7 +75,7 @@ export default function Compensation(props: Props) {
       value={values.compensation} 
       label={'Договорная'}
       isActive={values.compensation === CompensationType.Contract} 
-      onChange={(v) => setFieldValue('compensation', v?undefined:CompensationType.Contract)}
+      onChange={(v) => setFieldValue('compensation', v==CompensationType.Contract?CompensationType.Salary:CompensationType.Contract)}
       />
     </div>
   )

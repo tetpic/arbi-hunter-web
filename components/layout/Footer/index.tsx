@@ -32,7 +32,7 @@ export default function Footer(props: Props) {
         </div>
         <p className={styles.mail}>
           <MailConvertSvg/>
-          <Link href={'mailto:arbihanter@mail.com'} type='email'>arbihanter@mail.com</Link>
+          <Link href={'mailto:arbihunter@mail.com'} type='email'>arbihunter@mail.com</Link>
         </p>
         <p className={styles.desc}>
           Покупка трафика на&nbsp;одном ресурсе 
@@ -50,25 +50,24 @@ export default function Footer(props: Props) {
 
       <div className={styles.right}>
         <div className={styles.column}>
-          <p className={styles.title}>Соискателям</p>
-          <p className={styles.link}>Список команд</p>
-          <p className={styles.link}>Полезные статьи</p>
-          <p className={styles.link}>Истории успеха</p>
-          <p className={styles.link}>Истории успеха</p>
-          <p className={styles.link}>Истории успеха</p>
-          <p className={styles.link}>База знаний</p>
+          {/* <p className={styles.title}>О компании</p> */}
+          <p className={styles.link}>О компании</p>
+          <p className={styles.link}>Партнерам</p>
+          <p className={styles.link}>Реклама на сайте</p>
+          <p className={styles.link}>Условия оказания услуг</p>
+          <p className={styles.link}>Условия использования сайтов</p>
         </div>
         <div className={styles.column}>
-          <p className={styles.title}>Работодателям</p>
-          <p className={styles.link}>Список команд</p>
-          <p className={styles.link}>Полезные статьи</p>
-          <p className={styles.link}>Истории успеха</p>
-          <p className={styles.link}>База знаний</p>
+          {/* <p className={styles.title}>Работодателям</p> */}
+          <p className={styles.link}>Создать резюме</p>
+          <p className={styles.link}>Поиск работы</p>
+          <p className={styles.link}>Каталог вакансий</p>
+          <p className={styles.link}>Услуги</p>
         </div>
         <div className={styles.column}>
-          <p className={styles.title}>О сервисе</p>
-          <p className={styles.link}>Список команд</p>
-          <p className={styles.link}>Полезные статьи</p>
+          {/* <p className={styles.title}>О сервисе</p> */}
+          <p className={styles.link}>База знаний</p>
+          <p className={styles.link}>Карта сайта</p>
         </div>
       </div>
     </div>

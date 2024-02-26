@@ -29,7 +29,7 @@ interface Props extends IField<string> {
   errorClassName?: string
   value?: any
   onClick?: MouseEventHandler<HTMLInputElement>
-  labelType?: 'floating' | 'top' | 'static'
+  labelType?: 'floating' | 'top' | 'static' | 'underlined'
   isNumbersOnly?: boolean
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   autocompleteOff?: boolean
@@ -109,6 +109,7 @@ export default function InputField(props: Props) {
         {props.prefix}
         {props.labelType === 'floating' ? <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel> : null}
         {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
+        {props.labelType === 'underlined'? <FieldLabel className={classNames(styles.staticLabel, styles.underlinedLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         <input
           {...field}
           value = {props.value||field.value}

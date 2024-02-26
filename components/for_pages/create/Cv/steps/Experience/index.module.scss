@@ -64,6 +64,7 @@
   border-radius: 16px;
   background-color: $black;
   position: relative;
+  cursor: pointer;
 
   @include mq($PhoneWidth, max) {
     grid-template-columns: 2fr 3fr;

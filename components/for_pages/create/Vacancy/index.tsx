@@ -83,7 +83,7 @@ export default function Vacancy(props: Props) {
     contactName: props.vacancy?.contactName||getContactName(), 
     company: props.vacancy?.company||userContext.currentProfile?.company, 
     isRemote: props.vacancy?.isRemote||false,
-    compensation: props.vacancy?.compensation||undefined,
+    compensation: props.vacancy?.compensation||CompensationType.Salary,
     phone: props.vacancy?.phone||userContext.currentProfile?.phone,
     email: props.vacancy?.email||userContext.currentProfile?.email,
     telegramNickname: props.vacancy?.telegramNickname||userContext.currentProfile?.telegramNickname, 

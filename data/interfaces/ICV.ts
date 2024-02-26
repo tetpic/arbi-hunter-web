@@ -1,5 +1,5 @@
 import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
-import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource, TimeStamp} from './Common'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource, TimeStamp, IFile} from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
 import { IProposal } from './IProposal'
@@ -26,6 +26,7 @@ export interface ICVCreate extends IJob {
   experience?: WorkExperience
   searchPosition?: string
   assetsIds?: number[]
+  assets?: IFile[]
   completedSteps?: number[]
   whatsapp?: string,
   linkedin?: string,

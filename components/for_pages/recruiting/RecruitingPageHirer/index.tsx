@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
@@ -25,11 +26,13 @@ import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 
 
 interface Props {
-  vcId: number  
+  vcId?: number  
+  category?: number
   filters: Partial<IVacancyCvSearchParams>
 }
 
 export default function RecruitingPageHirer(props: Props) {
+
   return (
     <VacancyWrapper>
       <RecruitingPageHirerInner {...props}/>

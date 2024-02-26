@@ -45,7 +45,7 @@ export default function MainMediaPage(props: Props) {
     placeholder='Найти статьи'
     categories={props.categories}
     periods={periods}
-    onChange={search}
+    onSubmit={search}
     />
 
     <div className={styles.root}> 

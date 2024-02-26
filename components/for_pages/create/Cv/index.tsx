@@ -105,10 +105,10 @@ export default function Cv(props: Props) {
   }
 
   const initialValues:ICVCreate  = {
-    firstName: userContext.currentProfile?.firstName,
-    lastName: userContext.currentProfile?.lastName,
-    patronymic: userContext.currentProfile?.patronymic,
-    birthday: userContext.currentProfile?.birthday,
+    firstName: props.cv?.firstName|| userContext.currentProfile?.firstName,
+    lastName: props.cv?.lastName|| userContext.currentProfile?.lastName,
+    patronymic: props.cv?.patronymic|| userContext.currentProfile?.patronymic,
+    birthday: props.cv?.birthday|| userContext.currentProfile?.birthday,
     compensation: props.cv?.compensation||undefined,
     phone: userContext.currentProfile?.phone,
     email: userContext.currentProfile?.email,

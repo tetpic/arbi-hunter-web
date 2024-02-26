@@ -27,7 +27,7 @@ export default function NewsByCategories(props: Props) {
     className={styles.searchBar} 
     placeholder='Найти статьи в выбранной категории' 
     periods={periods}
-    onChange={search}
+    onSubmit={search}
     />
     <Spacer basis={24}/>
     <NewsList key={'news by category'} category={props.category} categories={[props.category.id]}/>

@@ -37,20 +37,28 @@ export default function Experience(props: Props) {
           fromDate: '',
           toPresent: true,
           description: '',
-          ...initial
         }]
       },
+      initialValues: initial? {experienceInfo: [{...initial, toPresent: !initial.toDate}]}:null,
       onSubmit: (data) => {
-        debugger
+        
         const exp = formikContext.values.experienceInfo
         if(index !== undefined) {
           exp[index] = data.experienceInfo[0]
+          if(exp[index].toPresent) {
+            delete exp[index].toDate
+          }
         }
         else {
           exp.push(...data.experienceInfo)
         }
         formikContext.setValues({...formikContext.values, experienceInfo:  exp})
         appContext.hideModal()
+      },
+      onDelete: (data) => {
+        const exp = formikContext.values.experienceInfo
+        const filtered = exp.filter((_, i) => i !== index)
+        formikContext.setValues({...formikContext.values, experienceInfo: filtered})
       }
     })
   }

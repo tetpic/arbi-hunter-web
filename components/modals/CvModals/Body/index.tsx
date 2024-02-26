@@ -39,7 +39,7 @@ export default function Body(props: Props) {
   {props.title &&
     <p className={styles.title}>
       {isPhoneWidth && 
-        <Button className={styles.buttonSmall} onClick={props.onClose}><ArrowDownSvg className={styles.arrow}/></Button>
+        <Button className={styles.buttonSmall} onClick={()=>props.onClose()}><ArrowDownSvg className={styles.arrow}/></Button>
       }
       {props.title}
     </p>
@@ -55,7 +55,10 @@ export default function Body(props: Props) {
       </div>
   <div className={styles.buttonsWrapper}>
     {!isPhoneWidth && 
-      <Button className={styles.buttonDefault} onClick={props.onClose} >Отменить</Button>
+      <Button className={styles.buttonDefault} type='button' onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        props.onClose()}} >Отменить</Button>
     }
     <Button className={classNames(styles.buttonGradient, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
   </div>

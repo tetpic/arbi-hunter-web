@@ -35,22 +35,30 @@ export default function Education(props: Props) {
           toDate: '',
           toPresent: true,
           faculity: '',
-          ...initial
         }]
       },
+      initialValues: initial? {educationInfo: [{...initial, toPresent: !initial.toPresent}]}:null,
+
       type: 'educationInfo',
       onSubmit: (data) => {
-        
         const educationInfo = values.educationInfo
         if(index !== undefined) {
           educationInfo[index] = data.educationInfo[0]
+          if(educationInfo[index].toPresent) {
+            delete educationInfo[index].toDate
+          }
         }
         else {
           educationInfo?.push(data.educationInfo[0])
         }
         setFieldValue('educationInfo', educationInfo)
         appContext.hideModal()
-      }
+      },
+      onDelete: (data) => {
+        const educationInfo = values.educationInfo
+        const filtered =educationInfo.filter((_, i) => i !== index)
+        setFieldValue('educationInfo', filtered)
+      },
     })
   }
 
@@ -71,22 +79,24 @@ export default function Education(props: Props) {
   name={'education'} 
   />
 
-  <div className={styles.educationItems}>
-    {values.educationInfo&&values.educationInfo.length>0&&values.educationInfo.map((el, index)=> {
-      return (
-        <div 
-        key={el.date} 
-        className={styles.educationWrapper} 
-        onClick={()=> onAddButtonClick(el, index)}
-        >
-          <P styleType={['large', 'w600']} >{el.institution}</P>
-          <P styleType={['medium', 'w500']} >{el.speciality}</P>
-          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</P>
-          <Button type={'button'} className={styles.trashButton}><ArrowRightSvg/></Button>
-        </div>)
-      }) 
-    }
-  </div>
+  {values.educationInfo&&values.educationInfo.length>0&& 
+    <div className={styles.educationItems}>
+      {values.educationInfo.map((el, index)=> {
+        return (
+          <div 
+          key={el.date} 
+          className={styles.educationWrapper} 
+          onClick={()=> onAddButtonClick(el, index)}
+          >
+            <P styleType={['large', 'w600']} >{el.institution}</P>
+            <P styleType={['medium', 'w500']} >{el.speciality}</P>
+            <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</P>
+            <Button type={'button'} className={styles.trashButton}><ArrowRightSvg/></Button>
+          </div>)
+        }) 
+      }
+    </div>
+  }
   {values.education !== EducationTypes.No && values.education !== EducationTypes.Secondary &&
   <AddButton onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
   }

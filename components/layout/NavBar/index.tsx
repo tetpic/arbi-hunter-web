@@ -18,7 +18,6 @@ import ManSvg from '@/components/svg/ManSvg'
 import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
-import Button from '@/components/ui/Button'
 
 interface Props {
 }
@@ -141,9 +140,6 @@ export default function NavBar(props: Props) {
             )
           })
         }
-        <Button styleType={['black', 'icon']} href={'/recruiting'}>R</Button>
-        <Button styleType={['black', 'icon']} href={'/personal/my'}>PS</Button>
-
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>
           <Switch

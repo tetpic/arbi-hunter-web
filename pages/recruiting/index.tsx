@@ -18,6 +18,7 @@ interface Query {
   vcId?: number
   cvId?: number
   filters?: string
+  category?: number
 }
 interface Props extends Query {
   profileType?: ProfileType
@@ -30,11 +31,11 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
   const profile = context.req.cookies[CookiesType.profileType]||null
   const vacancies = await VacancyRepository.searchVacancies({forLastNumberOfDays: 30})
   const filters = context.query?.filters||null
-  // const cvs = await CvRepository.findCvs({forLastNumberOfDays: 30})
   const vcId = context.query?.vcId||null
   const cvId = context.query?.cvId||null
+  const category = context.query?.category||null
   if(profile) {
-    return {props: {profileType: profile, auth: token, vcId, cvId, vacancies: vacancies.data.slice(0, 10), filters: filters||null}}
+    return {props: {profileType: profile, auth: token, vcId, cvId, category, vacancies: vacancies.data.slice(0, 10), filters: filters||null}}
   }
   else {
     return {props: {vacancies: vacancies.data.slice(0, 10)}}
@@ -45,6 +46,10 @@ export default function Recruiting(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.profileType
   const params: IVacancyCvSearchParams = props.filters&&JSON.parse(props.filters)||{}
+  if(props.category) {
+    params.categories = [props.category]
+  }
+  
 
   return (<ContentLayout withFooter hideMobileHeader  title='Рекрутинг'>
     <SourcesWrapper>
@@ -59,10 +64,10 @@ export default function Recruiting(props: Props) {
       }
       {
         props.auth && props.profileType=== ProfileType.Employee &&
-        <RecruitingPageEmployee filters={props.filters&&JSON.parse(props.filters) as IVacancyCvSearchParams}/>
+        <RecruitingPageEmployee filters={params}/>
         ||
         props.auth && props.profileType === ProfileType.Hirer &&
-        <RecruitingPageHirer vcId={Number(props.vcId)} filters={props.filters&&JSON.parse(props.filters) as IVacancyCvSearchParams}/>
+        <RecruitingPageHirer vcId={Number(props.vcId)} filters={params}/>
       }
 
     </LocationWrapper>

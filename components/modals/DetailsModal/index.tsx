@@ -13,6 +13,7 @@ import { ICVCreate } from 'data/interfaces/ICV'
 import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
 import Validator from 'utils/Validator'
+import CrossSvg from '@/components/svg/CrossSvg'
 
 
 interface Props {
@@ -22,7 +23,9 @@ interface Props {
 export interface IDetailsModalProps {
   type: 'experienceInfo'|'educationInfo'|'coursesInfo'
   values?: Partial<ICVCreate>
+  initialValues?: Partial<ICVCreate>
   onSubmit?: (data: Partial<ICVCreate>) => void
+  onDelete?: (data: Partial<ICVCreate>) => void
 }
 
 export default function DetailsModal(props: Props) {
@@ -31,10 +34,17 @@ export default function DetailsModal(props: Props) {
 
   const formik = useFormik<Partial<ICVCreate>>({
     initialValues: {
-      ...args.values
+      ...args.values,
+      ...args.initialValues
     },
     onSubmit: args.onSubmit
   })
+
+
+  const deleteHandler = () => {
+    args.onDelete?.(formik.values)
+    props.onClose()
+  }
 
 
 
@@ -51,6 +61,7 @@ export default function DetailsModal(props: Props) {
         formatMatcher: 'best fit', year: 'numeric', month: '2-digit'
       }}
       className={styles.dateField}
+      validate={Validator.required}
       />
       {!formik.values?.experienceInfo?.[0].toPresent &&
         <DateField 
@@ -58,11 +69,13 @@ export default function DetailsModal(props: Props) {
         styleType={'default'} 
         label='Окончание работы' 
         showMonthYearPicker
+        minDate={formik.values?.experienceInfo&&([formik.values.experienceInfo[0].fromDate.split('.')[0], '01', formik.values.experienceInfo[0].fromDate.split('.')[1]].join('.'))}
         formatOptions={{
           formatMatcher: 'best fit', year: 'numeric', month: '2-digit'
         }}
         dateFormat='MM/yyyy'
         className={styles.dateField}
+        validate={Validator.required}
         />
       }
     </div>
@@ -108,6 +121,7 @@ export default function DetailsModal(props: Props) {
         year: 'numeric'
       }}
       className={styles.dateField}
+      validate={Validator.required}
       />
       {!formik.values.educationInfo?.[0].toPresent &&
         <DateField 
@@ -116,10 +130,13 @@ export default function DetailsModal(props: Props) {
         label='Окончание обучения' 
         dateFormat='yyyy'        
         showYearPicker
+        minDate={formik.values?.educationInfo[0]?.fromDate}
+
         formatOptions={{
           year: 'numeric'
         }}
         className={styles.dateField}
+        validate={Validator.required}
         />
       }
     </div>
@@ -195,6 +212,7 @@ export default function DetailsModal(props: Props) {
     <ModalLayout mobileFullScreen  className={styles.modalLayout}>
       <ModalBody>
         <FormikProvider value={formik}>
+          <Button styleType={['backTransparent', 'icon']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
           <Form>
             <div className={styles.detailsRoot}>
               {args.type === 'experienceInfo' && formik.values.experienceInfo && experienceInfoForm}
@@ -202,8 +220,8 @@ export default function DetailsModal(props: Props) {
               {args.type === 'coursesInfo' && coursesInfoForm}
             </div>
             <div className={styles.buttonWrapper}>
-              <Button className={styles.grayButton} onClick={props.onClose}>Отмена</Button>
-              <Button className={styles.sendButton} onClick={formik.submitForm}>Добавить</Button>
+              <Button className={styles.grayButton} type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
+              <Button className={styles.sendButton} onClick={formik.submitForm}>{args.initialValues?'Сохранить':'Добавить'}</Button>
             </div>
           </Form>
         </FormikProvider>

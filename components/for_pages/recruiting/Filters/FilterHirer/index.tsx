@@ -101,13 +101,13 @@ export default function FilterHirer(props: Props) {
   const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
     const dataToSet:ISoursesModalArgs = {
       type: t.type,
-      onClose: (activeSources)=>{
+      onSubmit: (activeSources)=>{
         const newObject = {...creationContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         creationContext.setHelpObjects(newObject)
         appContext.hideModal()
       },
       data: [...sourcesContext[t.type].values()],
-      choosenElements: creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
+      choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
       appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)

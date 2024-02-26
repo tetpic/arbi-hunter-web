@@ -222,6 +222,7 @@ export function CreateVcCvWrapper(props: Props) {
         activeSources: new Map(cvItem?.sources&&cvItem?.sources?.map(el=> [el.id, el])),
         activeGeos: new Map(cvItem?.geos&&cvItem?.geos?.map(el=> [el.id, el])),
         activeVerticals: new Map(cvItem?.verticals&&cvItem?.verticals?.map(el=> [el.id, el])),
+        assets: cvItem.assets
       }})
       setCv(state=> {return {...state, ...item,
         categoriesIds: item.categories.map(el=> el.id)

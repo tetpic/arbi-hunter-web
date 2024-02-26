@@ -112,7 +112,7 @@ export enum Answer {
 }
 
 export enum CompensationType {
-  // Salary = 'salary',
+  Salary = 'salary',
   // Commission = 'commission',
   // Gybrid = 'gybrid',
   // Piecework = 'piecework',
@@ -125,7 +125,7 @@ export enum Currency {
   RUB = 'RUB',
   USD = 'USD',
   EUR = 'EUR',
-  GRN = 'GRN'
+  GRN = 'UAH'
 }
 
 export enum EducationTypes {

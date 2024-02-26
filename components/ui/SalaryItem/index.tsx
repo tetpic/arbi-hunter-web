@@ -1,7 +1,7 @@
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Image from 'next/image'
 import { CompensationType } from 'types/enums'
-import { TranslateCompensationType} from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateCurrency} from 'utils/enumsTranslations'
 // import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 import { ICV } from 'data/interfaces/ICV'
@@ -14,7 +14,7 @@ interface Props {
 
 export default function SalaryItem({vacancy, cv}: Props) {
 
-  const salary = cv&&Formatter.formatNumber(Number(cv?.salary))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax))].filter(Boolean).join(' ')
+  const salary = cv&&(Formatter.formatNumber(Number(cv?.salary)) + ' ' + TranslateCurrency(cv?.currency))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin) + TranslateCurrency(vacancy?.currency)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax) + TranslateCurrency(vacancy?.currency))].filter(Boolean).join(' ')
   const compensation = vacancy?.compensation||cv?.compensation
   const currency = vacancy?.currency||cv?.currency
   const commission = vacancy?.commission||cv?.commission

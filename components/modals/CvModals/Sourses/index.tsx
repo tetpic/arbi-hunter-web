@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { ISource } from 'data/interfaces/Common'
-import {  useState } from 'react'
+import { useState } from 'react'
 import Body from '../Body'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
@@ -17,7 +17,7 @@ interface Props {
 
 export interface ISoursesModalArgs{
   type: 'sources'|'geos'|'verticals'
-  onClose?: (activeElements: Map<number, ISource>)=> void
+  onSubmit?: (activeElements: Map<number, ISource>)=> void
   data?: ISource[] 
   choosenElements?: Map<number, ISource>
 }
@@ -28,10 +28,8 @@ export default function SourcesModal(props: Props) {
   const args: ISoursesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [choosenElements, setChoosenElement] = useState<Map<number, ISource>>(args.choosenElements||new Map())
 
-
-
   const saveSourcesHandler = () => {
-    args?.onClose?args?.onClose(choosenElements):props.onClose()
+    args.onSubmit?.(choosenElements)
   }
 
   const onElementClickHandler = (e: ISource) => {
@@ -58,8 +56,13 @@ export default function SourcesModal(props: Props) {
   const body = (
     <Body 
     withInput={false}
-    onClose={props.onClose}
-    onSave={saveSourcesHandler}
+    onClose={()=>{
+      props.onClose()
+    }}
+    onSave={()=>{
+      
+      saveSourcesHandler()
+    }}
     >
       <p className={styles.title}>{title}</p>
       <div className={styles.wrapper}>

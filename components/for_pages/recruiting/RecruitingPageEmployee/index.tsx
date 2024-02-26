@@ -89,7 +89,6 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   useEffect(()=>{
-    
     setTimeout(()=>{
       isInited.current = true      
     }, 200)

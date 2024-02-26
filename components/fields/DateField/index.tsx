@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker'
 import ru from 'date-fns/locale/ru'
 import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
-import FieldError from 'components/ui/FieldError'
+// import FieldError from 'components/ui/FieldError'
 import { useState } from 'react'
 import InputField from '../InputField'
 import CalendarSvg from 'components/svg/CalendarSvg'
@@ -13,8 +13,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 interface Props extends IField<string> {
   styleType: InputStyleType
-  maxDate?: Date
-  minDate?: Date
+  maxDate?: Date|string
+  minDate?: Date|string
   visibleYearSelector?: boolean
   visibleMonthSelector?: boolean
   excludeDates?: Date[]
@@ -57,6 +57,7 @@ export default function DateField(props: Props) {
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
           // forceShowMonthNavigation={false}
+          minDate={props.minDate&&new Date(props.minDate)}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
           showMonthDropdown={props.visibleMonthSelector}
@@ -64,11 +65,12 @@ export default function DateField(props: Props) {
           showMonthYearPicker={props.showMonthYearPicker}
           showYearPicker={props.showYearPicker}
           scrollableYearDropdown
-          dropdownMode="select"
-          maxDate={props.maxDate}
+          dropdownMode="scroll"
+          maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={
             <InputField 
             autocompleteOff={true} 
+            validate={props.validate}
             className={classNames(styles.input, props.inputClassName)}  
             value={field.value} 
             name={field.name} 
@@ -81,7 +83,6 @@ export default function DateField(props: Props) {
             suffix={<CalendarSvg className={classNames([styles.icon, styles[props.styleType]])}/>}
             />
           }
-          minDate={props.minDate}
           excludeDates={props.excludeDates}
          
         />
@@ -101,8 +102,8 @@ export default function DateField(props: Props) {
             color={'#828282'}
           />
         )} */}
-        {showError && <img src="/images/icons/field_fail.svg" alt="" className={styles.failIcon} />}
-        <FieldError showError={showError}>{meta.error}</FieldError>
+        {/* {showError && <img src="/images/icons/field_fail.svg" alt="" className={styles.failIcon} />}
+        <FieldError showError={showError}>{meta.error}</FieldError> */}
       </div>
     </div>
   )

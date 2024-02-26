@@ -27,13 +27,13 @@ export default function VacancyExperience(props: Props) {
   const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
     const dataToSet:ISoursesModalArgs = {
       type: t.type,
-      onClose: (activeSources)=>{
+      onSubmit: (activeSources)=>{
         const newObject = {...cvContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         cvContext.setHelpObjects(newObject)
         appContext.hideModal()
       },
       data: [...sourcesContext[t.type].values()],
-      choosenElements: cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']
+      choosenElements: new Map(cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
       appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)

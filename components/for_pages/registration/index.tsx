@@ -119,11 +119,13 @@ export default function Registration() {
       })
     }
 
-    const validateValues = async(strArr: string[]) => {
+    const validateValues = async(strArr: string[]):Promise<boolean> => {
       const errors = await Promise.all(strArr.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
       const filteredErrors = errors.filter(el=> el[1] !== undefined)
       filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-      filteredErrors.length === 0 && setProgress(page||progress+1)
+      if(filteredErrors.length > 0) return false
+      else return true
+      // filteredErrors.length === 0 && setProgress(page||progress+1)
     }
 
     switch(page||progress) {
@@ -150,14 +152,23 @@ export default function Registration() {
         }
       })()
       break
-      case 2:(() => {   
+      case 2:(async() => {  
         const values = loginType === LoginType.Phone? ['email'] : ['phone']
         validateValues(values)
+        .then(res=> {
+          RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
+          .then(r=> {
+            if(r === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
+            else { setProgress(page||progress+1) }
+          })
+        })
       })()
       break
       case 3:(() => {   
         const values = ['firstName', 'lastName']
-        validateValues(values)
+        validateValues(values).then(res=> {
+          if(res) setProgress(page||progress+1)
+        })
       })()
       break
       case 4:(() => {
@@ -353,7 +364,7 @@ export default function Registration() {
             {progress === 4 && stage4}
 
             <div className={styles.buttons}>
-              {((userContext.profileType ===ProfileType.Employee &&progress < 3)||(userContext.profileType ===ProfileType.Hirer &&progress < 4)) && progress > 1 &&
+              {((userContext.profileType ===ProfileType.Employee &&progress <= 3)||(userContext.profileType ===ProfileType.Hirer &&progress <= 4)) && progress > 2 &&
                 <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator(progress - 1)}>Назад</Button>
               }
               {((userContext.profileType ===ProfileType.Employee &&progress === 3)||(userContext.profileType ===ProfileType.Hirer &&progress === 4)) &&

@@ -11,7 +11,6 @@ import UserPic from 'components/ui/UserPic'
 import Spinner from 'components/ui/Spinner'
 import dynamic from 'next/dynamic'
 import { FILES } from 'types/constants'
-// import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import Modes from 'components/ui/Modes'
 import { useResize } from 'components/hooks/useResize'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
@@ -54,6 +53,12 @@ export default function Header(props: Props) {
   const regPath = '/registration'
   const loginPath = '/login'
 
+  const onSearchbarSubmit = (data: {search?: string}) => {
+    
+    const filters = JSON.parse(router?.query?.filters as string||'{}')
+    router.push({pathname: '/recruiting', query: {filters: JSON.stringify({...filters, search: data?.search})}})
+  }
+
   useEffect(()=>{
     if(!isTabletWidth) {
 
@@ -94,7 +99,10 @@ export default function Header(props: Props) {
 
         {!isTabletWidth && userContext.isLogged && userContext.currentProfile?.profileType &&
           <div className={styles.linksWrapper}>
-            <SearchBar onFilterClick={()=> {}}/>
+            <SearchBar 
+            onSubmit={(data)=> onSearchbarSubmit(data)}
+            onFilterClick={()=>{}}
+            />
             {/* <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
             <Link className={styles.link} href={'/media'}>Медиа</Link>
             <Link className={styles.link} href={'/courses'}>Онлайн обучение</Link> */}
@@ -106,7 +114,6 @@ export default function Header(props: Props) {
             {!userContext.currentProfile && <>
               <Button 
               styleType={['black', 'borderBlue', 'backTransparent']}
-
               href={regPath}
               disabled={activePath === regPath}
               >
@@ -147,7 +154,7 @@ export default function Header(props: Props) {
               key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
               image={getUserImageSource(userContext.currentProfile)} 
               className={styles.userPic} 
-              // onClick={()=>setDropDownOpen(state=> !state)}
+              onClick={()=>router.push('/personal/my')}
               />
             </>}
 
@@ -177,7 +184,7 @@ export default function Header(props: Props) {
               key={1} 
               image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 
               className={styles.userPic} 
-              // onClick={()=>{setDropDownOpen(state=> !state)}}
+              onClick={()=>router.push('/personal/my')}
               />
             </>}
             {userContext.currentProfile &&
