@@ -243,7 +243,7 @@ export default function Cv(props: Props) {
     setPage(element)
   }
 
-  const getImage = ():{src: string, animations: string[]} => {
+  const getImage = ():{src: string, animations: string[], artboards?: string[]} => {
     switch (progress) {
       case 1:
         return {src: '/rive/cvCreate/1.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
@@ -252,7 +252,7 @@ export default function Cv(props: Props) {
       case 3: 
         return {src: '/rive/cvCreate/3.riv', animations: ['BubbleFloat', 'Bubbles', 'Eyes', 'Hand', 'Phone', 'Head', 'Body']}
       case 4: 
-        return {src: '/rive/cvCreate/4.riv', animations: ['Text']}
+        return {src: '/rive/cvCreate/4.riv', animations: ['Text'], artboards: ['EN', 'UA', 'RU']}
       case 5: 
         return {src: '/rive/cvCreate/5.riv', animations: ['Man1', 'Man2', 'Man1Head']}
       case 6: 
@@ -263,6 +263,14 @@ export default function Cv(props: Props) {
         return {src: '/rive/cvCreate/1.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
     }
   }
+
+  // const {rive, RiveComponent} = useRive({src: '/rive/cvCreate/7.riv'})
+
+  // useEffect(()=>{
+  //   console.log(rive);
+    
+  
+  // }, [rive])
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
@@ -323,6 +331,7 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
+    {/* <RiveComponent className={styles.rive}/> */}
     {!isTabletWidth&& memoedRive}
     <div className={styles.content}>    
       <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>

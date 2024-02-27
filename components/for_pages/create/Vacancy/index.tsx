@@ -306,7 +306,7 @@ export default function Vacancy(props: Props) {
     setPage(element)
   }
 
-  const getImage = ():{src: string, animations: string[]} => {
+  const getImage = ():{src: string, animations: string[], artboards?: string[]} => {
     switch (progress) {
       case 1:
         return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
@@ -315,21 +315,28 @@ export default function Vacancy(props: Props) {
       case 3: 
         return {src: '/rive/vacancyCreate/3.riv', animations: ['Text']}
       case 4: 
-        return {src: '/rive/vacancyCreate/4.riv', animations: ['Text1', 'Text2']}
+        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text1', 'Text2']}
       case 5: 
-        return {src: '/rive/vacancyCreate/5.riv', animations: ['Man1','Man2', 'Man1Head']}
+        return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['EN', 'UA', 'RU']}
       case 6: 
-        return {src: '/rive/vacancyCreate/6.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
+        return {src: '/rive/vacancyCreate/5.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
       case 7: 
+        return {src: '/rive/vacancyCreate/6.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
+      case 8: 
         return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
+      // case 9: 
+      //   return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
       default:
         return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
     }
   }
 
+
+
+
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
+    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[1]}   key={image.src} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{
@@ -377,8 +384,17 @@ export default function Vacancy(props: Props) {
     }
   }, [])
   
+  // const {rive, RiveComponent} = useRive({src:  '/rive/vacancyCreate/7.riv'})
+
+  // useEffect(()=>{
+  //   console.log(rive);
+    
+  
+  // }, [rive])
+
 
   return <div className={styles.root}>
+    {/* <RiveComponent/> */}
     {!isTabletWidth && memoedRive}
     <div className={styles.content}>    
       <p className={styles.title}>  
