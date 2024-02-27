@@ -16,12 +16,15 @@ import RurSvg from '@/components/svg/RurSvg'
 import UsdSvg from '@/components/svg/UsdSvg'
 import BtcSvg from '@/components/svg/BtcSvg'
 import EuroSvg from '@/components/svg/EuroSvg'
+import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 interface Props {
 }
 
 export default function Footer(props: Props) {
+  const userContext = useUserContext()
 
   return (<div className={styles.root}> 
   <div className='contentWrapper'>
@@ -64,9 +67,21 @@ export default function Footer(props: Props) {
         </div>
         <div className={styles.column}>
           {/* <p className={styles.title}>Работодателям</p> */}
-          <p className={styles.link}>Создать резюме</p>
-          <p className={styles.link}>Поиск работы</p>
-          <p className={styles.link}>Каталог вакансий</p>
+          {userContext.profileType === ProfileType.Employee && 
+          <>
+            <p className={styles.link}>Создать резюме</p>
+            <p className={styles.link}>Поиск работы</p>
+            <p className={styles.link}>Каталог вакансий</p>
+          </>
+          }
+          {userContext.profileType === ProfileType.Hirer &&
+          <>
+            <p className={styles.link}>Разместить вакансию</p>
+            <p className={styles.link}>Поиск сотрудников</p>
+            <p className={styles.link}>Категории специалистов</p>
+          </>
+          }
+
           <p className={styles.link}>Услуги</p>
         </div>
         <div className={styles.column}>
