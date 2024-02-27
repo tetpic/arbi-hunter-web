@@ -129,3 +129,18 @@
   }
 }
 
+.qrCode {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border: 1px $greyLight solid;
+  background-color: $grey;
+  border-radius: 16px;
+  padding: 8px 8px 8px 24px;
+  display: flex;
+  align-items: center; 
+  column-gap: 24px;
+  
+
+}
+
