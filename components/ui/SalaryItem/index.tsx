@@ -48,9 +48,12 @@ export default function SalaryItem({vacancy, cv}: Props) {
   // </>
   // ||
   compensation === CompensationType.Contract &&  
-  <span>{TranslateCompensationType(compensation)}</span>
+  <span> {TranslateCompensationType(compensation)}</span>
   ||
+  <>
+  {image}
   <span>{salary}</span>
+  </>
 
   // ||
   // compensation === CompensationType.Gybrid && 

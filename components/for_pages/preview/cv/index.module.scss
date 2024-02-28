@@ -1,0 +1,63 @@
+@import 'styles/index';
+
+.root {
+  padding-top: 40px;
+  width: 100%;
+  max-width: 552px;
+  padding-bottom: 80px;
+}
+
+.head {
+  display: flex;
+  column-gap: 16px;
+  align-items: center;
+}
+
+.status {
+  padding: 8px 16px;
+  display: inline-block;
+  border-radius: 8px;
+
+
+  &_red {
+    background-color: $redLight;
+  }
+
+  &_green {
+    background-color: $greenLight;
+  }
+}
+
+.itemsWrapper {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-top: 16px;
+  align-items: flex-start;
+}
+
+.experience {
+  @include exeptLast {
+    margin-bottom: 30px;
+  }
+}
+
+.button {
+  margin-top: 24px;
+}
+
+.bio {
+  font-size: 14px;
+  font-weight: $medium;
+}
+
+.backButton {
+  margin-bottom: 24px;
+}

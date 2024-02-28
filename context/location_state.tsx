@@ -69,7 +69,6 @@ export function LocationWrapper(props: Props) {
         //     _newMap.set(el.geonameid, el)
         //   })
         // }
-        console.log( selectedCountries)
         res.forEach(el=> {
           _newMap.set(el.geoname.geonameid, el.geoname)
         })

@@ -315,7 +315,7 @@ export default function Vacancy(props: Props) {
       case 3: 
         return {src: '/rive/vacancyCreate/2.riv', animations: ['Text']}
       case 4: 
-        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text1', 'Text2']}
+        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text'], artboards: ['RU', 'EN', 'UA']}
       case 5: 
         return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['RU', 'EN', 'UA']}
       case 6: 
@@ -336,7 +336,7 @@ export default function Vacancy(props: Props) {
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[0]}   key={image.src} className={styles.rive}/>
+    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[1]}    key={image.src} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{
@@ -383,18 +383,8 @@ export default function Vacancy(props: Props) {
       creationContext.reset()
     }
   }, [])
-  
-  // const {rive, RiveComponent} = useRive({src:  '/rive/vacancyCreate/7.riv'})
-
-  // useEffect(()=>{
-  //   console.log(rive);
-    
-  
-  // }, [rive])
-
 
   return <div className={styles.root}>
-    {/* <RiveComponent/> */}
     {!isTabletWidth && memoedRive}
     <div className={styles.content}>    
       <p className={styles.title}>  

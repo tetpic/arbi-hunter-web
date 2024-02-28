@@ -264,14 +264,6 @@ export default function Cv(props: Props) {
     }
   }
 
-  // const {rive, RiveComponent} = useRive({src: '/rive/cvCreate/7.riv'})
-
-  // useEffect(()=>{
-  //   console.log(rive);
-    
-  
-  // }, [rive])
-
   const memoedRive = useMemo(()=>{
     const image = getImage()
     return <Rive src={image.src} animations={image.animations}  key={image.src} artboard={image.artboards&&image.artboards[0]} className={styles.rive}/>

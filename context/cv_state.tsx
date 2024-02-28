@@ -28,6 +28,7 @@ const CvContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  cv?: ICV
 }
 
 export function CvWrapper(props: Props) {
@@ -36,7 +37,7 @@ export function CvWrapper(props: Props) {
   const createVcCvContext = useCreateVcCvContext()
   const [foundCvs, setFoundCvsState] = useState<Map<number, ICV>>(new Map)
   const [savedCvs, setSavedCvsState] = useState<ICV[]>([])
-  const [currentCv, setCurrentCvState] = useState<ICV>(null)
+  const [currentCv, setCurrentCvState] = useState<ICV>(props.cv||null)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(undefined)
   

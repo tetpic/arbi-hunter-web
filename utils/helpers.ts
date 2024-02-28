@@ -32,7 +32,7 @@ export const shareData = async(data: ShareData) => {
   }
   catch( err) {
     // eslint-disable-next-line no-console
-    console.log(err)
+    console.warn(err)
   }
 }
 

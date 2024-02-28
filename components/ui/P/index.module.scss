@@ -72,3 +72,9 @@
 .alignEnd {
   text-align: end;
 }
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}

@@ -87,7 +87,6 @@ export function ChatDialogWrapper(props: Props) {
   }
 
   // const processLoadedMessages = (data: IChatMessage[], total: number | null, fromInit: boolean = false) => {
-  //   console.log('processLoadedMessages', total)
   //   if (total === 0) {
   //     setTotalMessages(messages.length)
   //   }

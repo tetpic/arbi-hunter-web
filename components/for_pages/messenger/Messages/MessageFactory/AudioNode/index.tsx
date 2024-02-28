@@ -56,7 +56,6 @@ export default function AudioNode(props: Props) {
 
 //   analyser.getByteFrequencyData(dataArray)
 
-//   console.log(dataArray)
 
 // }, [])
 

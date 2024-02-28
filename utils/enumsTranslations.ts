@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -128,8 +128,8 @@ export const TranslateCompensationType = (c: CompensationType) => {
     //   return 'Гибрид'
     // case CompensationType.Piecework: 
     //   return 'Сдельная'
-    // case CompensationType.Salary:
-    //   return 'Оклад'
+    case CompensationType.Salary:
+      return 'Оклад'
     }
 }
 
@@ -200,6 +200,18 @@ export const TranslateInterfaceLanguage = (t: InterfaceLanguage) => {
       return 'Русский'
     case InterfaceLanguage.Ukranian:
       return 'Українська'
+  }
+}
+
+export const TranslateScheduleType = (s: ScheduleType) => {
+  switch(s) {
+    case ScheduleType.FullDay:
+      return 'Полный день'
+    case ScheduleType.Flexible:
+      return 'Гибкий график'
+    case ScheduleType.Remote:
+      return 'Удаленная работа'
+
   }
 }
 
