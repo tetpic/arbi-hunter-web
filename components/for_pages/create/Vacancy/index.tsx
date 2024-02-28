@@ -311,13 +311,13 @@ export default function Vacancy(props: Props) {
       case 1:
         return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
       case 2: 
-        return {src: '/rive/vacancyCreate/2.riv', animations: ['Arg', 'ManLegs', 'Head', 'Hand', 'Papers']}
+        return {src: '/rive/vacancyCreate/1.riv', animations: ['Arg', 'ManLegs', 'Head', 'Hand', 'Papers']}
       case 3: 
-        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text']}
+        return {src: '/rive/vacancyCreate/2.riv', animations: ['Text']}
       case 4: 
         return {src: '/rive/vacancyCreate/3.riv', animations: ['Text1', 'Text2']}
       case 5: 
-        return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['EN', 'UA', 'RU']}
+        return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['RU', 'EN', 'UA']}
       case 6: 
         return {src: '/rive/vacancyCreate/5.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
       case 7: 
@@ -336,7 +336,7 @@ export default function Vacancy(props: Props) {
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[1]}   key={image.src} className={styles.rive}/>
+    return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[0]}   key={image.src} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{

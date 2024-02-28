@@ -252,7 +252,7 @@ export default function Cv(props: Props) {
       case 3: 
         return {src: '/rive/cvCreate/3.riv', animations: ['BubbleFloat', 'Bubbles', 'Eyes', 'Hand', 'Phone', 'Head', 'Body']}
       case 4: 
-        return {src: '/rive/cvCreate/4.riv', animations: ['Text'], artboards: ['EN', 'UA', 'RU']}
+        return {src: '/rive/cvCreate/4.riv', animations: ['Text'], artboards: ['RU','EN', 'UA']}
       case 5: 
         return {src: '/rive/cvCreate/5.riv', animations: ['Man1', 'Man2', 'Man1Head']}
       case 6: 
@@ -274,7 +274,7 @@ export default function Cv(props: Props) {
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive src={image.src} animations={image.animations}  key={image.src} className={styles.rive}/>
+    return <Rive src={image.src} animations={image.animations}  key={image.src} artboard={image.artboards&&image.artboards[0]} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{
