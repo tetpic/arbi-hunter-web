@@ -248,17 +248,17 @@ export default function Cv(props: Props) {
       case 1:
         return {src: '/rive/cvCreate/1.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
       case 2: 
-        return {src: '/rive/cvCreate/2.riv', animations: ['Hands', 'Flow']}
-      case 3: 
+        // return {src: '/rive/cvCreate/2.riv', animations: ['Hands', 'Flow']}
         return {src: '/rive/cvCreate/3.riv', animations: ['BubbleFloat', 'Bubbles', 'Eyes', 'Hand', 'Phone', 'Head', 'Body']}
+      case 3: 
+      return {src: '/rive/cvCreate/4.riv', animations: ['Text'], artboards: ['RU','EN', 'UA']}
       case 4: 
-        return {src: '/rive/cvCreate/4.riv', animations: ['Text'], artboards: ['RU','EN', 'UA']}
+      return {src: '/rive/cvCreate/5.riv', animations: ['Man1', 'Man2', 'Man1Head']}
       case 5: 
-        return {src: '/rive/cvCreate/5.riv', animations: ['Man1', 'Man2', 'Man1Head']}
+      return {src: '/rive/cvCreate/6.riv', animations: ['Bubbles', 'RHandMove', 'RHand', 'Eyes', 'Head', 'LHand', 'Finger']}
       case 6: 
-        return {src: '/rive/cvCreate/6.riv', animations: ['Bubbles', 'RHandMove', 'RHand', 'Eyes', 'Head', 'LHand', 'Finger']}
+      return {src: '/rive/cvCreate/7.riv', animations: ['DollarsA', 'Stars', 'Body', 'Head', 'Hand']}
       case 7: 
-        return {src: '/rive/cvCreate/7.riv', animations: ['DollarsA', 'Stars', 'Body', 'Head', 'Hand']}
       default:
         return {src: '/rive/cvCreate/1.riv', animations: ['Man2-3', 'Man2-2', 'Man2-1', 'Man1-4', 'Man1-3', 'Man1-2', 'Man1-1']}
     }
