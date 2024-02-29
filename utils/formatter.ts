@@ -165,7 +165,7 @@ export default class Formatter {
     let allMonths = arr.map((el) => {
       let oldString = el[0]?.split('.')||[new Date().getMonth().toString(), new Date().getFullYear().toString()]
       let oldDate = new Date(+oldString[1], +oldString[0])
-      let newString = el[1]?el[1]?.split('.'):[new Date().getMonth, new Date().getFullYear()]
+      let newString = el[1]?el[1]?.split('.'):[new Date().getMonth(), new Date().getFullYear()]
       let newDate = new Date(+newString[1], +newString[0])
       let m1=oldDate.getMonth()+(oldDate.getFullYear()*12)
       let m2=newDate.getMonth()+(newDate.getFullYear()*12)

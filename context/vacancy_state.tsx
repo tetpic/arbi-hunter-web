@@ -11,10 +11,9 @@ interface IState {
 
   draftVacancies: Map<number, IVacancy>
   archiveVacancies: Map<number, IVacancy>
-  setInactiveVacancies: ()=>Promise<boolean>
-
   activeVacancies: Map<number, IVacancy>,
-  setActiveVacancies: ()=>Promise<boolean>,
+  setVacancies: (disableLoader?: boolean)=>Promise<boolean>
+
 
   editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
   savedVCs: IVacancy[],
@@ -22,7 +21,7 @@ interface IState {
   saveVacancy: (id: number) => void
 
   removeVacancyFromSaved: (id: number) => void
-  removeVacancy: (id: number, published: boolean) => void
+  removeVacancy: (id: number, type?: 'drafts' | 'archive') => void
 
   editVcInEditor: (vc: IVacancy)=> void
 
@@ -32,6 +31,7 @@ interface IState {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
   total: number,
+  isLoading: boolean
 
 }
 
@@ -41,6 +41,7 @@ const VacancyContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  vacancy?: IVacancy
 }
 
 export function VacancyWrapper(props: Props) {
@@ -50,16 +51,20 @@ export function VacancyWrapper(props: Props) {
   const [draftVacancies, setDraftVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [savedVCs, setSavedVCState] = useState<IVacancy[]>(null)
   const [foundVacancies, setFoundVacancies] = useState<Map<number, IVacancy>>(new Map)
-  const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(null)
+  const [currentVacancy, setCurrentVacancyState] = useState<IVacancy>(props.vacancy||null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(undefined)
 
 
-  const setInactiveVacancies = async(): Promise<boolean> => {
-    return VacancyRepository.getArchiveVacancies()
+  const setVacancies = async(disableLoader?: boolean): Promise<boolean> => {
+    
+    !disableLoader&& setIsLoading(true)
+    return VacancyRepository.getUserVacancies()
     .then(res=> {
-      const _drafts = res.filter(e=> e.moderationStatus !== ModerationStatusType.Approved)
-      const _archive = res.filter(e=> e.moderationStatus === ModerationStatusType.Approved)
+      const _drafts = res.filter(e=> (!e.published||e.moderationStatus !== ModerationStatusType.Approved)&& !e.publishedAt)
+      const _archive = res.filter(e=> (!e.published ||e.moderationStatus !== ModerationStatusType.Approved)&& e.publishedAt)
+      const _active = res.filter(e => e.published && e.moderationStatus === ModerationStatusType.Approved)
       setArchiveVacanciesState(state=> {
         state.clear()
         _archive.forEach(e=> {
@@ -74,26 +79,34 @@ export function VacancyWrapper(props: Props) {
         })
         return new Map(state)
       })
+      setActiveVacanciesState(state=> {
+        state.clear()
+        _active.forEach(e=> {
+          state.set(e.id, e)
+        })
+        return new Map(state)
+      })
+      !disableLoader&& setIsLoading(false)
       return true
     })
     .catch(err=> false)
   }
 
-  const setActiveVacancies = async(): Promise<boolean> => {
-    return VacancyRepository.getActiveVacancies()
-    .then(res=> {
-      setActiveVacanciesState(state=> {
-        state.clear()
-        res.forEach(e=> {
-          state.set(e.id, e)
+  // const setActiveVacancies = async(): Promise<boolean> => {
+  //   return VacancyRepository.getActiveVacancies()
+  //   .then(res=> {
+  //     setActiveVacanciesState(state=> {
+  //       state.clear()
+  //       res.forEach(e=> {
+  //         state.set(e.id, e)
           
-        })
-        return new Map(state)
-      })
-      return true
-    })
-    .catch(err=> false)
-  }
+  //       })
+  //       return new Map(state)
+  //     })
+  //     return true
+  //   })
+  //   .catch(err=> false)
+  // }
 
   const setSavedVacancies = ():Promise<boolean> => {
     return VacancyRepository.getSavedFromCurrentProfile()
@@ -118,10 +131,28 @@ export function VacancyWrapper(props: Props) {
     })
   }
 
-  const removeVacancy = (id: number, published: boolean) =>{
+  const removeVacancy = (id: number, type?: 'drafts' | 'archive') =>{
+    if(!type) {
+      setActiveVacanciesState(state => {
+        state.delete(id)
+        return new Map(state)
+      })
+    }
+    if(type === 'archive') {
+      setArchiveVacanciesState(state => {
+        state.delete(id)
+        return new Map(state)
+      })
+    }
+    if(type === 'drafts') {
+      setDraftVacanciesState(state => {
+        state.delete(id)
+        return new Map(state)
+      })
+    }
     VacancyRepository.removeVacancy(id)
     .then(res=> {
-      published?setActiveVacancies():setInactiveVacancies()
+      // setVacancies(true)
     })
   }
 
@@ -129,7 +160,7 @@ export function VacancyWrapper(props: Props) {
     return VacancyRepository.editVacancyById(v, id)
     .then(_=>{
       if(published !==undefined) {
-        published==='active'?setActiveVacancies():setInactiveVacancies()
+        setVacancies(true)
       }
       return true
     })
@@ -166,9 +197,8 @@ export function VacancyWrapper(props: Props) {
     draftVacancies,
     foundVacancies,
     findVacancies,
-    setInactiveVacancies,
+    setVacancies,
     activeVacancies,
-    setActiveVacancies,
     editVacancy,
     savedVCs,
     setSavedVacancies,
@@ -180,6 +210,7 @@ export function VacancyWrapper(props: Props) {
     setCurrentVacancy,
     page,
     total,
+    isLoading,
     setPage,
   }
 

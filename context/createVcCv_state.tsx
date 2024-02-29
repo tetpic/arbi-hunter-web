@@ -4,7 +4,7 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import CvRepository from 'data/repositories/CvRepository'
 import VacancyRepository from 'data/repositories/VacancyRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
+import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
@@ -44,6 +44,7 @@ export interface ICreationState {
   progress: number
   setProgress: (p: number) => void
 
+  draftId: MutableRefObject<number>
   saveDraft: (data: {cv?: ICVCreate, vacancy?: IVacancyCreate}) => void
 
   categories:  Map<ISpecializationCategory, ISpecializationCategory[]|null>
@@ -55,10 +56,9 @@ export interface ICreationState {
   setActiveCategory: Dispatch<SetStateAction<ISpecializationCategory>>
   setActiveSubcategory: Dispatch<SetStateAction<ISpecializationCategory[]>>
   setSubcategoriesToCategory: (s: ISpecializationCategory) => void
-  
-  reset: ()=>void
 
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
+
 }
 
 
@@ -66,6 +66,7 @@ const CreateVcCvContext = createContext<Partial<ICreationState>>({})
 
 interface Props {
   children: React.ReactNode
+  progress?: number
 }
 
 export function CreateVcCvWrapper(props: Props) {
@@ -87,7 +88,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   const [currentCv, setCv] = useState<ICVCreate>()
   const [currentVc, setVc] = useState<IVacancy>()
-  const [progress, handleProgress] = useState<number>(1)
+  const [progress, handleProgress] = useState<number>(props.progress||1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
   const [subCategories, setSubCategoriesState] = useState<Map<number, ISpecializationCategory>>(new Map)
@@ -260,12 +261,7 @@ export function CreateVcCvWrapper(props: Props) {
     })
   }
 
-  const reset = () => {
-    handleProgress(1)
-    setHelp(initialHelpObject)
-    setCv(null)
-    setVc(null)
-  }
+
 
 
 
@@ -296,12 +292,12 @@ export function CreateVcCvWrapper(props: Props) {
     setProgress,
 
     saveDraft,
+    draftId,
 
     categories,
     subCategories,
     setCategories,
     setSubCategories,
-    reset,
 
     setEditedItem,
     activeCategory,

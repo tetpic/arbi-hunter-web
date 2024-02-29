@@ -23,6 +23,7 @@ import CvBusyness from './steps/CvBusyness'
 import { ICompensationModalArgs } from '@/components/modals/CompensationModal'
 import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
 import { clearObject } from 'utils/helpers'
+import SetTariff from '../utils/SetTariff'
 
 
 interface Props {
@@ -55,7 +56,7 @@ export default function Cv(props: Props) {
   const router = useRouter()
   const {progress, setProgress} = creationContext
   const maxProgress = useRef<number>(props?.cv?.completedSteps?.length||1)
-  const CVItemsCount = 6
+  const CVItemsCount = 7
 
   const submit = (data: ICVCreate) => {
     setLoading(true)
@@ -83,7 +84,6 @@ export default function Cv(props: Props) {
       CvRepository.updateCV(props.id, clearObject(sendData, 'string') as ICVCreate)
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
-        creationContext.reset()
         router.replace('/profile?page=cvs')      
       })
       .catch(err=>{        
@@ -92,10 +92,9 @@ export default function Cv(props: Props) {
     }
     else {
       CvRepository.createCV(clearObject(sendData, 'string') as ICVCreate)
-      .then(_ => {
+      .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
-        creationContext.reset()
-        router.replace('/profile?page=cvs')  
+        router.replace(`/preview/cv/${res.id}`)  
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
@@ -238,9 +237,11 @@ export default function Cv(props: Props) {
   const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
 
   const changeComponent = (p: number) => {
-    const [element, type] = getComponent(p)
-    setTitle(getTitle(type))   
-    setPage(element)
+    if(progress < CVItemsCount) {
+      const [element, type] = getComponent(p)
+      setTitle(getTitle(type))   
+      setPage(element)
+    }
   }
 
   const getImage = ():{src: string, animations: string[], artboards?: string[]} => {
@@ -273,28 +274,25 @@ export default function Cv(props: Props) {
     if(props.id) {
       creationContext.getCurrentCv(props.id, props.cv)
     }  
-    return ()=> {
-      formik.resetForm()
-      setProgress(1)
-      creationContext.setHelpObjects({})
-      creationContext.reset()    
-    }
   }, [])
 
 
   useEffect(()=>{
-    if(creationContext.activeSubCategory.length > 0) {
+    if(creationContext.activeSubCategory.length > 0 && progress === 1) {
       nextPageValidator()
     }
   }, [creationContext.activeSubCategory])
 
   useEffect(()=>{
+
     if(progress < 1) {
       setProgress(1)
       router.back()
       return
     }
     changeComponent(progress)
+
+    router.replace({query: { ...router.query, id: creationContext.draftId.current, progress: progress}}, undefined, {shallow: true})
 
     if(maxProgress.current > progress|| props.cv?.completedSteps?.length === CVItemsCount) return 
 
@@ -314,6 +312,7 @@ export default function Cv(props: Props) {
       
       creationContext.saveDraft({cv: {...formikCleared, completedSteps: new Array(maxProgress.current).fill(true).map((e, i) => i)}})
     }
+    
   }, [progress])
 
   useEffect(()=>{
@@ -323,12 +322,16 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-    {/* <RiveComponent className={styles.rive}/> */}
-    {!isTabletWidth&& memoedRive}
+    {progress === CVItemsCount && 
+      <SetTariff onSave={formik.submitForm} onBack={()=>setProgress(progress-1)} type='cv'/>
+    }
+    {progress < CVItemsCount &&
+    <>
+    {!isTabletWidth && progress < CVItemsCount&& memoedRive}
     <div className={styles.content}>    
-      <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
+        <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
+        <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}
           {page} 
@@ -346,6 +349,7 @@ export default function Cv(props: Props) {
         </Form>
       </FormikProvider>
     </div>
+    </>}
   </div>
 }
 

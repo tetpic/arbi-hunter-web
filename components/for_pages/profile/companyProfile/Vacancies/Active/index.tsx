@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
-import { useEffect, useState } from 'react'
 import VacancyItem from '../VacancyItem'
 
 interface Props {
@@ -11,16 +10,13 @@ interface Props {
 export default function VacanciesActive(props: Props) {
 
   const vacancyContext = useVacancyContext()
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
-  useEffect(()=>{
-    vacancyContext.setActiveVacancies().then(res=>res&&setIsLoaded(res))
-  }, [])
+
 
   return (
   <div className={styles.root}> 
       <div className={styles.wrapper}>
-        {isLoaded&&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
+        {!vacancyContext.isLoading &&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
           [...vacancyContext.activeVacancies.values()].map((el, index)=> {
             return <VacancyItem 
             key={index} 
@@ -29,10 +25,10 @@ export default function VacanciesActive(props: Props) {
             isActive={true}/>
           })  
           ||
-          isLoaded&&vacancyContext.activeVacancies.size === 0 &&
+          !vacancyContext.isLoading &&vacancyContext.activeVacancies.size === 0 &&
           <p className={'empty'}>Нет активных вакансий</p>  
           ||
-          !isLoaded &&
+          vacancyContext.isLoading &&
           <Spinner  size={24}/>
         } 
       </div>

@@ -18,7 +18,7 @@ import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
-import OptionsList from 'components/ui/OptionsList'
+import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
 import { useRouter } from 'next/router'
@@ -42,8 +42,10 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
 
-  const archiveHandler =()=> {
-    cvContext.updateCv(cv.id, {...cv, published: !cv?.published, salary: Number(cv.salary)})
+  const archiveHandler =(e: React.MouseEvent<HTMLElement>)=> {
+    e.preventDefault()
+    e.stopPropagation()
+    cvContext.updateCv(cv.id, {published: !cv?.published})
   }
 
   const editHandler =() => {
@@ -60,16 +62,23 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     )
   }
 
-  const options = <OptionsList 
-  options={[
+  const defaultOptions:IOptionList[] = [
     {title: cv?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
     {title: 'Дублировать'},
     {title: 'Поделиться'},
     {title: 'Продлить и Поднять'},
     {title: 'Улучшить'},
     {title: 'Редактировать', onClick: editHandler},
+    {title: 'Удалить', onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]
+
+  const draftOptions:IOptionList[] = [
+    {title: 'Редактировать', onClick: editHandler},
     {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
-  ]} 
+  ]
+
+  const options = <OptionsList 
+  options={props.type === 'drafts'?draftOptions:defaultOptions} 
   onMouseLeave={()=>openDropDown(false)}
   />
 
@@ -126,23 +135,57 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
     {!props.cardMode &&    
       <div className={styles.buttonsWrapper}>
-        {cv.moderationStatus !== 'approved' &&
+        {cv.moderationStatus !== 'approved' && props.type !== 'drafts' &&
           <p className={styles.refreshed}>На модерации</p>
         }
-        <Button
-        styleType={['gradient']}
-        >
-          Поднять в поиске
-        </Button>
-        <Button 
-        styleType={['borderGradient']}
-        onClick={(e)=> {
-          e.stopPropagation()
-          e.preventDefault()
-          showFeedbacksForVacancy()}}
-        >
-          {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
-        </Button>
+
+        {cv.published && cv.moderationStatus === 'approved' &&
+          <Button
+          styleType={['gradient']}
+          >
+            Поднять в поиске
+          </Button>
+        }
+
+        {(
+          ((!cv.published || !cv.publishedAt) &&  cv.moderationStatus === 'approved' && props.type==='archive') 
+          || 
+          (props.type === 'drafts' && cv.completedSteps?.length > 5) 
+        )&&
+          <Button
+          styleType={['gradient']}
+          onClick={archiveHandler}
+          >
+            Опубликовать
+          </Button>
+        }
+
+        {cv.completedSteps?.length <=5 && props.type === 'drafts' &&
+          <Button styleType={['gradient']} 
+          onClick={(e)=>{
+            e.preventDefault()
+            e.stopPropagation()
+            router.push({pathname: '/create/cv/', query: {id: cv.id, progress: cv.completedSteps.length}})}
+          }>
+            Продолжить заполнение
+          </Button>
+        }
+
+        {props.type === 'drafts' && cv.completedSteps?.length > 5 &&
+          <Button styleType={['black']}>Редактировать</Button>
+        }
+
+        {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&&
+          <Button 
+          styleType={['black']}
+          onClick={(e)=> {
+            e.stopPropagation()
+            e.preventDefault()
+            showFeedbacksForVacancy()}}
+            >
+            {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+          </Button>
+        }
       </div>
       }
   </div>)

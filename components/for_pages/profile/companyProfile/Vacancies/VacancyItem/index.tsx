@@ -9,7 +9,7 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useRouter } from 'next/router'
-import { ModalType, TariffType} from 'types/enums'
+import { ModalType, ModerationStatusType, TariffType} from 'types/enums'
 import Formatter from 'utils/formatter'
 
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -23,6 +23,7 @@ import OptionsDropDown from 'components/ui/OptionsDropDown'
 import { TranslateTariffType } from 'utils/enumsTranslations'
 import classNames from 'classnames'
 import Progress from './Progress'
+import P from '@/components/ui/P'
 
 interface Props {
   vacancy: IVacancy
@@ -41,9 +42,11 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
 
-  const setActiveHandler = () => {
+  const setActiveHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
     vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
-    .then(res=> res&&vacancyContext.setInactiveVacancies())
+    .then(res=> res&&vacancyContext.setVacancies(true))
   }
 
   const archiveHandler =()=> {
@@ -58,7 +61,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
       {text: 'Вы действительно хотите удалить вакансию?',
       callback: ()=>{
-        vacancyContext.removeVacancy(vacancy.id, vacancy.published)
+        vacancyContext.removeVacancy(vacancy.id, props.type)
       }
     })
   }
@@ -84,7 +87,9 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     }
   }
 
-  return (<div className={styles.item}> 
+
+
+  return (<div className={styles.item} onClick={()=>router.push(`/preview/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
           <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
@@ -133,12 +138,49 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
       
       {!props.cardMode &&
         <div className={styles.buttonsWrapper}>
-          <Button onClick={()=>{router.push(`/responses/${vacancy.id}/`)}} styleType={['gradient']}>Смотреть отклики</Button>
-          {!isActive && 
-            <Button styleType={['black']}  onClick={setActiveHandler}>Сделать активной</Button>
-          ||
-            <Button href={`recruiting?vcId=${vacancy.id}`} styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
-          }       
+          {vacancy.moderationStatus !== ModerationStatusType.Approved && props.type === 'archive' &&
+            <P styleType={['medium', 'w500', 'greyLight']}>На модерации</P>
+          }
+          {!props.type &&
+            <>
+            <Button 
+            stopPropagation
+            onClick={(e)=>{
+              router.push(`/responses/${vacancy.id}/`)
+            }} 
+            styleType={['gradient']}>
+              Смотреть отклики
+            </Button>
+            <Button 
+            stopPropagation
+            onClick={(e)=>{
+              router.push({pathname:'/recruiting', query: {vcId: vacancy.id}})
+            }} 
+            styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
+            </>
+          }
+          {props.type === 'archive' && vacancy.moderationStatus === ModerationStatusType.Approved &&
+            <>
+            <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}>Разместить повторно</Button>
+            <Button 
+            stopPropagation
+            onClick={(e)=>{
+              router.push(`/responses/${vacancy.id}/`)
+            }} 
+            styleType={['black']}>
+              Смотреть отклики
+            </Button>
+            </>
+          }
+          {props.type === 'drafts' && vacancy.completedSteps?.length < 8 &&
+            <Button styleType={['gradient']} stopPropagation onClick={editHandler}>Продолжить редактирование</Button>
+            ||
+            props.type === 'drafts' && vacancy.completedSteps?.length >=8 &&
+            <>
+             <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}>Опубликовать</Button>
+             <Button styleType={['black']} onClick={editHandler}>Редактировать</Button>
+            </>
+          }
         </div>
       }
   </div>)

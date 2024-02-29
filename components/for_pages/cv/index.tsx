@@ -70,7 +70,7 @@ export default function CvPage(props: Props) {
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-    vacancyContext.setActiveVacancies()
+    vacancyContext.setVacancies()
   }, [])
 
   useEffect(()=>{

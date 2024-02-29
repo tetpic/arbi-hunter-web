@@ -5,6 +5,7 @@ export interface TimeStamp {
   createdAt?: string,
   updatedAt?: string,
   deletedAt?: string|null
+  publishedAt?: string|null
 }
 
 export interface TimeLine {

@@ -22,6 +22,8 @@ import Specialization from '../utils/Steps/Specialization'
 import Busyness from '../utils/Steps/Busyness'
 import Contacts from '../utils/Steps/Contacts'
 import Spacer from '@/components/ui/Spacer'
+import SetTariff from '../utils/SetTariff'
+import { clearObject } from 'utils/helpers'
 
 interface Props {
   id?: number
@@ -54,10 +56,12 @@ export default function Vacancy(props: Props) {
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
-  const [loading, setLoading] = useState<boolean>(false)
   const maxProgress = useRef<number>(props.vacancy?.completedSteps?.length||1)
+  const initialDescription = '<p>Обязанности</p><ul><li></li><li></li><li></li></ul><p>Требования</p><ul><li></li><li></li><li></li></ul><p>Условия</p><ul><li></li><li></li><li></li></ul>'
 
-  const CVItemsCount = 8
+  const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
+
+  const VCItemsCount = 9
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
 
   const getContactName = () => {
@@ -74,7 +78,6 @@ export default function Vacancy(props: Props) {
     }
   }
 
-  const initialDescription = '<p>Обязанности</p><ul><li></li><li></li><li></li></ul><p>Требования</p><ul><li></li><li></li><li></li></ul><p>Условия</p><ul><li></li><li></li><li></li></ul>'
 
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
@@ -107,14 +110,7 @@ export default function Vacancy(props: Props) {
     showTelegramNickname: props.vacancy?.showTelegramNickname,
   }
 
-  const submit = (data: IVacancyCreate) => {
-    const isValid = nextPageValidator()
-    if(!isValid) {
-      return
-    }
-
-    setLoading(true)
-    const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
+  const getSendData = (data: IVacancyCreate) => {
     const sendData: IVacancyCreate = {
       ...data, 
       salary: null,
@@ -126,8 +122,19 @@ export default function Vacancy(props: Props) {
       sourcesIds: [...activeSources.keys()],
       verticalsIds: [...activeVerticals.keys()],
       geosIds: [...activeGeos.keys()],
-      categoriesIds: categoryIds.map(el=> el.id)
+      categoriesIds: [creationContext.activeSubCategory[0]?.id],
+      description: data.description === initialDescription||data.description === '<p></p>'? '<p></p>' : data.description
     }
+    return clearObject(sendData) as IVacancyCreate
+  }
+
+  const submit = (data: IVacancyCreate) => {
+    const isValid = nextPageValidator()
+    if(!isValid) {
+      return
+    }
+
+    const sendData = getSendData(data)
 
     if(data.isRemote) {
       sendData.cityId = null
@@ -141,25 +148,22 @@ export default function Vacancy(props: Props) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
         appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
-        creationContext.reset()   
         router.replace('/profile?page=vacancies')  
       })
       .catch(err=>{        
         appContext.showSnackbar(err.toString(), SnackbarType.error)
-        setLoading(false)
       })
     }
     else {
-      VacancyRepository.createVacancy(sendData)
+      VacancyRepository.editVacancyById(sendData, creationContext.draftId.current)
       .then(res => {
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
-          router.replace('/profile?page=vacancies')  
+          router.replace(`/preview/vacancy/${res.id}`)  
         }, 2000)
       })
       .catch(err=>{
         setTimeout(()=> {
-          setLoading(false)
         }, 2000)
         alert(err.toString())
       })
@@ -242,6 +246,7 @@ export default function Vacancy(props: Props) {
           return false
         }
       case 8:
+        setProgress(pageNumber||progress+1)
         return true
       // case 7:
       //   return true
@@ -301,9 +306,11 @@ export default function Vacancy(props: Props) {
   }
 
   const changeComponent = (p: number) => {
-    const [element, type] = getComponent(p)
-    setTitle(getTitle(type))   
-    setPage(element)
+    if(progress < VCItemsCount) {
+      const [element, type] = getComponent(p)
+      setTitle(getTitle(type))   
+      setPage(element)
+    }
   }
 
   const getImage = ():{src: string, animations: string[], artboards?: string[]} => {
@@ -332,8 +339,6 @@ export default function Vacancy(props: Props) {
   }
 
 
-
-
   const memoedRive = useMemo(()=>{
     const image = getImage()
     return <Rive stateMachines={'State Machine 1'} src={image.src} animations={image.animations} artboard={image.artboards&&image.artboards[1]}    key={image.src} className={styles.rive}/>
@@ -345,14 +350,19 @@ export default function Vacancy(props: Props) {
       router.back()
       return
     }
+    // if(props.vacancy) {
+      router.replace({query: {id: creationContext.draftId.current, ...router.query, progress: progress}}, undefined, {shallow: true})
+    // }
+
     changeComponent(progress)
-    if(maxProgress.current > progress || props.vacancy?.completedSteps?.length === CVItemsCount) return 
+    if(maxProgress.current > progress || props.vacancy?.completedSteps?.length === VCItemsCount) return 
     maxProgress.current < progress && (maxProgress.current = progress)
     
     if(progress > 1 && creationContext.activeSubCategory.length > 0) {
+      const sendData = getSendData(formik.values)
+
       const formikCleared = {
-        ...formik.values, 
-        categoriesIds: [creationContext.activeSubCategory[0]?.id],
+        ...sendData, 
         salaryMin: Number(formik.values.salaryMin?.toString().replaceAll(' ', '')),
         salaryMax: Number(formik.values.salaryMax?.toString().replaceAll(' ', '')),
         published: false,
@@ -376,25 +386,24 @@ export default function Vacancy(props: Props) {
     if(props.id) {
       creationContext.getCurrentVc(props.id, props.vacancy)
     }  
-    return ()=> {
-      formik.resetForm()
-      setProgress(1)
-      creationContext.setHelpObjects()
-      creationContext.reset()
-    }
   }, [])
 
   return <div className={styles.root}>
-    {!isTabletWidth && memoedRive}
+    {progress === VCItemsCount && 
+      <SetTariff onSave={formik.submitForm} onBack={()=>setProgress(progress-1)} type='vacancy'/>
+    }
+
+    {progress < VCItemsCount &&<>
+    {!isTabletWidth && progress < VCItemsCount && memoedRive}
     <div className={styles.content}>    
-      <p className={styles.title}>  
-        {isPhoneWidth &&
-          <Button className={styles.buttonBorderGradientSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
-        }
-        {title}
-      </p>
-      <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titles} onClick={nextPageValidator}/>
       <FormikProvider value={formik}>
+        <p className={styles.title}>  
+          {isPhoneWidth &&
+            <Button className={styles.buttonBorderGradientSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
+          }
+          {title}
+        </p>
+        <ProgressBar progress={progress} pointsCount={VCItemsCount} titles={titles} onClick={nextPageValidator}/>
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}
           {page} 
@@ -405,10 +414,10 @@ export default function Vacancy(props: Props) {
             {progress > 1 && !isPhoneWidth &&
               <Button className={styles.buttonBorderGradient} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
-            {progress < CVItemsCount &&
+            {progress < VCItemsCount &&
               <Button className={styles.buttonGradient} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
-            { progress === CVItemsCount &&
+            { progress === VCItemsCount &&
               <Button isProcess={formik.isSubmitting} spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonGradient}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
@@ -416,5 +425,6 @@ export default function Vacancy(props: Props) {
       </FormikProvider>
       
     </div>
+    </>}
   </div>
 }

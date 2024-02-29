@@ -29,7 +29,7 @@ export default function Footer(props: Props) {
   return (<div className={styles.root}> 
   <div className='contentWrapper'>
     <div className={styles.top}>
-    <Image className={styles.background} src={'images/ahFooter.svg'} alt={'back'} width={666} height={457}/>
+    <Image className={styles.background} src={'/images/ahFooter.svg'} alt={'back'} width={666} height={457}/>
 
       <div className={styles.left}>
         <div className={styles.logo}>

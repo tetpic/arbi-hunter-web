@@ -26,7 +26,6 @@ export interface IArticle extends TimeStamp {
   published: boolean,
   authorName: string|null,
   likesCount: string,
-  publishedAt: string|null,
   adminUpdatedAt: string,
   adminId: number,
   communityId: number|null,

@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import VacanciesActive from './Active'
 import styles from './index.module.scss'
 import VacanciesInactive from './Inactive'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import { useVacancyContext } from 'context/vacancy_state'
 
 interface Props {
 }
@@ -25,6 +26,11 @@ function translate (n: VacanciesNavigation) {
 }
 
 export default function Vacancies(props: Props) {
+  const vacancyContext = useVacancyContext()
+
+  useEffect(()=>{
+    vacancyContext.setVacancies()
+  }, [])
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)
   const items = Object.values(VacanciesNavigation).map(el=> {return {name: translate(el), type: el}})

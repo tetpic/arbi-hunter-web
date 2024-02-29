@@ -18,10 +18,13 @@ export default class VacancyRepository {
     return res
   }
   
-  static async getArchiveVacancies(): Promise<IVacancy[]|null> {
+  static async getUserVacancies(): Promise<IVacancy[]|null> {
     const res = await request({
       method: 'get',
-      url: '/api/vacancy/currentUser?s={"published": false}&sort=updatedAt,DESC',
+      url: '/api/vacancy/currentUser',
+      data: {
+        sort:'updatedAt,DESC'
+      }
     })
     if(res.err) {
       return null
@@ -29,16 +32,16 @@ export default class VacancyRepository {
     return res
   }
 
-  static async getActiveVacancies(): Promise<IVacancy[]|null> {
-    const res = await request({
-      method: 'get',
-      url: '/api/vacancy/currentUser?s={"published": true}&sort=updatedAt,DESC',
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
+  // static async getActiveVacancies(): Promise<IVacancy[]|null> {
+  //   const res = await request({
+  //     method: 'get',
+  //     url: '/api/vacancy/currentUser?s={"published": true}&sort=updatedAt,DESC',
+  //   })
+  //   if(res.err) {
+  //     return null
+  //   }
+  //   return res
+  // }
 
   static async editVacancyById(data: IVacancyCreate, id: number): Promise<any|null> {
     const res = await request({

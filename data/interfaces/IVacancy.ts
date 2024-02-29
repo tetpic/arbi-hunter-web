@@ -40,7 +40,6 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   applicationsByCurrentUser: IApplication[]
   tariff: TariffType
   topPurchasedAt: string|null
-  publishedAt: string|null
 }
 
 

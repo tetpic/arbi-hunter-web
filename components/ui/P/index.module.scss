@@ -78,3 +78,8 @@
   align-items: center;
   column-gap: 8px;
 }
+
+.alignStart {
+  @extend .alignCenter;
+  align-items: flex-start;
+}

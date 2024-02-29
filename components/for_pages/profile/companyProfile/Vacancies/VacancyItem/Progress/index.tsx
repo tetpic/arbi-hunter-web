@@ -17,6 +17,6 @@ export default function Progress(props: Props) {
         return <div className={classNames(styles.progressItem, i+1===props.progress?.length && styles.active)}></div>
       })}
     </div>
-    <P styleType={['small']}>Черновик почти готов к публикации</P>
+    <P styleType={['small']}>Черновик {props.progress.length !== props.stepsCount && ' почти'} готов к публикации</P>
   </div>)
 }

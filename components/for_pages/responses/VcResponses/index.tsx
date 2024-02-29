@@ -97,7 +97,7 @@ export default function VCFeedbacks(props: Props) {
   }, [currentPage, responsesContext.VCFeedbacks])
 
   useEffect(()=>{
-    vacancyContext.setActiveVacancies()
+    vacancyContext.setVacancies()
   }, [])
 
   const openFiltersHandler = () => {

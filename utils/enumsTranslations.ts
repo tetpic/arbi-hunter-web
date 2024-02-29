@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -213,6 +213,18 @@ export const TranslateScheduleType = (s: ScheduleType) => {
       return 'Удаленная работа'
 
   }
+}
+
+export const TranslateEmploymentType = (e: EmploymentType) => {
+  switch(e) {
+    case EmploymentType.FullTime:
+      return 'Полная'
+    case EmploymentType.PartTime:
+      return 'Частичная'
+    case EmploymentType.Project:
+      return 'Проектная работы'
+  }
+  
 }
 
 export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])

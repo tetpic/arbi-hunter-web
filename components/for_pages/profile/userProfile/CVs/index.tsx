@@ -49,14 +49,18 @@ export default function CVs(props: Props) {
         setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === true && el.moderationStatus === 'approved'))
         break
       case CVNavigation.Archive: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === false && el.moderationStatus === 'approved'))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => (el.moderationStatus !== 'approved'||!el.published)&& el.publishedAt))
         break
       case CVNavigation.Drafts: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.moderationStatus !== 'approved'))
+        setFilteredCvs(cvContext?.savedCvs.filter(el => (el.moderationStatus !== 'approved'||!el.published)&& !el.publishedAt ))
         break
     }
   }, [activeItem, cvContext.savedCvs])
 
+  // useEffect(()=>{
+  //   console.log(filteredCvs);
+    
+  // }, [filteredCvs])
 
 
   return (
@@ -68,7 +72,7 @@ export default function CVs(props: Props) {
         <ProfileCvItem  
         cv={el} 
         key={index}
-        isLast={index===filteredCvs.length -1} 
+        isLast={index > 2 &&index===filteredCvs.length -1} 
         image={getUserImageSource(userContext.currentProfile)}  
         type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
         />

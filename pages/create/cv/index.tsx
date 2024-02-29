@@ -8,6 +8,7 @@ import { CookiesType } from 'types/enums'
 
 interface Query {
   id?: string
+  progress?: number
 }
 interface Props extends Query {
   cv: ICV
@@ -17,9 +18,10 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const { id } = context.query  
   const token = context.req.cookies[CookiesType.accessToken]
   const profileType = context.req.cookies[CookiesType.profileType]
+  const progress = Number(context.query.progress)
   if(profileType && token && id) {
     const cv = await CvRepository.getById(Number(id), profileType, token).then(res=> res)
-    return {props: {cv, id}}
+    return {props: {cv, id, progress}}
   }
   else if(profileType && token && !id) {
     return {props: {}}
@@ -36,7 +38,7 @@ export default function CvCreate(props: Props) {
   
   return (
     <ContentLayout hideMobileHeader title={'Редактирование Резюме'}>
-      <CreateVcCvWrapper>
+      <CreateVcCvWrapper progress={props.progress}>
         <SourcesWrapper>
           <Cv id={Number(props.id) as number} cv={props.cv}/>
         </SourcesWrapper>

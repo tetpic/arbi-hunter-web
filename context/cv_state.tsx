@@ -1,4 +1,4 @@
-import { ICV } from 'data/interfaces/ICV'
+import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import CvRepository from 'data/repositories/CvRepository'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ interface IState {
   saveCv: (id: number)=> Promise<boolean>
   removeCvfromSaved: (id: number) => Promise<boolean>
   deleteCv: (id: number) => void
-  updateCv: (id: number, cv: ICV) =>void
+  updateCv: (id: number, cv: Partial<ICV>) =>void
   editCv: (cv: ICV) => void
   findCvs: (data?: IVacancyCvSearchParams) => Promise<boolean>
   page: number,
@@ -94,8 +94,8 @@ export function CvWrapper(props: Props) {
     })
   }
 
-  const updateCv = (id: number, cv: ICV) => {
-    CvRepository.updateCV(id, cv)
+  const updateCv = (id: number, cv: Partial<ICV>) => {
+    CvRepository.updateCV(id, cv as ICVCreate)
     .then(_=> {
       setSavedCvs()
     })

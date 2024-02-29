@@ -91,7 +91,7 @@ function RecruitingPageHirerInner(props: Props) {
   }
 
   const init = async() => {
-    vacancyContext.setActiveVacancies()
+    vacancyContext.setVacancies()
     if(props.vcId) {
       vacancyContext.setCurrentVacancy(props.vcId)
     }

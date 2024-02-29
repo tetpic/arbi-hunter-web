@@ -20,7 +20,10 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
   const token = context.req.cookies[CookiesType.accessToken]||null
   const profile = context.req.cookies[CookiesType.profileType]||null
   const id = context.query?.id
-  const cv = await CvRepository.getById(id)
+  if(!id|| !token|| !profile) {
+    return {redirect: {destination: '/'}}
+  }
+  const cv = await CvRepository.getById(id, profile, token)
   const user = await UserRepository.getCurrentUser(token)
   if(profile && token && cv && user.profiles[0].id === cv.profile.id) {
     return {props: {id: Number(id), cv: cv}}

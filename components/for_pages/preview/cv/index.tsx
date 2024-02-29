@@ -1,6 +1,6 @@
-import { useCvContext } from 'context/cv_state'
 import styles from './index.module.scss'
-import { useEffect } from 'react'
+import { useCvContext } from 'context/cv_state'
+import { useEffect, useState } from 'react'
 import BackTextButton from '@/components/ui/BackTextButton'
 import { useRouter } from 'next/router'
 import Title from '@/components/ui/TitleForSection'
@@ -15,12 +15,21 @@ import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import MailConvertSvg from '@/components/svg/MailConvertSvg'
 import Button from '@/components/ui/Button'
-import { TranslateCompensationType, TranslateEducationType, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEducationType, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
 import FilesList from '@/components/ui/FilesList'
 import { PreviewImage } from 'data/interfaces/Common'
+import PhoneSvg from '@/components/svg/PhoneSvg'
+import TelegramSvg from '@/components/svg/TelegramSvg'
+import LinkedInSvg from '@/components/svg/LinkedInSvg'
+import SkypeSvg from '@/components/svg/SkypeSvg'
+import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
+import MailAltSvg from '@/components/svg/MailAltSvg'
+import languages from '@cospired/i18n-iso-languages'
+import ru from '@cospired/i18n-iso-languages/langs/ru.json'
+
 
 interface Props {
   id: number
@@ -31,11 +40,14 @@ export default function CvPreview(props: Props) {
   const currentCv = cvContext.currentCv
   const router = useRouter()
   const userContext = useUserContext()
+  const [isLocaleLoaded, setIsLocaleLoaded] = useState(false)
 
   useEffect(()=>{
     if(!cvContext.currentCv) {
       cvContext.getCv(props.id)
     }
+    languages.registerLocale(ru)
+    setIsLocaleLoaded(true)
   }, [cvContext])
 
   const personalHead = (
@@ -45,12 +57,25 @@ export default function CvPreview(props: Props) {
     </div>
   )
 
+  const editElement = (progress: number) => {
+    if(currentCv.completedSteps && currentCv.completedSteps.length < progress) {
+      router.push(`/create/cv?id=${currentCv.id}&progress=${currentCv.completedSteps.length}`)
+    }
+    else {
+      router.push(`/create/cv?id=${currentCv.id}&progress=${progress}`)
+    }
+  }
+
   return (<div className={styles.root}> 
     <BackTextButton onClick={router.back} className={styles.backButton}/>
     <Title title={'Предпросмотр резюме'}/>
     <div className={styles.itemsWrapper}>
 
-      <PreviewItem titleElement={personalHead} wrapperClassName={styles.item}>
+      <PreviewItem 
+      titleElement={personalHead} 
+      wrapperClassName={styles.item}
+      onClick={() => editElement(1)}
+      >
         <P 
         styleType={['small', currentCv.vacancyLookType === VacancyLookType.NotLooking?'red':'green']} 
         className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.status_red: styles.status_green)}
@@ -70,40 +95,40 @@ export default function CvPreview(props: Props) {
 
       </PreviewItem>
 
-      <PreviewItem title='Контактная информация' >
+      <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => editElement(2)}>
         {currentCv.profile.email &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
           {currentCv.profile.email}
         </P>
         }
         {currentCv.profile.phone &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
           {currentCv.profile.phone}
         </P>
         }
         {currentCv.profile.telegramNickname &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
           {currentCv.profile.telegramNickname}
         </P>
         }
         {currentCv.whatsapp &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><WhatsAppSvg/></Button>
           {currentCv.whatsapp}
         </P>
         }
         {currentCv.skype &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><SkypeSvg/></Button>
           {currentCv.skype}
         </P>
         }
         {currentCv.linkedin &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
+          <Button styleType={['icon', 'black']}><LinkedInSvg/></Button>
           {currentCv.linkedin}
         </P>
         }
@@ -115,7 +140,11 @@ export default function CvPreview(props: Props) {
         }
       </PreviewItem>
 
-      <PreviewItem title={' '} wrapperClassName={styles.item}>
+      <PreviewItem 
+      title={' '} 
+      wrapperClassName={styles.item}
+      onClick={() => editElement(6)}
+      >
         {currentCv.relocation &&
           <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}</P>
         }
@@ -132,13 +161,19 @@ export default function CvPreview(props: Props) {
       </PreviewItem>
 
       {currentCv.bio &&
-        <PreviewItem title={'О себе'}>
+        <PreviewItem 
+        title={'О себе'} 
+        onClick={() => editElement(2)}
+        >
           <HtmlText text={currentCv.bio} className={styles.bio}/>
         </PreviewItem>
       }
 
       {currentCv.experienceInfo && currentCv.experienceInfo.length > 0 &&
-        <PreviewItem title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }>
+        <PreviewItem 
+        title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
+        onClick={() => editElement(3)}
+        >
           {currentCv.experienceInfo.map(el=> {
             return <div className={styles.experience}>
               <P styleType={['w500', 'medium']}>{el.position}</P>
@@ -150,7 +185,10 @@ export default function CvPreview(props: Props) {
       }
 
       {currentCv.educationInfo && currentCv.educationInfo.length > 0 &&
-        <PreviewItem title={'Образование'}> 
+        <PreviewItem 
+        title={'Образование'}
+        onClick={() => editElement(4)}
+        > 
           <P styleType={['w500', 'medium']}>{TranslateEducationType(currentCv.education)}</P>
           {currentCv.educationInfo.map(el=> {
             return <div className={styles.experience}>
@@ -162,19 +200,28 @@ export default function CvPreview(props: Props) {
       }
 
       {currentCv.skills && currentCv.skills.length > 0 &&
-        <PreviewItem title='Навыки'>
+        <PreviewItem 
+        title='Навыки'
+        onClick={() => editElement(5)}
+        >
           <TagList tags={currentCv.skills.map(el => ({name: el.title}))} />
         </PreviewItem>
       }
 
-      {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 &&
-        <PreviewItem title='Владение языками'>
-          <TagList tags={currentCv.languageKnowledges.map(el => ({name: [el.language, el.level].join(' ')}))} />
+      {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && isLocaleLoaded &&
+        <PreviewItem 
+        title='Владение языками'
+        onClick={() => editElement(5)}
+        >
+          <TagList tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
 
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
-        <PreviewItem title='Портфолио'>
+        <PreviewItem 
+        title='Портфолио'
+        onClick={() => editElement(5)}
+        >
           <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
           {currentCv.assets && currentCv.assets.map(el => {
             return <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>

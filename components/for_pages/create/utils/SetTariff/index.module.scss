@@ -1,0 +1,36 @@
+@import 'styles/index';
+
+.tariffItems {
+  margin-top: 24px;
+  display: flex;
+  column-gap: 24px;
+
+}
+
+.tariff {
+  background: $gradientFiltered;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+  max-width: 370px;
+}
+
+.check {
+  flex-shrink: 0;
+}
+
+.desc {
+  align-self: flex-start;
+}
+
+.buttonsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 16px;
+  margin-top: 24px;
+}

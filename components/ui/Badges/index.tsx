@@ -4,7 +4,7 @@ interface Props {
   items: {
     title: string
     value: string
-    icon: JSX.Element
+    icon?: JSX.Element
   }[]
 }
 
@@ -25,9 +25,11 @@ export default function Badges(props: Props) {
       return (
         <>
           <div className={styles.badge} key={index+el.value} >
+            {el.icon &&
             <div className={styles.badgeIcon}>
               {el.icon}
             </div>
+            }
             <p className={styles.badgeText}>
               {el.title}
             </p>

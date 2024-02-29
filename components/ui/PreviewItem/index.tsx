@@ -7,8 +7,10 @@ import P from '../P'
 interface Props {
   title?: string
   titleElement?: JSX.Element|JSX.Element[]
-  children: JSX.Element|JSX.Element[]|string|null|any
+  children?: JSX.Element|JSX.Element[]|string|null|any
   wrapperClassName?: string
+  disableLink?: boolean
+  onClick?: ()=>void
 }
 
 export default function PreviewItem(props: Props) {
@@ -20,7 +22,9 @@ export default function PreviewItem(props: Props) {
         <P styleType={['w600', 'large']}>{props.title}</P>
       }
       {props.titleElement}
-      <Button styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
+      {!props.disableLink &&
+        <Button onClick={props.onClick} styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
+      } 
     </div> 
     <div className={props.wrapperClassName}>
     {props.children}
