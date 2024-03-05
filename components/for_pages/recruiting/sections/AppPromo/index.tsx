@@ -52,10 +52,11 @@ export default function AppPromo(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.left}>
       <p className={styles.title}>
-        Безграничные возможности в приложении <span>ArbiHunter</span>
+        {/* Безграничные возможности в приложении <span>ArbiHunter</span> */}
+        Представляем вам наше мобильное приложение
       </p>
       <p className={styles.desc}>
-        Представляем новую функцию в&nbsp;мобильном приложении ArbiHunter <br/> Поиск вакансий стал еще более удобный!
+        С полным функционалом платформы, поиск сотрудников стал еще более удобный!
       </p>
       <div className={styles.buttonsWrapper}>
         <Button className={styles.button}>

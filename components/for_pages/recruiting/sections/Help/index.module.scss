@@ -2,7 +2,7 @@
 
 .root {
   display: grid;
-  grid-template-areas: 't i' 'd i' 'b i';
+  grid-template-areas: 't i'  'b i';
   align-items: center;
   padding-inline: 50px;
   justify-content: space-between;
@@ -10,6 +10,8 @@
   background: linear-gradient(229deg, #6A56E7 -8.02%, #2898FF 100%);
   margin-top: 120px;
   margin-bottom: 100px;
+  width: 100%;
+  row-gap: 42px;
   @include mq($TabletWidth, max) {
     background: unset;
     background-color: $black;
@@ -42,7 +44,6 @@
   justify-self: flex-start;
   position: relative;
   padding: 10px 20px 10px 4px;
-  margin-top: 20px;
   @include mq($TabletWidth, max) {
     margin-inline: 16px;
   }

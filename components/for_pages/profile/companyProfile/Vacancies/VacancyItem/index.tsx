@@ -173,7 +173,16 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
             </>
           }
           {props.type === 'drafts' && vacancy.completedSteps?.length < 8 &&
-            <Button styleType={['gradient']} stopPropagation onClick={editHandler}>Продолжить редактирование</Button>
+            <Button 
+            styleType={['gradient']} 
+            stopPropagation 
+            onClick={(e)=>{
+              e.preventDefault()
+              e.stopPropagation()
+              router.push({pathname: '/create/vacancy/', query: {id: vacancy.id, progress: vacancy.completedSteps.length}})
+            }}
+            >
+            Продолжить редактирование</Button>
             ||
             props.type === 'drafts' && vacancy.completedSteps?.length >=8 &&
             <>

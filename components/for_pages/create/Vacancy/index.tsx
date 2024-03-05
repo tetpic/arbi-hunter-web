@@ -18,7 +18,6 @@ import VacancyName from '../utils/Steps/VacancyName'
 import VacancyExperience from '../utils/Steps/VacancyExperience'
 import { useAppContext } from 'context/state'
 import Rive from '@rive-app/react-canvas'
-import Specialization from '../utils/Steps/Specialization'
 import Busyness from '../utils/Steps/Busyness'
 import Contacts from '../utils/Steps/Contacts'
 import Spacer from '@/components/ui/Spacer'
@@ -61,7 +60,7 @@ export default function Vacancy(props: Props) {
 
   const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
 
-  const VCItemsCount = 9
+  const VCItemsCount = 8
   const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
 
   const getContactName = () => {
@@ -123,7 +122,7 @@ export default function Vacancy(props: Props) {
       verticalsIds: [...activeVerticals.keys()],
       geosIds: [...activeGeos.keys()],
       categoriesIds: [creationContext.activeSubCategory[0]?.id],
-      description: data.description === initialDescription||data.description === '<p></p>'? '<p></p>' : data.description
+      description: data.description === initialDescription||data.description === '<p></p>'||data.description === ''? '<p></p>' : data.description
     }
     return clearObject(sendData) as IVacancyCreate
   }
@@ -188,13 +187,11 @@ export default function Vacancy(props: Props) {
           setErr('name', 'Укажите название вакансии')
           return false
         }
-        setProgress(pageNumber||progress+1)
-        return false
-      case 2:
         if(creationContext.activeSubCategory.length === 0) {
-          appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+          appContext.showSnackbar('Выберите название вакансии из списка', SnackbarType.error)
           return false
         }
+
         setProgress(pageNumber||progress+1)
         return false
       case 3: 
@@ -263,18 +260,17 @@ export default function Vacancy(props: Props) {
           setProgress(2)
         }}/>, VacancyNavigation.Name] 
       case 2: 
-        return [<Specialization/>, VacancyNavigation.Specialization]
-      case 3: 
+        // return [<Specialization/>, VacancyNavigation.Specialization]
         return [<Compensation/>, VacancyNavigation.Salary]
+      case 3: 
+      return [<Busyness/>, VacancyNavigation.Busyness]
       case 4:
-        return [<Busyness/>, VacancyNavigation.Busyness]
-      case 5: 
         return [<VacancyExperience/>, VacancyNavigation.Experience]
+      case 5: 
+      return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
       case 6: 
-        return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
+      return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
       case 7:
-        return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
-      case 8: 
         return [<Contacts/>, VacancyNavigation.Contacts]
 
     }
@@ -351,7 +347,7 @@ export default function Vacancy(props: Props) {
       return
     }
     // if(props.vacancy) {
-      router.replace({query: {id: creationContext.draftId.current, ...router.query, progress: progress}}, undefined, {shallow: true})
+      router.replace({query: {...router.query, id: creationContext.draftId.current,  progress: progress}}, undefined, {shallow: true})
     // }
 
     changeComponent(progress)

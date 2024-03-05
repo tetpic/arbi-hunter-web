@@ -33,28 +33,28 @@ export default function FindEmployees(props: Props) {
 
   return (<div className={styles.root} > 
     <div className={styles.item} >
-      <Image src={register} ref={triggerRef1} className={styles.image} width={200} height={200} alt={'register'}/>
+      <Image src={register} ref={triggerRef1} className={styles.image} width={130} height={200} alt={'register'}/>
       <p className={styles.step}>Шаг 1</p>
       <p className={styles.title}>Зарегистрируйтесь</p>
-      <p className={styles.desc}>И получите доступ ко всем услугам</p>
+      <p className={styles.desc}>И получите возможность просматривать базу соискателей</p>
     </div>
     {!isTabletWidth &&
       <Image src={chain} alt={'chain'}/>
     }
     <div className={styles.item} >
-      <Image src={land_vacancy} ref={triggerRef2} className={styles.image} width={200} height={200} alt={'land vacancy'}/>
+      <Image src={land_vacancy} ref={triggerRef2} className={styles.image} width={132} height={200} alt={'land vacancy'}/>
       <p className={styles.step}>Шаг 2</p>
-      <p className={styles.title}>Разместите вакансию</p>
-      <p className={styles.desc}>И получите доступ ко всем услугам</p>
+      <p className={styles.title}>Создайте вакансию</p>
+      <p className={styles.desc}>Чтобы получать входящие отклики от соискателей</p>
     </div>
     {!isTabletWidth &&
       <Image src={chain} alt={'chain'}/>
     }
     <div className={styles.item } >
-      <Image src={star} ref={triggerRef3} className={styles.image} width={200} height={200}  alt={'star'}/>
+      <Image src={star} ref={triggerRef3} className={styles.image} width={138} height={200}  alt={'star'}/>
       <p className={styles.step}>Шаг 3</p>
       <p className={styles.title}>Выбирайте лучших</p>
-      <p className={styles.desc}>И получите доступ ко всем услугам</p>
+      <p className={styles.desc}>Все отклики с базой данных будут доступны вам неограниченное время</p>
     </div>
   </div>)
 }

@@ -222,7 +222,7 @@ export const TranslateEmploymentType = (e: EmploymentType) => {
     case EmploymentType.PartTime:
       return 'Частичная'
     case EmploymentType.Project:
-      return 'Проектная работы'
+      return 'Проектная работа'
   }
   
 }

@@ -26,6 +26,7 @@ export interface ISource extends TimeStamp {
 
 export interface ICategorySearchParams {
   withVacanciesCount: boolean,
+  key: 'sub-other'|'other'
   withCVsCount: boolean,
   withNewVacanciesCount: boolean,
   withNewCVsCount: boolean,

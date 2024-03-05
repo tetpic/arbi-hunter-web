@@ -30,11 +30,11 @@ export default function RecruitingHirer(props: Props) {
     {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
       <Head/>
 
-      {!isTabletWidth && <Search title={'Поиск сотрудников'}/>}
+      {!isTabletWidth && <Search title={'Поиск резюме'}/>}
       
       <Reasons/>
     
-      <Title className={styles.title} title={'С чего начать поиск сотрудников?'}/>
+      <Title className={styles.title} title={'Начни поиск в три шага'}/>
       <FindEmployees/>
       
       <AppPromo cards={[slide1, slide2]}/>

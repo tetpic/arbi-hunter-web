@@ -33,10 +33,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <p className={styles.title}>
-          Вакансию увидит каждый второй соискатель
+          Единая база соискателей
         </p>
         <p className={styles.desc}>
-          46% трудоспособного населения России — зарегистрированы на ArbiHunter
+          Больше не нужно искать по разным площадкам, все кандидаты из сферы ждут вашего предложения после регистрации
         </p>
       </div>
       <div className={styles.item}>
@@ -44,10 +44,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <p className={styles.title}>
-          Вакансию увидит каждый второй соискатель
+          Удобная система поиска
         </p>
         <p className={styles.desc}>
-          46% трудоспособного населения России — зарегистрированы на ArbiHunter
+          Еще никогда поиск сотрудников не был так удобен, благодаря встроенным расширенным фильтрам с нужным набором навыков
         </p>
       </div>
       <div className={styles.item}>
@@ -55,10 +55,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <p className={styles.title}>
-          Вакансию увидит каждый второй соискатель
+          Поиск с любого устройства
         </p>
         <p className={styles.desc}>
-          46% трудоспособного населения России — зарегистрированы на ArbiHunter
+          Наш сайт и мобильное приложение позволят вам заниматься поиском сотрудников с любого устройства
         </p>
       </div>
     </div>

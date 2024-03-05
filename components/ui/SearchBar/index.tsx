@@ -104,7 +104,7 @@ export default function SearchBar(props: Props) {
             color={'default'} 
             name={'search'} 
             prefix={<LoupeSvg color={colors.greyLight}/>} 
-            placeholder={`Поиск ${userContext.currentProfile.profileType===ProfileType.Employee?'вакансий':'резюме'}`}
+            placeholder={`Поиск ${userContext.currentProfile?.profileType===ProfileType.Employee?'вакансий':'резюме'}`}
             />
             <Button 
             title='search button' 
