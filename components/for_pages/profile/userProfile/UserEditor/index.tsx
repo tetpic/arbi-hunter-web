@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import ThreeModelVariant from 'components/for_pages/three'
 import UserPic from 'components/ui/UserPic'
-import { useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
 import { FILES } from 'types/constants'
@@ -10,6 +10,7 @@ import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
+import { CharCategoryKey } from 'data/interfaces/ICharacter'
 
 interface Props {
 }
@@ -78,13 +79,36 @@ export default function UserEditor(props: Props) {
     init()
   }, [])
 
+
+
+  // const getImage = useCallback((key: CharCategoryKey)=> {
+  //   if(dataLoaded && variant.model) {
+  //     switch(key) {
+  //       case 'model':
+  //         return FILES + variant.model
+  //       case 'cap':
+  //         return FILES + variant.cap
+  //       case 'jacket':
+  //         return FILES + variant.jacket
+  //       case 'glasses':
+  //         return FILES + variant.glasses
+  //       case 'face':
+  //         return FILES + variant.face
+  //       case 'chain':
+  //         return FILES + variant.chain
+  //     }
+  //   }
+
+
+  // }, [variant.model, dataLoaded])
+
   return (<div className={styles.root}>
       {!isTabletWidth &&
       <div className={styles.settings}>
         {[...categories.entries()].reverse().map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
-              <UserPic size={64} active={el === activeSet[0]} image={el.image&&FILES + el.image.source}/>
+              <UserPic size={64} active={el === activeSet[0]} image={el.key === CharCategoryKey.Model?el.image&&FILES + el.image.source: `/images/charCategories/${el.key}_${variant.model}.webp`}/>
               <p>{el.name}</p>
             </div>
           )

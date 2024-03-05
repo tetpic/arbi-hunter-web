@@ -14,6 +14,9 @@ import EditToolbar from './EditToolbar'
 import classNames from 'classnames'
 import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import Button from '@/components/ui/Button'
+import Spacer from '@/components/ui/Spacer'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   id?: number
@@ -22,6 +25,7 @@ interface Props {
 export default function PersonalPage(props: Props) {
   const personalContext = usePersonalContext()
   const [isEditing, setIsEditing] = useState(false)
+  const userContext = useUserContext()
 
   useEffect(()=>{
     personalContext.setPersonalPage({profileId: props.id}) 
@@ -65,6 +69,8 @@ export default function PersonalPage(props: Props) {
 
         <ContentAside className={styles.aside}>
           <PersonalCard save={() => personalContext.updatePersonalPage()} isEditable={!props.id} isEditing={!props.id&&isEditing} switchMode={() => !props.id&&setIsEditing(!isEditing)}/>
+          <Spacer basis={16}/>
+          <Button styleType={['gradient', 'wide']} onClick={()=>userContext.logout()}>Выйти</Button>
         </ContentAside>
       </Content>
       </>

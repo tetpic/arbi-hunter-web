@@ -12,7 +12,7 @@ export default function UserRegImage(props: Props) {
 
   const emptyImages = (<>
     {props.type === ProfileType.Employee
-    ? <Rive src={'/rive/login/user.riv'} artboard='EN'  key={1}  className={styles.regImage}/>
+    ? <Rive src={'/rive/login/user.riv'} artboard='RU'  key={1}  className={styles.regImage}/>
     : <Rive src={'/rive/login/company.riv'} artboard='RU'  key={2} className={styles.regImage} />
     }
   </>)
