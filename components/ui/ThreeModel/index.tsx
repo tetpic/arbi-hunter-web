@@ -115,7 +115,7 @@ export function ThreeModel(props: IThreeModelProps) {
           {props.face !== undefined && 
           <skinnedMesh name={`Face_${props.face||'0'}`} geometry={nodes[`Face_${props.face||'0'}`].geometry} material={materials[`Face_${props.face||'0'}`]} skeleton={nodes[`Face_${props.face||'0'}`].skeleton} />
           }
-          {props.glasses !== undefined &&
+          {props.glasses !== undefined && props.face !== '1' &&
             <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
           }
           {props.hair !== undefined && 
