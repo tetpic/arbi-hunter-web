@@ -125,6 +125,7 @@ export default function Login() {
               <InputField   
               label={'E-mail:'}
               className={styles.input} 
+              data-testid={'email'}
               labelType='top' 
               styleType={'default'} 
               color={'default'} 

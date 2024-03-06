@@ -130,7 +130,7 @@ export default function DetailsModal(props: Props) {
         label='Окончание обучения' 
         dateFormat='yyyy'        
         showYearPicker
-        minDate={formik.values?.educationInfo[0]?.fromDate}
+        minDate={formik.values?.educationInfo?.[0]?.fromDate}
 
         formatOptions={{
           year: 'numeric'

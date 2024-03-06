@@ -1,7 +1,6 @@
 import Validator from '../../utils/Validator'
-
+//@ts-ignore
 describe('Validator.required', () => {
-
   it('not valid if string is empty', () => {
     expect(Validator.required('')).toBe('Обязательное поле')
   })

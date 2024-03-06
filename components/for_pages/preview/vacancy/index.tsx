@@ -5,7 +5,7 @@ import Title from '@/components/ui/TitleForSection'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import PreviewItem from '@/components/ui/PreviewItem'
-import { TranslateEmploymentType, TranslateLanguageKnowLevel, TranslateScheduleType, TranslateWorkExperience } from 'utils/enumsTranslations'
+import {  TranslateLanguageKnowLevel,  TranslateWorkExperience } from 'utils/enumsTranslations'
 import P from '@/components/ui/P'
 import SalaryItem from '@/components/ui/SalaryItem'
 import UserPic from '@/components/ui/UserPic'
@@ -21,11 +21,14 @@ import MailAltSvg from '@/components/svg/MailAltSvg'
 import languages from '@cospired/i18n-iso-languages'
 import ru from '@cospired/i18n-iso-languages/langs/ru.json'
 import { CompensationType } from 'types/enums'
+import EmploymentBoard from '@/components/ui/EmploymentBoard'
 
 
 interface Props {
   id?: number
 }
+
+
 
 export default function VacancyPreview(props: Props) {
   const router = useRouter()
@@ -103,22 +106,7 @@ export default function VacancyPreview(props: Props) {
       </PreviewItem>
 
       <PreviewItem title='Занятость' onClick={()=>editElement(4)}>
-        <div className={styles.badges}>
-          <div className={styles.badge}>
-            <P styleType={['medium', 'w500']}>Занятость</P>
-            <P styleType={['medium', 'w500']}>{TranslateEmploymentType(currentVacancy.employment)}</P>
-          </div>
-          <div className={styles.divider}></div>
-          <div className={styles.badge}>
-            <P styleType={['medium', 'w500']}>График работы</P>
-            <P styleType={['medium', 'w500']}>{TranslateScheduleType(currentVacancy.schedule)}</P>
-          </div>
-          <div className={styles.divider}></div>
-          <div className={styles.badge}>
-            <P styleType={['medium', 'w500']}>Место</P>
-            <P styleType={['medium', 'w500']}>{currentVacancy.isRemote?'Удаленно': currentVacancy.city.locName}</P>
-          </div>
-        </div>
+        <EmploymentBoard cv={currentVacancy}/>
       </PreviewItem>
 
       {currentVacancy.description &&

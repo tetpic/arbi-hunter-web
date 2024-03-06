@@ -1,6 +1,6 @@
 import Formatter from '../../utils/formatter'
 
-
+//@ts-ignore
 describe('Formatter.fulltimeLime', () => {
   it('show 1 month if dates gap is 1', () => {
     expect(Formatter.fullTimeLine([['01.2020', '02.2020']])).toBe('1 месяц')
@@ -29,12 +29,14 @@ describe('Formatter.fulltimeLime', () => {
   })
 })
 
+//@ts-ignore
 describe('Formatter.formatPrice', ()=> {
   it('formatPrice', () => {
     expect(Formatter.formatPrice(100)).toBe('100 ₽')
   })
 })
 
+//@ts-ignore
 describe('Formatter.formatToShortYear', () => {
   it('recieve new Date object', () => {
     expect(Formatter.formatToShortYear(new Date('2020-01-01 00:00'))).toBe('01.01.20 00:00')
@@ -49,6 +51,7 @@ describe('Formatter.formatToShortYear', () => {
   })
 })
 
+//@ts-ignore
 describe('Formatter.formatSecondsToTime', () => {
   it('should be HH:mm:ss type hour', () => {
     expect(Formatter.formatSecondsToTime(3600)).toBe('01:00:00')
@@ -67,6 +70,7 @@ describe('Formatter.formatSecondsToTime', () => {
   })
 })
 
+//@ts-ignore
 describe('Formatter.hideSomePhoneNumbers', () => {
   it('should return +7 999 ***-**-99', () => {
     expect(Formatter.hideSomePhoneNumbers('+7 999 999 99 99')).toBe('+7 999 *** ** 99')
@@ -77,6 +81,7 @@ describe('Formatter.hideSomePhoneNumbers', () => {
   })
 })
 
+//@ts-ignore
 describe('Formatter.formatPhone', () => {
   it('should formar Russian phone', ()=> {
     expect(Formatter.formatPhone('+79999999999')).toBe('+7 999 999-99-99')
@@ -98,7 +103,7 @@ describe('Formatter.formatPhone', () => {
     expect(Formatter.formatPhone('')).toBe('')
   })
 })
-
+//@ts-ignore
 describe('Formatter.formatDistanceToNow', () => {
   const dateNow = '2024-02-01T05:00:00.000Z'
   jest.useFakeTimers({

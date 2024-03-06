@@ -74,7 +74,8 @@
     "lint": "next lint",
     "plop": "plop",
     "ts": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "cy:open": "cypress open"
   },
   "pre-commit": [
     "lint",
@@ -97,6 +98,7 @@
     "@types/scrollmagic": "^2.0.8",
     "@types/uuid": "^9.0.2",
     "babel-jest": "^29.7.0",
+    "cypress": "^13.6.6",
     "eslint": "^8.48.0",
     "eslint-config-next": "^13.4.19",
     "eslint-plugin-unused-imports": "^3.0.0",
