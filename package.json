@@ -75,7 +75,9 @@
     "plop": "plop",
     "ts": "tsc --noEmit",
     "test": "jest",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+    
   },
   "pre-commit": [
     "lint",
