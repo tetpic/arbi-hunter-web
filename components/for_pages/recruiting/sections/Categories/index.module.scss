@@ -56,6 +56,8 @@
   }
 
   .swiper {
+    width: 100%;
+    margin: unset;
     @include mq($TabletWidth, max) {
       padding: 0px 16px;
     }

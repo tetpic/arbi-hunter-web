@@ -40,7 +40,7 @@ export default function RecruitingHirer(props: Props) {
       <AppPromo cards={[slide1, slide2]}/>
     
       <Title className={styles.title} title={'Поиск по популярным категориям'}/>
-      <Categories count='резюме' image={users} titles={['Веб дизайнер', 'Маркетолог', 'Менеджер']}/>
+      <Categories count='резюме' image={users} titles={['Маркетинг', 'Разработка', 'Менеджмент']}/>
       <Button className={styles.watchAll}>Смотреть все</Button>
     
       <Help/>
