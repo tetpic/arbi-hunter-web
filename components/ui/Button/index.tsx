@@ -91,6 +91,7 @@ export default function Button(props: Props) {
 
   return (
     <button
+      data-cy={'button_'+props.title}
       ref={props.buttonRef ?? ref}
       type={props.type}
       form={props.form}

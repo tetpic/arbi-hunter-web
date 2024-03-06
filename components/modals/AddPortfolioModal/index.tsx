@@ -80,8 +80,8 @@ export default function AddPortfolioModal(props: Props) {
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' onClick={props.onClose} className={styles.cancelButton}>Отменить</Button>
-      <Button type='button' onClick={formik.submitForm} className={styles.saveButton}>Сохранить</Button>
+      <Button type='button' title={'back'} onClick={props.onClose} className={styles.cancelButton}>Отменить</Button>
+      <Button type='button' title='save' onClick={formik.submitForm} className={styles.saveButton}>Сохранить</Button>
     </div>
   </>)
 

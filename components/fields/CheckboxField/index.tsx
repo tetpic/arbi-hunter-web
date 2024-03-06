@@ -41,6 +41,7 @@ export default function CheckboxField<T>(props: Props<T>) {
   return (
     <div className={classNames(styles.root, props.rootClass)}>
       <Checkbox<T>
+        name={props.name}
         circleClassName={props.circleClassName}
         className={classNames(props.itemClassName)}
         labelClassName={props.itemLabelClassName}

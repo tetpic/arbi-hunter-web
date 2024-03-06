@@ -95,7 +95,7 @@ export default function Experience(props: Props) {
       }
 
       {values.workExperiencePresense === 'present' &&
-        <AddButton onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
+        <AddButton test={'addWorkPlace'} onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
       }
     </div>
   )

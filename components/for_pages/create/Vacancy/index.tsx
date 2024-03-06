@@ -122,12 +122,13 @@ export default function Vacancy(props: Props) {
       verticalsIds: [...activeVerticals.keys()],
       geosIds: [...activeGeos.keys()],
       categoriesIds: [creationContext.activeSubCategory[0]?.id],
-      description: data.description === initialDescription||data.description === '<p></p>'||data.description === ''? '<p></p>' : data.description
+      description: data.description === initialDescription||data.description === '<p></p>'||data.description === ''? '<p></p>' : data.description,
+      published: true
     }
     return clearObject(sendData) as IVacancyCreate
   }
 
-  const submit = (data: IVacancyCreate) => {
+  const submit = (data: IVacancyCreate, noRedirect?: boolean) => {
     const isValid = nextPageValidator()
     if(!isValid) {
       return
@@ -147,7 +148,7 @@ export default function Vacancy(props: Props) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
         appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
-        router.replace('/profile?page=vacancies')  
+        !noRedirect&&router.replace('/profile?page=vacancies')  
       })
       .catch(err=>{        
         appContext.showSnackbar(err.toString(), SnackbarType.error)
@@ -158,7 +159,7 @@ export default function Vacancy(props: Props) {
       .then(res => {
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
-          router.replace(`/preview/vacancy/${res.id}`)  
+          !noRedirect&&router.replace(`/preview/vacancy/${res.id}`)  
         }, 2000)
       })
       .catch(err=>{
@@ -171,7 +172,7 @@ export default function Vacancy(props: Props) {
 
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: submit
+    onSubmit: (v)=>submit(v)
   })
 
   const setErr = (val: string, err?: string) => {
@@ -346,9 +347,9 @@ export default function Vacancy(props: Props) {
       router.back()
       return
     }
-    // if(props.vacancy) {
-      router.replace({query: {...router.query, id: creationContext.draftId.current,  progress: progress}}, undefined, {shallow: true})
-    // }
+    if(progress <=VCItemsCount) {
+      router.replace({query: {...router.query, id: creationContext.draftId.current,  progress: progress <=VCItemsCount?progress: VCItemsCount}}, undefined, {shallow: true})
+    }
 
     changeComponent(progress)
     if(maxProgress.current > progress || props.vacancy?.completedSteps?.length === VCItemsCount) return 
@@ -386,7 +387,7 @@ export default function Vacancy(props: Props) {
 
   return <div className={styles.root}>
     {progress === VCItemsCount && 
-      <SetTariff onSave={formik.submitForm} onBack={()=>setProgress(progress-1)} type='vacancy'/>
+      <SetTariff setText='Разместить вакансию' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
     }
 
     {progress < VCItemsCount &&<>
@@ -408,13 +409,13 @@ export default function Vacancy(props: Props) {
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBorderGradient} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
+              <Button className={styles.buttonBorderGradient} type='button' title='back' onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < VCItemsCount &&
-              <Button className={styles.buttonGradient} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
+              <Button className={styles.buttonGradient} type='button' title='next' onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === VCItemsCount &&
-              <Button isProcess={formik.isSubmitting} spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonGradient}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
+              <Button isProcess={formik.isSubmitting} title='create' spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonGradient}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
             }
           </div>
         </Form>

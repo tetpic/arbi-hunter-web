@@ -47,7 +47,7 @@ export default function Body(props: Props) {
     {props.withInput !== false&&
       <div className={styles.inputWrapper}>
         <LoupeSvg className={styles.loupeSvg}/>
-          <input className={styles.input} type="text" onChange={props.onChange} placeholder={props.placeholder} />
+          <input className={styles.input} type="text" data-cy={'modal_search'} onChange={props.onChange} placeholder={props.placeholder} />
       </div>
     }
       <div className={classNames(styles.positionsWrapper, !props.title&&styles.noTitle)}>
@@ -60,7 +60,7 @@ export default function Body(props: Props) {
         e.stopPropagation()
         props.onClose()}} >Отменить</Button>
     }
-    <Button className={classNames(styles.buttonGradient, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'Выберите позицию из списка'}>Выбрать</Button>
+    <Button className={classNames(styles.buttonGradient, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'saveSkill'}>Выбрать</Button>
   </div>
   </>)
 }

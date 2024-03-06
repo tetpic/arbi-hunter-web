@@ -98,7 +98,7 @@ export default function InputField(props: Props) {
   
 
   return (
-    <div className={classNames(styles.root, props.className)} data-field={props.name}>
+    <div className={classNames(styles.root, props.className)} data-cy={'input_'+props.name} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel> : null}
       <div className={classNames(
         styles.wrapper, 

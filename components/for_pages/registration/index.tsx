@@ -133,10 +133,11 @@ export default function Registration() {
         const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
         const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values[loginType])
+        debugger
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
-        if(filteredErrors.length === 0 && !isLoginExist) {
+        if(filteredErrors.length === 0 && !isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
             [loginType]: formik.values[loginType],
             onComplete: () => {
@@ -144,7 +145,7 @@ export default function Registration() {
             }
           })
         }
-        else if(isLoginExist) {
+        else {
           setErr(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
           // formik.setFieldError(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
           // formik.setFieldTouched(loginType, true)
@@ -158,7 +159,7 @@ export default function Registration() {
         .then(res=> {
           RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
           .then(r=> {
-            if(r === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
+            if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
             else { setProgress(page||progress+1) }
           })
         })

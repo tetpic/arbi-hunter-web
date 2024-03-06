@@ -23,11 +23,11 @@ export default function Tag(props: Props) {
 
   if(props.link) {
     return (
-      <Link href={props.link} className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)}>{props.text}</Link>
+      <Link href={props.link} data-cy={'tag_'+props.text} className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)}>{props.text}</Link>
     )
   }
 
   return (
-    <p title={props.text} className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</p>
+    <p title={props.text} data-cy={'tag_'+props.text} className={classNames(styles.tag, props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</p>
   )
 }

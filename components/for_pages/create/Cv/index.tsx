@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -58,9 +58,9 @@ export default function Cv(props: Props) {
   const maxProgress = useRef<number>(props?.cv?.completedSteps?.length||1)
   const CVItemsCount = 7
 
-  const submit = (data: ICVCreate) => {
+  const submit = (data: ICVCreate, noReplace?: boolean) => {
     setLoading(true)
-    const {activeSources, languageKnowledges, skills,  activeGeos} = creationContext?.helpObjects
+    const {activeSources, languageKnowledges, skills,  activeGeos, activeVerticals} = creationContext?.helpObjects
 
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
@@ -77,14 +77,18 @@ export default function Cv(props: Props) {
       sourcesIds: [...activeSources.keys()],
       categoriesIds: [creationContext.activeSubCategory[0].id],
       geosIds: [...activeGeos.keys()],
-      experience: WorkExperience.From1to3
+      experience: WorkExperience.From1to3,
+      verticalsIds: [...activeVerticals.keys()],
+      published: true,
     }
    
     if(props.id) {
       CvRepository.updateCV(props.id, clearObject(sendData, 'string') as ICVCreate)
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
-        router.replace('/profile?page=cvs')      
+        if(!noReplace) {
+          router.replace('/profile?page=cvs')      
+        }
       })
       .catch(err=>{        
         appContext.showSnackbar(err, SnackbarType.error)
@@ -94,7 +98,9 @@ export default function Cv(props: Props) {
       CvRepository.createCV(clearObject(sendData, 'string') as ICVCreate)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
-        router.replace(`/preview/cv/${res.id}`)  
+        if(!noReplace) {
+          router.replace(`/preview/cv/${res.id}`)  
+        }
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
@@ -108,7 +114,7 @@ export default function Cv(props: Props) {
     lastName: props.cv?.lastName|| userContext.currentProfile?.lastName,
     patronymic: props.cv?.patronymic|| userContext.currentProfile?.patronymic,
     birthday: props.cv?.birthday|| userContext.currentProfile?.birthday,
-    compensation: props.cv?.compensation||undefined,
+    compensation: props.cv?.compensation||null,
     phone: userContext.currentProfile?.phone,
     email: userContext.currentProfile?.email,
     telegramNickname: userContext.currentProfile?.telegramNickname, 
@@ -148,7 +154,7 @@ export default function Cv(props: Props) {
 
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: submit
+    onSubmit: (v)=>submit(v)
   })
 
   const nextPageValidator = (pageNumber?: number) => {
@@ -163,7 +169,8 @@ export default function Cv(props: Props) {
         (()=> {
           const args: ICompensationModalArgs = {
             onSubmit: (data) => {
-              formik.setValues({...formik.values, ...data})
+              
+              formik.setValues({...formik.values, ...data, compensation: data.compensation||CompensationType.Salary})
                setProgress(pageNumber||progress+1)
              },
              initialValues: formik.values
@@ -190,7 +197,21 @@ export default function Cv(props: Props) {
           }
         })()
         break
+
+      case 2: {
+        formik.validateField('birthday')
+        .then(v => {
+          if(v) {
+            setErr('birthday', 'Укажите дату рождения')
+          }
+          else {
+            setProgress(pageNumber||progress+1)
+          }
+        })
+      }
+      break
       default :
+        
         setProgress(pageNumber||progress+1)
     }
   }
@@ -323,7 +344,7 @@ export default function Cv(props: Props) {
 
   return <div className={styles.root}>
     {progress === CVItemsCount && 
-      <SetTariff onSave={formik.submitForm} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>
@@ -337,13 +358,13 @@ export default function Cv(props: Props) {
           {page} 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBorderGradient} type='button' onClick={()=>setProgress(progress-1)}>Назад</Button>
+              <Button className={styles.buttonBorderGradient} type='button' title={'prev'} onClick={()=>setProgress(progress-1)}>Назад</Button>
             }
             {progress < CVItemsCount &&
-              <Button className={styles.buttonGradient} type='button' onClick={()=>nextPageValidator()}>Продолжить</Button>
+              <Button className={styles.buttonGradient} type='button' title={'next'} onClick={()=>nextPageValidator()}>Продолжить</Button>
             }
             { progress === CVItemsCount &&
-              <Button isProcess={loading} spinner={loading} disabled={loading} className={classNames(styles.buttonGradient, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
+              <Button isProcess={loading} spinner={loading} disabled={loading} title={'save'} className={classNames(styles.buttonGradient, loading&&styles.disabled)} type='button' onClick={()=> formik.submitForm()}>Сохранить резюме</Button>
             }
           </div>
         </Form>

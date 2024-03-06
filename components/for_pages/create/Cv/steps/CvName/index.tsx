@@ -44,7 +44,7 @@ export default function CvName(props: Props) {
     if(!isDisable.current) {
       setIsActive(true)      
     }
-    if(formikContext.values.searchPosition?.length > 2) {
+    if(formikContext.values.searchPosition?.length > 1) {
       search.callback(formikContext.values.searchPosition)
       isDisable.current = false
     }
@@ -69,7 +69,7 @@ export default function CvName(props: Props) {
         placeholder='Поиск профессии'/>
         {cvCreateContext.subCategories.size > 0 &&
         <div className={classNames(styles.suggestions, !isActive&&styles.disabled)}>
-          <div className={styles.suggestionsWrapper}>
+          <div className={styles.suggestionsWrapper} data-cy={'suggestions_wrapper'}>
             {[...cvCreateContext.subCategories.values()].map(subCategory => {
               return <p className={styles.category} key={subCategory.id} onClick={() => onSuggestClick(subCategory)}>{subCategory.name}</p>
             })}

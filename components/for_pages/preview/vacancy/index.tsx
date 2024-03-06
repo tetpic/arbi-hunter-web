@@ -146,7 +146,7 @@ export default function VacancyPreview(props: Props) {
       }
     </div>
 
-    <Button styleType={['gradient']} onClick={router.back} className={styles.button}>Назад</Button>
+    <Button styleType={['gradient']} onClick={router.back} title={'back'} className={styles.button}>Назад</Button>
 
 
   </div>

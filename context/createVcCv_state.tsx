@@ -215,6 +215,7 @@ export function CreateVcCvWrapper(props: Props) {
       }})
     } 
     else if(type === 'cv') {
+      
       const cvItem = item as ICV
       setHelp(state=>{return {...state, 
         categoryIds: cvItem.categories,   

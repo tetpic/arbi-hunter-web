@@ -178,6 +178,7 @@ export default function Skills(props: Props) {
 
   return ( <div className={styles.root}>
     <AddButton 
+    test={'addSkill'}
     className={styles.addButton} 
     onClick={()=>appContext.showModal<ISkillModalProps>(ModalType.SkillsModal, {
       choosenSkills: cvContext.helpObjects?.skills,
@@ -201,6 +202,7 @@ export default function Skills(props: Props) {
       (cvContext?.activeSubCategory[0]?.withGeos || cvContext?.activeSubCategory[0]?.withSources) && !props.fieldToHide?.traffic &&
       <>
       <AddButton 
+      test={'addSources'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'sources'})}} 
       text={'Добавить источники'}
@@ -217,6 +219,7 @@ export default function Skills(props: Props) {
         </>
       }
       <AddButton 
+      test={'addGeos'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'geos'})}} 
       text={'Добавить гео'}
@@ -237,6 +240,7 @@ export default function Skills(props: Props) {
 
     {!props.fieldToHide?.traffic && <>
       <AddButton 
+      test={'addVerticals'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'verticals'})}} 
       text={'Добавить вертикали'}
@@ -255,6 +259,7 @@ export default function Skills(props: Props) {
     </>}
 
     <AddButton 
+    test={'addLanguage'}
     className={styles.addButton} 
     onClick={()=>{appContext.showModal<ILangaugesModalArgs>(ModalType.LanguageModal, {
       onSubmit: (data) => {
@@ -312,6 +317,7 @@ export default function Skills(props: Props) {
 
     {!props.fieldToHide?.portfolio  && <>
       <AddButton 
+      test={'addPortfolio'}
       className={styles.addButton} 
       onClick={onAddPortfolioClick} 
       text={'Добавить порфтолио'} />

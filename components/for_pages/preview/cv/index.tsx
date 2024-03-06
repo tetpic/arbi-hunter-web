@@ -13,7 +13,6 @@ import classNames from 'classnames'
 import { Answer, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
-import MailConvertSvg from '@/components/svg/MailConvertSvg'
 import Button from '@/components/ui/Button'
 import { TranslateCompensationType, TranslateEducationType, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
@@ -85,9 +84,9 @@ export default function CvPreview(props: Props) {
         <P 
         styleType={['greyLight', 'w500', 'medium']}>
           {[
-            currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина', 
-            currentCv.age + ' ' + Formatter.pluralize(currentCv.age, 'год', 'года', 'лет'), 
-            currentCv.city.locName].join(' · ')
+            currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
+            currentCv.age?currentCv.age + ' ' + Formatter.pluralize(currentCv.age, 'год', 'года', 'лет'):null, 
+            currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>
         <P styleType={['w600', 'large']}>{currentCv.categories[0].name}</P>
@@ -130,12 +129,6 @@ export default function CvPreview(props: Props) {
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <Button styleType={['icon', 'black']}><LinkedInSvg/></Button>
           {currentCv.linkedin}
-        </P>
-        }
-        {currentCv.skype &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailConvertSvg/></Button>
-          {currentCv.skype}
         </P>
         }
       </PreviewItem>
@@ -230,7 +223,7 @@ export default function CvPreview(props: Props) {
       }
     </div>
 
-    <Button styleType={['gradient']} onClick={router.back} className={styles.button}>Назад</Button>
+    <Button styleType={['gradient']} title={'back'} onClick={router.back} className={styles.button}>Назад</Button>
 
 
   </div>)

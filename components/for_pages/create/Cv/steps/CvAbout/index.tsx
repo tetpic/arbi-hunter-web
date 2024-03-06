@@ -14,6 +14,7 @@ import classNames from 'classnames'
 import DateField from '@/components/fields/DateField'
 import Image from 'next/image'
 import { useUserContext } from 'context/user_state'
+import Validator from 'utils/Validator'
 
 interface Props {
 }
@@ -52,6 +53,8 @@ export default function CvAbout(props: Props) {
     label='Дата рождения'
     className={styles.dateField}
     inputClassName={styles.dateInput}
+    error='Укажите дату рождения'
+    validate={Validator.required}
     />
     <PhoneCountryField 
     styleType={'horizontal'} 

@@ -65,7 +65,7 @@ export default function SourcesModal(props: Props) {
     }}
     >
       <p className={styles.title}>{title}</p>
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} data-cy={'sources_wrapper'}>
         {args.data?.length>0&&
           args.data.map(el=> 
             <p 

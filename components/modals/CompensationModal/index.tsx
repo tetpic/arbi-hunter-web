@@ -88,7 +88,7 @@ export default function CompensationModal(props: Props) {
       value={formik.values.compensation} 
       isActive={formik.values.compensation === CompensationType.Contract} 
       onChange={(v)=>formik.setFieldValue('compensation', v?undefined:CompensationType.Contract)}/>
-      <Button className={styles.button}>Сохранить и продолжить</Button>
+      <Button className={styles.button} title='saveAndNext'>Сохранить и продолжить</Button>
     </div>
   )
 

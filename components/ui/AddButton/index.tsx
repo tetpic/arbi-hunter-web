@@ -7,12 +7,13 @@ interface Props {
   text?: string
   title?: string
   className?: string
+  test?:string
   
 }
 
 export default function AddButton(props: Props) {
 
   return ( <>
-    <p className={classnames(styles.link, props.className)} title={props.title} onClick={props.onClick}><PlusSvg className={styles.plusSvg} />{props.text?props.text: 'Добавить'}</p>
+    <p className={classnames(styles.link, props.className)} data-cy={props.test} title={props.title} onClick={props.onClick}><PlusSvg className={styles.plusSvg} />{props.text?props.text: 'Добавить'}</p>
   </>)
 }

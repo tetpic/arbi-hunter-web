@@ -98,7 +98,7 @@ export default function Education(props: Props) {
     </div>
   }
   {values.education !== EducationTypes.No && values.education !== EducationTypes.Secondary &&
-  <AddButton onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
+  <AddButton test={'addEducation'} onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
   }
   </>)
 }

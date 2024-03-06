@@ -39,7 +39,7 @@ export default function TextAreaField(props: Props) {
 
 
   return (
-    <div className={styles.root} ref={ref} data-field={props.name}>
+    <div className={styles.root} ref={ref} data-field={props.name} data-cy={'textarea_'+props.name}>
       {/* {props.label && <FloatingFieldLabel active={focused || !!field.value}>{props.label}</FloatingFieldLabel>} */}
       {props.label && <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel>}
       <TextAreaInner

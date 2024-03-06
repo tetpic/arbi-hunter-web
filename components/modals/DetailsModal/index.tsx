@@ -220,8 +220,8 @@ export default function DetailsModal(props: Props) {
               {args.type === 'coursesInfo' && coursesInfoForm}
             </div>
             <div className={styles.buttonWrapper}>
-              <Button className={styles.grayButton} type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
-              <Button className={styles.sendButton} onClick={formik.submitForm}>{args.initialValues?'Сохранить':'Добавить'}</Button>
+              <Button className={styles.grayButton} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
+              <Button className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?'Сохранить':'Добавить'}</Button>
             </div>
           </Form>
         </FormikProvider>
