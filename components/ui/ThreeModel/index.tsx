@@ -34,7 +34,6 @@ export function ThreeModel(props: IThreeModelProps) {
   const { actions } = useAnimations(animations, mesh)
 
   useEffect(()=>{   
-    
     if(!actions[currentAction.current]) {
       return
     }
@@ -50,17 +49,15 @@ export function ThreeModel(props: IThreeModelProps) {
   }, [nodes, characterContext.dataLoaded])
 
   useEffect(()=>{
-    
     characterContext.setDurations(state=> {
       (animations as {name: string, duration: number}[]).map((animation)=>{
-        state[animation.name] = animation.duration
+        //тут погрешность продолжительности анимации, поэтому минус 10 милисекунд сделали переходы плавнее
+        state[animation.name] = animation.duration - 0.01
       })
       return {...state}
     })
   
   }, [animations])
-  
-
 
   if(props.model === 'woman') {
     return (
@@ -109,7 +106,7 @@ export function ThreeModel(props: IThreeModelProps) {
             <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
           }
           {props.chain !== undefined &&
-          <skinnedMesh name={`Chain_${props.chain}_${Number(props.body)>0?props.body:'1'}`} geometry={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'1'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'1'}`].skeleton} />
+          <skinnedMesh name={`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`} geometry={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`].skeleton} />
           }
           <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
           {props.face !== undefined && 

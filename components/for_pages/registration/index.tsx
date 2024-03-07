@@ -137,7 +137,7 @@ export default function Registration() {
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
-        if(filteredErrors.length === 0 && !isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0) {
+        if(filteredErrors.length === 0 && (!isLoginExist.exists ||(!isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0))) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
             [loginType]: formik.values[loginType],
             onComplete: () => {
@@ -373,7 +373,7 @@ export default function Registration() {
                   Зарегистрироваться
                 </Button>
                 ||
-                <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
+                <Button title="next" className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
               }
             </div>
           </Form>

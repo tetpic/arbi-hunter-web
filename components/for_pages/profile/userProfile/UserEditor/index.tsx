@@ -22,12 +22,12 @@ export enum ModelActions {
   Laughter ='Laughter',
   New = 'New',
   No = 'No',  
+  Yes = 'Yes',
   Sadness = 'Sadness',
   ShakesHead = 'Shakes_head',
   Shrug = 'Shrug',
   TurnsAway = 'Turns_away',
   LongAnimation = 'Long_animation_test',
-  Yes = 'Yes'
 } 
 
 

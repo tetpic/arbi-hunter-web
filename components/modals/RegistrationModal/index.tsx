@@ -138,7 +138,7 @@ export default function RegistrationModal(props: Props) {
     ? <p className={styles.refreshCode} >Отправить код повторно</p>
     : <p className={styles.timeRemain}>Повторить через {Formatter.formatSecondsToTime(seconds)}</p>
   }
-  <p className={styles.confirmTitle}>{code}</p>
+  <p className={styles.confirmTitle} data-cy={'confirmCode'}>{code}</p>
   </>)
 
   const body = (<div className={styles.body}>

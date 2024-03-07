@@ -43,7 +43,7 @@ export default function MainPageEmployee() {
   [
     {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
-    {type: ModelActions.New, duration: ~~(characterContext.durations[ModelActions.New]*1000)},
+    // {type: ModelActions.New, duration: ~~(characterContext.durations[ModelActions.New]*1000)},
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
     {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},

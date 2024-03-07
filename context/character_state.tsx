@@ -30,16 +30,8 @@ interface IState {
   
 const defaultVariant: {[key: string]: string|number} = {
   model: 'man',
-  body: 0,
-  size: 0,
   eye: 0,
-  emotion: 0,
-  hair: '0',
-  jacket: 0,
-  face: 0,
-  head: 0,
-  color: 0,
-  glasses: '3'
+  hair: 0
 }
 
 
