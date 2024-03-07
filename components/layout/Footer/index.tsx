@@ -36,13 +36,6 @@ export default function Footer(props: Props) {
           <Image src={'/favicon.svg'} alt={'logo'} width={74} height={76}/>
           <ArbiLogoTextSvg/>
         </div>
-
-        <p className={styles.desc}>
-          Покупка трафика на&nbsp;одном ресурсе 
-          и&nbsp;перенаправление на&nbsp;другой, 
-          но&nbsp;за&nbsp;большую стоимость. 
-          Проще говоря, арбитраж трафика работает так.
-        </p>
         <p className={styles.mail}>
           <MailConvertSvg/>
           <Link href={'mailto:arbihunter@mail.com'} type='email'>arbihunter@mail.com</Link>

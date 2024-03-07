@@ -16,7 +16,6 @@ import Rive from '@rive-app/react-canvas'
 import ThreeModelVariant from '../../three'
 import classNames from 'classnames'
 import { useCharacterContext } from 'context/character_state'
-import Spinner from '@/components/ui/Spinner'
 import { ModelActions } from '../../profile/userProfile/UserEditor'
 import { IBackgroundSwitchModalArgs } from '@/components/modals/BackgroundSwitchModal'
 import { IBackgroundPickModalArguments } from '@/components/modals/BackgroundPickModal'
@@ -227,9 +226,6 @@ export default function PersonalHeader(props: Props) {
         ||
         personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && props.useModel &&
         <div className={styles.modelWrapper} >
-          {!characterContext.modelLoaded && 
-            <Spinner className={styles.modelSpinner} size={52}/>
-          } 
           <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
           {characterContext.variant &&  characterContext.dataLoaded &&
             <ThreeModelVariant disableControls data={characterContext.variant } actions={props.action}  r={4}/> 

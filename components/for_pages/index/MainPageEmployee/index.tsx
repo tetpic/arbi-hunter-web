@@ -41,7 +41,7 @@ export default function MainPageEmployee() {
 
   const actionsAllowedMap: {type: ModelActions, duration: number}[] = characterContext.variant.model === 'man'?
   [
-    {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)},
+    // {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)||2115},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
     // {type: ModelActions.New, duration: ~~(characterContext.durations[ModelActions.New]*1000)},
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
@@ -51,8 +51,8 @@ export default function MainPageEmployee() {
     {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
   ]:
   [
+    // {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)||2115},
     {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
-    {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
     {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
@@ -67,14 +67,14 @@ export default function MainPageEmployee() {
   const [disableClick, setDisableClick] = useState<boolean>(false)
 
 
-  const showNextAnimation = () => {
+  const showNextAnimation = (init?: {type: ModelActions, duration: number}) => {
     setDisableClick(true)
-    setAction(temporaryAnimation.type)
+    setAction(init?.type||temporaryAnimation.type)
     setTimeout(()=> {
       setAction(ModelActions.LongAnimation)
-      setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
+      setTemporaryAnimation(actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0])
       setDisableClick(false)      
-    }, temporaryAnimation.duration)
+    }, init?.duration||temporaryAnimation.duration)
   }
 
   const init = async() => {
@@ -111,8 +111,6 @@ export default function MainPageEmployee() {
     }, 100)
   }
 
-
-
   useEffect(()=>{
     characterContext.init()
     cvContext.setSavedCvs()
@@ -122,6 +120,13 @@ export default function MainPageEmployee() {
   useEffect(()=>{
     setTemporaryAnimation(actionsAllowedMap[0])
   }, [characterContext.durations])
+
+  useEffect(()=>{
+    if(characterContext.modelLoaded) {
+      showNextAnimation({type: ModelActions.Appearance, duration: characterContext.variant.model === 'woman'? 2115:2549})
+    }
+  }, [characterContext.modelLoaded])
+
 
   if(!load) {
     return(
@@ -135,7 +140,7 @@ export default function MainPageEmployee() {
     <div className={styles.root}>
       <div className={styles.top}>
         {/* {personalContext.personalPage && personalContext.backgrounds && */}
-          <PersonalHeader action={action} showNextAnimation={showNextAnimation} useModel/>
+          <PersonalHeader action={action} showNextAnimation={()=>showNextAnimation()} useModel/>
         {/* } */}
         <div className={styles.statsWeek}>
           <div className={styles.cards}>

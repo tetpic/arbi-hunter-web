@@ -153,7 +153,7 @@ export default function Head(props: Props) {
       </span>
     </h6>
     <p className={styles.desc}>
-      46% трудоспособного населения России — <br /> зарегистрированы на ArbiHunter
+      Огромная база кандидатов из сферы IT <br /> и маркетинга ждет вашу вакансию внутри
     </p>
     <Button className={styles.button}>
       <span>
