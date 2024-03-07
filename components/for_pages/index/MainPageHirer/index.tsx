@@ -37,7 +37,7 @@ export default function MainPageHirer() {
   const init = async() => {
     const [ stats, courses, categories, news, backs] = await Promise.all([
       UserRepository.getStats(), 
-      CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
+      CoursesRepository.getCourses({page: 1, limit: 10},Languages.ru),
       CategoryRepository.getCategories(),
       ArticlesRepository.getNews(true),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 

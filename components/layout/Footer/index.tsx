@@ -94,7 +94,7 @@ export default function Footer(props: Props) {
 
     <div className={styles.bottom}>
       <p className={styles.license}>
-        © 2023 All rights reserved
+        © {new Date().getFullYear()} All rights reserved
       </p>
       <div className={styles.payment}>
         <LockSvg/>

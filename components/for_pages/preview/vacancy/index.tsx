@@ -106,7 +106,7 @@ export default function VacancyPreview(props: Props) {
       </PreviewItem>
 
       <PreviewItem title='Занятость' onClick={()=>editElement(4)}>
-        <EmploymentBoard cv={currentVacancy}/>
+        <EmploymentBoard vacancy={currentVacancy}/>
       </PreviewItem>
 
       {currentVacancy.description &&

@@ -315,19 +315,18 @@ export default function Vacancy(props: Props) {
       case 1:
         return {src: '/rive/vacancyCreate/1.riv', animations: ['Timeline 2', 'Timeline 1']}
       case 2: 
-        return {src: '/rive/vacancyCreate/1.riv', animations: ['Arg', 'ManLegs', 'Head', 'Hand', 'Papers']}
-      case 3: 
         return {src: '/rive/vacancyCreate/2.riv', animations: ['Text']}
+      case 3: 
+      return {src: '/rive/vacancyCreate/3.riv', animations: ['Text'], artboards: ['RU', 'EN', 'UA']}
       case 4: 
-        return {src: '/rive/vacancyCreate/3.riv', animations: ['Text'], artboards: ['RU', 'EN', 'UA']}
+      return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['RU', 'EN', 'UA']}
       case 5: 
-        return {src: '/rive/vacancyCreate/4.riv', animations: ['Man1','Man2', 'Man1Head'], artboards: ['RU', 'EN', 'UA']}
+      return {src: '/rive/vacancyCreate/5.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
       case 6: 
-        return {src: '/rive/vacancyCreate/5.riv', animations: ['Head', 'Baks', 'Wrist', 'Hand', 'Tors', 'Legs', 'Eyes']}
+      return {src: '/rive/vacancyCreate/6.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
       case 7: 
-        return {src: '/rive/vacancyCreate/6.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
+      return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
       case 8: 
-        return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
       // case 9: 
       //   return {src: '/rive/vacancyCreate/7.riv', animations: ['Stars', 'Mag', 'Float', 'Back']}
       default:

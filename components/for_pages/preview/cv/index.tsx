@@ -28,6 +28,7 @@ import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
 import MailAltSvg from '@/components/svg/MailAltSvg'
 import languages from '@cospired/i18n-iso-languages'
 import ru from '@cospired/i18n-iso-languages/langs/ru.json'
+import EmploymentBoard from '@/components/ui/EmploymentBoard'
 
 
 interface Props {
@@ -92,6 +93,10 @@ export default function CvPreview(props: Props) {
         <P styleType={['w600', 'large']}>{currentCv.categories[0].name}</P>
         <SalaryItem cv={currentCv}/>
 
+      </PreviewItem>
+
+      <PreviewItem title='Занятость' onClick={()=>editElement(4)}>
+        <EmploymentBoard cv={currentCv}/>
       </PreviewItem>
 
       <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => editElement(2)}>
@@ -201,6 +206,25 @@ export default function CvPreview(props: Props) {
         </PreviewItem>
       }
 
+      {currentCv.sources && currentCv.sources.length > 0 &&
+        <PreviewItem title='Источники' onClick={()=>editElement(5)}>
+          <TagList tags={currentCv.sources.map(el => ({name: el.title}))}/>
+        </PreviewItem>
+      }      
+
+      {currentCv.geos && currentCv.geos.length > 0 &&
+        <PreviewItem title='Гео' onClick={()=>editElement(5)}>
+          <TagList tags={currentCv.geos.map(el => ({name: el.title}))}/>
+        </PreviewItem>
+      }
+
+      {currentCv.verticals && currentCv.verticals.length > 0 &&
+        <PreviewItem title='Вертикали'onClick={()=>editElement(5)}>
+          <TagList tags={currentCv.verticals.map(el => ({name: el.title}))}/>
+        </PreviewItem>
+      }
+
+
       {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && isLocaleLoaded &&
         <PreviewItem 
         title='Владение языками'
@@ -216,9 +240,7 @@ export default function CvPreview(props: Props) {
         onClick={() => editElement(5)}
         >
           <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
-          {currentCv.assets && currentCv.assets.map(el => {
-            return <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
-          })}
+          <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
         </PreviewItem>
       }
     </div>
