@@ -12,6 +12,7 @@
   flex-direction: column;
   row-gap: 30px;
   position: relative;
+  height: 400px;
   @include mq($MdDesktopWidth, max) {
     align-items: center;
     row-gap: 16px;
@@ -122,5 +123,6 @@
 
 .watchAll {
   @include watchAllButton;
+  margin-top: 40px;
 }
 

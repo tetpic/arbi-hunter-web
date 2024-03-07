@@ -21,7 +21,26 @@
     border-radius: 40px;
   }
 
+  .searchBar {
+    &:before {
+      content: "";
+      position: absolute;
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      background: #2D2D37;
+      top: 2px;
+      left: 2px;
+      z-index: 2;
+      border-radius: 14px;
+    }
+    &:after {
+      border-radius: 14px;
+    }
+  }
+
 }
+
+
 
 .smallTitle {
   justify-content: center;

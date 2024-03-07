@@ -71,7 +71,7 @@ export default function Registration() {
       data = {...data, 
         cityId, 
         countryId : country?.geoname?.geonameid,
-        phone: userContext.user?.phone,
+        phone: userContext.user?.phone||data.phone,
         profileType: userContext.profileType
       }
       !data.telegramNickname && delete data.telegramNickname
@@ -133,7 +133,6 @@ export default function Registration() {
         const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
         const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values[loginType])
-        debugger
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
@@ -157,6 +156,7 @@ export default function Registration() {
         const values = loginType === LoginType.Phone? ['email'] : ['phone']
         validateValues(values)
         .then(res=> {
+          debugger
           RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
           .then(r=> {
             if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
@@ -369,7 +369,7 @@ export default function Registration() {
                 <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator(progress - 1)}>Назад</Button>
               }
               {((userContext.profileType ===ProfileType.Employee &&progress === 3)||(userContext.profileType ===ProfileType.Hirer &&progress === 4)) &&
-                <Button disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
+                <Button title={'register'} disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
                   Зарегистрироваться
                 </Button>
                 ||

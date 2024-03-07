@@ -15,6 +15,10 @@ import slide2 from 'images/recruiting/recruiting_swipe2.png'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
 import SearchBar from 'components/ui/SearchBar'
+import recruitingCatWallet from 'images/recruiting/scene1.png'
+import recruitingCatPoint from 'images/recruiting/scene2.png'
+import recruitingCatMessage from 'images/recruiting/scene3.png'
+
 
 
 interface Props {
@@ -30,7 +34,7 @@ export default function RecruitingHirer(props: Props) {
     {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
       <Head/>
 
-      {!isTabletWidth && <Search title={'Поиск резюме'}/>}
+      {!isTabletWidth && <Search title={'Поиск резюме'} tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}/>}
       
       <Reasons/>
     
@@ -40,7 +44,7 @@ export default function RecruitingHirer(props: Props) {
       <AppPromo cards={[slide1, slide2]}/>
     
       <Title className={styles.title} title={'Поиск по популярным категориям'}/>
-      <Categories count='резюме' image={users} titles={['Маркетинг', 'Разработка', 'Менеджмент']}/>
+      <Categories count='резюме' image={users} titles={['Маркетинг', 'Разработка', 'Менеджмент']} images={[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}/>
       <Button className={styles.watchAll}>Смотреть все</Button>
     
       <Help/>
