@@ -156,10 +156,8 @@ export default function Head(props: Props) {
     <p className={styles.desc}>
       Огромная база кандидатов из сферы IT <br /> и маркетинга ждет вашу вакансию внутри
     </p>
-    <Button className={styles.button}>
-      <span>
+    <Button styleType={['gradient']} className={styles.button} href={'/create/vacancy/'}>
         Разместить вакансию
-      </span>
     </Button>
   </section>)
 }

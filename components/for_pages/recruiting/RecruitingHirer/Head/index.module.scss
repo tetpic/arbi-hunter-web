@@ -67,13 +67,12 @@
 
   .desc {
     font-size: $largeText;
-    color: $greyLight;
+    color: $white;
     text-align: center;
     margin-top: 40px;
   }
 
   .button {
-    @include buttonGradient;
     margin-top: 30px;
   }
 }
