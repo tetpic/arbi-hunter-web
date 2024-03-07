@@ -1,0 +1,11 @@
+@import 'styles/index';
+
+.root {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 32px;
+
+}

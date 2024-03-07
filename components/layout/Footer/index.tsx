@@ -52,35 +52,35 @@ export default function Footer(props: Props) {
       <div className={styles.right}>
         <div className={styles.column}>
           {/* <p className={styles.title}>О компании</p> */}
-          <p className={styles.link}>О компании</p>
-          <p className={styles.link}>Партнерам</p>
-          <p className={styles.link}>Реклама на сайте</p>
-          <p className={styles.link}>Условия оказания услуг</p>
-          <p className={styles.link}>Условия использования сайтов</p>
+          <Link className={styles.link} href={'/about'}>О компании</Link>
+          <Link href={'/partners'} className={styles.link}>Партнерам</Link>
+          <Link href={'/advertising'} className={styles.link}>Реклама на сайте</Link>
+          <Link href={'/serviceterms'} className={styles.link}>Условия оказания услуг</Link>
+          <Link href={'/useterms'} className={styles.link}>Условия использования сайтов</Link>
         </div>
         <div className={styles.column}>
           {/* <p className={styles.title}>Работодателям</p> */}
           {userContext.profileType === ProfileType.Employee && 
           <>
-            <p className={styles.link}>Создать резюме</p>
-            <p className={styles.link}>Поиск работы</p>
-            <p className={styles.link}>Каталог вакансий</p>
+            <Link href={userContext.currentProfile?'/create/cv/':'/login'} className={styles.link}>Создать резюме</Link>
+            <Link href={'/recruiting'}  className={styles.link}>Поиск работы</Link>
+            <Link href={userContext.currentProfile?'/recruiting':'/login'} className={styles.link}>Каталог вакансий</Link>
           </>
           }
           {userContext.profileType === ProfileType.Hirer &&
           <>
-            <p className={styles.link}>Разместить вакансию</p>
-            <p className={styles.link}>Поиск сотрудников</p>
-            <p className={styles.link}>Категории специалистов</p>
+            <Link href={userContext.currentProfile?'/create/vacancy/':'/login'} className={styles.link}>Разместить вакансию</Link>
+            <Link href={'/recruiting'} className={styles.link}>Поиск сотрудников</Link>
+            <Link href={userContext.currentProfile?'/recruiting':'/login'} className={styles.link}>Категории специалистов</Link>
           </>
           }
 
-          <p className={styles.link}>Услуги</p>
+          <Link href={'/services'} className={styles.link}>Услуги</Link>
         </div>
         <div className={styles.column}>
           {/* <p className={styles.title}>О сервисе</p> */}
-          <p className={styles.link}>База знаний</p>
-          <p className={styles.link}>Карта сайта</p>
+          <Link href={'/base'} className={styles.link}>База знаний</Link>
+          <Link href={'/sitemap'} className={styles.link}>Карта сайта</Link>
         </div>
 
         <div className={styles.qrCode}>
