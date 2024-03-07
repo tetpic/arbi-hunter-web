@@ -1,15 +1,25 @@
-import styles from './index.module.scss'
+import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import RecruitingEmployee from '../../recruiting/RecruitingEmployee'
+import RecruitingHirer from '../../recruiting/RecruitingHirer'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import { ICV } from 'data/interfaces/ICV'
 
 interface Props {
+  vacancies?: IVacancy[]
+  cvs?: ICV[]
 }
 
 export default function MainLanding(props: Props) {
+  const userContext = useUserContext()
 
 
-  return ( 
-    <div className={styles.root}>
-      <p className={styles.test1}>Test</p>
-      <p className={styles.test2}>Test</p>
-    </div>
+  return ( <>
+    {userContext.profileType===ProfileType.Employee &&
+      <RecruitingEmployee vacancies={props.vacancies} />
+      ||
+      <RecruitingHirer cvs={props.cvs}/>
+    }
+  </>
   )
 }
