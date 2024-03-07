@@ -106,7 +106,7 @@ export function ThreeModel(props: IThreeModelProps) {
             <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
           }
           {props.chain !== undefined &&
-          <skinnedMesh name={`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`} geometry={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${Number(props.body)>0?props.body:'2'}`].skeleton} />
+          <skinnedMesh name={`Chain_${props.chain}_${props.body||'0'}`} geometry={nodes[`Chain_${props.chain}_${props.body||'0'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body||'0'}`].skeleton} />
           }
           <skinnedMesh name={`Eye_${props.eye||'0'}`} geometry={nodes[`Eye_${props.eye||'0'}`].geometry} material={materials[`Eye_${props.eye||'0'}`]} skeleton={nodes[`Eye_${props.eye||'0'}`].skeleton} />
           {props.face !== undefined && 

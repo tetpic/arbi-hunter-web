@@ -47,12 +47,12 @@ export default function MainPageEmployee() {
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
     {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
-    {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
+    // {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
     {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
   ]:
   [
     // {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)||2115},
-    {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
+    // {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
     {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
@@ -140,7 +140,7 @@ export default function MainPageEmployee() {
     <div className={styles.root}>
       <div className={styles.top}>
         {/* {personalContext.personalPage && personalContext.backgrounds && */}
-          <PersonalHeader action={action} showNextAnimation={()=>showNextAnimation()} useModel/>
+          <PersonalHeader action={action} showNextAnimation={()=>!disableClick&&showNextAnimation()} useModel/>
         {/* } */}
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
