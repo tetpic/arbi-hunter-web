@@ -19,6 +19,11 @@
     color: $white;
     background-color: $grey;
     border-radius: 40px;
+    cursor: pointer;
+    @include transitionDefault;
+    @include hover {
+      background-color: $greyLight;
+    }
   }
 
   .searchBar {

@@ -17,6 +17,22 @@ describe('email registration', () => {
     .should('have.value', password)
   }
 
+  const completeRegistration = (phone: string, email: string) => {
+    cy.get('#phone-field input').type(phone)
+    cy.get('@nextButton').click()
+    cy.get('[data-cy="input_firstName"]').type('testCyName')
+    cy.get('[data-cy="input_lastName"]').type('testCyLastName')
+    cy.get('[data-cy="input_patronymic"]').type('testCyPartonyimic')
+    cy.get('[data-cy="button_register"]').click()
+    cy.contains('Создать резюме')
+    cy.visit('http://arbi.local.glob-com.ru:3088/settings')
+    cy.get('[data-cy="input_email"] input').should('have.value', email)
+    cy.get('#phone-field input').should('include.value', '+7 800')
+    cy.get('[data-cy="input_firstName"] input').should('have.value','testCyName')
+    cy.get('[data-cy="input_lastName"] input').should('have.value','testCyLastName')
+    cy.get('[data-cy="input_patronymic"] input').should('have.value','testCyPartonyimic')
+  }
+
   const enterPass = () => {
     cy.get('[data-cy="confirmCode"]').invoke('attr', 'data-value')
     .then(v => {
@@ -64,19 +80,28 @@ describe('email registration', () => {
     cy.wait(500)
     enterPass()
     cy.wait(1000)
-    cy.get('#phone-field input').type(phone)
-    cy.get('@nextButton').click()
-    cy.get('[data-cy="input_firstName"]').type('testCyName')
-    cy.get('[data-cy="input_lastName"]').type('testCyLastName')
-    cy.get('[data-cy="input_patronymic"]').type('testCyPartonyimic')
-    cy.get('[data-cy="button_register"]').click()
-    cy.contains('Создать резюме')
-    cy.visit('http://arbi.local.glob-com.ru:3088/settings')
-    cy.get('[data-cy="input_email"] input').should('have.value', email)
-    cy.get('#phone-field input').should('include.value', '+7 800')
-    cy.get('[data-cy="input_firstName"] input').should('have.value','testCyName')
-    cy.get('[data-cy="input_lastName"] input').should('have.value','testCyLastName')
-    cy.get('[data-cy="input_patronymic"] input').should('have.value','testCyPartonyimic')
+    completeRegistration(phone, email)
+  })
 
+  it('should register user after incomplete registration', ()=> {
+    const email = `test${new Date().getTime()}@test.com`
+    const phone = `800${String(new Date().getTime()).split('').slice(0, 7).join('')}`
+    typeEmail(email)
+    typePassword('testPassword')
+    cy.get('@nextButton').click()
+    cy.wait(500)
+    enterPass()
+    cy.wait(1000)
+    cy.clearCookie('access-token')
+    cy.clearCookie('profile-type')
+    cy.reload()
+    visit()
+    typeEmail(email)
+    typePassword('testPassword')
+    cy.get('@nextButton').click()
+    cy.wait(500)
+    enterPass()
+    cy.wait(1000)
+    completeRegistration(phone, email)
   })
 })

@@ -35,7 +35,8 @@ export default function DetailsModal(props: Props) {
   const formik = useFormik<Partial<ICVCreate>>({
     initialValues: {
       ...args.values,
-      ...args.initialValues
+      ...args.initialValues,
+      
     },
     onSubmit: args.onSubmit
   })

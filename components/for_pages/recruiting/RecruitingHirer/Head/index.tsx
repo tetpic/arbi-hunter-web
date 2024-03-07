@@ -72,6 +72,7 @@ export default function Head(props: Props) {
       easing: 'linear',
       autoplay: true,
       loop: true,
+      
       duration: 2000,
       loopBegin: ()=> {
         setCounter(state=> state>6?0:state+1)

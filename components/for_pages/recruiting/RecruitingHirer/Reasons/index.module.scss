@@ -103,7 +103,7 @@
   .desc {
     grid-area: d;
     font-size: $largeText;
-    color: $greyLight;
+    color: $white;
     width: 70%;
     @include mq($TabletWidth, max) {
       display: none;

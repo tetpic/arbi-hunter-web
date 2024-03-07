@@ -126,6 +126,10 @@
 .front {
   z-index: 3;
   transform: translate3d();
+  transform-style: preserve-3d;
+  will-change: transform;
+
+
 
   img {
     scale: .2;
@@ -156,6 +160,9 @@
   scale: (0.7);
   filter: blur(10px);
   z-index: 2;
+  transform-style: preserve-3d;
+  will-change: transform;
+
 
   img {
     animation: rotation 16s linear infinite ;
@@ -208,7 +215,9 @@
   position: absolute;
   bottom: 35%;
   left: 30%;
-  transform: translate3d();
+  transform: translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 

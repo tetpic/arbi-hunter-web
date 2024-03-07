@@ -37,7 +37,7 @@ export default function Education(props: Props) {
           faculity: '',
         }]
       },
-      initialValues: initial? {educationInfo: [{...initial, toPresent: !initial.toPresent}]}:null,
+      initialValues: initial? {educationInfo: [{...initial, toPresent: !initial.toDate}]}:null,
 
       type: 'educationInfo',
       onSubmit: (data) => {
