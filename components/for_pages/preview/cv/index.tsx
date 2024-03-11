@@ -79,7 +79,6 @@ export default function CvPreview(props: Props) {
     <BackTextButton onClick={router.back} className={styles.backButton}/>
     <Title title={'Предпросмотр резюме'}/>
     <div className={styles.itemsWrapper}>
-
       <PreviewItem 
       titleElement={personalHead} 
       wrapperClassName={styles.item}

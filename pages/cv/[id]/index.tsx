@@ -19,7 +19,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 
 export default function Cv(props: Props) {
 
-  return (<ContentLayout title='Резюме' hideMobileHeader>
+  return (<ContentLayout title='Резюме' hideMobileHeader withFooter>
     <PersonalWrapper key={'cv_page'+props.id}>
       <VacancyWrapper>
         <CvPage cvId={props.id}/>

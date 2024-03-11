@@ -2,139 +2,35 @@
 
 .root {
   margin-top: 48px;
+  padding-bottom: 120px;
+  max-width: 638px;
   @include mq($TabletWidth, max) {
     margin-top: 8px;
     padding-inline: 16px;
     padding-bottom: 100px !important;
   }
-}
 
-.body {
-  border-radius: 32px;
-  background-color: $black;
-  max-width: 760px;
-  width: 70%;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 32px;
-  @include mq($TabletWidth, max) {
-    width: 100%;
-    padding: unset;
-    padding-bottom: 100px;
-    background-color: unset;
-  }
-}
-
-.top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .left {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 16px;
-
-    .city {
-      font-size: $mediumText;
-      font-weight: $medium;
-      color: $greyLight;
-    }
-  }
-
-  .right {
-    width: 40%;
-    display: grid;
-    justify-content: flex-end;
-    grid-template-areas: 's s h' 'c cont cont';
-    column-gap: 16px;
-    row-gap: 16px;
-  }
-
-  .button {
-    @include buttonGray;
-    width: 40px;
-    height: 40px;
-    padding: unset;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .share {
-    grid-area: s;
-    justify-self: flex-end;
-  }
-
-  .heart {
-    grid-area: h;
-  }
-
-  .closeEye {
-    grid-area: c;
-  }
-
-  .showContacts {
-    grid-area: cont;
-    @include buttonGradient;
-  }
-}
-
-.experience {
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-
-  .experienceItem {
-    display: grid;
-    grid-template-areas: 'tl com' 'tl desc';
-    column-gap: 16px;
-    row-gap: 16px;
-    color: $white;
-    font-size: $smallText;
-    grid-template-columns: auto 1fr;
-  }
-
-  .timeLine {
-    grid-area: tl;
-    max-width: 175px;
-  }
-
-  .company {
-    grid-area: com;
-    font-size: $mediumText;
-    font-weight: $medium;
-  }
-
-  .description {
-    grid-area: desc;
+  .tag {
+    padding: 12px 16px;
+    border-radius: 14px;
   }
 }
 
 .userCard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  row-gap: 8px;
-  @include mq ($TabletWidth, max) {
-    padding: 16px;
-    background-color: $black;
-    margin-block: 16px;
-    border-radius: 16px;
+  align-items: flex-start;
+  row-gap: 16px;
+  padding: 16px;
+  background-color: $black;
+  margin-block: 16px;
+  border-radius: 16px;
+
+  .top {
+    display: flex;
+    column-gap: 16px;
   }
 
-  .otherData {
-    color: $greyLight;
-    font-size: $mediumText;
-    font-weight: $medium;
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
-  }
 
   
   .status {
@@ -143,6 +39,8 @@
     font-size: $largeText;
     font-weight: $semibold;
     column-gap: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
   
     svg {
       width: 6px;
@@ -151,9 +49,6 @@
   }
 
   .userName {
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
     margin-top: 8px;
   }
   
@@ -170,50 +65,109 @@
 
   .red {
     color: $red;    
+    background-color: $redLight;
   }
   
   .green {
     color: $green;
+    background-color: $greenLight;
+  }
+
+  .topButtonsWrapper {
+    display: flex;
+    width: 100%;
+    column-gap: 10px;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .topButton {
+      flex: 1 1;
+    }
+
+    .chatButton {
+      min-width: 120px;
+    }
+
+    
   }
 }
 
-.title {
-  font-size: $largeText;
+
+
+.salary {
+  font-size: $text20;
   font-weight: $semibold;
   color: $white;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  margin-bottom: 32px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-bottom: 32px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+
+    &__bottom {
+      margin-top: 8px;
+    }
+  }
+}
+
+.speciality {
+  margin-bottom: 16px;
+}
+
+.employment {
+  margin-bottom: 32px;
+}
+
+.contacts {
+  margin-bottom: 20px;
+
+  p {
+    padding-block: 8px;
+    border-bottom: 1px $grey solid;
+  }
+  
 }
 
 .buttonsWrapper {
   display: flex;
-  margin-top: 14px;
-  padding-inline: 16px;
-  column-gap: 8px;
-}
-
-.button {
-  border-radius: 10px;
-  background-color: $grey;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  &:first-of-type {
-    margin-right: auto;
-  }
-}
-
-.responseWrapper {
-  position: fixed;
-  bottom: 0px;
+  flex-direction: column;
   width: 100%;
-  padding: 16px;
-  padding-bottom: 100px;
-  background-color: $grey;
-  border-radius: 16px;
+  max-width: 344px;
+  row-gap: 8px;
 
-
-  .responseButton {
-    @include buttonGradient;
+  button {
     width: 100%;
   }
-}   
+}
+
+.favoritesButton {
+  background-color: $grey;
+  flex-shrink: 0;
+  width: 40px;
+  border-radius: 8px;
+}
+
+
 

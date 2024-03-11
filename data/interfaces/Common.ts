@@ -150,7 +150,7 @@ export interface CategoryTranslation extends TimeStamp {
   requirements: string,
 }
 
-export interface ICategory extends TimeStamp, CategoryTranslation {
+export interface ICategory extends TimeStamp, Pick<CategoryTranslation, 'id'|'baseId'|'languageCode'|'name'> {
   categoryType: CategoryType,
   published: boolean,
   isMain: boolean,
@@ -165,6 +165,7 @@ export interface ICategory extends TimeStamp, CategoryTranslation {
   subscribers: number[],
   isSubscribedByCurrentProfile: boolean,
   coursesCount?: string|number
+  parentId?: number
 }
 
 export interface UpdateCommunityForm {

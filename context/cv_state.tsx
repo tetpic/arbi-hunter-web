@@ -118,6 +118,8 @@ export function CvWrapper(props: Props) {
     router.push(`/create/cv?id=${cv.id}`)
   }
 
+
+
   const getCv = (id: number) => {
     CvRepository.getById(id)
     .then(res=> {

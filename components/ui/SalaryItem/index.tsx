@@ -9,10 +9,11 @@ import Formatter from 'utils/formatter'
 
 interface Props {
   vacancy?: IVacancy
-  cv?: ICV
+  cv?: ICV,
+  className?: string
 }
 
-export default function SalaryItem({vacancy, cv}: Props) {
+export default function SalaryItem({vacancy, cv, ...props}: Props) {
   const salary = cv&&(Formatter.formatNumber(Number(cv?.salary)) + ' ' + TranslateCurrency(cv?.currency))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin) + TranslateCurrency(vacancy?.currency)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax) + TranslateCurrency(vacancy?.currency))].filter(Boolean).join(' ')
   const compensation = vacancy?.compensation||cv?.compensation
   const currency = vacancy?.currency||cv?.currency
@@ -26,7 +27,7 @@ export default function SalaryItem({vacancy, cv}: Props) {
     return null
   }
 
-  return (<p className={styles.salary}>
+  return (<p className={props.className||styles.salary}>
   {
   // compensation === CompensationType.Salary && salary &&
   // <>

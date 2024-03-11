@@ -131,6 +131,17 @@ export default class CvRepository {
     }
     return res
   }
+
+  static async openContacts(id: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${id}/openContacts`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }
 
 
