@@ -48,7 +48,7 @@ export default function Possibilities(props: Props) {
 
   const [currentCompany, setCurrentCompany] = useState<ICompany>(companies[0])
 
-  const memoedPlanet = useMemo(()=><Planet active={active} companies={companies} onClick={(id)=>{
+  const memoedPlanet = useMemo(()=><Planet active={active}  companies={companies} onClick={(id)=>{
     setCurrentCompany(companies.find(el => el.id === id))}
   }/>, [active])
 

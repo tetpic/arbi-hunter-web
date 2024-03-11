@@ -42,7 +42,6 @@ describe('email registration', () => {
       cy.get('.pincode-input-container > :nth-child(3)').type(vArr[2])
       cy.get('.pincode-input-container > :nth-child(4)').type(vArr[3])
     })
-
   }
 
   beforeEach(()=> {

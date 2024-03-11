@@ -16,7 +16,7 @@ interface IState {
   saveCv: (id: number)=> Promise<boolean>
   removeCvfromSaved: (id: number) => Promise<boolean>
   deleteCv: (id: number) => void
-  updateCv: (id: number, cv: Partial<ICV>) =>void
+  updateCv: (id: number, cv: Partial<ICV>, onSave?: ()=>void) =>void
   editCv: (cv: ICV) => void
   findCvs: (data?: IVacancyCvSearchParams) => Promise<boolean>
   page: number,
@@ -94,10 +94,10 @@ export function CvWrapper(props: Props) {
     })
   }
 
-  const updateCv = (id: number, cv: Partial<ICV>) => {
+  const updateCv = (id: number, cv: Partial<ICV>, onSave?: ()=>void) => {
     CvRepository.updateCV(id, cv as ICVCreate)
     .then(_=> {
-      setSavedCvs()
+      onSave? onSave() : setSavedCvs()
     })
   }
 

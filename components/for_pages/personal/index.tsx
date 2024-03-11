@@ -46,9 +46,9 @@ export default function PersonalPage(props: Props) {
       <>
       { !isEditing && 
         (
-          (personalContext.currentProfile.profileType === ProfileType.Hirer && personalContext.backgrounds.get(BackgroundCategoryType.Places) && personalContext.currentProfile.logo)
+          (personalContext.currentProfile?.profileType === ProfileType.Hirer && personalContext.backgrounds?.get(BackgroundCategoryType.Places) && personalContext.currentProfile?.logo)
           ||
-          (personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.backgrounds.get(BackgroundCategoryType.Places)) 
+          (personalContext.currentProfile?.profileType === ProfileType.Employee && personalContext.backgrounds?.get(BackgroundCategoryType.Places)) 
         )
         &&
         <PersonalHeader isEditing={!props.id&&isEditing}/>

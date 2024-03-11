@@ -10,7 +10,7 @@ import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
-import { Answer, VacancyLookType } from 'types/enums'
+import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
@@ -29,6 +29,7 @@ import MailAltSvg from '@/components/svg/MailAltSvg'
 import languages from '@cospired/i18n-iso-languages'
 import ru from '@cospired/i18n-iso-languages/langs/ru.json'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
+import { useAppContext } from 'context/state'
 
 
 interface Props {
@@ -37,6 +38,7 @@ interface Props {
 
 export default function CvPreview(props: Props) {
   const cvContext = useCvContext()
+  const appContext = useAppContext()
   const currentCv = cvContext.currentCv
   const router = useRouter()
   const userContext = useUserContext()
@@ -64,6 +66,13 @@ export default function CvPreview(props: Props) {
     else {
       router.push(`/create/cv?id=${currentCv.id}&progress=${progress}`)
     }
+  }
+
+  const onPublish = () => {
+    cvContext.updateCv(currentCv.id, {published: true}, ()=>{
+      appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
+      router.push('/profile?page=cvs')
+    })
   }
 
   return (<div className={styles.root}> 
@@ -112,10 +121,10 @@ export default function CvPreview(props: Props) {
           {currentCv.profile.phone}
         </P>
         }
-        {currentCv.profile.telegramNickname &&
+        {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
-          {currentCv.profile.telegramNickname}
+          {currentCv.telegramNickname||currentCv.profile.telegramNickname}
         </P>
         }
         {currentCv.whatsapp &&
@@ -153,7 +162,7 @@ export default function CvPreview(props: Props) {
           <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}</P>
         }
         {currentCv.businessTrips &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки не возможны'}</P>
+          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}</P>
         }
 
       </PreviewItem>
@@ -167,35 +176,37 @@ export default function CvPreview(props: Props) {
         </PreviewItem>
       }
 
-      {currentCv.experienceInfo && currentCv.experienceInfo.length > 0 &&
         <PreviewItem 
         title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
         onClick={() => editElement(3)}
         >
-          {currentCv.experienceInfo.map(el=> {
-            return <div className={styles.experience}>
-              <P styleType={['w500', 'medium']}>{el.position}</P>
-              <P styleType={['w500', 'medium']}>{el.company}</P>
-              <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
-            </div>
-         })}
+          {currentCv.experienceInfo.length > 0 && 
+            currentCv.experienceInfo.map(el=> {
+              return <div className={styles.experience}>
+                <P styleType={['w500', 'medium']}>{el.position}</P>
+                <P styleType={['w500', 'medium']}>{el.company}</P>
+                <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+              </div>
+            })
+            ||
+            <P styleType={['w500', 'medium']}>Без опыта</P>
+          }
         </PreviewItem>
-      }
 
-      {currentCv.educationInfo && currentCv.educationInfo.length > 0 &&
         <PreviewItem 
         title={'Образование'}
         onClick={() => editElement(4)}
         > 
           <P styleType={['w500', 'medium']}>{TranslateEducationType(currentCv.education)}</P>
-          {currentCv.educationInfo.map(el=> {
-            return <div className={styles.experience}>
-              <P styleType={['w500', 'medium']}>{el.institution}</P>
-              <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
-            </div>
-          })}
+          { currentCv.educationInfo.length > 0 && 
+            currentCv.educationInfo.map(el=> {
+              return <div className={styles.experience}>
+                <P styleType={['w500', 'medium']}>{el.institution}</P>
+                <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+              </div>
+            })
+          }
         </PreviewItem>
-      }
 
       {currentCv.skills && currentCv.skills.length > 0 &&
         <PreviewItem 
@@ -245,7 +256,14 @@ export default function CvPreview(props: Props) {
       }
     </div>
 
-    <Button styleType={['gradient']} title={'back'} onClick={router.back} className={styles.button}>Назад</Button>
+    <div className={styles.buttonsWrapper}>
+      <Button styleType={['gradient']} title={'back'} onClick={router.back} className={styles.button}>Назад</Button>
+      {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
+        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
+      }
+
+    </div>
+
 
 
   </div>)

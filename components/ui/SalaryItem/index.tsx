@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function SalaryItem({vacancy, cv}: Props) {
-
   const salary = cv&&(Formatter.formatNumber(Number(cv?.salary)) + ' ' + TranslateCurrency(cv?.currency))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin) + TranslateCurrency(vacancy?.currency)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax) + TranslateCurrency(vacancy?.currency))].filter(Boolean).join(' ')
   const compensation = vacancy?.compensation||cv?.compensation
   const currency = vacancy?.currency||cv?.currency
@@ -23,7 +22,7 @@ export default function SalaryItem({vacancy, cv}: Props) {
 
 
 
-  if(!Boolean(salary.trim())) {
+  if(!Boolean(salary.trim()) && compensation === CompensationType.Salary) {
     return null
   }
 

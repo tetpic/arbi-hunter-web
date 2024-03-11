@@ -84,7 +84,6 @@ export default function Registration() {
         }, 300)
       })
       .catch(err=> {
-        
         setDisableButton(false)
         appContext.showSnackbar('Такой email уже есть в системе', SnackbarType.error)
         return
@@ -157,11 +156,16 @@ export default function Registration() {
         validateValues(values)
         .then(res=> {
           debugger
-          RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
-          .then(r=> {
-            if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
-            else { setProgress(page||progress+1) }
-          })
+          if(res === false) {
+            setErr(loginType, `Введите корректный ${loginType === 'email' ? 'email' : 'номер'}`)
+          }
+          else {
+            RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
+            .then(r=> {
+              if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
+              else { setProgress(page||progress+1) }
+            })
+          }
         })
       })()
       break

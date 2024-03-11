@@ -17,7 +17,7 @@ export default function CvBusyness(props: Props) {
     options={[
       {label: 'Частичная', value: EmploymentType.PartTime},
       {label: 'Полная', value: EmploymentType.FullTime},
-      {label: 'Гибкий рабочий день', value: EmploymentType.Project},
+      {label: 'Проектная', value: EmploymentType.Project},
     ]} 
     />
     </div>

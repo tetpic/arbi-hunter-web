@@ -57,7 +57,7 @@ export default function SetTariff(props: Props) {
     styleType={['gradient']} 
     title={'preview'} 
     onClick={()=> {
-      props.onSave(true)
+      // props.onSave(true)
       toPreview()}
     }>
       Предпросмотр {props.type === 'cv'?  'резюме': 'вакансии'}
