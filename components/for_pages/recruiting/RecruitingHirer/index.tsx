@@ -14,7 +14,6 @@ import slide1 from 'images/recruiting/recruiting_swipe1.png'
 import slide2 from 'images/recruiting/recruiting_swipe2.png'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
-import SearchBar from 'components/ui/SearchBar'
 import recruitingCatWallet from 'images/recruiting/scene1.png'
 import recruitingCatPoint from 'images/recruiting/scene2.png'
 import recruitingCatMessage from 'images/recruiting/scene3.png'
@@ -31,11 +30,8 @@ export default function RecruitingHirer(props: Props) {
 
   return (
     <div className={styles.root}> 
-    {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
       <Head/>
-
-      {!isTabletWidth && <Search title={'Поиск резюме'} tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}/>}
-      
+      <Search title={'Поиск резюме'} tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}/>
       <Reasons/>
     
       <Title className={styles.title} title={'Начни поиск в три шага'}/>

@@ -93,7 +93,7 @@ export default function Subscriptions(props: Props) {
   <InfiniteScroll 
   next={()=>setPage(p => p+1)} 
   hasMore={news.size < total} 
-  loader={<Spinner size={32} color={colors.yellow}/>} 
+  loader={<Spinner size={32} color={colors.blue}/>} 
   scrollableTarget={'scrollable'}
   style={{overflow: 'unset'}}
   dataLength={news.size}>

@@ -75,7 +75,7 @@ export default function ResponsesFilter(props: Props) {
               Только новые
               <div className={classnames(styles.switcher, switcher&&styles.switcher_active)}>
                 <div className={styles.roller}>
-                  {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.yellow}/>}
+                  {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.blue}/>}
                 </div>
               </div>
             </div>

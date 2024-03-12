@@ -29,24 +29,24 @@ export default function SetTariff(props: Props) {
     <div className={styles.tariff}>
       <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
       <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.yellow} className={styles.check}/> Открытые контакты в откликах</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}><CheckSvg color={colors.yellow} className={styles.check}/>До 15 подходящих резюме к каждой вакансии</P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}><CheckSvg color={colors.blue} className={styles.check}/>До 15 подходящих резюме к каждой вакансии</P>
       <P styleType={['w600', 'huge', 'alignStart']}> от 350 000 ₽</P>
       <Button styleType={['gradient']} title={'saveVacancy1'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>
     <div className={styles.tariff}>
       <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
       <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.yellow} className={styles.check}/> Открытые контакты в откликах</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.yellow} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
       <P styleType={['w600', 'huge']}>от 350 000 ₽</P>
       <Button styleType={['gradient']} title={'saveVacancy2'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>
     <div className={styles.tariff}>
       <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
       <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.yellow} className={styles.check}/> Открытые контакты в откликах</P>
-      <P  styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.yellow} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
+      <P  styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
       <P  styleType={['w600', 'huge']}>от 350 000 ₽</P>
       <Button styleType={['gradient']} title={'saveVacancy3'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>

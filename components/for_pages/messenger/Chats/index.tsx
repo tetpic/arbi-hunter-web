@@ -61,7 +61,7 @@ export default function Chats(props: Props) {
           // props.chats.length === 0 && !chatContext.loading &&
           // <p className='empty'>Чатов не найдено</p>
           // ||
-          <Spinner size={32} color={colors.yellow}/>
+          <Spinner size={32} color={colors.blue}/>
         }
       </div>
       <div className={styles.draggable} draggable={true} onDragStart={initial} onDrag={(e)=> resize(e)}></div>

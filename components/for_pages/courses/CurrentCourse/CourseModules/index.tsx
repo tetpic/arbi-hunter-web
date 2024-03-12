@@ -55,7 +55,7 @@ export default function CourseModules({course}: Props) {
               <Image className={styles.image} src={FILES + k.image?.source} width={65} height={48} alt={'course title'}/>
             }
             <div className={styles.progressBarWrapper}>
-              <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.yellow})} value={k.progress} text={`${k.progress}%`}/>
+              <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
             </div>
             <p className={styles.title}>{k.title}</p>
             <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), 'урок', 'урока', 'уроков')}</p>
@@ -82,7 +82,7 @@ export default function CourseModules({course}: Props) {
         </div>
       ))
       ||
-      loadingBlocks && <Spinner size={32} color={colors.yellow}/>
+      loadingBlocks && <Spinner size={32} color={colors.blue}/>
       ||
       <p className={'empty'}>Нет добавленных образовательных модулей</p>
     }

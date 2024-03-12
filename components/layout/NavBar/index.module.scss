@@ -10,6 +10,7 @@
   z-index: 20;
   width: 0px;
   position: relative;
+  height: auto;
   @include transitionDefault;
   @include mq($MdDesktopWidth, max) {
     justify-content: flex-end;

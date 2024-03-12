@@ -7,7 +7,7 @@
 .title {
   justify-content: center;
   margin-top: 120px;
-  font-size: 32px;
+  font-size: clamp(16px, 4vw, 32px);
   @include mq($TabletWidth, max) {
     margin-top: 40px;
     justify-content: flex-start;

@@ -13,12 +13,11 @@
   width: 100%;
   row-gap: 42px;
   @include mq($TabletWidth, max) {
-    background: unset;
-    background-color: $black;
     padding: 16px;
     row-gap: 16px;
     margin-inline: 16px;
     margin-top: 40px;
+    width: calc(100% - 32px);
   }
 }
 

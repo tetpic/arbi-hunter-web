@@ -59,7 +59,7 @@ export default function Communities() {
         // height={'100%'}
         next={()=>setPage(p => p+1)}
         hasMore={communityContext.communities.size < total}
-        loader={<Spinner size={24} color={colors.yellow} />}  
+        loader={<Spinner size={24} color={colors.blue} />}  
         scrollableTarget={'scrollable'}
         dataLength={communityContext.communities.size}  
         >
@@ -73,7 +73,7 @@ export default function Communities() {
               })
               ||
               !loaded &&
-              <Spinner size={34} color={colors.yellow}/>
+              <Spinner size={34} color={colors.blue}/>
               ||
               loaded &&
               <p className={'empty'}>Нет загруженных сообществ</p>

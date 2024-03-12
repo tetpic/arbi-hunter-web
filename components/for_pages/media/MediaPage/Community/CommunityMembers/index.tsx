@@ -27,7 +27,7 @@ export default function CommunityMembers(props: Props) {
       )
     })
     ||
-    props.loading && <Spinner size={24} color={colors.yellow}/>
+    props.loading && <Spinner size={24} color={colors.blue}/>
     ||
     <p className={'empty'}>Нет участников</p>
   }

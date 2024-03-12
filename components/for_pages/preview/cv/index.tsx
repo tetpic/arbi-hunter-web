@@ -7,7 +7,7 @@ import Title from '@/components/ui/TitleForSection'
 import PreviewItem from '@/components/ui/PreviewItem'
 import UserPic from '@/components/ui/UserPic'
 import { useUserContext } from 'context/user_state'
-import { getUserImageSource } from 'utils/helpers'
+import { getAge, getUserImageSource } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
 import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
@@ -94,7 +94,7 @@ export default function CvPreview(props: Props) {
         styleType={['greyLight', 'w500', 'medium']}>
           {[
             currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
-            currentCv.age?currentCv.age + ' ' + Formatter.pluralize(currentCv.age, 'год', 'года', 'лет'):null, 
+            getAge(currentCv.age), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>

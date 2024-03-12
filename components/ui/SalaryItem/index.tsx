@@ -1,5 +1,4 @@
 import { IVacancy } from 'data/interfaces/IVacancy'
-import Image from 'next/image'
 import { CompensationType } from 'types/enums'
 import { TranslateCompensationType, TranslateCurrency} from 'utils/enumsTranslations'
 // import Formatter from 'utils/formatter'
@@ -19,7 +18,7 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
   const currency = vacancy?.currency||cv?.currency
   const commission = vacancy?.commission||cv?.commission
 
-  const image =   <Image src={'/icons/money.png'} width={24} height={24} alt={'money icon'}/> 
+  // const image =   <Image src={'/icons/money.png'} width={24} height={24} alt={'money icon'}/> 
 
 
 
@@ -51,8 +50,8 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
   <span> {TranslateCompensationType(compensation)}</span>
   ||
   <>
-  {image}
-  <span>{salary}</span>
+  {/* {image} */}
+  <span>от {salary}</span>
   </>
 
   // ||

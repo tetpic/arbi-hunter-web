@@ -183,7 +183,7 @@ export default function CurrentCourse(props: Props) {
           </div>
       </>
       ||
-      <Spinner size={36} color={colors.yellow}/>
+      <Spinner size={36} color={colors.blue}/>
       }
     </div>
 

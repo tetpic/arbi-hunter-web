@@ -11,11 +11,8 @@
   max-width: 764px;
   margin-inline: auto;
   width: 100%;
-  @include mq($TabletWidth, max) {
-    &:before, &:after {
-      display: none;
-    }
-  }
+  height: clamp(48px, 9vw, 56px);
+
 
 
   .button {

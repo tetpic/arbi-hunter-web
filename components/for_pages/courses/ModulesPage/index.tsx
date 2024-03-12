@@ -139,7 +139,7 @@ export default function ModulesPage() {
       <Button className={styles.button} onClick={nextButtonHandler} >{endOfCourse?'Завершить курс':'Продолжить'}</Button>
       </>
       ||
-      <Spinner size={34} color={colors.yellow}/>
+      <Spinner size={34} color={colors.blue}/>
       }
     </div>
     {!isTabletWidth && !courseContext.blocksLoading &&

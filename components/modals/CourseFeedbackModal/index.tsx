@@ -45,7 +45,7 @@ export default function CourseFeedbackModal(props: Props) {
     appContext.hideModal()
   }
 
-  const goldColor = colors.yellow
+  const goldColor = colors.blue
   const greyColor = colors.greyLight
 
   /** возвращает массив цветов для StarSVG */

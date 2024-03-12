@@ -69,7 +69,7 @@ export default function ApplicationModal(props: Props) {
             <TextAreaField areaClassname={styles.textArea} onChange={(e)=> formik.setFieldValue('coverLetter', e.target.value)} autoSize name={'coverLetter'}/>
           }
           {!showTextField && 
-            <p className={styles.addCover} onClick={()=>setShowTextField(true)}><PlusSvg color={colors.yellow} />Сопроводительное письмо</p>
+            <p className={styles.addCover} onClick={()=>setShowTextField(true)}><PlusSvg color={colors.blue} />Сопроводительное письмо</p>
           } 
         </Form>
       </FormikProvider>

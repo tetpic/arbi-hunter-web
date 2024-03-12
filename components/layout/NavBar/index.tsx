@@ -146,8 +146,8 @@ export default function NavBar(props: Props) {
           onChange={(val) => {}}
           checked={true}
           offColor={colors.white}
-          onColor={colors.yellow}
-          offHandleColor={colors.yellow}
+          onColor={colors.blue}
+          offHandleColor={colors.blue}
           onHandleColor={colors.white}
           width={50}
           />

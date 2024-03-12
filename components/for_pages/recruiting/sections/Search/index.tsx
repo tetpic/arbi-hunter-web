@@ -2,6 +2,7 @@ import styles from './index.module.scss'
 
 import Title from 'components/ui/TitleForSection'
 import MainSearchBar from '@/components/ui/MainSearchBar'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 interface Props {
   title: string
@@ -13,9 +14,19 @@ export default function Search(props: Props) {
   return (<div className={styles.search}>
     <Title title={props.title} className={styles.smallTitle}/>
     <div className={styles.tags}>
+      <Swiper
+      slidesPerView={'auto'}
+      spaceBetween={8}
+      className={styles.swiper}
+      >
+        
+
       {props.tags.map(el => {
-        return <p className={styles.tag}>{el}</p>
+        return <SwiperSlide className={styles.slide}>
+        <p className={styles.tag}>{el}</p>
+        </SwiperSlide>
       })}
+      </Swiper>
       {/* <p className={styles.tag}>Разработка</p>
       <p className={styles.tag}>Affiliate Manger</p>
       <p className={styles.tag}>Frontented-Разработчик</p>

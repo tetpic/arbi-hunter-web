@@ -2,7 +2,7 @@
 
 .top {
   display: grid;
-  grid-template-areas: 'u s' 'u n';
+  grid-template-areas: 'u n' 'u s';
   row-gap: 8px;
   grid-template-columns: auto 1fr;
 }

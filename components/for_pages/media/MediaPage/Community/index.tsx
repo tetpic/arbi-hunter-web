@@ -84,7 +84,7 @@ export default function CommunityPage({community, id}: Props) {
           <InfiniteScroll 
           next={()=>setPage((p)=> p+1)} 
           hasMore={communityContext.communityNews.size < total} 
-          loader={<Spinner size={24} color={colors.yellow}/>} 
+          loader={<Spinner size={24} color={colors.blue}/>} 
           dataLength={contentLength.current}
           >
           <CommunityContent/>

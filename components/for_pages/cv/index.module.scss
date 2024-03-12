@@ -4,6 +4,7 @@
   margin-top: 48px;
   padding-bottom: 120px;
   max-width: 638px;
+  min-height: 70vh;
   @include mq($TabletWidth, max) {
     margin-top: 8px;
     padding-inline: 16px;
@@ -167,6 +168,51 @@
   flex-shrink: 0;
   width: 40px;
   border-radius: 8px;
+}
+
+
+
+.userTop {
+  margin-bottom: 32px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  .topLine {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    column-gap: 16px;
+  
+    button {
+      flex: 1 1;
+    }
+  }
+  
+  .stats {
+    width: 100% !important;
+    max-width: 450px !important;
+  }
+
+  .edit {
+    @include transitionDefault;
+    cursor: pointer;
+    svg {
+      path {
+        @include transitionDefault;
+      }
+    }
+    @include hover {
+      color: $white;
+      svg {
+        path {
+          fill: $white;
+        }
+      }
+    }
+  }
 }
 
 

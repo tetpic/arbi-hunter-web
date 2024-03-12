@@ -11,7 +11,8 @@
   min-width: 960px;
   @include mq($TabletWidth, max) {
     min-width: unset;
-    padding-top: 40px;
+    padding-top: 0px;
+    margin-top: 0px;
     margin-bottom: 40px;
   }
 
@@ -88,6 +89,14 @@
   width: 400px;
   height: 400px;
   z-index: 3;
+  @include mq($TabletWidth, max) {
+    position: relative;
+    width: 100vw;
+    height: 320px;
+    left: unset;
+    top: 0;
+  }
+
 }
 
 .back, .front {
@@ -171,6 +180,9 @@
 .tower {
   top: 40px;
   right: -50px;
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
 
   .counter {
     position: absolute;

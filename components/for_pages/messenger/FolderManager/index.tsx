@@ -122,7 +122,7 @@ function FolderEditor(props: Props) {
 
         <p className={styles.folderTitle}>ВЫБРАТЬ ЧАТЫ</p>
         <div className={styles.chatsWrapper}>
-          <div className={classNames(styles.item, choosenChats.size === 1&&styles.item_add)} onClick={addModalHandler}><PlusSvg color={colors.yellow} /><span>Добавить чаты</span></div>
+          <div className={classNames(styles.item, choosenChats.size === 1&&styles.item_add)} onClick={addModalHandler}><PlusSvg color={colors.blue} /><span>Добавить чаты</span></div>
           {[...choosenChats.values()].map(chat=> {
             const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
             return (

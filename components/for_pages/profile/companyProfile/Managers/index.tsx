@@ -44,7 +44,7 @@ export default function Managers() {
       height={'100%'}
       next={()=>{managerContext.setManagers(managerContext.managersPage+1)}} 
       hasMore={managerContext.managers.size < managerContext.managersTotal} 
-      loader={<Spinner size={24} color={colors.yellow}/>} 
+      loader={<Spinner size={24} color={colors.blue}/>} 
       dataLength={0}>
          {managerContext.managers&& managerContext.managers.size > 0 && 
            [...managerContext.managers.values()].map((el, index)=> {

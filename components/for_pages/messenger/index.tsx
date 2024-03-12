@@ -62,7 +62,7 @@ export default function Messenger() {
           <Messages onBackClick={()=>setComponent(ChatComponent.Chat)}/>
           ||
         chatContext.loading &&
-          <Spinner size={32} color={colors.yellow}/>
+          <Spinner size={32} color={colors.blue}/>
         }
       </ChatDialogWrapper>
     </div>

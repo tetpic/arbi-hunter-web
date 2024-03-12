@@ -119,8 +119,6 @@ export default function Head(props: Props) {
 
 
   return (<section className={styles.head}>
-    {!isTabletWidth &&
-    <>
       <svg xmlns="http://www.w3.org/2000/svg" style={{opacity: 0, position: 'absolute'}} width="822" height="168" viewBox="0 0 822 168" fill="none">
         <path ref={svgPath} d="M794.914 2.99225L795.301 3.05904C800.005 3.87085 804.314 4.61452 808.005 5.41309C811.804 6.23494 814.909 7.10718 817.101 8.15292C819.316 9.2104 820.436 10.3668 820.582 11.6767C820.731 13.0134 819.904 14.7709 817.514 17.1162C812.765 21.776 802.347 28.2802 784.126 37.6886C765.926 47.0859 740 59.353 704.294 75.5446C660.621 95.3488 621.555 105.644 578.184 116.527C575.489 117.204 572.777 117.882 570.047 118.565C528.839 128.877 483.369 140.255 426.327 161.028C414.124 165.472 396.644 167.377 375.613 167.256C354.593 167.136 330.07 164.995 303.806 161.376C251.279 154.138 191.827 140.996 139.582 126.328C87.3235 111.656 42.3234 95.4697 18.6765 82.1558C12.7656 78.8278 8.21581 75.6939 5.22356 72.8252C2.20641 69.9325 0.887442 67.4202 1.15026 65.3237C1.40923 63.2578 3.24804 61.3252 7.2741 59.6916C11.2751 58.0683 17.2829 56.8075 25.5475 55.9948C86.4502 50.0055 121.615 60.6108 152.862 74.2076C159.207 76.9686 165.396 79.8563 171.611 82.7556C196.01 94.1393 220.796 105.703 256.933 110.495C317.656 118.547 362.492 120.786 412.151 113.066C461.799 105.349 516.24 87.6815 596.183 55.9643C609.557 50.6583 622.953 44.6221 636.455 38.5384C638.762 37.4989 641.072 36.4581 643.386 35.4193C659.245 28.298 675.274 21.2691 691.634 15.4119C724.352 3.69839 758.363 -3.31709 794.914 2.99225Z" stroke="black"/>
       </svg>
@@ -139,14 +137,17 @@ export default function Head(props: Props) {
           </div>
         })}
         </div>
-        <Image  className={styles.randomImg} ref={imageRef} src={activeImage[1]} alt='random' width={64} height={64}/>
+        {!isTabletWidth &&
+          <Image  className={styles.randomImg} ref={imageRef} src={activeImage[1]} alt='random' width={64} height={64}/>
+        }
+      </div>
+      {!isTabletWidth &&
+        <div className={styles.tower}>
+          <Image  src={tower} alt={'tower'}/>
+          <div className={styles.counter}><UserSvg/> <p>000<span>{counter}</span></p></div>
+        </div>
+      }
 
-      </div>
-      <div className={styles.tower}>
-        <Image  src={tower} alt={'tower'}/>
-        <div className={styles.counter}><UserSvg/> <p>000<span>{counter}</span></p></div>
-      </div>
-    </>}
     <h6 className={styles.title}>
       Разместите вакансию <br />
       <span className={styles.title_big}>

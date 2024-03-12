@@ -19,7 +19,7 @@ export default function Spinner(props: Props) {
     }, props.className)}>
       <SpinnerCircular
         size={props.size}
-        color={props.color ?? colors.yellow}
+        color={props.color ?? colors.blue}
         secondaryColor={props.secondaryColor ?? colors.black}
         thickness={150}
       />

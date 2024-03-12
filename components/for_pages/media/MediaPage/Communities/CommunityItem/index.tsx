@@ -58,7 +58,7 @@ export default function CommunityItem({community}: Props) {
       onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
 
       >
-        {isSubscribed?<CheckSvg color={colors.yellow}/>:<PlusSvg/>}
+        {isSubscribed?<CheckSvg color={colors.blue}/>:<PlusSvg/>}
       </Button>
     }
     <p className={styles.name}>{community.name}</p>

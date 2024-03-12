@@ -89,7 +89,7 @@ export default function NewsList(props: Props) {
       <InfiniteScroll 
       next={()=>mediaContext.setPage(p => p+1)} 
       hasMore={mediaContext.currentNews?.size < mediaContext.total} 
-      loader={<Spinner size={24} color={colors.yellow}/>} 
+      loader={<Spinner size={24} color={colors.blue}/>} 
       dataLength={mediaContext.currentNews?.size}
       scrollableTarget={props.scrollableTarget}
       >

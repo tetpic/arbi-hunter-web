@@ -16,7 +16,7 @@ export default function SubNavigationSet<T extends {id?: number, name?: string}>
   return (
     props.categories.map(el=> {
       const isCurrent = el.id === props.currentCategory?.id
-      return <p  key={el.id} className={classNames(styles.subCategory, isCurrent&&styles.subCategory_active)} onClick={()=> props.setCurrent(el)}><AppSvg color={isCurrent&&colors.yellow} />{el.name}</p>
+      return <p  key={el.id} className={classNames(styles.subCategory, isCurrent&&styles.subCategory_active)} onClick={()=> props.setCurrent(el)}><AppSvg color={isCurrent&&colors.blue} />{el.name}</p>
     })
   )
 }

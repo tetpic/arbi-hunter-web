@@ -36,6 +36,8 @@ import { useUserContext } from 'context/user_state'
 import CvRepository from 'data/repositories/CvRepository'
 import ChatRepository from 'data/repositories/ChatRepository'
 import FavoritesButton from '@/components/ui/FavoritesButton'
+import PencilSvg from '@/components/svg/PencilSvg'
+import Statistics from '@/components/ui/Statistics'
 
 
 interface Props {
@@ -51,6 +53,7 @@ export default function CvPage(props: Props) {
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
+  const isMyCv = currentCv?.profileId === userContext.currentProfile?.id
 
   const makeResponse = () => {
     if(isTabletWidth) {
@@ -107,19 +110,32 @@ export default function CvPage(props: Props) {
 
 
   const profileImage = 
-  currentCv?.profile.useOwnLogo && currentCv?.profile?.logo?.source && FILES+currentCv?.profile?.logo?.source
+  currentCv?.profile.useOwnLogo 
+  && currentCv?.profile?.logo?.source 
+  && FILES+currentCv?.profile?.logo?.source
   ||
-  !currentCv?.profile.useOwnLogo && currentCv?.profile?.image?.source && FILES+currentCv?.profile?.image?.source
+  !currentCv?.profile.useOwnLogo 
+  && currentCv?.profile?.image?.source 
+  && FILES+currentCv?.profile?.image?.source
 
 
   if(!currentCv) {
-    return <Spinner size={24}/>
+    return <div className={styles.root}>
+      <Spinner size={24}/>
+    </div>
   }
 
   const userCard = (<>
     <div className={styles.top}>
       <UserPic size={80} image={profileImage}/>
-      <P styleType={['large', 'w600']} className={styles.userName}>{currentCv?.profile?.firstName} {currentCv?.profile?.lastName}</P>
+      {currentCv.isContactsOpen &&
+        <P 
+        styleType={['large', 'w600']} 
+        className={styles.userName} 
+        >
+          {currentCv?.profile?.firstName} {currentCv?.profile?.lastName}
+        </P>
+      }
     </div>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
     <P styleType={['medium', 'w500', 'alignCenter']}>
@@ -181,9 +197,55 @@ export default function CvPage(props: Props) {
   return (
     <div className={styles.root}>
       <BackTextButton onClick={router.back}/>
-      <div className={styles.userCard}>
-        {userCard}
+
+      {isMyCv &&
+      <div className={styles.userTop}>
+        <div className={styles.topLine}>
+          <P styleType={['f20', 'w600']}>
+            {currentCv.categories[0].name}
+          </P>
+          <P 
+          styleType={['blue', 'alignCenter', 'medium', 'w500']} 
+          onClick={()=>router.push('/create/cv?id='+currentCv.id)} 
+          className={styles.edit}
+          >
+            <PencilSvg color={colors.blue}/> Редактировать
+          </P>
+        </div>
+        <SalaryItem cv={currentCv} />
+        <Statistics 
+        className={styles.stats}
+        items={[
+          {name: 'Показы', count: currentCv.totalShows},
+          {name: 'Просмотры', count: currentCv.totalViews},
+          {name: 'Отклики', count: currentCv.totalApplications},
+        ]} 
+        title={'Cтатистика за неделю'}/>
+        <div className={styles.topLine}>
+          <P styleType={['w500', 'medium', 'greyLight']}>
+            Поднять вручную можно сегодня в 20:30
+          </P>
+          <P styleType={['w500', 'medium', 'blue']}>
+            Поднять автоматически
+          </P>
+        </div>
+        <div className={styles.topLine}>
+          <Button styleType={['gradient']}>
+            Улучшить резюме
+          </Button>
+          <Button styleType={['borderGradient']}>
+            123 подходящих вакансий
+          </Button>
+        </div>
+
       </div>
+      }
+
+      {!isMyCv &&
+        <div className={styles.userCard}>
+          {userCard}
+        </div>
+      }
 
       {(currentCv.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
@@ -227,10 +289,17 @@ export default function CvPage(props: Props) {
         </div>
       }
 
-
-
-      <P styleType={['f20', 'w600']} className={styles.speciality}>{currentCv.categories[0].name}</P>
-      <SalaryItem cv={currentCv} className={styles.salary}/>
+      {!isMyCv &&
+      <>
+        <P 
+        styleType={['f20', 'w600']} 
+        className={styles.speciality}
+        >
+          {currentCv.categories[0].name}
+        </P>
+        <SalaryItem cv={currentCv} className={styles.salary}/>
+      </>
+      }
 
       <div className={styles.employment}>
         <TagList tagClassName={styles.tag} tags={[
@@ -322,7 +391,10 @@ export default function CvPage(props: Props) {
       {currentCv.languageKnowledges?.length > 0 &&
         <div className={styles.item}>
           <P styleType={['large', 'w600']}>Владения языками</P>
-          <TagList tagClassName={styles.tag} tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList 
+          tagClassName={styles.tag} 
+          tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} 
+          />
         </div>
       }
 
@@ -336,10 +408,14 @@ export default function CvPage(props: Props) {
 
       <div className={styles.item}>
         {currentCv.relocation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
+          </P>
         }
         {currentCv.businessTrips &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
+          </P>
         }
       </div>
 

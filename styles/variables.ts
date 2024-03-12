@@ -31,7 +31,7 @@ export const colors = {
   greayLightAlt2: '#A2A3A4',
   
   // yellow: '#F3CE7B',
-  yellow: '#4E81F3',
+  blue: '#4E81F3',
   green: '#339B62',
   
   //other colors

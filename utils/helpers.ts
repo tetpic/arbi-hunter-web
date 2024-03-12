@@ -1,6 +1,11 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { FILES } from 'types/constants'
+import Formatter from './formatter'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import { ICV } from 'data/interfaces/ICV'
+import { TranslateCompensationType, TranslateCurrency } from './enumsTranslations'
+import { CompensationType } from 'types/enums'
 
 export const getUserImageSource = (userProfile: IUserProfile): string|null => {
   switch(userProfile?.profileType) {
@@ -57,4 +62,38 @@ export const clearObject = (obj: any, type?: 'string' | 'array') => {
   }
 
   return clearedQuery
+}
+
+export const getAge = (age: number): string => {
+  if(!age) {
+    return null
+  }
+  return age + ' ' + Formatter.pluralize(age, 'год', 'года', 'лет')
+}
+
+export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}):string|null => {
+  const salary = data.cv&&(Formatter.formatNumber(Number(data.cv?.salary)) + ' ' + TranslateCurrency(data.cv?.currency))
+  ||data.vacancy&&
+    [
+      data.vacancy?.salaryMin&&('от '+ Formatter.formatNumber(data.vacancy?.salaryMin) + TranslateCurrency(data.vacancy?.currency)), 
+      data.vacancy?.salaryMax&&('до '+Formatter.formatNumber(data.vacancy?.salaryMax) + TranslateCurrency(data.vacancy?.currency))
+    ].filter(Boolean).join(' ')
+  const compensation = data.vacancy?.compensation||data.cv?.compensation
+
+  if(!Boolean(salary.trim()) && compensation === CompensationType.Salary) {
+    return null
+  }
+
+  switch(compensation) {
+    case CompensationType.Contract:
+      return TranslateCompensationType(compensation)
+    case CompensationType.Salary:
+      return 'от ' + salary
+    default: 
+      return 'от ' + salary
+  }
+}
+
+export const getUserName = (profile: IUserProfile):string => {
+  return [profile?.firstName, profile?.patronymic, profile?.lastName].filter(Boolean).join(' ')
 }

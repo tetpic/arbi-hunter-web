@@ -139,7 +139,7 @@ export default function Messages(props: Props) {
           }
         </>
         ||
-        <Spinner size={48} color={colors.yellow}/>
+        <Spinner size={48} color={colors.blue}/>
         }
       </div>
       <div className={styles.invite}>
@@ -161,7 +161,7 @@ export default function Messages(props: Props) {
       inverse
       height={'100%'}
       style={{display: 'flex', flexDirection: 'column-reverse'}}
-      loader={<Spinner size={24} color={colors.yellow}/>}
+      loader={<Spinner size={24} color={colors.blue}/>}
       hasMore={dialog.totalMessages > dialog.messages.size}
       scrollThreshold={0.6}>
         {
@@ -169,7 +169,7 @@ export default function Messages(props: Props) {
             return <MessageFactory profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
           })
           ||
-          loading && messages.size===0 && <Spinner size={24} color={colors.yellow}/>
+          loading && messages.size===0 && <Spinner size={24} color={colors.blue}/>
           ||
           <p className={classNames(styles.empty, 'empty')}>Нет сообщений</p>
         }

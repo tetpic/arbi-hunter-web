@@ -61,7 +61,7 @@ export default function MessageFactory(props: Props) {
           msg.pastedImages.map(el=>{
             return <div className={classNames(styles.image, msg.pastedImages.length>1&&styles.image_half)}>
               <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} />
-              <Spinner className={styles.spinner} size={44} color={colors.yellow}/>
+              <Spinner className={styles.spinner} size={44} color={colors.blue}/>
             </div>
           })
         }

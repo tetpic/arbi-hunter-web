@@ -52,8 +52,8 @@ export default function SwitchField(props: Props) {
           onChange={(val) => handleChange(val)}
           checked={field.value||false}
           offColor={props.offColor||colors.white}
-          onColor={props.onColor||colors.yellow}
-          offHandleColor={props.offHandleColor||colors.yellow}
+          onColor={props.onColor||colors.blue}
+          offHandleColor={props.offHandleColor||colors.blue}
           onHandleColor={props.onHandleColor||colors.white}
           />
           {props.label && !props.fluid && label}
