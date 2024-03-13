@@ -72,7 +72,7 @@ export default function CVs(props: Props) {
         <ProfileCvItem  
         cv={el} 
         key={index}
-        isLast={index > 2 &&index===filteredCvs.length -1} 
+        isLast={index > 0 &&index===filteredCvs.length -1} 
         image={getUserImageSource(userContext.currentProfile)}  
         type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
         />

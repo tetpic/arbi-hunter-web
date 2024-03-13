@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import ThreeModelVariant from '..'
 import { useEffect, useRef, useState } from 'react'
 import Button from 'components/ui/Button'
+import { CharacterWrapper } from 'context/character_state'
 
 interface Props {
 }
@@ -22,6 +23,7 @@ function generateVariants(obj: {[key: string]: number[]}, type: 'man'|'woman') {
           eye: 0, 
           hair: k==='cap'?0:1,
           size: s,
+          jacket: 4,
           [k]: el, 
         })
       })
@@ -73,7 +75,9 @@ export default function ThreePage(props: Props) {
   
     {combinations&&combinations.map(el=> {
       return (
-        <ThreeModelVariant {...el}/>
+        <CharacterWrapper>
+        <ThreeModelVariant data={el} r={0}/>
+        </CharacterWrapper>
       )
     })} 
   </div>

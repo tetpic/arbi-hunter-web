@@ -43,13 +43,13 @@ export function ThreeModel(props: IThreeModelProps) {
   }, [props.actions])
 
   useEffect(()=>{
-    if(nodes && characterContext.dataLoaded) {
+    if(nodes && characterContext?.dataLoaded) {
       characterContext.setModelLoad(true)
     }
-  }, [nodes, characterContext.dataLoaded])
+  }, [nodes, characterContext?.dataLoaded])
 
   useEffect(()=>{
-    characterContext.setDurations(state=> {
+    characterContext?.setDurations(state=> {
       (animations as {name: string, duration: number}[]).map((animation)=>{
         //тут погрешность продолжительности анимации, поэтому минус 10 милисекунд сделали переходы плавнее
         state[animation.name] = animation.duration - 0.01

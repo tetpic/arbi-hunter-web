@@ -4,7 +4,6 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
 import {  ModalType } from 'types/enums'
-import languages from '@cospired/i18n-iso-languages'
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
 import { useAppContext } from 'context/state'
@@ -26,7 +25,14 @@ import FavoritesButton from '@/components/ui/FavoritesButton'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
-import { TranslateLanguage, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { TranslateLanguage, TranslateLanguageKnowLevel, TranslateTariffType } from 'utils/enumsTranslations'
+import VacancyItem from '@/components/ui/VacancyItem'
+import PencilSvg from '@/components/svg/PencilSvg'
+import { colors } from 'styles/variables'
+import classNames from 'classnames'
+import Statistics from '@/components/ui/Statistics'
+import Link from 'next/link'
+import ContactsModal from './ContactsModal'
 
 
 interface Props {
@@ -43,6 +49,9 @@ export default function VacancyPage(props: Props) {
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
   const router = useRouter()
+  const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
+  const salary = getSalary({vacancy:currentVacancy})
+  const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
 
 
   const makeResponse = () => {
@@ -74,14 +83,15 @@ export default function VacancyPage(props: Props) {
   useEffect(()=>{
     cvContext.setSavedCvs()
     vacancyContext.setCurrentVacancy(props.id)  
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
 
 
-  if(!currentVacancy) return <Spinner size={24}/>
+  if(!currentVacancy) return <div className={styles.root}>
+    <Spinner size={24}/>
+  </div> 
 
   const companyCard = (
-    <div className={styles.companyCard}>
+    <Link href={'/personal/'+currentVacancy.profile?.id} className={styles.companyCard}>
       <UserPic image={FILES + currentVacancy.profile?.logo?.source} size={67}/>
       <div className={styles.companyInfo}>
         <P styleType={['w600', 'medium']}>{currentVacancy.profile?.company}</P>
@@ -90,22 +100,94 @@ export default function VacancyPage(props: Props) {
         }
       </div>
       <Button className={styles.companyArrow} styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
-    </div>
+    </Link>
   )
+
+  
 
 
   return (
     <div className={styles.root}>
       <BackTextButton onClick={router.back}/>
-      {companyCard}
-      <P styleType={['w600', 'huge']}>{currentVacancy.name}</P>
-      <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
-      <P styleType={['w600', 'large']}>{getSalary({vacancy:currentVacancy})} на руки</P>
-      <div className={styles.buttonsWrapper}>
-        <Button styleType={['gradient' ]}>Откликнуться</Button>
-        <FavoritesButton/>
-        <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
+      {!isMyVacancy &&companyCard}
+      <div className={styles.topLine}>
+        <P styleType={['w600', 'huge']}>{currentVacancy.name}</P>
+        {isMyVacancy &&
+          <P 
+          styleType={['blue', 'alignCenter', 'medium', 'w500']} 
+          onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)} 
+          className={styles.edit}
+          >
+            <PencilSvg color={colors.blue}/> Редактировать
+          </P>
+        }
       </div>
+      <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
+      {salary &&
+        <P styleType={['w600', 'large']}>{salary} на руки</P>
+      }
+      {isMyVacancy && 
+        <div className={styles.topLine}>
+          <P 
+          styleType={['w600', 'medium']} 
+          className={classNames(styles.tariff, styles['tariff_'+currentVacancy.tariff])}
+          >
+            {TranslateTariffType(currentVacancy.tariff)}
+          </P>
+
+          <P 
+          styleType={['small', 'green']} 
+          className={styles.expires}
+          >
+            Истекает {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30})}
+          </P>
+        </div>
+      }
+
+      {isMyVacancy &&
+        <Statistics 
+        className={styles.stats}
+        items={[
+          {name: 'Показы', count: currentVacancy.totalShows},
+          {name: 'Просмотры', count: currentVacancy.totalViews},
+          {name: 'Отклики', count: currentVacancy.totalApplications},
+        ]} 
+        title={'Статистика за неделю'} 
+        />
+      }
+
+      {isMyVacancy &&
+        <div className={styles.buttonsWrapper}>
+          <Button 
+          styleType={['gradient']}  
+          onClick={(e)=>{
+              router.push(`/responses/${currentVacancy.id}/`)
+          }} 
+          >
+            Посмотреть отклики
+          </Button>
+          <Button styleType={['black', 'borderBlue']}>Пригласить подходящих</Button>
+        </div>
+      }
+
+      {!isMyVacancy &&
+        <div className={styles.buttonsWrapper}>
+          <Button styleType={['gradient' ]} onClick={makeResponse}>Откликнуться</Button>
+          {currentVacancy.showContactName &&
+            <Button styleType={['black', 'borderBlue']} onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>Показать контакты</Button>
+          }
+          <FavoritesButton/>
+          <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
+          {currentVacancy.showContactName && isShowContacts[0] &&
+            <ContactsModal 
+            key={'contacts1'}
+            vacancy={currentVacancy} 
+            isActive={isShowContacts[0]} 
+            onClose={()=>setIsShowContacts(state=> ([false, state[0]]))}
+            />
+          }
+        </div>
+      }
       <EmploymentBoard type='black' vacancy={currentVacancy}/>
       {currentVacancy.description !== '<p></p>' &&
         <div className={styles.description}>
@@ -147,14 +229,33 @@ export default function VacancyPage(props: Props) {
         </div>
       }
 
+      {currentVacancy.showContactName && !isMyVacancy &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Контакты</P>
+          <div className={styles.contacts}>
+            <P styleType={['w500', 'medium']}>{currentVacancy.contactName}</P>
+            <Button styleType={['black', 'wide', 'borderBlue']} onClick={()=>setIsShowContacts(state=> ([state[0], true]))}>Показать контакты</Button>
+            {currentVacancy.showContactName && isShowContacts[1]&&
+              <ContactsModal key={'contacts2'} vacancy={currentVacancy} isActive={isShowContacts[1]} onClose={()=>setIsShowContacts(state=> ([state[0], false]))}/>
+            }
+          </div>
+        </div>
+      }
+
+      {!isMyVacancy &&
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['gradient']}>Откликнуться</Button>
+        <Button styleType={['gradient']} onClick={makeResponse}>Откликнуться</Button>
       </div>
-
-
-
-
-
+      }
+      
+      {!isMyVacancy &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Похожие вакансии</P>
+          <div className={styles.vacancies}>
+            {otherCompanyVacncies.map(el => <VacancyItem key={el.id} vacancy={el} />)}
+          </div>
+        </div>
+      }
     </div>
   )
 }

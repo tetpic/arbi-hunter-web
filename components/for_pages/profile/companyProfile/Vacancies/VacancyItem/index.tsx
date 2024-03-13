@@ -89,7 +89,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
 
 
-  return (<div className={styles.item} onClick={()=>router.push(`/preview/vacancy/${vacancy.id}`)}> 
+  return (<div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
           <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>

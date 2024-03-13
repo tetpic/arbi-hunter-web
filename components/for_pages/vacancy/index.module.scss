@@ -2,10 +2,46 @@
 
 .root {
   margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  max-width: 640px;
+  padding-bottom: 120px;
+  min-height: 70vh;
   @include mq($TabletWidth, max) {
     margin-top: 22px;
     padding-inline: 16px;
     padding-bottom: 170px !important;
+  }
+}
+
+.topLine {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  column-gap: 16px;
+
+  button {
+    flex: 1 1;
+  }
+}
+
+.edit {
+  @include transitionDefault;
+  cursor: pointer;
+  svg {
+    path {
+      @include transitionDefault;
+    }
+  }
+  @include hover {
+    color: $white;
+    svg {
+      path {
+        fill: $white;
+      }
+    }
   }
 }
 
@@ -25,9 +61,63 @@
 
 }
 
+.item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+
+
 
 .buttonsWrapper {
   display: flex;
   align-items: center;
   column-gap: 16px;
+  position: relative;
+  width: fit-content;
+  z-index: 2;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: $black;
+  width: fit-content;
+  min-width: 320px;
+  position: relative;
+  z-index: 4;
+}
+
+.vacancies {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.tariff{
+  border-radius: 8px;
+  padding: 4px 8px;
+  &_standard {
+    background: $blue;
+  }
+
+  &_vip {
+    background: $goldGradient;
+  }
+}
+
+.expires {
+  background: $greenSmell;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.stats {
+  width: 100% !important;
+  max-width: unset !important;
+  padding-right: 60px !important;
 }

@@ -98,7 +98,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)
 
-  return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/preview/cv/${cv.id}`)}> 
+  return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
       <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>

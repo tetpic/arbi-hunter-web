@@ -1,12 +1,14 @@
 import Button from '@/components/ui/Button'
 import styles from './index.module.scss'
-import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
-import Image from 'next/image'
 import P from '@/components/ui/P'
-import CheckSvg from '@/components/svg/CheckSvg'
-import { colors } from 'styles/variables'
+import classnames from 'classnames'
+import BriefCaseBigSvg from '@/components/svg/BriefCaseBigSvg'
+import BigPlusSvg from '@/components/svg/BigPlusSvg'
+import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
+import Image from 'next/image'
+import CheckRadialSvg from '@/components/svg/CheckRadialSvg'
 
 interface Props {
   onSave?: (replace?: boolean) =>void
@@ -24,31 +26,67 @@ export default function SetTariff(props: Props) {
   }
 
   return (<div className={styles.root}> 
-  <Title title={'Выберите тариф'}/>
+  <P styleType={['huge', 'w600', 'textCenter']}>Выберите тариф</P>
   <div className={styles.tariffItems}>
-    <div className={styles.tariff}>
-      <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
-      <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}><CheckSvg color={colors.blue} className={styles.check}/>До 15 подходящих резюме к каждой вакансии</P>
-      <P styleType={['w600', 'huge', 'alignStart']}> от 350 000 ₽</P>
-      <Button styleType={['gradient']} title={'saveVacancy1'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
+    <div className={classnames(styles.tariff, styles.tariff_red)}>
+      <div className={styles.top}>
+        <BriefCaseBigSvg className={styles.topIcon}/>
+        <P styleType={['w500', 'large']} className={styles.tariffType}>{props.type=== 'cv'? 'Резюме': 'Вакансия'} “Стандарт”</P>
+        <P styleType={['w500', 'medium', 'alignCenter']}><ArbiCoinSvg/> Бесплатно</P>
+      </div>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <Button styleType={['gradient', 'wide']} title={'saveVacancy1'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>
-    <div className={styles.tariff}>
-      <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
-      <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
-      <P styleType={['w600', 'huge']}>от 350 000 ₽</P>
-      <Button styleType={['gradient']} title={'saveVacancy2'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
+    <div className={classnames(styles.tariff, styles.tariff_gold)}>
+      <div className={styles.top}>
+        <Image className={styles.crown} src={'/icons/crown.png'} width={90} height={79} alt='crown'/>
+        <P styleType={['w500', 'large']} className={styles.tariffType}>{props.type=== 'cv'? 'Резюме': 'Вакансия'} “VIP”</P>
+        <P styleType={['w500', 'medium', 'alignCenter']} className={styles.tariffPrice}><ArbiCoinSvg className={styles.bigCoin}/> <span className={styles.big}>49</span>/ 30 дней</P>
+      </div>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <Button styleType={['gradient', 'wide']} title={'saveVacancy2'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>
-    <div className={styles.tariff}>
-      <Image src={'/images/purpleDiamond.png'} alt={'diamond'} width={123} height={103}/>
-      <P styleType={['w600', 'huge']}>VIP тариф</P>
-      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> Открытые контакты в откликах</P>
-      <P  styleType={['w600', 'large', 'alignStart']} className={styles.desc}> <CheckSvg color={colors.blue} className={styles.check}/> До 15 подходящих резюме к каждой вакансии</P>
-      <P  styleType={['w600', 'huge']}>от 350 000 ₽</P>
-      <Button styleType={['gradient']} title={'saveVacancy3'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
+    <div className={classnames(styles.tariff, styles.tariff_blue)}>
+      <div className={styles.top}>
+        <BigPlusSvg className={styles.topIcon}/>
+        <P styleType={['w500', 'large']} className={styles.tariffType}>{props.type=== 'cv'? 'Резюме': 'Вакансия'} “Стандарт +”</P>
+        <P styleType={['w500', 'medium', 'alignCenter']} className={styles.tariffPrice}><ArbiCoinSvg className={styles.bigCoin}/> <span className={styles.big}>49</span>/ 30 дней</P>
+      </div>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Выделяйтесь среди всех
+      </P>
+      <P styleType={['w600', 'large', 'alignStart']} className={styles.desc}>
+        <CheckRadialSvg className={styles.check}/> Чаще получайте отклики
+      </P>
+      <Button styleType={['gradient', 'wide']} title={'saveVacancy3'} onClick={()=>props.onSave()}>{props.setText ||'Разместить'}</Button>
     </div>
   </div>
   <div className={styles.buttonsWrapper}>

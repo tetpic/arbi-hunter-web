@@ -1,14 +1,20 @@
 @import 'styles/index';
 
+.root {
+  width: 100%;
+}
+
 .tariffItems {
-  margin-top: 24px;
   display: flex;
   column-gap: 24px;
-
+  width: 100%;
+  margin-top: 82px;
+  margin-bottom: 82px;
+  align-items: center;
+  height: 382px;
 }
 
 .tariff {
-  background: $gradientFiltered;
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -16,6 +22,26 @@
   align-items: center;
   row-gap: 16px;
   max-width: 370px;
+  width: 33%;
+  flex: 1 1;
+  height: 100%;
+  justify-content: space-between;
+  @include transitionDefault;
+  @include hover {
+    height: 115%;
+  }
+
+  &_red {
+    background: $redGradient;
+  }
+
+  &_blue {
+    background: $gradientIndigo;
+  }
+
+  &_gold {
+    background: $goldGradient;
+  }
 }
 
 .check {
@@ -33,4 +59,51 @@
   align-items: center;
   column-gap: 16px;
   margin-top: 24px;
+}
+
+.tariffType {
+  padding: 8px;
+  border: 1px $white solid;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.top {
+  position: relative;
+  padding-bottom: 16px;
+  border-bottom: 1px $white solid;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  .crown {
+    position: absolute;
+    top: -16px;
+    right: 6px;
+    transform: translate(50%, -50%);
+  }
+
+  .topIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .big {
+    font-size: $text36;
+    font-weight: $bold;
+    line-height: 16px;
+    line-height: 100%;
+  }
+
+  .bigCoin {
+    width: 32px;
+    height: 32px;
+  }
+
+  .tariffPrice {
+    align-items: flex-end;
+  }
+  
 }

@@ -51,7 +51,7 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
   ||
   <>
   {/* {image} */}
-  <span>от {salary}</span>
+  <span>{salary}</span>
   </>
 
   // ||
