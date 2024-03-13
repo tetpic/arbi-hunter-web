@@ -9,122 +9,25 @@
   }
 }
 
-.asideVacancies {
-  padding: unset !important;
-  margin-bottom: 16px;
-}
-
-.vacancies {
-  background-color: unset !important;
+.companyCard {
+  width: fit-content;
   display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-  padding: unset !important;
-}
-
-.title {
-  font-size: $largeText;
-  font-weight: $semibold;
-  color: $white;
-}
-
-.sectionTitle {
-  margin-top: 32px;
-  margin-bottom: 24px;
-}
-
-.aside {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  row-gap: 16px;
+  background-color: $black;
+  border-radius: 16px;
+  padding: 16px;
+  column-gap: 8px ;
+  min-width: 350px;
 
-  .button {
-    @include buttonGradient;
-    width: 100%;
-  }  
-}
-
-.name {
-  color: $white;
-  font-size: $largeText;
-  font-weight: $semibold;
-}
-
-.otherVacancies {
-  color: $white;
-  font-size: $largeText;
-  font-weight: $semibold;
-  margin-block: 24px 16px;
-}
-
-.bodyItem {
-  padding: 32px !important;
-  display: flex;
-  flex-direction: column;
-  row-gap: 32px;
-  @include mq($TabletWidth, max) {
-    background-color: unset !important;
-    padding: unset !important;
+  .companyArrow {
+    margin-left: auto;
   }
+
 }
 
-.buttonGray {
-  @include buttonGray;
-  color: $blue;
-  margin-top: 24px;
-}
 
 .buttonsWrapper {
   display: flex;
-  margin-top: 14px;
-  padding-inline: 16px;
-  column-gap: 8px;
-}
-
-.button {
-  border-radius: 10px;
-  background-color: $grey;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  &:first-of-type {
-    margin-right: auto;
-  }
-}
-
-.companyCard {
-  display: grid;
-  grid-template-areas: 'i n';
-  grid-template-columns: auto 1fr ;
-  column-gap: 8px;
-  padding: 14px 18px;
-  background-color: $black;
-  border-radius: 16px;
-
-  .userPic {
-    grid-area: i;
-    width: Clamp(66px, 20vw, 100px);
-    height: Clamp(66px, 20vw, 100px);
-  }
-
-  .name {
-    grid-area: n;
-  }
-}
-
-.responseWrapper {
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  padding: 16px;
-  padding-bottom: 100px;
-  background-color: $grey;
-  border-radius: 16px;
-
-
-  .responseButton {
-    @include buttonGradient;
-    width: 100%;
-  }
+  align-items: center;
+  column-gap: 16px;
 }

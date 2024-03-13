@@ -14,7 +14,7 @@ import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
-import { TranslateCompensationType, TranslateEducationType, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEducationType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
@@ -240,7 +240,7 @@ export default function CvPreview(props: Props) {
         title='Владение языками'
         onClick={() => editElement(5)}
         >
-          <TagList tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
 

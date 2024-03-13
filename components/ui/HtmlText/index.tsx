@@ -7,6 +7,10 @@ interface Props {
   className?: string
 }
 
+/**
+ * @param text :string
+ * @param className :string
+ */
 export default function HtmlText(props: Props) {
   let filtered = props.text ? props.text.replace(/(<? *script)|(base64)|(onload=)/gi, '') : ''
   if(runtimeConfig.DEV){

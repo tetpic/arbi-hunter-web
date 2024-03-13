@@ -14,6 +14,7 @@ export default function FavoritesButton(props: Props) {
 
   return (
     <Button 
+    styleType={['icon', 'black']}
     onClick={props.onClick} 
     className={classnames(styles.heartButton, props.isActive&&styles.heartButton_active, props.className)} 
     >

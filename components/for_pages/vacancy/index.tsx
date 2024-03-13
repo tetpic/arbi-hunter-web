@@ -1,45 +1,32 @@
 import styles from './index.module.scss'
 
-import Content from 'components/ui/Content'
-import ContentBody from 'components/ui/Content/ContentBody'
-import ContentAside from 'components/ui/Content/ContentAside'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import Buildings from '../profile/Personal/Buildings'
-import Spacer from 'components/ui/Spacer'
-import CvVcPageTop from 'components/ui/CvVcPageTop'
-import Badges from 'components/ui/Badges'
-import BriefCaseSvg from 'components/svg/BriefCaseSvg'
-import TimeLineSvg from 'components/svg/TimeLineSvg'
-import TimerSvg from 'components/svg/TimerSvg'
-import { EmploymentType, ModalType } from 'types/enums'
-import { TranslateLanguageKnowLevel, TranslateWorkExperience } from 'utils/enumsTranslations'
-import CvVcAbout from 'components/ui/CvVcAbout'
-import TagList from 'components/ui/TagList'
+import {  ModalType } from 'types/enums'
 import languages from '@cospired/i18n-iso-languages'
-import Title from 'components/ui/TitleForSection'
-import VacancyItem from 'components/ui/VacancyItem'
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
-import ContentItem from 'components/ui/Content/ContentItem'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import { useCvContext } from 'context/cv_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import Formatter from 'utils/formatter'
-import Link from 'next/link'
 import { useUserContext } from 'context/user_state'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import Button from 'components/ui/Button'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
-import ShareSvg from 'components/svg/ShareSvg'
-import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
-import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import { useRouter } from 'next/navigation'
 import { usePersonalContext } from 'context/personal_state'
-import { BackgroundCategoryType } from 'data/interfaces/IBackground'
+import BackTextButton from '@/components/ui/BackTextButton'
+import P from '@/components/ui/P'
+import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import { getSalary } from 'utils/helpers'
+import FavoritesButton from '@/components/ui/FavoritesButton'
+import EmploymentBoard from '@/components/ui/EmploymentBoard'
+import HtmlText from '@/components/ui/HtmlText'
+import TagList from '@/components/ui/TagList'
+import { TranslateLanguage, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 
 
 interface Props {
@@ -81,9 +68,6 @@ export default function VacancyPage(props: Props) {
     }
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
-      .then(r=> {
-        personalContext.setBackgrounds(r)
-      })
     }
   }, [currentVacancy])
 
@@ -93,119 +77,84 @@ export default function VacancyPage(props: Props) {
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
   }, [])
 
-  if(personalContext.loading && !personalContext.backgrounds) return <Spinner size={24}/>
 
-  return (<>
-    {currentVacancy.profile.image && !isTabletWidth && personalContext.backgrounds?.size > 0 && personalContext.backgrounds.get(BackgroundCategoryType.Places) &&
-      <>
-        <Spacer basis={48} hide={isTabletWidth}/>
-          <Buildings profile={currentVacancy.profile} background={personalContext.backgrounds.get(BackgroundCategoryType.Places)}/>
-      </>
-    }
+  if(!currentVacancy) return <Spinner size={24}/>
 
-    {isTabletWidth &&
+  const companyCard = (
+    <div className={styles.companyCard}>
+      <UserPic image={FILES + currentVacancy.profile?.logo?.source} size={67}/>
+      <div className={styles.companyInfo}>
+        <P styleType={['w600', 'medium']}>{currentVacancy.profile?.company}</P>
+        {currentVacancy.city?.locName &&
+          <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.city.locName}</P>
+        }
+      </div>
+      <Button className={styles.companyArrow} styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
+    </div>
+  )
+
+
+  return (
+    <div className={styles.root}>
+      <BackTextButton onClick={router.back}/>
+      {companyCard}
+      <P styleType={['w600', 'huge']}>{currentVacancy.name}</P>
+      <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
+      <P styleType={['w600', 'large']}>{getSalary({vacancy:currentVacancy})} на руки</P>
       <div className={styles.buttonsWrapper}>
-        <Button onClick={() => router.back()} className={styles.button}><ArrowLeftSvg/></Button>
-        <Button className={styles.button}><CloseEyeSvg/></Button>
-        <Button className={styles.button}><ShareSvg/></Button>
-        <Button className={styles.button}><BookmarkEmptySvg/></Button>
+        <Button styleType={['gradient' ]}>Откликнуться</Button>
+        <FavoritesButton/>
+        <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
       </div>
-    }
-    <Content className={styles.root}>
-      <ContentBody>
-        <ContentItem className={styles.bodyItem}>
-          <CvVcPageTop 
-          hideButtons={isTabletWidth}
-          title={currentVacancy.name} 
-          vc={currentVacancy} 
-          buttonText={'Откликнуться'}
-          onButtonClick={makeResponse}
-          />
-          <Badges 
-          items={[
-            {
-              title: 'Опыт работы',
-              value: TranslateWorkExperience(currentVacancy.experience),
-              icon: <BriefCaseSvg/>,
-            },
-            {
-              title: 'Занятость',
-              value: (
-                currentVacancy.employment === EmploymentType.FullTime &&'Полная'
-                || 
-                currentVacancy.employment === EmploymentType.PartTime && 'Частичная'
-                || 
-                currentVacancy.employment === EmploymentType.Project && 'Проектная'
-              )
-              ,
-              icon: <TimeLineSvg/>
-            },  
-            {
-              title: 'График работы',
-              value: 'Полный день',
-              icon: <TimerSvg/>,
-            },
-          ]}
-          />
-          {isTabletWidth && 
-            <Link href={'/personal/' + currentVacancy.profileId} className={styles.companyCard}>
-              <UserPic size={100} className={styles.userPic} image={currentVacancy?.profile?.image?.source&& FILES+currentVacancy.profile.image.source}/>
-              <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
-            </Link>
-          }
-          <CvVcAbout titleClassName={styles.title} title={'Описание вакансии'} text={currentVacancy.description}/>
-          {currentVacancy.skills.length > 0 &&
-            <TagList title={'Навыки'} tags={currentVacancy.skills.map(el=>({name: el.title}))} titleClassName={styles.title}/>
-          }
-          {currentVacancy.languageKnowledges?.length > 0 &&
-            <TagList title={'Языки'} tags={currentVacancy.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} titleClassName={styles.title}/>
-          }
-          {currentVacancy.geos?.length > 0 &&
-            <TagList title={'Гео'} tags={currentVacancy.geos?.map(el=>({name:el.title}))} titleClassName={styles.title}/>
-          }
-          {currentVacancy.sources?.length > 0 &&
-            <TagList title={'Источники'} tags={currentVacancy.sources.map(el=>({name:el.title}))} titleClassName={styles.title}/>
-          }
-        </ContentItem>
-        {userContext?.currentProfile?.profileType === ProfileType.Employee && foundVacancies.size > 0 &&
-        <>
-          <Title className={styles.sectionTitle} title={'Вам подойдут эти вакансии'}/>
-          <ContentItem className={styles.vacancies}>
-            {
-              [...foundVacancies.values()].slice(0, 2).map(vacancy=> <VacancyItem key={vacancy.id} vacancy={vacancy}/>)
-            }
-          </ContentItem>        
-        </>
-        }
-     
-      </ContentBody>
+      <EmploymentBoard type='black' vacancy={currentVacancy}/>
+      {currentVacancy.description !== '<p></p>' &&
+        <div className={styles.description}>
+          <HtmlText text={currentVacancy.description}/>
+        </div>
+      }
+      {currentVacancy.skills?.length > 0 &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Навыки</P>
+          <TagList tags={currentVacancy.skills.map(el=> ({name: el.title}))}/>
+        </div>
+      }
 
-      <ContentAside hide={isTabletWidth}>
-        <ContentItem className={styles.aside}>
-          <UserPic size={100} image={currentVacancy?.profile?.logo?.source&& FILES+currentVacancy.profile.logo.source}/>
-          <p className={styles.name}>{currentVacancy.company|| currentVacancy.contactName }</p>
-          <Link href={'/personal/' + currentVacancy.profileId} className={styles.button}>Открыть профиль</Link>
-        </ContentItem>
+      {currentVacancy.sources?.length > 0 &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Источники</P>
+          <TagList tags={currentVacancy.sources.map(el=> ({name: el.title}))}/>
+        </div>
+      }
 
-        {userContext?.currentProfile?.profileType === ProfileType.Employee && otherCompanyVacncies.length > 0 &&
-          <>
-            <p className={styles.otherVacancies}>Другие вакансии компании</p>
-              {
-                otherCompanyVacncies.map(vacancy=> 
-                <ContentItem className={styles.asideVacancies}>
-                      <VacancyItem key={vacancy.id} vacancy={vacancy} smallCard/>
-                </ContentItem>
-              )}
-            <Link href='/' className={styles.buttonGray}>Смотреть все</Link>
-          </>
-        }
-      </ContentAside>
-    </Content>
+      {currentVacancy.geos?.length > 0 &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Гео</P>
+          <TagList tags={currentVacancy.geos.map(el=> ({name: el.title}))}/>
+        </div>
+      }
 
-    {isTabletWidth && 
-      <div className={styles.responseWrapper}>
-        <Button onClick={makeResponse} className={styles.responseButton}>Откликнуться</Button>
+      {currentVacancy.verticals?.length > 0 &&
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Вертикали</P>
+          <TagList tags={currentVacancy.verticals.map(el=> ({name: el.title}))}/>
+        </div>
+      }
+
+      {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
+        <div className={styles.item}>
+          <P styleType={['w600', 'large']}>Владение языками</P>
+          <TagList tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+        </div>
+      }
+
+      <div className={styles.buttonsWrapper}>
+        <Button styleType={['gradient']}>Откликнуться</Button>
       </div>
-    }
-  </>)
+
+
+
+
+
+    </div>
+  )
 }

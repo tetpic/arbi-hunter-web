@@ -88,9 +88,9 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}):string|null => {
     case CompensationType.Contract:
       return TranslateCompensationType(compensation)
     case CompensationType.Salary:
-      return 'от ' + salary
+      return salary
     default: 
-      return 'от ' + salary
+      return salary
   }
 }
 

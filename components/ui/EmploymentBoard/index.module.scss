@@ -8,6 +8,8 @@
   background: $gradient;
   border-radius: 16px;
 
+
+
   .badge {
     flex: 1 1;
     display: flex;
@@ -25,4 +27,12 @@
 
   }
 
+}
+
+.black {
+  background: $black;
+}
+
+.gradient {
+  background: $gradient;
 }

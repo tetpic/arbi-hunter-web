@@ -1,4 +1,4 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -201,6 +201,43 @@ export const TranslateInterfaceLanguage = (t: InterfaceLanguage) => {
     case InterfaceLanguage.Ukranian:
       return 'Українська'
   }
+}
+
+export const TranslateLanguage = (t: Languages) => {
+  switch(t) {
+    case Languages.en:
+      return 'Английский'
+    case Languages.de:
+      return 'Немецкий'
+    case Languages.fr:
+      return 'Французский'
+    case Languages.cs:
+      return 'Чешский'
+    case Languages.nl:
+      return 'Нидерландский'
+    case Languages.et:
+      return 'Эфиопский'
+    case Languages.pt:
+      return 'Португальский'
+    case Languages.it:
+      return 'Итальянский'
+    case Languages.ja:
+      return 'Японский'
+    case Languages.ko:
+      return 'Корейский'
+    case Languages.es:
+      return 'Польский'
+    case Languages.ru:
+      return 'Русский'
+    case Languages.zh:
+      return 'Китайский'
+    case Languages.lv:
+      return 'Литовский'
+    case Languages.uk:
+      return 'Украинский'
+      
+  }
+
 }
 
 export const TranslateScheduleType = (s: ScheduleType) => {
