@@ -1,6 +1,6 @@
 import {Canvas, useThree} from '@react-three/fiber'
 import {Bounds, Environment, OrbitControls, OrthographicCamera, PerspectiveCamera} from '@react-three/drei'
-import { useEffect, useRef} from 'react'
+import { useEffect, useRef, useState} from 'react'
 import { ThreeModel } from 'components/ui/ThreeModel'
 import styles from './index.module.scss'
 import { useCharacterContext } from 'context/character_state'
@@ -38,6 +38,7 @@ const Camera = () => {
 
 export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: ModelActions }) {
   const characterContext = useCharacterContext()
+  const [canvasSizes, setCanvasSizes] = useState<{width: number, height: number}>({width: 200, height: 200})
 
   const canvasRef = useRef<HTMLCanvasElement>()
 
@@ -50,6 +51,18 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
       }, 20)
     }
   }, [characterContext.choosenItems])
+
+  useEffect(()=>{
+    window.addEventListener('resize', ()=>{
+      setCanvasSizes({width: canvasRef.current.offsetWidth, height: canvasRef.current.offsetHeight})
+    })
+  }, [])
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setCanvasSizes({width: canvasRef.current.width, height: canvasRef.current.width})  
+    }, 100)
+  }, [characterContext.dataLoaded])
 
 
   return (<div className={styles.root}>
@@ -64,19 +77,19 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
           fullHeight: 500,
           fullWidth: 500,
           offsetX: 0,
-          offsetY: -90,
+          offsetY: -250,
           width: 500,
           height: 500
         }} 
         makeDefault 
-        position={[Number(props.r)||0, 1, 7]} zoom={100} />
+        position={[Number(props.r)||0, 1, 7]} zoom={canvasSizes.height/3.1} />
 
-        <Bounds fit clip observe damping={0} margin={1}>
+        <Bounds  clip observe damping={0} margin={1}>
           <ThreeModel {...props.data as any} actions={props.actions}/>
         </Bounds>
         <Environment files="/models/skidpan.hdr"/>
         {!props.disableControls &&
-          <OrbitControls makeDefault enableZoom={false} maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.6} maxPolarAngle={1.6}/>
+          <OrbitControls makeDefault enableZoom={false} enablePan={false} maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.6} maxPolarAngle={1.6}/>
         }
       </Canvas>
     }
