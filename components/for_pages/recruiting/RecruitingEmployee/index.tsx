@@ -14,7 +14,6 @@ import slide3 from 'images/recruiting/recruiting_swipe3.png'
 import slide4 from 'images/recruiting/recruiting_swipe4.png'
 import slide5 from 'images/recruiting/recruiting_swipe5.png'
 import { useAppContext } from 'context/state'
-import SearchBar from 'components/ui/SearchBar'
 import dynamic from 'next/dynamic'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ISpecializationCategory } from 'data/interfaces/Common'
@@ -98,7 +97,6 @@ export default function RecruitingEmployee(props: Props) {
   
 
   return (<div className={styles.root}> 
-    {isTabletWidth && <SearchBar placeholder='Поиск вакансий'/>}
     <div className={styles.top}>
       {riveAnimation}
       <h2 className={styles.title}>

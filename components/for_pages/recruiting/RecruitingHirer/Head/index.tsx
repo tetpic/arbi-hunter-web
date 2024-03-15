@@ -130,7 +130,7 @@ export default function Head(props: Props) {
             return <Image className={styles[`img${index-3}`]} src={el} width={60} height={60} alt='1'/>
           })}
         </div>
-        <div className={classNames(styles.front, active&&styles.front_active)}>
+        <div className={classNames(styles.front, active||isTabletWidth&&styles.front_active)}>
         {imgIndexes.map((el, index)=> {          
           return  <div className={styles[`img${index+1}`]}>
           <Image className={styles.image}  src={sources[el]} width={60} height={60} alt='1'/>
