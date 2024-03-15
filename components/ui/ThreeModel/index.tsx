@@ -34,6 +34,7 @@ export function ThreeModel(props: IThreeModelProps) {
   const { actions } = useAnimations(animations, mesh)
 
   useEffect(()=>{   
+    
     if(!actions[currentAction.current]) {
       return
     }
@@ -49,6 +50,7 @@ export function ThreeModel(props: IThreeModelProps) {
   }, [nodes, characterContext?.dataLoaded])
 
   useEffect(()=>{
+    
     characterContext?.setDurations(state=> {
       (animations as {name: string, duration: number}[]).map((animation)=>{
         //тут погрешность продолжительности анимации, поэтому минус 10 милисекунд сделали переходы плавнее

@@ -25,7 +25,6 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { Languages } from 'types/enums'
 import ArticlesList from '../../index/ArticlesList'
 import CoursesList from '../../index/CoursesList'
-import Spacer from '@/components/ui/Spacer'
 import recruitingCatWallet from 'images/recruiting/scene4.png'
 import recruitingCatPoint from 'images/recruiting/scene1.png'
 import recruitingCatMessage from 'images/recruiting/scene3.png'
@@ -118,9 +117,13 @@ export default function RecruitingEmployee(props: Props) {
       <Link className={styles.createLink} href={'/create/cv'} ><span>Создать резюме</span></Link>
     </div>
 
-    {!isTabletWidth && <Search title={'Поиск вакансий'} tags={['Media Buyer', 'Affiliate Manger', 'Sales Manager', 'Team Lead']}/>}
+    <Search title={'Поиск вакансий'} tags={['Media Buyer', 'Affiliate Manger', 'Sales Manager', 'Team Lead']}/>
     
-    <Title title="Поиск по популярным категориям" className={styles.title}/>
+    <Title 
+    title="Поиск по популярным категориям" 
+    className={styles.title} 
+    itemClassName={styles.titleLink} 
+    onAllWatchClick={()=>{}}/>
     <Categories count='вакансий' image={recruitingCatCompanies} titles={['CPA-сети', 'Маркетинг', 'Media Buying']} images={[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}/>
     {!isTabletWidth &&
       <Button className={styles.watchAll}>Смотреть все</Button>
@@ -128,8 +131,11 @@ export default function RecruitingEmployee(props: Props) {
 
     <Possibilities/>
 
-    <Title title={'Полезные статьи'} className={styles.title}/>
-    <Spacer basis={40}/>
+    <Title 
+    title={'Полезные статьи'} 
+    className={styles.title} 
+    itemClassName={styles.titleLink} 
+    onAllWatchClick={()=>{}}/>
     {news.size > 0 &&
       <ArticlesList news={[...news.values()]}/>
     }
@@ -137,8 +143,11 @@ export default function RecruitingEmployee(props: Props) {
       <Button className={styles.watchAll}>Смотреть все</Button>
     }
 
-    <Title title={'Бесплатные курсы'} className={styles.title}/>
-    <Spacer basis={40}/>
+    <Title 
+    title={'Бесплатные курсы'} 
+    className={styles.title} 
+    itemClassName={styles.titleLink} 
+    onAllWatchClick={()=>{}}/>
     {popularCourses.size > 0 &&
       <CoursesList courses={[...popularCourses.values()]}/>
     }

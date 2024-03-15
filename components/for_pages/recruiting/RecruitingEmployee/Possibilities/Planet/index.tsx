@@ -183,7 +183,7 @@ export default function Planet(props: Props) {
       <Bounds fit clip observe damping={0} margin={1}>
         <PlanetModel companies={props.companies} onClick={props.onClick} active={props.active}/>
       </Bounds>
-      <OrbitControls maxZoom={35} minZoom={35} autoRotate autoRotateSpeed={0.7} enablePan={false}/>
+      <OrbitControls maxZoom={35} minZoom={18} autoRotate autoRotateSpeed={0.7} enablePan={false}/>
       <Environment files="/models/skidpan.hdr"/>
     </Canvas>
   )

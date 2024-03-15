@@ -13,15 +13,35 @@
   display: flex;
   column-gap: 16px;
   height: 205px;
+  @include mq($TabletWidth, max) {
+    padding:  8px;
+    height: unset;
+  }
 }
 
 .slide {
   width: calc(50% - 16px);
+  @include mq($TabletWidth, max)  {
+    min-width: 300px;
+    width: 95%;
+  }
 }
 
 .image {
   object-fit: cover;
   border-radius: 16px;
+  min-width: 106px;
+  min-height: 106px;
+  max-width: 25vw;
+  max-height: 25vw;
+  align-self: flex-start;
+}
+
+.swiper {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+    overflow: unset;
+  }
 }
 
 .textLine {
@@ -45,10 +65,22 @@
   width: 100%;
   padding-block: 16px;
   row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    padding-block: unset;
+  }
+}
+
+.counter {
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
 }
 
 .itemPack {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    row-gap: 8px;
+  }
 }

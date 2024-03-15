@@ -13,7 +13,7 @@
     min-width: unset;
     padding-top: 0px;
     margin-top: 0px;
-    margin-bottom: 40px;
+    margin-bottom: unset;
   }
 
   &:before, &:after {
@@ -47,9 +47,9 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    // @include mq($TabletWidth, max) {
-    //   font-size: $hugeText;
-    // }
+    @include mq($TabletWidth, max) {
+      order: 1;
+    }
 
     &_big {
       font-size: $text36;
@@ -58,6 +58,7 @@
       @include mq($TabletWidth, max) {
         font-size: inherit;
         font-weight: inherit;
+        margin-top: 12px;
       }
     }
 
@@ -70,11 +71,17 @@
     font-size: $largeText;
     color: $white;
     text-align: center;
-    margin-top: 40px;
+    margin-top: clamp(32px, 4vw, 40px);
+    @include mq($TabletWidth, max) {
+      order: 2;
+    }
   }
 
   .button {
     margin-top: 30px;
+    @include mq($TabletWidth, max) {
+      order: 4;
+    }
   }
 }
 
@@ -95,6 +102,7 @@
     height: 320px;
     left: unset;
     top: 0;
+    order: 3;
   }
 
 }

@@ -4,6 +4,7 @@ import { IApplication } from './IApplication'
 import { ICV,} from './ICV'
 import { IJob} from './IJob'
 import { IUserProfile } from './IUser'
+import { IProposal } from './IProposal'
 
 
 
@@ -38,6 +39,7 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   verticals: ISource[],
   applicationByCurrentUser: IApplication
   applicationsByCurrentUser: IApplication[]
+  proposalsToCurrentUser: IProposal[]
   tariff: TariffType
   topPurchasedAt: string|null
 }

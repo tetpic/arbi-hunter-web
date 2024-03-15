@@ -6,12 +6,17 @@
   min-width: 300px;
 }
 
+.swiper {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
+}
+
 .news {
   width: 100%;
   overflow: hidden;
   border-radius: 16px;
   background-color: $grey;
-  
 }
 
 .image {

@@ -33,12 +33,18 @@
     color: $white;
     white-space: nowrap;
     align-self: flex-start;
+    @include mq($TabletWidth, max) {
+      align-self: unset;
+    }
   }
 
   .desc {
     font-size: $largeText;
     color: $white;
     margin-top: 16px;
+    @include mq($TabletWidth, max) {
+      text-align: center;
+    }
   }
 }
 

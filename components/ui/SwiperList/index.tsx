@@ -13,8 +13,10 @@ import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 interface Props {
   children: JSX.Element[]
   className?: string
+  wrapperClassName?: string
   hideNav?: boolean
   slideClassName?: string
+  swiperClassname?: string
   swiperProps?: SwiperProps
 }
 
@@ -34,7 +36,8 @@ export default function SwiperList(props: Props) {
     autoplay={true}
     loop={true}
     modules={[Autoplay]}
-    className={styles.swiper}
+    className={classNames(styles.swiper, props.swiperClassname)}
+    wrapperClass={props.wrapperClassName}
     {...props.swiperProps}
     >
       {props.children.length > 0 && props.children.map(item=> {

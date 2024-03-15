@@ -59,18 +59,6 @@ export default function ProposalTextModal(props: Props) {
     })
   }
 
-  useEffect(()=>{
-    if(patternContext.patterns) {
-      const initialPattern = [...patternContext.patterns.values()].find(el=> {
-        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?PatternTypes.Rejection:PatternTypes.Interview)
-      })
-      setPattern(initialPattern)
-    }
-  }, [patternContext.patterns])
-
-  useEffect(()=>{
-    patternContext.setPatterns()
-  }, [])
 
   const initialValues = {
     type: modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview,
@@ -85,6 +73,21 @@ export default function ProposalTextModal(props: Props) {
     onSubmit: submit
   })
 
+
+  useEffect(()=>{
+    if(patternContext.patterns) {
+      const initialPattern = [...patternContext.patterns.values()].find(el=> {
+        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?PatternTypes.Rejection:PatternTypes.Interview)
+      })
+      setPattern(initialPattern)
+      formik.setFieldValue('coverLetter', initialPattern?.template||'')
+    }
+  }, [patternContext.patterns])
+
+  useEffect(()=>{
+    patternContext.setPatterns()
+  }, [])
+
   const body = (
     <>
       <div className={styles.patterns}>
@@ -94,7 +97,7 @@ export default function ProposalTextModal(props: Props) {
       </div>
       <FormikProvider value={formik} >
         <Form className={styles.form}>
-            <RichTextField name={'coverLetter'} value={pattern?.template}/>
+            <RichTextField name={'coverLetter'} key={pattern?.template} value={pattern?.template}/>
           <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>Отправить</Button>
         </Form>
       </FormikProvider>

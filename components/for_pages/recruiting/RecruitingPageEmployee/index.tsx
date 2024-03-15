@@ -23,6 +23,7 @@ import MainSearchBar from '@/components/ui/MainSearchBar'
 import SideFilterEmployee from '../SideFilters/SideFilterEmployee'
 import FilterEmployee from '../Filters/FilterEmployee'
 import { clearObject } from 'utils/helpers'
+import { CvWrapper, useCvContext } from 'context/cv_state'
 
 interface Props {
   filters: Partial<IVacancyCvSearchParams>
@@ -31,7 +32,9 @@ interface Props {
 export default function RecruitingPageEmployee(props: Props) {
   return (
     <VacancyWrapper>
+    <CvWrapper>
       <RecruitingPageEmployeeInner {...props}/>
+    </CvWrapper>
     </VacancyWrapper>
   )
 }
@@ -40,6 +43,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   const router = useRouter()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
+  const cvContext = useCvContext()
 
   const {isTabletWidth} = appContext.size
   const isInited = useRef<boolean>(false)
@@ -89,6 +93,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   useEffect(()=>{
+    cvContext.setSavedCvs()
     setTimeout(()=>{
       isInited.current = true      
     }, 200)

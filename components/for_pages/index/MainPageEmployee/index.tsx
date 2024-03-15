@@ -123,7 +123,7 @@ export default function MainPageEmployee() {
 
   useEffect(()=>{
     if(characterContext.modelLoaded) {
-      showNextAnimation({type: ModelActions.Appearance, duration: characterContext.variant.model === 'woman'? 2115:2549})
+      showNextAnimation({type: ModelActions.Appearance, duration: characterContext.variant.model === 'woman'? 2115:2489})
     }
   }, [characterContext.modelLoaded])
 

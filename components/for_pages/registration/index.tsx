@@ -155,7 +155,7 @@ export default function Registration() {
         const values = loginType === LoginType.Phone? ['email'] : ['phone']
         validateValues(values)
         .then(res=> {
-          debugger
+          
           if(res === false) {
             setErr(loginType, `Введите корректный ${loginType === 'email' ? 'email' : 'номер'}`)
           }

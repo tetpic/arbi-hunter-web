@@ -1,12 +1,35 @@
 @import 'styles/index';
 
 .buttonsWrapper {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   row-gap: 8px;
+  column-gap: 8px;
   margin-top: auto;
+}
+
+.firstApp {
+  padding: 4px 8px;
+  background-color: $purpleSmell;
+  border-radius: 4px;
+}
+
+.greenBadge {
+  border-radius: 4px;
+  padding: 4px 8px;
+  background-color: $green;
+}
+
+.redBadge {
+  border-radius: 4px;
+  padding: 4px 8px;
+  background-color: $red;
+}
+
+.briefCase {
+  width: 16px;
+  height: 16px;
 }
 
 .card {
@@ -19,10 +42,6 @@
     grid-area: u;
     margin-right: 8px;
     align-self: flex-start;
-  }
-
-  .name {
-    grid-area: n;
   }
 
   .city {
@@ -67,13 +86,7 @@
 
   .name {
     grid-area: n;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
     @include lineClamp(2);
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
   }
   
   .price {
@@ -123,7 +136,7 @@
 
 .heartButton {
   position: absolute;
-  top: 16px;
+  bottom: 16px;
   right: 16px;
   z-index: 3;
 }

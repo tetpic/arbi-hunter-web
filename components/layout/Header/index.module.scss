@@ -37,6 +37,17 @@
   @include mq($TabletWidth, max) {
     padding: unset;
     padding-left: 8px;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    padding-inline: 28px;
+    z-index: 0;
+    &:before {
+      content: '';
+      display: block;
+      width: 24px;
+    }
   }
 }
 

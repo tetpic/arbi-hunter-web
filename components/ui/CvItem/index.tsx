@@ -77,9 +77,7 @@ export default function CvItem({cv, ...props}: Props) {
           router.push('/messenger?chat=' + res.id)
         }
       })
-
     }
-
   }
   
   const openContacts = (e: React.MouseEvent<HTMLButtonElement>) => {

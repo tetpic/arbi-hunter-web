@@ -72,7 +72,7 @@ export default function CvPage(props: Props) {
   const goToChat = () => {
     ChatRepository.getChatByContactId(currentCv.profileId, {proposalId: currentCv.proposalsByCurrentUser?.[0].id})
     .then(res=> {
-      debugger
+      
       router.push(`/messenger?chat=${res?.id}`)
     })
   }

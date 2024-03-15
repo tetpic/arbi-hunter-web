@@ -16,6 +16,7 @@
   @include mq($MdDesktopWidth, max) {
     align-items: center;
     row-gap: 16px;
+    flex-direction: column-reverse;
   }
 
   .image {
@@ -64,6 +65,9 @@
       row-gap: 8px
     }
 
+
+    
+
     &_purple {
       @include textGradientDefault;
     }
@@ -77,6 +81,7 @@
       }
     }
   }
+
 
   .description {
     max-width: 524px;
@@ -116,10 +121,19 @@
 .title {
   justify-content: center;
   margin-top: 120px;
+  margin-bottom: clamp(16px, 4vw, 40px);
   @include mq($TabletWidth, max) {
     margin-top: 40px;
+    padding-inline: 16px;
+    text-align: start;
+    justify-content: space-between;
   }
 }
+
+.titleLink {
+  margin-left: 15%;
+}
+
 
 .watchAll {
   @include watchAllButton;

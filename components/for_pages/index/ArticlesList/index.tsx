@@ -19,6 +19,8 @@ export default function ArticlesList(props: Props) {
     <SwiperList
     hideNav
     slideClassName={styles.slide}
+    swiperClassname={styles.swiper}
+    swiperProps={{loop: false}}
     >
       {props.news && props.news.map(el=>{
         return (

@@ -9,6 +9,8 @@ import PlayButtonSvg from '@/components/svg/PlayButtonSvg'
 import Formatter from 'utils/formatter'
 import UserSmallSvg from '@/components/svg/UserSmallGreySvg'
 import StarSmallFilledSvg from '@/components/svg/StarSmallFilledSvg'
+import classNames from 'classnames'
+import { useAppContext } from 'context/state'
 // import { useEffect } from 'react'
 
 interface Props {
@@ -16,6 +18,8 @@ interface Props {
 }
 
 export default function CoursesList(props: Props) {
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   const arrayPackager = <T,>(arr: T[], packBy: number): T[][] => {
     let newArr:T[][] = []
@@ -39,7 +43,12 @@ export default function CoursesList(props: Props) {
 
 
   return (
-    <SwiperList hideNav swiperProps={{loop: false, spaceBetween: 16}} slideClassName={styles.slide}>
+    <SwiperList 
+    hideNav 
+    swiperProps={{loop: false, spaceBetween: isTabletWidth?8:16}} 
+    slideClassName={styles.slide} 
+    swiperClassname={styles.swiper}
+    >
       {arrayPackager(props.courses, 2).map((el)=>{
         return (
           <div className={styles.itemPack}>
@@ -48,12 +57,13 @@ export default function CoursesList(props: Props) {
                 <div className={styles.item} key={course.id}>
                   <Image src={FILES + course.image.source} alt={'course image'} width={185} height={185} className={styles.image}/>
                   <div className={styles.content}>
-                    <P styleType={['small', 'w500']} className={styles.textLine}><PlayButtonSvg/> {course.stepsCount} {Formatter.pluralize(Number(course.stepsCount), 'урок', 'урока', 'уроков')}</P>
+                    <P styleType={['small', 'w500']} className={classNames(styles.textLine, styles.counter) }><PlayButtonSvg/> {course.stepsCount} {Formatter.pluralize(Number(course.stepsCount), 'урок', 'урока', 'уроков')}</P>
                     <P styleType={['large', 'w600']} className={styles.title}>{course.name}</P>
+                    <P styleType={['blue', 'large', 'w600']}>Бесплатно</P>
                     
                     <div className={styles.bottom}>
                       {course.completedCount > 0 &&
-                        <P styleType={['medium', 'w500', 'greyLight']} className={styles.textLine}><UserSmallSvg/> {course.completedCount} {Formatter.pluralize(Number(course.completedCount), 'ученик', 'ученика', 'учеников')}</P>
+                        <P styleType={['medium', 'w500', 'greyLight']} className={classNames(styles.textLine, styles.counter)}><UserSmallSvg/> {course.completedCount} {Formatter.pluralize(Number(course.completedCount), 'ученик', 'ученика', 'учеников')}</P>
                       }
                       {course.rating &&
                         <P styleType={['medium', 'w500', 'greyLight']} className={styles.textLine}><StarSmallFilledSvg/> {course.rating} из 5</P>

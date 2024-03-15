@@ -6,17 +6,21 @@ import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
 import Image from 'next/image'
 import { useAppContext } from 'context/state'
-import { ActivityStatus, ModalType } from 'types/enums'
+import { ActivityStatus,  ApplicationStatus, ModalType, ProposalRequestType } from 'types/enums'
 import { useCvContext } from 'context/cv_state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
-import LikeButton from '../LikeButton'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import classNames from 'classnames'
-import CalendarSvg from 'components/svg/CalendarSvg'
 import Link from 'next/link'
 import UserPic from '../UserPic'
 import useAbortController from 'components/hooks/useAbortController'
 import { FILES } from 'types/constants'
+import P from '../P'
+import { TranslateWorkExperience } from 'utils/enumsTranslations'
+import BriefCaseSvg from '@/components/svg/BriefCaseSvg'
+import FavoritesButton from '../FavoritesButton'
+import ChatRepository from 'data/repositories/ChatRepository'
+import { useRouter } from 'next/router'
 
 interface Props {
   vacancy?: IVacancy
@@ -28,14 +32,35 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const appContext = useAppContext()
   const cvContext = useCvContext()
   const {getNewSignal} = useAbortController()
+  const router = useRouter()
+  const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser.length -1]||null
+
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs, vacancyId: vacancy.id})
+    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs.filter(el => el.published), vacancyId: vacancy.id})
   }
 
-  const likeHandler = () => {
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const activeChat = vacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
+    if(activeChat[0]){
+      ChatRepository.getChatByContactId(vacancy.profile.id, {proposalId: lastProposal.id})
+      .then(res=>{
+        if(res) {
+          router.push('/messenger?chat=' + res.id)
+        }
+      })
+    }
+  }
+
+  const likeHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     const[signal] = getNewSignal('likeHandler')
     if(!vacancy.isSavedByCurrentProfile) {
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
@@ -53,38 +78,64 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     }
   }
 
+
   return (<Link className={styles.item} href={'/vacancy/'+vacancy.id}> 
-    <LikeButton className={styles.heartButton} active={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
+    <FavoritesButton className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>
       <div className={ styles.card}>
         {smallCard &&
         <UserPic className={styles.userPic} size={42}/>
         }
-        <p className={styles.name}>{vacancy.company||vacancy.contactName}</p>
+        <P styleType={['large', 'w600']} className={styles.name}>
+          {vacancy.company||vacancy.contactName}
+        </P>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }
       </div>
-      <p className={styles.name}>{vacancy.name}</p>
-      {vacancy.isRemote &&
-        <p className={styles.city}>Удаленно</p>
+
+      <P styleType={['large', 'w600']} className={styles.name}>
+        {vacancy.name}
+      </P>
+      {Number(vacancy.totalApplications) === 0 &&
+        <P styleType={['purple', 'small']} className={styles.firstApp}>Откликнитесь первым!</P>
       }
+
+      <P styleType={['alignCenter', 'medium', 'w500']}><BriefCaseSvg className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience).toLowerCase()}</P>
+
       <SalaryItem vacancy={vacancy}/>
-      <p className={styles.time}><CalendarSvg/> {Formatter.formatToShortYear(vacancy.updatedAt)}</p>
+      <P styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}})}</P>
       {vacancy?.profile?.activityStatus && !smallCard &&
         <p className={styles.activityStatus}>
           <span className={classNames(styles.dot, vacancy.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>
           {vacancy.profile.activityStatus === ActivityStatus.Online?'В сети':`Был в сети ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt)}`}
         </p>
       }
+      {vacancy.proposalsToCurrentUser.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&
+        <P styleType={['medium', 'w500']} className={styles.greenBadge} > Вас пригласили!</P>
+        ||
+        lastProposal?.type === ProposalRequestType.Rejection &&
+        <P styleType={['medium', 'w500']} className={styles.redBadge}> Вам отказали</P>
+      }
       <div className={styles.buttonsWrapper}>
-        <Button 
-        styleType={['gradient', 'phoneWide']}
-        onClick={respondHandler}
-        >
-          Откликнуться
-        </Button>
+        {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
+          <Button 
+          styleType={['gradient']}
+          onClick={openChat}
+          >Перейти в чат</Button>
+        }
+        {!lastProposal &&
+          <Button 
+          styleType={['gradient', 'phoneWide']}
+          onClick={respondHandler}
+          >
+            Откликнуться
+          </Button>
+        }
+        {vacancy.showContactName && 
+          <Button styleType={['black', 'borderBlue']}>Контакты</Button>
+        }
       </div>
     </div>
     {!smallCard &&

@@ -38,7 +38,7 @@ const Camera = () => {
 
 export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: ModelActions }) {
   const characterContext = useCharacterContext()
-  const [canvasSizes, setCanvasSizes] = useState<{width: number, height: number}>({width: 200, height: 200})
+  const [canvasSizes, setCanvasSizes] = useState<{width: number, height: number}|null>(null)
 
   const canvasRef = useRef<HTMLCanvasElement>()
 
@@ -52,15 +52,16 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
     }
   }, [characterContext.choosenItems])
 
+
   useEffect(()=>{
     window.addEventListener('resize', ()=>{
-      setCanvasSizes({width: canvasRef.current.offsetWidth, height: canvasRef.current.offsetHeight})
+      setCanvasSizes({width: canvasRef.current?.offsetWidth||200, height: canvasRef.current?.offsetWidth||200})
     })
   }, [])
 
   useEffect(()=>{
     setTimeout(()=>{
-      setCanvasSizes({width: canvasRef.current.width, height: canvasRef.current.width})  
+      setCanvasSizes({width: canvasRef.current?.offsetWidth||200, height: canvasRef.current?.offsetWidth||200})  
     }, 100)
   }, [characterContext.dataLoaded])
 
@@ -71,26 +72,24 @@ export default function ThreeModelVariant (props: {onSave?: ()=>void, disableCon
     } */}
 
     {props &&
-      <Canvas  gl={{ preserveDrawingBuffer: true }} ref={canvasRef}  style={{width: '100%', height: '100%'}}>
+      <Canvas  key={'canvas'} gl={{ preserveDrawingBuffer: true }} ref={canvasRef}  style={{width: '100%', height: '100%', opacity: canvasSizes?1:0, transition: '.1s linear'}}>
         <OrthographicCamera view={{
           enabled: true,
           fullHeight: 500,
           fullWidth: 500,
           offsetX: 0,
-          offsetY: -250,
+          offsetY: -260,
           width: 500,
           height: 500
         }} 
         makeDefault 
-        position={[Number(props.r)||0, 1, 7]} zoom={canvasSizes.height/3.1} />
+        position={[Number(props.r)||0, 1, 7]} zoom={canvasSizes?canvasSizes.width/3.1:50} />
 
-        <Bounds  clip observe damping={0} margin={1}>
+        <Bounds clip observe damping={0} margin={1}>
           <ThreeModel {...props.data as any} actions={props.actions}/>
         </Bounds>
         <Environment files="/models/skidpan.hdr"/>
-        {!props.disableControls &&
-          <OrbitControls makeDefault enableZoom={false} enablePan={false} maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.6} maxPolarAngle={1.6}/>
-        }
+        <OrbitControls makeDefault enableZoom={false} enablePan={false} enableRotate={!props.disableControls} maxAzimuthAngle={0.8} minAzimuthAngle={-0.8} minPolarAngle={1.6} maxPolarAngle={1.6}/>
       </Canvas>
     }
   </div>

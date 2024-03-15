@@ -55,6 +55,7 @@ export default function Recruiting(props: Props) {
     <SourcesWrapper>
     <CreateVcCvWrapper>
     <LocationWrapper initials={{cities: params?.cities, countries: params?.countries}}>
+
       
       {!props.auth&&((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
         <RecruitingEmployee vacancies={props.vacancies} />
@@ -64,7 +65,7 @@ export default function Recruiting(props: Props) {
       }
       {
         props.auth && props.profileType=== ProfileType.Employee &&
-        <RecruitingPageEmployee filters={params}/>
+          <RecruitingPageEmployee filters={params}/>
         ||
         props.auth && props.profileType === ProfileType.Hirer &&
         <RecruitingPageHirer vcId={Number(props.vcId)} filters={params}/>
