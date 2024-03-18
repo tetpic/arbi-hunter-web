@@ -14,6 +14,7 @@ interface Props {
 export default function Layout(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   return ( 
   <div className={styles.root}>
@@ -26,7 +27,7 @@ export default function Layout(props: Props) {
       </Sticky>
       }
       <div className={styles.content}>
-      {userContext.isLogged &&
+      {userContext.isLogged && !isTabletWidth &&
         <NavBar/>
       }
       {props.children}

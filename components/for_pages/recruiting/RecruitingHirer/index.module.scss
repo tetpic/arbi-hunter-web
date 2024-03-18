@@ -10,7 +10,7 @@
   font-size: clamp(16px, 4vw, 32px);
   @include mq($TabletWidth, max) {
     margin-top: 40px;
-    justify-content: flex-start;
+    justify-content: center;
     padding-inline: 16px;
   }
 }

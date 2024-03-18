@@ -342,7 +342,6 @@ export default function Vacancy(props: Props) {
 
   useEffect(()=>{
     if(progress < 1) {
-      setProgress(1)
       router.back()
       return
     }

@@ -13,6 +13,7 @@
   @include transitionDefault;
   @include mq($SmDesktopWidth, max) {
     justify-content: space-between;
+    padding: 16px;
   }
 }
 
@@ -36,13 +37,13 @@
   }
   @include mq($TabletWidth, max) {
     padding: unset;
-    padding-left: 8px;
     position: absolute;
     top: 12px;
     left: 0;
     right: 0;
-    padding-inline: 28px;
+    padding-inline: 16px;
     z-index: 0;
+    height: 50px;
     &:before {
       content: '';
       display: block;

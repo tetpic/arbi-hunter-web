@@ -52,6 +52,7 @@
     @include mq($TabletWidth, max) {
       font-size: $hugeText;
       padding: 0px 16px;
+      text-align: center;
       br{
         display: none;
       }

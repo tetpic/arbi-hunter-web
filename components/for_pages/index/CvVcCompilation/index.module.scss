@@ -12,8 +12,24 @@
   padding: 8px 16px;
 }
 
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 16px;
+}
+
+.slide {
+  width: calc(33.3% - 12px);
+  min-width: 324px;
+}
+
+.swiper {
+  padding-inline: 16px;
+  overflow: unset;
+}
+
 .card {
-  width: calc(33% - 8px);
   padding: 16px;
   background-color: $blue;
   border-radius: 16px;

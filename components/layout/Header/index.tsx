@@ -81,11 +81,11 @@ export default function Header(props: Props) {
 
   return ( 
     <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar)} ref={dropdownRef}>
-      {(!userContext.isLogged || !userContext.currentProfile) &&
-      <Link href={userContext.currentProfile?'/profile':'/'} className={styles.logo}>
+      {/* {(!userContext.isLogged || !userContext.currentProfile) && */}
+      <Link href={'/'} className={styles.logo}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
       </Link>
-      }
+      {/* } */}
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
           <Modes 
@@ -196,7 +196,7 @@ export default function Header(props: Props) {
             }
           </div>
           ||
-          <Button onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg/></Button>
+          <Button styleType={['icon', 'black']} onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg/></Button>
         }
       </div>
     </div>

@@ -24,6 +24,7 @@ import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
+import { useAppContext } from 'context/state'
 
 export default function MainPageEmployee() {
 
@@ -31,6 +32,8 @@ export default function MainPageEmployee() {
   const characterContext = useCharacterContext()
   const userContext  = useUserContext()
   const cvContext = useCvContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const [load, setLoad] = useState<boolean>(false)
   const [stats, setStats] = useState<IStats>(null)
   const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
@@ -145,7 +148,7 @@ export default function MainPageEmployee() {
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <div className={styles.card}>
-              <p className={styles.desc}>Отклики и приглашения</p>
+              <p className={styles.desc}>{isTabletWidth?'Отклики':'Отклики и приглашения'}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -160,7 +163,7 @@ export default function MainPageEmployee() {
               }
             </div>
             <div className={styles.card}>
-              <p className={styles.desc}>Просмотры резюме</p>
+              <p className={styles.desc}>{isTabletWidth?'Просмотры':'Просмотры резюме'}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
