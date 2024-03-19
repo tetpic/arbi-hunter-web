@@ -51,7 +51,8 @@ export const clearObject = (obj: any, type?: 'string' | 'array') => {
   }
   else{    
     Object.entries(clearedQuery).forEach(([key, value]) => {
-      if(!Boolean(value)
+      if(value===null
+      ||value===undefined
       ||value===0
       ||(Array.isArray(value) && value.length === 0)  
       ||(typeof value === 'string' && value.trim().length === 0)

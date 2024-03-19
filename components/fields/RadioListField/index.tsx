@@ -47,7 +47,7 @@ export default function RadioListField<T>(props: Props<T>) {
   }
 
   return (
-    <div className={classNames(styles.root, props.rootClass)}>
+    <div className={classNames(styles.root, props.rootClass)} data-cy={'radioList_'+props.name}>
       {label && <div className={classNames(styles.label, props.labelClassName)}>{label}</div>}
       <div className={classNames(styles.wrapper , props.wrapperClassName)} >
         {options.filter(item => restrictedValues.indexOf(item.value) === -1).map((item, index) => (

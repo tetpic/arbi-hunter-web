@@ -24,6 +24,7 @@ import { ICompensationModalArgs } from '@/components/modals/CompensationModal'
 import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
 import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
+import CvPreview from '../../preview/cv'
 
 
 interface Props {
@@ -56,18 +57,13 @@ export default function Cv(props: Props) {
   const router = useRouter()
   const {progress, setProgress} = creationContext
   const maxProgress = useRef<number>(props?.cv?.completedSteps?.length||1)
+  const [showPreview, setShowPreview] = useState<boolean>(false)
+
   const CVItemsCount = 7
 
-  const submit = (data: ICVCreate, noReplace?: boolean) => {
-    setLoading(true)
+  const getSendData = (data: ICVCreate): ICVCreate => {
     const {activeSources, languageKnowledges, skills,  activeGeos, activeVerticals} = creationContext?.helpObjects
 
-    if(creationContext.activeSubCategory.length === 0) {
-      setProgress(1)
-      appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
-      setLoading(false)
-      return 
-    }
     const sendData: ICVCreate = {
       ...data, 
       commission: Number(data.commission),
@@ -81,9 +77,24 @@ export default function Cv(props: Props) {
       verticalsIds: [...activeVerticals.keys()],
       published: true,
     }
+
+    return clearObject(sendData, 'string') as ICVCreate
+  }
+
+  const submit = (data: ICVCreate, noReplace?: boolean) => {
+    setLoading(true)
+
+    if(creationContext.activeSubCategory.length === 0) {
+      setProgress(1)
+      appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
+      setLoading(false)
+      return 
+    }
+
+    const sendData = getSendData(data)
    
     if(props.id) {
-      CvRepository.updateCV(props.id, clearObject(sendData, 'string') as ICVCreate)
+      CvRepository.updateCV(props.id, sendData)
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         if(!noReplace) {
@@ -95,11 +106,11 @@ export default function Cv(props: Props) {
       })
     }
     else {
-      CvRepository.createCV(clearObject(sendData, 'string') as ICVCreate)
+      CvRepository.createCV(sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         if(!noReplace) {
-          router.replace(`/preview/cv/${res.id}`)  
+          router.replace('/profile?page=cvs')      
         }
       })
       .catch(err=>{
@@ -343,8 +354,18 @@ export default function Cv(props: Props) {
   
 
   return <div className={styles.root}>
-    {progress === CVItemsCount && 
-      <SetTariff setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
+    {showPreview && 
+      <CvPreview 
+      onBack={(page)=>{
+        if(page){
+          setProgress(page)
+        }
+        setShowPreview(false)
+      }} 
+      cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values}) as ICV}/>
+    }
+    {progress === CVItemsCount && !showPreview &&
+      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>

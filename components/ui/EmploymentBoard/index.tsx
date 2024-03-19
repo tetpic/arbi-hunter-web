@@ -31,7 +31,7 @@ export default function EmploymentBoard({type,cv,vacancy}: Props) {
         {
           (cv&&(cv?.schedule === ScheduleType.Remote?'Удаленно': cv?.city?.locName||'Офис'))
           ||
-          (vacancy &&(vacancy.schedule === ScheduleType.Remote?'Удаленно': vacancy.city?.locName||'Офис'))
+          (vacancy &&(vacancy.isRemote?'Удаленно': vacancy.city?.locName||'Офис'))
         }
       </P>
     </div>

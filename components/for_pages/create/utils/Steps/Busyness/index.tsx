@@ -32,34 +32,9 @@ export default function Busyness(props: Props) {
     options={[
       {label: 'Полный день', value: ScheduleType.FullDay},
       {label: 'Гибкий график', value: ScheduleType.Flexible},
-      {label: 'Удаленная работа', value: ScheduleType.Remote},
     ]} 
     />
     </div>
-
-    {/* <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Переезд'}/>
-    <RadioListField 
-    name={'relocation'}
-    wrapperClassName={styles.radioWrapper}
-    options={[
-      {label: 'Возможен', value: Answer.Yes},
-      {label: 'Не возможен', value: Answer.No},
-    ]} 
-    />
-    </div>
-
-    <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Командировки'}/>
-    <RadioListField 
-    name={'businessTrips'}
-    wrapperClassName={styles.radioWrapper}
-    options={[
-      {label: 'Командировки возможны', value: Answer.Yes},
-      {label: 'Командировки не возможны', value: Answer.No},
-    ]} 
-    />
-    </div> */}
       
     <div className={styles.fieldItem}>
     <SectionSubtitle text={'Место работы'}/>  

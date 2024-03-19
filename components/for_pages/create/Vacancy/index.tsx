@@ -23,6 +23,7 @@ import Contacts from '../utils/Steps/Contacts'
 import Spacer from '@/components/ui/Spacer'
 import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
+import VacancyPreview from '../../preview/vacancy'
 
 interface Props {
   id?: number
@@ -52,6 +53,7 @@ export default function Vacancy(props: Props) {
   const {isPhoneWidth, isTabletWidth} = appContext.size
   const router = useRouter()
   const {progress, setProgress} = creationContext
+  const [showPreview, setShowPreview] = useState<boolean>(false)
   
   const [title, setTitle] = useState<string>('Специализация')
   const [page, setPage] = useState<JSX.Element>()
@@ -76,6 +78,8 @@ export default function Vacancy(props: Props) {
       return ''
     }
   }
+
+
 
 
   const initialValues: IVacancyCreate = {
@@ -128,12 +132,7 @@ export default function Vacancy(props: Props) {
     return clearObject(sendData) as IVacancyCreate
   }
 
-  const submit = (data: IVacancyCreate, noRedirect?: boolean) => {
-    const isValid = nextPageValidator()
-    if(!isValid) {
-      return
-    }
-
+  const getDataToSend = (data: IVacancyCreate):IVacancyCreate => {
     const sendData = getSendData(data)
 
     if(data.isRemote) {
@@ -144,6 +143,17 @@ export default function Vacancy(props: Props) {
       cityId&&(sendData.cityId = cityId)
       countryId&&(sendData.countryId = countryId)
     }
+    return sendData
+  }
+
+  const submit = (data: IVacancyCreate, noRedirect?: boolean) => {
+    const isValid = nextPageValidator()
+    if(!isValid) {
+      return
+    }
+
+    const sendData = getDataToSend(data)
+
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
@@ -384,8 +394,19 @@ export default function Vacancy(props: Props) {
   }, [])
 
   return <div className={styles.root}>
-    {progress === VCItemsCount && 
-      <SetTariff setText='Разместить вакансию' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
+    {showPreview && 
+      <VacancyPreview 
+      onBack={(page)=>{
+        if(page){
+          setProgress(page)
+        }
+        setShowPreview(false)
+      }} 
+      vacancy={getDataToSend(formik.values) as IVacancy}/>
+    }
+
+    {progress === VCItemsCount && !showPreview &&
+      <SetTariff setText='Разместить вакансию' onPreview={()=>setShowPreview(true)} onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
     }
 
     {progress < VCItemsCount &&<>

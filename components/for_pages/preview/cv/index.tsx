@@ -1,13 +1,12 @@
 import styles from './index.module.scss'
 import { useCvContext } from 'context/cv_state'
-import { useEffect, useState } from 'react'
 import BackTextButton from '@/components/ui/BackTextButton'
 import { useRouter } from 'next/router'
 import Title from '@/components/ui/TitleForSection'
 import PreviewItem from '@/components/ui/PreviewItem'
 import UserPic from '@/components/ui/UserPic'
 import { useUserContext } from 'context/user_state'
-import { getAge, getUserImageSource } from 'utils/helpers'
+import { getAge, getUserImageSource, getUserName } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
 import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
@@ -26,36 +25,31 @@ import LinkedInSvg from '@/components/svg/LinkedInSvg'
 import SkypeSvg from '@/components/svg/SkypeSvg'
 import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
 import MailAltSvg from '@/components/svg/MailAltSvg'
-import languages from '@cospired/i18n-iso-languages'
-import ru from '@cospired/i18n-iso-languages/langs/ru.json'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { useAppContext } from 'context/state'
+import { ICV } from 'data/interfaces/ICV'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 
 
 interface Props {
-  id: number
+  id?: number
+  cv?: ICV,
+  onBack?: (page?: number)=> void
 }
 
 export default function CvPreview(props: Props) {
   const cvContext = useCvContext()
+  const creationContext = useCreateVcCvContext()
   const appContext = useAppContext()
-  const currentCv = cvContext.currentCv
+  const currentCv = props.cv
+  debugger
   const router = useRouter()
   const userContext = useUserContext()
-  const [isLocaleLoaded, setIsLocaleLoaded] = useState(false)
-
-  useEffect(()=>{
-    if(!cvContext.currentCv) {
-      cvContext.getCv(props.id)
-    }
-    languages.registerLocale(ru)
-    setIsLocaleLoaded(true)
-  }, [cvContext])
 
   const personalHead = (
     <div className={styles.head}>
       <UserPic image={getUserImageSource(userContext.currentProfile)} size={80}/>
-      <P styleType={['w600', 'large']}>{[userContext.currentProfile.firstName, userContext.currentProfile.lastName].join(' ')}</P>
+      <P styleType={['w600', 'large']}>{getUserName(userContext.currentProfile)}</P>
     </div>
   )
 
@@ -75,14 +69,16 @@ export default function CvPreview(props: Props) {
     })
   }
 
+  if(!currentCv) return null
+
   return (<div className={styles.root}> 
-    <BackTextButton onClick={router.back} className={styles.backButton}/>
+    <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
     <Title title={'Предпросмотр резюме'}/>
     <div className={styles.itemsWrapper}>
       <PreviewItem 
       titleElement={personalHead} 
       wrapperClassName={styles.item}
-      onClick={() => editElement(1)}
+      onClick={() => props.onBack(1)}
       >
         <P 
         styleType={['small', currentCv.vacancyLookType === VacancyLookType.NotLooking?'red':'green']} 
@@ -94,36 +90,36 @@ export default function CvPreview(props: Props) {
         styleType={['greyLight', 'w500', 'medium']}>
           {[
             currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
-            getAge(currentCv.age), 
+            getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>
-        <P styleType={['w600', 'large']}>{currentCv.categories[0].name}</P>
+        <P styleType={['w600', 'large']}>{creationContext.activeSubCategory[0].name}</P>
         <SalaryItem cv={currentCv}/>
 
       </PreviewItem>
 
-      <PreviewItem title='Занятость' onClick={()=>editElement(4)}>
+      <PreviewItem title='Занятость' onClick={()=>props.onBack(4)}>
         <EmploymentBoard cv={currentCv}/>
       </PreviewItem>
 
-      <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => editElement(2)}>
-        {currentCv.profile.email &&
+      <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => props.onBack(2)}>
+        {(currentCv.profile?.email||currentCv.email) &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
-          {currentCv.profile.email}
+          {currentCv.email||currentCv.profile?.email}
         </P>
         }
-        {currentCv.profile.phone &&
+        {(currentCv.phone||currentCv.profile?.phone) &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
-          {currentCv.profile.phone}
+          {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
         </P>
         }
-        {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
+        {(currentCv?.telegramNickname||currentCv.profile?.telegramNickname) &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
-          {currentCv.telegramNickname||currentCv.profile.telegramNickname}
+          {currentCv.telegramNickname||currentCv.profile?.telegramNickname}
         </P>
         }
         {currentCv.whatsapp &&
@@ -144,12 +140,18 @@ export default function CvPreview(props: Props) {
           {currentCv.linkedin}
         </P>
         }
+        {/* {currentCv.viber && =============== TODO (нужна свг вайбера) ===============
+        <P styleType={['w500', 'medium', 'alignCenter']}>
+          <Button styleType={['icon', 'black']}><ViberSvg/></Button>
+          {currentCv.linkedin}
+        </P>
+        } */}
       </PreviewItem>
 
       <PreviewItem 
       title={' '} 
       wrapperClassName={styles.item}
-      onClick={() => editElement(6)}
+      onClick={() => props.onBack(6)}
       >
         {currentCv.relocation &&
           <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}</P>
@@ -163,13 +165,12 @@ export default function CvPreview(props: Props) {
         {currentCv.businessTrips &&
           <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}</P>
         }
-
       </PreviewItem>
 
       {currentCv.bio &&
         <PreviewItem 
         title={'О себе'} 
-        onClick={() => editElement(2)}
+        onClick={() => props.onBack(2)}
         >
           <HtmlText text={currentCv.bio} className={styles.bio}/>
         </PreviewItem>
@@ -177,7 +178,7 @@ export default function CvPreview(props: Props) {
 
         <PreviewItem 
         title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
-        onClick={() => editElement(3)}
+        onClick={() => props.onBack(3)}
         >
           {currentCv.experienceInfo.length > 0 && 
             currentCv.experienceInfo.map(el=> {
@@ -194,7 +195,7 @@ export default function CvPreview(props: Props) {
 
         <PreviewItem 
         title={'Образование'}
-        onClick={() => editElement(4)}
+        onClick={() => props.onBack(4)}
         > 
           <P styleType={['w500', 'medium']}>{TranslateEducationType(currentCv.education)}</P>
           { currentCv.educationInfo.length > 0 && 
@@ -207,38 +208,38 @@ export default function CvPreview(props: Props) {
           }
         </PreviewItem>
 
-      {currentCv.skills && currentCv.skills.length > 0 &&
+      {creationContext.helpObjects.skills && creationContext.helpObjects.skills.size > 0 &&
         <PreviewItem 
         title='Навыки'
-        onClick={() => editElement(5)}
+        onClick={() => props.onBack(5)}
         >
-          <TagList tags={currentCv.skills.map(el => ({name: el.title}))} />
+          <TagList tags={[...creationContext.helpObjects.skills.values()].map(el => ({name: el.title}))} />
         </PreviewItem>
       }
 
-      {currentCv.sources && currentCv.sources.length > 0 &&
-        <PreviewItem title='Источники' onClick={()=>editElement(5)}>
-          <TagList tags={currentCv.sources.map(el => ({name: el.title}))}/>
+      {creationContext.helpObjects.activeSources && creationContext.helpObjects.activeSources.size > 0 &&
+        <PreviewItem title='Источники' onClick={()=>props.onBack(5)}>
+          <TagList tags={[...creationContext.helpObjects.activeSources.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }      
 
-      {currentCv.geos && currentCv.geos.length > 0 &&
-        <PreviewItem title='Гео' onClick={()=>editElement(5)}>
-          <TagList tags={currentCv.geos.map(el => ({name: el.title}))}/>
+      {creationContext.helpObjects.activeGeos && creationContext.helpObjects.activeGeos.size > 0 &&
+        <PreviewItem title='Гео' onClick={()=>props.onBack(5)}>
+          <TagList tags={[...creationContext.helpObjects.activeGeos.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
-      {currentCv.verticals && currentCv.verticals.length > 0 &&
-        <PreviewItem title='Вертикали'onClick={()=>editElement(5)}>
-          <TagList tags={currentCv.verticals.map(el => ({name: el.title}))}/>
+      {creationContext.helpObjects.activeVerticals && creationContext.helpObjects.activeVerticals.size > 0 &&
+        <PreviewItem title='Вертикали'onClick={()=>props.onBack(5)}>
+          <TagList tags={[...creationContext.helpObjects.activeVerticals.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
 
-      {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && isLocaleLoaded &&
+      {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && 
         <PreviewItem 
         title='Владение языками'
-        onClick={() => editElement(5)}
+        onClick={() => props.onBack(5)}
         >
           <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
@@ -247,23 +248,23 @@ export default function CvPreview(props: Props) {
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
         <PreviewItem 
         title='Портфолио'
-        onClick={() => editElement(5)}
+        onClick={() => props.onBack(5)}
         >
-          <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
-          <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
+          {currentCv.portfolio &&
+            <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+          }
+          {currentCv.assets?.length > 0 &&
+            <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
+          }
         </PreviewItem>
       }
     </div>
 
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['gradient']} title={'back'} onClick={router.back} className={styles.button}>Назад</Button>
+      <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
         <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
       }
-
     </div>
-
-
-
   </div>)
 }

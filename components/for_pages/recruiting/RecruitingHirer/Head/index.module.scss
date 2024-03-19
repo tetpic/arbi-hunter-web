@@ -48,6 +48,7 @@
     text-align: center;
     display: flex;
     flex-direction: column;
+    line-height: unset;
     @include mq($TabletWidth, max) {
       order: 1;
     }

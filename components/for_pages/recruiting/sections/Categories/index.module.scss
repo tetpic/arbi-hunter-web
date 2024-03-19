@@ -32,6 +32,7 @@
       position: absolute;
       top: 0;
       right: 0;
+      animation: rotateAndScale 5s linear infinite;
     }
 
     &__bottom {
@@ -68,3 +69,5 @@
     }
   }
 }
+
+@include rotateAndScale;

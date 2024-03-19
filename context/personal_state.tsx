@@ -94,7 +94,9 @@ export function PersonalWrapper(props: Props) {
       setCurrentProfile(userContext?.currentProfile)
     }
     try {
-      const res = (data?.profile||data?.profileId)?await PersonalRepository.getPersonalPageById(data?.profile?.id||data?.profileId):await PersonalRepository.getPersonalPage()
+      const res = (data?.profile||data?.profileId)?
+      await PersonalRepository.getPersonalPageById(data?.profile?.id||data?.profileId):
+      await PersonalRepository.getPersonalPage()
       setPersonalPageState(res)
       if(res?.blocks) {
         res?.blocks.forEach(block => {

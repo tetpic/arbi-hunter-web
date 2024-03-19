@@ -19,7 +19,7 @@ export default function Radio<T>(props: Props<T>) {
     props.onChange(props.value)
   }
   return (
-    <div data-cy={'radio_'+props.value} className={classNames(styles.root, props.isActive&&styles.active, props.className, props.isActive&&props.activeClassName)} onClick={handleClick}>
+    <div data-cy={'radio_'+props.value} data-active={props.isActive} className={classNames(styles.root, props.isActive&&styles.active, props.className, props.isActive&&props.activeClassName)} onClick={handleClick}>
       <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'white'}/>}</div>
       {props.children && props.children.length ? props.children : <div className={classNames(styles.label, props.labelClassName)}>{props.label}</div>}
     </div>

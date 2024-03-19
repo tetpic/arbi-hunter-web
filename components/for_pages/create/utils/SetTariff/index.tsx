@@ -13,6 +13,7 @@ import CheckRadialSvg from '@/components/svg/CheckRadialSvg'
 interface Props {
   onSave?: (replace?: boolean) =>void
   onBack?: () =>void
+  onPreview?: ()=>void
   type?: 'cv'|'vacancy'
   setText?: string
 }
@@ -21,9 +22,9 @@ export default function SetTariff(props: Props) {
   const router = useRouter()
   const creationContext = useCreateVcCvContext()
 
-  const toPreview = () => {
-    router.push(props.type === 'cv'? `/preview/cv/${creationContext.draftId.current}`: `/preview/vacancy/${creationContext.draftId.current}`)
-  }
+  // const toPreview = () => {
+  //   router.push(props.type === 'cv'? `/preview/cv/${creationContext.draftId.current}`: `/preview/vacancy/${creationContext.draftId.current}`)
+  // }
 
   return (<div className={styles.root}> 
   <P styleType={['huge', 'w600', 'textCenter']}>Выберите тариф</P>
@@ -95,8 +96,9 @@ export default function SetTariff(props: Props) {
     styleType={['gradient']} 
     title={'preview'} 
     onClick={()=> {
+      props.onPreview?.()
       // props.onSave(true)
-      toPreview()}
+    }
     }>
       Предпросмотр {props.type === 'cv'?  'резюме': 'вакансии'}
     </Button>

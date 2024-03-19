@@ -1,7 +1,8 @@
-const token1 ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUxLCJlbWFpbCI6IjEyMzQyMzQyMzQyQGFtZXJpY2EuYXUiLCJwaG9uZSI6IisxMjM0MjM0MjM0MiIsImlhdCI6MTcwOTczOTUyNCwiZXhwIjoxNzQxMzAyNTI0fQ.cowmrdd42io67Sc4RhS_gAxfbEhPqt3_vh_PGmtP9a8'
-const token2 ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAwLCJlbWFpbCI6ImJ1bGwxNjA0QGdtYWlsLmNvbSIsInBob25lIjoiKzc5MjY5NjI3MjAyIiwiaWF0IjoxNzA5NzI1OTk3LCJleHAiOjE3NDEyODg5OTd9.0_P4pq8VD6b9Ov2KEdfA8euPtLnOIcNlCIoJp2D2Irs'
 
 describe('simple cv full create', ()=> {
+  const token1 ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUxLCJlbWFpbCI6IjEyMzQyMzQyMzQyQGFtZXJpY2EuYXUiLCJwaG9uZSI6IisxMjM0MjM0MjM0MiIsImlhdCI6MTcwOTczOTUyNCwiZXhwIjoxNzQxMzAyNTI0fQ.cowmrdd42io67Sc4RhS_gAxfbEhPqt3_vh_PGmtP9a8'
+  const token2 ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAwLCJlbWFpbCI6ImJ1bGwxNjA0QGdtYWlsLmNvbSIsInBob25lIjoiKzc5MjY5NjI3MjAyIiwiaWF0IjoxNzA5NzI1OTk3LCJleHAiOjE3NDEyODg5OTd9.0_P4pq8VD6b9Ov2KEdfA8euPtLnOIcNlCIoJp2D2Irs'
+
   it('pass create and check preview', ()=> {
     cy.setCookie('accessToken', token1)
     cy.setCookie('profile-type', 'employee')
@@ -156,8 +157,44 @@ describe('simple cv full create', ()=> {
 
     //7stage
     cy.get('[data-cy="button_preview"]').click()
+    cy.contains('Nikita')
+    cy.contains('Kekovidze')
+    cy.contains('Loliev')
+
+    cy.contains('10 000 ₽')
+    cy.contains('Оклад')
+    cy.contains('Продуктовый аналитик')
+    cy.contains('Офис')
+
+    cy.contains('Полная')
+    cy.contains('Полный день')
+    cy.contains('Переезд невозможен')
+    cy.contains('Командировки невозможны')
+
+    cy.contains('Опыт работы')
+    cy.contains('01.2023')
+
+    cy.contains('24 годa')
+    cy.contains('+1 234-234-2342')
+    cy.contains('12342342342@america.au')
+    //telegram
+    // cy.contains('@rabustes')
+    cy.contains('whatsAppTest')
+    cy.contains('linkedinTest')
+    // need viber icon 
+
+    //cy.contains('viberLink')
+    cy.contains('skypeTest')
+    cy.contains('testBioAbout')
+    cy.contains('Программа')
+
+    cy.contains('Доктор наук')
+
+    cy.contains('Английский')
+    cy.contains('https://www.youtube.com')
+
+
     //  Preview
-    cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/preview/cv')
     cy.get('[data-cy="button_back"]').wait(100).click()
     //Save Vacancy
     cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/create/cv')
