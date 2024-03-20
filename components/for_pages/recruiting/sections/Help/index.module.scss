@@ -43,6 +43,10 @@
   justify-self: flex-start;
   position: relative;
   padding: 10px 20px 10px 4px;
+  @include hover {
+    scale: 1.05;
+    background-color: $whitePurple;
+  }
   @include mq($TabletWidth, max) {
     margin-inline: 16px;
   }

@@ -6,6 +6,9 @@ import { FILES } from 'types/constants'
 import P from '@/components/ui/P'
 import TextNode from '@/components/ui/TextNode'
 import Formatter from 'utils/formatter'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import classNames from 'classnames'
 
 interface Props {
   news: IArticle[]
@@ -14,6 +17,8 @@ interface Props {
 
 
 export default function ArticlesList(props: Props) {
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   return (
     <SwiperList
@@ -24,7 +29,7 @@ export default function ArticlesList(props: Props) {
     >
       {props.news && props.news.map(el=>{
         return (
-          <div className={styles.news}>
+          <div className={classNames(styles.news, isLightTheme && styles.news_light) }>
             <Image src={FILES + el.image.source} alt={'news'} width={372} height={180} className={styles.image}/>
             <div className={styles.content}>
               <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{el.name}</P>

@@ -135,5 +135,9 @@
 .watchAll {
   margin-top: 40px;
   margin-inline: auto;
+  @include hover {
+    scale: 1.05;
+    background-color: $blueLight;
+  }
 }
 

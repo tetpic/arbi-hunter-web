@@ -31,6 +31,7 @@
 
   &_light {
     background-color: $white;
+    border: 2px $whitePurple solid;
   }
 
   .title {
@@ -62,6 +63,10 @@
     .button {
       padding: 16px 20px;
       height: 52px;
+      @include hover {
+        background-color: $blueLight;
+        scale: 1.05;
+      }
       @include mq($TabletWidth, max) {
         width: 100%;
       }
@@ -156,11 +161,8 @@
 
   &_light {
     background-color: $white;
+    border: 2px $whitePurple solid;
   }
-
-
-  
-
 
   .imageWrapper {
     padding: 22px 36px;
@@ -170,8 +172,5 @@
     &_light {
       background-color: $whitePurple;
     }
-    
-
-
   }
 }

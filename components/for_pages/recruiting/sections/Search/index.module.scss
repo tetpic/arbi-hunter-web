@@ -26,10 +26,13 @@
     box-shadow: 0px 0px 0px 0px transparent;
     @include transitionDefault;
     @include hover {
-      background-color: $blue;
-      scale: 1.07;
-      box-shadow: 0px 8px 10px 0px #4e82f37e;
-      color: $white;
+      scale: 1.05;
+      box-shadow: 0px 0px 20px 0px $purpleText;
+    }
+
+    &_light {
+      border: 2px $whitePurple solid;
+      box-shadow: 0px 0px 40px -15px $greyLight;
     }
   }
 

@@ -29,6 +29,7 @@
   margin-inline: auto;
   width: 100%;
   height: clamp(48px, 9vw, 56px);
+  border: 2px $whitePurple solid;
   &:before {
     display: none;
   }
