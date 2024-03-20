@@ -48,7 +48,7 @@ build_prod_image:
     - docker-compose -f docker-compose.prod.yml push nginx
   #  when: manual
   only:
-    - master
+    - main
 
 deploy_dev:
   stage: deploy
