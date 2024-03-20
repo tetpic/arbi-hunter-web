@@ -44,9 +44,6 @@
   }
 
   .title {
-    font-size: $text32;
-    font-weight: $semibold;
-    color: $white;
     padding-top: 26px;
     line-height: 150%;
     @include mq($TabletWidth, max) {
@@ -88,14 +85,15 @@
       padding-block: unset;
       margin-top: 16px;
     }
+
+    &_light {
+      border-bottom: 2px $whitePurple solid;
+    }
     
   }
 
   .title {
     grid-area: t;
-    font-size: $text20;
-    font-weight: $semibold;
-    color: $white;
     @include mq($TabletWidth, max) {
       text-align: center;
     }
@@ -103,8 +101,6 @@
 
   .desc {
     grid-area: d;
-    font-size: $largeText;
-    color: $white;
     width: 70%;
     @include mq($TabletWidth, max) {
       display: none;
@@ -117,6 +113,12 @@
     padding: 8px;
     border-radius: 50%;
     background-color: $black;
+  }
+
+  .lightImage {
+    @extend .image;
+    background-color: unset;
+    background: $gradientAlt;
   }
 }
 

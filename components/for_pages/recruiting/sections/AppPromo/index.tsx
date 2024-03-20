@@ -2,7 +2,8 @@ import styles from './index.module.scss'
 
 import Image, { StaticImageData } from 'next/image'
 import qr from 'images/recruiting/recruiting_qr.svg'
-import check from 'images/recruiting/recruiting_check.svg'
+import qrGradient from 'images/recruiting/recruiting_qrGradient.svg'
+import check from 'images/recruiting/check.svg'
 import cross from 'images/recruiting/recruiting_cross.svg'
 import appleIcon from 'images/recruiting/recruiting_apple.png'
 import googleIcon from 'images/recruiting/recruiting_gplay.png'
@@ -11,6 +12,8 @@ import Button from 'components/ui/Button'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import P from '@/components/ui/P'
 
 interface Props {
   cards: string[]|StaticImageData[]
@@ -21,6 +24,7 @@ interface Props {
 export default function AppPromo(props: Props) {
   const cardsRef = useRef<HTMLImageElement[]>([])
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
   const [activeCard, setActiveCard] = useState<HTMLImageElement>(cardsRef.current[0])
 
@@ -50,22 +54,22 @@ export default function AppPromo(props: Props) {
 
 
   return (<div className={styles.root}> 
-    <div className={styles.left}>
-      <p className={styles.title}>
+    <div className={classNames(styles.left, isLightTheme&&styles.left_light) }>
+      <P styleType={['w700', 'huge']} useThemeColor className={styles.title}>
         {/* Безграничные возможности в приложении <span>ArbiHunter</span> */}
         Представляем вам наше мобильное приложение
-      </p>
-      <p className={styles.desc}>
+      </P>
+      <P styleType={['w500', 'large']} useThemeColor className={styles.desc}>
         С полным функционалом платформы, поиск сотрудников стал еще более удобный!
-      </p>
+      </P>
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.button}>
+        <Button styleType={['grey']} altStyleType={['whitePurple']} className={styles.button}>
           <Image src={appleIcon} alt={'apple icon'} width={20} height={20}/>
-          Download Now
+          <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>
-        <Button className={styles.button}>
+        <Button styleType={['grey']} altStyleType={['whitePurple']} className={styles.button}>
           <Image src={googleIcon} alt={'google play icon'}/>
-          Download Now
+          <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>
       </div>
       <div className={styles.mobile}>
@@ -90,11 +94,11 @@ export default function AppPromo(props: Props) {
     </div>
 
     {!isTabletWidth &&
-      <div className={styles.right}>
-        <p className={styles.title}>Скачайте приложение по&nbsp;QR коду</p>
-        <p className={styles.desc}>Отсканируйте код с&nbsp;камеры своего телефона</p>
-        <div className={styles.imageWrapper}>
-          <Image src={qr} alt={'qr code'}/>
+      <div className={classNames(styles.right, isLightTheme&&styles.right_light)}>
+        <P styleType={['large', 'w600']} useThemeColor >Скачайте приложение по&nbsp;QR коду</P>
+        <P styleType={['small']} useThemeColor >Отсканируйте код с&nbsp;камеры своего телефона</P>
+        <div className={classNames(styles.imageWrapper, isLightTheme&&styles.imageWrapper_light)}>
+          <Image src={isLightTheme?qrGradient:qr} alt={'qr code'}/>
         </div>
       </div>
     } 

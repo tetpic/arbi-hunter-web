@@ -13,6 +13,11 @@
     width: 32%;
     min-width: 300px;
     overflow: hidden;
+    
+    &_light {
+      background-color: unset;
+      background: $gradientAlt;
+    }
 
     &:before {
       content: '';
@@ -30,8 +35,8 @@
 
     &__image {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 16px;
+      right: 16px;
       animation: rotateAndScale 5s linear infinite;
     }
 

@@ -29,11 +29,12 @@
     overflow: hidden;
   }
 
+  &_light {
+    background-color: $white;
+  }
+
   .title {
     grid-area: t;
-    color: $white;
-    font-weight: $bold;
-    font-size: $hugeText;
 
     span {
       @include textGradientDefault;
@@ -42,9 +43,6 @@
 
   .desc {
     grid-area: d;
-    font-size: $largeText;
-    font-weight: $medium;
-    color: $white;
     margin-top: 16px;
   }
 
@@ -62,10 +60,8 @@
     }
 
     .button {
-      @include buttonGray;
       padding: 16px 20px;
       height: 52px;
-      background-color: #282831;
       @include mq($TabletWidth, max) {
         width: 100%;
       }
@@ -136,6 +132,7 @@
     .button {
       border-radius: 50%;
       padding: 16px;
+      overflow: hidden;
       cursor: pointer;
       border: 2px $white solid;
       @include transitionDefault;
@@ -157,21 +154,23 @@
   max-width: 274px;
   justify-content: space-between;
 
-  .title {
-    color: $white;
-    font-size: $largeText;
-    font-weight: $semibold;
+  &_light {
+    background-color: $white;
   }
+
+
   
-  .desc {
-    font-size: $smallText;
-    color: $white;
-  }
+
 
   .imageWrapper {
     padding: 22px 36px;
     border-radius: 24px;
     background-color: #30303D;
+
+    &_light {
+      background-color: $whitePurple;
+    }
+    
 
 
   }

@@ -1,12 +1,16 @@
 import {Dispatch, SetStateAction, createContext, useContext, useState} from 'react'
-import { ModalType, SnackbarType } from 'types/enums'
+import { AppTheme, ModalType, SnackbarType } from 'types/enums'
 import ReactModal from 'react-modal'
 import { SnackbarData } from 'types/types'
 import { IResize, useResize } from 'components/hooks/useResize'
+import { useRouter } from 'next/router'
 
 interface IState {
   isMobile: boolean
   setIsMobile: (t: boolean) => void
+
+  theme: AppTheme
+  setTheme: Dispatch<SetStateAction<AppTheme>>
 
   snackbar: SnackbarData | null,
   showSnackbar: (text: string, type: SnackbarType) => void
@@ -48,6 +52,7 @@ interface Props {
 
 export function AppWrapper(props: Props) {
   const [isMobile, setIsMobile] = useState<boolean>(props.isMobile)
+  const router = useRouter()
   const [snackbar, setSnackbar] = useState<SnackbarData | null>(null)
   const [modal, setModal] = useState<ModalType | null>(null)
   const [modalArguments, setModalArguments] = useState<any>(null)
@@ -58,6 +63,7 @@ export function AppWrapper(props: Props) {
   const [hideHeader, setHideHeader] = useState<boolean>(false)
   const [snapPoints, setSnapPoints] = useState<number>(null)
   const [isNavBarActive, setNavBarActive] = useState<boolean>(false)
+  const [theme, setTheme] = useState<AppTheme>(router.query.theme as AppTheme||AppTheme.Dark)
   const size = useResize()
 
 
@@ -108,6 +114,9 @@ export function AppWrapper(props: Props) {
   const value: IState = {
     isMobile,
     setIsMobile,
+
+    theme,
+    setTheme,
 
     snackbar,
     showSnackbar,

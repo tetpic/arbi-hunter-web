@@ -8,6 +8,7 @@ import anime from 'animejs'
 import UserSvg from 'components/svg/UserSvg'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
+import P from '@/components/ui/P'
 
 
 
@@ -148,15 +149,15 @@ export default function Head(props: Props) {
         </div>
       }
 
-    <h6 className={styles.title}>
+    <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
       Разместите вакансию <br />
       <span className={styles.title_big}>
         в <span className={styles.title_purple}>Arbi</span>Hunter
       </span>
-    </h6>
-    <p className={styles.desc}>
+    </P>
+    <P useThemeColor styleType={['large']} className={styles.desc}>
       Огромная база кандидатов из сферы IT <br /> и маркетинга ждет вашу вакансию внутри
-    </p>
+    </P>
     <Button styleType={['gradient']} className={styles.button} href={'/create/vacancy/'}>
         Разместить вакансию
     </Button>

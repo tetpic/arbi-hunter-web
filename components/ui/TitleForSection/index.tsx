@@ -6,6 +6,7 @@ import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import Link from 'next/link'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
+import P from '../P'
 
 interface Props {
   title: string|JSX.Element
@@ -38,7 +39,7 @@ export default function Title(props: Props) {
         <Button styleType={['icon', 'black']} className={props.itemClassName} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
       }
 
-      {props.title} {props.emoji}
+      <P styleType={['huge','w600']} useThemeColor>{props.title}</P> {props.emoji}
       {((isTabletWidth&&props.onBackClick)||props.showButton)&&!props.rightButton&&
         <div className={styles.filler}></div>
       }

@@ -18,6 +18,7 @@ import ManSvg from '@/components/svg/ManSvg'
 import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 interface Props {
 }
@@ -143,8 +144,8 @@ export default function NavBar(props: Props) {
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>
           <Switch
-          onChange={(val) => {}}
-          checked={true}
+          onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
+          checked={appContext.theme ===AppTheme.Dark}
           offColor={colors.white}
           onColor={colors.blue}
           offHandleColor={colors.blue}

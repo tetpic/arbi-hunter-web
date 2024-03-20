@@ -11,6 +11,7 @@ import UserSmallSvg from '@/components/svg/UserSmallGreySvg'
 import StarSmallFilledSvg from '@/components/svg/StarSmallFilledSvg'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 // import { useEffect } from 'react'
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 
 export default function CoursesList(props: Props) {
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
 
   const arrayPackager = <T,>(arr: T[], packBy: number): T[][] => {
@@ -54,11 +56,11 @@ export default function CoursesList(props: Props) {
           <div className={styles.itemPack}>
             {el.map((course)=>{
               return (
-                <div className={styles.item} key={course.id}>
+                <div className={classNames(styles.item, isLightTheme&&styles.item_light)} key={course.id}>
                   <Image src={FILES + course.image.source} alt={'course image'} width={185} height={185} className={styles.image}/>
                   <div className={styles.content}>
-                    <P styleType={['small', 'w500']} className={classNames(styles.textLine, styles.counter) }><PlayButtonSvg/> {course.stepsCount} {Formatter.pluralize(Number(course.stepsCount), 'урок', 'урока', 'уроков')}</P>
-                    <P styleType={['large', 'w600']} className={styles.title}>{course.name}</P>
+                    <P styleType={['small', 'w500']} useThemeColor className={classNames(styles.textLine, styles.counter) }><PlayButtonSvg/> {course.stepsCount} {Formatter.pluralize(Number(course.stepsCount), 'урок', 'урока', 'уроков')}</P>
+                    <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{course.name}</P>
                     <P styleType={['blue', 'large', 'w600']}>Бесплатно</P>
                     
                     <div className={styles.bottom}>

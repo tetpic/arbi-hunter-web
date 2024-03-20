@@ -42,9 +42,6 @@
   }
 
   .title {
-    font-size: $text32;
-    font-weight: $semibold;
-    color: $white;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -70,8 +67,6 @@
   }
 
   .desc {
-    font-size: $largeText;
-    color: $white;
     text-align: center;
     margin-top: clamp(32px, 4vw, 40px);
     @include mq($TabletWidth, max) {

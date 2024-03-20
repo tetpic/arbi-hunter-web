@@ -1,5 +1,8 @@
 @import 'styles/index';
 
+.defaultRoot {
+}
+
 .root {
   @include buttonBorderGradient;
   padding: 8px 8px 8px 16px;
@@ -12,59 +15,69 @@
   margin-inline: auto;
   width: 100%;
   height: clamp(48px, 9vw, 56px);
+}
 
+.rootLight {
+  @include buttonWhite;
+  padding: 8px 8px 8px 16px;
+  height: unset;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 16px;
+  cursor: default;
+  max-width: 764px;
+  margin-inline: auto;
+  width: 100%;
+  height: clamp(48px, 9vw, 56px);
+  &:before {
+    display: none;
+  }
+}
 
+.button {
+  position: relative;
+  z-index: 4;
+  height: 40px;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+  }
+}
 
-  .button {
-    @include buttonGradient;
-    position: relative;
-    z-index: 4;
-    height: 40px;
-    @include mq($TabletWidth, max) {
-      width: 100%;
+.input {
+  color: $white;
+  font-size: $mediumText;
+  font-weight: $medium;
+  position: relative;
+  z-index: 4;
+  width: calc(100% - 160px);
+  min-width: 258px;
+  background-color: transparent;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    min-width: unset;
+  }
+  &:focus {
+    &::placeholder {
+      color: transparent;
     }
   }
+}
 
-  .input {
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
-    position: relative;
-    z-index: 4;
-    width: calc(100% - 160px);
-    min-width: 258px;
-    background-color: transparent;
-    @include mq($TabletWidth, max) {
-      width: 100%;
-      min-width: unset;
-    }
-
-    &:focus {
-      &::placeholder {
-        color: transparent;
+.filterButton {
+  margin-left: auto;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  border-radius: 6px;
+  padding: 4px;
+  flex-shrink: 0;
+  &_active {
+    svg {
+      path {
+        stroke: $blue;
       }
     }
-
   }
-
-  .filterButton {
-    margin-left: auto;
-    cursor: pointer;
-    border-radius: 6px;
-    overflow: hidden;
-    border-radius: 6px;
-    padding: 4px;
-    flex-shrink: 0;
-
-    &_active {
-      svg {
-        path {
-          stroke: $blue;
-        }
-      }
-    }
-  }
-
 }
 
 .container {

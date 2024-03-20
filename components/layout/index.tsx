@@ -17,7 +17,7 @@ export default function Layout(props: Props) {
   const {isTabletWidth} = appContext.size
 
   return ( 
-  <div className={styles.root}>
+  <div className={styles.root} data-theme={appContext.theme} id={'mainLayout'}>
     <StickyContainer>
       {!appContext.hideHeader &&
       <Sticky>

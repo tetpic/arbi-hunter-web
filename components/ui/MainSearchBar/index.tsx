@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { useResize } from 'components/hooks/useResize'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import {  useState } from 'react'
 import { ISearchFilterModalProps } from 'components/modals/SearchFilterModal'
 import { ICategory } from 'data/interfaces/Common'
@@ -38,6 +38,7 @@ interface Props {
 export default function MainSearchBar(props: Props) {
   const {isTabletWidth} = useResize()
   const appContext = useAppContext()
+  const isLightTheme = appContext?.theme === AppTheme.Light
 
   const [activeCategories, setActiveCategories] = useState<Map<number, ICategory>>(new Map())
   const [activePeriod, setActivePeriod] = useState<number>()
@@ -85,7 +86,7 @@ export default function MainSearchBar(props: Props) {
 
   return (
     <div className={classNames(styles.container, props.fullWidth&&styles.container_wide)}>
-      <div className={classNames(styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
+      <div className={classNames(isLightTheme?styles.rootLight:styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
         <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||'Поиск'} /> 
         {props.onFilterClick &&
         <Button 
@@ -97,6 +98,7 @@ export default function MainSearchBar(props: Props) {
         }
 
         <Button 
+        styleType={!isTabletWidth?['gradient']:['icon', 'backTransparent']}
         title='search button' 
         onClick={()=> submit()} 
         className={!isTabletWidth&&styles.button}>

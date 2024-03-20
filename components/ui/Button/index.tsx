@@ -7,15 +7,20 @@ import { IButton } from 'types/types'
 import usePressAndHover from 'hooks/usePressAndHover'
 import { MouseEventHandler, ReactElement, RefObject } from 'react'
 import useStopPropagation from 'hooks/useStopPropagation'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 type ButtonStyle = 
 'black'|
 'grey'|
 'gradient'|
 'blue'|
+'white'|
+'whitePurple'|
 'borderGradient'|
 'borderWhite'|
 'borderBlue'|
+'borderGrey'|
 'fontSmall'|
 'fontMedium'|
 'fontLarge'|
@@ -32,6 +37,7 @@ interface Props extends IButton {
   children: React.ReactNode
   className?: string
   styleType?: ButtonStyle[]
+  altStyleType?: ButtonStyle[]
   arrow?: boolean
   fluid?: boolean
   buttonRef?: RefObject<any>
@@ -51,7 +57,8 @@ interface Props extends IButton {
 export default function Button(props: Props) {
   const [ref, press, hover] = usePressAndHover()
   useStopPropagation(ref, !props.stopPropagation)
-
+  const {theme} = useAppContext()
+  const isLightTheme = theme === AppTheme.Light
   const cn = classNames(
     {
       [styles.root]: true,
@@ -61,7 +68,7 @@ export default function Button(props: Props) {
       [styles.hover]: props.hover ?? hover,
       [styles.withIcon]: !!props.icon
     }, props.className,
-    props.styleType?.map(s => styles[s]),
+    isLightTheme&&props.altStyleType?.length > 0?props.altStyleType.map(s=> styles[s]):props.styleType?.map(s => styles[s]),
   )
 
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

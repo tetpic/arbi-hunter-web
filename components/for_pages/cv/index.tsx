@@ -201,7 +201,7 @@ export default function CvPage(props: Props) {
       {isMyCv &&
       <div className={styles.userTop}>
         <div className={styles.topLine}>
-          <P styleType={['f20', 'w600']}>
+          <P styleType={['fs20', 'w600']}>
             {currentCv.categories[0].name}
           </P>
           <P 
@@ -292,7 +292,7 @@ export default function CvPage(props: Props) {
       {!isMyCv &&
       <>
         <P 
-        styleType={['f20', 'w600']} 
+        styleType={['fs20', 'w600']} 
         className={styles.speciality}
         >
           {currentCv.categories[0].name}

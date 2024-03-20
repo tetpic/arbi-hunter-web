@@ -114,6 +114,7 @@ export default function Header(props: Props) {
             {!userContext.currentProfile && <>
               <Button 
               styleType={['black', 'borderBlue', 'backTransparent']}
+              altStyleType={['white', 'borderGrey']}
               href={regPath}
               disabled={activePath === regPath}
               >
@@ -124,6 +125,7 @@ export default function Header(props: Props) {
               disabled={activePath === loginPath}
               href={loginPath}
               styleType={['grey', 'borderWhite', 'backTransparent']}
+              altStyleType={['gradient']}
               >
                 Вход
               </Button>

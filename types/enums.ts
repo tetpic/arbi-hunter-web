@@ -45,6 +45,11 @@ export enum ModalType {
   BackgroundSwitchModal = 'backgroundSwitchModal',
 }
 
+export enum AppTheme {
+  Light= 'light',
+  Dark= 'dark'
+}
+
 export enum SnackbarType {
   error,
   success,

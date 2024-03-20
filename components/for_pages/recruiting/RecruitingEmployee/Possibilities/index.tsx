@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import { useMemo, useRef, useState } from 'react'
 import { ICompany } from './Planet'
 import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
+import P from '@/components/ui/P'
 const RatingLine = dynamic(()=>import('components/ui/RatingLine'), {ssr: false})
 const Planet = dynamic(()=>import('./Planet'), {ssr: false})
 
@@ -57,10 +58,10 @@ export default function Possibilities(props: Props) {
       {memoedPlanet}
     </div>
     <div className={styles.body}>
-      <p className={styles.title}>Откройте дверь в новый мир возможностей!</p>
+      <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>Откройте дверь в новый мир возможностей!</P>
       <div className={styles.card}>
         <UserPic className={styles.card_pic} image={currentCompany.logo} size={55}/>
-        <p className={styles.card_title}>{currentCompany.name}</p>
+        <P styleType={['huge', 'w500']} useThemeColor className={styles.card_title}>{currentCompany.name}</P>
         <div className={styles.rating}>
           <span className={styles.rating_stats}>4,9</span>
           <RatingLine rating={4}/>
@@ -70,7 +71,7 @@ export default function Possibilities(props: Props) {
       {currentCompany.descriptions.map((el, i)=>{
         return <p key={i} className={styles.desc}>{el}</p>
       })}
-      <Button className={styles.button}>Открыть страницу компании</Button>
+      <Button styleType={['grey']} altStyleType={['gradient']} className={styles.button}>Открыть страницу компании</Button>
     </div>
 
   </section>)

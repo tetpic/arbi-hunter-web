@@ -4,6 +4,7 @@
   //do NOT set overflow to hidden
   min-height: 100vh;
   min-height: 100dvh;
+  background: var(--backGroundColor);
   @include mq($TabletWidth, max) {
     padding-bottom: 72px;
   }

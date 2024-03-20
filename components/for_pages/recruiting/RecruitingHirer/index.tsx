@@ -10,13 +10,18 @@ import FindEmployees from './FindEmployees'
 import Reasons from './Reasons'
 import Head from './Head'
 import users from 'images/recruiting/users.png'
+import usersLight from 'images/recruiting/usersLight.png'
 import slide1 from 'images/recruiting/recruiting_swipe1.png'
 import slide2 from 'images/recruiting/recruiting_swipe2.png'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
 import recruitingCatWallet from 'images/recruiting/scene1.png'
-import recruitingCatPoint from 'images/recruiting/scene2.png'
-import recruitingCatMessage from 'images/recruiting/scene3.png'
+import recruitingCatWalletLight from 'images/recruiting/scene1Light.png'
+import recruitingCatPoint from 'images/recruiting/scene3.png'
+import recruitingCatPointLight from 'images/recruiting/scene3Light.png'
+import recruitingCatMessage from 'images/recruiting/scene2.png'
+import recruitingCatMessageLight from 'images/recruiting/scene2Light.png'
+import { AppTheme } from 'types/enums'
 
 
 
@@ -26,6 +31,7 @@ interface Props {
 
 export default function RecruitingHirer(props: Props) {
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
 
   return (
@@ -40,8 +46,13 @@ export default function RecruitingHirer(props: Props) {
       <AppPromo cards={[slide1, slide2]}/>
     
       <Title className={styles.title} title={'Поиск по популярным категориям'}/>
-      <Categories count='резюме' image={users} titles={['Маркетинг', 'Разработка', 'Менеджмент']} images={[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}/>
-      <Button className={styles.watchAll}>Смотреть все</Button>
+      <Categories 
+      count='резюме' 
+      image={isLightTheme?usersLight:users} 
+      titles={['Маркетинг', 'Разработка', 'Менеджмент']} 
+      images={isLightTheme?[recruitingCatWalletLight, recruitingCatPointLight, recruitingCatMessageLight]:[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}
+      />
+      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
     
       <Help/>
     </div>

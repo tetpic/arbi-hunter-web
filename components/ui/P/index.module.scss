@@ -40,10 +40,10 @@
 .fs32{
   font-size: $text32;
 }
-.f36{
+.fs36{
   font-size: $text36;
 }
-.f20{
+.fs20{
   font-size: $text20;
 }
 
@@ -89,4 +89,8 @@
 .alignStart {
   @extend .alignCenter;
   align-items: flex-start;
+}
+
+.themeColor {
+  color: var(--pTextColor);
 }

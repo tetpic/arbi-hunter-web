@@ -2,6 +2,7 @@
 
 .title {
   @include lineClamp(2);
+  flex-shrink: 0;
 }
 
 .item {
@@ -16,6 +17,11 @@
   @include mq($TabletWidth, max) {
     padding:  8px;
     height: unset;
+  }
+
+  &_light {
+    background-color: $white;
+    box-shadow: 0px 5px 20px -10px $greayLightAlt2;
   }
 }
 
@@ -35,9 +41,11 @@
   max-width: 25vw;
   max-height: 25vw;
   align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .swiper {
+  overflow: unset;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
     overflow: unset;

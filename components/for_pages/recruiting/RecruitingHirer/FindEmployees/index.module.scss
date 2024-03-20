@@ -18,9 +18,7 @@
   max-width: 237px;
 
   .step {
-    font-size: $text20;
-    font-weight: $semibold;
-    color: $white;
+
     margin-block: 24px;
     @include mq($TabletWidth, max) {
       margin-block: 8px;
@@ -28,9 +26,6 @@
   }
   
   .title {
-    font-size: $text20;
-    font-weight: $semibold;
-    color: $white;
     white-space: nowrap;
     align-self: flex-start;
     @include mq($TabletWidth, max) {
@@ -39,8 +34,6 @@
   }
 
   .desc {
-    font-size: $largeText;
-    color: $white;
     margin-top: 16px;
     @include mq($TabletWidth, max) {
       text-align: center;

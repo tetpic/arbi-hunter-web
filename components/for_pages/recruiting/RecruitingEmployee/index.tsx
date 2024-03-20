@@ -8,6 +8,7 @@ import AppPromo from '../sections/AppPromo'
 import Help from '../sections/Help'
 import Search from '../sections/Search'
 import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
+import recruitingCatCompaniesLight from 'images/recruiting/recruitingCatCompaniesLight.png'
 import Rive  from '@rive-app/react-canvas'
 import { useEffect, useMemo, useState } from 'react'
 import slide3 from 'images/recruiting/recruiting_swipe3.png'
@@ -21,12 +22,16 @@ import ICourse from 'data/interfaces/ICourse'
 import { IArticle } from 'data/interfaces/IArticle'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import { Languages } from 'types/enums'
+import { AppTheme, Languages } from 'types/enums'
 import ArticlesList from '../../index/ArticlesList'
 import CoursesList from '../../index/CoursesList'
-import recruitingCatWallet from 'images/recruiting/scene4.png'
-import recruitingCatPoint from 'images/recruiting/scene1.png'
-import recruitingCatMessage from 'images/recruiting/scene3.png'
+import s1 from 'images/recruiting/scene1.png'
+import s1Light from 'images/recruiting/scene1Light.png'
+import s2 from 'images/recruiting/scene2.png'
+import s2Light from 'images/recruiting/scene2Light.png'
+import s3 from 'images/recruiting/scene3.png'
+import s3Light from 'images/recruiting/scene3Light.png'
+import P from '@/components/ui/P'
 
 
 const Categories = dynamic(() => import('../sections/Categories'), {
@@ -43,6 +48,7 @@ interface Props {
 export default function RecruitingEmployee(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
@@ -99,10 +105,10 @@ export default function RecruitingEmployee(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.top}>
       {riveAnimation}
-      <h2 className={styles.title}>
+      <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
         Найдите работу мечты 
         <span className={styles.title_big}> в <span className={styles.title_purple}>Arbi</span>Hunter</span>
-      </h2>
+      </P>
       {/* <p className={styles.description}>
         Ежедневно более 1000 людей находят работу в ArbiHunter которая позволяет им расти и становиться успешными!
       </p>
@@ -122,9 +128,13 @@ export default function RecruitingEmployee(props: Props) {
     className={styles.title} 
     itemClassName={styles.titleLink} 
     onAllWatchClick={()=>{}}/>
-    <Categories count='вакансий' image={recruitingCatCompanies} titles={['CPA-сети', 'Маркетинг', 'Media Buying']} images={[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}/>
+    <Categories 
+    count='вакансий' 
+    image={isLightTheme? recruitingCatCompaniesLight:recruitingCatCompanies} 
+    titles={['CPA-сети', 'Маркетинг', 'Media Buying']} 
+    images={isLightTheme?[s3Light, s1Light, s2Light]:[s3, s1, s2]}/>
     {!isTabletWidth &&
-      <Button className={styles.watchAll}>Смотреть все</Button>
+      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
     }
 
     <Possibilities/>
@@ -138,7 +148,7 @@ export default function RecruitingEmployee(props: Props) {
       <ArticlesList news={[...news.values()]}/>
     }
     {!isTabletWidth &&
-      <Button className={styles.watchAll}>Смотреть все</Button>
+      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
     }
 
     <Title 
@@ -156,7 +166,7 @@ export default function RecruitingEmployee(props: Props) {
     </>
     } */}
     {!isTabletWidth &&
-      <Button className={styles.watchAll}>Смотреть все</Button>
+      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
     }
 
     <AppPromo cards={[slide3, slide4, slide5]}/>

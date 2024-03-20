@@ -5,8 +5,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  background-color: $backgroundBlack;
-  border-bottom: 2px $grey solid;
+  background-color: var(--backGroundColor);
+  border-bottom: 2px var(--borderColor) solid;
   position: relative;
   z-index: 10;
   transform: translateY(0);

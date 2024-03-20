@@ -53,9 +53,6 @@
 
   .title {
     margin-top: 114px;
-    font-size: $text32;
-    font-weight: $semibold;
-    color: $white;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
@@ -136,7 +133,7 @@
 
 
 .watchAll {
-  @include watchAllButton;
   margin-top: 40px;
+  margin-inline: auto;
 }
 

@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import Title from 'components/ui/TitleForSection'
 import MainSearchBar from '@/components/ui/MainSearchBar'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import P from '@/components/ui/P'
 
 interface Props {
   title: string
@@ -23,7 +24,7 @@ export default function Search(props: Props) {
 
       {props.tags.map(el => {
         return <SwiperSlide className={styles.slide}>
-        <p className={styles.tag}>{el}</p>
+        <P styleType={['medium', 'w500', ]} useThemeColor  className={styles.tag}>{el}</P>
         </SwiperSlide>
       })}
       </Swiper>
