@@ -1,14 +1,12 @@
 import BackTextButton from '@/components/ui/BackTextButton'
 import styles from './index.module.scss'
-import { useRouter } from 'next/router'
 import Title from '@/components/ui/TitleForSection'
-import {  useState } from 'react'
 import PreviewItem from '@/components/ui/PreviewItem'
 import {  TranslateLanguage, TranslateLanguageKnowLevel,  TranslateWorkExperience } from 'utils/enumsTranslations'
 import P from '@/components/ui/P'
 import SalaryItem from '@/components/ui/SalaryItem'
 import UserPic from '@/components/ui/UserPic'
-import { getUserImageSource } from 'utils/helpers'
+import { copyToClipboard, getUserImageSource } from 'utils/helpers'
 import { useUserContext } from 'context/user_state'
 import Button from '@/components/ui/Button'
 import UserSvg from '@/components/svg/UserSvg'
@@ -20,6 +18,12 @@ import MailAltSvg from '@/components/svg/MailAltSvg'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
+import Formatter from 'utils/formatter'
+import Link from 'next/link'
+import { useAppContext } from 'context/state'
+import { SnackbarType } from 'types/enums'
+import { useVacancyContext } from 'context/vacancy_state'
+import { useRouter } from 'next/router'
 
 
 interface Props {
@@ -31,13 +35,19 @@ interface Props {
 
 
 export default function VacancyPreview(props: Props) {
-  const router = useRouter()
   const creationContext = useCreateVcCvContext()
+  const vacancyContext = useVacancyContext()
   const currentVacancy = props.vacancy
   const userContext = useUserContext()
-  const [isLocaleLoaded, setIsLocaleLoaded] = useState(false)
+  const appContext = useAppContext()
+  const router = useRouter()
 
-
+  const onPublish = () => {
+    vacancyContext.editVacancy({...currentVacancy, published: true}, currentVacancy.id).then(()=>{
+      appContext.showSnackbar('Вакансия опубликована', SnackbarType.success)
+      router.replace('/profile?page=vacancies') 
+    })
+  }
 
   const header = (
     <div className={styles.header}>
@@ -48,15 +58,6 @@ export default function VacancyPreview(props: Props) {
       </div>
     </div>
   )
-
-  const editElement = (progress: number) => {
-    if(currentVacancy.completedSteps && currentVacancy.completedSteps.length < progress) {
-      router.push(`/create/vacancy?id=${currentVacancy.id}&progress=${currentVacancy.completedSteps.length}`)
-    }
-    else {
-      router.push(`/create/vacancy?id=${currentVacancy.id}&progress=${progress}`)
-    }
-  }
 
   return (
   <div className={styles.root}> 
@@ -83,24 +84,35 @@ export default function VacancyPreview(props: Props) {
       {(currentVacancy.showContactName||currentVacancy.showEmail||currentVacancy.showPhone||currentVacancy.showTelegramNickname)&&
         <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={()=>props.onBack(7)}>
           {currentVacancy.showContactName &&
-            <P styleType={['medium', 'w500', 'alignCenter']}>
+          <Button onClick={()=>{
+            copyToClipboard(currentVacancy.contactName)
+            appContext.showSnackbar('Контактное имя скопировано', SnackbarType.success)
+          }}>
+            <P styleType={['medium', 'w500', 'alignCenter']} >
               <Button styleType={['icon', 'black']} ><UserSvg/></Button> {currentVacancy.contactName}
             </P>
+          </Button>
           }
           {currentVacancy.showEmail &&
-            <P styleType={['medium', 'w500', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><MailAltSvg/></Button>  {currentVacancy.email}
-            </P>
+            <Link href={`mailto:${currentVacancy.email}`}>
+              <P styleType={['medium', 'w500', 'alignCenter']}>
+                <Button styleType={['icon', 'black']}><MailAltSvg/></Button>  {currentVacancy.email}
+              </P>
+            </Link>
           }
           {currentVacancy.showPhone &&
+          <Link href={`tel:${currentVacancy.phone}`}>
             <P styleType={['medium', 'w500', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><PhoneSvg/> </Button> {currentVacancy.phone}
+              <Button styleType={['icon', 'black']}><PhoneSvg/> </Button> {Formatter.formatPhone(currentVacancy.phone)}
             </P>
+          </Link>
           }
           {currentVacancy.showTelegramNickname &&
+          <Link href={`tg://resolve?domain=${currentVacancy.telegramNickname}`}>
             <P styleType={['medium', 'w500', 'alignCenter']}>
               <Button styleType={['icon', 'black']}><TelegramSvg/></Button> {currentVacancy.telegramNickname}
             </P>
+          </Link>
           }
         </PreviewItem>
       }
@@ -109,8 +121,8 @@ export default function VacancyPreview(props: Props) {
         <EmploymentBoard vacancy={currentVacancy}/>
       </PreviewItem>
 
-      {currentVacancy.description &&
-      <PreviewItem title='Обязанности' onClick={()=>props.onBack(6)}>
+      {currentVacancy.description && currentVacancy.description !== '<p></p>' &&
+      <PreviewItem title='Описание' onClick={()=>props.onBack(6)}>
         <HtmlText text={currentVacancy.description}/>
       </PreviewItem>
       }
@@ -146,6 +158,10 @@ export default function VacancyPreview(props: Props) {
       }
     </div>
     <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
+    {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
+        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
+    }
+
   </div>
   )
 }

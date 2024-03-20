@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import RadioListField from 'components/fields/RadioListField'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
 import { ExperienceInfo } from 'data/interfaces/Common'
@@ -66,19 +65,7 @@ export default function Experience(props: Props) {
 
   return (
     <div className={styles.root}>
-      <RadioListField 
-      name={'workExperiencePresense'}     
-      itemCircleClassname={styles.radioCircle}
-      activeItemClassName={styles.radioItemActive}
-      wrapperClassName={styles.radioWrapper}
-      options={[
-        {label: 'Есть опыт', value: 'present'},
-        {label: 'Нет опыта', value: 'absent'},
-      ]} 
-      />   
-      
-      {values.workExperiencePresense === 'present' 
-      &&values.experienceInfo.length>0
+      { values.experienceInfo.length>0
       &&values.experienceInfo
       .map((el, index)=> {
         return (<div 
@@ -93,10 +80,7 @@ export default function Experience(props: Props) {
         </div>)
       }) 
       }
-
-      {values.workExperiencePresense === 'present' &&
-        <AddButton test={'addWorkPlace'} onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
-      }
+      <AddButton test={'addWorkPlace'} onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
     </div>
   )
 }

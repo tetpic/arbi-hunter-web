@@ -19,7 +19,7 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { SnackbarType } from 'types/enums'
 import { useAppContext } from 'context/state'
-import copyToClipboard from 'utils/copyToClipboard'
+import { copyToClipboard } from 'utils/helpers'
 
 interface Props {
   className?: string

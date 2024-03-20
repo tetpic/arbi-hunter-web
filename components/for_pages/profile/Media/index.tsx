@@ -11,9 +11,9 @@ import BookmarkEmptySvg from '@/components/svg/BookmarkEmptySvg'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
 import LinkSvg from '@/components/svg/LinkSvg'
-import copyToClipboard from 'utils/copyToClipboard'
 import ShareSvg from '@/components/svg/ShareSvg'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
+import { copyToClipboard } from 'utils/helpers'
 
 
 

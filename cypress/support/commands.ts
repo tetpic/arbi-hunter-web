@@ -8,6 +8,14 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
+Cypress.Commands.add('getBySel' as any, (selector, ...args) => {
+  return cy.get(`[data-cy=${selector}]`, ...args)
+})
+
+
+Cypress.Commands.add('getBySelLike' as  any, (selector, ...args) => {
+  return cy.get(`[data-cy*=${selector}]`, ...args)
+})
 //
 //
 // -- This is a parent command --

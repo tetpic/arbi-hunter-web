@@ -69,6 +69,7 @@ export default function VacancyName(props: Props) {
   }
 
   const onSuggestionClick = (name: string, category?: ISpecializationCategory ) => {
+    debugger
     if(category) {
       cvContext.setActiveSubcategory([category])
     }

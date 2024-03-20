@@ -75,6 +75,7 @@ export default function Cv(props: Props) {
       geosIds: [...activeGeos.keys()],
       experience: WorkExperience.From1to3,
       verticalsIds: [...activeVerticals.keys()],
+      workExperiencePresense: data.experienceInfo?.length > 0? WorkExperiencePresense.Present: WorkExperiencePresense.Absent,
       published: true,
     }
 
@@ -219,6 +220,12 @@ export default function Cv(props: Props) {
             setProgress(pageNumber||progress+1)
           }
         })
+      }
+
+      case 4: {
+        if(formik.values.education === EducationTypes.Secondary||formik.values.education === EducationTypes.No) {
+          setProgress(pageNumber||progress+1)
+        }
       }
       break
       default :

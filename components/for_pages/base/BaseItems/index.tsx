@@ -5,10 +5,10 @@ import ShareSvg from 'components/svg/ShareSvg'
 import { IArticle } from 'data/interfaces/IArticle'
 import { IOptionList } from 'components/ui/OptionsList'
 import DocumentSvg from 'components/svg/DocumentSvg'
-import copyToClipboard from 'utils/copyToClipboard'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
 import BaseMobileItem from '../BaseMobileItem'
+import { copyToClipboard } from 'utils/helpers'
 
 interface Props {
   activeCategory: number

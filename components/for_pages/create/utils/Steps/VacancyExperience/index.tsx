@@ -64,9 +64,7 @@ export default function VacancyExperience(props: Props) {
     ]} 
     />
 
-    {
-      (cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) &&
-      <>
+    {cvContext?.activeSubCategory[0].withSources && <>
       <AddButton 
       className={styles.addButton} 
       onClick={()=>openSourcesModal({type: 'sources'})} 
@@ -79,11 +77,13 @@ export default function VacancyExperience(props: Props) {
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeSources.entries()]
               .map(([key, value])=> 
               <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
-            )}
+              )}
           </div>
         </>
       }
+    </>}
 
+    {cvContext.activeSubCategory[0].withGeos && <>
       <AddButton 
       className={styles.addButton} 
       onClick={()=>openSourcesModal({type: 'geos'})} 
@@ -96,12 +96,12 @@ export default function VacancyExperience(props: Props) {
             {cvContext.helpObjects && [...cvContext.helpObjects?.activeGeos.entries()]
              .map(([key, value])=> 
              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
-            )}
+             )}
           </div>
         </>
       }
-      </>
-    }
+    </>}
+
 
     <AddButton 
     className={styles.addButton} 

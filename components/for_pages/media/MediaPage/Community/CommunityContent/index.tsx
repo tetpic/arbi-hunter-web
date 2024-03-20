@@ -15,7 +15,7 @@ import { ModalType, SnackbarType } from 'types/enums'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import { colors } from 'styles/variables'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
-import copyToClipboard from 'utils/copyToClipboard'
+import { copyToClipboard } from 'utils/helpers'
 
 const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {

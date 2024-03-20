@@ -14,7 +14,7 @@ import { useRef } from 'react'
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
-import { ProfilePages, useProfilePageContext } from 'context/profile_page_state'
+import { useProfilePageContext } from 'context/profile_page_state'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -91,12 +91,15 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     }
   }
 
-  const showFeedbacksForVacancy = () => {
-    feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
-    profilePageContext.pager(ProfilePages.FeedBacks)
+  const showVacancies = () => {
+    // feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
+    // profilePageContext.pager(ProfilePages.FeedBacks)
+    router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories: [cv.categories[0]?.baseId]})}})
   }
 
-  const vacanciesCounter = Number(cv.totalProposals) + Number(cv.totalApplications)
+
+
+  const vacanciesCounter = cv.categories[0].vacanciesCount||0
 
   return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
@@ -175,15 +178,26 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           <Button styleType={['black']}>Редактировать</Button>
         }
 
-        {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&&
+        {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 
           <Button 
           styleType={['black']}
           onClick={(e)=> {
             e.stopPropagation()
             e.preventDefault()
-            showFeedbacksForVacancy()}}
-            >
+            showVacancies()}
+          }>
             {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+          </Button>
+        }
+        {!props.type &&
+          <Button 
+          styleType={['black']}
+          onClick={(e)=> {
+            e.stopPropagation()
+            e.preventDefault()
+            showVacancies()}
+          }>
+            Подходящие вакансии
           </Button>
         }
       </div>

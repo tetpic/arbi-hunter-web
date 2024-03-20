@@ -1,8 +1,23 @@
 describe('simple vacancy full create', () => {
 
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAyLCJlbWFpbCI6InJhYnVzdGVzQGdtYWlsLmNvbSIsInBob25lIjoiKzc5MjY5NjI3MjAxIiwiaWF0IjoxNzA5NzE3MzgwLCJleHAiOjE3NDEyODAzODB9.xLsKr-XKq1KBzahQacyCUXbJk0e__KCEEFEJ_QlCeco'
+
+  const data = {
+    salaryMin: '10 000',
+    salaryMax: '20 000',
+    verticals: 'Gambling',
+    employment: 'Полная',
+    schedule: 'Полный день',
+    place: 'Офис',
+    city: 'Москва',
+    experience: 'От 1 до 3',
+    phone: '+7 926 962-72-01'
+
+  }
+
   it('pass create and check preview', () => {
     //1 page
-    cy.setCookie('accessToken','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAyLCJlbWFpbCI6InJhYnVzdGVzQGdtYWlsLmNvbSIsInBob25lIjoiKzc5MjY5NjI3MjAxIiwiaWF0IjoxNzA5NzE3MzgwLCJleHAiOjE3NDEyODAzODB9.xLsKr-XKq1KBzahQacyCUXbJk0e__KCEEFEJ_QlCeco')
+    cy.setCookie('accessToken',token)
     cy.setCookie('profile-type','hirer')
     cy.visit('http://arbi.local.glob-com.ru:3088/create/vacancy')
     const nextButton = cy.get('[data-cy="button_next"]', {timeout: 5000})
@@ -46,8 +61,14 @@ describe('simple vacancy full create', () => {
     //8page
     cy.get('[data-cy="button_preview"]').click()
     //  Preview
-    cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/preview/vacancy')
-    cy.get('[data-cy="button_back"]').wait(100).click()
+    Object.values(data).forEach(el => {
+      cy.contains(el)
+    })
+
+    //@ts-ignore
+    cy.getBySel('button_back').wait(100).click()
+
+
     //Save Vacancy
     cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/create/vacancy')
     cy.get('[data-cy="button_saveVacancy1"]').click()

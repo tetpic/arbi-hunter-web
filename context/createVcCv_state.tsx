@@ -201,6 +201,9 @@ export function CreateVcCvWrapper(props: Props) {
       }
       else if(draftId.current){
         VacancyRepository.editVacancyById(data.vacancy, draftId.current)
+        .then(res => {
+          draftItem.current = res
+        })
       }
     }
   }

@@ -16,7 +16,7 @@ import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import useAbortController from 'components/hooks/useAbortController'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
-import copyToClipboard from 'utils/copyToClipboard'
+import { copyToClipboard } from 'utils/helpers'
 
 interface Props {
 }

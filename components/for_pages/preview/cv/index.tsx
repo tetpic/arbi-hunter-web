@@ -25,10 +25,10 @@ import LinkedInSvg from '@/components/svg/LinkedInSvg'
 import SkypeSvg from '@/components/svg/SkypeSvg'
 import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
 import MailAltSvg from '@/components/svg/MailAltSvg'
-import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
+import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 
 
 interface Props {
@@ -52,15 +52,6 @@ export default function CvPreview(props: Props) {
       <P styleType={['w600', 'large']}>{getUserName(userContext.currentProfile)}</P>
     </div>
   )
-
-  const editElement = (progress: number) => {
-    if(currentCv.completedSteps && currentCv.completedSteps.length < progress) {
-      router.push(`/create/cv?id=${currentCv.id}&progress=${currentCv.completedSteps.length}`)
-    }
-    else {
-      router.push(`/create/cv?id=${currentCv.id}&progress=${progress}`)
-    }
-  }
 
   const onPublish = () => {
     cvContext.updateCv(currentCv.id, {published: true}, ()=>{
@@ -99,9 +90,7 @@ export default function CvPreview(props: Props) {
 
       </PreviewItem>
 
-      <PreviewItem title='Занятость' onClick={()=>props.onBack(4)}>
-        <EmploymentBoard cv={currentCv}/>
-      </PreviewItem>
+
 
       <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => props.onBack(2)}>
         {(currentCv.profile?.email||currentCv.email) &&
@@ -140,16 +129,16 @@ export default function CvPreview(props: Props) {
           {currentCv.linkedin}
         </P>
         }
-        {/* {currentCv.viber && =============== TODO (нужна свг вайбера) ===============
+        {currentCv.viber &&
         <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><ViberSvg/></Button>
-          {currentCv.linkedin}
+          <Button styleType={['icon', 'black']}><ViberLogoSvg/></Button>
+          {currentCv.viber}
         </P>
-        } */}
+        }
       </PreviewItem>
 
       <PreviewItem 
-      title={' '} 
+      title={'Занятость'} 
       wrapperClassName={styles.item}
       onClick={() => props.onBack(6)}
       >

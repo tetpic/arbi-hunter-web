@@ -79,9 +79,6 @@ export default function Vacancy(props: Props) {
     }
   }
 
-
-
-
   const initialValues: IVacancyCreate = {
     name: props.vacancy?.name||'',
     description: props.vacancy?.description||initialDescription,
@@ -169,7 +166,7 @@ export default function Vacancy(props: Props) {
       .then(res => {
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
-          !noRedirect&&router.replace(`/preview/vacancy/${res.id}`)  
+          !noRedirect&&router.replace('/profile?page=vacancies')  
         }, 2000)
       })
       .catch(err=>{
@@ -402,7 +399,7 @@ export default function Vacancy(props: Props) {
         }
         setShowPreview(false)
       }} 
-      vacancy={getDataToSend(formik.values) as IVacancy}/>
+      vacancy={getDataToSend({...creationContext.draftItem.current, ...props.vacancy, ...formik.values}) as IVacancy}/>
     }
 
     {progress === VCItemsCount && !showPreview &&
