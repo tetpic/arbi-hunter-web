@@ -26,7 +26,7 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 
 export default function Page(props: Props) {
   return (
-    <ContentLayout withFooter={Boolean(props?.profile)} >
+    <ContentLayout withFooter >
       <VacancyWrapper>
         <PersonalWrapper>
         {

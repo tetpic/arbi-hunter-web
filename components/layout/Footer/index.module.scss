@@ -3,13 +3,17 @@
 .root {
   position: relative;
   overflow: hidden;
-  background-color: $black;
+  background-color: var(--backColorAlt);
 
   .background {
     position: absolute;
     top: 0;
     right: -80px;
     z-index: 0;
+
+    &_light {
+      opacity: .2;
+    }
   }
 }
 
@@ -40,6 +44,14 @@
       width: 136px;
       height: 33px;
     }
+
+    &_light {
+      svg {
+        path {
+          fill: $black;
+        }
+      }
+    }
   }
 
   .links {
@@ -48,12 +60,6 @@
   }
 
   .mail {
-    display: flex;
-    align-items: center;
-    color: $white;
-    font-size: $largeText;
-    font-weight: $semibold;
-    column-gap: 8px;
     margin-top: auto;
   }
 
@@ -121,12 +127,30 @@
     display: flex;
     column-gap: 8px;
     align-items: center;
-    color: $white;
-    font-weight: $medium;
-    font-size: $mediumText;
 
     svg {
       margin-block: 1px;
+    }
+  }
+
+  .paymentMethod {
+    border-radius: 50%;
+    background-color: $grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+
+  &_light {
+    &:before {
+      background-color: $whitePurple;
+    }
+
+    .paymentMethod  {
+      background-color: unset;
+      background: $gradientAlt;
     }
   }
 }
@@ -136,13 +160,18 @@
   bottom: 0;
   right: 0;
   border: 1px $greyLight solid;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   border-radius: 16px;
   padding: 8px 8px 8px 24px;
   display: flex;
   align-items: center; 
   column-gap: 24px;
-  
 
+  &_light {
+    border: 2px $whitePurple solid;
+    img {
+      filter: invert(1);
+    }
+  }
 }
 
