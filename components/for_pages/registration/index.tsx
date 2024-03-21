@@ -76,7 +76,7 @@ export default function Registration() {
         profileType: userContext.profileType
       }
       const sendData = clearObject(data)
-      debugger
+      
       RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
         setTimeout(() => {          

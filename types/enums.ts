@@ -340,3 +340,10 @@ export enum SearchIn {
   Company = 'company'
 }
 
+export  enum PurchaseType {
+  Character = 'character',
+  CharacterItem = 'characterItem',
+  VacancyTariff = 'vacancyTariff',
+  CvTariff = 'cvTariff',
+}
+

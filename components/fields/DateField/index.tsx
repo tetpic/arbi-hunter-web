@@ -30,14 +30,16 @@ export default function DateField(props: Props) {
   const [wrapperRef, press] = usePressAndHover()
   const [field, meta, helpers] = useField<string>(props as any)
   const showError = meta.touched && !!meta.error
-  const [date, setDate] = useState<Date | null>(null)
+  const [date, setDate] = useState<Date | null>(new Date(field.value))
 
 
 
   const onChangeDate = (d : Date) => {
-    const date = new Date(d)
+    const newDate = new Date(d)
+    setDate(d)
+
     const dateFormatter = new Intl.DateTimeFormat('ru', props.formatOptions)
-    const formattedDate =  dateFormatter.format(date) 
+    const formattedDate =  dateFormatter.format(newDate) 
     helpers.setValue(formattedDate, true) 
   }
 
@@ -51,8 +53,24 @@ export default function DateField(props: Props) {
             [styles.error]: showError,
             [styles.withIcon]: props.iconName,
             [styles.press]: press,
-          },)}
+            
+          }, 'myDatePicker')}
           locale={ru}
+          calendarClassName={styles.popperStyle}
+          monthClassName={(date) => {
+            return styles.month
+          }}
+          dayClassName={(dt)=> {
+            if(dt.toDateString() === date.toDateString()) {
+              return styles.activeDay
+            }
+            else if (dt.getTime() > new Date().getTime()) {
+              return styles.futureDay
+            }
+            else {
+              return styles.otherDay
+            }
+          }}
           onChange={(date)=> {onChangeDate(date)}} 
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
@@ -64,7 +82,8 @@ export default function DateField(props: Props) {
           // dateFormat="MM/yyyy"
           showMonthYearPicker={props.showMonthYearPicker}
           showYearPicker={props.showYearPicker}
-          scrollableYearDropdown
+          scrollableYearDropdown={true}
+          yearDropdownItemNumber={70}
           dropdownMode="scroll"
           maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={

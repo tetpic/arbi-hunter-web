@@ -145,10 +145,13 @@ export default function VacancyPreview(props: Props) {
         </PreviewItem>
       }
     </div>
-    <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
-    {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
+
+    <div className={styles.buttonsWrapper}>
+      <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
+      {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
         <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
-    }
+      }
+    </div>
 
   </div>
   )

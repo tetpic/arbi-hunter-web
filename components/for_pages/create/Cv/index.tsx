@@ -26,6 +26,7 @@ import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 
 interface Props {
@@ -83,8 +84,20 @@ export default function Cv(props: Props) {
     return clearObject(sendData, 'string') as ICVCreate
   }
 
-  const submit = (data: ICVCreate, noReplace?: boolean) => {
+  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
     setLoading(true)
+
+    if(tariffId) {
+      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
+      .then(res=> {
+        // console.log(res)
+        
+      })
+      .catch(err=> {
+        // console.log(err)
+        
+      })
+    }
 
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
@@ -214,7 +227,7 @@ export default function Cv(props: Props) {
       case 2: {
         formik.validateField('birthday')
         .then(v => {
-          debugger
+          
           if(v) {
             setErr('birthday', 'Укажите дату рождения')
           }
@@ -226,7 +239,7 @@ export default function Cv(props: Props) {
       break
 
       case 4: {
-        if(formik.values.education === EducationTypes.Secondary||formik.values.education === EducationTypes.No) {
+        if(formik.values.education === EducationTypes.Secondary||formik.values.education === undefined) {
           setProgress(pageNumber||progress+1)
         }
         else if (formik.values.educationInfo.length > 0) {
@@ -403,7 +416,7 @@ export default function Cv(props: Props) {
       cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
-      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>

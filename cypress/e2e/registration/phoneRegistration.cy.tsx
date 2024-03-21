@@ -64,7 +64,7 @@ describe('email registration', () => {
 
   it('if phone not exists but email do', ()=> {
     const email = `test${new Date().getTime()}@test.com`
-    const phone = `800${String(new Date().getTime()).split('').slice(2, 9).join('')}`
+    const phone = `800${String(new Date().getTime()).split('').slice(3, 10).join('')}`
     typePhone(phone)
     typePassword('testPassword')
     cy.get('@nextButton').click()
@@ -86,6 +86,8 @@ describe('email registration', () => {
     enterPass()
     cy.wait(1000)
     typeEmail('applicant@mail.')
+    cy.get('@nextButton').click()
+    cy.contains('Неверный формат email')
     cy.get('@nextButton').click()
     cy.contains('Неверный формат email')
   })

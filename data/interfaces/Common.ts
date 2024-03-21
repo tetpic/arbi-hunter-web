@@ -1,4 +1,4 @@
-import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
+import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, PurchaseType, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
 import { ILanguageKnowledge } from './IJob'
 
 export interface TimeStamp {
@@ -270,4 +270,20 @@ export interface IVacancyCvSearchParams {
   ageMax?: number,
   exclude?: string,
 
+}
+
+export interface ITariff extends TimeStamp {
+  baseId: number
+  colors: [string, string]
+  description: string
+  icon: IFile
+  iconId: number
+  id: number
+  key: string
+  languageCode: Languages
+  name: string
+  period: number
+  price: number
+  purchaseType: PurchaseType
+  translations: ITranslation[]
 }

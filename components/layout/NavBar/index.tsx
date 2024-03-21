@@ -19,6 +19,8 @@ import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
+import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -124,7 +126,7 @@ export default function NavBar(props: Props) {
           <div className={classNames(styles.coloredIcon, styles.icon)}>
             <WalletSvg className={styles.linkSvg}/>
           </div>
-          <p className={classNames(styles.linkText, styles.money)}>12 500 $</p>
+          <P styleType={['alignCenter']}  className={classNames(styles.linkText, styles.money)}>{userContext.user?.balance} <ArbiCoinSvg/></P>
         </Link>
 
         {(profileType === ProfileType.Employee && employeeLinks

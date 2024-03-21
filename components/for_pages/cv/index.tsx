@@ -234,8 +234,8 @@ export default function CvPage(props: Props) {
           <Button styleType={['gradient']}>
             Улучшить резюме
           </Button>
-          <Button styleType={['borderGradient']}>
-            123 подходящих вакансий
+          <Button styleType={['borderGradient']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv.categories[0].id]})}}}>
+            {currentCv.categories[0].vacanciesCount||0} подходящих вакансий
           </Button>
         </div>
 
@@ -263,7 +263,7 @@ export default function CvPage(props: Props) {
           <Link href={`tel:${currentCv.phone}`}>
             <P styleType={['w500', 'medium', 'alignCenter']}>
               <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
-              {currentCv.profile.phone}
+              {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
             </P>
           </Link>
           }

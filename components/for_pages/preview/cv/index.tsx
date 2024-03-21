@@ -43,7 +43,7 @@ export default function CvPreview(props: Props) {
   const creationContext = useCreateVcCvContext()
   const appContext = useAppContext()
   const currentCv = props.cv
-  debugger
+  
   const router = useRouter()
   const userContext = useUserContext()
 
@@ -82,7 +82,7 @@ export default function CvPreview(props: Props) {
         styleType={['greyLight', 'w500', 'medium']}>
           {[
             currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
-            getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
+            currentCv.birthday&&getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>

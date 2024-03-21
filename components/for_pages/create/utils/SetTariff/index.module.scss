@@ -11,7 +11,7 @@
   margin-top: 82px;
   margin-bottom: 82px;
   align-items: center;
-  height: 382px;
+  height: 300px;
 }
 
 .tariff {
@@ -27,6 +27,8 @@
   height: 100%;
   justify-content: space-between;
   @include transitionDefault;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--gradientColor1) 0%, var(--gradientColor2) 100%);
   @include hover {
     height: 115%;
   }
@@ -81,6 +83,7 @@
     position: absolute;
     top: -16px;
     right: 6px;
+    object-fit: cover;
     transform: translate(50%, -50%);
   }
 

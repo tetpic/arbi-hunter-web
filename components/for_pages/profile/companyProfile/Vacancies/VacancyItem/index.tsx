@@ -16,7 +16,6 @@ import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
-// import Link from 'next/link'
 import OptionsList from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
@@ -124,7 +123,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
       {props.type !== 'drafts' &&
         <Statistics 
-        title='Статистика за неделю'
+        title='Статистика за все время'
         items={[
           {name: 'Показы', count: vacancy.totalProposals},
           {name: 'Просмотры', count: vacancy.totalViews},
@@ -154,7 +153,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
             <Button 
             stopPropagation
             onClick={(e)=>{
-              router.push({pathname:'/recruiting', query: {vcId: vacancy.id}})
+              router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [vacancy.categories[0].id]}), vcId: vacancy.id}})
             }} 
             styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
             </>

@@ -56,6 +56,7 @@ export default function VacancyName(props: Props) {
   const onModalSubmit = (data: ISpecializationCategory[]) => {
     cvContext.setActiveSubcategory(data)
     cvContext.setActiveCategory(null)
+    setFieldValue('name', data[0].name)
 
     const helperCv = cvContext.helpObjects
     cvContext.setHelpObjects({...helperCv, categoryIds: data})
@@ -69,7 +70,7 @@ export default function VacancyName(props: Props) {
   }
 
   const onSuggestionClick = (name: string, category?: ISpecializationCategory ) => {
-    debugger
+    
     if(category) {
       cvContext.setActiveSubcategory([category])
     }

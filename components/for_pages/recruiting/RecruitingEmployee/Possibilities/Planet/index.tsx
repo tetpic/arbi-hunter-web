@@ -1,7 +1,7 @@
 import { Bounds, Decal, Environment, OrthographicCamera, useGLTF, useTexture} from '@react-three/drei'
 import { Canvas} from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import anime from 'animejs'
 
 
@@ -174,16 +174,17 @@ function PlanetModel(props: Props) {
 }
 
 export default function Planet(props: Props) {
+  const ref = useRef<HTMLCanvasElement>()
   return (
-    <Canvas>
+    <Canvas ref={ref}>
       <OrthographicCamera 
       makeDefault
-      zoom={30} 
+      zoom={20} 
       />
-      <Bounds fit clip observe damping={0} margin={1}>
+      <Bounds fit  clip observe damping={0} margin={1}>
         <PlanetModel companies={props.companies} onClick={props.onClick} active={props.active}/>
       </Bounds>
-      <OrbitControls maxZoom={35} minZoom={18} autoRotate autoRotateSpeed={0.7} enablePan={false}/>
+      <OrbitControls maxZoom={ref.current?.offsetWidth/15||32} minZoom={ref.current?.offsetWidth/15||32} enableZoom={false} autoRotate autoRotateSpeed={0.7} enablePan={false}/>
       <Environment files="/models/skidpan.hdr"/>
     </Canvas>
   )
