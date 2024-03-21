@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -108,7 +108,7 @@ export default function Cv(props: Props) {
       })
     }
     else {
-      CvRepository.createCV(sendData)
+      CvRepository.updateCV(creationContext.draftId.current, sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         if(!noReplace) {
@@ -158,7 +158,7 @@ export default function Cv(props: Props) {
     businessTrips: props.cv?.businessTrips||Answer.No,
     searchPosition: '',
     assetsIds: props.cv?.assetsIds||[],
-    gender: props.cv?.gender||undefined,
+    gender: props.cv?.gender||Genders.Male,
     whatsapp: props.cv?.whatsapp||'',
     viber: props.cv?.viber||'',
     linkedin: props.cv?.linkedin||'',
@@ -214,6 +214,7 @@ export default function Cv(props: Props) {
       case 2: {
         formik.validateField('birthday')
         .then(v => {
+          debugger
           if(v) {
             setErr('birthday', 'Укажите дату рождения')
           }
@@ -222,6 +223,7 @@ export default function Cv(props: Props) {
           }
         })
       }
+      break
 
       case 4: {
         if(formik.values.education === EducationTypes.Secondary||formik.values.education === EducationTypes.No) {
@@ -391,6 +393,7 @@ export default function Cv(props: Props) {
   return <div className={styles.root}>
     {showPreview && 
       <CvPreview 
+      onPublish={formik.submitForm}
       onBack={(page)=>{
         if(page){
           setProgress(page)

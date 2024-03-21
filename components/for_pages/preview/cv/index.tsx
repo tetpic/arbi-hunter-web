@@ -9,7 +9,7 @@ import { useUserContext } from 'context/user_state'
 import { getAge, getUserImageSource, getUserName } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
-import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
@@ -35,6 +35,7 @@ interface Props {
   id?: number
   cv?: ICV,
   onBack?: (page?: number)=> void
+  onPublish?: () => void
 }
 
 export default function CvPreview(props: Props) {
@@ -53,12 +54,12 @@ export default function CvPreview(props: Props) {
     </div>
   )
 
-  const onPublish = () => {
-    cvContext.updateCv(currentCv.id, {published: true}, ()=>{
-      appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
-      router.push('/profile?page=cvs')
-    })
-  }
+  // const onPublish = () => {
+  //   cvContext.updateCv(currentCv.id, {published: true}, ()=>{
+  //     appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
+  //     router.push('/profile?page=cvs')
+  //   })
+  // }
 
   if(!currentCv) return null
 
@@ -267,7 +268,7 @@ export default function CvPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
       }
     </div>
   </div>)

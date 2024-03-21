@@ -38,6 +38,7 @@ import ChatRepository from 'data/repositories/ChatRepository'
 import FavoritesButton from '@/components/ui/FavoritesButton'
 import PencilSvg from '@/components/svg/PencilSvg'
 import Statistics from '@/components/ui/Statistics'
+import Link from 'next/link'
 
 
 interface Props {
@@ -251,40 +252,52 @@ export default function CvPage(props: Props) {
         <div className={styles.contacts}>
           <P styleType={['large', 'w600']}>Контактная информация</P>
           {currentCv.profile.email &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
-            {currentCv.profile.email}
-          </P>
+          <Link href={`mailto:${currentCv.email}`}>
+            <P styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
+              {currentCv.profile.email}
+            </P>
+          </Link>
           }
           {currentCv.profile.phone &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
-            {currentCv.profile.phone}
-          </P>
+          <Link href={`tel:${currentCv.phone}`}>
+            <P styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
+              {currentCv.profile.phone}
+            </P>
+          </Link>
           }
           {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
-            {currentCv.telegramNickname||currentCv.profile.telegramNickname}
-          </P>
+          <Link href={`tg://resolve?domain=${currentCv.telegramNickname}`}>
+            <P styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
+              {currentCv.telegramNickname||currentCv.profile.telegramNickname}
+            </P>
+          </Link>
           }
           {currentCv.whatsapp &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><WhatsAppSvg/></Button>
-            {currentCv.whatsapp}
-          </P>
+          <Link href={`https://wa.me/${currentCv.whatsapp}`} target='_blank'>
+            <P styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']}><WhatsAppSvg/></Button>
+              {currentCv.whatsapp}
+            </P>
+          </Link>
           }
           {currentCv.skype &&
+          <Link href={`skype:${currentCv.skype}?chat`}>
           <P styleType={['w500', 'medium', 'alignCenter']}>
             <Button styleType={['icon', 'black']}><SkypeSvg/></Button>
             {currentCv.skype}
           </P>
+          </Link>
           }
           {currentCv.linkedin &&
+          <Link href={currentCv.linkedin}>
           <P styleType={['w500', 'medium', 'alignCenter']}>
             <Button styleType={['icon', 'black']}><LinkedInSvg/></Button>
             {currentCv.linkedin}
           </P>
+          </Link>
           }
         </div>
       }
