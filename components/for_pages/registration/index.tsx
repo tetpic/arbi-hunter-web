@@ -24,6 +24,7 @@ import ProgressBar from 'components/ui/ProgressBar'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import Modes from '@/components/ui/Modes'
+import { clearObject } from 'utils/helpers'
 
 
 
@@ -74,10 +75,9 @@ export default function Registration() {
         phone: userContext.user?.phone||data.phone,
         profileType: userContext.profileType
       }
-      !data.telegramNickname && delete data.telegramNickname
-      !data.cityId && delete data.cityId
-      !data.countryId && delete data.countryId
-      RegistrationRepository.completeRegistration(data)
+      const sendData = clearObject(data)
+      debugger
+      RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
         setTimeout(() => {          
           userContext.updateUser()

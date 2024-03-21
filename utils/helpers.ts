@@ -41,7 +41,7 @@ export const shareData = async(data: ShareData) => {
   }
 }
 
-export const clearObject = (obj: any, type?: 'string' | 'array') => {
+export const clearObject = <T>(obj: T, type?: 'string' | 'array') => {
   const clearedQuery: {[key: string]: any} = {...obj}
   if(type === 'string') {
     Object.entries(clearedQuery).forEach(([key, value]) => {
@@ -62,7 +62,7 @@ export const clearObject = (obj: any, type?: 'string' | 'array') => {
     })
   }
 
-  return clearedQuery
+  return clearedQuery as T
 }
 
 export const getAge = (age: number): string => {
