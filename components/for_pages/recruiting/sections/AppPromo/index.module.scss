@@ -14,11 +14,16 @@
   display: grid;
   grid-template-areas: 't i' 'd i' 'b i';
   width: 75%;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: auto 290px;
   padding: 55px 40px 0px;
   background-color: #22222A;
   border-radius: 24px;
-  @include mq($TabletWidth, max) {
+  @include transitionDefault;
+  @include hover {
+    scale: 1.03;
+    box-shadow: 0px 0px 20px 0px $purple;
+  }
+  @include mq($MdDesktopWidth, max) {
     grid-template-areas: 't' 'd' 'b' 'i';
     grid-template-columns: unset;
     padding: unset;
@@ -51,20 +56,22 @@
     grid-area: b;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    row-gap: 16px;
     column-gap: 16px;
     margin-top: 48px;
     margin-bottom: 55px;
-    @include mq($TabletWidth, max) {
+    @include mq($SmDesktopWidth, max) {
       flex-direction: column;
       width: 100%;
-      row-gap: 16px;
     }
 
     .button {
       padding: 16px 20px;
       height: 52px;
+      white-space: nowrap;
       @include hover {
-        background-color: $blueLight;
+        box-shadow: 0px 0px 30px 0px  $purple;
         scale: 1.05;
       }
       @include mq($TabletWidth, max) {
@@ -76,13 +83,22 @@
   .mobile {
     grid-area: i;
     position: relative;
-     @include mq($TabletWidth, max) {
+    height: 300px;
+    align-self: flex-end;
+    @include mq($MdDesktopWidth, max) {
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 360px;
-      margin-bottom: -90px;
-     }
+      width: 252px;
+      height: 284px;
+      margin-top: 120px;
+    }
+    @include mq($TabletWidth, max) {
+      margin-top: unset;
+      width: 340px;
+      height: 420px;
+      max-width: 80vw;
+    }
 
     .back {
       position: absolute;
@@ -158,6 +174,11 @@
   background-color: #22222A;
   max-width: 274px;
   justify-content: space-between;
+  @include transitionDefault;
+  @include hover {
+    scale: 1.04;
+    box-shadow: 0px 0px 20px 0px $purple;
+  }
 
   &_light {
     background-color: $white;

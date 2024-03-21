@@ -15,12 +15,12 @@
     overflow: hidden;
     @include transitionDefault;
     scale: 1;
-    box-shadow: 0px 10px 0px -5px transparent ;
+    box-shadow: 0px 0px 30px 0px transparent ;
     cursor: pointer;
 
     @include hover {
       scale: 1.05;
-      box-shadow: 0px 10px 30px -20px $blue ;
+      box-shadow: 0px 0px 30px 0px $purple;
     }
     
     &_light {

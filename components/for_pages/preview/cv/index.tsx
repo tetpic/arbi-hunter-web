@@ -13,7 +13,7 @@ import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
-import { TranslateCompensationType, TranslateEducationType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEducationType, TranslateEmploymentType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
@@ -142,17 +142,32 @@ export default function CvPreview(props: Props) {
       wrapperClassName={styles.item}
       onClick={() => props.onBack(6)}
       >
+        {currentCv.employment &&
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment)} занятость
+          </P>
+        }
         {currentCv.relocation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> 
+            {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
+          </P>
         }
         {currentCv.schedule &&
-          <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}
+          </P>
         }
         {currentCv.compensation &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}> 
+            <GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}
+          </P>
         }
         {currentCv.businessTrips &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> 
+            {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
+          </P>
         }
       </PreviewItem>
 

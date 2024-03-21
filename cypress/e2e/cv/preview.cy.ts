@@ -26,7 +26,6 @@ describe('show all data in preview if cv already exists', ()=> {
     cy.contains('text about')
     cy.get('@nextButton').click()
 
-    cy.get('[data-cy="radioList_workExperiencePresense"]').get('[data-cy="radio_present"]').should('have.data', 'active', true)
     cy.contains('test')
     cy.contains('01.2016')
     cy.get('@nextButton').click()

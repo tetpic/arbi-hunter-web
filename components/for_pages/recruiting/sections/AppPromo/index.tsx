@@ -56,7 +56,6 @@ export default function AppPromo(props: Props) {
   return (<div className={styles.root}> 
     <div className={classNames(styles.left, isLightTheme&&styles.left_light) }>
       <P styleType={['w700', 'huge']} useThemeColor className={styles.title}>
-        {/* Безграничные возможности в приложении <span>ArbiHunter</span> */}
         Представляем вам наше мобильное приложение
       </P>
       <P styleType={['w500', 'large']} useThemeColor className={styles.desc}>

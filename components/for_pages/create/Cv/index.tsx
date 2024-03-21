@@ -25,6 +25,7 @@ import { ISpecializationModalProps } from '@/components/modals/CvModals/Speciali
 import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
+import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 
 
 interface Props {
@@ -225,6 +226,33 @@ export default function Cv(props: Props) {
       case 4: {
         if(formik.values.education === EducationTypes.Secondary||formik.values.education === EducationTypes.No) {
           setProgress(pageNumber||progress+1)
+        }
+        else if (formik.values.educationInfo.length > 0) {
+          setProgress(pageNumber||progress+1)
+        }
+        else {
+          appContext.showSnackbar('Укажите место обучения', SnackbarType.error)
+          appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
+            values: {
+              educationInfo: [{
+                institution: '',
+                speciality: '',
+                fromDate: '',
+                toDate: '',
+                toPresent: true,
+                faculity: '',
+              }]
+            },
+            initialValues: null,
+      
+            type: 'educationInfo',
+            onSubmit: (data) => {
+              const educationInfo = formik.values.educationInfo
+              educationInfo?.push(data.educationInfo[0])
+              formik.setFieldValue('educationInfo', educationInfo)
+              appContext.hideModal()
+            },
+          })
         }
       }
       break

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
 import P from '../P'
+import { AppTheme } from 'types/enums'
 
 interface Props {
   title: string|JSX.Element
@@ -30,6 +31,7 @@ interface Props {
  */
 export default function Title(props: Props) {
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
 
 
@@ -44,10 +46,10 @@ export default function Title(props: Props) {
         <div className={styles.filler}></div>
       }
       {isTabletWidth && props.link &&
-        <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>Все <ArrowRightSvg/></Link>
+        <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>Все <ArrowRightSvg color={isLightTheme&&'black'}/></Link>
       }
       {isTabletWidth && props.onAllWatchClick && 
-        <div className={classNames(styles.link, props.itemClassName)} onClick={props.onAllWatchClick}>Все <ArrowRightSvg/></div>
+        <div className={classNames(styles.link, props.itemClassName)} onClick={props.onAllWatchClick}><P useThemeColor>Все</P> <ArrowRightSvg color={isLightTheme&&'black'}/></div>
       }
       {props.rightButton}
     </div>
