@@ -131,7 +131,7 @@ export default function Cv(props: Props) {
       })
       .catch(err=> {
         debugger
-        console.log(err)
+        // console.log(err)
         
       })
     }
