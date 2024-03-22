@@ -84,21 +84,7 @@ export default function Cv(props: Props) {
     return clearObject(sendData, 'string') as ICVCreate
   }
 
-  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
-    setLoading(true)
-
-    if(tariffId) {
-      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
-      .then(res=> {
-        // console.log(res)
-        
-      })
-      .catch(err=> {
-        // console.log(err)
-        
-      })
-    }
-
+  const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
@@ -133,6 +119,24 @@ export default function Cv(props: Props) {
         setLoading(false)
       })
     }
+  }
+
+  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
+    setLoading(true)
+
+    if(tariffId) {
+      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
+      .then(res=> {
+        saveCV(data, noReplace)
+      })
+      .catch(err=> {
+        debugger
+        console.log(err)
+        
+      })
+    }
+
+
   }
 
   const initialValues:ICVCreate  = {

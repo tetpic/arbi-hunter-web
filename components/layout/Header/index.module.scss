@@ -81,21 +81,11 @@
 
   &_unlogged {
     >* {
-      opacity: 0;
       @include hover {
         scale: 1.1;
-        box-shadow: 0px 0px 20px 0px $purple;
-      }
-    }
-  
-    @for $i from 1 through 5 {
-      >*:nth-child(#{$i}) {
-        animation: buttonAppear .3s ease-in-out forwards;
-        animation-delay: $i * .2s;
       }
     }
   }
-
 }
 
 
