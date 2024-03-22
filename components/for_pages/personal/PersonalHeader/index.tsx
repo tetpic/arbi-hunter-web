@@ -215,7 +215,7 @@ export default function PersonalHeader(props: Props) {
         />
       </>
       }
-      {personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && !props.useModel &&
+      {personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && !props.useModel && personalContext.currentProfile?.logo &&
         <Image
         className={styles.userLogo}
         src={FILES + personalContext.currentProfile.logo.source}

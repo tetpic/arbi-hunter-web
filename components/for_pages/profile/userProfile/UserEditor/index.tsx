@@ -105,10 +105,10 @@ export default function UserEditor(props: Props) {
   return (<div className={styles.root}>
       {!isTabletWidth &&
       <div className={styles.settings}>
-        {[...categories.entries()].sort((a,b)=> a[0].sort - b[0].sort).map(([el, val])=> {
+        {[...categories.entries()].map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
-              <UserPic size={64} active={el === activeSet[0]} image={el.key === CharCategoryKey.Model?el.image&&FILES + el.image.source: `/images/charCategories/${el.key}_${variant.model}.webp`}/>
+              <UserPic size={64} active={el.id === activeSet[0].id} image={el.key === CharCategoryKey.Model?el.image&&FILES + el.image.source: `/images/charCategories/${el.key}_${variant.model}.webp`}/>
               <p>{el.name}</p>
             </div>
           )

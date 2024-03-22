@@ -1,4 +1,4 @@
-import { ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
+import { ICharCategory, ICharItem, IUserCharacter } from 'data/interfaces/ICharacter'
 import CharacterRepository from 'data/repositories/CharacterRepository'
 import FileRepository from 'data/repositories/FileRepository'
 import UserRepository from 'data/repositories/UserRepository'
@@ -61,51 +61,94 @@ export function CharacterWrapper(props: Props) {
     if(!userContext.currentProfile) {
       return    
     }
-    await CharacterRepository.getCurrentUserChar()
-    .then(res=> {
+    const [categoriesList, itemsList, currentChar]:[ICharCategory[]|null, ICharItem[]|null, IUserCharacter|null] = await Promise.all(
+      [
+        CharacterRepository.fetchCharacterCategoryList().catch(_=>null), 
+        CharacterRepository.fetchItemsList().catch(_=> null), 
+        CharacterRepository.getCurrentUserChar().catch(_=> null)
+      ]
+    )
+
+    const sortedCategories = categoriesList.sort((a, b)=> a.sort-b.sort)
+
+    if(categoriesList) {
+      setCategoriesState(state=> {
+        sortedCategories.forEach(category=> {
+          state.set(category, itemsList.filter(item => item.categoryId === category.id))
+        })
+        return new Map(state)
+      })
+    }
+
+    if(itemsList) {
+      setActiveSetState([
+        sortedCategories[0], 
+        itemsList.filter(c => c.categoryId === sortedCategories[0].id)
+      ])
+    }
+
+    if(currentChar) {
       isCharacterExist.current = true
-      characterId.current = res.id
-      const setItems:any = {model: res.gender==='male'?'man':'woman'}
+      characterId.current = currentChar.id
+      const setItems:any = {model: currentChar.gender==='male'?'man':'woman'}
+      setActiveItem(currentChar.items.find(el => el.category.key === 'model'))
       setItems.eye = 0
       setItems.hair = 0
-      res.items.forEach(el=> {
-        if(el.gender === res.gender) {
+      currentChar.items.forEach(el=> {
+        if(el.gender === currentChar.gender) {
           setItems[el.category.key] = el.animationKey          
         }
       })
       setVariantState(setItems)
       setChoosenItemsState(state=> {
         state.clear()
-        res.items.forEach(el=> el.gender===res.gender&&state.set(el.category.id, el))
+        currentChar.items.forEach(el=> el.gender===currentChar.gender&&state.set(el.category.id, el))
         return new Map(state)
       })
-    })
-    .catch(_=> {
-      isCharacterExist.current = false
-      setDataLoaded(true)
-    })
-    
-    await CharacterRepository.fetchCharacterCategoryList()
-    .then(res=> {
-      setCategoriesState(state=> {
-        state.clear()
-        res.forEach(c=> {
-          state.set(c, undefined)
-        })
-        return new Map(state)
-      })
-      setActiveSetState([res[0], undefined])
-    })
+    }
+    if(!currentChar) {
+      setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
+    }
 
-    await CharacterRepository.fetchItemsList()
-    .then(res=> {
-      setCategoriesState(state=> {
-        state.forEach((v, k)=> {
-          state.set(k, res.filter(c => c.categoryId === k.id))
-        })
-        return new Map(state)
-      })
-    })
+
+    // await CharacterRepository.fetchItemsList()
+    // .then(res=> {
+    //   setCategoriesState(state=> {
+    //     state.forEach((v, k)=> {
+    //       state.set(k, res.filter(c => c.categoryId === k.id))
+    //     })
+    //     return new Map(state)
+    //   })
+    //   setActiveSetState(state=> {
+    //     state[1] = res.filter(c => c.categoryId === state[0].id)
+    //     return [...state]
+    //   })
+    // })
+
+
+    // await CharacterRepository.getCurrentUserChar()
+    // .then(res=> {
+    //   isCharacterExist.current = true
+    //   characterId.current = res.id
+    //   const setItems:any = {model: res.gender==='male'?'man':'woman'}
+    //   setItems.eye = 0
+    //   setItems.hair = 0
+    //   res.items.forEach(el=> {
+    //     if(el.gender === res.gender) {
+    //       setItems[el.category.key] = el.animationKey          
+    //     }
+    //   })
+    //   setVariantState(setItems)
+    //   setChoosenItemsState(state=> {
+    //     state.clear()
+    //     res.items.forEach(el=> el.gender===res.gender&&state.set(el.category.id, el))
+    //     return new Map(state)
+    //   })
+    // })
+    // .catch(_=> {
+    //   isCharacterExist.current = false
+    //   setDataLoaded(true)
+    // })
     setDataLoaded(true)
   }
 

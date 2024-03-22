@@ -45,13 +45,13 @@ export default function UserImageModal(props: Props) {
           <p>Индивидуальный аватар</p>
         </div>
         <label className={classNames(styles.item, type==='image' && styles.active)} onClick={()=>setType('image')}>
-              <FileInput setImages={setImage}/>
-              <UserPic
-              className={styles.userPic}
-              size={88}
-              image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
-              />
-            <p>Загрузить фото</p>
+          <FileInput setImages={setImage} accept={['.jpg','.jpeg', '.png']} multiple={false}/>
+          <UserPic
+          className={styles.userPic}
+          size={88}
+          image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
+          />
+          <p>Загрузить фото</p>
         </label>
       </div>
       <div className={styles.buttonsWrapper}>
