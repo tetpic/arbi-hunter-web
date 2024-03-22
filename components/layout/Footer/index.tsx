@@ -34,9 +34,11 @@ export default function Footer(props: Props) {
     <Image className={classNames(styles.background, isLightTheme && styles.background_light)} src={'/images/ahFooter.svg'} alt={'back'} width={666} height={457}/>
 
       <div className={styles.left}>
-        <div className={classNames(styles.logo, isLightTheme && styles.logo_light)}>
-          <Image src={'/favicon.svg'} alt={'logo'} width={74} height={76}/>
-          <ArbiLogoTextSvg/>
+        <div className={styles.logoWrapper}>
+          <div className={classNames(styles.logo, isLightTheme && styles.logo_light)}>
+            <Image src={'/favicon.svg'} alt={'logo'} width={74} height={76}/>
+            <ArbiLogoTextSvg/>
+          </div>
         </div>
         <P styleType={['large', 'w600', 'alignCenter']} useThemeColor className={styles.mail}>
           <MailConvertSvg color={isLightTheme&&colors.black}/>

@@ -62,6 +62,7 @@
 
 .right {
   width: 54%;
+  perspective: 1000px;
   @include mq($TabletWidth, max) {
     width: 70%;
     align-self: center;
@@ -76,6 +77,10 @@
     row-gap: 16px;
     align-items: center;
     padding-block: 26px;
+    opacity: 0;
+    @include transitionDefault;
+    transform: rotateY(90deg);
+    transform-origin: left;    
     @include mq($TabletWidth, max) {
       display: flex;
       flex-direction: column;
@@ -90,6 +95,17 @@
       @include mq($TabletWidth, max) {
         border-bottom: unset;
       }
+    }
+
+    &_active {
+      opacity: 1;
+      transform: rotateY(0deg);
+
+      @include hover {
+        transform-origin: right;
+        transform: rotateY(10deg);
+      }
+
     }
   }
 
