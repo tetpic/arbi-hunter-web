@@ -24,6 +24,9 @@ interface Props extends IField<string> {
   formatOptions?: Intl.DateTimeFormatOptions
   showMonthYearPicker?: boolean
   showYearPicker?: boolean
+  showTimeInput?: boolean
+  openDefault?: boolean
+  hideInput?: boolean
 }
 
 export default function DateField(props: Props) {
@@ -56,6 +59,7 @@ export default function DateField(props: Props) {
             
           }, 'myDatePicker')}
           locale={ru}
+          open={props.openDefault}
           calendarClassName={styles.popperStyle}
           monthClassName={(date) => {
             return styles.month
@@ -81,6 +85,7 @@ export default function DateField(props: Props) {
           showMonthDropdown={props.visibleMonthSelector}
           // dateFormat="MM/yyyy"
           showMonthYearPicker={props.showMonthYearPicker}
+          showTimeInput={props.showTimeInput}
           showYearPicker={props.showYearPicker}
           scrollableYearDropdown={true}
           yearDropdownItemNumber={70}
@@ -90,7 +95,7 @@ export default function DateField(props: Props) {
             <InputField 
             autocompleteOff={true} 
             validate={props.validate}
-            className={classNames(styles.input, props.inputClassName)}  
+            className={classNames(styles.input, props.hideInput&&styles.hideInput, props.inputClassName)}  
             value={field.value} 
             name={field.name} 
             styleType={'default'} 

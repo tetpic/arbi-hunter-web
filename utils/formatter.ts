@@ -109,7 +109,7 @@ export default class Formatter {
     if (!price) {
       return
     }
-    return `${this.formatNumber(Math.ceil(price))} ₽`
+    return `${this.formatNumber(Math.ceil(price))}`
   }
 
   static formatDeliveryPeriod(minPeriod: number, maxPeriod: number) {

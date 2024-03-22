@@ -61,8 +61,7 @@ export default function NavBar(props: Props) {
       icon: <MessageSvg className={styles.linkSvg}/>
     },
     shop: {
-      path: '/profile',
-      query: {page: 'shop'},
+      path: '/shop',
       text: 'Магазин',
       icon: <ShopSmallSvg className={styles.linkSvg}/>
     },

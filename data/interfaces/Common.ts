@@ -1,5 +1,6 @@
 import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, PurchaseType, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
 import { ILanguageKnowledge } from './IJob'
+import { IUser } from './IUser'
 
 export interface TimeStamp {
   createdAt?: string,
@@ -286,4 +287,29 @@ export interface ITariff extends TimeStamp {
   price: number
   purchaseType: PurchaseType
   translations: ITranslation[]
+}
+
+export interface ISubscription extends TimeStamp {
+  cvId: number
+  vacancyId: number
+  tariff: ITariff
+  profileId: number
+  period: number
+  endAt: string
+  startAt: string
+  id: string
+  prevStatus: string|null
+  status: string|null
+  tariffId: number
+}
+
+export interface IPurchase extends TimeStamp {
+  amount: number
+  characterItemId: number|null
+  id: number
+  purchaseType: PurchaseType
+  userId: number
+  user: IUser
+  subscriptionId: number
+  subscription: ISubscription
 }

@@ -43,6 +43,7 @@ export enum ModalType {
   CountryModal = 'countryModal',
   CityModal = 'cityModal',
   BackgroundSwitchModal = 'backgroundSwitchModal',
+  PurchasePreviewModal = 'purchasePreviewModal',
 }
 
 export enum AppTheme {

@@ -130,7 +130,8 @@ export default function Cv(props: Props) {
         saveCV(data, noReplace)
       })
       .catch(err=> {
-        debugger
+        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+        router.push('/shop')
         // console.log(err)
         
       })
