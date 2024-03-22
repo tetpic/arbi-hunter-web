@@ -79,8 +79,6 @@
     padding-block: 26px;
     opacity: 0;
     @include transitionDefault;
-    transform: rotateY(90deg);
-    transform-origin: left;    
     @include mq($TabletWidth, max) {
       display: flex;
       flex-direction: column;
@@ -99,11 +97,9 @@
 
     &_active {
       opacity: 1;
-      transform: rotateY(0deg);
 
       @include hover {
-        transform-origin: right;
-        transform: rotateY(10deg);
+        scale: 1.1;
       }
 
     }
