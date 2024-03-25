@@ -2,10 +2,11 @@ import { ICharCategory, ICharItem, IUserCharacter } from 'data/interfaces/IChara
 import CharacterRepository from 'data/repositories/CharacterRepository'
 import FileRepository from 'data/repositories/FileRepository'
 import UserRepository from 'data/repositories/UserRepository'
-import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react'
+import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
 import { useAppContext } from './state'
 import { SnackbarType } from 'types/enums'
+import { useRouter } from 'next/router'
 
 interface IState {
   init: ()=> void,
@@ -24,8 +25,10 @@ interface IState {
   setDataBaseBlob: Dispatch<SetStateAction<Blob>>
   dataBaseBlob: Blob
   savingProcess: boolean
+  currentCharacter: MutableRefObject<IUserCharacter>
   durations: {[key: string]: number;}
   setDurations: Dispatch<SetStateAction<{[key: string]: number;}>>
+  buyCharacter: ()=>Promise<boolean>
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -44,6 +47,7 @@ interface Props {
 export function CharacterWrapper(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const router = useRouter()
   const [activeSet, setActiveSetState] = useState<[ICharCategory, ICharItem[]]>([undefined, undefined])
   const isCharacterExist = useRef<boolean>(false)
   const [choosenItems, setChoosenItemsState] = useState<Map<number, ICharItem>>(new Map)
@@ -54,6 +58,7 @@ export function CharacterWrapper(props: Props) {
   const [savingProcess, setSavingProcess] = useState<boolean>(false)
   const [categories, setCategoriesState] = useState<Map<ICharCategory, ICharItem[]>>(new Map)
   const characterId = useRef<number>(null)
+  const currentCharacter = useRef<IUserCharacter>(null)
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
   const [durations, setDurations ] = useState<{[key: string]: number}>({})
 
@@ -90,6 +95,7 @@ export function CharacterWrapper(props: Props) {
     if(currentChar) {
       isCharacterExist.current = true
       characterId.current = currentChar.id
+      currentCharacter.current = currentChar
       const setItems:any = {model: currentChar.gender==='male'?'man':'woman'}
       setActiveItem(currentChar.items.find(el => el.category.key === 'model'))
       setItems.eye = 0
@@ -109,47 +115,20 @@ export function CharacterWrapper(props: Props) {
     if(!currentChar) {
       setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
     }
-
-
-    // await CharacterRepository.fetchItemsList()
-    // .then(res=> {
-    //   setCategoriesState(state=> {
-    //     state.forEach((v, k)=> {
-    //       state.set(k, res.filter(c => c.categoryId === k.id))
-    //     })
-    //     return new Map(state)
-    //   })
-    //   setActiveSetState(state=> {
-    //     state[1] = res.filter(c => c.categoryId === state[0].id)
-    //     return [...state]
-    //   })
-    // })
-
-
-    // await CharacterRepository.getCurrentUserChar()
-    // .then(res=> {
-    //   isCharacterExist.current = true
-    //   characterId.current = res.id
-    //   const setItems:any = {model: res.gender==='male'?'man':'woman'}
-    //   setItems.eye = 0
-    //   setItems.hair = 0
-    //   res.items.forEach(el=> {
-    //     if(el.gender === res.gender) {
-    //       setItems[el.category.key] = el.animationKey          
-    //     }
-    //   })
-    //   setVariantState(setItems)
-    //   setChoosenItemsState(state=> {
-    //     state.clear()
-    //     res.items.forEach(el=> el.gender===res.gender&&state.set(el.category.id, el))
-    //     return new Map(state)
-    //   })
-    // })
-    // .catch(_=> {
-    //   isCharacterExist.current = false
-    //   setDataLoaded(true)
-    // })
     setDataLoaded(true)
+  }
+
+  const buyCharacter = async():Promise<boolean> => {
+    return CharacterRepository.buyCharacter()
+    .then(res => {
+      debugger
+      return true
+    })
+    .catch(err => {
+      appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+      router.push('/shop')
+      return false
+    })
   }
 
   const setVariant = (data: ICharItem) => {
@@ -216,6 +195,7 @@ export function CharacterWrapper(props: Props) {
   const value: IState = {
     init,
     modelLoaded,
+    currentCharacter,
     dataLoaded,
     setModelLoad,
     activeSet,
@@ -232,6 +212,7 @@ export function CharacterWrapper(props: Props) {
     savingProcess,
     durations,
     setDurations,
+    buyCharacter
   }
 
   return (

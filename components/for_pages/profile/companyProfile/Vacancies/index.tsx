@@ -34,7 +34,7 @@ export default function Vacancies(props: Props) {
 
   useEffect(()=>{
     vacancyContext.setVacancies()
-    tariffContext.setPackets(userContext.currentProfile.profileType)
+    tariffContext.setPackets(userContext.currentProfile)
   }, [])
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)

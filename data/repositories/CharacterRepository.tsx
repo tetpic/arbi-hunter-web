@@ -60,4 +60,15 @@ export default class CharacterRepository {
     }
     return res
   }
+
+  static async buyCharacter(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/character/buy',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

@@ -1,5 +1,6 @@
 import { IPurchase, ITariff } from 'data/interfaces/Common'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { IUserProfile } from 'data/interfaces/IUser'
 import TariffRepository from 'data/repositories/TariffRepository'
 import { createContext, useContext, useState } from 'react'
 import { PurchaseType } from 'types/enums'
@@ -7,7 +8,7 @@ import { PurchaseType } from 'types/enums'
 interface IState {
   packets: Map<number, ITariff>
   purchased: Map<number, IPurchase>
-  setPackets: (profileType: ProfileType) => Promise<void>
+  setPackets: (profile: IUserProfile) => Promise<void>
   
 }
 
@@ -23,19 +24,21 @@ export function TariffWrapper(props: Props) {
   const [packets, setPacketsState] =  useState<Map<number, ITariff>>(new Map)
   const [purchased, setPurchasedState] =  useState<Map<number, IPurchase>>(new Map)
 
-  const setPackets = async(profileType: ProfileType) => {
-    if(profileType === ProfileType.Employee) {
+  const setPackets = async(profile: IUserProfile) => {
+    if(profile.profileType === ProfileType.Employee) {
       const [cvTariffs, modelTariffs] = await Promise.all([
         TariffRepository.getTariff(PurchaseType.CvTariff),
-        TariffRepository.getTariff(PurchaseType.Character)
-      ])
+        !profile.logo?.source &&TariffRepository.getTariff(PurchaseType.Character)
+      ].filter(Boolean))
       setPacketsState(state => {
         cvTariffs.forEach(t => state.set(t.id, t))
-        modelTariffs.forEach(t => state.set(t.id, t))
+        if(modelTariffs) {
+          modelTariffs.forEach(t => state.set(t.id, t))
+        }
         return new Map(state)
       })
     }
-    else if(profileType === ProfileType.Hirer) {
+    else if(profile.profileType  === ProfileType.Hirer) {
       const cvTariffs = await TariffRepository.getTariff(PurchaseType.VacancyTariff)
       setPacketsState(state => {
         cvTariffs.forEach(t => state.set(t.id, t))

@@ -1,4 +1,4 @@
-import { ITariff } from 'data/interfaces/Common'
+import { IPurchase, ITariff } from 'data/interfaces/Common'
 import styles from './index.module.scss'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
@@ -19,12 +19,15 @@ interface Props {
   tariff: ITariff
   cvs?: ICV[],
   vacancies?: IVacancy[],
+  type?: 'buy'|'info'
+  purchase?: IPurchase
 }
 
-export default function PurchaseItem({tariff, cvs, vacancies}: Props) {
+export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) {
   const appContext = useAppContext()
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
+  
 
 
   const showPreviewModal = (tariff: ITariff) => {
@@ -58,6 +61,11 @@ export default function PurchaseItem({tariff, cvs, vacancies}: Props) {
     <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>Бесплатно</P>
   } 
   <P>{tariff.description}</P>
+  {props.type === 'buy' &&
   <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal(tariff)}>Купить</Button>
+  }
+  {props.type === 'info' &&
+    <P className={styles.button}  styleType={['medium', 'w500']}>Куплено {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+  }
 </div>)
 }

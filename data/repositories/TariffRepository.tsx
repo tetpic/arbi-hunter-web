@@ -41,17 +41,4 @@ export default class TariffRepository {
     }
     return res
   }
-
-  static async removeSubsription(id: number): Promise<any|null> {
-    const res = await request({
-      method: 'delete',
-      url: `/api/subscription/${id}`,
-    })
-    if(res.err) {
-      return null
-    }
-    return res
-  }
-
-
 }

@@ -21,7 +21,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
-import TariffRepository from 'data/repositories/TariffRepository'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -55,22 +55,13 @@ export default function PurchasePreviewModal(props: Props) {
   const args:PurchasePreviewModalArgs = appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
   const [date, setDate] = useState<string|undefined>(undefined)
-  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies).filter(el=> args.tariffs.get(el.subscriptions.tariff.id).price < args.tariff.price)
+  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies).filter(el=> args.tariffs.get(el.subscriptions?.tariff?.id)?.price < args.tariff?.price)||[]
 
-  const buy = async(data: PurchaseForm) => {
-    const currentItem = items.find(el => el.id === data.cvId||el.id === data.vacancyId)
-    debugger
-    if(currentItem?.subscriptions) {
-      await TariffRepository.removeSubsription(Number(currentItem.subscriptions.id))
-      .then(res => {
-        debugger
-      })
-      .catch(err => {
-        debugger 
-        return
-      })
+  const buy = (data: PurchaseForm) => {
+    if(args.tariff.purchaseType === PurchaseType.Character) {
+      
+      return
     }
-
     PurchaseRepository.cvVcPurchase({
       date: data.date,
       cvId: data.cvId,
@@ -129,7 +120,9 @@ export default function PurchasePreviewModal(props: Props) {
         <P styleType={['w600', 'large', 'alignCenter']}>
           {/* @ts-ignore */}
           <div className={styles.imageWrapper} style={{'--gradientColor1': '#'+args.tariff.colors[0], '--gradientColor2': '#'+args.tariff.colors[1]}}>
-            <Image src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={24} height={24}/>
+            {args.tariff.icon &&
+              <Image src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={24} height={24}/>
+            }
           </div>
           {args.tariff.name}
         </P>

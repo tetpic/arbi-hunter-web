@@ -10,6 +10,7 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
+import { useCharacterContext } from 'context/character_state'
 
 interface Props {
 }
@@ -26,11 +27,13 @@ export default function Shop(props: Props) {
   const userContext = useUserContext()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
+  const characterContext = useCharacterContext()
 
   useEffect(()=>{
-    tariffContext.setPackets(userContext.currentProfile.profileType)
+    tariffContext.setPackets(userContext.currentProfile)
     if(userContext.currentProfile.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
+      characterContext.init()
     }
     else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
       vacancyContext.setVacancies()      

@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import ThreeModelVariant from 'components/for_pages/three'
 import UserPic from 'components/ui/UserPic'
-import {  useEffect, useState } from 'react'
+import {  useEffect } from 'react'
 import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
 import { FILES } from 'types/constants'
@@ -11,6 +11,7 @@ import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
 import { CharCategoryKey } from 'data/interfaces/ICharacter'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
@@ -33,36 +34,31 @@ export enum ModelActions {
 
 export default function UserEditor(props: Props) {
   const characterContext = useCharacterContext()
+  const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
-  const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
 
-  // const actionsAllowedMap: {type: ModelActions, duration: number}[] = [
-  //   {type: ModelActions.Laughter2, duration: ~~(characterContext.durations[ModelActions.Laughter2]*1000)||1600},
-  //   {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
-  //   {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
-  //   {type: ModelActions.Action_test, duration: ~~(characterContext.durations[ModelActions.Action_test]*1000)},
-  // ]
-
-  const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(undefined)
-  const [disableClick, setDisableClick] = useState<boolean>(false)
-
-  // const showNextAnimation = () => {
-  //   setDisableClick(true)
-  //   setAction(temporaryAnimation.type)
-  //   setTimeout(()=> {
-  //     setAction(ModelActions.LongAnimation)
-  //     setTemporaryAnimation((actionsAllowedMap[actionsAllowedMap.map(el=> el.type).indexOf(temporaryAnimation.type)+1]||actionsAllowedMap[0]))
-  //     setDisableClick(false)      
-  //   }, temporaryAnimation.duration)
-  // }
+  const save = () => {
+    if(characterContext.currentCharacter.current.purchased) {
+      characterContext.saveCurrentSet()
+    }
+    else {
+      characterContext.buyCharacter()
+      .then(res=> {
+        if(res) {
+          characterContext.saveCurrentSet()
+        }
+      })
+      
+    }
+  }
 
   const saveCharButton = (<>
     <Button 
     isProcess={characterContext.savingProcess}  
     disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
-    onClick={()=>characterContext.saveCurrentSet()}  
+    onClick={save}  
     styleType={['gradient']}
     className={styles.saveButton}
     >
@@ -78,29 +74,6 @@ export default function UserEditor(props: Props) {
   useEffect(()=>{
     init()
   }, [])
-
-
-
-  // const getImage = useCallback((key: CharCategoryKey)=> {
-  //   if(dataLoaded && variant.model) {
-  //     switch(key) {
-  //       case 'model':
-  //         return FILES + variant.model
-  //       case 'cap':
-  //         return FILES + variant.cap
-  //       case 'jacket':
-  //         return FILES + variant.jacket
-  //       case 'glasses':
-  //         return FILES + variant.glasses
-  //       case 'face':
-  //         return FILES + variant.face
-  //       case 'chain':
-  //         return FILES + variant.chain
-  //     }
-  //   }
-
-
-  // }, [variant.model, dataLoaded])
 
   return (<div className={styles.root}>
       {!isTabletWidth &&
@@ -119,7 +92,7 @@ export default function UserEditor(props: Props) {
       <ItemNavigation activeItem={activeSet[0]?.id} items={[...categories.keys()].map(el=> {return {name: el.name, type: el.id}})} onClick={(n)=> onNavClick(n)}/>
       }
 
-      <div className={classnames(styles.model, disableClick&&styles.model_disabled)} onClick={()=> {}} > 
+      <div className={styles.model}> 
         {dataLoaded && variant &&
           <ThreeModelVariant data={variant} r={4} />
           ||

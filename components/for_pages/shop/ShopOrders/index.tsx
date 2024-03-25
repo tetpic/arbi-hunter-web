@@ -25,7 +25,7 @@ export default function ShopOrders(props: Props) {
     {name: 'Архив пополнений', isActive: type ===PurchasedType.Archive, onClick: ()=>{setType(PurchasedType.Archive)}},
   ]}/>
     {[...tariffContext.purchased.values()].map(el => {
-      return <PurchaseItem tariff={tariffContext.packets.get(el.subscription.tariffId)}/>
+      return <PurchaseItem tariff={tariffContext.packets.get(el.subscription.tariffId)} purchase={el} type='info' />
     })}
   
 
