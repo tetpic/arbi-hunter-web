@@ -37,6 +37,7 @@ const Camera = () => {
 }
 
 export default function ThreeModelVariant (props: {onSave?: ()=>void, disableControls?: boolean, data: {[key: string]: string|number}, r:number, actions?: ModelActions }) {
+  
   const characterContext = useCharacterContext()
   const [canvasSizes, setCanvasSizes] = useState<{width: number, height: number}|null>(null)
 

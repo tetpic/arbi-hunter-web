@@ -45,6 +45,8 @@ import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
 import CountryModal from '@/components/modals/CountryModal'
 import CityModal from '@/components/modals/CityModal'
 import BackgroundSwitchModal from '@/components/modals/BackgroundSwitchModal'
+import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
+import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 
 
 interface Props { }
@@ -222,6 +224,14 @@ export default function ModalContainer(props: Props) {
       case ModalType.BackgroundSwitchModal:
         return <Modal isOpen {...commonSettings} >
         <BackgroundSwitchModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.PurchasePreviewModal:
+        return <Modal isOpen {...commonSettings} >
+        <PurchasePreviewModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.RefillBalanceModal:
+        return <Modal isOpen {...commonSettings} >
+        <RefillBalanceModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

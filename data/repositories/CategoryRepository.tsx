@@ -17,7 +17,7 @@ export default class CategoryRepository {
     return res
   }
 
-  static async getSubcategories(data: Partial<ICategorySearchParams>): Promise<ISpecializationCategory[]|null> {
+  static async getSubcategories(data?: Partial<ICategorySearchParams>): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/service-category',

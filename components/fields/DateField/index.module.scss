@@ -2,6 +2,73 @@
 
 .root {
   position: relative;
+  
+  :global {
+
+    .react-datepicker__navigation {
+      top: 16px;
+    }
+
+    .react-datepicker-year-header {
+      font-size: 20px;
+      margin-top: 10px;
+      margin-bottom: 16px;
+    }
+
+    .react-datepicker__header  {
+      background-color: $black;
+      color: $white !important;
+      * {
+        color: $white !important;
+      }
+
+      .react-datepicker__current-month  {
+        margin-block: 16px 20px;
+        font-size: 20px;
+        line-height: 12px;
+      }
+
+      .react-datepicker__header__dropdown {
+        font-size: 16px;
+        font-weight: 600;
+        *{
+          line-height: 14px;
+        }
+
+      }
+
+
+    }
+
+    .react-datepicker__year-wrapper {
+      color: $black !important;
+      max-width: 205px !important;
+      * {
+        color: $black !important;
+      }
+
+      .react-datepicker__year-text {
+        height: 30px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        background-color: $white;
+        border-radius: 8px;
+      }
+    }
+
+    .react-datepicker__year-option {
+      color: $black !important;
+      height: 30px;
+      width: 80%;
+      margin-block: 4px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      background-color: $whitePurple;
+      border-radius: 8px;
+    }
+  }
 }
 
 .icon {
@@ -181,4 +248,49 @@
 .topLabel {
   position: absolute;
 } 
+
+.popperStyle {
+  background-color: $black !important;
+  border: $blue 2px solid !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.month {
+  background-color: $white  !important;
+  height: 40px;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.activeDay {
+  background: $gradientAlt !important;
+  border-radius: 8px !important;
+  color: $white !important;
+}
+
+.availableDay {
+  background-color: $greyLight !important;
+  color: $white !important;
+  border-radius: 8px !important;
+  @include transitionDefault;
+  @include hover {
+    background-color: $purple !important;
+  }
+  
+}
+
+
+.disabledDay {
+  background-color: $black !important;
+  border-radius: 8px !important;
+  opacity: .4;
+}
+
+.hideInput {
+  display: none;
+}
 

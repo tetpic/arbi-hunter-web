@@ -110,7 +110,7 @@ export default function Header(props: Props) {
         }
         
         {!isTabletWidth && 
-          <div className={styles.userWrapper}>
+          <div className={classnames(styles.userWrapper, !userContext.currentProfile&&styles.userWrapper_unlogged)}>
             {!userContext.currentProfile && <>
               <Button 
               styleType={['black', 'borderBlue', 'backTransparent']}
@@ -189,13 +189,6 @@ export default function Header(props: Props) {
               onClick={()=>router.push('/personal/my')}
               />
             </>}
-            {userContext.currentProfile &&
-              <UserDropdownMenu       
-              reference={(ref) => {dropdownRef.current = ref}}
-              className={classnames(styles.dropdown, /*isDropDownOpen&&styles.dropdown_active*/)} 
-              // onClose={()=> {setDropDownOpen(false)}}
-              />
-            }
           </div>
           ||
           <Button styleType={['icon', 'black']} onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg/></Button>

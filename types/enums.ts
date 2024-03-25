@@ -43,6 +43,8 @@ export enum ModalType {
   CountryModal = 'countryModal',
   CityModal = 'cityModal',
   BackgroundSwitchModal = 'backgroundSwitchModal',
+  PurchasePreviewModal = 'purchasePreviewModal',
+  RefillBalanceModal = 'refillBalanceModal',
 }
 
 export enum AppTheme {
@@ -338,5 +340,12 @@ export enum InterfaceLanguage {
 export enum SearchIn {
   Name = 'name',
   Company = 'company'
+}
+
+export  enum PurchaseType {
+  Character = 'character',
+  CharacterItem = 'characterItem',
+  VacancyTariff = 'vacancyTariff',
+  CvTariff = 'cvTariff',
 }
 

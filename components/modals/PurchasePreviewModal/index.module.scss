@@ -1,0 +1,108 @@
+@import 'styles/index';
+
+.modalLayout {
+  max-width: 554px;
+}
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: center;
+}
+
+
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
+
+.rootConfirm {
+  row-gap: 32px;
+
+  .top {
+    margin-bottom: unset;
+  }
+}
+
+
+.price {
+  background-color: rgba(255, 255, 255, 0.281);
+  border-radius: 8px;
+  padding: 8px 16px;
+  height: 40px;
+  display: inline-flex;
+  width: fit-content;
+
+}
+
+.buttonsWrapper {
+  display: flex;
+  width: 100%;
+  column-gap: 16px;
+}
+
+.closeButton {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+}
+
+.calendarField {
+  width: 100%;
+  height: 400px;
+}
+
+.balance {
+  padding: 4px 8px;
+  background-color: $grey;
+  border-radius: 8px;
+}
+
+.balanceLine {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.confirmInfo {
+  background-color: $grey;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  
+  .divider {
+    width: 100%;
+    height: 2px;
+    background-color: $greyLight;
+  }
+}
+
+.imageWrapper {
+  padding: 8px;
+  border-radius: 8px;
+  background: linear-gradient(45deg, var(--gradientColor1) 0%, var(--gradientColor2) 100%);
+}
+
+.crossed {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    top: calc(50% - 1px);
+    left: 0px;
+    background-color: $white;
+  }
+}
+
+.radioListField {
+  align-self: flex-start;
+}

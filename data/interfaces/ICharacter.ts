@@ -48,4 +48,5 @@ export interface IUserCharacter extends TimeStamp{
   id: number,
   items: ICharItem[],
   profileId: number
+  purchased?: boolean
 }

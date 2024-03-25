@@ -23,7 +23,7 @@ function generateVariants(obj: {[key: string]: number[]}, type: 'man'|'woman') {
           eye: 0, 
           hair: k==='cap'?0:1,
           size: s,
-          jacket: 0,
+          jacket: 5,
           [k]: el, 
         })
       })
@@ -59,7 +59,7 @@ export default function ThreePage(props: Props) {
 
   const [page, setPage] = useState<number>(0)
   const [combinations, setCombinations] = useState<any[]>([])
-  const generatedRef = useRef([...generateVariants(nodesVariants, 'man'), ...generateVariants(womanNodesVariants, 'woman')])
+  const generatedRef = useRef([...generateVariants(womanNodesVariants, 'woman'), ...generateVariants(nodesVariants, 'man')])
 
   useEffect(()=>{
     setCombinations(generatedRef.current.slice(page*10, (page*10)+10))

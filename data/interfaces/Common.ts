@@ -1,5 +1,6 @@
-import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
+import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, PurchaseType, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
 import { ILanguageKnowledge } from './IJob'
+import { IUser } from './IUser'
 
 export interface TimeStamp {
   createdAt?: string,
@@ -34,6 +35,7 @@ export interface ICategorySearchParams {
   search: string, 
   page: number, 
   limit: number
+  recommended?: boolean
 }
 
 export interface ExperienceInfo extends TimeLine {
@@ -133,6 +135,7 @@ export interface ISpecializationCategory extends TimeStamp {
   maxCVsSalary?: number|null,
   withGeos?: boolean,
   withSources?: boolean,
+  recommended?: boolean
   
 }
 
@@ -270,4 +273,51 @@ export interface IVacancyCvSearchParams {
   ageMax?: number,
   exclude?: string,
 
+}
+
+export interface ITariff extends TimeStamp {
+  baseId: number
+  colors: [string, string]
+  description: string
+  icon: IFile
+  iconId: number
+  id: number
+  key: string
+  languageCode: Languages
+  name: string
+  period: number
+  price: number
+  purchaseType: PurchaseType
+  translations: ITranslation[]
+}
+
+export interface ISubscription extends TimeStamp {
+  cvId: number
+  vacancyId: number
+  tariff: ITariff
+  profileId: number
+  period: number
+  endAt: string
+  startAt: string
+  id: string
+  prevStatus: string|null
+  status: string|null
+  tariffId: number
+}
+
+export interface IPurchase extends TimeStamp {
+  amount: number
+  characterItemId: number|null
+  id: number
+  purchaseType: PurchaseType
+  userId: number
+  user: IUser
+  subscriptionId: number
+  subscription: ISubscription
+}
+
+export interface RefillBalanceData {
+  amount: number,
+  currency: Currency,
+  paymentType: 'bankCard'
 }

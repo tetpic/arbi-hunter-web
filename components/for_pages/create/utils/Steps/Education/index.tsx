@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 import RadioListField from 'components/fields/RadioListField'
-// import TrashBasketSvg from 'components/svg/TrashBasketSvg'
 import AddButton from 'components/ui/AddButton'
 import Button from 'components/ui/Button'
 import { EducationInfo } from 'data/interfaces/Common'
@@ -66,7 +65,7 @@ export default function Education(props: Props) {
   <RadioListField 
   wrapperClassName={styles.radiosWrapper}
   options={[
-    {label: 'Нет образования', value: EducationTypes.No},
+    {label: 'Нет образования', value: undefined},
     {label: 'Среднее', value: EducationTypes.Secondary},
     {label: 'Средне специальное', value: EducationTypes.SecondarySpecial},
     {label: 'Неоконченное высшее', value: EducationTypes.IncompleteHigher},
@@ -97,7 +96,7 @@ export default function Education(props: Props) {
       }
     </div>
   }
-  {values.education !== EducationTypes.No && values.education !== EducationTypes.Secondary &&
+  {values.education !== undefined && values.education !== EducationTypes.Secondary &&
   <AddButton test={'addEducation'} onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
   }
   </>)

@@ -20,7 +20,16 @@ export default function Reasons(props: Props) {
   const isLightTheme = theme === AppTheme.Light
   const triggerRef = useRef<HTMLDivElement>(null!)
   useTriggerOnVisible(triggerRef, ()=> {
-    document.querySelectorAll(`.${styles.bucket}`).forEach(el=> el.classList.add(`${styles.bucket_active}`))
+    const bucket = document.querySelector(`.${styles.bucket}`)
+    const items = document.querySelectorAll(`.${styles.item}`)
+    if(!bucket || !items) return
+
+    bucket.classList.add(`${styles.bucket_active}`)
+    items.forEach((el, index)=> {
+      setTimeout(()=> {
+        el.classList.add(`${styles.item_active}`)
+      }, 300 * index+1)
+    })
   },
   {offset: 100}
   )  

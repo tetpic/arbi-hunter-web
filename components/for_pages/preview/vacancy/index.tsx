@@ -6,7 +6,7 @@ import {  TranslateLanguage, TranslateLanguageKnowLevel,  TranslateWorkExperienc
 import P from '@/components/ui/P'
 import SalaryItem from '@/components/ui/SalaryItem'
 import UserPic from '@/components/ui/UserPic'
-import { copyToClipboard, getUserImageSource } from 'utils/helpers'
+import { getUserImageSource } from 'utils/helpers'
 import { useUserContext } from 'context/user_state'
 import Button from '@/components/ui/Button'
 import UserSvg from '@/components/svg/UserSvg'
@@ -19,35 +19,19 @@ import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import Formatter from 'utils/formatter'
-import Link from 'next/link'
-import { useAppContext } from 'context/state'
-import { SnackbarType } from 'types/enums'
-import { useVacancyContext } from 'context/vacancy_state'
-import { useRouter } from 'next/router'
-
 
 interface Props {
   id?: number
   vacancy?: IVacancy
   onBack?: (page?: number)=> void
+  onPublish?: () => void
 }
-
 
 
 export default function VacancyPreview(props: Props) {
   const creationContext = useCreateVcCvContext()
-  const vacancyContext = useVacancyContext()
   const currentVacancy = props.vacancy
   const userContext = useUserContext()
-  const appContext = useAppContext()
-  const router = useRouter()
-
-  const onPublish = () => {
-    vacancyContext.editVacancy({...currentVacancy, published: true}, currentVacancy.id).then(()=>{
-      appContext.showSnackbar('Вакансия опубликована', SnackbarType.success)
-      router.replace('/profile?page=vacancies') 
-    })
-  }
 
   const header = (
     <div className={styles.header}>
@@ -84,35 +68,24 @@ export default function VacancyPreview(props: Props) {
       {(currentVacancy.showContactName||currentVacancy.showEmail||currentVacancy.showPhone||currentVacancy.showTelegramNickname)&&
         <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={()=>props.onBack(7)}>
           {currentVacancy.showContactName &&
-          <Button onClick={()=>{
-            copyToClipboard(currentVacancy.contactName)
-            appContext.showSnackbar('Контактное имя скопировано', SnackbarType.success)
-          }}>
             <P styleType={['medium', 'w500', 'alignCenter']} >
               <Button styleType={['icon', 'black']} ><UserSvg/></Button> {currentVacancy.contactName}
             </P>
-          </Button>
           }
           {currentVacancy.showEmail &&
-            <Link href={`mailto:${currentVacancy.email}`}>
-              <P styleType={['medium', 'w500', 'alignCenter']}>
-                <Button styleType={['icon', 'black']}><MailAltSvg/></Button>  {currentVacancy.email}
-              </P>
-            </Link>
+            <P styleType={['medium', 'w500', 'alignCenter']}>
+              <Button styleType={['icon', 'black']}><MailAltSvg/></Button>  {currentVacancy.email}
+            </P>
           }
           {currentVacancy.showPhone &&
-          <Link href={`tel:${currentVacancy.phone}`}>
             <P styleType={['medium', 'w500', 'alignCenter']}>
               <Button styleType={['icon', 'black']}><PhoneSvg/> </Button> {Formatter.formatPhone(currentVacancy.phone)}
             </P>
-          </Link>
           }
           {currentVacancy.showTelegramNickname &&
-          <Link href={`tg://resolve?domain=${currentVacancy.telegramNickname}`}>
             <P styleType={['medium', 'w500', 'alignCenter']}>
               <Button styleType={['icon', 'black']}><TelegramSvg/></Button> {currentVacancy.telegramNickname}
             </P>
-          </Link>
           }
         </PreviewItem>
       }
@@ -157,10 +130,13 @@ export default function VacancyPreview(props: Props) {
         </PreviewItem>
       }
     </div>
-    <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
-    {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
-    }
+
+    <div className={styles.buttonsWrapper}>
+      <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
+      {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
+        <Button styleType={['black']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
+      }
+    </div>
 
   </div>
   )

@@ -24,6 +24,7 @@ import Spacer from '@/components/ui/Spacer'
 import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
 import VacancyPreview from '../../preview/vacancy'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 interface Props {
   id?: number
@@ -143,19 +144,14 @@ export default function Vacancy(props: Props) {
     return sendData
   }
 
-  const submit = (data: IVacancyCreate, noRedirect?: boolean) => {
-    const isValid = nextPageValidator()
-    if(!isValid) {
-      return
-    }
-
+  const saveVacancy = (data: IVacancyCreate, noRedirect?: boolean) => {
     const sendData = getDataToSend(data)
 
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
         appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
-        !noRedirect&&router.replace('/profile?page=vacancies')  
+        !noRedirect&&router.push('/profile?page=vacancies')  
       })
       .catch(err=>{        
         appContext.showSnackbar(err.toString(), SnackbarType.error)
@@ -166,14 +162,30 @@ export default function Vacancy(props: Props) {
       .then(res => {
         appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
         setTimeout(()=> {
-          !noRedirect&&router.replace('/profile?page=vacancies')  
-        }, 2000)
+          !noRedirect&&router.push('/profile?page=vacancies')  
+        }, 1500)
       })
       .catch(err=>{
         setTimeout(()=> {
-        }, 2000)
+        }, 1500)
         alert(err.toString())
       })
+    }
+  }
+
+  const submit = (data: IVacancyCreate, noRedirect?: boolean, tariffId?: number) => {
+    if(tariffId && !creationContext.currentVc?.subscriptions && !creationContext.draftItem.current.subscriptions) {
+      PurchaseRepository.cvVcPurchase({vacancyId:creationContext.draftId.current||props.id, tariffId})
+      .then(res=> {
+        saveVacancy(data, noRedirect)
+      })
+      .catch(err=> {
+        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+        router.push('/shop')
+      })
+    }
+    else {
+      saveVacancy(data, noRedirect)
     }
   }
 
@@ -383,7 +395,6 @@ export default function Vacancy(props: Props) {
     }
   }, [userContext.currentProfile])  
 
-
   useEffect(()=>{
     if(props.id) {
       creationContext.getCurrentVc(props.id, props.vacancy)
@@ -399,11 +410,12 @@ export default function Vacancy(props: Props) {
         }
         setShowPreview(false)
       }} 
+      onPublish={formik.submitForm}
       vacancy={getDataToSend({...creationContext.draftItem.current, ...props.vacancy, ...formik.values}) as IVacancy}/>
     }
 
     {progress === VCItemsCount && !showPreview &&
-      <SetTariff setText='Разместить вакансию' onPreview={()=>setShowPreview(true)} onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
+      <SetTariff setText='Разместить вакансию' onPreview={()=>setShowPreview(true)} onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
     }
 
     {progress < VCItemsCount &&<>

@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import { IField, InputStyleType } from 'types/types'
 import { useField } from 'formik'
-import DatePicker from 'react-datepicker'
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker'
 import ru from 'date-fns/locale/ru'
 import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
@@ -24,20 +24,26 @@ interface Props extends IField<string> {
   formatOptions?: Intl.DateTimeFormatOptions
   showMonthYearPicker?: boolean
   showYearPicker?: boolean
+  showTimeInput?: boolean
+  openDefault?: boolean
+  hideInput?: boolean
+  datePickerProps?: ReactDatePickerProps
 }
 
 export default function DateField(props: Props) {
   const [wrapperRef, press] = usePressAndHover()
   const [field, meta, helpers] = useField<string>(props as any)
   const showError = meta.touched && !!meta.error
-  const [date, setDate] = useState<Date | null>(null)
+  const [date, setDate] = useState<Date | null>(new Date(field.value))
 
 
 
   const onChangeDate = (d : Date) => {
-    const date = new Date(d)
+    const newDate = new Date(d)
+    setDate(d)
+
     const dateFormatter = new Intl.DateTimeFormat('ru', props.formatOptions)
-    const formattedDate =  dateFormatter.format(date) 
+    const formattedDate =  dateFormatter.format(newDate) 
     helpers.setValue(formattedDate, true) 
   }
 
@@ -51,27 +57,49 @@ export default function DateField(props: Props) {
             [styles.error]: showError,
             [styles.withIcon]: props.iconName,
             [styles.press]: press,
-          },)}
+            
+          }, 'myDatePicker')}
           locale={ru}
+          open={props.openDefault}
+          calendarClassName={styles.popperStyle}
+          monthClassName={(date) => {
+            return styles.month
+          }}
+          dayClassName={(dt)=> {
+            const minDate =  new Date(props.minDate).setHours(0,0,0,0)
+            if(dt.toDateString() === date.toDateString()||dt.toDateString() === new Date(field.value).toDateString()) {
+              return styles.activeDay
+            }
+            else if (dt.getTime() > (props.maxDate?new Date(props.maxDate).getTime():new Date().getTime())) {
+              return styles.disabledDay
+            }
+            else if(props.minDate&&dt.getTime() < new Date(minDate).getTime()) {
+              return styles.disabledDay
+            }
+            else {
+              return styles.availableDay
+            }
+          }}
           onChange={(date)=> {onChangeDate(date)}} 
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
-          // forceShowMonthNavigation={false}
           minDate={props.minDate&&new Date(props.minDate)}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
           showMonthDropdown={props.visibleMonthSelector}
-          // dateFormat="MM/yyyy"
           showMonthYearPicker={props.showMonthYearPicker}
+          showTimeInput={props.showTimeInput}
           showYearPicker={props.showYearPicker}
-          scrollableYearDropdown
+          scrollableYearDropdown={true}
+          yearDropdownItemNumber={70}
           dropdownMode="scroll"
+          
           maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={
             <InputField 
             autocompleteOff={true} 
             validate={props.validate}
-            className={classNames(styles.input, props.inputClassName)}  
+            className={classNames(styles.input, props.hideInput&&styles.hideInput, props.inputClassName)}  
             value={field.value} 
             name={field.name} 
             styleType={'default'} 
@@ -84,7 +112,7 @@ export default function DateField(props: Props) {
             />
           }
           excludeDates={props.excludeDates}
-         
+          {...props.datePickerProps}
         />
         {props.styleType === 'default' && (
           <div className={classNames({

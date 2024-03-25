@@ -68,10 +68,9 @@ describe('simple vacancy full create', () => {
     //@ts-ignore
     cy.getBySel('button_back').wait(100).click()
 
-
     //Save Vacancy
     cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/create/vacancy')
-    cy.get('[data-cy="button_saveVacancy1"]').click()
+    cy.get('[data-cy="button_save_vacancyStandard"]').click()
     cy.contains('Менеджер-cy-test', {timeout: 10000}).should('be.visible')
   })
 })

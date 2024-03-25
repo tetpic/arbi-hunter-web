@@ -1,4 +1,4 @@
-import { ISpecializationCategory, ISource, IFile, ICategorySearchParams } from 'data/interfaces/Common'
+import { ISpecializationCategory, ISource, IFile, ICategorySearchParams, ITariff } from 'data/interfaces/Common'
 import { ICVCreate, ICV } from 'data/interfaces/ICV'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
@@ -33,6 +33,8 @@ export interface ICreationState {
   currentCv: ICVCreate,
   setCurrentCv: (v: ICVCreate) => void
   getCurrentCv: (id: number, cv?: ICV) => void
+  tariffs: Map<number,ITariff>
+  setTariffs:  Dispatch<SetStateAction<Map<number, ITariff>>>
 
   currentVc: IVacancy,
   setCurrentVc: (v: IVacancy) => void
@@ -97,6 +99,7 @@ export function CreateVcCvWrapper(props: Props) {
   const [activeSubCategory, setActiveSubcategory] = useState<ISpecializationCategory[]>([])
   const draftId = useRef<number>()
   const draftItem = useRef<Partial<ICV|IVacancy>>({})
+  const [tariffs, setTariffs] = useState<Map<number,ITariff>>(new Map)
 
 
   const setCurrentCv = (v: ICVCreate) => {
@@ -176,7 +179,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const saveDraft = (data: {cv?: ICVCreate, vacancy?: IVacancyCreate}) => {
-    debugger
+    
     if(data.cv) {
       if(!draftId.current) {      
         CvRepository.createCV(data.cv)
@@ -291,6 +294,9 @@ export function CreateVcCvWrapper(props: Props) {
     currentCv,
     setCurrentCv,
     getCurrentCv,
+
+    tariffs,
+    setTariffs,
 
     currentVc,
     setCurrentVc,

@@ -152,7 +152,7 @@ export default function VacancyPage(props: Props) {
           {name: 'Просмотры', count: currentVacancy.totalViews},
           {name: 'Отклики', count: currentVacancy.totalApplications},
         ]} 
-        title={'Статистика за неделю'} 
+        title={'Статистика за все время'} 
         />
       }
 
@@ -241,7 +241,7 @@ export default function VacancyPage(props: Props) {
           </div>
         </div>
       }
-
+      
       {!isMyVacancy &&
       <div className={styles.buttonsWrapper}>
         <Button styleType={['gradient']} onClick={makeResponse}>Откликнуться</Button>

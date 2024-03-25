@@ -9,11 +9,11 @@ import { useUserContext } from 'context/user_state'
 import { getAge, getUserImageSource, getUserName } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
-import { Answer, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
-import { TranslateCompensationType, TranslateEducationType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEducationType, TranslateEmploymentType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
@@ -35,6 +35,7 @@ interface Props {
   id?: number
   cv?: ICV,
   onBack?: (page?: number)=> void
+  onPublish?: () => void
 }
 
 export default function CvPreview(props: Props) {
@@ -42,7 +43,7 @@ export default function CvPreview(props: Props) {
   const creationContext = useCreateVcCvContext()
   const appContext = useAppContext()
   const currentCv = props.cv
-  debugger
+  
   const router = useRouter()
   const userContext = useUserContext()
 
@@ -53,12 +54,12 @@ export default function CvPreview(props: Props) {
     </div>
   )
 
-  const onPublish = () => {
-    cvContext.updateCv(currentCv.id, {published: true}, ()=>{
-      appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
-      router.push('/profile?page=cvs')
-    })
-  }
+  // const onPublish = () => {
+  //   cvContext.updateCv(currentCv.id, {published: true}, ()=>{
+  //     appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
+  //     router.push('/profile?page=cvs')
+  //   })
+  // }
 
   if(!currentCv) return null
 
@@ -81,7 +82,7 @@ export default function CvPreview(props: Props) {
         styleType={['greyLight', 'w500', 'medium']}>
           {[
             currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
-            getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
+            currentCv.birthday&&getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>
@@ -142,17 +143,32 @@ export default function CvPreview(props: Props) {
       wrapperClassName={styles.item}
       onClick={() => props.onBack(6)}
       >
+        {currentCv.employment &&
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment)} занятость
+          </P>
+        }
         {currentCv.relocation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> 
+            {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
+          </P>
         }
         {currentCv.schedule &&
-          <P styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}
+          </P>
         }
         {currentCv.compensation &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}> 
+            <GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}
+          </P>
         }
         {currentCv.businessTrips &&
-          <P  styleType={['w500', 'medium', 'alignCenter']}><GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}</P>
+          <P styleType={['w500', 'medium', 'alignCenter']}>
+            <GradientDotSvg/> 
+            {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
+          </P>
         }
       </PreviewItem>
 
@@ -252,7 +268,7 @@ export default function CvPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>Опубликовать</Button>
       }
     </div>
   </div>)

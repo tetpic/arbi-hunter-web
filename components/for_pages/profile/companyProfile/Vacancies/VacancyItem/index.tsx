@@ -9,21 +9,19 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useRouter } from 'next/router'
-import { ModalType, ModerationStatusType, TariffType} from 'types/enums'
+import { ModalType, ModerationStatusType} from 'types/enums'
 import Formatter from 'utils/formatter'
 
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
-import { useRef } from 'react'
+import {  useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
-// import Link from 'next/link'
 import OptionsList from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
-import { TranslateTariffType } from 'utils/enumsTranslations'
-import classNames from 'classnames'
 import Progress from './Progress'
 import P from '@/components/ui/P'
+import { useTariffContext } from 'context/tariff_state'
 
 interface Props {
   vacancy: IVacancy
@@ -37,9 +35,12 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
+  const tariffContext = useTariffContext()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
+
 
 
   const setActiveHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -87,8 +88,6 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     }
   }
 
-
-
   return (<div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
@@ -109,7 +108,8 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
         }
         <SalaryItem vacancy={vacancy}/>
 
-        <p className={classNames(styles.tariff, vacancy.tariff === TariffType.Vip && styles.tariff_vip)}>{TranslateTariffType(vacancy.tariff)}</p>
+        {/* @ts-ignore */}
+        <p className={styles.tariff} style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}>{tariff.name}</p>
 
         <ThreeDotsButton  onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth && 
@@ -124,7 +124,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
       {props.type !== 'drafts' &&
         <Statistics 
-        title='Статистика за неделю'
+        title='Статистика за все время'
         items={[
           {name: 'Показы', count: vacancy.totalProposals},
           {name: 'Просмотры', count: vacancy.totalViews},
@@ -154,7 +154,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
             <Button 
             stopPropagation
             onClick={(e)=>{
-              router.push({pathname:'/recruiting', query: {vcId: vacancy.id}})
+              router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [vacancy.categories[0].id]}), vcId: vacancy.id}})
             }} 
             styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
             </>

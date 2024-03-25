@@ -56,6 +56,12 @@
   margin-top: 24px;
 }
 
+.buttonsWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
 // .langTag {
 //   text-transform: capitalize;
 // }

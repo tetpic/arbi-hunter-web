@@ -3,13 +3,17 @@
 .root {
   position: relative;
   overflow: hidden;
-  background-color: $black;
+  background-color: var(--backColorAlt);
 
   .background {
     position: absolute;
     top: 0;
     right: -80px;
     z-index: 0;
+
+    &_light {
+      opacity: .2;
+    }
   }
 }
 
@@ -30,30 +34,47 @@
   z-index: 2;
   height: 290px;
 
+  .logoWrapper {
+    perspective: 800px;
+  }
+
+
   .logo {
     display: flex;
     align-items: center;
     column-gap: 6px;
     margin-bottom: 8px;
-  
+    @include transitionDefault;
+
     svg {
       width: 136px;
       height: 33px;
+    }
+
+    &_light {
+      svg {
+        path {
+          fill: $black;
+        }
+      }
     }
   }
 
   .links {
     display: flex;
     column-gap: 20px;
+    img {
+      border-radius: 50%;
+      @include transitionDefault;
+      @include hover {
+        scale: 1.1;
+        box-shadow: 0px 0px 20px 0px $purple;
+      }
+    }
+
   }
 
   .mail {
-    display: flex;
-    align-items: center;
-    color: $white;
-    font-size: $largeText;
-    font-weight: $semibold;
-    column-gap: 8px;
     margin-top: auto;
   }
 
@@ -76,6 +97,15 @@
     display: flex;
     flex-direction: column;
     row-gap: 24px;
+
+    a {
+      @include transitionDefault;
+      transform-origin: left;
+      @include hover {
+        color: $purple;
+        scale: 1.1;
+      }
+    }
   }
 
   .title {
@@ -121,12 +151,35 @@
     display: flex;
     column-gap: 8px;
     align-items: center;
-    color: $white;
-    font-weight: $medium;
-    font-size: $mediumText;
 
     svg {
       margin-block: 1px;
+    }
+  }
+
+  .paymentMethod {
+    border-radius: 50%;
+    background-color: $grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    @include transitionDefault;
+    @include hover {
+      scale: 1.1;
+      box-shadow: 0px 0px 20px 0px $purple;
+    }
+  }
+
+  &_light {
+    &:before {
+      background-color: $whitePurple;
+    }
+
+    .paymentMethod  {
+      background-color: unset;
+      background: $gradientAlt;
     }
   }
 }
@@ -136,13 +189,24 @@
   bottom: 0;
   right: 0;
   border: 1px $greyLight solid;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   border-radius: 16px;
   padding: 8px 8px 8px 24px;
   display: flex;
   align-items: center; 
   column-gap: 24px;
-  
+  @include transitionDefault;
+  @include hover {
+    scale: 1.05;
+    box-shadow: 0px 0px 20px 0px $purple;
+  }
 
+
+  &_light {
+    border: 2px $whitePurple solid;
+    img {
+      filter: invert(1);
+    }
+  }
 }
 

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -25,6 +25,8 @@ import { ISpecializationModalProps } from '@/components/modals/CvModals/Speciali
 import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
+import { IDetailsModalProps } from '@/components/modals/DetailsModal'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 
 interface Props {
@@ -82,9 +84,7 @@ export default function Cv(props: Props) {
     return clearObject(sendData, 'string') as ICVCreate
   }
 
-  const submit = (data: ICVCreate, noReplace?: boolean) => {
-    setLoading(true)
-
+  const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
@@ -99,7 +99,7 @@ export default function Cv(props: Props) {
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         if(!noReplace) {
-          router.replace('/profile?page=cvs')      
+          router.push('/profile?page=cvs')      
         }
       })
       .catch(err=>{        
@@ -107,17 +107,35 @@ export default function Cv(props: Props) {
       })
     }
     else {
-      CvRepository.createCV(sendData)
+      CvRepository.updateCV(creationContext.draftId.current, sendData)
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         if(!noReplace) {
-          router.replace('/profile?page=cvs')      
+          router.push('/profile?page=cvs')      
         }
       })
       .catch(err=>{
         appContext.showSnackbar(err, SnackbarType.error)
         setLoading(false)
       })
+    }
+  }
+
+  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
+    setLoading(true)
+
+    if(tariffId && !creationContext.currentCv?.subscriptions && !creationContext.draftItem.current.subscriptions) {
+      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
+      .then(res=> {
+        saveCV(data, noReplace)
+      })
+      .catch(err=> {
+        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+        router.push('/shop')
+      })
+    }
+    else {
+      saveCV(data, noReplace)
     }
   }
 
@@ -157,7 +175,7 @@ export default function Cv(props: Props) {
     businessTrips: props.cv?.businessTrips||Answer.No,
     searchPosition: '',
     assetsIds: props.cv?.assetsIds||[],
-    gender: props.cv?.gender||undefined,
+    gender: props.cv?.gender||Genders.Male,
     whatsapp: props.cv?.whatsapp||'',
     viber: props.cv?.viber||'',
     linkedin: props.cv?.linkedin||'',
@@ -213,6 +231,7 @@ export default function Cv(props: Props) {
       case 2: {
         formik.validateField('birthday')
         .then(v => {
+          
           if(v) {
             setErr('birthday', 'Укажите дату рождения')
           }
@@ -221,15 +240,42 @@ export default function Cv(props: Props) {
           }
         })
       }
+      break
 
       case 4: {
-        if(formik.values.education === EducationTypes.Secondary||formik.values.education === EducationTypes.No) {
+        if(formik.values.education === EducationTypes.Secondary||formik.values.education === undefined) {
           setProgress(pageNumber||progress+1)
+        }
+        else if (formik.values.educationInfo.length > 0) {
+          setProgress(pageNumber||progress+1)
+        }
+        else {
+          appContext.showSnackbar('Укажите место обучения', SnackbarType.error)
+          appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
+            values: {
+              educationInfo: [{
+                institution: '',
+                speciality: '',
+                fromDate: '',
+                toDate: '',
+                toPresent: true,
+                faculity: '',
+              }]
+            },
+            initialValues: null,
+      
+            type: 'educationInfo',
+            onSubmit: (data) => {
+              const educationInfo = formik.values.educationInfo
+              educationInfo?.push(data.educationInfo[0])
+              formik.setFieldValue('educationInfo', educationInfo)
+              appContext.hideModal()
+            },
+          })
         }
       }
       break
       default :
-        
         setProgress(pageNumber||progress+1)
     }
   }
@@ -363,6 +409,7 @@ export default function Cv(props: Props) {
   return <div className={styles.root}>
     {showPreview && 
       <CvPreview 
+      onPublish={formik.submitForm}
       onBack={(page)=>{
         if(page){
           setProgress(page)
@@ -372,7 +419,7 @@ export default function Cv(props: Props) {
       cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
-      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>

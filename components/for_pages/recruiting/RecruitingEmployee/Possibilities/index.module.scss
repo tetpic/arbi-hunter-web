@@ -93,6 +93,10 @@
     align-self: flex-start;
     padding: 18px 32px !important;
     height: 52px !important;
+    @include hover {
+      scale: 1.03;
+      box-shadow: 0px 0px 20px 0px $purple;
+    }
     @include mq($TabletWidth, max) {
       display: none;
     }
