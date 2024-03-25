@@ -1,5 +1,5 @@
 import { TariffType, WorkExperience } from 'types/enums'
-import { ISource } from './Common'
+import { ISource, ISubscription } from './Common'
 import { IApplication } from './IApplication'
 import { ICV,} from './ICV'
 import { IJob} from './IJob'
@@ -24,6 +24,7 @@ export interface IVacancyCreate extends IJob {
   showPhone?: boolean
   showTelegramNickname?: boolean
   completedSteps?: number[]
+  subscriptions?: ISubscription
 }
 
 
@@ -42,6 +43,7 @@ export interface IVacancy extends IVacancyCreate, IUserProfile, ICV {
   proposalsToCurrentUser: IProposal[]
   tariff: TariffType
   topPurchasedAt: string|null
+  subscriptions: ISubscription
 }
 
 

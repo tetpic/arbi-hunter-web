@@ -129,7 +129,8 @@
   font-size: $mediumText;
   font-weight: $semibold;
   color: $white;
-  background-color: $blue;
+  background: $blue;
+  background: linear-gradient(90deg, var(--gradientColor1) 0%, var(--gradientColor2) 100%);
   padding: 4px 8px;
   border-radius: 8px;
 

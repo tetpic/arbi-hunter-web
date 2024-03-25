@@ -4,6 +4,8 @@ import styles from './index.module.scss'
 import VacanciesInactive from './Inactive'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useVacancyContext } from 'context/vacancy_state'
+import { useTariffContext } from 'context/tariff_state'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
@@ -27,9 +29,12 @@ function translate (n: VacanciesNavigation) {
 
 export default function Vacancies(props: Props) {
   const vacancyContext = useVacancyContext()
+  const tariffContext = useTariffContext()
+  const userContext = useUserContext()
 
   useEffect(()=>{
     vacancyContext.setVacancies()
+    tariffContext.setPackets(userContext.currentProfile.profileType)
   }, [])
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)

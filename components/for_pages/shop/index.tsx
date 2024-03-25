@@ -7,6 +7,9 @@ import ShopPackets from './ShopPackets'
 import ShopOrders from './ShopOrders'
 import { useTariffContext } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import { useCvContext } from 'context/cv_state'
+import { useVacancyContext } from 'context/vacancy_state'
 
 interface Props {
 }
@@ -21,9 +24,17 @@ export default function Shop(props: Props) {
   const [page, setPage] = useState<ShopPages>(ShopPages.Balance)
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
+  const cvContext = useCvContext()
+  const vacancyContext = useVacancyContext()
 
   useEffect(()=>{
     tariffContext.setPackets(userContext.currentProfile.profileType)
+    if(userContext.currentProfile.profileType === ProfileType.Employee) {
+      cvContext.setSavedCvs()
+    }
+    else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
+      vacancyContext.setVacancies()      
+    }
   }, [])
 
 

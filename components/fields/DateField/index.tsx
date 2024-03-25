@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import { IField, InputStyleType } from 'types/types'
 import { useField } from 'formik'
-import DatePicker from 'react-datepicker'
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker'
 import ru from 'date-fns/locale/ru'
 import classNames from 'classnames'
 import usePressAndHover from 'hooks/usePressAndHover'
@@ -27,6 +27,7 @@ interface Props extends IField<string> {
   showTimeInput?: boolean
   openDefault?: boolean
   hideInput?: boolean
+  datePickerProps?: ReactDatePickerProps
 }
 
 export default function DateField(props: Props) {
@@ -65,31 +66,34 @@ export default function DateField(props: Props) {
             return styles.month
           }}
           dayClassName={(dt)=> {
-            if(dt.toDateString() === date.toDateString()) {
+            const minDate =  new Date(props.minDate).setHours(0,0,0,0)
+            if(dt.toDateString() === date.toDateString()||dt.toDateString() === new Date(field.value).toDateString()) {
               return styles.activeDay
             }
-            else if (dt.getTime() > new Date().getTime()) {
-              return styles.futureDay
+            else if (dt.getTime() > (props.maxDate?new Date(props.maxDate).getTime():new Date().getTime())) {
+              return styles.disabledDay
+            }
+            else if(props.minDate&&dt.getTime() < new Date(minDate).getTime()) {
+              return styles.disabledDay
             }
             else {
-              return styles.otherDay
+              return styles.availableDay
             }
           }}
           onChange={(date)=> {onChangeDate(date)}} 
           dateFormat={props.dateFormat||'dd/MM/yyyy'}
           placeholderText={props.placeholder}
-          // forceShowMonthNavigation={false}
           minDate={props.minDate&&new Date(props.minDate)}
           popperPlacement="bottom"
           showYearDropdown={props.visibleYearSelector}
           showMonthDropdown={props.visibleMonthSelector}
-          // dateFormat="MM/yyyy"
           showMonthYearPicker={props.showMonthYearPicker}
           showTimeInput={props.showTimeInput}
           showYearPicker={props.showYearPicker}
           scrollableYearDropdown={true}
           yearDropdownItemNumber={70}
           dropdownMode="scroll"
+          
           maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={
             <InputField 
@@ -108,7 +112,7 @@ export default function DateField(props: Props) {
             />
           }
           excludeDates={props.excludeDates}
-         
+          {...props.datePickerProps}
         />
         {props.styleType === 'default' && (
           <div className={classNames({

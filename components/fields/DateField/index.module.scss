@@ -272,7 +272,7 @@
   color: $white !important;
 }
 
-.otherDay {
+.availableDay {
   background-color: $greyLight !important;
   color: $white !important;
   border-radius: 8px !important;
@@ -280,10 +280,11 @@
   @include hover {
     background-color: $purple !important;
   }
+  
 }
 
 
-.futureDay {
+.disabledDay {
   background-color: $black !important;
   border-radius: 8px !important;
   opacity: .4;

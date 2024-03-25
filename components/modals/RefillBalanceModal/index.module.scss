@@ -1,0 +1,21 @@
+@import 'styles/index';
+
+.modalLayout {
+  background-color: $backgroundBlack;
+  max-width: 550px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.form {
+  @extend .root;
+  row-gap: 24px;
+}
+
+.closeButton {
+  align-self: flex-end;
+}

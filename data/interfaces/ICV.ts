@@ -1,5 +1,5 @@
 import { Answer, EducationTypes, Genders, Languages, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
-import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource, TimeStamp, IFile} from './Common'
+import { CoursesInfo, EducationInfo, ExperienceInfo, ISpecializationCategory, ISource, TimeStamp, IFile, ISubscription} from './Common'
 import { IJob } from './IJob'
 import { IGeoName } from './ILocation'
 import { IProposal } from './IProposal'
@@ -32,6 +32,7 @@ export interface ICVCreate extends IJob {
   linkedin?: string,
   viber?: string,
   skype?: string,
+  subscriptions?: ISubscription
 }
 
 export interface ICVVC {
@@ -80,4 +81,5 @@ Pick<IUserProfile,
   totalShows?: number,
   isContactsOpen?: boolean
   verticals?: ISource[]
+  subscriptions?: ISubscription
 }

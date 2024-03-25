@@ -8,6 +8,7 @@ import Vacancies from './Vacancies'
 import styles from './index.module.scss'
 import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
+import { TariffWrapper } from 'context/tariff_state'
 
 
 interface Props {
@@ -33,7 +34,9 @@ export default function CompanyProfile(props: Props) {
       case ProfilePages.Saved:
       return <Saved/>
       case ProfilePages.Vacancies:
-      return <Vacancies/>
+      return <TariffWrapper>
+          <Vacancies/>
+        </TariffWrapper>
       case ProfilePages.Shop:
       return <Shop/>
       case ProfilePages.Patterns:

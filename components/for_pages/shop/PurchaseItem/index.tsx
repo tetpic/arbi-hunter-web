@@ -7,21 +7,36 @@ import Button from '@/components/ui/Button'
 import Image from 'next/image'
 import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import { FILES } from 'types/constants'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import { ICV } from 'data/interfaces/ICV'
+import { useTariffContext } from 'context/tariff_state'
+import { useUserContext } from 'context/user_state'
 
 
 interface Props {
   tariff: ITariff
+  cvs?: ICV[],
+  vacancies?: IVacancy[],
 }
 
-export default function PurchaseItem({tariff}: Props) {
+export default function PurchaseItem({tariff, cvs, vacancies}: Props) {
   const appContext = useAppContext()
+  const tariffContext = useTariffContext()
+  const userContext = useUserContext()
 
 
   const showPreviewModal = (tariff: ITariff) => {
+    if(tariff.price > userContext.user.balance) {
+      appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+      return
+    }
     appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
-      tariff: tariff
+      tariff: tariff,
+      tariffs: tariffContext.packets,
+      cvs,
+      vacancies,
     })
   }
 

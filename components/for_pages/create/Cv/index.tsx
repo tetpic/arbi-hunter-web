@@ -99,7 +99,7 @@ export default function Cv(props: Props) {
       .then(_=>{
         appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
         if(!noReplace) {
-          router.replace('/profile?page=cvs')      
+          router.push('/profile?page=cvs')      
         }
       })
       .catch(err=>{        
@@ -111,7 +111,7 @@ export default function Cv(props: Props) {
       .then(res => {
         appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
         if(!noReplace) {
-          router.replace('/profile?page=cvs')      
+          router.push('/profile?page=cvs')      
         }
       })
       .catch(err=>{
@@ -132,12 +132,11 @@ export default function Cv(props: Props) {
       .catch(err=> {
         appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
         router.push('/shop')
-        // console.log(err)
-        
       })
     }
-
-
+    else {
+      saveCV(data, noReplace)
+    }
   }
 
   const initialValues:ICVCreate  = {
@@ -277,7 +276,6 @@ export default function Cv(props: Props) {
       }
       break
       default :
-        
         setProgress(pageNumber||progress+1)
     }
   }

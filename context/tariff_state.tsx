@@ -35,6 +35,13 @@ export function TariffWrapper(props: Props) {
         return new Map(state)
       })
     }
+    else if(profileType === ProfileType.Hirer) {
+      const cvTariffs = await TariffRepository.getTariff(PurchaseType.VacancyTariff)
+      setPacketsState(state => {
+        cvTariffs.forEach(t => state.set(t.id, t))
+        return new Map(state)
+      })
+    }
 
     TariffRepository.getPurchasedItems({page: 1, limit: 10, state: 'active'})
     .then(res=> {

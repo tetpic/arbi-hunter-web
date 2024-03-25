@@ -19,34 +19,19 @@ import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import Formatter from 'utils/formatter'
-import { useAppContext } from 'context/state'
-import { SnackbarType } from 'types/enums'
-import { useVacancyContext } from 'context/vacancy_state'
-import { useRouter } from 'next/router'
-
 
 interface Props {
   id?: number
   vacancy?: IVacancy
   onBack?: (page?: number)=> void
+  onPublish?: () => void
 }
-
 
 
 export default function VacancyPreview(props: Props) {
   const creationContext = useCreateVcCvContext()
-  const vacancyContext = useVacancyContext()
   const currentVacancy = props.vacancy
   const userContext = useUserContext()
-  const appContext = useAppContext()
-  const router = useRouter()
-
-  const onPublish = () => {
-    vacancyContext.editVacancy({...currentVacancy, published: true}, currentVacancy.id).then(()=>{
-      appContext.showSnackbar('Вакансия опубликована', SnackbarType.success)
-      router.replace('/profile?page=vacancies') 
-    })
-  }
 
   const header = (
     <div className={styles.header}>
@@ -149,7 +134,7 @@ export default function VacancyPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
       {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
       }
     </div>
 

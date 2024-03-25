@@ -268,7 +268,7 @@ export default function CvPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>Опубликовать</Button>
       }
     </div>
   </div>)

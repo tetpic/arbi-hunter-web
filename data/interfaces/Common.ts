@@ -35,6 +35,7 @@ export interface ICategorySearchParams {
   search: string, 
   page: number, 
   limit: number
+  recommended?: boolean
 }
 
 export interface ExperienceInfo extends TimeLine {
@@ -134,6 +135,7 @@ export interface ISpecializationCategory extends TimeStamp {
   maxCVsSalary?: number|null,
   withGeos?: boolean,
   withSources?: boolean,
+  recommended?: boolean
   
 }
 
@@ -312,4 +314,10 @@ export interface IPurchase extends TimeStamp {
   user: IUser
   subscriptionId: number
   subscription: ISubscription
+}
+
+export interface RefillBalanceData {
+  amount: number,
+  currency: Currency,
+  paymentType: 'bankCard'
 }

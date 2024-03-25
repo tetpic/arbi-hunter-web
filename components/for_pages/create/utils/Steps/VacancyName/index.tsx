@@ -24,7 +24,7 @@ interface Props {
 
 export default function VacancyName(props: Props) {
 
-  // const [tags, setTagsState]= useState<{name: string}[]>([])
+  const [tags, setTagsState]= useState<ISpecializationCategory[]>([])
   const [suggestions, setSuggestions] = useState<ISpecializationCategory[]>([])
   const inputWrapperRef = useRef(null!)
   const [isActive, setIsActive] = useDetectOutsideClick(inputWrapperRef, false)
@@ -46,18 +46,18 @@ export default function VacancyName(props: Props) {
     })
   }
 
-  // const setTags = (s: string) => {
-  //   VacancyRepository.suggestPosition({search: s})
-  //   .then(r=> {
-  //     setTagsState(r)
-  //   })
-  // }
+  const setTags = () => {
+    CategoryRepository.getSubcategories({recommended: true})
+    .then(r=> {
+      const recommended = r.filter(el => el.recommended)
+      setTagsState(recommended)
+    })
+  }
 
   const onModalSubmit = (data: ISpecializationCategory[]) => {
     cvContext.setActiveSubcategory(data)
     cvContext.setActiveCategory(null)
     setFieldValue('name', data[0].name)
-
     const helperCv = cvContext.helpObjects
     cvContext.setHelpObjects({...helperCv, categoryIds: data})
   }
@@ -99,8 +99,7 @@ export default function VacancyName(props: Props) {
   }, [values])
 
   useEffect(()=>{
-    
-    // setTags('про')
+    setTags()
   }, [])
 
   return (
@@ -138,18 +137,20 @@ export default function VacancyName(props: Props) {
         <Tag text={cvContext.activeSubCategory[0].name} onClick={openModalHandler}/>
       </>
       }
+
+      <P styleType={['w700', 'medium']} className={styles.subTitle}>Рекомендованные</P>
       
-      {/* {tags.length > 0 && 
+      {tags.length > 0 && 
       <div className={styles.tags}>
         {
           tags.map(s=> {
             return <Tag text={s.name} onClick={()=>{
-              onSuggestionClick(s.name)
+              onSuggestionClick(s.name, s)
             }} isActive={s.name === values.name}/>
           })
         }
       </div>
-      } */}
+      }
     </div>
   )
 }

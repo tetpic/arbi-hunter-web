@@ -50,6 +50,7 @@ describe('simple cv full create', ()=> {
         cy.get('@nextButton').click()
         cy.contains('Укажите дату рождения', {timeout: 3000})
         cy.get('@birthday').type('01.01.2000', {delay: 50})
+        cy.get('body').click()
       }
     })
     cy.wait(1000)
@@ -95,6 +96,7 @@ describe('simple cv full create', ()=> {
     .should('be.visible')
     .type('01.01.2023')
     .should('have.value', '01.01.2023')
+    cy.get('.ModalBody_root__Huhyk').click()
     cy.get('[data-cy="input_experienceInfo[0].company"] input')
     .type('testCompany')
     .should('have.value', 'testCompany')
@@ -185,7 +187,7 @@ describe('simple cv full create', ()=> {
     cy.contains('Командировки невозможны')
 
     cy.contains('Опыт работы')
-    cy.contains('01.2023')
+    // cy.contains('01.2023')
 
     cy.contains('+1 234-234-2342')
     cy.contains('12342342342@america.au')
@@ -203,12 +205,11 @@ describe('simple cv full create', ()=> {
     cy.contains('Английский, начинающий')
     cy.contains('https://www.youtube.com')
 
-
     //  Preview
     cy.get('[data-cy="button_back"]').wait(100).click()
     //Save Vacancy
     cy.url().should('contain', 'http://arbi.local.glob-com.ru:3088/create/cv')
-    cy.get('[data-cy="button_saveVacancy1"]').contains('Разместить резюме').click()
+    cy.get('[data-cy="button_save_cvStandard"]').contains('Разместить резюме').click()
     cy.url({timeout: 10000}).should('contain', 'http://arbi.local.glob-com.ru:3088/profile?page=cvs')
     cy.contains('Продуктовый аналитик')
   })

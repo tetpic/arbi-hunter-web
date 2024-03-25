@@ -7,12 +7,19 @@ import P from '@/components/ui/P'
 import Formatter from 'utils/formatter'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import Button from '@/components/ui/Button'
+import { useAppContext } from 'context/state'
+import { ModalType } from 'types/enums'
 
 interface Props {
 }
 
 export default function ShopBalance(props: Props) {
   const userContext = useUserContext()
+  const appContext = useAppContext()
+
+  const openRefillModal = () => {
+    appContext.showModal(ModalType.RefillBalanceModal)
+  }
 
   return (<div className={styles.root}> 
   
@@ -24,9 +31,9 @@ export default function ShopBalance(props: Props) {
 
   <div className={styles.balance}>
     <ArbiCoinGradientSvg/>
-    <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user.balance)}</P>
+    <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user.balance)||0}</P>
   </div>
 
-  <Button styleType={['gradient', 'wide']}>Пополнить</Button>
+  <Button styleType={['gradient', 'wide']} onClick={openRefillModal}>Пополнить</Button>
   </div>)
 }
