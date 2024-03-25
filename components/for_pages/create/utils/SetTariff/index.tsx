@@ -48,9 +48,13 @@ export default function SetTariff(props: Props) {
       }
     }).map(el => {
       return (
-        <>
-        {/* @ts-ignore */}
-        <div className={classnames(styles.tariff)} style={{'--gradientColor1': '#'+el.colors[0], '--gradientColor2': '#'+el.colors[1]}} key={el.id} onClick={()=>props.onSave(undefined, el.id)}>
+        <div 
+        className={classnames(styles.tariff)} 
+        /* @ts-ignore */
+        style={{'--gradientColor1': '#'+el.colors[0], '--gradientColor2': '#'+el.colors[1]}} 
+        key={el.id} 
+        onClick={()=>props.onSave(undefined, el.id)}
+        >
           <div className={styles.top}>
             <Image src={FILES + el.icon.source} alt={''} width={70} height={70} className={el.key.includes('Vip')?styles.crown:styles.topIcon}/>
             <P styleType={['w500', 'large']} className={styles.tariffType}>{el.name}</P>
@@ -68,7 +72,7 @@ export default function SetTariff(props: Props) {
             props.setText ||'Разместить'}
           </Button>
         </div>
-        </>
+
       )
     })}
   </div>

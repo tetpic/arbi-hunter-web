@@ -174,7 +174,7 @@ export default function Vacancy(props: Props) {
   }
 
   const submit = (data: IVacancyCreate, noRedirect?: boolean, tariffId?: number) => {
-    if(tariffId) {
+    if(tariffId && !creationContext.currentVc?.subscriptions && !creationContext.draftItem.current.subscriptions) {
       PurchaseRepository.cvVcPurchase({vacancyId:creationContext.draftId.current||props.id, tariffId})
       .then(res=> {
         saveVacancy(data, noRedirect)

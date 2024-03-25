@@ -124,7 +124,7 @@ export default function Cv(props: Props) {
   const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
     setLoading(true)
 
-    if(tariffId) {
+    if(tariffId && !creationContext.currentCv?.subscriptions && !creationContext.draftItem.current.subscriptions) {
       PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
       .then(res=> {
         saveCV(data, noReplace)
