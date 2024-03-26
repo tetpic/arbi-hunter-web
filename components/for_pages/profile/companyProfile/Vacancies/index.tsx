@@ -6,6 +6,7 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useTariffContext } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
 }
@@ -34,7 +35,7 @@ export default function Vacancies(props: Props) {
 
   useEffect(()=>{
     vacancyContext.setVacancies()
-    tariffContext.setPackets(userContext.currentProfile)
+    tariffContext.setPackets([PurchaseType.VacancyTariff])
   }, [])
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)

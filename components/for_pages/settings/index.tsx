@@ -11,6 +11,7 @@ import SiteSettings from './SiteSettings'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Patterns from './Patterns'
+import { VacancyWrapper } from 'context/vacancy_state'
 
 interface Props {
 }
@@ -72,7 +73,9 @@ export default function SettingsPage(props: Props) {
       case SettingsNavigation.Notifications:
         return <Notifications/>
       case SettingsNavigation.BlackList:
-        return <BlackList/>
+        return <VacancyWrapper>
+        <BlackList/>
+        </VacancyWrapper>
       case SettingsNavigation.Access:
         return <ChangePassword/>
       case SettingsNavigation.SiteSettings:

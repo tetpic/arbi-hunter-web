@@ -7,12 +7,15 @@ import Button from '@/components/ui/Button'
 import Image from 'next/image'
 import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
 import { useAppContext } from 'context/state'
-import { ModalType, SnackbarType } from 'types/enums'
+import { ModalType, PurchaseType, SnackbarType } from 'types/enums'
 import { FILES } from 'types/constants'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import { useTariffContext } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
+import CharacterRepository from 'data/repositories/CharacterRepository'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import { clearObject } from 'utils/helpers'
 
 
 interface Props {
@@ -31,6 +34,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
 
 
   const showPreviewModal = (tariff: ITariff) => {
+    
     if(tariff.price > userContext.user.balance) {
       appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
       return
@@ -40,6 +44,37 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       tariffs: tariffContext.packets,
       cvs,
       vacancies,
+      onBuy: (data) => {
+        if(tariff.purchaseType === PurchaseType.Character) {
+          CharacterRepository.createCharacter({gender: 'male'})
+          .then(_=> {
+            CharacterRepository.buyCharacter()
+            .then(res=> {
+              tariffContext.setPacketsState(state=> {
+                state.delete(tariff.id)
+                return new Map(state)
+              })
+            })
+            .catch(err => {
+              appContext.showSnackbar('Ошибка', SnackbarType.error)
+            })
+          })
+          return
+        }
+        PurchaseRepository.cvVcPurchase(clearObject({
+          date: data.date,
+          cvId: data.cvId,
+          vacancyId: data.vacancyId,
+          tariffId: tariff.id
+        }))
+        .then(_=>{
+          appContext.showSnackbar('Тариф успешно приобретен', SnackbarType.success)
+        })
+        .catch(err => {
+          appContext.showSnackbar('Ошибка', SnackbarType.error)
+        })
+      }
+  
     })
   }
 

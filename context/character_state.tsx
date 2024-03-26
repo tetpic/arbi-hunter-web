@@ -9,7 +9,7 @@ import { SnackbarType } from 'types/enums'
 import { useRouter } from 'next/router'
 
 interface IState {
-  init: ()=> void,
+  init: ()=> Promise<boolean>,
   modelLoaded: boolean,
   setModelLoad: Dispatch<SetStateAction<boolean>>
   activeSet: [ICharCategory, ICharItem[]],
@@ -62,7 +62,7 @@ export function CharacterWrapper(props: Props) {
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
   const [durations, setDurations ] = useState<{[key: string]: number}>({})
 
-  const init = async() => {
+  const init = async():Promise<boolean> => {
     if(!userContext.currentProfile) {
       return    
     }
@@ -112,16 +112,19 @@ export function CharacterWrapper(props: Props) {
         return new Map(state)
       })
     }
+    setDataLoaded(true)
     if(!currentChar) {
       setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
+      return false
     }
-    setDataLoaded(true)
+    
+    return currentChar.purchased
   }
 
   const buyCharacter = async():Promise<boolean> => {
+    await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
     return CharacterRepository.buyCharacter()
     .then(res => {
-      debugger
       return true
     })
     .catch(err => {

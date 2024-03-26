@@ -41,12 +41,15 @@ export default function UserEditor(props: Props) {
 
   const save = () => {
     if(characterContext.currentCharacter?.current?.purchased) {
+      
       characterContext.saveCurrentSet()
     }
     else {
+      
       characterContext.buyCharacter()
       .then(res=> {
         if(res) {
+          
           characterContext.saveCurrentSet()
         }
       })
@@ -62,7 +65,7 @@ export default function UserEditor(props: Props) {
     styleType={['gradient']}
     className={styles.saveButton}
     >
-      {isTabletWidth?'Готово':'Сохранить'}
+      {isTabletWidth?'Готово':characterContext.currentCharacter?.current?.purchased?'Сохранить':'Купить персонажа'}
     </Button>
     </>)
 

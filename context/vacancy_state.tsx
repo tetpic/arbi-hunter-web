@@ -3,16 +3,20 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
-import { ModerationStatusType } from 'types/enums'
+import { ModerationStatusType, SnackbarType } from 'types/enums'
+import { useAppContext } from './state'
 
 interface IState {
   currentVacancy: IVacancy
-  setCurrentVacancy: (id: number)=> void
+  setCurrentVacancy: (data: {id?: number, vacancy?: IVacancy})=> void
 
   draftVacancies: Map<number, IVacancy>
   archiveVacancies: Map<number, IVacancy>
   activeVacancies: Map<number, IVacancy>,
   setVacancies: (disableLoader?: boolean)=>Promise<boolean>
+
+  addToBlackList: (id?: number) => void
+  setBlackListedVacancies: () => void
 
 
   editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
@@ -46,6 +50,7 @@ interface Props {
 
 export function VacancyWrapper(props: Props) {
   const router = useRouter()
+  const appContext = useAppContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [draftVacancies, setDraftVacanciesState] = useState<Map<number, IVacancy>>(new Map())
@@ -108,6 +113,14 @@ export function VacancyWrapper(props: Props) {
   //   .catch(err=> false)
   // }
 
+  const addToBlackList = (id?: number)  => {
+    VacancyRepository.addToBlackList(id||currentVacancy.id)
+    .then(_=> {
+      router.back()
+      appContext.showSnackbar('Вакансия добавлена в черный список', SnackbarType.success)
+    })
+  }
+
   const setSavedVacancies = ():Promise<boolean> => {
     return VacancyRepository.getSavedFromCurrentProfile()
     .then(res=> {
@@ -116,6 +129,7 @@ export function VacancyWrapper(props: Props) {
     })
     .catch(_=> false)
   }
+  
 
   const saveVacancy = (id: number) => {
     VacancyRepository.addVcToSaved(id)
@@ -171,6 +185,13 @@ export function VacancyWrapper(props: Props) {
     router.push(`/create/vacancy?id=${vc.id}`)
   }
 
+  const setBlackListedVacancies = () => {
+    VacancyRepository.getBlacklistedVacancies()
+    .then(res => {
+      setSavedVCState(res.data)
+    })
+  }
+
   const findVacancies = async (data?: IVacancyCvSearchParams):Promise<boolean> => {
     const res = await VacancyRepository.searchVacancies(data, page, 40)
     if(typeof res === 'object') {
@@ -184,11 +205,16 @@ export function VacancyWrapper(props: Props) {
     return true
   }
 
-  const setCurrentVacancy = (id: number) => {
-    VacancyRepository.getVacancyById(id)
-    .then(res=> {
-      setCurrentVacancyState(res)
-    })
+  const setCurrentVacancy = (data: {id?: number, vacancy?: IVacancy}) => {
+    if(data.id) {
+      VacancyRepository.getVacancyById(data.id)
+      .then(res=> {
+        setCurrentVacancyState(res)
+      })
+    }
+    else if(data.vacancy) {
+      setCurrentVacancyState(data.vacancy)
+    }
   }
 
 
@@ -198,6 +224,8 @@ export function VacancyWrapper(props: Props) {
     foundVacancies,
     findVacancies,
     setVacancies,
+    addToBlackList,
+    setBlackListedVacancies,
     activeVacancies,
     editVacancy,
     savedVCs,

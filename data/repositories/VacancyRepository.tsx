@@ -127,6 +127,17 @@ export default class VacancyRepository {
     return res
   }
 
+  static async getBlacklistedVacancies(): Promise<IPagination<IVacancy>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/vacancy?blackListedByCurrentProfile=true',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async searchVacancies(data: IVacancyCvSearchParams, page?: number, limit: number = 40): Promise<IPagination<IVacancy>|null> {
     const dataToSend:any = {...data, page, limit, sort: 'createdAt,DESC'}
     data?.employment&&data.employment.length>0&&(dataToSend.employment = data.employment.join(','))
@@ -152,6 +163,17 @@ export default class VacancyRepository {
       method: 'get',
       url: '/api/vacancy/suggest',
       data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+  
+  static async addToBlackList(vacancyId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/vacancy/${vacancyId}/blackList`,
     })
     if(res.err) {
       return null

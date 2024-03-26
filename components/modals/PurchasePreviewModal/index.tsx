@@ -20,7 +20,6 @@ import ArrowSvg from '@/components/svg/ArrowSvg'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
-import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { PurchaseType } from 'types/enums'
 
 interface Props {
@@ -46,6 +45,7 @@ export interface PurchasePreviewModalArgs  {
   tariffs: Map<number, ITariff>
   cvs?: ICV[]
   vacancies?: IVacancy[]
+  onBuy: (data: PurchaseForm) => void
 }
 
 export default function PurchasePreviewModal(props: Props) {
@@ -58,24 +58,8 @@ export default function PurchasePreviewModal(props: Props) {
   const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies).filter(el=> args.tariffs.get(el.subscriptions?.tariff?.id)?.price < args.tariff?.price)||[]
 
   const buy = (data: PurchaseForm) => {
-    if(args.tariff.purchaseType === PurchaseType.Character) {
-      
-      return
-    }
-    PurchaseRepository.cvVcPurchase({
-      date: data.date,
-      cvId: data.cvId,
-      vacancyId: data.vacancyId,
-      tariffId: args.tariff.id
-    })
-    .then(res => {
-      debugger
-      setType(PurchaseStep.confirmation)
-    })
-    .catch(err => {
-      debugger
-    })
-    setType(PurchaseStep.purchase)
+    args.onBuy(data)
+    args.tariff.purchaseType === PurchaseType.Character?setType(PurchaseStep.purchase):setType(PurchaseStep.confirmation)
   }
 
   const formik = useFormik<PurchaseForm>({
@@ -244,7 +228,7 @@ export default function PurchasePreviewModal(props: Props) {
       <P styleType={['medium']}>{args.tariff.description}</P>
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>Выбрать дату активации</Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.setItems)}>Купить</Button> 
+        <Button styleType={['gradient', 'wide']} onClick={() => args.tariff.purchaseType === PurchaseType.Character ? formik.submitForm() : setType(PurchaseStep.setItems)}>Купить</Button> 
       </div>
     </div>
   )

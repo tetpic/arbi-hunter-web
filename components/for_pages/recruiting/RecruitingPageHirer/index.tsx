@@ -93,7 +93,7 @@ function RecruitingPageHirerInner(props: Props) {
   const init = async() => {
     vacancyContext.setVacancies()
     if(props.vcId) {
-      vacancyContext.setCurrentVacancy(props.vcId)
+      vacancyContext.setCurrentVacancy({id: props.vcId})
     }
     setTimeout(()=>{
       isInited.current = true      

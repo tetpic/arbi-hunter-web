@@ -62,6 +62,17 @@ export default function VacancyPage(props: Props) {
     appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {vacancyId: currentVacancy.id, cvs: cvContext.savedCvs})
   }
 
+  const likeHandler = () => {
+    if(!currentVacancy.isSavedByCurrentProfile) {
+      vacancyContext.saveVacancy(currentVacancy.id)
+      vacancyContext.setCurrentVacancy({vacancy: {...currentVacancy, isSavedByCurrentProfile: true}})
+    }
+    else {
+      vacancyContext.removeVacancyFromSaved(currentVacancy.id)
+      vacancyContext.setCurrentVacancy({vacancy: {...currentVacancy, isSavedByCurrentProfile: false}})
+    }
+  }
+
   useEffect(()=>{
     if(currentVacancy && !currentVacancy?.profile) {
       router.back()
@@ -82,7 +93,7 @@ export default function VacancyPage(props: Props) {
 
   useEffect(()=>{
     cvContext.setSavedCvs()
-    vacancyContext.setCurrentVacancy(props.id)  
+    vacancyContext.setCurrentVacancy({id: props.id})  
   }, [])
 
 
@@ -176,8 +187,8 @@ export default function VacancyPage(props: Props) {
           {currentVacancy.showContactName &&
             <Button styleType={['black', 'borderBlue']} onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>Показать контакты</Button>
           }
-          <FavoritesButton/>
-          <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
+          <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+          <Button styleType={['icon', 'black']} onClick={()=>vacancyContext.addToBlackList()}><CloseEyeSvg/></Button>
           {currentVacancy.showContactName && isShowContacts[0] &&
             <ContactsModal 
             key={'contacts1'}

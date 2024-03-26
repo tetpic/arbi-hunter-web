@@ -8,6 +8,7 @@ import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from './state'
+import { clearObject } from 'utils/helpers'
 
 interface IState {
   token: string,
@@ -49,8 +50,6 @@ export function UserWrapper(props: Props) {
   const [profileType, setProfileTypeState] = useState<ProfileType>(props.profileType||ProfileType.Employee)
   const [isLogged, setIsLogged] = useState<boolean>(props.user?.isRegistrationCompleted||false)
   const [currentProfile, setCurrentProfileState] = useState<IUserProfile>(props.user?.profiles?props.user.profiles[0]:null)
-
-
   
   const userRef = useRef<IUser | null>(null)
   const isAuth = useRef<boolean>(false)
@@ -102,10 +101,15 @@ export function UserWrapper(props: Props) {
     return true
   }
 
-
-
-
   const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<IUserProfile|false> => {
+    if(data.email||data.phone) {
+      const dataToSend = {
+        email: data.email,
+        phone: data.phone
+      }
+      UserRepository.editCurrentUser(clearObject(dataToSend))
+    }
+   
     return UserRepository.editProfileByType(data, currentProfile.profileType)
     .then(p=> {
       setCurrentProfileState(p)

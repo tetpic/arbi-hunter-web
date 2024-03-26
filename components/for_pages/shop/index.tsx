@@ -11,6 +11,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useCharacterContext } from 'context/character_state'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
 }
@@ -30,13 +31,16 @@ export default function Shop(props: Props) {
   const characterContext = useCharacterContext()
 
   useEffect(()=>{
-    tariffContext.setPackets(userContext.currentProfile)
     if(userContext.currentProfile.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
-      characterContext.init()
+      characterContext.init().then((res)=>{
+        
+        tariffContext.setPackets([PurchaseType.CvTariff, !res&&PurchaseType.Character].filter(Boolean))
+      })
     }
     else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
       vacancyContext.setVacancies()      
+      tariffContext.setPackets([PurchaseType.VacancyTariff])
     }
   }, [])
 

@@ -22,6 +22,7 @@ import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
 import StarSvg from '@/components/svg/StarSvg'
+import ArbiLogoTextSvg from '@/components/svg/ArbiLogoTextSvg'
 
 const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
 
@@ -84,6 +85,7 @@ export default function Header(props: Props) {
       {/* {(!userContext.isLogged || !userContext.currentProfile) && */}
       <Link href={'/'} className={styles.logo}>
         <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
+        <ArbiLogoTextSvg className={styles.logoText}/>
       </Link>
       {/* } */}
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>

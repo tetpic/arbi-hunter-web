@@ -1,15 +1,13 @@
 import { IPurchase, ITariff } from 'data/interfaces/Common'
-import { ProfileType } from 'data/interfaces/IRegistration'
-import { IUserProfile } from 'data/interfaces/IUser'
 import TariffRepository from 'data/repositories/TariffRepository'
-import { createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { PurchaseType } from 'types/enums'
 
 interface IState {
   packets: Map<number, ITariff>
   purchased: Map<number, IPurchase>
-  setPackets: (profile: IUserProfile) => Promise<void>
-  
+  setPackets: (types: PurchaseType[]) => void
+  setPacketsState: Dispatch<SetStateAction<Map<number, ITariff>>>
 }
 
 
@@ -24,27 +22,17 @@ export function TariffWrapper(props: Props) {
   const [packets, setPacketsState] =  useState<Map<number, ITariff>>(new Map)
   const [purchased, setPurchasedState] =  useState<Map<number, IPurchase>>(new Map)
 
-  const setPackets = async(profile: IUserProfile) => {
-    if(profile.profileType === ProfileType.Employee) {
-      const [cvTariffs, modelTariffs] = await Promise.all([
-        TariffRepository.getTariff(PurchaseType.CvTariff),
-        !profile.logo?.source &&TariffRepository.getTariff(PurchaseType.Character)
-      ].filter(Boolean))
-      setPacketsState(state => {
-        cvTariffs.forEach(t => state.set(t.id, t))
-        if(modelTariffs) {
-          modelTariffs.forEach(t => state.set(t.id, t))
-        }
-        return new Map(state)
+  const setPackets = async(types: PurchaseType[]) => {
+    const tariffs = await Promise.all(types.map(t=> TariffRepository.getTariff(t)))
+    tariffs.forEach(el => {
+      el.forEach(e=> {
+        setPacketsState(state => {
+          state.set(e.id, e)
+          return new Map(state)
+        })
       })
-    }
-    else if(profile.profileType  === ProfileType.Hirer) {
-      const cvTariffs = await TariffRepository.getTariff(PurchaseType.VacancyTariff)
-      setPacketsState(state => {
-        cvTariffs.forEach(t => state.set(t.id, t))
-        return new Map(state)
-      })
-    }
+    })
+
 
     TariffRepository.getPurchasedItems({page: 1, limit: 10, state: 'active'})
     .then(res=> {
@@ -59,7 +47,8 @@ export function TariffWrapper(props: Props) {
   const value: IState = {
     packets,
     setPackets,
-    purchased
+    setPacketsState,
+    purchased,
   }
 
   return (
