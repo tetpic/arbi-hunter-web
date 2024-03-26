@@ -121,7 +121,7 @@ export default function NavBar(props: Props) {
           <ArbiLogoTextSvg className={styles.linkText}/>
         </Link>
 
-        <Link aria-label='to chats'  className={classNames(styles.coloredLink, styles.link)} href={'/profile?page=shop'}>
+        <Link aria-label='to shop'  className={classNames(styles.coloredLink, styles.link)} href={'/shop'}>
           <div className={classNames(styles.coloredIcon, styles.icon)}>
             <WalletSvg className={styles.linkSvg}/>
           </div>

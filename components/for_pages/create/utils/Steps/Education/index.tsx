@@ -33,7 +33,7 @@ export default function Education(props: Props) {
           fromDate: '',
           toDate: '',
           toPresent: true,
-          faculity: '',
+          faculty: '',
         }]
       },
       initialValues: initial? {educationInfo: [{...initial, toPresent: !initial.toDate}]}:null,

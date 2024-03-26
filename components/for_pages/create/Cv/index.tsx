@@ -188,10 +188,11 @@ export default function Cv(props: Props) {
   })
 
   const nextPageValidator = (pageNumber?: number) => {
-    const setErr = (val: string, err?: string) => {
-      formik.setFieldTouched(val, true).then(_=>{
-        formik.setFieldError(val, err||' ')
+    const setErr = (fieldName: string, err?: string) => {
+      formik.setFieldTouched(fieldName, true).then(_=>{
+        formik.setFieldError(fieldName, err||' ')
       })
+      document.querySelector('[data-field="'+fieldName+'"]')?.scrollIntoView({block: 'center', behavior: 'smooth'})
     }
 
     switch(progress) {
@@ -231,7 +232,6 @@ export default function Cv(props: Props) {
       case 2: {
         formik.validateField('birthday')
         .then(v => {
-          
           if(v) {
             setErr('birthday', 'Укажите дату рождения')
           }
@@ -259,7 +259,7 @@ export default function Cv(props: Props) {
                 fromDate: '',
                 toDate: '',
                 toPresent: true,
-                faculity: '',
+                faculty: '',
               }]
             },
             initialValues: null,
@@ -360,7 +360,6 @@ export default function Cv(props: Props) {
       creationContext.getCurrentCv(props.id, props.cv)
     }  
   }, [])
-
 
   useEffect(()=>{
     if(creationContext.activeSubCategory.length > 0 && progress === 1) {

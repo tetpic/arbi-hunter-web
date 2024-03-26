@@ -228,7 +228,7 @@ export default function PersonalHeader(props: Props) {
         <div className={styles.modelWrapper} >
           <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
           {characterContext.variant &&  characterContext.dataLoaded &&
-            <ThreeModelVariant disableControls  data={characterContext.variant } actions={props.action} r={4}/> 
+            <ThreeModelVariant disableControls  data={characterContext.variant } actions={props.action} r={0}/> 
           }
         </div>
       </div>

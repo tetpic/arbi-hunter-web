@@ -369,14 +369,14 @@ export default function CvPage(props: Props) {
 
       <div className={styles.item}>
         <P styleType={['large', 'w600']}>Образование</P>
-        <P styleType={['w500', 'medium']}>{TranslateEducationType(currentCv.education)}</P>
+        <P styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education)}</P>
         {currentCv.educationInfo.length > 0 && 
           <div className={styles.cards}>
             { currentCv.educationInfo.map(el=> {
               return <div className={styles.card}>
                   <P styleType={['w500', 'large']}>{el.institution}</P>
-                  <P styleType={['w500', 'medium']}>{el.faculity}</P>
-                  <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                  <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                  <P styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
                 </div>
               })
               }

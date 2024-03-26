@@ -40,7 +40,7 @@ export default function UserEditor(props: Props) {
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
 
   const save = () => {
-    if(characterContext.currentCharacter.current.purchased) {
+    if(characterContext.currentCharacter?.current?.purchased) {
       characterContext.saveCurrentSet()
     }
     else {

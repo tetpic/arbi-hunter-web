@@ -12,7 +12,7 @@ describe('simple cv full create', ()=> {
     cy.get(`[data-cy="input_educationInfo[${index}].institution"] input`)
     .type('testInstitution')
     .should('have.value', 'testInstitution')
-    cy.get(`[data-cy="input_educationInfo[${index}].faculity"] input`)
+    cy.get(`[data-cy="input_educationInfo[${index}].faculty"] input`)
     .type('testFaculity')
     .should('have.value', 'testFaculity')
     cy.get(`[data-cy="input_educationInfo[${index}].speciality"] input`)

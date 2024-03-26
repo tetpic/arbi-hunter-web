@@ -47,7 +47,7 @@ export interface ExperienceInfo extends TimeLine {
 export interface EducationInfo extends TimeLine {
   institution: string,
   speciality: string,
-  faculity: string
+  faculty: string
 }
 
 export interface CoursesInfo extends TimeLine {
