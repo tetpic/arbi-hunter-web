@@ -81,3 +81,38 @@
     }
   }
 }
+
+.optionsWrapper {
+  position: relative;
+  width: 100%;
+
+  .options {
+    top: 8px;
+  }
+}
+
+.lookType {
+  white-space: nowrap;
+  font-size: $smallText;
+}
+
+.vacancyLookType {
+  width: 100%;
+
+  
+  .activelyLooking {
+    background-color: $greenLight;
+    color: $green;
+  }
+  
+  .passivelyLooking {
+    background-color: $yellowLight;
+    color: $yellow;
+  }
+  
+  .notLooking {
+    color: $red;
+    background-color: $redLight;
+  }
+}
+

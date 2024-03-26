@@ -145,8 +145,8 @@ export default function Cv(props: Props) {
     patronymic: props.cv?.patronymic|| userContext.currentProfile?.patronymic,
     birthday: props.cv?.birthday|| userContext.currentProfile?.birthday,
     compensation: props.cv?.compensation||null,
-    phone: userContext.currentProfile?.phone,
-    email: userContext.currentProfile?.email,
+    phone: props.cv?.phone||userContext.currentProfile?.phone,
+    email: props.cv?.email||userContext.currentProfile?.email,
     telegramNickname: props.cv?.telegramNickname||userContext.currentProfile?.telegramNickname, 
     cityId: props.cv?.cityId||userContext.currentProfile?.cityId,
     countryId: props.cv?.countryId||userContext.currentProfile?.countryId,
@@ -415,7 +415,7 @@ export default function Cv(props: Props) {
         }
         setShowPreview(false)
       }} 
-      cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values}) as ICV}/>
+      cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values, assets: creationContext.helpObjects.assets}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
       <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='cv'/>

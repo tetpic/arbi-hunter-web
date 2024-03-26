@@ -56,18 +56,25 @@
     font-weight: $medium;
     font-size: $mediumText;
     border-radius: 10px;
-
-    &_red {
-      color: $red;
-      background-color: #E7605650;
-    }
-
-    &_green {
-      color: $green;
-      background-color: #339B6250;
-    }
   }
+
+  .activelyLooking {
+    background-color: $greenLight;
+    color: $green;
+  }
+  
+  .passivelyLooking {
+    background-color: $yellowLight;
+    color: $yellow;
+  }
+  
+  .notLooking {
+    background-color: $redLight;
+    color: $red;
+  }
+  
 }
+
 
 .time {
   color: $greyLight;

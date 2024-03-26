@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, VacancyLookType } from 'types/enums'
+import { ApplicationBSSelectType,  ApplicationStatus,  ModalType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -22,6 +22,8 @@ import { useRouter } from 'next/router'
 import FolderPlusSvg from '@/components/svg/FolderPlusSvg'
 import DotSvg from '@/components/svg/DotSvg'
 import { useState } from 'react'
+import { TranslateVacancyLookType } from 'utils/enumsTranslations'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   cv: ICV
@@ -120,8 +122,8 @@ export default function CvItem({cv, ...props}: Props) {
       <CvItemTop cv={cv} userImage={userImage}/>
 
       {cv.vacancyLookType &&
-        <p className={classNames(styles.lookType, cv.vacancyLookType === VacancyLookType.NotLooking?styles.lookType_red:styles.lookType_green)}>
-          {cv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'Активно ищет работу'}
+        <p className={classNames(styles.lookType, styles[cv.vacancyLookType])}>
+          {TranslateVacancyLookType(cv.vacancyLookType, ProfileType.Hirer)}
         </p>
       }
 

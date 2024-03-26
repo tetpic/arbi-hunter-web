@@ -6,13 +6,20 @@ import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { PreviewImage } from 'data/interfaces/Common'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { usePersonalContext } from 'context/personal_state'
 import FileInput from 'components/fields/FileInput'
 import { useUserContext } from 'context/user_state'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
-import { ModalType } from 'types/enums'
+import { ModalType, VacancyLookType } from 'types/enums'
 import { IUserImageModalProps } from 'components/modals/UserImageModal'
+import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
+import OptionsDropDown from '@/components/ui/OptionsDropDown'
+import OptionsList from '@/components/ui/OptionsList'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import { colors } from 'styles/variables'
+import { TranslateVacancyLookType } from 'utils/enumsTranslations'
+import classNames from 'classnames'
 
 interface Props {
   isEditing?: boolean
@@ -27,6 +34,9 @@ export default function PersonalCard(props: Props) {
   const {isTabletWidth} = appContext.size
   const [logoImage, setLogoImage] = useState<PreviewImage>()
   const userContext = useUserContext()
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+
 
   const saveHandler = () => {
     if (props.isEditing) {
@@ -53,7 +63,37 @@ export default function PersonalCard(props: Props) {
     }})
   }
 
-  return (<div className={styles.root}> 
+  const setVacancyLookType = (vacancyLookType: VacancyLookType) => {
+    openDropDown(false)
+    userContext.editCurrentProfile({vacancyLookType})
+    .then(res=> {
+      if(res) {
+        personalContext.setCurrentProfile(res)
+      }
+    })
+  }
+
+  const optionsList = <OptionsList 
+  options={[
+    {
+      title: TranslateVacancyLookType(VacancyLookType.ActivelyLooking, personalContext.currentProfile?.profileType), 
+      onClick: ()=>setVacancyLookType(VacancyLookType.ActivelyLooking), 
+      style:{color: colors.green, backgroundColor: colors.greenLight, borderRadius: 0}
+    },
+    {
+      title: TranslateVacancyLookType(VacancyLookType.PassivelyLooking, personalContext.currentProfile?.profileType), 
+      onClick: ()=>setVacancyLookType(VacancyLookType.PassivelyLooking), 
+      style:{color: colors.yellow, whiteSpace: 'nowrap', backgroundColor: colors.yellowLight, borderRadius: 0}
+    },
+    {
+      title: TranslateVacancyLookType(VacancyLookType.NotLooking, personalContext.currentProfile?.profileType), 
+      onClick: ()=>setVacancyLookType(VacancyLookType.NotLooking), 
+      style:{color: colors.red, backgroundColor: colors.redLight, borderRadius: 0}
+    },
+  ]} 
+  onMouseLeave={()=>{}}/>
+
+  return (<div className={styles.root}>
     <div className={styles.imageWrapper}>
     {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage && personalContext.currentProfile.profileType === ProfileType.Employee &&
       <UserPic 
@@ -73,7 +113,7 @@ export default function PersonalCard(props: Props) {
     }
     {
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
-      <Button onClick={openUserImageModal} className={styles.photoButton}>
+      <Button onClick={openUserImageModal} styleType={['wide']} className={styles.photoButton}>
         {!isTabletWidth && (personalContext.currentProfile?.image?'Изменить фото':'Добавить фото')}
         {isTabletWidth && <EditPencilSvg/>}
       </Button>
@@ -90,6 +130,27 @@ export default function PersonalCard(props: Props) {
     </div>
     
     <p className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</p>
+
+    {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
+    <>
+      <div className={styles.vacancyLookType}>
+        <Button 
+        styleType={['grey', 'wide']} 
+        onClick={()=>openDropDown(true)} 
+        className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}>
+          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType)||'Выберите статус'} <ArrowDownSvg/>
+        </Button>
+        <div className={styles.optionsWrapper}>
+          <OptionsDropDown 
+          className={styles.options}
+          options={optionsList} 
+          active={dropDown} 
+          getRef={(r)=> dropRef.current = r} 
+          onClose={()=>{}}
+          />
+        </div>
+      </div>
+    </>}
     {/* <div className={styles.rating}>
       <p className={styles.ratingValue}>4.0</p>
       <RatingLine rating={4}/>

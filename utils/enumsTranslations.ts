@@ -1,4 +1,5 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -260,6 +261,18 @@ export const TranslateEmploymentType = (e: EmploymentType) => {
       return 'Частичная'
     case EmploymentType.Project:
       return 'Проектная'
+  }
+  
+}
+
+export const TranslateVacancyLookType = (v: VacancyLookType, profileType: ProfileType) => {
+  switch(v) {
+    case VacancyLookType.ActivelyLooking:
+      return profileType===ProfileType.Employee? 'Активно ищу работу': 'Активно ищет работу'
+    case VacancyLookType.NotLooking:
+      return profileType === ProfileType.Employee? 'Не ищу работу': 'Не ищет работу'
+    case VacancyLookType.PassivelyLooking:
+      return profileType === ProfileType.Employee? 'Рассматриваю предложения': 'Рассматривает предложения'
   }
   
 }

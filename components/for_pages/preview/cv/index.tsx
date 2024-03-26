@@ -1,7 +1,5 @@
 import styles from './index.module.scss'
-import { useCvContext } from 'context/cv_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { useRouter } from 'next/router'
 import Title from '@/components/ui/TitleForSection'
 import PreviewItem from '@/components/ui/PreviewItem'
 import UserPic from '@/components/ui/UserPic'
@@ -25,7 +23,6 @@ import LinkedInSvg from '@/components/svg/LinkedInSvg'
 import SkypeSvg from '@/components/svg/SkypeSvg'
 import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
 import MailAltSvg from '@/components/svg/MailAltSvg'
-import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
@@ -39,13 +36,9 @@ interface Props {
 }
 
 export default function CvPreview(props: Props) {
-  const cvContext = useCvContext()
   const creationContext = useCreateVcCvContext()
-  const appContext = useAppContext()
-  const currentCv = props.cv
-  
-  const router = useRouter()
   const userContext = useUserContext()
+  const currentCv = props.cv
 
   const personalHead = (
     <div className={styles.head}>

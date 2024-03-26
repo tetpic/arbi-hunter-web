@@ -414,7 +414,9 @@ export default function CvPage(props: Props) {
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
         <div className={styles.item}>
           <P styleType={['large', 'w600']}>Портфолио</P>
-          <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+          {currentCv.portfolio &&
+            <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+          }
           <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
         </div>
       }
