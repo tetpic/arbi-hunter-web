@@ -39,6 +39,7 @@ import FavoritesButton from '@/components/ui/FavoritesButton'
 import PencilSvg from '@/components/svg/PencilSvg'
 import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
+import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 
 
 interface Props {
@@ -299,6 +300,14 @@ export default function CvPage(props: Props) {
           </P>
           </Link>
           }
+          {currentCv.viber &&
+            <Link href={'viber://chat?number=+'+currentCv.viber}>
+              <P styleType={['w500', 'medium', 'alignCenter']}>
+                <Button styleType={['icon', 'black']}><ViberLogoSvg/></Button>
+                {currentCv.viber}
+              </P>
+            </Link>
+          }
         </div>
       }
 
@@ -355,9 +364,11 @@ export default function CvPage(props: Props) {
             {currentCv.experienceInfo.map(el=> {
               return  <div className={styles.card}>
                 <P styleType={['medium', 'w500']}>{el.position}</P>
-                <P styleType={['medium', 'w500']}>{el.company}</P>
+                <P styleType={['large', 'w500']}>{el.company}</P>
+                {el.description &&
+                  <P styleType={['medium', 'w500']}>{el.description}</P>
+                }
                 <P styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
-                <P styleType={['medium', 'w500']} className={styles.card__bottom}>{el.description}</P>
               </div>
               })
             }
@@ -376,6 +387,9 @@ export default function CvPage(props: Props) {
               return <div className={styles.card}>
                   <P styleType={['w500', 'large']}>{el.institution}</P>
                   <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                  {el.faculty &&
+                    <P styleType={['w500', 'medium']}>{el.faculty}</P>
+                  }
                   <P styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
                 </div>
               })

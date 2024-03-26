@@ -183,6 +183,9 @@ export default function CvPreview(props: Props) {
               return <div className={styles.experience}>
                 <P styleType={['w500', 'medium']}>{el.position}</P>
                 <P styleType={['w500', 'medium']}>{el.company}</P>
+                {el.description &&
+                  <P styleType={['w500', 'medium']}>{el.description}</P>
+                }
                 <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })
@@ -200,7 +203,12 @@ export default function CvPreview(props: Props) {
             currentCv.educationInfo.map(el=> {
               return <div className={styles.experience}>
                 <P styleType={['w500', 'medium']}>{el.institution}</P>
+                {el.speciality &&
                 <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                }
+                {el.faculty &&
+                <P styleType={['w500', 'medium']}>{el.faculty}</P>
+                }
                 <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })

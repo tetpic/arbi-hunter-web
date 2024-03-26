@@ -8,6 +8,7 @@ import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import UserEditor from './UserEditor'
 import Personal from '../Personal'
+import { TariffWrapper } from 'context/tariff_state'
 
 interface Props {
   currentPage: ProfilePages 
@@ -34,7 +35,10 @@ export default function UserProfile(props: Props) {
       case ProfilePages.Saved:
         return <Saved/>
       case ProfilePages.Cvs:
-        return <CVs/>
+        return <TariffWrapper>
+        <CVs/>
+        </TariffWrapper>
+        
       // case ProfilePages.Shop:
       // return <Shop/>
       // case ProfilePages.Patterns:

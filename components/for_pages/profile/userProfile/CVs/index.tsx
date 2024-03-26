@@ -7,6 +7,8 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
+import { useTariffContext } from 'context/tariff_state'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
 }
@@ -34,9 +36,11 @@ export default function CVs(props: Props) {
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
   const items = Object.values(CVNavigation).map(el=> {return {name: translate(el), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
+  const tariffContext = useTariffContext()
 
   useEffect(()=>{
     cvContext.setSavedCvs()
+    tariffContext.setPackets([PurchaseType.CvTariff])
   }, [])
 
   useEffect(()=>{

@@ -16,6 +16,8 @@ import { useUserContext } from 'context/user_state'
 import CharacterRepository from 'data/repositories/CharacterRepository'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { clearObject } from 'utils/helpers'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 
 interface Props {
@@ -29,12 +31,11 @@ interface Props {
 export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) {
   const appContext = useAppContext()
   const tariffContext = useTariffContext()
-  const userContext = useUserContext()
-  
+  const userContext = useUserContext()  
+  const router = useRouter()
 
 
-  const showPreviewModal = (tariff: ITariff) => {
-    
+  const showPreviewModal = () => {
     if(tariff.price > userContext.user.balance) {
       appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
       return
@@ -78,6 +79,14 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
     })
   }
 
+  useEffect(()=>{
+    if(tariff.purchaseType === PurchaseType.Character && router.query.buy === PurchaseType.Character ) {
+      showPreviewModal()
+    }
+  }, [router])
+
+
+
   // @ts-ignore
   return (<div className={styles.item} key={tariff.id} style={{'--gradientColor1': '#'+tariff.colors[0], '--gradientColor2': '#'+tariff.colors[1]}}>
   {tariff.icon &&
@@ -97,7 +106,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   } 
   <P>{tariff.description}</P>
   {props.type === 'buy' &&
-  <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal(tariff)}>Купить</Button>
+  <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>Купить</Button>
   }
   {props.type === 'info' &&
     <P className={styles.button}  styleType={['medium', 'w500']}>Куплено {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>

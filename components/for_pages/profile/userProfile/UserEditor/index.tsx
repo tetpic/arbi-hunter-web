@@ -11,7 +11,9 @@ import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
 import { CharCategoryKey } from 'data/interfaces/ICharacter'
-import { useUserContext } from 'context/user_state'
+import { useRouter } from 'next/router'
+import { PurchaseType } from 'types/enums'
+
 
 interface Props {
 }
@@ -34,26 +36,17 @@ export enum ModelActions {
 
 export default function UserEditor(props: Props) {
   const characterContext = useCharacterContext()
-  const userContext = useUserContext()
   const appContext = useAppContext()
+  const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
 
   const save = () => {
     if(characterContext.currentCharacter?.current?.purchased) {
-      
       characterContext.saveCurrentSet()
     }
-    else {
-      
-      characterContext.buyCharacter()
-      .then(res=> {
-        if(res) {
-          
-          characterContext.saveCurrentSet()
-        }
-      })
-      
+    else {     
+      router.push({pathname:'/shop', query: {page: 'packets', buy: PurchaseType.Character}}) 
     }
   }
 
@@ -67,7 +60,7 @@ export default function UserEditor(props: Props) {
     >
       {isTabletWidth?'Готово':characterContext.currentCharacter?.current?.purchased?'Сохранить':'Купить персонажа'}
     </Button>
-    </>)
+  </>)
 
   const onNavClick = (n: number) => {
     const key = [...categories.keys()].find(el=> el.id === n)

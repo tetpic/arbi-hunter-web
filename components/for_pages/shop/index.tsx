@@ -12,6 +12,7 @@ import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useCharacterContext } from 'context/character_state'
 import { PurchaseType } from 'types/enums'
+import { useRouter } from 'next/router'
 
 interface Props {
 }
@@ -29,6 +30,7 @@ export default function Shop(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const characterContext = useCharacterContext()
+  const router = useRouter()
 
   useEffect(()=>{
     if(userContext.currentProfile.profileType === ProfileType.Employee) {
@@ -43,6 +45,12 @@ export default function Shop(props: Props) {
       tariffContext.setPackets([PurchaseType.VacancyTariff])
     }
   }, [])
+
+  useEffect(()=>{
+    if(router.query.page) {
+      setPage(router.query.page as ShopPages)
+    }
+  }, [router])
 
 
 

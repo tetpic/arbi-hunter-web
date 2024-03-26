@@ -22,6 +22,8 @@ import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
 import { useRouter } from 'next/router'
+import { useTariffContext } from 'context/tariff_state'
+import P from '@/components/ui/P'
 
 interface Props {
   cv: ICV
@@ -41,6 +43,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
+  const tariffContext = useTariffContext()
+  const tariff = tariffContext.packets?.get(cv.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
+
 
   const archiveHandler =(e: React.MouseEvent<HTMLElement>)=> {
     e.preventDefault()
@@ -92,8 +97,6 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const showVacancies = () => {
-    // feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
-    // profilePageContext.pager(ProfilePages.FeedBacks)
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories: [cv.categories[0]?.baseId]})}})
   }
 
@@ -121,10 +124,21 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       }
     </div>
 
+    {tariff &&
+      <P
+      styleType={['medium', 'w500']}
+      className={styles.tariff} 
+      // @ts-ignore
+      style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}
+      >
+        {tariff.name}
+      </P>
+    }
+
+
     {(props.type !== 'drafts' || !cv.completedSteps) &&
       <Statistics 
-      title='Статистика за неделю'
-      className={styles.stats}
+      title='Статистика за неделю'     
       items={[
         {name: 'Показы', count: cv.totalProposals},
         {name: 'Просмотры', count: cv.totalViews},
