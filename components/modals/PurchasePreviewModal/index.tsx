@@ -11,7 +11,6 @@ import Formatter from 'utils/formatter'
 import Button from '@/components/ui/Button'
 import CrossSvg from '@/components/svg/CrossSvg'
 import { useState } from 'react'
-import DateField from '@/components/fields/DateField'
 import { Form, FormikProvider, useFormik } from 'formik'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import { useUserContext } from 'context/user_state'
@@ -20,7 +19,7 @@ import ArrowSvg from '@/components/svg/ArrowSvg'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
-import { PurchaseType } from 'types/enums'
+import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
 
 interface Props {
   onClose: () => void
@@ -45,6 +44,7 @@ export interface PurchasePreviewModalArgs  {
   tariffs: Map<number, ITariff>
   cvs?: ICV[]
   vacancies?: IVacancy[]
+  data?: {cvId?: number, vacancyId?: number}
   onBuy: (data: PurchaseForm) => void
 }
 
@@ -55,18 +55,19 @@ export default function PurchasePreviewModal(props: Props) {
   const args:PurchasePreviewModalArgs = appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
   const [date, setDate] = useState<string|undefined>(undefined)
-  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies).filter(el=> args.tariffs.get(el.subscriptions?.tariff?.id)?.price < args.tariff?.price)||[]
+  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies)?.filter(el=> args.tariffs.get(el.subscriptions?.tariff?.id)?.price < args.tariff?.price)||[]
 
   const buy = (data: PurchaseForm) => {
+    debugger
     args.onBuy(data)
-    args.tariff.purchaseType === PurchaseType.Character?setType(PurchaseStep.purchase):setType(PurchaseStep.confirmation)
+    setType(PurchaseStep.purchase)
   }
 
   const formik = useFormik<PurchaseForm>({
     initialValues: {
       date: date,
-      cvId: undefined,
-      vacancyId: undefined
+      cvId: args.data?.cvId||undefined,
+      vacancyId: args.data?.vacancyId||undefined
     },
     onSubmit: buy
   })
@@ -148,20 +149,7 @@ export default function PurchasePreviewModal(props: Props) {
       </div>
       <P>{formik.values.date}</P>
       <div className={styles.calendarField}>
-        <DateField 
-        styleType={PurchaseStep.default} 
-        showTimeInput
-        openDefault
-        hideInput
-        minDate={new Date()}
-        maxDate={maxDate()}
-        name={'date'}
-        datePickerProps={{
-          onChange(date, event) {
-            formik.setFieldValue('date', date.toString())
-          },
-        }}
-        />
+        <ShopDateTimePicker name={'date'}/>
       </div>
       <div className={styles.buttonsWrapper}>
         <Button 
@@ -200,7 +188,7 @@ export default function PurchasePreviewModal(props: Props) {
       <Button 
       styleType={['gradient']} 
       onClick={()=>setType(PurchaseStep.confirmation)}
-      disabled={balance < args.tariff.price||(args.cvs.length > 0&&!formik.values.cvId)||(args.vacancies.length > 0&&!formik.values.vacancyId)}
+      disabled={balance < args.tariff.price||(args.cvs?.length > 0&&!formik.values.cvId)||(args.vacancies?.length > 0&&!formik.values.vacancyId)}
       >
         Продолжить
       </Button>
@@ -228,7 +216,7 @@ export default function PurchasePreviewModal(props: Props) {
       <P styleType={['medium']}>{args.tariff.description}</P>
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>Выбрать дату активации</Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => args.tariff.purchaseType === PurchaseType.Character ? formik.submitForm() : setType(PurchaseStep.setItems)}>Купить</Button> 
+        <Button styleType={['gradient', 'wide']} onClick={() => args.data?setType(PurchaseStep.confirmation):setType(PurchaseStep.setItems)}>Купить</Button> 
       </div>
     </div>
   )

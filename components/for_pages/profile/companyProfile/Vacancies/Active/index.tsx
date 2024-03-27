@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
-import VacancyItem from '../VacancyItem'
+import ProfileVacancyItem from '../ProfileVacancyItem'
 
 interface Props {
 }
@@ -18,7 +18,7 @@ export default function VacanciesActive(props: Props) {
       <div className={styles.wrapper}>
         {!vacancyContext.isLoading &&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
           [...vacancyContext.activeVacancies.values()].map((el, index)=> {
-            return <VacancyItem 
+            return <ProfileVacancyItem 
             key={index} 
             isLast={vacancyContext.activeVacancies.size > 1 && vacancyContext.activeVacancies.size-1 ===index} 
             vacancy={el} 

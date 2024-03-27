@@ -35,8 +35,7 @@ export default function Shop(props: Props) {
   useEffect(()=>{
     if(userContext.currentProfile.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
-      characterContext.init().then((res)=>{
-        
+      characterContext.init().then((res)=>{        
         tariffContext.setPackets([PurchaseType.CvTariff, !res&&PurchaseType.Character].filter(Boolean))
       })
     }
@@ -51,9 +50,6 @@ export default function Shop(props: Props) {
       setPage(router.query.page as ShopPages)
     }
   }, [router])
-
-
-
 
   const navSet = (()=>{
     const obj = Object.values(ShopPages)

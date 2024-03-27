@@ -94,6 +94,7 @@ export default function DateField(props: Props) {
           yearDropdownItemNumber={70}
           dropdownMode="scroll"
           
+          
           maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={
             <InputField 

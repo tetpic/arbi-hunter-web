@@ -24,7 +24,6 @@ import Spacer from '@/components/ui/Spacer'
 import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
 import VacancyPreview from '../../preview/vacancy'
-import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 interface Props {
   id?: number
@@ -173,20 +172,8 @@ export default function Vacancy(props: Props) {
     }
   }
 
-  const submit = (data: IVacancyCreate, noRedirect?: boolean, tariffId?: number) => {
-    if(tariffId && !creationContext.currentVc?.subscriptions && !creationContext.draftItem.current.subscriptions) {
-      PurchaseRepository.cvVcPurchase({vacancyId:creationContext.draftId.current||props.id, tariffId})
-      .then(res=> {
-        saveVacancy(data, noRedirect)
-      })
-      .catch(err=> {
-        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
-        router.push('/shop')
-      })
-    }
-    else {
+  const submit = (data: IVacancyCreate, noRedirect?: boolean) => {
       saveVacancy(data, noRedirect)
-    }
   }
 
   const formik = useFormik({
@@ -364,12 +351,13 @@ export default function Vacancy(props: Props) {
       router.back()
       return
     }
+
     if(progress <=VCItemsCount) {
       router.replace({query: {...router.query, id: creationContext.draftId.current,  progress: progress <=VCItemsCount?progress: VCItemsCount}}, undefined, {shallow: true})
     }
 
     changeComponent(progress)
-    if(maxProgress.current > progress || props.vacancy?.completedSteps?.length === VCItemsCount) return 
+    if(props.vacancy?.subscriptions) return 
     maxProgress.current < progress && (maxProgress.current = progress)
     
     if(progress > 1 && creationContext.activeSubCategory.length > 0) {
@@ -415,7 +403,12 @@ export default function Vacancy(props: Props) {
     }
 
     {progress === VCItemsCount && !showPreview &&
-      <SetTariff setText='Разместить вакансию' onPreview={()=>setShowPreview(true)} onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='vacancy'/>
+      <SetTariff 
+      setText='Разместить вакансию' 
+      onPreview={()=>setShowPreview(true)} 
+      onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} 
+      onBack={()=>setProgress(progress-1)} type='vacancy'
+      />
     }
 
     {progress < VCItemsCount &&<>

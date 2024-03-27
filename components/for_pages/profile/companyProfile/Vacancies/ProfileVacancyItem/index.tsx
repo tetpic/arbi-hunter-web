@@ -29,9 +29,11 @@ interface Props {
   isLast?: boolean
   cardMode?: boolean
   type?: 'drafts' | 'archive'
+  onChange?: (v: Partial<IVacancy>) => void
+  onRemove?: (vacancyId: number) => void
 }
 
-export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props) {
+export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}: Props) {
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
@@ -39,18 +41,13 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
-  const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
-
-
-
-  const setActiveHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
-    .then(res=> res&&vacancyContext.setVacancies(true))
-  }
+  const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)
 
   const archiveHandler =()=> {
+    if(!vacancy.subscriptions && !vacancy.published) {
+      router.push({pathname: '/create/vacancy', query: {id: vacancy.id, progress: 8}})
+      return
+    }
     vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salaryMin: Number(vacancy.salaryMin), salaryMax: Number(vacancy.salaryMax)}, vacancy.id, vacancy.published?'active':'archive')
   }
 
@@ -63,8 +60,13 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
       {text: 'Вы действительно хотите удалить вакансию?',
       callback: ()=>{
         vacancyContext.removeVacancy(vacancy.id, props.type)
+        props.onRemove(vacancy.id)
       }
     })
+  }
+
+  const upgradeTariffHandler = () => {
+    router.push({pathname:'/shop', query: {page: 'packets'}})
   }
 
   const options = <OptionsList options={[
@@ -72,7 +74,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     {title: 'Дублировать'},
     {title: 'Поделиться'},
     {title: 'Продлить и Поднять'},
-    {title: 'Улучшить'},
+    {title: 'Улучшить', onClick: upgradeTariffHandler},
     {title: 'Редактировать', onClick: editHandler},
     {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]}
@@ -88,7 +90,8 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     }
   }
 
-  return (<div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
+  return (
+    <div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
           <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
@@ -108,8 +111,15 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
         }
         <SalaryItem vacancy={vacancy}/>
 
-        {/* @ts-ignore */}
-        <p className={styles.tariff} style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}>{tariff.name}</p>
+        {tariff &&
+          <p 
+          className={styles.tariff} 
+          /* @ts-ignore */
+          style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}
+          >
+            {tariff.name}
+          </p>
+        }
 
         <ThreeDotsButton  onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth && 
@@ -192,6 +202,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           }
         </div>
       }
-  </div>)
+    </div>
+  )
 }
 

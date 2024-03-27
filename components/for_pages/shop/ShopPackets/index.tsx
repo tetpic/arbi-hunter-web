@@ -20,7 +20,7 @@ export default function ShopPackets(props: Props) {
       return <PurchaseItem 
       type='buy'
       tariff={value} 
-      cvs={userContext.currentProfile.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true && el.moderationStatus === 'approved'/*&&!el.subscriptions*/)} 
+      cvs={userContext.currentProfile.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true/*&&!el.subscriptions*/)} 
       vacancies={userContext.currentProfile.profileType === ProfileType.Hirer&&[...vacancyContext.activeVacancies.values()]/*.filter(el=>!el.subscriptions)*/}/>
     })}
   </div>)

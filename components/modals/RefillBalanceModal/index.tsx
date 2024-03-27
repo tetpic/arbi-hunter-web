@@ -8,8 +8,8 @@ import InputField from '@/components/fields/InputField'
 import TagsRadioList from '@/components/for_pages/create/utils/TagsRadioList'
 import Button from '@/components/ui/Button'
 import CrossSvg from '@/components/svg/CrossSvg'
-import TariffRepository from 'data/repositories/TariffRepository'
 import Validator from 'utils/Validator'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 interface Props {
   onClose?: () => void
@@ -19,7 +19,7 @@ interface Props {
 export default function RefillBalanceModal(props: Props) {
 
   const submit = (data: RefillBalanceData) => {
-    TariffRepository.refillBalance({...data, amount: Number(data.amount)})
+    PurchaseRepository.refillBalance({...data, amount: Number(data.amount)})
     .then(res => {
       location.assign(res.payUrl)
     })

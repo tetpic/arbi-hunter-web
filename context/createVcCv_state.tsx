@@ -214,7 +214,7 @@ export function CreateVcCvWrapper(props: Props) {
   const setEditedItem = async<T extends ICV|IVacancy>(item: T, type: 'cv'|'vc') => {
     if(type === 'vc') {
       const vcItem = item as IVacancy
-      
+      draftItem.current = vcItem
       setHelp(state=>{return {...state, 
         categoryIds: vcItem.categories,   
         skills: new Map(vcItem.skills.map(el => [el.id, el])),
@@ -228,8 +228,8 @@ export function CreateVcCvWrapper(props: Props) {
       }})
     } 
     else if(type === 'cv') {
-      
       const cvItem = item as ICV
+      draftItem.current = cvItem
       setHelp(state=>{return {...state, 
         categoryIds: cvItem.categories,   
         skills: new Map(cvItem.skills.map(el=> [el.id, el])),

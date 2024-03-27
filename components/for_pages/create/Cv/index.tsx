@@ -26,7 +26,6 @@ import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
-import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 
 interface Props {
@@ -121,22 +120,9 @@ export default function Cv(props: Props) {
     }
   }
 
-  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
+  const submit = (data: ICVCreate, noReplace?: boolean) => {
     setLoading(true)
-
-    if(tariffId && !creationContext.currentCv?.subscriptions && !creationContext.draftItem.current.subscriptions) {
-      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
-      .then(res=> {
-        saveCV(data, noReplace)
-      })
-      .catch(err=> {
-        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
-        router.push('/shop')
-      })
-    }
-    else {
-      saveCV(data, noReplace)
-    }
+    saveCV(data, noReplace)    
   }
 
   const initialValues:ICVCreate  = {
@@ -418,7 +404,7 @@ export default function Cv(props: Props) {
       cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values, assets: creationContext.helpObjects.assets}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
-      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>

@@ -178,7 +178,7 @@ export function VacancyWrapper(props: Props) {
       }
       return true
     })
-    .catch(err=> {return false})
+    .catch(_=> {return false})
   }
 
   const editVcInEditor = (vc: IVacancy) => {

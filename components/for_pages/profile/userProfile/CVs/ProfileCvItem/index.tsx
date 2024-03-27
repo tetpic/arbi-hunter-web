@@ -7,20 +7,18 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
-import { ModalType } from 'types/enums'
+import { ModalType} from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
-import { useProfilePageContext } from 'context/profile_page_state'
-import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
-import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
+import Progress from '../../../companyProfile/Vacancies/ProfileVacancyItem/Progress'
 import { useRouter } from 'next/router'
 import { useTariffContext } from 'context/tariff_state'
 import P from '@/components/ui/P'
@@ -36,8 +34,6 @@ interface Props {
 
 export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const appContext = useAppContext()
-  const profilePageContext = useProfilePageContext()
-  const feedBackContext = useFeedbacksContext()
   const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
@@ -50,6 +46,10 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const archiveHandler =(e: React.MouseEvent<HTMLElement>)=> {
     e.preventDefault()
     e.stopPropagation()
+    if(!cv?.subscriptions && !cv.published) {
+      router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7}})
+      return
+    }
     cvContext.updateCv(cv.id, {published: !cv?.published})
   }
 
@@ -67,12 +67,16 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     )
   }
 
+  const upgradeTariffHandler = () => {
+    router.push({pathname: '/shop', query: {page: 'packets'}})
+  }
+
   const defaultOptions:IOptionList[] = [
     {title: cv?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
     {title: 'Дублировать'},
     {title: 'Поделиться'},
     {title: 'Продлить и Поднять'},
-    {title: 'Улучшить'},
+    {title: 'Улучшить', onClick: upgradeTariffHandler},
     {title: 'Редактировать', onClick: editHandler},
     {title: 'Удалить', onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]

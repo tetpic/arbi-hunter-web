@@ -1,5 +1,5 @@
 import { IPurchase, ITariff } from 'data/interfaces/Common'
-import TariffRepository from 'data/repositories/TariffRepository'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { PurchaseType } from 'types/enums'
 
@@ -23,7 +23,7 @@ export function TariffWrapper(props: Props) {
   const [purchased, setPurchasedState] =  useState<Map<number, IPurchase>>(new Map)
 
   const setPackets = async(types: PurchaseType[]) => {
-    const tariffs = await Promise.all(types.map(t=> TariffRepository.getTariff(t)))
+    const tariffs = await Promise.all(types.map(t=> PurchaseRepository.getTariff(t)))
     tariffs.forEach(el => {
       el.forEach(e=> {
         setPacketsState(state => {
@@ -34,7 +34,7 @@ export function TariffWrapper(props: Props) {
     })
 
 
-    TariffRepository.getPurchasedItems({page: 1, limit: 10, state: 'active'})
+    PurchaseRepository.getPurchasedItems({page: 1, limit: 10, state: 'active'})
     .then(res=> {
       setPurchasedState(state => {
         res.data.forEach(t => state.set(t.id, t))

@@ -62,6 +62,24 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           })
           return
         }
+        const currentCv = cvs&&cvs?.find(el => el.id === data.cvId)
+        debugger
+        if(data.cvId && currentCv) {
+          PurchaseRepository.upgradeSubscription(currentCv.subscriptions.id, {date: data.date, cvId: data.cvId, tariffId: tariff.id})
+          .then(_=>{
+            appContext.showSnackbar('Тариф успешно обновлен', SnackbarType.success)
+          })
+          return
+        }
+        const currentVc = vacancies&&vacancies?.find(el => el.id === data.vacancyId)
+        debugger
+        if(data.vacancyId && currentVc) {
+          PurchaseRepository.upgradeSubscription(currentVc.subscriptions.id, {date: data.date, vacancyId: data.vacancyId, tariffId: tariff.id})
+          .then(_=>{
+            appContext.showSnackbar('Тариф успешно обновлен', SnackbarType.success)
+          })
+          return
+        }
         PurchaseRepository.cvVcPurchase(clearObject({
           date: data.date,
           cvId: data.cvId,

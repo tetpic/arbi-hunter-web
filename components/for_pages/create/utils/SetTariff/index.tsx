@@ -5,13 +5,19 @@ import P from '@/components/ui/P'
 import classnames from 'classnames'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import { useEffect } from 'react'
-import TariffRepository from 'data/repositories/TariffRepository'
-import { PurchaseType } from 'types/enums'
+import { ModalType, PurchaseType } from 'types/enums'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import { ITariff } from 'data/interfaces/Common'
+import { useAppContext } from 'context/state'
+import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
+import { clearObject } from 'utils/helpers'
+import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import { useRouter } from 'next/router'
 
 interface Props {
-  onSave?: (replace?: boolean, tariffId?: number) =>void
+  onSave?: (replace?: boolean) =>void
   onBack?: () =>void
   onPreview?: ()=>void
   type?: 'cv'|'vacancy'
@@ -21,10 +27,12 @@ interface Props {
 export default function SetTariff(props: Props) {
   const creationContext = useCreateVcCvContext()
   const tariffs = creationContext.tariffs
+  const appContext = useAppContext()
+  const router = useRouter()
 
   useEffect(()=>{
     if(tariffs.size === 0) {
-      TariffRepository.getTariff(props.type==='cv'? PurchaseType.CvTariff:PurchaseType.VacancyTariff).then(res=>{
+      PurchaseRepository.getTariff(props.type==='cv'? PurchaseType.CvTariff:PurchaseType.VacancyTariff).then(res=>{
         creationContext.setTariffs(state => {
           res.forEach(el => {
             state.set(el.id, el)
@@ -34,6 +42,47 @@ export default function SetTariff(props: Props) {
       })
     }
   }, [])
+
+  const buyTariff = (tariff: ITariff, ) => {
+    const purchaseData = {
+      cvId: props.type === 'cv'? creationContext.draftItem.current.id:null,
+      vacancyId: props.type === 'vacancy'? creationContext.draftItem.current.id:null
+    }
+
+    if(tariff.id === creationContext.currentVc.subscriptions?.tariff?.id) {
+      props.onSave()
+      return
+    }
+
+    if(tariff.price === 0) {
+      debugger
+      PurchaseRepository.cvVcPurchase({...clearObject(purchaseData), tariffId: tariff.id})
+      .then(res => {
+        props.onSave()
+      })
+      return 
+    }
+    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+      tariff,
+      tariffs: tariffs,
+      data: purchaseData,
+      onBuy: (data) => {
+        PurchaseRepository.cvVcPurchase({...clearObject(data), tariffId: tariff.id})
+        .then(res=>{
+          props.onSave()
+        })
+        .catch(_=> {
+          appContext.hideModal()
+          appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+            text: 'Недостаточно арбикоинов, хотите пополнить баланс?',
+            callback: () => {
+              router.push('/shop')
+            }
+          })
+        })
+      }
+    })
+  }
 
 
   return (<div className={styles.root}> 
@@ -53,7 +102,7 @@ export default function SetTariff(props: Props) {
         /* @ts-ignore */
         style={{'--gradientColor1': '#'+el.colors[0], '--gradientColor2': '#'+el.colors[1]}} 
         key={el.id} 
-        onClick={()=>props.onSave(undefined, el.id)}
+        onClick={()=>buyTariff(el)}
         >
           <div className={styles.top}>
             <Image src={FILES + el.icon.source} alt={''} width={70} height={70} className={el.key.includes('Vip')?styles.crown:styles.topIcon}/>
