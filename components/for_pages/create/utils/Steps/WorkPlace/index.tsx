@@ -9,6 +9,7 @@ import { useFormikContext } from 'formik'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import { useUserContext } from 'context/user_state'
 import Spacer from '@/components/ui/Spacer'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id?: number
@@ -17,6 +18,7 @@ interface Props {
 export default function WorkPlace(props: Props) {
   const cvContext = useCreateVcCvContext()
   const userContext = useUserContext()
+  const {t} = useTranslation()
 
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
 
@@ -39,8 +41,8 @@ export default function WorkPlace(props: Props) {
     <RadioListField 
     name={'isRemote'} 
     options={[
-      {label: 'Удаленная', value: true},
-      {label: 'В офисе', value: false},
+      {label: t('isRemote_true'), value: true},
+      {label: t('isRemote_false'), value: false},
     ]}
     wrapperClassName={styles.radioWrapper}
     />

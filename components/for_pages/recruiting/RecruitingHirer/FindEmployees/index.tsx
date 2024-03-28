@@ -13,11 +13,13 @@ import { useAppContext } from 'context/state'
 import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
 import P from '@/components/ui/P'
 import { AppTheme } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function FindEmployees(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
@@ -39,30 +41,66 @@ export default function FindEmployees(props: Props) {
 
   return (<div className={styles.root} > 
     <div className={styles.item} >
-      <Image src={isLightTheme?registerLight: register} ref={triggerRef1} className={styles.image} width={200} height={200} alt={'register'}/>
+      <Image 
+      width={200}
+      height={200} 
+      src={isLightTheme?registerLight: register} 
+      ref={triggerRef1} className={styles.image} 
+      alt={'register'}/>
+
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.step}>
-        Шаг 1
+        {t('landing_hir_step')} 1
       </P>
-      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>Зарегистрируйтесь</P>
-      <P styleType={['large']} useThemeColor className={styles.desc}>И получите возможность просматривать базу соискателей</P>
+      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
+        {t('landing_hir_step1_title')}
+      </P>
+      <P styleType={['large']} useThemeColor className={styles.desc}>
+        {t('landing_hir_step1_desc')}
+      </P>
     </div>
     {!isTabletWidth &&
       <Image src={isLightTheme?chainGradient:chain } alt={'chain'}/>
     }
     <div className={styles.item} >
-      <Image src={ isLightTheme?land_vacancyLight:land_vacancy} ref={triggerRef2} className={styles.image} width={200} height={200} alt={'land vacancy'}/>
-      <P styleType={['fs20', 'w600']} useThemeColor className={styles.step}>Шаг 2</P>
-      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>Создайте вакансию</P>
-      <P styleType={['large']} useThemeColor className={styles.desc}>Чтобы получать входящие отклики от соискателей</P>
+      <Image 
+      width={200} 
+      height={200} 
+      ref={triggerRef2} 
+      className={styles.image} 
+      src={ isLightTheme?land_vacancyLight:land_vacancy} 
+      alt={'land vacancy'}/>
+
+      <P styleType={['fs20', 'w600']} useThemeColor className={styles.step}>
+        {t('landing_hir_step')} 2
+      </P>
+      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
+        {t('landing_hir_step2_title')}
+      </P>
+      <P styleType={['large']} useThemeColor className={styles.desc}>
+        {t('landing_hir_step2_desc')}
+      </P>
     </div>
     {!isTabletWidth &&
       <Image  src={isLightTheme?chainGradient:chain } alt={'chain'}/>
     }
     <div className={styles.item } >
-      <Image src={star} ref={triggerRef3} className={styles.image} width={200} height={200}  alt={'star'}/>
-      <P styleType={['fs20', 'w600']} useThemeColor  className={styles.step}>Шаг 3</P>
-      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>Выбирайте лучших</P>
-      <P styleType={['large']} useThemeColor className={styles.desc}>Все отклики с базой данных будут доступны вам неограниченное время</P>
+      <Image 
+      src={star} 
+      width={200} 
+      height={200}  
+      ref={triggerRef3} 
+      className={styles.image} 
+      alt={'star'}/>
+
+      <P styleType={['fs20', 'w600']} useThemeColor  className={styles.step}>
+        {t('landing_hir_step')} 3
+      </P>
+      <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
+        {t('landing_hir_step3_title')}
+      </P>
+      <P styleType={['large']} useThemeColor className={styles.desc}>
+        {t('landing_hir_step3_desc')}
+      </P>
     </div>
   </div>)
 }

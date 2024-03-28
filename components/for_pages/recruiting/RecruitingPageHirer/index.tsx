@@ -118,10 +118,10 @@ function RecruitingPageHirerInner(props: Props) {
         <div className={styles.back}>
           <Image className={styles.backImage} src={hirer} alt={'rec image'} />
         </div>
-        <P styleType={['huge', 'w700']}>
+        <P styleType={['huge', 'w700']} useThemeColor>
           Разместите вакансию в ArbiHunter
         </P>
-        <P styleType={['large']} className={styles.description}>
+        <P styleType={['large']} className={styles.description} useThemeColor>
           46% трудоспособного населения России — зарегистрированы на ArbiHunter        
         </P>
         <Link className={styles.createLink} href={'/create/vacancy'}>Разместить вакансию</Link>
@@ -143,6 +143,7 @@ function RecruitingPageHirerInner(props: Props) {
         <P 
         styleType={['huge', 'w600']} 
         className={styles.found}
+        useThemeColor
         >
           Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ vacancyContext.currentVacancy.name:''}
         </P>

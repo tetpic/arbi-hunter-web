@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 
 export type ParagraphStyleType = 
 'small'|'medium'|'large'|'huge'|
-'w500'|'w600'|'w700'|
+'w500'|'w600'|'w700'|'w800'|
 'fs32'|'fs36'|'fs20'|
 'white'|'grey'|'greyLight'|'blue'|'purple'|
 'underlined'|'green'|'red'|

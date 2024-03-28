@@ -8,6 +8,7 @@ import RadioListField from '@/components/fields/RadioListField'
 import Button from '@/components/ui/Button'
 import { InterfaceLanguage } from 'types/enums'
 import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -25,6 +26,7 @@ export interface IChangeLanguageModalArgs {
 export default function ChangeLanguageModal(props: Props) {
   const appContext = useAppContext()
   const args: IChangeLanguageModalArgs = appContext.modalArguments
+  const {t} = useTranslation()
   
   const submit = (data: FormikValues) => {
     args.onSave(data)
@@ -40,7 +42,7 @@ export default function ChangeLanguageModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Title title={'Язык приложения'} className={styles.title}/>
+      <Title title={t('app_language')} className={styles.title}/>
       <RadioListField name={'value'} 
       options={[
         {value: InterfaceLanguage.English, label: TranslateInterfaceLanguage(InterfaceLanguage.English)},

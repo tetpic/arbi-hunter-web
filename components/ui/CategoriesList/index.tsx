@@ -5,6 +5,7 @@ import Formatter from 'utils/formatter'
 import Link from 'next/link'
 import { FILES } from 'types/constants'
 import SwiperList from '../SwiperList'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props<T> {
   categories: T[]
@@ -17,6 +18,7 @@ interface Props<T> {
 
 
 export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
+  const {t} = useTranslation()
   // const swiper= useRef<SwiperRef>(null!)
   // const {isTabletWidth} = useResize()
 
@@ -37,7 +39,7 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
             </div>
             <p className={styles.name} title={category.name}>{category.name}</p>
             {props.articlesCounter && category.articlesCount &&
-              <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></div>
+              <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, t('articlesCounter1'), t('articlesCounter2'), t('articlesCounter3') )}</span></div>
             }
           </Link>
         )

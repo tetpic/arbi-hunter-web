@@ -9,6 +9,7 @@ import UserSvg from 'components/svg/UserSvg'
 import { useAppContext } from 'context/state'
 import classNames from 'classnames'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -27,6 +28,7 @@ const sources = [
 ]
 
 export default function Head(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const animationItemRef = useRef<ReturnType<typeof anime>>(null!)
@@ -150,16 +152,16 @@ export default function Head(props: Props) {
       }
 
     <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
-      Разместите вакансию <br />
+      {t('landing_hir_createVC')} <br />
       <span className={styles.title_big}>
-        в <span className={styles.title_purple}>Arbi</span>Hunter
+        {t('landing_in')} <span className={styles.title_purple}>Arbi</span>Hunter
       </span>
     </P>
     <P useThemeColor styleType={['large']} className={styles.desc}>
-      Огромная база кандидатов из сферы IT <br /> и маркетинга ждет вашу вакансию внутри
+      {t('landing_hir_desc1')} <br /> {t('landing_hir_desc2')}
     </P>
     <Button styleType={['gradient']} className={styles.button} href={'/create/vacancy/'}>
-        Разместить вакансию
+        {t('landing_hir_createVCAlt')}
     </Button>
   </section>)
 }

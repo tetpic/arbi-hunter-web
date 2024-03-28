@@ -14,7 +14,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/navigation'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, Genders, ModalType, VacancyLookType } from 'types/enums'
+import { Answer, Genders, ModalType, SnackbarType, VacancyLookType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -40,6 +40,7 @@ import PencilSvg from '@/components/svg/PencilSvg'
 import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -47,7 +48,7 @@ interface Props {
 }
 
 export default function CvPage(props: Props) {
-  
+  const {t} = useTranslation()
   const cvContext = useCvContext()
   const userContext = useUserContext()
   const vacancyContext = useVacancyContext()
@@ -84,6 +85,9 @@ export default function CvPage(props: Props) {
     .then(res=> {
       cvContext.saveCv(currentCv.id)
       cvContext.getCv(Number(props.cvId))
+    })
+    .catch(err => {
+      appContext.showSnackbar('Нет доступных открытий контактов', SnackbarType.error)
     })
   }
 
@@ -325,7 +329,7 @@ export default function CvPage(props: Props) {
 
       <div className={styles.employment}>
         <TagList tagClassName={styles.tag} tags={[
-          {name: TranslateScheduleType(currentCv.schedule)},
+          {name: TranslateScheduleType(currentCv.schedule, t)},
           {name: TranslateEmploymentType(currentCv.employment)+ ' занятость'}
         ]}/>
       </div>

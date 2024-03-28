@@ -8,11 +8,13 @@ import { useRef } from 'react'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
 import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function Help(props: Props) {
+  const {t} = useTranslation()
   const triggerRef = useRef<HTMLDivElement>(null!)
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -23,10 +25,10 @@ export default function Help(props: Props) {
 
   return (
     <section className={styles.root} ref={triggerRef}>
-      <p className={styles.title}>Нужна помощь? Оставьте заявку <br/> и мы с вами свяжемся!</p>
+      <p className={styles.title}>{t('landing_help_needHelp')} <br/> {t('landing_help_leaveOrder')}</p>
       <Button className={styles.button}>
         <Image src={telegram} alt={'telegram icon'}/>
-        Написать в поддержку в Telegramm
+        {t('landing_help_writeUs')}
       </Button>
       {!isTabletWidth && 
       <>

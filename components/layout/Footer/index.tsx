@@ -18,12 +18,14 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import classNames from 'classnames'
 import { colors } from 'styles/variables'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
 }
 
 export default function Footer(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
@@ -59,19 +61,19 @@ export default function Footer(props: Props) {
         <div className={styles.column}>
           {/* <p className={styles.title}>О компании</p> */}
           <Link  href={'/about'}>
-            <P  styleType={['medium', 'w500']} useThemeColor>О компании</P>
+            <P  styleType={['medium', 'w500']} useThemeColor>{t('footer_about')}</P>
           </Link>
           <Link href={'/partners'}>
-            <P styleType={['medium', 'w500']} useThemeColor>Партнерам</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_forPartners')}</P>
           </Link>
           <Link href={'/advertising'}>
-            <P styleType={['medium', 'w500']} useThemeColor>Реклама на сайте</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_advertisement')}</P>
           </Link>
           <Link href={'/serviceterms'}>
-            <P styleType={['medium', 'w500']} useThemeColor>Условия оказания услуг</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_serviceTerms')}</P>
           </Link>
           <Link href={'/useterms'}>
-            <P styleType={['medium', 'w500']} useThemeColor>Условия использования сайтов</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_useTerms')}</P>
           </Link>
         </div>
         <div className={styles.column}>
@@ -79,47 +81,47 @@ export default function Footer(props: Props) {
           {userContext.profileType === ProfileType.Employee && 
           <>
             <Link href={userContext.currentProfile?'/create/cv/':'/login'}>
-              <P styleType={['medium', 'w500']} useThemeColor>Создать резюме</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('create_cv')}</P>
             </Link>
             <Link href={'/recruiting'}>
-              <P styleType={['medium', 'w500']} useThemeColor>Поиск работы</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('footer_findJobs')}</P>
             </Link>
             <Link href={userContext.currentProfile?'/recruiting':'/login'}>
-              <P styleType={['medium', 'w500']} useThemeColor>Каталог вакансий</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('footer_vcCatalog')}</P>
             </Link>
           </>
           }
           {userContext.profileType === ProfileType.Hirer &&
           <>
             <Link href={userContext.currentProfile?'/create/vacancy/':'/login'} >
-              <P styleType={['medium', 'w500']} useThemeColor>Разместить вакансию</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('footer_createVc')}</P>
             </Link>
             <Link href={'/recruiting'} >
-              <P styleType={['medium', 'w500']} useThemeColor>Поиск сотрудников</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('footer_findCandidates')}</P>
             </Link>
             <Link href={userContext.currentProfile?'/recruiting':'/login'} >
-              <P styleType={['medium', 'w500']} useThemeColor>Категории специалистов</P>
+              <P styleType={['medium', 'w500']} useThemeColor>{t('footer_candidatesCategories')}</P>
             </Link>
           </>
           }
 
           <Link href={'/services'}>
-            <P styleType={['medium', 'w500']} useThemeColor>Услуги</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_services')}</P>
           </Link>
         </div>
         <div className={styles.column}>
           {/* <p className={styles.title}>О сервисе</p> */}
           <Link href={'/base'} >
-            <P styleType={['medium', 'w500']} useThemeColor>База знаний</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_knowledgeBase')}</P>
           </Link>
           <Link href={'/sitemap'} >
-            <P styleType={['medium', 'w500']} useThemeColor>Карта сайта</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('footer_siteMap')}</P>
           </Link>
         </div>
 
         <div className={classNames(styles.qrCode, isLightTheme&&styles.qrCode_light)}>
           <P styleType={['medium', 'w500']} useThemeColor>
-            Скачать приложение <br /> в Google play <br /> или AppStore
+            {t('footer_download1')} <br /> {t('footer_download2')} <br /> {t('footer_download3')}
           </P>
           <Image src={qrCode} alt={'qrCode'} />
         </div>
@@ -132,7 +134,7 @@ export default function Footer(props: Props) {
       </p>
       <div className={styles.payment}>
         <LockSvg color={isLightTheme&&colors.black}/>
-        <P styleType={['medium', 'w500']} useThemeColor>Защищенная оплата:</P>
+        <P styleType={['medium', 'w500']} useThemeColor>{t('footer_securePayment')}:</P>
         <P styleType={['huge', 'w600']} className={styles.paymentMethod}>₴</P>
         <P styleType={['huge', 'w600']} className={styles.paymentMethod}>₽</P>
         <P styleType={['huge', 'w600']} className={styles.paymentMethod}>$</P>

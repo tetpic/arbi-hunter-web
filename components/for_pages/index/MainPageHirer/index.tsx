@@ -22,10 +22,12 @@ import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
 export default function MainPageHirer() {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const personalContext = usePersonalContext()
   const [load, setLoad] = useState<boolean>(false)
@@ -88,12 +90,16 @@ export default function MainPageHirer() {
     <div className={styles.root}>
       <div className={styles.top}>
 
-        <Buildings useDefaultImage profile={userContext.currentProfile} background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}/>
+        <Buildings 
+        useDefaultImage 
+        profile={userContext.currentProfile} 
+        background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
+        />
         
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <div className={styles.card}>
-              <p className={styles.desc}>Отклики</p>
+              <p className={styles.desc}>{t('mainPage_hir_feedbacks')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -108,7 +114,7 @@ export default function MainPageHirer() {
               }
             </div>
             <div className={styles.card}>
-              <p className={styles.desc}>Просмотры вакансий</p>
+              <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -123,7 +129,7 @@ export default function MainPageHirer() {
               }
             </div>
             <div className={styles.card}>
-              <p className={styles.desc}>Подходящие резюме</p>
+              <p className={styles.desc}>{t('mainPage_hir_cvs')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -141,19 +147,19 @@ export default function MainPageHirer() {
         </div>
       </div>
 
-      <Title title={'Категории'} className={styles.title}/>
+      <Title title={t('mainPage_hir_categories')} className={styles.title}/>
       <CategoriesList hideNav link={'/recruiting?category='} categories={[...categories.values()].filter(e=> e.image)}/>
 
 
-      <Title title={'Подборки лучших резюме'} className={styles.title}/>
+      <Title title={t('mainPage_hir_bestCvs')} className={styles.title}/>
       <CvVcCompilation/>
 
-      <Title title={'Статьи'} className={styles.title}/>
+      <Title title={t('mainPage_hir_articles')} className={styles.title}/>
       {news.size > 0 &&
         <ArticlesList news={[...news.values()]}/>
       }
 
-      <Title title={'Бесплатные курсы'} className={styles.title}/>
+      <Title title={t('mainPage_hir_freeCourses')} className={styles.title}/>
       {popularCourses.size > 0 &&
         <CoursesList courses={[...popularCourses.values()]}/>
       }

@@ -22,6 +22,7 @@ import recruitingCatPointLight from 'images/recruiting/scene3Light.png'
 import recruitingCatMessage from 'images/recruiting/scene2.png'
 import recruitingCatMessageLight from 'images/recruiting/scene2Light.png'
 import { AppTheme } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -30,6 +31,7 @@ interface Props {
 }
 
 export default function RecruitingHirer(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
@@ -37,23 +39,30 @@ export default function RecruitingHirer(props: Props) {
   return (
     <div className={styles.root}> 
       <Head/>
-      <Search title={'Поиск резюме'} tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}/>
+      <Search 
+      title={t('landing_hir_findVc')} 
+      tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}
+      />
       <Reasons/>
     
-      <Title className={styles.title} title={'Начни поиск в три шага'}/>
+      <Title className={styles.title} title={t('landing_hir_startSearching')}/>
       <FindEmployees/>
       
       <AppPromo cards={[slide1, slide2]}/>
     
-      <Title className={styles.title} title={'Поиск по популярным категориям'}/>
+      <Title className={styles.title} title={t('landing_hir_searchCategories')}/>
       <Categories 
-      count='резюме' 
+      count={t('landing_hir_cvCounter')} 
       image={isLightTheme?usersLight:users} 
       titles={['Маркетинг', 'Разработка', 'Менеджмент']} 
       images={isLightTheme?[recruitingCatWalletLight, recruitingCatPointLight, recruitingCatMessageLight]:[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}
       />
-      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
-    
+      <Button 
+      styleType={['grey']} 
+      altStyleType={['white', 'borderGrey']} 
+      className={styles.watchAll}>
+        {t('watchAll')}
+      </Button>
       <Help/>
     </div>
   )

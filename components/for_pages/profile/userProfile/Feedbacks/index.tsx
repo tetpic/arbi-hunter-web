@@ -8,6 +8,8 @@ import { IProposal } from 'data/interfaces/IProposal'
 import Spinner from 'components/ui/Spinner'
 import Formatter from 'utils/formatter'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import useTranslation from 'next-translate/useTranslation'
+import { Translate } from 'next-translate'
 
 enum ReviewsNavigation {
   Any = 'any',
@@ -16,26 +18,27 @@ enum ReviewsNavigation {
   Reject = 'reject',
 }
 
-function translate (n: ReviewsNavigation) {
+function translate (n: ReviewsNavigation, t:Translate) {
   switch(n) {
     case ReviewsNavigation.Any:
-      return 'Все отклики'
+      return t('profile_feedbacks_all')
     case ReviewsNavigation.Invite:
-      return 'Приглашение'
+      return t('profile_feedbacks_invite')
     case ReviewsNavigation.Wait:
-      return 'Ожидание'
+      return t('profile_feedbacks_paused')
     case ReviewsNavigation.Reject:
-      return 'Отказ'
+      return t('profile_feedbacks_reject')
   }
 }
 
 export default function Feedbacks() {
+  const {t} = useTranslation()
 
   const feedBackContext = useFeedbacksContext()
   const {CVFeedbacks} = feedBackContext
 
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
-  const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el), type: el}})
+  const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el, t), type: el}})
   const [filtered, setFiltered] = useState<Map<number, IProposal>>(CVFeedbacks)
   const [loading, setLoading] = useState<boolean>(true)
   const [itemsHidden, setItemsHidden] = useState<Map<number, IProposal>>(new Map)
@@ -141,15 +144,15 @@ export default function Feedbacks() {
       <div className={styles.wrapper}>
         {filtered.size + itemsHidden.size > 0 &&
         <p className={styles.itemsCounter}>
-          {filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')}
+          {filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), t('feedbackCount1'), t('feedbackCount2'), t('feedbackCount3'))}
         </p>
         }
         {itemsHidden.size > 0 &&
           <div className={styles.unavailable}>
             <p className={styles.counter}>
-              {itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), 'отклик', 'отклика', 'откликов')} недоступно
+              {itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), t('feedbackCount1'), t('feedbackCount2'), t('feedbackCount3'))} {t('unavailable')}
             </p>
-            <p className={styles.descriptions}>Работадатель скрыл или удалил вакансию</p>
+            <p className={styles.descriptions}>{t('profile_feedbacks_hideReason_emp')}</p>
           </div>
         }
         {
@@ -160,7 +163,7 @@ export default function Feedbacks() {
           loading &&
           <Spinner size={24}/>
           ||
-          <p className={'empty'}>Нет откликов</p>
+          <p className={'empty'}>{t('profile_feedbacks_noFeed')}</p>
         }
       </div>
     </div>)

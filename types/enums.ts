@@ -342,10 +342,12 @@ export enum SearchIn {
   Company = 'company'
 }
 
-export  enum PurchaseType {
+export enum PurchaseType {
   Character = 'character',
   CharacterItem = 'characterItem',
   VacancyTariff = 'vacancyTariff',
   CvTariff = 'cvTariff',
+  ContactsOpen = 'contactsOpen',
+  AddContactsOpen = 'addContactsOpen',
 }
 

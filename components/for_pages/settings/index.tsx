@@ -12,6 +12,8 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Patterns from './Patterns'
 import { VacancyWrapper } from 'context/vacancy_state'
+import useTranslation from 'next-translate/useTranslation'
+import { Translate } from 'next-translate'
 
 interface Props {
 }
@@ -25,25 +27,26 @@ enum SettingsNavigation {
   Patterns = 'patterns'
 }
 
-function translatePersonalNavigation(p: SettingsNavigation) {
+function translatePersonalNavigation(p: SettingsNavigation, t: Translate) {
   switch(p) {
     case SettingsNavigation.Personal:
-      return 'Личная информация'
+      return t('settings_personal')
     case SettingsNavigation.Notifications: 
-      return 'Уведомления'
+      return t('settings_notification')
     case SettingsNavigation.BlackList:
-      return 'Черный список'
+      return t('settings_blackList')
     case SettingsNavigation.Access:
-      return 'Настройки доступа'
+      return t('settings_access')
     case SettingsNavigation.SiteSettings:
-      return 'Настройки сайта'
+      return t('settings_site')
     case SettingsNavigation.Patterns:
-      return 'Шаблоны'
+      return t('settings_patterns')
   }
 }
 
 
 export default function SettingsPage(props: Props) {
+  const {t} = useTranslation()
   const [activeItem, setActiveItem] = useState<SettingsNavigation>(SettingsNavigation.Personal)
   const userContext = useUserContext()
   const router = useRouter()
@@ -64,7 +67,7 @@ export default function SettingsPage(props: Props) {
     SettingsNavigation.SiteSettings,
   ]
 
-  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems).map(el=> {return {name: translatePersonalNavigation(el), type: el}})
+  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems).map(el=> {return {name: translatePersonalNavigation(el, t), type: el}})
 
   const getComponent = () => {
     switch(activeItem) {
@@ -90,7 +93,7 @@ export default function SettingsPage(props: Props) {
   return (    
     <div className={styles.root}> 
       {
-        <TitleForSection title='Настройки' onBackClick={()=>router.back()}/>
+        <TitleForSection title={t('settings')} onBackClick={()=>router.back()}/>
       }
       <ItemNavigation activeItem={activeItem} onClick={(n)=>setActiveItem(n)} items={items} className={styles.itemNavigation} />
       <div className={styles.contentWrapper}>

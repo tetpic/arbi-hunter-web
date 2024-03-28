@@ -10,6 +10,7 @@ import { AppTheme, ModalType } from 'types/enums'
 import {  useState } from 'react'
 import { ISearchFilterModalProps } from 'components/modals/SearchFilterModal'
 import { ICategory } from 'data/interfaces/Common'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface ISearchBarReturnParams {
   activeCategories?: number[]
@@ -36,6 +37,7 @@ interface Props {
  * @placeholder ?: string
  */
 export default function MainSearchBar(props: Props) {
+  const {t} = useTranslation()
   const {isTabletWidth} = useResize()
   const appContext = useAppContext()
   const isLightTheme = appContext?.theme === AppTheme.Light
@@ -102,7 +104,7 @@ export default function MainSearchBar(props: Props) {
         title='search button' 
         onClick={()=> submit()} 
         className={!isTabletWidth&&styles.button}>
-          {isTabletWidth&&<LoupeSvg/>||'Найти'}
+          {isTabletWidth&&<LoupeSvg/>||t('searchAlt')}
         </Button>
       </div>
     </div>

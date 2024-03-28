@@ -1,4 +1,5 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { Translate } from 'next-translate'
 import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
@@ -241,15 +242,15 @@ export const TranslateLanguage = (t: Languages) => {
 
 }
 
-export const TranslateScheduleType = (s: ScheduleType) => {
+export const TranslateScheduleType = (s: ScheduleType, t: Translate) => {
   switch(s) {
     case ScheduleType.FullDay:
-      return 'Полный день'
+      return t('schedule_fullDay')
     case ScheduleType.Flexible:
-      return 'Гибкий график'
+      return t('schedule_flexible')
     case ScheduleType.Remote:
-      return 'Удаленная работа'
-
+      'schedule_remote'
+      return t('schedule_remote')
   }
 }
 
@@ -274,7 +275,6 @@ export const TranslateVacancyLookType = (v: VacancyLookType, profileType: Profil
     case VacancyLookType.PassivelyLooking:
       return profileType === ProfileType.Employee? 'Рассматриваю предложения': 'Рассматривает предложения'
   }
-  
 }
 
 export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])

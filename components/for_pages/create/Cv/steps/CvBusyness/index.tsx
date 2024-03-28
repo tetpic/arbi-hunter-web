@@ -2,11 +2,14 @@ import RadioListField from 'components/fields/RadioListField'
 import { Answer, EmploymentType, ScheduleType } from 'types/enums'
 import styles from './index.module.scss'
 import SectionSubtitle from '../../../utils/SectionSubtitle'
+import { TranslateScheduleType } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function CvBusyness(props: Props) {
+  const {t} = useTranslation()
 
   return ( <div className={styles.root}>   
     <div className={styles.fieldItem}>
@@ -29,9 +32,9 @@ export default function CvBusyness(props: Props) {
     name={'schedule'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {label: 'Полный день', value: ScheduleType.FullDay},
-      {label: 'Гибкий график', value: ScheduleType.Flexible},
-      {label: 'Удаленная работа', value: ScheduleType.Remote},
+      {label:  TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
+      {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
+      {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
     ]} 
     />
     </div>

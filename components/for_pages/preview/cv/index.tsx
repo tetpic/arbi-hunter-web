@@ -26,6 +26,7 @@ import MailAltSvg from '@/components/svg/MailAltSvg'
 import { ICV } from 'data/interfaces/ICV'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export default function CvPreview(props: Props) {
+  const {t} = useTranslation()
   const creationContext = useCreateVcCvContext()
   const userContext = useUserContext()
   const currentCv = props.cv
@@ -149,7 +151,7 @@ export default function CvPreview(props: Props) {
         }
         {currentCv.schedule &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}
+            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule, t)}
           </P>
         }
         {currentCv.compensation &&

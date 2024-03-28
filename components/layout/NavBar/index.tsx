@@ -21,6 +21,7 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -29,61 +30,62 @@ export default function NavBar(props: Props) {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const profileType = userContext.currentProfile?.profileType
 
   const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element}} = {
     cvs: {
       path: '/profile',
       query: {page: 'cvs'},
-      text: 'Мои резюме',
+      text: t('nav_myCvs'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },
     vacancies: {
       path: '/profile',
       query: {page: 'vacancies'},
-      text: 'Мои вакансии',
+      text: t('nav_myVacancies'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },
     feedBacksEmp: {
       path: '/profile',
       query: {page: 'feedbacks'},
-      text: 'Мои отклики',
+      text: t('nav_myFeedbacks'),
       icon: <ChatFeedbackSvg className={styles.linkSvg}/>
     },
     feedBacksHir: {
       path: '/responses',
-      text: 'Мои отклики',
+      text: t('nav_myFeedbacks'),
       icon: <ChatFeedbackSvg className={styles.linkSvg}/>
     },
     messages: {
       path: '/messenger',
-      text: 'Сообщения',
+      text: t('nav_messenger'),
       icon: <MessageSvg className={styles.linkSvg}/>
     },
     shop: {
       path: '/shop',
-      text: 'Магазин',
+      text: t('nav_shop'),
       icon: <ShopSmallSvg className={styles.linkSvg}/>
     },
     settings: {
       path: '/settings',
-      text: 'Настройки',
+      text: t('nav_settings'),
       icon: <SettingSvg className={styles.linkSvg}/>
     },
     personality: {
       path: '/profile',
       query: {page: 'edit'},
-      text: 'Персонаж',
+      text: t('nav_character'),
       icon: <ManSvg className={styles.linkSvg}/>
     },
     managers: {
       path: '/managers',
-      text: 'Менеджеры',
+      text: t('nav_managers'),
       icon: <UserDoubleSvg className={styles.linkSvg}/>
     },
     knowledge: {
       path: '/base',
-      text: 'База знаний',
+      text: t('nav_knowlegdeBase'),
       icon: <QuestionSvg className={styles.linkSvg}/>
     }
   }

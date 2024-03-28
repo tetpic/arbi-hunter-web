@@ -55,7 +55,7 @@ export default function SetTariff(props: Props) {
     }
 
     if(tariff.price === 0) {
-      debugger
+      
       PurchaseRepository.cvVcPurchase({...clearObject(purchaseData), tariffId: tariff.id})
       .then(res => {
         props.onSave()

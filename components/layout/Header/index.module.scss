@@ -88,8 +88,6 @@
   }
 }
 
-
-
 @keyframes buttonAppear {
   from {
     opacity: 0;
@@ -145,24 +143,7 @@
 
 .logo {
   display: flex;
-  perspective: 800px;
   position: relative;
-
-  .logoText {
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    width: 110px;
-    opacity: 0;
-    transform: rotateY(45deg) translateX(100%) translateY(-50%);
-    @include transitionDefault;
-  }
-  @include hover {
-    .logoText {
-      opacity: 1;
-      transform: rotateY(0deg) translateX(100%) translateY(-50%);
-    }
-  }
 }
 
 

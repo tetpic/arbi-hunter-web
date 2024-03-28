@@ -8,6 +8,7 @@ import Button from '../Button'
 import LinkBlack from '../LinkBlack'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -24,6 +25,7 @@ export default function SwiperList(props: Props) {
   const swiper= useRef<SwiperRef>(null!)
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
 
   return (
@@ -55,7 +57,7 @@ export default function SwiperList(props: Props) {
         {/* </>
       } */}
       {!props.hideNav && !isTabletWidth &&
-        <LinkBlack href={'/media/page?page=categories'}>Смотреть все</LinkBlack>
+        <LinkBlack href={'/media/page?page=categories'}>{t('watchAll')}</LinkBlack>
       }
     </section>
   

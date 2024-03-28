@@ -18,6 +18,7 @@ import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { clearObject } from 'utils/helpers'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const tariffContext = useTariffContext()
   const userContext = useUserContext()  
@@ -63,7 +65,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           return
         }
         const currentCv = cvs&&cvs?.find(el => el.id === data.cvId)
-        debugger
+        
         if(data.cvId && currentCv) {
           PurchaseRepository.upgradeSubscription(currentCv.subscriptions.id, {date: data.date, cvId: data.cvId, tariffId: tariff.id})
           .then(_=>{
@@ -72,7 +74,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           return
         }
         const currentVc = vacancies&&vacancies?.find(el => el.id === data.vacancyId)
-        debugger
+        
         if(data.vacancyId && currentVc) {
           PurchaseRepository.upgradeSubscription(currentVc.subscriptions.id, {date: data.date, vacancyId: data.vacancyId, tariffId: tariff.id})
           .then(_=>{
@@ -104,30 +106,35 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   }, [router])
 
 
-
-  // @ts-ignore
-  return (<div className={styles.item} key={tariff.id} style={{'--gradientColor1': '#'+tariff.colors[0], '--gradientColor2': '#'+tariff.colors[1]}}>
-  {tariff.icon &&
-    <Image src={FILES + tariff.icon?.source} alt={'item icon'} width={60} height={60} className={styles.icon}/>
-  }
-  <P styleType={['w600', 'large']} className={styles.title}>{tariff.name}</P>
-  {tariff.price > 0 &&
-    <P 
-    styleType={['alignCenter', 'w500', 'medium']} 
-    className={styles.price}>
-      <ArbiCoinSvg/> 
-      {tariff.price} {Formatter.pluralize(tariff.price, 'арбикоин', 'арбикоина', 'арбикоинов')} / {tariff.period} {Formatter.pluralize(tariff.period, 'день', 'дня', 'дней')}
-    </P>
-  }
-  {tariff.price === 0 &&
-    <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>Бесплатно</P>
-  } 
-  <P>{tariff.description}</P>
-  {props.type === 'buy' &&
-  <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>Купить</Button>
-  }
-  {props.type === 'info' &&
-    <P className={styles.button}  styleType={['medium', 'w500']}>Куплено {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
-  }
-</div>)
+  return (
+    <div 
+    className={styles.item} 
+    key={tariff.id} 
+    // @ts-ignore
+    style={{'--gradientColor1': '#'+tariff.colors[0], '--gradientColor2': '#'+tariff.colors[1]}}
+    >
+      {tariff.icon &&
+        <Image src={FILES + tariff.icon?.source} alt={'item icon'} width={60} height={60} className={styles.icon}/>
+      }
+      <P styleType={['w600', 'large']} className={styles.title}>{tariff.name}</P>
+      {tariff.price > 0 &&
+        <P 
+        styleType={['alignCenter', 'w500', 'medium']} 
+        className={styles.price}>
+          <ArbiCoinSvg/> 
+          {tariff.price} {Formatter.pluralize(tariff.price, t('arbicoins1'), t('arbicoins2'), t('arbicoins3'))} / {tariff.period} {Formatter.pluralize(tariff.period, t('day1'), t('day2'), t('day3'))}
+        </P>
+      }
+      {tariff.price === 0 &&
+        <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>{t('shop_free')}</P>
+      } 
+      <P>{tariff.description}</P>
+      {props.type === 'buy' &&
+        <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{t('shop_buy')}</Button>
+      }
+      {props.type === 'info' &&
+        <P className={styles.button}  styleType={['medium', 'w500']}>Куплено {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+      }
+    </div>
+  )
 }

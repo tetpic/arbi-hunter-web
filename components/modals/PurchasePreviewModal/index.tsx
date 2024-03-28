@@ -20,6 +20,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -55,12 +56,20 @@ export default function PurchasePreviewModal(props: Props) {
   const args:PurchasePreviewModalArgs = appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
   const [date, setDate] = useState<string|undefined>(undefined)
-  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies)?.filter(el=> args.tariffs.get(el.subscriptions?.tariff?.id)?.price < args.tariff?.price)||[]
+  const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies)?.filter(el=> {
+    const currentTariff = args.tariffs.get(el.subscriptions?.tariff?.id)
+    return (currentTariff.price < args.tariff?.price) && (currentTariff.id !== args.tariff?.id)
+  })||[]
 
   const buy = (data: PurchaseForm) => {
-    debugger
     args.onBuy(data)
     setType(PurchaseStep.purchase)
+  }
+
+  const maxDate = ()=>{
+    const d = new Date()
+    d.setMonth(d.getMonth() + 1)
+    return d
   }
 
   const formik = useFormik<PurchaseForm>({
@@ -134,32 +143,31 @@ export default function PurchasePreviewModal(props: Props) {
     </div>
   )
 
-  const maxDate = ()=>{
-    const d = new Date()
-    d.setMonth(d.getMonth() + 5)
-    return d
-  }
-
-
   const calendar = (
     <div className={styles.root}>
       <div className={styles.top}>
         <P styleType={['w600', 'large']}>Выбрать дату и время активации</P>
         <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
-      <P>{formik.values.date}</P>
+      {formik.values.date &&
+        <P>{Formatter.formatDate(formik.values.date, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+      }
       <div className={styles.calendarField}>
-        <ShopDateTimePicker name={'date'}/>
+        <ShopDateTimePicker 
+        name={'date'} 
+        maxDate={maxDate()}
+        />
       </div>
       <div className={styles.buttonsWrapper}>
         <Button 
         styleType={['grey', 'wide']} 
         onClick={() => {
+          formik.setFieldValue('date', undefined)
           setDate(null)
           setType(PurchaseStep.default)
         }}
         >
-          Отменить
+          {formik.values.date?'Удалить':'Отменить'}
         </Button>
         <Button styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.default)}>Сохранить</Button> 
       </div>
@@ -199,7 +207,7 @@ export default function PurchasePreviewModal(props: Props) {
     <div className={styles.root}>
       <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       {args.tariff.icon &&
-        <Image src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={96} height={96}/>
+        <Image className={styles.tariffIcon} src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={96} height={96}/>
       }
       <P styleType={['w600', 'huge']}>{args.tariff.name}</P>
       {args.tariff.price > 0 &&
@@ -214,9 +222,12 @@ export default function PurchasePreviewModal(props: Props) {
         <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>Бесплатно</P>
       } 
       <P styleType={['medium']}>{args.tariff.description}</P>
+      {formik.values.date &&
+        <P styleType={['w500', 'greyLight', 'small']}>Дата активации: {Formatter.formatDate(formik.values.date, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+      }
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>Выбрать дату активации</Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => args.data?setType(PurchaseStep.confirmation):setType(PurchaseStep.setItems)}>Купить</Button> 
+        <Button styleType={['gradient', 'wide']} onClick={() => (args.tariff.purchaseType === PurchaseType.CvTariff||args.tariff.purchaseType === PurchaseType.VacancyTariff)?setType(PurchaseStep.setItems):setType(PurchaseStep.confirmation)}>Купить</Button> 
       </div>
     </div>
   )

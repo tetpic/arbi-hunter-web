@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ApplicationBSSelectType,  ApplicationStatus,  ModalType} from 'types/enums'
+import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, SnackbarType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -89,6 +89,10 @@ export default function CvItem({cv, ...props}: Props) {
     CvRepository.openContacts(cv.id)
     .then(res=> {
       setIsOpenContacts(true)
+      setIsLoading(false)
+    })
+    .catch(err => {
+      appContext.showSnackbar('Нет доступных открытий контактов', SnackbarType.error)
       setIsLoading(false)
     })
   }

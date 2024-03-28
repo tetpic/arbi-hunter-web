@@ -44,7 +44,12 @@ export default function Profile() {
       }
       {
         profileType === ProfileType.Employee && !showNav &&
-          <UserProfile titleButton={page===ProfilePages.Edit && profileType === ProfileType.Employee && isTabletWidth&& saveCharButton}  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/> 
+          <UserProfile 
+          titleButton={page===ProfilePages.Edit && profileType === ProfileType.Employee && isTabletWidth&& saveCharButton}  
+          currentPage={page} 
+          navSet={navSet()} 
+          onBackClick={()=>setShowNav(true)}
+          /> 
         ||
         profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>

@@ -76,7 +76,7 @@ export function CharacterWrapper(props: Props) {
 
     const sortedCategories = categoriesList.sort((a, b)=> a.sort-b.sort)
 
-    if(categoriesList) {
+    if(categoriesList && categories.size === 0) {
       setCategoriesState(state=> {
         sortedCategories.forEach(category=> {
           state.set(category, itemsList.filter(item => item.categoryId === category.id))
@@ -108,7 +108,7 @@ export function CharacterWrapper(props: Props) {
       setVariantState(setItems)
       setChoosenItemsState(state=> {
         state.clear()
-        currentChar.items.forEach(el=> el.gender===currentChar.gender&&state.set(el.category.id, el))
+        currentChar.items.forEach(el=> el.gender===currentChar.gender&&state.set(el.category.id, itemsList.find(e => e.id === el.id)))
         return new Map(state)
       })
     }
@@ -174,7 +174,11 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       return res.id
     })
+    debugger
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
+    await Promise.all([...choosenItems.values()].filter(el => el.isLocked).map(item => {
+      return CharacterRepository.buyItem(item.id)
+    }))
     CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .then(res=> {
       appContext.showSnackbar('Изображение сохранено', SnackbarType.success)

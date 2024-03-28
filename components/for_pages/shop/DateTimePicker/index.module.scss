@@ -35,7 +35,15 @@
       background-color: $grey;
     }
   }
+
+  .popper {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: unset !important;
+  }
 }
+
+
 
 .day {
   height: 44px;

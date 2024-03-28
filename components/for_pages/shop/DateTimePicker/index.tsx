@@ -18,16 +18,18 @@ import { IField } from 'types/types'
 
 interface Props extends IField<string> {
   name: string
+  maxDate?: Date
 }
 
-function Day (props: {dayOfMonth: number, date?: Date, currentDate: Date}) {
+function Day (props: {dayOfMonth: number, date?: Date, currentDate: Date, maxDate?: Date}) {
   
   const minDate =  new Date().setHours(0,0,0,0)
-  const isFutureDay = props.date?.getTime() >= new Date(minDate).getTime()
+  const isActiveDay = props.date?.getTime() >= new Date(minDate).getTime()&&props.date.getTime() <= new Date(props.maxDate).getTime()
+  
   const isPast = props.date?.getTime() < new Date(minDate).getTime()
   const isChosen = props.date?.toDateString() === new Date(props.currentDate)?.toDateString()
 
-  return <P styleType={['w600', 'medium']} className={classNames(styles.day, isFutureDay&&styles.day_future, isPast&&styles.day_past, isChosen&&styles.day_chosen) }>{props.dayOfMonth}</P>
+  return <P styleType={['w600', 'medium']} className={classNames(styles.day, isActiveDay&&styles.day_future, isPast&&styles.day_past, isChosen&&styles.day_chosen) }>{props.dayOfMonth}</P>
 
 }
 
@@ -35,42 +37,51 @@ function Header (props: {picker: ReactDatePickerCustomHeaderProps, onSetTime: (t
   const [currenttime, setCurrentTime] = useState<string>('00:00') 
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
-  const currentHour = new Date().getHours()
+  const now = new Date()
+  const currentHour = now.getHours()
+  const currentMinutes = now.getMinutes()
   const isToday = new Date(props.picker.monthDate).getDay() === new Date().getDay()
   
 
   const getTimes = ():string[] => {
     const arr = []
-    for (let i = isToday ? currentHour+1 : 0; i < 24; i++) {
-      arr.push([i.toString(), '00'].join(':'))
-      arr.push([i.toString(), '30'].join(':'))
+    for (let i = isToday ? currentHour : 0; i < 24; i++) {
+      if(isToday && i === currentHour && currentMinutes < 30) {
+        arr.push([i.toString(), '30'].join(':'))
+      }
+      else if(isToday && i === currentHour && currentMinutes >= 30) {
+        
+      }
+      else {
+        arr.push([i.toString(), '00'].join(':'))
+        arr.push([i.toString(), '30'].join(':'))
+      }
     }
     return arr
   }
 
-  const options = <OptionsList 
-  className={styles.timeOptions}
-
-  options={getTimes().map(el=> {
-    return {
-      title: el,
-      value: el,
-      onClick: () => {
-        setCurrentTime(el)
-        props.onSetTime(el)
-        openDropDown(false)
+  const options = (
+    <OptionsList 
+    className={styles.timeOptions}
+    options={getTimes().map(el=> {
+      return {
+        title: el,
+        value: el,
+        onClick: () => {
+          setCurrentTime(el)
+          props.onSetTime(el)
+          openDropDown(false)
+        }
       }
-    }
-  })} 
-  onMouseLeave={()=>{
-
-  }}
-  />
+    })} 
+    onMouseLeave={()=>{}}
+    />
+  )
   return <div className={styles.header}>
     <div className={styles.header__month}>
-      <Button onClick={props.picker.decreaseMonth}><ArrowLeftSvg/></Button>
+      <Button type='button'  disabled={props.picker.prevMonthButtonDisabled} onClick={props.picker.decreaseMonth}><ArrowLeftSvg/></Button>
       <P styleType={['w600', 'large']}>{Formatter.formatDate(new Date(props.picker.monthDate), {timeOptions: {month: 'long', day: undefined}})}</P>
-      <Button onClick={props.picker.increaseMonth}><ArrowRightSvg/></Button>
+      <Button type='button' disabled={props.picker.nextMonthButtonDisabled} onClick={props.picker.increaseMonth}><ArrowRightSvg/></Button>
     </div>
     <div className={styles.timePicker}>
       <P onClick={()=>{openDropDown(true)}}  styleType={['alignCenter', 'w500', 'medium']}>{currenttime} <ArrowDownSvg/></P>
@@ -91,10 +102,24 @@ export default function ShopDateTimePicker(props: Props) {
   return (<div className={styles.root}> 
     <DatePicker 
     open
+    popperPlacement='top'
+    popperClassName={styles.popper}
     locale={ru}
     minDate={new Date()}
+    maxDate={props.maxDate}
+    customInput={<></>}
     value={field.value}
-    renderDayContents={(dayOfMonth: number, date?: Date) => <Day dayOfMonth={dayOfMonth} date={date} currentDate={new Date(field.value)}/>}
+    renderDayContents={(dayOfMonth: number, date?: Date) => {
+      return (
+        <Day 
+        dayOfMonth={dayOfMonth} 
+        date={date} 
+        currentDate={new Date(field.value)}
+        maxDate={props.maxDate}
+        />
+      )
+    }}
+
     renderCustomHeader={(p) => <Header picker={p} onSetTime={(s)=>{
       const formikDate = new Date(field.value)||new Date()
       const minutes = Number(s.split(':')[1])
@@ -102,9 +127,7 @@ export default function ShopDateTimePicker(props: Props) {
       formikDate.setHours(hours, minutes, 0, 0)
       helpers.setValue(formikDate.toISOString())
     }}/>}  
-    onChange={(date) => helpers.setValue( date.toISOString())}
+    onChange={(date) => helpers.setValue( date.toString())}
     />
-
-
   </div>)
 }

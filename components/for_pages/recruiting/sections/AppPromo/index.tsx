@@ -14,6 +14,7 @@ import classNames from 'classnames'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cards: string[]|StaticImageData[]
@@ -22,6 +23,7 @@ interface Props {
 
 
 export default function AppPromo(props: Props) {
+  const {t} = useTranslation()
   const cardsRef = useRef<HTMLImageElement[]>([])
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
@@ -56,10 +58,10 @@ export default function AppPromo(props: Props) {
   return (<div className={styles.root}> 
     <div className={classNames(styles.left, isLightTheme&&styles.left_light) }>
       <P styleType={['w700', 'huge']} useThemeColor className={styles.title}>
-        Представляем вам наше мобильное приложение
+        {t('landing_promo_intro')}
       </P>
       <P styleType={['w500', 'large']} useThemeColor className={styles.desc}>
-        С полным функционалом платформы, поиск сотрудников стал еще более удобный!
+        {t('landing_promo_desc')}
       </P>
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey']} altStyleType={['whitePurple']} className={styles.button}>
@@ -94,8 +96,8 @@ export default function AppPromo(props: Props) {
 
     {!isTabletWidth &&
       <div className={classNames(styles.right, isLightTheme&&styles.right_light)}>
-        <P styleType={['large', 'w600']} useThemeColor >Скачайте приложение по&nbsp;QR коду</P>
-        <P styleType={['small']} useThemeColor >Отсканируйте код с&nbsp;камеры своего телефона</P>
+        <P styleType={['large', 'w600']} useThemeColor >{t('landing_promo_download')}</P>
+        <P styleType={['small']} useThemeColor >{t('landing_promo_scan')}</P>
         <div className={classNames(styles.imageWrapper, isLightTheme&&styles.imageWrapper_light)}>
           <Image src={isLightTheme?qrGradient:qr} alt={'qr code'}/>
         </div>

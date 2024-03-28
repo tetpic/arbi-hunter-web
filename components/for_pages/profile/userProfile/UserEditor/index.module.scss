@@ -1,6 +1,11 @@
 @import 'styles/index';
 
 .root {
+  display: flex;
+}
+
+.content {
+  width: 60%;
   display: grid;
   grid-template-areas: 's m' 's save' 's v' ;
   grid-template-rows: auto auto 1fr;
@@ -12,6 +17,73 @@
     grid-template-areas: 'm' 's' 'v';
   }
 }
+
+.variantItem {
+  position: relative;
+
+  .price {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: $gradient;
+    padding: 4px;
+    border-radius: 20px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  width: 380px;
+
+  .balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $blueGradient;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .balanceLeft {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+  }
+}
+
+.choosenItems {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: $black;
+
+}
+
+.choosenItemsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 8px;
+}
+
+.buyButton {
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+
 
 .model {
   grid-area: m;

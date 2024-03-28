@@ -15,11 +15,13 @@ import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import { IChatFilterModalProps } from 'components/modals/ChatFilterModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function ChatSearchBar(props: Props) {
+  const {t} = useTranslation()
   const [active, setActive] = useState<boolean>(false)
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
@@ -56,19 +58,19 @@ export default function ChatSearchBar(props: Props) {
   <div className={styles.root}> 
     <div className={styles.rootWrapper}>
       {isTabletWidth &&
-        <Title className={styles.title} title={'Чаты'}/>
+        <Title className={styles.title} title={t('chat_main')}/>
       }
       <div className={classNames(styles.inputWrapper, (active||chatContext.foldersActive)&&styles.inputWrapper_active)}>
         {chatContext.foldersActive &&
         <>
           <FolderClosedSvg/>
-          <p className={styles.folderText}>Папки с чатами</p>
+          <p className={styles.folderText}>{t('chat_folders')}</p>
           <CrossSvg color={colors.greyLight} className={styles.closeSvg} onClick={chatContext.setFoldersActive}/>
         </>
         ||
         <>
           <LoupeSvg className={styles.loupe}/>
-          <input type="text" onFocus={()=>setActive(true)}  onBlur={()=>setActive(false)} placeholder='Поиск по чатам' />
+          <input type="text" onFocus={()=>setActive(true)}  onBlur={()=>setActive(false)} placeholder={t('chat_searchPlaceholder')} />
         </>
         }
       </div>

@@ -17,8 +17,8 @@ import { LoginType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Modes from 'components/ui/Modes'
 import Button from 'components/ui/Button'
-// import Rive from '@rive-app/react-canvas'
 import UserRegImage from 'components/ui/UserRegImage'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -27,6 +27,7 @@ export default function Login() {
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
   const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
@@ -48,10 +49,10 @@ export default function Login() {
     .catch(err=> {
       let errString: string
       if(err.message === 'Wrong login or password') {
-        errString = 'Неправильный логин или пароль'
+        errString = t('login_wrongPassword')
       }
       else if(err.message === 'Network Error') {
-        errString = 'Прервано соединение с интернетом'
+        errString = t('login_connectionLost')
       }
       appContext.showSnackbar(errString, SnackbarType.error)
     })
@@ -101,12 +102,12 @@ export default function Login() {
       <div className={styles.content}>
         <p className={styles.title}>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-          Войти
+          {t('login')}
         </p>
         <p className={styles.subTitle}>
-          Еще нет аккаунта? 
+          {t('login_stillNoAccount')}
           <Link className={styles.loginLink} href={'/registration'}>
-            Зарегистрируйтесь
+            {t('login_getRegister')}
           </Link>
         </p>
         <FormikProvider value={formik}>
@@ -115,8 +116,8 @@ export default function Login() {
             className={styles.modes}
             buttonClassName={styles.modesButtons}
             buttons={[
-              {name: 'Телефон', type: LoginType.Phone},
-              {name: 'Почта', type: LoginType.Email}
+              {name: t('phone'), type: LoginType.Phone},
+              {name: t('emailShort'), type: LoginType.Email}
             ]} 
             activeButton={loginType} 
             onSet={(type)=> changeLoginTypeHandler(type)}
@@ -141,11 +142,11 @@ export default function Login() {
               name={'login'}  
               className={styles.input} 
               defaultCountry={'RU'}
-              label={'Телефон:'}
+              label={`${t('phone')}:`}
               />
             }
             <InputField 
-            label={'Пароль:'}
+            label={`${t('password')}:`}
             className={styles.input} 
             labelType='top' 
             styleType={'default'} 
@@ -157,8 +158,13 @@ export default function Login() {
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
-            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>Забыли пароль?</p> Восстановить</Link>
-            <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>Войти</span></Button>
+            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>{t('login_forgot')}</p> {t('login_restorePassword')}</Link>
+            <Button 
+            className={styles.submitButton} 
+            type='button' 
+            onClick={()=>formik.submitForm()}>
+              <span>{t('enter')}</span>
+            </Button>
           </Form>
         </FormikProvider>
       </div>

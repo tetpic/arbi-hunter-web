@@ -16,7 +16,7 @@ import { periods } from 'utils/commonObjects'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType,  TranslateCurrency, TranslateSearchInType } from 'utils/enumsTranslations'
+import { TranslateCompensationType,  TranslateCurrency, TranslateScheduleType, TranslateSearchInType } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import P from '@/components/ui/P'
 import InputField from '@/components/fields/InputField'
@@ -29,6 +29,7 @@ import { useLocationContext } from 'context/location_state'
 import CrossSvg from '@/components/svg/CrossSvg'
 import { ICityModalArgs } from '@/components/modals/CityModal'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -42,6 +43,7 @@ export default function FilterEmployee(props: Props) {
   const sourcesContext = useSourcesContext()
   const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
+  const {t} = useTranslation()
 
   const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
@@ -484,9 +486,9 @@ export default function FilterEmployee(props: Props) {
             rootClass={styles.radioField}
             name={'schedule'}
             options={[
-              {value: ScheduleType.Flexible, label: 'Гибкий график'},
-              {value: ScheduleType.FullDay, label: 'Полный день'},
-              {value: ScheduleType.Remote, label: 'Удаленная работа'}
+              {value: ScheduleType.Flexible, label: TranslateScheduleType(ScheduleType.Flexible, t)},
+              {value: ScheduleType.FullDay, label: TranslateScheduleType(ScheduleType.FullDay, t)},
+              {value: ScheduleType.Remote, label: TranslateScheduleType(ScheduleType.Remote, t)}
             ]} 
             />
             {isTabletWidth&&<Spacer basis={4}/>}

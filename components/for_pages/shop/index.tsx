@@ -13,6 +13,7 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { useCharacterContext } from 'context/character_state'
 import { PurchaseType } from 'types/enums'
 import { useRouter } from 'next/router'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -24,6 +25,7 @@ enum ShopPages  {
 }
 
 export default function Shop(props: Props) {
+  const {t} = useTranslation()
   const [page, setPage] = useState<ShopPages>(ShopPages.Balance)
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
@@ -41,7 +43,7 @@ export default function Shop(props: Props) {
     }
     else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
       vacancyContext.setVacancies()      
-      tariffContext.setPackets([PurchaseType.VacancyTariff])
+      tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen])
     }
   }, [])
 
@@ -56,11 +58,11 @@ export default function Shop(props: Props) {
     let result = obj.map(page => {
       switch(page) {
         case ShopPages.Balance:
-          return {name: 'Баланс', type: page}
+          return {name: t('shop_balance'), type: page}
         case ShopPages.Packets:
-          return {name: 'Пакеты услуг', type: page}
+          return {name: t('shop_packets'), type: page}
         case ShopPages.Orders:
-          return {name: 'Заказы', type: page}
+          return {name: t('shop_orders'), type: page}
       }
     })
     return result
@@ -78,7 +80,7 @@ export default function Shop(props: Props) {
   })()
 
   return (<div className={styles.root}> 
-  <Title title={'Магазин'}/>
+  <Title title={t('shop')}/>
   <ItemNavigation className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
 
   {getPage}

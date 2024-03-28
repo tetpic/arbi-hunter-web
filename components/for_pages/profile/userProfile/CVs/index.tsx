@@ -9,6 +9,8 @@ import { getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
 import { useTariffContext } from 'context/tariff_state'
 import { PurchaseType } from 'types/enums'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -19,22 +21,23 @@ enum CVNavigation {
   Archive = 'archive',
 }
 
-function translate (n: CVNavigation) {
+function translate (n: CVNavigation, t: Translate) {
   switch(n) {
     case CVNavigation.Active:
-      return 'Активные'
+      return t('profile_cvs_active')
     case CVNavigation.Drafts:
-      return 'Черновики'
+      return t('profile_cvs_drafts')
     case CVNavigation.Archive:
-      return 'Архив'
+      return t('profile_cvs_archive')
   }
 }
 
 export default function CVs(props: Props) {
+  const {t} = useTranslation()
   const cvContext = useCvContext()
   const userContext = useUserContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
-  const items = Object.values(CVNavigation).map(el=> {return {name: translate(el), type: el}})
+  const items = Object.values(CVNavigation).map(el=> {return {name: translate(el, t), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
   const tariffContext = useTariffContext()
 
@@ -82,7 +85,7 @@ export default function CVs(props: Props) {
         />
       )
       ||
-      <p className={'empty'}>Нет созданных резюме</p>
+      <p className={'empty'}>{t('profile_cvs_empty')}</p>
       }
       <Spacer basis={24}/>
     </div>
