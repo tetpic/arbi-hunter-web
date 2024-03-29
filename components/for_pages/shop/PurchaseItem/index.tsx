@@ -1,4 +1,4 @@
-import { IPurchase, ITariff } from 'data/interfaces/Common'
+import { IPurchase, ITariff, PurchaseForm } from 'data/interfaces/Common'
 import styles from './index.module.scss'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
@@ -24,6 +24,7 @@ import useTranslation from 'next-translate/useTranslation'
 interface Props {
   tariff: ITariff
   cvs?: ICV[],
+  onCvVcUpdate?: () => void
   vacancies?: IVacancy[],
   type?: 'buy'|'info'
   purchase?: IPurchase
@@ -36,66 +37,93 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   const userContext = useUserContext()  
   const router = useRouter()
 
-
-  const showPreviewModal = () => {
-    if(tariff.price > userContext.user.balance) {
-      appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
-      return
-    }
-    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
-      tariff: tariff,
-      tariffs: tariffContext.packets,
-      cvs,
-      vacancies,
-      onBuy: (data) => {
-        if(tariff.purchaseType === PurchaseType.Character) {
-          CharacterRepository.createCharacter({gender: 'male'})
+  const buyHandler = (data: PurchaseForm) => {
+    switch (tariff.purchaseType) {
+      case PurchaseType.Character : {
+        CharacterRepository.createCharacter({gender: 'male'})
+        .then(_=> {
+          CharacterRepository.buyCharacter()
           .then(_=> {
-            CharacterRepository.buyCharacter()
-            .then(res=> {
-              tariffContext.setPacketsState(state=> {
-                state.delete(tariff.id)
-                return new Map(state)
-              })
+            tariffContext.setPacketsState(state=> {
+              state.delete(tariff.id)
+              return new Map(state)
             })
-            .catch(err => {
-              appContext.showSnackbar('Ошибка', SnackbarType.error)
-            })
+            userContext.refreshUser()
           })
-          return
-        }
+          .catch(_=> {
+            appContext.showSnackbar(t('error'), SnackbarType.error)
+          })
+        })
+      }
+      case PurchaseType.CvTariff: {
         const currentCv = cvs&&cvs?.find(el => el.id === data.cvId)
-        
-        if(data.cvId && currentCv) {
-          PurchaseRepository.upgradeSubscription(currentCv.subscriptions.id, {date: data.date, cvId: data.cvId, tariffId: tariff.id})
+        if(data.cvId && currentCv && currentCv.subscriptions) {
+          PurchaseRepository.upgradeSubscription(currentCv.subscriptions.id, {startAt: data.startAt, cvId: data.cvId, tariffId: tariff.id})
           .then(_=>{
-            appContext.showSnackbar('Тариф успешно обновлен', SnackbarType.success)
+            appContext.showSnackbar(t('shop_tariffRefreshed'), SnackbarType.success)
+            userContext.refreshUser()
+            props.onCvVcUpdate?.()
           })
           return
         }
+      }
+      case PurchaseType.VacancyTariff: {
         const currentVc = vacancies&&vacancies?.find(el => el.id === data.vacancyId)
-        
-        if(data.vacancyId && currentVc) {
-          PurchaseRepository.upgradeSubscription(currentVc.subscriptions.id, {date: data.date, vacancyId: data.vacancyId, tariffId: tariff.id})
+        if(data.vacancyId && currentVc && currentVc.subscriptions) {
+          PurchaseRepository.upgradeSubscription(currentVc.subscriptions.id, {startAt: data.startAt, vacancyId: data.vacancyId, tariffId: tariff.id})
           .then(_=>{
-            appContext.showSnackbar('Тариф успешно обновлен', SnackbarType.success)
+            appContext.showSnackbar(t('shop_tariffRefreshed'), SnackbarType.success)
+            userContext.refreshUser()
+            props.onCvVcUpdate?.()
           })
           return
         }
+      } 
+      case PurchaseType.AddContactsOpen: {
+        PurchaseRepository.addContactsOpenToTariff({
+          subscriptionId: data.subscriptionId, 
+          contactsCanOpenCount: tariff.contactsCanOpenCount
+        })
+        .then(_=> {
+          appContext.showSnackbar(t('shop_tariffRefreshed'), SnackbarType.success)
+          userContext.refreshUser()
+          tariffContext.setActiveSubscriptions([PurchaseType.ContactsOpen])
+        })
+        .catch(_ => {
+          appContext.showSnackbar(t('error'), SnackbarType.error)
+        })
+        return
+      }     
+      default: {
         PurchaseRepository.cvVcPurchase(clearObject({
-          date: data.date,
+          startAt: data.startAt,
           cvId: data.cvId,
           vacancyId: data.vacancyId,
           tariffId: tariff.id
         }))
         .then(_=>{
-          appContext.showSnackbar('Тариф успешно приобретен', SnackbarType.success)
+          appContext.showSnackbar(t('shop_tariffRefreshed'), SnackbarType.success)
         })
-        .catch(err => {
-          appContext.showSnackbar('Ошибка', SnackbarType.error)
+        .catch(_ => {
+          appContext.showSnackbar(t('error'), SnackbarType.error)
         })
       }
-  
+    }
+  }
+
+
+  const showPreviewModal = () => {
+    if(tariff.price > userContext.user.balance) {
+      appContext.showSnackbar(t('shop_Insufficient_funds'), SnackbarType.error)
+      return
+    }
+    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+      tariff: tariff,
+      tariffs: tariffContext.packets,
+      activeSubscriptions: [...tariffContext.activeSubscriptions.values()],
+      cvs,
+      vacancies,
+      onBuy: buyHandler
     })
   }
 
@@ -133,7 +161,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{t('shop_buy')}</Button>
       }
       {props.type === 'info' &&
-        <P className={styles.button}  styleType={['medium', 'w500']}>Куплено {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P className={styles.button}  styleType={['medium', 'w500']}>{t('shop_bought')} {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
     </div>
   )

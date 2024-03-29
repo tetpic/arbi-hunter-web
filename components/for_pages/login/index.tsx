@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import InputField from 'components/fields/InputField'
-import PhoneCountryField from 'components/fields/PhoneCountryField'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -15,7 +14,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { LoginType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
-import Modes from 'components/ui/Modes'
 import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import useTranslation from 'next-translate/useTranslation'
@@ -29,7 +27,7 @@ export default function Login() {
   const {isTabletWidth} = appContext.size
   const {t} = useTranslation()
 
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
+  const [loginType, setLoginType] = useState<LoginType>(LoginType.Email)
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
 
   const passwordHandler = () => {
@@ -112,16 +110,6 @@ export default function Login() {
         </p>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
-            <Modes 
-            className={styles.modes}
-            buttonClassName={styles.modesButtons}
-            buttons={[
-              {name: t('phone'), type: LoginType.Phone},
-              {name: t('emailShort'), type: LoginType.Email}
-            ]} 
-            activeButton={loginType} 
-            onSet={(type)=> changeLoginTypeHandler(type)}
-            />   
             {loginType=== LoginType.Email &&
               <InputField   
               label={'E-mail:'}
@@ -132,17 +120,6 @@ export default function Login() {
               color={'default'} 
               name={'login'} 
               validate={Validator.combine([Validator.required, Validator.email])}
-              />
-            }
-            {loginType === LoginType.Phone &&
-              <PhoneCountryField 
-              styleType={'horizontal'} 
-              disabled={false} 
-              placeholder={'000 000 00 00'} 
-              name={'login'}  
-              className={styles.input} 
-              defaultCountry={'RU'}
-              label={`${t('phone')}:`}
               />
             }
             <InputField 

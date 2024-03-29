@@ -24,6 +24,7 @@ interface IState {
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<IUserProfile|false>
   removeCurrentProfile: () => void
   updateUser: (user?: IUser) => Promise<IUser> 
+  refreshUser: () => void
 }
 
 const loginState$ = new Subject<boolean>()
@@ -142,6 +143,15 @@ export function UserWrapper(props: Props) {
     }
   }
 
+  const refreshUser = () => {
+    UserRepository.getCurrentUser()
+    .then(res => {
+      if(res) {
+        setUser(res)
+      }
+    })
+  }
+
   useEffect(() => {
     userRef.current = user
   }, [user])
@@ -190,6 +200,7 @@ export function UserWrapper(props: Props) {
    editCurrentProfile,
    removeCurrentProfile,
    updateUser,
+   refreshUser,
   }
 
   return (

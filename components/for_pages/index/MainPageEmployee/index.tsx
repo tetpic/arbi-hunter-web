@@ -26,6 +26,7 @@ import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import Link from 'next/link'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -141,7 +142,7 @@ export default function MainPageEmployee() {
         <PersonalHeader action={action} showNextAnimation={()=>!disableClick&&showNextAnimation()} useModel/>
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
-            <div className={styles.card}>
+            <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
               <p className={styles.desc}>{isTabletWidth?t('mainPage_em_feedBacks'):t('mainPage_em_feedBacksAlt')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -155,8 +156,8 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
+            </Link>
+            <Link className={styles.card} href={{pathname: '/'}}>
               <p className={styles.desc}>{isTabletWidth?t('mainPage_em_watches'):t('mainPage_em_watchesAlt')}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -170,8 +171,8 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
+            </Link>
+            <Link className={styles.card} href={{pathname: 'recruiting'}}>
               <p className={styles.desc}>{t('mainPage_em_vacancies')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -185,7 +186,7 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
+            </Link>
           </div>
         </div>
       </div>

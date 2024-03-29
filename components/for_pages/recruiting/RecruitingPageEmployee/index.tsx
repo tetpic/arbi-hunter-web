@@ -24,6 +24,7 @@ import SideFilterEmployee from '../SideFilters/SideFilterEmployee'
 import FilterEmployee from '../Filters/FilterEmployee'
 import { clearObject } from 'utils/helpers'
 import { CvWrapper, useCvContext } from 'context/cv_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   filters: Partial<IVacancyCvSearchParams>
@@ -40,6 +41,7 @@ export default function RecruitingPageEmployee(props: Props) {
 }
 
 function RecruitingPageEmployeeInner(props: Props) {
+  const {t} = useTranslation()
   const router = useRouter()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
@@ -116,24 +118,24 @@ function RecruitingPageEmployeeInner(props: Props) {
       <div className={styles.back}>
         <Image src={employee} className={styles.backImage} alt={'back'} />
       </div>
-      <p className={styles.title}>Найти работу в ArbiHunter</p>
+      <p className={styles.title}>{t('recruiting_em_placeCv')}</p>
       <p className={styles.description}>
-        Ежедневно более 1000 людей находят работу в&nbsp;ArbiHunter <br/> которая позволяет им&nbsp;расти и&nbsp;становиться успешными!    
+        {t('recruiting_em_desc1')} <br/> {t('recruiting_em_desc2')}    
       </p>
-      <Link className={styles.createLink} href={'/create/cv'}>Создать резюме</Link>
+      <Link className={styles.createLink} href={'/create/cv'}>{t('create_cv')}</Link>
     </div>
   }
   {isTabletWidth && 
     <TitleForSection title={' '} onBackClick={router.back}/>
   }
 
-  <MainSearchBar placeholder={'Поиск вакансий'} fullWidth className={styles.searchBar} 
+  <MainSearchBar placeholder={t('recruiting_em_searchVcs')} fullWidth className={styles.searchBar} 
   onChange={(s)=>onFilterChange({...currentFilters,  ...s})}
   onFilterClick={onFilterClick}
   initialSearch= {currentFilters.search}
   />
   {!loading &&
-    <p className={styles.found}>Найдено {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, 'вакансия', 'вакансии', 'вакансий')}</p>
+    <p className={styles.found}>{t('found')} {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</p>
     ||
     <Spacer basis={88}/>
   }
@@ -163,7 +165,7 @@ function RecruitingPageEmployeeInner(props: Props) {
             return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies()}/>
           })
           ||
-          <p className='empty'>Нет найденных вакансий</p>
+          <p className='empty'>{t('recruiting_em_noFoundVacancies')}</p>
         }
       </div>
       </InfiniteScroll>

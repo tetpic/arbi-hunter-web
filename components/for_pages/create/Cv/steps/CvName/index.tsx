@@ -9,12 +9,14 @@ import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import classNames from 'classnames'
 import { ISpecializationCategory } from 'data/interfaces/Common'
 import LoupeSvg from '@/components/svg/LoupeSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onSuggestionClick: (activeSubCategory: ISpecializationCategory[]) => void
 }
 
 export default function CvName(props: Props) {
+  const {t} = useTranslation()
   const cvCreateContext = useCreateVcCvContext()
   const [taglist, setTaglist] = useState([])
   const formikContext = useFormikContext<{searchPosition: string, categoriesIds: ISpecializationCategory[]}>()
@@ -66,7 +68,7 @@ export default function CvName(props: Props) {
         name={'searchPosition'} 
         styleType={'default'} 
         color={'default'} 
-        placeholder='Поиск профессии'/>
+        placeholder={t('create_cv_searchProfession')}/>
         {cvCreateContext.subCategories.size > 0 &&
         <div className={classNames(styles.suggestions, !isActive&&styles.disabled)}>
           <div className={styles.suggestionsWrapper} data-cy={'suggestions_wrapper'}>
@@ -80,7 +82,7 @@ export default function CvName(props: Props) {
       <p className={styles.categoryName}>{cvCreateContext.activeSubCategory[0]?.name}</p>
       { taglist.length>0 && 
         <TagList 
-        title={'Тэги'} 
+        title={t('create_tags')} 
         tags={taglist.slice(0, 15).map(el => {
           return {
             name: el.name, 

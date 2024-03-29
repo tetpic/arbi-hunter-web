@@ -42,8 +42,16 @@ export default function Shop(props: Props) {
       })
     }
     else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
-      vacancyContext.setVacancies()      
-      tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen])
+      vacancyContext.setVacancies()
+      tariffContext.setActiveSubscriptions([PurchaseType.ContactsOpen])   
+      .then(res => {
+        if(res.length > 0) {
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen])
+        }
+        else {
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen])
+        }
+      })  
     }
   }, [])
 

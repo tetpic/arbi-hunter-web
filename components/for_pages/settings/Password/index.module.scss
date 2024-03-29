@@ -21,6 +21,7 @@
 
 .button {
   align-self: flex-start;
+  white-space: nowrap;
   @include buttonGradient;
   @include mq($TabletWidth, max) {
     order: 3;
@@ -30,6 +31,7 @@
 }
 
 .blackButton {
+  white-space: nowrap;
   @include buttonGray;
   color: $red;
 }

@@ -4,21 +4,13 @@
 .root {
   min-height: 150vh;
   min-height: 150dvh;
-}
-// .root {
-//   display: flex;
-//   align-items: flex-start;
-//   padding-top: 48px;
-//   @include mq($TabletWidth, max) {
-//     padding-inline: 16px;
-//     padding-top: 26px;
-//   }
-// }
-
-.root {
   margin-bottom: 32px;
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }
+
 
 .content {
   width: Min(770px, 70%);
@@ -102,6 +94,10 @@
 .card {
   border-radius: 16px;
   padding: 16px;
+  @include transitionDefault;
+  @include hover {
+    scale: 1.05;
+  }
 }
 
 .balance {

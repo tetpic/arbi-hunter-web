@@ -6,6 +6,11 @@
   flex-direction: column;
   align-items: center;
   max-width: 295px;
+  @include mq($PhoneWidth, max) {
+    max-width: unset;
+    height: calc(100vh - 250px);
+    height: calc(100dvh - 250px);
+  }
 }
 
 .title {
@@ -49,5 +54,11 @@
   padding: 8px 16px 8px 8px;
   margin-top: 24px;
   margin-bottom: 64px;
+}
+
+.button {
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 

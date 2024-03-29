@@ -7,6 +7,7 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { Form, FormikHelpers, FormikProvider, useFormik,} from 'formik'
+import useTranslation from 'next-translate/useTranslation'
 import { useState } from 'react'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
@@ -22,6 +23,7 @@ interface PersonalPassword {
 
 export default function ChangePassword(props: Props) {
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)  
+  const {t} = useTranslation()
 
   const userContext = useUserContext()
   const appContext = useAppContext()
@@ -32,14 +34,14 @@ export default function ChangePassword(props: Props) {
 
   const submitPassword = async(data: PersonalPassword, helpers: FormikHelpers<PersonalPassword>) => {
     if(data.newPassword !== data.repeatPassword) {
-      appContext.showSnackbar('Пароли не совпадают', SnackbarType.error)
+      appContext.showSnackbar(t('login_passwordsAreNotSame'), SnackbarType.error)
       return
     }
     
-    if(confirm('Изменить существующий пароль на новый?')) {
+    if(confirm(t('login_changePasswordQuestion'))) {
       UserRepository.passwordChangeConfirmation(data).then(res=>{
         userContext.setToken(res.accessToken)
-        appContext.showSnackbar('Пароль успешно изменен', SnackbarType.success)
+        appContext.showSnackbar(t('login_passwordRestoreComplete'), SnackbarType.success)
         helpers.resetForm()
       })
       .catch(err=> appContext.showSnackbar(err.message, SnackbarType.error))
@@ -60,7 +62,7 @@ export default function ChangePassword(props: Props) {
     <FormikProvider value={passwordFormik}>
       <Form className={styles.root}>
         <InputField 
-        label={'Cтарый пароль:'}
+        label={t('login_oldPassword')}
         className={styles.input} 
         labelType='top' 
         styleType={'default'} 
@@ -73,7 +75,7 @@ export default function ChangePassword(props: Props) {
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <InputField 
-        label={'Новый пароль:'}
+        label={t('login_newPassword')}
         className={styles.input} 
         labelType='top' 
         styleType={'default'} 
@@ -86,7 +88,7 @@ export default function ChangePassword(props: Props) {
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <InputField 
-        label={'Подтвердите новый пароль:'}
+        label={t('login_confirmPassword')}
         className={styles.input} 
         labelType='top' 
         styleType={'default'} 
@@ -99,8 +101,8 @@ export default function ChangePassword(props: Props) {
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <div className={styles.buttonsWrapper}>
-          <Button className={styles.button} type='submit'>Сохранить</Button>
-          <Button type='button' onClick={userContext.removeCurrentProfile} className={styles.blackButton}>Удалить аккаунт</Button>
+          <Button className={styles.button} type='submit'>{t('save')}</Button>
+          <Button type='button' onClick={userContext.removeCurrentProfile} className={styles.blackButton}>{t('login_removeAccount')}</Button>
         </div>
       </Form>
     </FormikProvider>

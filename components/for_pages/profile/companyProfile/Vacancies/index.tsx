@@ -7,6 +7,8 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { useTariffContext } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
 import { PurchaseType } from 'types/enums'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -17,18 +19,19 @@ enum VacanciesNavigation {
   Archive = 'archive',
 }
 
-function translate (n: VacanciesNavigation) {
+function translate (n: VacanciesNavigation, t:Translate) {
   switch(n) {
     case VacanciesNavigation.Active:
-      return 'Активные'
+      return t('profile_active')
     case VacanciesNavigation.Archive:
-      return 'Архив'
+      return t('profile_archive')
     case VacanciesNavigation.Drafts:
-      return 'Черновики'
+      return t('profile_drafts')
   }
 }
 
 export default function Vacancies(props: Props) {
+  const {t} = useTranslation()
   const vacancyContext = useVacancyContext()
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
@@ -39,7 +42,7 @@ export default function Vacancies(props: Props) {
   }, [])
 
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)
-  const items = Object.values(VacanciesNavigation).map(el=> {return {name: translate(el), type: el}})
+  const items = Object.values(VacanciesNavigation).map(el=> {return {name: translate(el, t), type: el}})
 
 
   return (<div className={styles.root}> 

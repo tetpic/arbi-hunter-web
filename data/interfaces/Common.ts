@@ -289,6 +289,7 @@ export interface ITariff extends TimeStamp {
   price: number
   purchaseType: PurchaseType
   translations: ITranslation[]
+  contactsCanOpenCount: number
 }
 
 export interface ISubscription extends TimeStamp {
@@ -303,6 +304,7 @@ export interface ISubscription extends TimeStamp {
   prevStatus: string|null
   status: string|null
   tariffId: number
+  contactsCanOpenCount: number
 }
 
 export interface IPurchase extends TimeStamp {
@@ -320,4 +322,12 @@ export interface RefillBalanceData {
   amount: number,
   currency: Currency,
   paymentType: 'bankCard'
+}
+
+export interface PurchaseForm {
+  startAt: string|undefined,
+  cvId: number|undefined,
+  vacancyId: number|undefined
+  tariffId: number
+  subscriptionId: number
 }

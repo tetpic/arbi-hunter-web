@@ -200,7 +200,7 @@ export default function CvPreview(props: Props) {
         title={'Образование'}
         onClick={() => props.onBack(4)}
         > 
-          <P styleType={['w500', 'medium']} className={styles.educationGrade}>{TranslateEducationType(currentCv.education)}</P>
+          <P styleType={['w500', 'medium']} className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
           { currentCv.educationInfo.length > 0 && 
             currentCv.educationInfo.map(el=> {
               return <div className={styles.experience}>

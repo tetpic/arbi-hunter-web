@@ -36,6 +36,6 @@ export default function ShopBalance(props: Props) {
     <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user?.balance)||0}</P>
   </div>
 
-  <Button styleType={['gradient', 'wide']} onClick={openRefillModal}>{t('shop_fill')}</Button>
+  <Button className={styles.button} styleType={['gradient', 'wide']} onClick={openRefillModal}>{t('shop_fill')}</Button>
   </div>)
 }

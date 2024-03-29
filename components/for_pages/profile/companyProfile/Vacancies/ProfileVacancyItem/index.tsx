@@ -22,6 +22,7 @@ import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from './Progress'
 import P from '@/components/ui/P'
 import { useTariffContext } from 'context/tariff_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy: IVacancy
@@ -34,6 +35,7 @@ interface Props {
 }
 
 export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}: Props) {
+  const {t} = useTranslation()
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
@@ -57,7 +59,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
   const removeHandler =()=> {
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: 'Вы действительно хотите удалить вакансию?',
+      {text: t('vacancy_item_areYouShureToDelete'),
       callback: ()=>{
         vacancyContext.removeVacancy(vacancy.id, props.type)
         props.onRemove(vacancy.id)
@@ -70,18 +72,20 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
   }
 
   const options = <OptionsList options={[
-    {title: vacancy?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
-    {title: 'Дублировать'},
-    {title: 'Поделиться'},
-    {title: 'Продлить и Поднять'},
-    {title: 'Улучшить', onClick: upgradeTariffHandler},
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_double')},
+    {title: t('item_share')},
+    {title: t('item_prolong')},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]}
   onMouseLeave={()=>openDropDown(false)}
   />
 
-  const openModalHandler =()=> {
+  const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {
+    e.preventDefault()
+    e.stopPropagation()
     if (isTabletWidth) {
       appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 430)
     }

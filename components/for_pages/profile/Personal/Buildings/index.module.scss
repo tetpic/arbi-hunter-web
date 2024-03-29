@@ -5,6 +5,9 @@
   background-color: $black;
   overflow: hidden;
   position: relative;
+  @include mq($TabletWidth, max) {
+    border-radius: 0px 0px 16px 16px;
+  }
 
   .buildingWrapper {
     position: absolute;

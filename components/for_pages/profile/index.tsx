@@ -54,15 +54,7 @@ export default function Profile() {
         profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
-      {/* {((showNav && isTabletWidth) || !isTabletWidth) &&
-        <Navigation 
-        wrapperClassName={styles.nav} 
-        bottomItem={page===ProfilePages.Edit && profileType === ProfileType.Employee && !isTabletWidth&& saveCharButton} 
-        currentPage={page} 
-        navSet={navSet()} 
-        setPage={(p)=> {router.push(`/profile?page=${p}`)}} 
-        onClickHandler={()=>setShowNav(false)}/>
-      } */}
+
     </div>
   )
 }

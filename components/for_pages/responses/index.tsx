@@ -5,7 +5,7 @@ import VCFeedbacks from './VcResponses'
 import { VacancyWrapper } from 'context/vacancy_state'
 
 interface Props {
-  id: number
+  id?: number
 }
 
 export default function Responses(props: Props) {

@@ -19,9 +19,13 @@ export default class ApplicationRepository {
   }
 
   static async getVacancyApplication(vacancyId: number|string): Promise<IApplication[]|null> {
+    const dataToSend = vacancyId&&{
+      s: JSON.stringify({vacancyId: vacancyId})
+    }
     const res = await request({
       method: 'get',
-      url: `/api/application?s=${JSON.stringify({vacancyId: vacancyId})}`,
+      url: '/api/application',
+      data: dataToSend
     })
     if(res.err) {
       return null
@@ -42,9 +46,14 @@ export default class ApplicationRepository {
   }
 
   static async getStatsCountByVacancy(vacancyId: number|string): Promise<IStat[]|null> {
+    const dataToSend = vacancyId&&{
+      s: JSON.stringify({vacancyId: vacancyId})
+    }
+
     const res = await request({
       method: 'get',
-      url: `/api/application/stats?s=${JSON.stringify({vacancyId: vacancyId})}`,
+      url: '/api/application/stats',
+      data: dataToSend
     })
     if(res.err) {
       return null

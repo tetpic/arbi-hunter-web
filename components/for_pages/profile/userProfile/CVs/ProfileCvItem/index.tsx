@@ -22,6 +22,7 @@ import Progress from '../../../companyProfile/Vacancies/ProfileVacancyItem/Progr
 import { useRouter } from 'next/router'
 import { useTariffContext } from 'context/tariff_state'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cv: ICV
@@ -33,6 +34,7 @@ interface Props {
 }
 
 export default function ProfileCvItem({cv, isLast, ...props}: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
@@ -111,8 +113,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
-      <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
-      <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
+      <p className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</p>
+      <p className={styles.refreshed}>{t('cv_item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()
@@ -142,11 +144,11 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
     {(props.type !== 'drafts' || !cv.completedSteps) &&
       <Statistics 
-      title='Статистика за неделю'     
+      title={t('item_statistics')}     
       items={[
-        {name: 'Показы', count: cv.totalProposals},
-        {name: 'Просмотры', count: cv.totalViews},
-        {name: 'Отклики', count: cv.totalApplications},
+        {name: t('item_shows'), count: cv.totalProposals},
+        {name: t('item_views'), count: cv.totalViews},
+        {name: t('item_feedbacks'), count: cv.totalApplications},
       ]}
       />
       ||
@@ -157,14 +159,14 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     {!props.cardMode &&    
       <div className={styles.buttonsWrapper}>
         {cv.moderationStatus !== 'approved' && props.type !== 'drafts' &&
-          <p className={styles.refreshed}>На модерации</p>
+          <p className={styles.refreshed}>{t('item_onModeration')}</p>
         }
 
         {cv.published && cv.moderationStatus === 'approved' &&
           <Button
           styleType={['gradient']}
           >
-            Поднять в поиске
+            {t('item_upriseInSearch')}
           </Button>
         }
 
@@ -177,7 +179,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           styleType={['gradient']}
           onClick={archiveHandler}
           >
-            Опубликовать
+            {t('item_publish')}
           </Button>
         }
 
@@ -188,12 +190,12 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.stopPropagation()
             router.push({pathname: '/create/cv/', query: {id: cv.id, progress: cv.completedSteps.length}})}
           }>
-            Продолжить заполнение
+            {t('item_continueEditing')}
           </Button>
         }
 
         {props.type === 'drafts' && cv.completedSteps?.length > 5 &&
-          <Button styleType={['black']}>Редактировать</Button>
+          <Button styleType={['black']}>{t('item_edit')}</Button>
         }
 
         {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 
@@ -204,7 +206,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.preventDefault()
             showVacancies()}
           }>
-            {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+            {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, t('vacancies1'), t('vacancies2'), t('vacancies3'))}
           </Button>
         }
         {!props.type &&
@@ -215,7 +217,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.preventDefault()
             showVacancies()}
           }>
-            Подходящие вакансии
+            {t('vacancy_item_relevant')}
           </Button>
         }
       </div>

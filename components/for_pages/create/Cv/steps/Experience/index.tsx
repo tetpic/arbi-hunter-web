@@ -10,12 +10,14 @@ import { ModalType } from 'types/enums'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import P from '@/components/ui/P'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   name: string
 }
 
 export default function Experience(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const formikContext = useFormikContext<ICVCreate>()
   const values = formikContext.values
@@ -39,8 +41,7 @@ export default function Experience(props: Props) {
         }]
       },
       initialValues: initial? {experienceInfo: [{...initial, toPresent: !initial.toDate}]}:null,
-      onSubmit: (data) => {
-        
+      onSubmit: (data) => {        
         const exp = formikContext.values.experienceInfo
         if(index !== undefined) {
           exp[index] = data.experienceInfo[0]
@@ -80,7 +81,7 @@ export default function Experience(props: Props) {
         </div>)
       }) 
       }
-      <AddButton test={'addWorkPlace'} onClick={()=>onAddButtonClick()} text='Добавить место работы'/>
+      <AddButton test={'addWorkPlace'} onClick={()=>onAddButtonClick()} text={t('create_cv_addWorkPlace')}/>
     </div>
   )
 }

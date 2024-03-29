@@ -23,7 +23,6 @@ import UserRegImage from 'components/ui/UserRegImage'
 import ProgressBar from 'components/ui/ProgressBar'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
-import Modes from '@/components/ui/Modes'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 
@@ -40,7 +39,7 @@ export default function Registration() {
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
   const [progress, setProgress] = useState<number>(1)
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
+  const [loginType, setLoginType] = useState<LoginType>(LoginType.Email)
 
 
   const [disableButton, setDisableButton] = useState<boolean>(false)
@@ -182,18 +181,6 @@ export default function Registration() {
   }
 
   const stage1 = (<>
-
-    <Modes 
-    className={styles.modes}
-    buttonClassName={styles.modesButtons}
-    buttons={[
-      {name: t('phone'), type: LoginType.Phone},
-      {name: t('emailShort'), type: LoginType.Email}
-    ]} 
-    activeButton={loginType} 
-    onSet={(type)=> changeLoginTypeHandler(type)}
-    />   
-
     {loginType===LoginType.Phone && 
       <PhoneCountryField 
       styleType={'horizontal'} 

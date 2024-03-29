@@ -86,27 +86,6 @@ export const TranslateGenderType = (g: Genders) => {
   }
 }
 
-export const TranslateEducationType = (e: EducationTypes) => {
-  switch(e) {
-    case EducationTypes.Bachelor:
-      return 'Бакалавр'
-    case EducationTypes.Doctor: 
-      return 'Доктор наук'
-    case EducationTypes.Higher: 
-      return 'Высшее'
-    case EducationTypes.IncompleteHigher: 
-      return 'Неоконченное высшее'
-    case EducationTypes.Master:
-      return 'Магистр'
-    case EducationTypes.PhD:
-      return 'Кандидат наук'
-    case EducationTypes.Secondary:
-      return 'Среднее'
-    case EducationTypes.SecondarySpecial:
-      return 'Средне специальное'
-  }
-}
-
 export const TranslateWorkExperience = (w: WorkExperience) => {
   switch(w) {
     case WorkExperience.NoExperience: 
@@ -263,7 +242,30 @@ export const TranslateEmploymentType = (e: EmploymentType) => {
     case EmploymentType.Project:
       return 'Проектная'
   }
-  
+}
+
+
+export const TranslateEducationType = (e: EducationTypes, t: Translate) => {
+  switch(e) {
+    case EducationTypes.Secondary:
+      return t('education_secondary')
+    case EducationTypes.SecondarySpecial:
+      return t('education_secondarySpecial')
+    case EducationTypes.IncompleteHigher:
+      return t('education_incompleteHigher')
+    case EducationTypes.Higher:
+      return t('education_higher')
+    case EducationTypes.Bachelor:
+      return t('education_bachelor')
+    case EducationTypes.Master:
+      return t('education_master')
+    case EducationTypes.PhD:
+      return t('education_phD')
+    case EducationTypes.Doctor:
+      return t('education_doctor')
+    default: 
+      return t('education_noEducation')
+  }
 }
 
 export const TranslateVacancyLookType = (v: VacancyLookType, profileType: ProfileType) => {

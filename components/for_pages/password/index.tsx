@@ -9,11 +9,13 @@ import { useRouter } from 'next/navigation'
 import PhoneOrEmail from './PhoneOrEmail'
 import PasswordConfirm from './PasswordConfirm'
 import { SnackbarType } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function Password(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
   const router = useRouter()
@@ -26,7 +28,7 @@ export default function Password(props: Props) {
       setStep(2)
     }
     else {
-      appContext.showSnackbar('Аккаунта не существует', SnackbarType.error)
+      appContext.showSnackbar(t('login_accountNotExist'), SnackbarType.error)
       router.replace('/registration')
     }
   }
@@ -46,7 +48,7 @@ export default function Password(props: Props) {
     <div className={styles.content}>
       <p className={styles.title}>
       {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-      Восстановление пароля
+      {t('login_restoringPassword')}
       </p>
       {step === 1 &&
       <PhoneOrEmail/>

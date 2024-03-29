@@ -384,7 +384,7 @@ export default function CvPage(props: Props) {
 
       <div className={styles.item}>
         <P styleType={['large', 'w600']}>Образование</P>
-        <P styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education)}</P>
+        <P styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education, t)}</P>
         {currentCv.educationInfo.length > 0 && 
           <div className={styles.cards}>
             { currentCv.educationInfo.map(el=> {

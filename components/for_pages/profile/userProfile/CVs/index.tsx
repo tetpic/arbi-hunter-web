@@ -24,11 +24,11 @@ enum CVNavigation {
 function translate (n: CVNavigation, t: Translate) {
   switch(n) {
     case CVNavigation.Active:
-      return t('profile_cvs_active')
+      return t('profile_active')
     case CVNavigation.Drafts:
-      return t('profile_cvs_drafts')
+      return t('profile_drafts')
     case CVNavigation.Archive:
-      return t('profile_cvs_archive')
+      return t('profile_archive')
   }
 }
 

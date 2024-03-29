@@ -109,7 +109,7 @@ export default function RecruitingEmployee(props: Props) {
       {riveAnimation}
       <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
         {t('landing_em_findWork')}
-        <span className={styles.title_big}> {t('landing_em_in')} <span className={styles.title_purple}>Arbi</span>Hunter</span>
+        <span className={styles.title_big}> {t('landing_in')} <span className={styles.title_purple}>Arbi</span>Hunter</span>
       </P>
       <Link className={styles.createLink} href={'/create/cv'} ><span>{t('landing_em_createCV')}</span></Link>
     </div>

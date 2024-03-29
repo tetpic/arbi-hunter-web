@@ -46,7 +46,6 @@ export function CvWrapper(props: Props) {
     if(currentProfile.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser()
       .then(res=> {
-        //потому что с бэка, в отличие от вакансий такие данные мне не приходят...
         res = res.map(el=> {return {...el, isSavedByCurrentProfile: true}})
         setSavedCvsState(res)
         return true

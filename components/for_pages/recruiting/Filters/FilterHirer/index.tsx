@@ -206,12 +206,12 @@ export default function FilterHirer(props: Props) {
             Специализация:
           </p>
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory.length === 0 && 
+          {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && 
             <P styleType={['medium', 'w500']}>
               Любая
             </P>
           }
-          {creationContext.activeSubCategory.length > 0 &&
+          {creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
             creationContext.activeSubCategory.map(el=> {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
             })

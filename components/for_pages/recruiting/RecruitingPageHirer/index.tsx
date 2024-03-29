@@ -23,6 +23,7 @@ import { clearObject } from 'utils/helpers'
 import FilterHirer from '../Filters/FilterHirer'
 import SideFilterHirer from '../SideFilters/SideFilterHirer'
 import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -43,6 +44,7 @@ export default function RecruitingPageHirer(props: Props) {
 
 
 function RecruitingPageHirerInner(props: Props) {
+  const {t} = useTranslation()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const [loading, setLoading] = useState<boolean>(true)
@@ -119,12 +121,12 @@ function RecruitingPageHirerInner(props: Props) {
           <Image className={styles.backImage} src={hirer} alt={'rec image'} />
         </div>
         <P styleType={['huge', 'w700']} useThemeColor>
-          Разместите вакансию в ArbiHunter
+          {t('recruiting_hir_placeVacancy')}
         </P>
         <P styleType={['large']} className={styles.description} useThemeColor>
-          46% трудоспособного населения России — зарегистрированы на ArbiHunter        
+          {t('rectuing_hir_description')}        
         </P>
-        <Link className={styles.createLink} href={'/create/vacancy'}>Разместить вакансию</Link>
+        <Link className={styles.createLink} href={'/create/vacancy'}>{t('recruiting_hir_toPlaceVacancy')}</Link>
       </div>
     }
 
@@ -132,7 +134,7 @@ function RecruitingPageHirerInner(props: Props) {
       <TitleForSection title={' '} onBackClick={router.back}/>
     }
     <MainSearchBar
-     placeholder={'Поиск резюме'} fullWidth className={styles.searchBar} 
+     placeholder={t('search_cv')} fullWidth className={styles.searchBar} 
      onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
      initialSearch={searchString}
      onFilterClick={onFilterClick}
@@ -145,7 +147,7 @@ function RecruitingPageHirerInner(props: Props) {
         className={styles.found}
         useThemeColor
         >
-          Найдено {cvContext.total} резюме {props.vcId?'на вакансию '+ vacancyContext.currentVacancy.name:''}
+          {t('found')} {cvContext.total} {t('cv').toLowerCase()} {props.vcId?t('recruiting_hit_foundOnVacancy')+' '+ vacancyContext.currentVacancy.name:''}
         </P>
         ||
         <Spacer basis={88}/>
@@ -173,7 +175,7 @@ function RecruitingPageHirerInner(props: Props) {
                 return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy} key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
-              !loading && <p className='empty'>Нет найденных резюме</p>
+              !loading && <p className='empty'>{t('recruiting_noFoundCvs')}</p>
             }
           </div>
         </InfiniteScroll>

@@ -7,6 +7,7 @@ import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
 import { useRouter } from 'next/navigation'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -17,6 +18,7 @@ interface Passwords {
 }
 
 export default function PasswordConfirm(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const router = useRouter()
@@ -25,13 +27,13 @@ export default function PasswordConfirm(props: Props) {
     if(data.newPassword === data.newPasswordRepeat) {
       UserRepository.passwordChangeConfirmation(data).then(res=>{
         userContext.setToken(res.accessToken)
-        appContext.showSnackbar('Пароль успешно изменен', SnackbarType.success)
+        appContext.showSnackbar(t('login_passwordRestoreComplete'), SnackbarType.success)
         router.push('/')
       })
       .catch(err=> alert(err.toString()))
     }
     else {
-      appContext.showSnackbar('Пароли не совпадают', SnackbarType.error)
+      appContext.showSnackbar(t('login_passwordsAreNotSame'), SnackbarType.error)
     }
   }
 
@@ -48,15 +50,15 @@ export default function PasswordConfirm(props: Props) {
       <PasswordField 
       className={styles.input} 
       name='newPassword' 
-      label='Пароль' 
+      label={t('password')} 
       />
 
       <PasswordField 
       className={styles.input} 
       name='newPasswordRepeat' 
-      label='Повторите пароль'/>
+      label={t('login_repeatPassword')}/>
 
-      <Button disabled={formik.isSubmitting} isProcess={formik.isSubmitting}  className={styles.submitButton}><span>Восстановить</span></Button>
+      <Button disabled={formik.isSubmitting} isProcess={formik.isSubmitting}  className={styles.submitButton}><span>{t('login_restorePassword')}</span></Button>
     </Form>
   </FormikProvider>)
 }

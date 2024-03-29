@@ -93,7 +93,7 @@ export default function SettingsPage(props: Props) {
   return (    
     <div className={styles.root}> 
       {
-        <TitleForSection title={t('settings')} onBackClick={()=>router.back()}/>
+        <TitleForSection className={styles.title} title={t('settings')} onBackClick={()=>router.back()}/>
       }
       <ItemNavigation activeItem={activeItem} onClick={(n)=>setActiveItem(n)} items={items} className={styles.itemNavigation} />
       <div className={styles.contentWrapper}>

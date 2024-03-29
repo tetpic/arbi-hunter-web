@@ -144,7 +144,7 @@ function FolderEditor(props: Props) {
         </div>
         {!isTabletWidth &&
           <Button className={styles.createBtn} type='button' onClick={formik.submitForm}>
-            {props.folderToEdit?t('chat_save'): t('chat_folder_create')}
+            {props.folderToEdit?t('save'): t('chat_folder_create')}
           </Button>
         }
       </Form>

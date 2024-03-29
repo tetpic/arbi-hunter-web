@@ -3,8 +3,24 @@
 .root {
   width: 100%;
   padding-top: 32px;
+
+}
+
+.title {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
+}
+
+.contentWrapper {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .itemNavigation {
   margin-bottom: 32px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }

@@ -105,7 +105,7 @@ export function ProfilePageWrapper(props: Props) {
         return {name: t('profile_title_feedbacks'), type: page, icon: <EditMessageSvg/>}
 
         case ProfilePages.Cvs:
-        return {name: 'profile_title_myCVs', type: page, icon: <FolderSvg/>}
+        return {name: t('profile_title_myCVs'), type: page, icon: <FolderSvg/>}
 
         case ProfilePages.Managers:
         return {name: t('profile_title_managers'), type: page, icon: <UsersSvg/>}

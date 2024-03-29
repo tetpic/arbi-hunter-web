@@ -23,6 +23,7 @@ import CategoryRepository from 'data/repositories/CategoryRepository'
 import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import useTranslation from 'next-translate/useTranslation'
+import Link from 'next/link'
 
 
 
@@ -98,7 +99,7 @@ export default function MainPageHirer() {
         
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
-            <div className={styles.card}>
+            <Link className={styles.card} href={'/responses'}>
               <p className={styles.desc}>{t('mainPage_hir_feedbacks')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -112,8 +113,8 @@ export default function MainPageHirer() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
+            </Link>
+            <Link className={styles.card} href={'/recruiting'}>
               <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -127,8 +128,8 @@ export default function MainPageHirer() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
+            </Link>
+            <Link className={styles.card} href={'/'}>
               <p className={styles.desc}>{t('mainPage_hir_cvs')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
@@ -142,7 +143,7 @@ export default function MainPageHirer() {
                 }
               </p>
               }
-            </div>
+            </Link>
           </div>
         </div>
       </div>

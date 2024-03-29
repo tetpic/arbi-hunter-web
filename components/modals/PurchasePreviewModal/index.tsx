@@ -1,7 +1,7 @@
 import ModalLayout from '@/components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
 import ModalBody from '@/components/layout/Modal/ModalBody'
-import { ITariff } from 'data/interfaces/Common'
+import { IPurchase, ITariff, PurchaseForm } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import { FILES } from 'types/constants'
@@ -10,7 +10,7 @@ import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import Formatter from 'utils/formatter'
 import Button from '@/components/ui/Button'
 import CrossSvg from '@/components/svg/CrossSvg'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import { useUserContext } from 'context/user_state'
@@ -21,6 +21,7 @@ import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
 import { PurchaseType } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -34,15 +35,12 @@ enum PurchaseStep {
   setItems = 'setItems'
 }
 
-interface PurchaseForm {
-  date: string|undefined,
-  cvId: number|undefined,
-  vacancyId: number|undefined
-}
+
 
 export interface PurchasePreviewModalArgs  {
   tariff: ITariff
   tariffs: Map<number, ITariff>
+  activeSubscriptions?: IPurchase[] 
   cvs?: ICV[]
   vacancies?: IVacancy[]
   data?: {cvId?: number, vacancyId?: number}
@@ -50,15 +48,16 @@ export interface PurchasePreviewModalArgs  {
 }
 
 export default function PurchasePreviewModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
-  const balance = userContext.user?.balance
+  const balance = useRef(userContext.user?.balance)
   const args:PurchasePreviewModalArgs = appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
   const [date, setDate] = useState<string|undefined>(undefined)
   const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies)?.filter(el=> {
     const currentTariff = args.tariffs.get(el.subscriptions?.tariff?.id)
-    return (currentTariff.price < args.tariff?.price) && (currentTariff.id !== args.tariff?.id)
+    return (currentTariff?.price < args.tariff?.price) && (currentTariff.id !== args.tariff?.id)
   })||[]
 
   const buy = (data: PurchaseForm) => {
@@ -74,9 +73,11 @@ export default function PurchasePreviewModal(props: Props) {
 
   const formik = useFormik<PurchaseForm>({
     initialValues: {
-      date: date,
+      startAt: date,
       cvId: args.data?.cvId||undefined,
-      vacancyId: args.data?.vacancyId||undefined
+      vacancyId: args.data?.vacancyId||undefined,
+      subscriptionId: (args.activeSubscriptions && args.activeSubscriptions.length === 1) ?args.activeSubscriptions[0]?.subscriptionId :undefined,
+      tariffId: undefined
     },
     onSubmit: buy
   })
@@ -85,29 +86,29 @@ export default function PurchasePreviewModal(props: Props) {
   const purchase = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>Покупка</P>
+        <P styleType={['w600', 'large']}>{t('shop_purchase')}</P>
         <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
-      <P styleType={['w600', 'huge', 'textCenter']}>Покупка тарифа <br /> {args.tariff.name}</P>
+      <P styleType={['w600', 'huge', 'textCenter']}>{t('shop_tariffPurchase')} <br /> {args.tariff.name}</P>
       <div className={styles.balanceLine}>
-      <P styleType={['alignCenter', 'w600', 'huge' ]} className={styles.crossed}><ArbiCoinSvg/> {userContext.user.balance}</P>
+      <P styleType={['alignCenter', 'w600', 'huge' ]} className={styles.crossed}><ArbiCoinSvg/> {balance.current}</P>
       <ArrowSvg/>
-      <P styleType={['alignCenter', 'w600', 'huge' ]} ><ArbiCoinSvg/> {userContext.user.balance - args.tariff.price}</P>
+      <P styleType={['alignCenter', 'w600', 'huge' ]} ><ArbiCoinSvg/> {balance.current - args.tariff.price}</P>
       </div>
       <P styleType={['w600', 'fs32', 'alignCenter']} className={styles.balance}><ArbiCoinGradientSvg/>{args.tariff.price}</P>
-      <Button styleType={['gradient']} onClick={props.onClose}>Готово</Button>
+      <Button styleType={['gradient']} onClick={props.onClose}>{t('ready')}</Button>
     </div>
   )
 
   const confirmation = (
     <div className={classNames(styles.root, styles.rootConfirm)}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>Подтверждение покупки</P>
+        <P styleType={['w600', 'large']}>{t('shop_purchaseConfirmation')}</P>
         <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       <div className={styles.balanceLine}>
-        <P styleType={['w600', 'huge']}>Баланс</P>
-        <P styleType={['w600', 'huge', 'alignCenter']} className={styles.balance}><ArbiCoinGradientSvg/>{balance}</P>
+        <P styleType={['w600', 'huge']}>{t('shop_balance')}</P>
+        <P styleType={['alignCenter', 'w600', 'huge' ]} className={styles.balance}><ArbiCoinGradientSvg/> {balance.current}</P>
       </div>
 
       <div className={styles.confirmInfo}>
@@ -125,7 +126,7 @@ export default function PurchasePreviewModal(props: Props) {
 
         <P styleType={['w500', 'medium', 'alignCenter']}>
           <ArbiCoinSvg/>
-          {args.tariff.price} {Formatter.pluralize(args.tariff.price, 'арбикоин', 'арбикоина', 'арбикоинов')} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, 'день', 'дня', 'дней')}
+          {args.tariff.price} {Formatter.pluralize(args.tariff.price, t('arbicoins1'), t('arbicoins2'), t('arbicoins3'))} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, t('day1'), t('day2'), t('day3'))}
         </P>
       </div>
 
@@ -134,11 +135,11 @@ export default function PurchasePreviewModal(props: Props) {
         styleType={['grey', 'wide']} 
         onClick={() => {setType(PurchaseStep.default)}}
         >
-          Отменить
+          {t('cancel')}
         </Button>
         <Button 
         styleType={['gradient', 'wide']} 
-        onClick={formik.submitForm} >Купить</Button> 
+        onClick={formik.submitForm} >{t('shop_buy')}</Button> 
       </div>
     </div>
   )
@@ -146,15 +147,15 @@ export default function PurchasePreviewModal(props: Props) {
   const calendar = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>Выбрать дату и время активации</P>
+        <P styleType={['w600', 'large']}>{t('shop_setActivationTime')}</P>
         <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
-      {formik.values.date &&
-        <P>{Formatter.formatDate(formik.values.date, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+      {formik.values.startAt &&
+        <P>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
       <div className={styles.calendarField}>
         <ShopDateTimePicker 
-        name={'date'} 
+        name={'startAt'} 
         maxDate={maxDate()}
         />
       </div>
@@ -167,21 +168,27 @@ export default function PurchasePreviewModal(props: Props) {
           setType(PurchaseStep.default)
         }}
         >
-          {formik.values.date?'Удалить':'Отменить'}
+          {formik.values.startAt?t('delete'):t('cancel')}
         </Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.default)}>Сохранить</Button> 
+        <Button styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.default)}>{t('save')}</Button> 
       </div>
-
     </div>
   )
 
   const setItems = (
     <div className={classNames(styles.root, styles.rootConfirm)}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>Выберите {args.vacancies?'вакансию':'резюме'}</P>
+        <P styleType={['w600', 'large']}>
+          {args.tariff.purchaseType === PurchaseType.AddContactsOpen && t('shop_chooseTariff')
+            ||
+            args.tariff.purchaseType === PurchaseType.CvTariff && t('shop_chooseCv')
+            ||
+            args.tariff.purchaseType === PurchaseType.VacancyTariff && t('shop_chooseVacancy')    
+          }
+        </P>
         <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
-      {items.length > 0 &&
+      {items.length > 0 && args.tariff.purchaseType !== PurchaseType.AddContactsOpen &&
         <RadioListField 
         rootClass={styles.radioListField}
         options={
@@ -192,13 +199,47 @@ export default function PurchasePreviewModal(props: Props) {
         } 
         name={args.cvs?'cvId':'vacancyId'}
         />
+        ||
+        items.length === 0 && args.tariff.purchaseType !== PurchaseType.AddContactsOpen &&
+        <P styleType={['w500', 'medium']}>
+        {args.tariff.purchaseType === PurchaseType.CvTariff && t('shop_noActiveCvs')}
+        {args.tariff.purchaseType === PurchaseType.VacancyTariff && t('shop_noActiveVacancies')}
+        </P>
       }
+      {args.tariff.purchaseType === PurchaseType.AddContactsOpen && args.activeSubscriptions?.length > 0 &&
+        <RadioListField 
+        rootClass={styles.radioListField}
+        options={
+          args.activeSubscriptions.filter(el => el?.purchaseType === PurchaseType.ContactsOpen).map(el => ({
+            label: <>
+            <P styleType={['w500', 'medium']}>
+              {args.tariffs.get(el.subscription.tariffId).name}
+            </P>
+            <P styleType={['w500', 'medium', 'greyLight']}>
+              (истекает {Formatter.formatDate(el.subscription.endAt)}, осталось {el.subscription.contactsCanOpenCount} {Formatter.pluralize(el.subscription.contactsCanOpenCount, 'открытие', 'открытия', 'открытий')})
+            </P>
+            </>,
+            value: el.subscriptionId
+          }))
+        } 
+        name={'subscriptionId'}
+        />
+        ||
+        args.activeSubscriptions&&args.activeSubscriptions?.length === 0 &&
+        <P styleType={['w500', 'medium']}>{t('shop_noAvailableTariffs')}</P>
+      }
+      
       <Button 
       styleType={['gradient']} 
       onClick={()=>setType(PurchaseStep.confirmation)}
-      disabled={balance < args.tariff.price||(args.cvs?.length > 0&&!formik.values.cvId)||(args.vacancies?.length > 0&&!formik.values.vacancyId)}
+      disabled={
+        balance.current < args.tariff.price
+        ||(args.tariff.purchaseType === PurchaseType.CvTariff&&!formik.values.cvId)
+        ||(args.tariff.purchaseType === PurchaseType.VacancyTariff &&!formik.values.vacancyId)
+        ||(args.tariff.purchaseType === PurchaseType.AddContactsOpen && !formik.values.subscriptionId)
+      }
       >
-        Продолжить
+        {t('continue')}
       </Button>
     </div>
   )
@@ -215,19 +256,29 @@ export default function PurchasePreviewModal(props: Props) {
         styleType={['alignCenter', 'w500', 'medium']} 
         className={styles.price}>
           <ArbiCoinSvg/> 
-          {args.tariff.price} {Formatter.pluralize(args.tariff.price, 'арбикоин', 'арбикоина', 'арбикоинов')} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, 'день', 'дня', 'дней')}
+          {args.tariff.price} {Formatter.pluralize(args.tariff.price, t('arbicoins1'), t('arbicoins2'), t('arbicoins3'))} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, t('day1'), t('day2'), t('day3'))}
         </P>
       }
       {args.tariff.price === 0 &&
-        <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>Бесплатно</P>
+        <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>{t('shop_free')}</P>
       } 
       <P styleType={['medium']}>{args.tariff.description}</P>
-      {formik.values.date &&
-        <P styleType={['w500', 'greyLight', 'small']}>Дата активации: {Formatter.formatDate(formik.values.date, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+      {formik.values.startAt &&
+        <P styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>Выбрать дату активации</Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => (args.tariff.purchaseType === PurchaseType.CvTariff||args.tariff.purchaseType === PurchaseType.VacancyTariff)?setType(PurchaseStep.setItems):setType(PurchaseStep.confirmation)}>Купить</Button> 
+        <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
+        <Button 
+        styleType={['gradient', 'wide']} 
+        onClick={() => (
+          args.tariff.purchaseType === PurchaseType.CvTariff&&!args.data.cvId
+          ||args.tariff.purchaseType === PurchaseType.VacancyTariff&&!args.data.vacancyId
+          ||(args.tariff.purchaseType === PurchaseType.AddContactsOpen&&args.tariffs.size > 1))
+          ?setType(PurchaseStep.setItems)
+          :setType(PurchaseStep.confirmation)}
+        >
+          {t('shop_buy')}
+        </Button> 
       </div>
     </div>
   )
