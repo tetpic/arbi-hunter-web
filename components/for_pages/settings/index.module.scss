@@ -2,7 +2,8 @@
 
 .root {
   width: 100%;
-  padding-top: 32px;
+  padding-top: clamp(16px, 4vw, 32px);
+  
 
 }
 

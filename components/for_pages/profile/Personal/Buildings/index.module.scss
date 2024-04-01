@@ -5,6 +5,8 @@
   background-color: $black;
   overflow: hidden;
   position: relative;
+  height: clamp(250px, 70vw, 370px);
+
   @include mq($TabletWidth, max) {
     border-radius: 0px 0px 16px 16px;
   }
@@ -14,10 +16,27 @@
     bottom: 0;
     right: 10%;
     z-index: 2;
+    @include mq($TabletWidth, max) {
+      width: clamp(190px, 50vw, 250px);
+    }
+
+    .building {
+      position: relative;
+      z-index: 2;
+      @include mq($TabletWidth, max) {
+        width: 100%;
+        height: auto;
+      }
+    }
 
     .logo{
       position: absolute;
       transform: translate(-50%, -50%);
+      @include mq($TabletWidth, max) {
+        width: clamp(40px, 10.5vw, 55px);
+        height: clamp(40px, 10.5vw, 55px);
+      }
+
     }
   }
 
@@ -32,10 +51,6 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-}
-
-.imageSettings {
-  height: 370px;
 }
 
 .swiper {
@@ -72,13 +87,17 @@
   position: absolute;
   top: 0;
   right: 0;
-  height: 101%;
-  width: 130%;
+  height: Max(101%, 360px);
+  width: Max(130%, 1400px);
   z-index: 3;
 }
 
 .transport {
   @extend .rive;
+  width: Max(130%, 1000px);
+  height: Max(101%, 250px);
+
+
   top: 40px;
   z-index: 1;
 }

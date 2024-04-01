@@ -1,16 +1,19 @@
+import styles from './index.module.scss'
+
 import Head from 'next/head'
 import Footer from '../Footer'
 import { useAppContext } from 'context/state'
 import { useResize } from 'components/hooks/useResize'
 import { useEffect } from 'react'
 import { useUserContext } from 'context/user_state'
-import styles from './index.module.scss'
+import classnames from 'classnames'
 
 interface Props {
   title?: string,
   description?: string 
   children: JSX.Element|JSX.Element[]
   withFooter?: boolean
+  disabledNavBar?: boolean
   hideMobileHeader?: boolean
 }
 
@@ -50,7 +53,7 @@ export default function ContentLayout(props: Props) {
       </Head>
     }
     <div className={styles.wrapper}>
-      <div className='contentWrapper'> 
+      <div className={classnames(props.disabledNavBar && styles.disabledNavBar,  'contentWrapper')}> 
         {props.children}
       </div>
       {props.withFooter &&

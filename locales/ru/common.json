@@ -32,6 +32,9 @@
   "gender": "Пол",
   "birthday": "Дата рождения",
   "found": "Найдено",
+  "clear": "Oчистить",
+  "apply": "Применить",
+  
 
 
   "articlesCounter1": "статья",
@@ -185,7 +188,9 @@
 
   "mainPage_hir_feedbacks":"Отклики",
   "mainPage_hir_watches":"Просмотры вакансий",
+  "mainPage_hir_watches_mobile":"Просмотры",
   "mainPage_hir_cvs":"Подходящие резюме",
+  "mainPage_hir_cvs_mobile":"Резюме",
   "mainPage_hir_categories":"Категории",
   "mainPage_hir_bestCvs":"Подборки лучших резюме",
   "mainPage_hir_articles":"Статьи",
@@ -224,6 +229,7 @@
   "profile_editor_fill": " Пополнить", 
   "profile_editor_choosenItems": "Выбранные товары",
   "profile_editor_buyFor": "Купить за",
+  "profile_editor_buyCharacter": "Купить персонажа",
 
   "chat_searchPlaceholder":"Поиск по чатам",
   "chat_folders":"Папки с чатами",
@@ -316,7 +322,21 @@
   "recruiting_em_desc1": "Ежедневно более 1000 людей находят работу в ArbiHunter",
   "recruiting_em_desc2": "которая позволяет им расти и становиться успешными!",
   "recruiting_em_searchVcs": "Поиск вакансий",
-  "recruiting_em_noFoundVacancies": "Нет найденных вакансий"
+  "recruiting_em_noFoundVacancies": "Нет найденных вакансий",
+
+  "chatFilterModal_title_main": "Поиск по фильтрам",
+  "chatFilterModal_title_activity": "Активность чатов",
+  "chatFilterModal_title_status": "Статус отклика",
+  "chatFilterModal_title_vacancies": "Чаты по вакансиям",
+  "chatFilterModal_showUnread": "Показать только непрочитанные",
+  "chatFilterModal_showUnactive": "Показать неактивные чаты",
+  "chatFilterModal_allStages": "Все этапы подбора",
+  "chatFilterModal_unsorted": "Неразобранные",
+  "chatFilterModal_accepted": "Приглашение",
+  "chatFilterModal_rejected": "Отказ"
+  
+
+
 
 
   

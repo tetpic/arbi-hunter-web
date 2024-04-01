@@ -32,8 +32,8 @@ export default function SiteSettings(props: Props) {
 
 
   const submit = (data: SiteSettings) => {
-    Cookies.set('NEXT_LOCALE', data.language)
-    setLanguage(data.language)
+    Cookies.set('NEXT_LOCALE', data.language, {path: '/'})
+    setLanguage(data.language, false)
   }
 
   const formik = useFormik<SiteSettings>({
@@ -84,7 +84,7 @@ export default function SiteSettings(props: Props) {
             <ArrowRightSvg/>
           </div>
           
-          <Button onClick={formik.submitForm} className={styles.button}>Сохранить</Button>
+          <Button onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
         </Form>
       </FormikProvider>
     </div>

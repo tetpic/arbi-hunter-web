@@ -13,7 +13,7 @@ import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation
 import LocationDropDownInput from '../../fields/LocationDropdownInput'
 import BackBtn from 'components/ui/BackBtn'
 import { useRouter } from 'next/navigation'
-import { LoginType, ModalType, SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
@@ -26,10 +26,11 @@ import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 
+interface Props {
+  token?: string
+}
 
-
-
-export default function Registration() {
+export default function Registration(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
@@ -38,8 +39,7 @@ export default function Registration() {
   const [cityId, setCityId] = useState<number>(undefined)
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
-  const [progress, setProgress] = useState<number>(1)
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.Email)
+  const [progress, setProgress] = useState<number>(props.token?2:1)
 
 
   const [disableButton, setDisableButton] = useState<boolean>(false)
@@ -107,11 +107,6 @@ export default function Registration() {
     setCityId(obj.id)
   }
 
-  const changeLoginTypeHandler = (s: LoginType) => {
-    setLoginType(s)
-    formik.resetForm()
-  }
-
   const  nextPageValidator = (page?: number) => {
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
@@ -129,37 +124,37 @@ export default function Registration() {
 
     switch(page||progress) {
       case 1: (async() => {
-        const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
+        const values = ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values[loginType])
+        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
         if(filteredErrors.length === 0 && (!isLoginExist.exists ||(!isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0))) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
-            [loginType]: formik.values[loginType],
+            email: formik.values.email,
             onComplete: () => {
               setProgress(page||progress+1)
             }
           })
         }
         else {
-          setErr(loginType, loginType === 'email' ? t('registration_emailExist'):t('registration_phoneExist'))
+          setErr('email', t('registration_emailExist'))
         }
       })()
       break
       case 2:(async() => {  
-        const values = loginType === LoginType.Phone? ['email'] : ['phone']
+        const values = ['phone']
         validateValues(values)
         .then(res=> {
           
           if(res === false) {
-            setErr(loginType, loginType === 'email' ? t('registration_enterCorrectEmail'):t('registration_enterCorrectPhone'))
+            setErr('email', t('registration_enterCorrectEmail'))
           }
           else {
-            RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
+            RegistrationRepository.checkEmailOrPhoneExists(formik.values.phone)
             .then(r=> {
-              if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', loginType === 'email' ? t('registration_emailExist'):t('registration_phoneExist'))
+              if(r.exists === true) setErr('phone', t('registration_phoneExist'))
               else { setProgress(page||progress+1) }
             })
           }
@@ -181,38 +176,6 @@ export default function Registration() {
   }
 
   const stage1 = (<>
-    {loginType===LoginType.Phone && 
-      <PhoneCountryField 
-      styleType={'horizontal'} 
-      disabled={false} 
-      placeholder={'000 000 00 00'} 
-      name={'phone'}  
-      className={styles.input} 
-      defaultCountry={'RU'}
-      label={`${t('phone')}:`}
-      validate={Validator.phone}
-      />
-      ||
-      <InputField   
-      label={'E-mail:'}
-      className={styles.input} 
-      labelType='top' 
-      styleType={'default'} 
-      color={'default'} 
-      name={'email'} 
-      validate={Validator.combine([Validator.required, Validator.email])}
-      />
-    }
-
-    <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
-    </>
-  )
-
-  const stage2 = (<>
-    <p className={styles.uneditable}>
-      {loginType === LoginType.Phone ? `${t('phone')}: ${formik.values.phone}` : `E-mail: ${formik.values.email}`}
-    </p>
-   {loginType === LoginType.Phone && 
     <InputField   
     label={'E-mail:'}
     className={styles.input} 
@@ -222,7 +185,14 @@ export default function Registration() {
     name={'email'} 
     validate={Validator.combine([Validator.required, Validator.email])}
     />
-    ||
+    <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
+    </>
+  )
+
+  const stage2 = (<>
+    <p className={styles.uneditable}>
+      {`E-mail: ${formik.values.email}`}
+    </p>
     <PhoneCountryField 
     styleType={'horizontal'} 
     disabled={false} 
@@ -233,13 +203,11 @@ export default function Registration() {
     label={`${t('phone')}:`}
     validate={Validator.phone}
     />   
-   }
-  
   </>)
 
   const stage3 =(<>
     <InputField 
-    label={`${t('firstName')}:`}
+    label={`${t('name')}:`}
     className={styles.input} 
     labelType='top' 
     styleType={'default'} 
@@ -317,14 +285,33 @@ export default function Registration() {
   }, [userContext.currentProfile])
 
   useEffect(()=>{
-    setProgress(1)
-    formik.resetForm()
+    if(!props.token) {
+      setProgress(1)
+      formik.resetForm()
+    }
   }, [userContext.profileType])
+
+  useEffect(()=>{
+    if(userContext.user) {
+      const dataToSet: Partial<IRegistrationComplete> = {
+        email: userContext.user.email,
+        lastName: userContext.user.lastName,
+        firstName: userContext.user.firstName,
+        phone: userContext.user.phone
+      }
+      formik.setValues({...formik.values, ...clearObject(dataToSet)})      
+    }
+  }, [userContext.user])
+
+  useEffect(()=>{
+    if(props.token) {
+      userContext.setToken(props.token)
+    }  
+  }, [props.token])
 
   useEffect(()=>{
     isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
   }, [])
-
 
   return ( 
     <div className={styles.root}>

@@ -3,3 +3,9 @@
 .wrapper {
   width: 100%;
 }
+
+.disabledNavBar {
+  @include mq($MdDesktopWidth, max) {
+    margin: auto;
+  }
+}

@@ -52,10 +52,10 @@ function RecruitingPageEmployeeInner(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
   const [page, setPage] = useState<'filters' | 'vacancies'>('vacancies')
-  const [searchString, setSearchString] = useState<string>(props?.filters?.search||'')
 
 
   const findVacancies = (data?: IVacancyCvSearchParams):void => {
+    
     vacancyContext.findVacancies(currentFilters)
     .then(_=>setLoading(false))
   }
@@ -104,7 +104,8 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
   useEffect(()=>{
-    isInited.current && findVacancies()  
+    
+    findVacancies()  
   }, [vacancyContext.page])
 
 

@@ -89,6 +89,9 @@
   margin-bottom: 24px;
   margin-top: 32px;
   text-shadow: 0px 0px 6px $black;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .card {
@@ -151,8 +154,14 @@
 
 .statsWeek {
   width: 57%;
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 4;
   @include mq($MdDesktopWidth, max) {
-    width: 100%;
+    width: calc(100% - 32px);
+    bottom: 0;
+    transform: translateY(50%);
   }
 
   .cards {
@@ -160,16 +169,22 @@
     flex-wrap: wrap;
     column-gap: 10px;
     row-gap: 10px;
+    @include mq($MdDesktopWidth, max) {
+      justify-content: space-between;
+    }
   }
 
   .card {
-    grid-area: c;
-    width: calc(50% - 5px);
-    background-color: $black;
     display: grid;
     grid-template-areas: 'd i' 'c c';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
+    background-color: #737389b3;
+    backdrop-filter: blur(3px);
+    width: calc(33% - 10px);
+    @include mq($PhoneWidth, max) {
+      grid-template-areas: 'i''d''c';
+    }
   }
 
   .title {
@@ -195,11 +210,14 @@
   }
 
   .desc {
-    color: $greyLight;
+    color: $white;
     font-size: $mediumText;
     font-weight: $medium;
     grid-area: d;
     min-height: 35px;
+    @include mq($TabletWidth, max) {
+      min-height: unset;
+    }
   }
 }
 
@@ -230,25 +248,13 @@
   display: flex;
 }
 
-.statsWeek {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  z-index: 4;
 
-  .card {
-    background-color: #737389b3;
-    backdrop-filter: blur(3px);
-    width: calc(33% - 10px);
-    
-    .desc {
-      color: $white;
-    }
-  }
-}
 
 .top {
   position: relative;
+  @include mq($MdDesktopWidth, max) {
+    margin-bottom: 80px;
+  }
 }
 
 

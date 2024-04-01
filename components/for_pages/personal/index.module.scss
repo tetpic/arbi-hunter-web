@@ -48,3 +48,10 @@
     z-index: 3;
   }
 }
+
+.logout {
+  @include mq($TabletWidth, max) {
+    max-width: calc(100% - 32px);
+    margin: auto;
+  }  
+}

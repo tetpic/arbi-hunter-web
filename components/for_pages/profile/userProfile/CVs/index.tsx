@@ -64,12 +64,6 @@ export default function CVs(props: Props) {
     }
   }, [activeItem, cvContext.savedCvs])
 
-  // useEffect(()=>{
-  //   console.log(filteredCvs);
-    
-  // }, [filteredCvs])
-
-
   return (
     <div className={styles.root}> 
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>

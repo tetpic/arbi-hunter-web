@@ -1,5 +1,6 @@
 import styles from './index.module.scss'
 
+import { runtimeConfig} from 'config/runtimeConfig'
 import InputField from 'components/fields/InputField'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
@@ -17,10 +18,13 @@ import Validator from 'utils/Validator'
 import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import useTranslation from 'next-translate/useTranslation'
+import Image from 'next/image'
 
 
 
 export default function Login() {
+  const { HOST } = runtimeConfig
+
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
@@ -77,10 +81,9 @@ export default function Login() {
     }
   }
 
-  // const memoedRive = useMemo(()=>{
-  //   const src = userContext.profileType===ProfileType.Hirer?'/rive/login/company.riv':'/rive/login/user_RU.riv'
-  //   return <Rive src={src} key={src} className={styles.regImage}/>
-  // }, [userContext.currentProfile])
+  const googleLogin = () => {
+    router.push(HOST +'/api/auth/google/login')
+  }
 
   useEffect(()=>{
     if(userContext.currentProfile) {
@@ -135,13 +138,28 @@ export default function Login() {
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
+            
             <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>{t('login_forgot')}</p> {t('login_restorePassword')}</Link>
-            <Button 
-            className={styles.submitButton} 
-            type='button' 
-            onClick={()=>formik.submitForm()}>
-              <span>{t('enter')}</span>
-            </Button>
+            
+            <div className={styles.buttonsWrapper}>
+              <Button 
+              className={styles.submitButton} 
+              type='button' 
+              onClick={()=>formik.submitForm()}>
+                <span>{t('enter')}</span>
+              </Button>
+              
+              <Button 
+              type='button' 
+              onClick={googleLogin} 
+              styleType={['black']}
+              icon={
+                <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
+              }>
+               Войти через Google 
+              </Button>
+            </div>
+
           </Form>
         </FormikProvider>
       </div>

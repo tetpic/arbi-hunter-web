@@ -174,7 +174,7 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       return res.id
     })
-    debugger
+    
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
     await Promise.all([...choosenItems.values()].filter(el => el.isLocked).map(item => {
       return CharacterRepository.buyItem(item.id)

@@ -24,6 +24,7 @@ import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
+import { useAppContext } from 'context/state'
 
 
 
@@ -31,6 +32,8 @@ export default function MainPageHirer() {
   const {t} = useTranslation()
   const userContext = useUserContext()
   const personalContext = usePersonalContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const [load, setLoad] = useState<boolean>(false)
   const [stats, setStats] = useState<IStats>()
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
@@ -115,7 +118,7 @@ export default function MainPageHirer() {
               }
             </Link>
             <Link className={styles.card} href={'/recruiting'}>
-              <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_watches_mobile'):t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -130,7 +133,7 @@ export default function MainPageHirer() {
               }
             </Link>
             <Link className={styles.card} href={'/'}>
-              <p className={styles.desc}>{t('mainPage_hir_cvs')}</p>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_cvs_mobile'):t('mainPage_hir_cvs')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||

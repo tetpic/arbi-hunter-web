@@ -40,6 +40,17 @@ export default class UserRepository {
     return res
   }
 
+  static async loginViaGoogle(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/auth/google/login',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getBlackListedProfiles(): Promise<IPagination<IUserProfile>|null> {
     const res = await request({
       method: 'get',

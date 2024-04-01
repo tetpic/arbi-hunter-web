@@ -1,5 +1,6 @@
-import { useState } from 'react'
 import styles from './index.module.scss'
+
+import { useState } from 'react'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import PersonalInformation from './PersonalInformation'
 import TitleForSection from '@/components/ui/TitleForSection'

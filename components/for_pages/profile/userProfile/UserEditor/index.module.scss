@@ -15,6 +15,7 @@
 
   @include mq($SmDesktopWidth, max) {
     grid-template-areas: 'm' 's' 'v';
+    width: 100%;
   }
 }
 

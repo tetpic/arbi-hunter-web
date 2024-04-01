@@ -17,7 +17,6 @@ import slide5 from 'images/recruiting/recruiting_swipe5.png'
 import { useAppContext } from 'context/state'
 import dynamic from 'next/dynamic'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import { ISpecializationCategory } from 'data/interfaces/Common'
 import ICourse from 'data/interfaces/ICourse'
 import { IArticle } from 'data/interfaces/IArticle'
 import CoursesRepository from 'data/repositories/CoursesRepository'
@@ -50,10 +49,8 @@ export default function RecruitingEmployee(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
-  const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
-  const [load, setLoad] = useState<boolean>(false)
   const {t} = useTranslation()
 
 
@@ -93,10 +90,6 @@ export default function RecruitingEmployee(props: Props) {
       })
       return state
     })
-
-    setTimeout(()=> {
-      setLoad(true)
-    }, 100)
   }
 
   useEffect(()=>{
@@ -152,16 +145,11 @@ export default function RecruitingEmployee(props: Props) {
     {popularCourses.size > 0 &&
       <CoursesList courses={[...popularCourses.values()]}/>
     }
-    {/* {props.vacancies.length > 0 &&  
-    <>
-      <Title title={'Вакансии дня'} className={styles.title}/>
-      <Vacancies vacancies={props.vacancies}/>
-    </>
-    } */}
+
     {!isTabletWidth &&
       <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
-
+    
     <AppPromo cards={[slide3, slide4, slide5]}/>
 
     <Help/>

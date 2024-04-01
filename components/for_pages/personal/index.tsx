@@ -70,7 +70,7 @@ export default function PersonalPage(props: Props) {
         <ContentAside className={styles.aside}>
           <PersonalCard save={() => personalContext.updatePersonalPage()} isEditable={!props.id} isEditing={!props.id&&isEditing} switchMode={() => !props.id&&setIsEditing(!isEditing)}/>
           <Spacer basis={16}/>
-          <Button styleType={['gradient', 'wide']} onClick={()=>userContext.logout()}>Выйти</Button>
+          <Button styleType={['gradient', 'wide']} className={styles.logout} onClick={()=>userContext.logout()}>Выйти</Button>
         </ContentAside>
       </Content>
       </>

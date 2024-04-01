@@ -9,8 +9,10 @@
   @include mq($TabletWidth, max) {
     padding-left: unset;
     height: unset;
-    height: calc(100vh - 146px);
-    height: calc(100dvh - 76px);
+    min-height: 100vh;
+    min-height: 100dvh;
+    // height: calc(100vh - 146px);
+    // height: calc(100dvh - 76px);
   }
 }
 

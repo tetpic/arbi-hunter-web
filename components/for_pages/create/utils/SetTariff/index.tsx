@@ -50,7 +50,7 @@ export default function SetTariff(props: Props) {
       cvId: props.type === 'cv'? creationContext.draftItem.current.id:null,
       vacancyId: props.type === 'vacancy'? creationContext.draftItem.current.id:null
     }
-    debugger
+    
 
     if(tariff.id === creationContext.currentVc?.subscriptions?.tariff?.id) {
       props.onSave()
