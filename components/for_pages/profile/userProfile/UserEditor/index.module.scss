@@ -2,6 +2,9 @@
 
 .root {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: 16px;
 }
 
 .content {
@@ -12,8 +15,12 @@
   margin-top: 32px;
   max-height: 800px;
   overflow: auto;
+  @include mq($DesktopWidth, max) {
+    width: 100%;
+    order: 1;
+  }
 
-  @include mq($SmDesktopWidth, max) {
+  @include mq($TabletWidth, max) {
     grid-template-areas: 'm' 's' 'v';
     width: 100%;
   }
@@ -43,6 +50,9 @@
   flex-direction: column;
   row-gap: 24px;
   width: 380px;
+  @include mq($DesktopWidth, max) {
+    width: 100%;
+  }
 
   .balance {
     display: flex;
@@ -88,20 +98,21 @@
 
 .model {
   grid-area: m;
-  width: Min(35vw, 504px);
-  height: Min(35vw, 504px);
+  width: Clamp(400px, 30vw, 504px);
+  height: Clamp(400px, 30vw, 504px);
   background-color: $black;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   @include mq($SmDesktopWidth, max) {
-    width: Clamp(300px, 54vw, 504px);
-    height: Clamp(300px, 54vw, 504px);
+    width: Clamp(400px, 54vw, 504px);
+    height: Clamp(400px, 54vw, 504px);
   }
   @include mq($TabletWidth, max) {
-    width: calc(100vw - 32px);
-    height: calc(100vw - 32px);
+    width: Min(calc(100vw - 32px), 400px);
+    height: Min(calc(100vw - 32px), 400px);
     border-radius: 50%;
+    justify-self: center;
   }
   
 
@@ -162,6 +173,9 @@
   max-width: 504px;
   align-content: flex-start;
   row-gap: 8px;
+  @include mq($TabletWidth, max) {
+    justify-self: center;
+  }
 }
 
 .variant {

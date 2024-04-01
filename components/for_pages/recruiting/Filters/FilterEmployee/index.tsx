@@ -13,7 +13,6 @@ import RemovableItem from 'components/ui/RemovableItem'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
-import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
 import { TranslateCompensationType,  TranslateCurrency, TranslateScheduleType, TranslateSearchInType } from 'utils/enumsTranslations'
@@ -30,6 +29,7 @@ import CrossSvg from '@/components/svg/CrossSvg'
 import { ICityModalArgs } from '@/components/modals/CityModal'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
 import useTranslation from 'next-translate/useTranslation'
+import AddButton from '@/components/ui/AddButton'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -129,18 +129,12 @@ export default function FilterEmployee(props: Props) {
   }
 
   const openCityModal = () => {
-    // if(formik.values.countries.length === 0 ) {
-    //   appContext.showSnackbar('Укажите страну', SnackbarType.error)
-    //   return
-    // }
-
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
       initialCountries: formik.values.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el.id)])
         locationContext.getCities(null, null, r)
         creationContext.setHelpObjects({...creationContext.helpObjects, cities: r})
-
       },
     })
   }
@@ -186,7 +180,6 @@ export default function FilterEmployee(props: Props) {
           countries: props.initialFields?.countries?.map(el => locationContext.countries?.get(el)).filter(Boolean),
         }
       )
-      
   }, [props.initialFields])
 
 
@@ -206,11 +199,11 @@ export default function FilterEmployee(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Title title={'Поиск резюме'}/>
+      <Title title={t('search_cv')}/>
       <MainSearchBar initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>
-      <Form>
+      <Form className={styles.form}>
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
             Ключевые слова:
@@ -223,7 +216,7 @@ export default function FilterEmployee(props: Props) {
             name={'keywords'}
             suffix={<CrossSvg onClick={() => formik.setFieldValue('keywords', '')}/>}
             />
-            <P className={styles.subTitle} styleType={['w500', 'medium']}>Искать только</P>
+            <P className={styles.subTitle} styleType={['w500', 'medium']}>{t('filters_searchOnlyIn')}</P>
             <RadioListField 
             itemClassName={styles.radioField}
             name={'searchIn'}
@@ -234,7 +227,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Поиск по компании:
+            {t('filters_findCompany')}
           </p>
           <div className={styles.itemContent}>
             <InputField               
@@ -327,13 +320,14 @@ export default function FilterEmployee(props: Props) {
               )
             }
             {!isTabletWidth &&
-              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
                 Вертикали:
               </P>
+              ||
+              <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
             }
           </div>
         </div>
@@ -341,34 +335,35 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Специализация:
+            {t('filters_specs')}
           </p>
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory.length === 0 && 
+          {creationContext.activeSubCategory?.length === 0 && 
             <P styleType={['medium', 'w500']}>
               Любая
             </P>
           }
-          {creationContext.activeSubCategory.length > 0 &&
-            creationContext.activeSubCategory.map(el=> {
+          {creationContext.activeSubCategory?.length > 0 &&
+            creationContext.activeSubCategory?.map(el=> {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
             })
           }
           {!isTabletWidth &&
-            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={()=>openSpecializationModal()}
             >
-              Указать специализации
+              {t('filters_addSpecs')}
             </P>
+            ||
+            <AddButton className={styles.addButton} text={t('filters_addSpecs')} onClick={()=>openSpecializationModal()}/>
           }
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Страна:
+            {t('filters_country')}
           </p>
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
@@ -376,21 +371,22 @@ export default function FilterEmployee(props: Props) {
               return (<RemovableItem key={el.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el.locName} />)
             })
           }
-          {!isTabletWidth &&
-            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
+          {!isTabletWidth &&            
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCountryModal}
             >
-              Добавить страну
+              {t('filters_addCountry')}
             </P>
+            ||
+            <AddButton className={styles.addButton} text={t('filters_addCountry')} onClick={openCountryModal}/>
           }
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Регион:
+            {t('filters_region')}
           </p>
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.cities?.length > 0 &&
@@ -398,21 +394,22 @@ export default function FilterEmployee(props: Props) {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCity(el)} text={el.name} />)
             })
           }
-          {!isTabletWidth &&
-            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
+          {!isTabletWidth &&            
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCityModal}
             >
-              Добавить регион
+              {t('filters_addRegion')}
             </P>
+            ||
+            <AddButton className={styles.addButton} text={t('filters_addRegion')} onClick={openCityModal}/>
           }
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>
-            Источники трафика:
+            {t('filters_sources')}
           </p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeSources?.size > 0 && creationContext.helpObjects && 
@@ -426,14 +423,17 @@ export default function FilterEmployee(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'sources'})}
               >
-                Добавить источники трафика
+                {t('filters_addSources')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={openCityModal}/>
+
             }
           </div>
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>Гео</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>{t('filters_geos')}</p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
                 [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
@@ -445,15 +445,18 @@ export default function FilterEmployee(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'geos'})}            
               >
-                Добавить гео
+                {t('filters_addGeos')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addGeos')} onClick={()=>openSourcesModal({type: 'geos'})}/>
+
             }
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+            <span>Опыт работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
           </p>
             <CheckboxListField 
             name={'experience'} 
@@ -480,7 +483,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
-            <span>График работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>}
+            <span>График работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
           </p>
             <CheckboxListField 
             rootClass={styles.radioField}
@@ -497,7 +500,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>Время публикации</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+            <span>Время публикации</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
           </p>
             <RadioListField 
             name={'forLastNumberOfDays'}

@@ -161,7 +161,7 @@
   @include mq($MdDesktopWidth, max) {
     width: calc(100% - 32px);
     bottom: 0;
-    transform: translateY(50%);
+    transform: translateY(60%);
   }
 
   .cards {
@@ -184,6 +184,9 @@
     width: calc(33% - 10px);
     @include mq($PhoneWidth, max) {
       grid-template-areas: 'i''d''c';
+      justify-items: center;
+      width: calc(33.3% - 8px);
+      padding: 8px;
     }
   }
 

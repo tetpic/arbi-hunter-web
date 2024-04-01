@@ -34,8 +34,6 @@
   "found": "Найдено",
   "clear": "Oчистить",
   "apply": "Применить",
-  
-
 
   "articlesCounter1": "статья",
   "articlesCounter2": "статьи",
@@ -51,8 +49,7 @@
   "day3":"дней",
   "vacancies1":"вакансия",
   "vacancies2":"вакансии",
-  "vacancies3":"вакансий",
-  
+  "vacancies3":"вакансий",  
 
   "isRemote_true": "Удаленная",
   "isRemote_false": "В офисе",
@@ -89,6 +86,7 @@
   "login_accountNotExist":"Аккаунта не существует",
   "login_removeAccount": "Удалить аккаунт",
   "login_changePasswordQuestion": "Изменить существующий пароль на новый?",
+  "login_viaGoogle": "Войти через Google",
   
   
   "registration": "Регистрация",
@@ -333,7 +331,40 @@
   "chatFilterModal_allStages": "Все этапы подбора",
   "chatFilterModal_unsorted": "Неразобранные",
   "chatFilterModal_accepted": "Приглашение",
-  "chatFilterModal_rejected": "Отказ"
+  "chatFilterModal_rejected": "Отказ",
+
+  "personal_changeBackground": "Изменить фон",
+  "personal_changeBanner": "Изменить баннер",
+  "personal_photoVideoGif": "Фото, видео, gif",
+  "personal_text":"Текст",
+  "personal_image":"Изображение",
+  "personal_gallery":"Галерея",
+  "personal_video":"Видео",
+  "personal_address":"Адрес",
+  "personal_divider":"Разделитель",
+  "personal_addBlock":"Добавить блок",
+  "personal_addVideo": "Добавить видео",
+  "personal_header": "Заголовок",
+
+  "filters_searchOnlyIn": "Искать только",
+  "filters_findCompany": "Поиск по компании:",
+  "filters_country": "Страна:",
+  "filters_addCountry": "Добавить страну",
+  "filters_region": "Регион:",
+  "filters_addRegion": "Добавить регион",
+  "filters_sources": "Источники трафика:",
+  "filters_addSources": "Добавить источники трафика",
+  "filters_specs": "Специализация:",
+  "filters_addSpecs": "Указать специализации",
+
+  "filters_geos": "Гео",
+  "filters_addGeos": "Добавить гео",
+
+
+
+
+  "fields_addImage": "Добавить изображение"
+  
   
 
 

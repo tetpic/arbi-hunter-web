@@ -17,6 +17,7 @@ import LangaugesModal from 'components/modals/CvModals/Languages'
 import ApplicationModal from 'components/modals/ApplicationModal'
 import AddPortfolioModal from '@/components/modals/AddPortfolioModal'
 import CompensationModal from '@/components/modals/CompensationModal'
+import CharacterCartModal from '@/components/modals/CharacterCartModal'
 
 
 interface Props { }
@@ -137,6 +138,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={appContext.modalNonSkippable}
         >
           <CompensationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.CharacterCartModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={appContext.modalNonSkippable}
+        >
+          <CharacterCartModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

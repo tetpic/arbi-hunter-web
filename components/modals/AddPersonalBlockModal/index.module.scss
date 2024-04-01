@@ -11,6 +11,12 @@
   row-gap: 16px;
 }
 
+.modalLayout {
+  @include mq($TabletWidth, max) {
+    padding-top: 16px
+  }
+}
+
 
 
 .submitButton {

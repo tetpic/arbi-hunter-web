@@ -13,6 +13,7 @@ import Button from 'components/ui/Button'
 import FilesField from 'components/fields/FilesField'
 import { IFile } from 'data/interfaces/Common'
 import { useState } from 'react'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -30,6 +31,7 @@ export interface IAddPersonalBlockModalProps {
  * потому что они лежат в отдельном массиве. поэтому чтобы все ок работало, приходится писать такую дичь...
  */
 export default function AddPersonalBlockModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args = appContext.modalArguments as IAddPersonalBlockModalProps
   const [images, setImages] = useState<Map<number, IFile>>(new Map(args.initialData&&args.initialData.assets.map(el=> [el.id, el])))
@@ -52,7 +54,7 @@ export default function AddPersonalBlockModal(props: Props) {
     onSubmit: submit
   })
 
-  const titleInput = <InputField placeholder={'Заголовок'} styleType={'default'} color={'default'} name={'title'}/>
+  const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
   const richText = <RichTextField hideButtons={{helpers: true}} name='text'/>
   const imageField = <FilesField 
   name={'assets'} 
@@ -65,7 +67,7 @@ export default function AddPersonalBlockModal(props: Props) {
   />
   const videoField = <FilesField 
   name={'assets'} 
-  buttonName='Добавить видео' 
+  buttonName={t('personal_addVideo')} 
   initialImages={args.initialData?.assets}
   getImages={(i)=> setImages(_=> {
     const newImages = new Map()
@@ -93,13 +95,13 @@ export default function AddPersonalBlockModal(props: Props) {
       <FormikProvider value={formik}>
         <Form className={styles.form}>
           {getInputs()}
-          <Button className={styles.submitButton} type='submit'>Сохранить</Button>
+          <Button className={styles.submitButton} type='submit'>{t('save')}</Button>
         </Form>
       </FormikProvider>
     </div>
   )
 
-  return (<ModalLayout className={styles.modalLayout} >
+  return (<ModalLayout className={styles.modalLayout} mobileFullScreen>
     <ModalBody>
       {body}
     </ModalBody>

@@ -5,6 +5,12 @@
   flex-direction: column;
   row-gap: 24px;
   width: 380px;
+  max-width: 28vw;
+  @include mq($DesktopWidth, max) {
+    width: 100%;
+    max-width: unset;
+
+  }
 
   .balance {
     display: flex;

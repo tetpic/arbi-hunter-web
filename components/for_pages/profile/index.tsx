@@ -11,6 +11,8 @@ import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { ModalType } from 'types/enums'
+import { CharacterCartModalArgs } from '@/components/modals/CharacterCartModal'
 
 
 export default function Profile() {
@@ -21,11 +23,26 @@ export default function Profile() {
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
   const router = useRouter()
 
+  const onSaveHandler = () => {
+    if(!isTabletWidth) {
+      characterContext.saveCurrentSet()
+    }
+    else {
+      appContext.showBottomSheet<CharacterCartModalArgs>(ModalType.CharacterCartModal, {
+        onSave: ()=>{
+          characterContext.saveCurrentSet()
+          appContext.hideBottomSheet()
+        },
+        choosenItems: characterContext.choosenItems
+      }, 0.7)
+    }
+  }
+
   const saveCharButton = (<>
   <Button 
   isProcess={characterContext.savingProcess}  
   disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
-  onClick={()=>characterContext.saveCurrentSet()}  
+  onClick={onSaveHandler}  
   className={styles.saveCharButton}>
     {isTabletWidth?'Готово':'Сохранить'}
   </Button>

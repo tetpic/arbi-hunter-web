@@ -13,11 +13,13 @@ import { IAddPersonalBlockModalProps } from 'components/modals/AddPersonalBlockM
 import { usePersonalContext } from 'context/personal_state'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function EditToolbar(props: Props) {
+  const {t}= useTranslation()
   const appContext = useAppContext()
   const personalContext = usePersonalContext()
 
@@ -28,16 +30,16 @@ export default function EditToolbar(props: Props) {
   }
 
   const buttons = [
-    {name: 'Текст', icon: <TextSvg/>, type: PersonalBlockType.Text, onClick: () => showModal(PersonalBlockType.Text)},
-    {name: 'Изображение', icon: <PhotoBigSvg/>, type: PersonalBlockType.Image, onClick: () => showModal(PersonalBlockType.Image)},
-    {name: 'Галерея', icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
-    {name: 'Видео', icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
-    {name: 'Адрес', icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
-    {name: 'Разделитель', icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {}},
+    {name: t('personal_text'), icon: <TextSvg/>, type: PersonalBlockType.Text, onClick: () => showModal(PersonalBlockType.Text)},
+    {name: t('personal_image'), icon: <PhotoBigSvg/>, type: PersonalBlockType.Image, onClick: () => showModal(PersonalBlockType.Image)},
+    {name: t('personal_gallery'), icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
+    {name: t('personal_video'), icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
+    {name: t('personal_address'), icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
+    {name: t('personal_divider'), icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {}},
   ]
 
   return (<div className={styles.root}> 
-    <p className={styles.title}>Добавить блок</p>
+    <p className={styles.title}>{t('personal_addBlock')}</p>
     <div className={styles.buttonsWrapper}>
       {buttons.map((el, i) => {
         return (

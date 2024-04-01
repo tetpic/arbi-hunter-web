@@ -10,8 +10,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import React from 'react'
 import StickyBox from 'react-sticky-box'
 import { useAppContext } from 'context/state'
-import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
-import { ModalType, SearchIn } from 'types/enums'
+import { SearchIn } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -85,13 +84,13 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   const onFilterClick = ()=>{
-    if(!isTabletWidth) {
+    // if(!isTabletWidth) {
       setPage('filters')
-      return 
-    }
-    appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
-      onFilterChange: (data)=>onFilterChange(data)
-    })
+    //   return 
+    // }
+    // appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
+    //   onFilterChange: (data)=>onFilterChange(data)
+    // })
   }
 
   useEffect(()=>{

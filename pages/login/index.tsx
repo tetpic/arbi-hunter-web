@@ -29,8 +29,8 @@ export default function LoginPage(props: Props) {
   const router = useRouter()
   if(props.token) {
     userContext.setToken(props.token)
-    .then(res=> {
-      router.replace('/')
+    .then(_=> {
+      router.push('/')
     })
   }
 
