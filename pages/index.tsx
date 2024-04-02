@@ -34,7 +34,7 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 
 export default function Page(props: Props) {
   return (
-    <ContentLayout withFooter disabledNavBar={!props?.profile}>
+    <ContentLayout withFooter disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
       <VacancyWrapper>
         <PersonalWrapper>
         {

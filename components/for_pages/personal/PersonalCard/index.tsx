@@ -20,6 +20,7 @@ import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { colors } from 'styles/variables'
 import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   isEditing?: boolean
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function PersonalCard(props: Props) {
+  const {t} = useTranslation()
   const personalContext = usePersonalContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -76,17 +78,17 @@ export default function PersonalCard(props: Props) {
   const optionsList = <OptionsList 
   options={[
     {
-      title: TranslateVacancyLookType(VacancyLookType.ActivelyLooking, personalContext.currentProfile?.profileType), 
+      title: TranslateVacancyLookType(VacancyLookType.ActivelyLooking, personalContext.currentProfile?.profileType, t), 
       onClick: ()=>setVacancyLookType(VacancyLookType.ActivelyLooking), 
       style:{color: colors.green, backgroundColor: colors.greenLight, borderRadius: 0}
     },
     {
-      title: TranslateVacancyLookType(VacancyLookType.PassivelyLooking, personalContext.currentProfile?.profileType), 
+      title: TranslateVacancyLookType(VacancyLookType.PassivelyLooking, personalContext.currentProfile?.profileType, t), 
       onClick: ()=>setVacancyLookType(VacancyLookType.PassivelyLooking), 
       style:{color: colors.yellow, whiteSpace: 'nowrap', backgroundColor: colors.yellowLight, borderRadius: 0}
     },
     {
-      title: TranslateVacancyLookType(VacancyLookType.NotLooking, personalContext.currentProfile?.profileType), 
+      title: TranslateVacancyLookType(VacancyLookType.NotLooking, personalContext.currentProfile?.profileType, t), 
       onClick: ()=>setVacancyLookType(VacancyLookType.NotLooking), 
       style:{color: colors.red, backgroundColor: colors.redLight, borderRadius: 0}
     },
@@ -138,7 +140,7 @@ export default function PersonalCard(props: Props) {
         styleType={['grey', 'wide']} 
         onClick={()=>openDropDown(true)} 
         className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}>
-          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType)||'Выберите статус'} <ArrowDownSvg/>
+          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)||'Выберите статус'} <ArrowDownSvg/>
         </Button>
         <div className={styles.optionsWrapper}>
           <OptionsDropDown 

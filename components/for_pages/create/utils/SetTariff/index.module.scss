@@ -6,12 +6,14 @@
 
 .tariffItems {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 24px;
   width: 100%;
-  margin-top: 82px;
+  margin-top: clamp(24px, 7vw, 82px);
   margin-bottom: 82px;
-  align-items: center;
-  height: 300px;
+  align-items: stretch;
+  row-gap: 24px;
+
 }
 
 .tariff {
@@ -21,16 +23,19 @@
   flex-direction: column;
   align-items: center;
   row-gap: 16px;
-  max-width: 370px;
-  width: 33%;
-  flex: 1 1;
-  height: 100%;
+  width: clamp(310px, calc(33.3% - 16px), 370px);
+  height: auto;
   justify-content: space-between;
   @include transitionDefault;
   cursor: pointer;
   background: linear-gradient(90deg, var(--gradientColor1) 0%, var(--gradientColor2) 100%);
   @include hover {
-    height: 115%;
+    scale: 1.1;
+    position: relative;
+    z-index: 20;
+  }
+  @include mq($TabletWidth, max) {
+    width: 100%;
   }
 
   &_red {

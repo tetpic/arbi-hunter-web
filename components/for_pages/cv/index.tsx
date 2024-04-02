@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useCvContext } from 'context/cv_state'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
-import languages from '@cospired/i18n-iso-languages'
 import UserPic from 'components/ui/UserPic'
 import { FILES } from 'types/constants'
 import DotSvg from 'components/svg/DotSvg'
@@ -20,7 +19,7 @@ import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
 import SalaryItem from '@/components/ui/SalaryItem'
 import TagList from '@/components/ui/TagList'
-import { TranslateEducationType, TranslateEmploymentType, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateEducationType, TranslateEmploymentType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import Spinner from '@/components/ui/Spinner'
 import HtmlText from '@/components/ui/HtmlText'
 import FilesList from '@/components/ui/FilesList'
@@ -41,6 +40,7 @@ import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 interface Props {
@@ -74,20 +74,19 @@ export default function CvPage(props: Props) {
 
   const goToChat = () => {
     ChatRepository.getChatByContactId(currentCv.profileId, {proposalId: currentCv.proposalsByCurrentUser?.[0].id})
-    .then(res=> {
-      
+    .then(res=> {      
       router.push(`/messenger?chat=${res?.id}`)
     })
   }
 
   const openContacts = () => {
     CvRepository.openContacts(currentCv.id)
-    .then(res=> {
+    .then(_=> {
       cvContext.saveCv(currentCv.id)
       cvContext.getCv(Number(props.cvId))
     })
-    .catch(err => {
-      appContext.showSnackbar('Нет доступных открытий контактов', SnackbarType.error)
+    .catch(_ => {
+      appContext.showSnackbar(t('cv_page_noOpensAvailable'), SnackbarType.error)
     })
   }
 
@@ -108,12 +107,8 @@ export default function CvPage(props: Props) {
 
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
     vacancyContext.setVacancies()
   }, [])
-
-
-
 
   const profileImage = 
   currentCv?.profile.useOwnLogo 
@@ -146,8 +141,8 @@ export default function CvPage(props: Props) {
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
     <P styleType={['medium', 'w500', 'alignCenter']}>
       { [
-          currentCv.gender === Genders.Female&&'Женщина'||currentCv.gender === Genders.Male&&'Мужчина',
-          currentCv?.age && `${currentCv?.age} ${Formatter.pluralize(currentCv?.age, 'год', 'года', 'лет', )}`,
+          currentCv.gender === Genders.Female&&t('gender_female')||currentCv.gender === Genders.Male&&t('gender_male'),
+          currentCv?.age && `${currentCv?.age} ${Formatter.pluralize(currentCv?.age, t('year1'), t('year2'), t('year3'))}`,
           currentCv?.profile?.city?.locName
         ].filter(Boolean).map((el, i, arr)=>{
           return(<>
@@ -161,7 +156,7 @@ export default function CvPage(props: Props) {
     }
     {currentCv?.vacancyLookType &&
       <p className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
-        {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'Активно ищет работу'}
+        {TranslateVacancyLookType(currentCv.vacancyLookType, ProfileType.Hirer, t)}
       </p>
     }
     <div className={styles.topButtonsWrapper}>
@@ -172,7 +167,7 @@ export default function CvPage(props: Props) {
         title={'openProfileTop'} 
         onClick={openContacts}
         >
-          Открыть профиль
+          {t('cv_page_openProfile')}
         </Button>
         ||
         <Button
@@ -181,7 +176,7 @@ export default function CvPage(props: Props) {
         title={'inviteTop'}
         onClick={makeResponse}
         >
-          Пригласить
+          {t('cv_page_invite')}
         </Button>
       }
       {(currentCv?.proposalsByCurrentUser?.length>0 || currentCv?.applicationsToCurrentUser?.length > 0) &&
@@ -190,7 +185,7 @@ export default function CvPage(props: Props) {
         className={styles.chatButton}
         onClick={goToChat}
         >
-          Чат
+          {t('cv_page_chat')}
         </Button>
       }
 
@@ -215,32 +210,32 @@ export default function CvPage(props: Props) {
           onClick={()=>router.push('/create/cv?id='+currentCv.id)} 
           className={styles.edit}
           >
-            <PencilSvg color={colors.blue}/> Редактировать
+            <PencilSvg color={colors.blue}/> {t('cv_page_edit')}
           </P>
         </div>
         <SalaryItem cv={currentCv} />
         <Statistics 
         className={styles.stats}
         items={[
-          {name: 'Показы', count: currentCv.totalShows},
-          {name: 'Просмотры', count: currentCv.totalViews},
-          {name: 'Отклики', count: currentCv.totalApplications},
+          {name: t('cv_pagee_shows'), count: currentCv.totalShows},
+          {name: t('cv_pagee_views'), count: currentCv.totalViews},
+          {name: t('cv_page_applications'), count: currentCv.totalApplications},
         ]} 
-        title={'Cтатистика за неделю'}/>
+        title={t('cv_page_statsTitle')}/>
         <div className={styles.topLine}>
           <P styleType={['w500', 'medium', 'greyLight']}>
             Поднять вручную можно сегодня в 20:30
           </P>
           <P styleType={['w500', 'medium', 'blue']}>
-            Поднять автоматически
+            {t('cv_page_upCvAutomatically')}
           </P>
         </div>
         <div className={styles.topLine}>
           <Button styleType={['gradient']}>
-            Улучшить резюме
+            {t('cv_page_improve')}
           </Button>
           <Button styleType={['borderGradient']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv.categories[0].id]})}}}>
-            {currentCv.categories[0].vacanciesCount||0} подходящих вакансий
+            {currentCv.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
           </Button>
         </div>
 
@@ -255,7 +250,7 @@ export default function CvPage(props: Props) {
 
       {(currentCv.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
-          <P styleType={['large', 'w600']}>Контактная информация</P>
+          <P styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
           {currentCv.profile.email &&
           <Link href={`mailto:${currentCv.email}`}>
             <P styleType={['w500', 'medium', 'alignCenter']}>
@@ -330,13 +325,13 @@ export default function CvPage(props: Props) {
       <div className={styles.employment}>
         <TagList tagClassName={styles.tag} tags={[
           {name: TranslateScheduleType(currentCv.schedule, t)},
-          {name: TranslateEmploymentType(currentCv.employment)+ ' занятость'}
+          {name: TranslateEmploymentType(currentCv.employment, t, true)}
         ]}/>
       </div>
 
       {currentCv.sources?.length > 0 &&
       <div className={styles.item}> 
-        <P styleType={['large', 'w600']}>Источники</P>
+        <P styleType={['large', 'w600']}>{t('cv_page_sources')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.sources.map(el=> {
           return {name: el.title}
         })}/>
@@ -345,7 +340,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.verticals?.length > 0 &&
        <div className={styles.item}>
-        <P styleType={['large', 'w600']}>Вертикали</P>
+        <P styleType={['large', 'w600']}>{t('cv_page_verticals')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.verticals.map(el=> {
           return {name: el.title}
         })}/>
@@ -354,7 +349,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.geos?.length > 0 && 
        <div className={styles.item}>
-        <P styleType={['large', 'w600']}>Гео</P>
+        <P styleType={['large', 'w600']}>{t('cv_page_geos')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.geos.map(el=> {
           return {name: el.title}
         })}/>
@@ -362,7 +357,7 @@ export default function CvPage(props: Props) {
       }
 
       <div className={styles.item}>
-        <P styleType={['large', 'w600']}>Опыт работы</P>
+        <P styleType={['large', 'w600']}>{t('cv_page_experience')}</P>
         {currentCv.experienceInfo.length > 0 &&
           <div className={styles.cards}>
             {currentCv.experienceInfo.map(el=> {
@@ -378,12 +373,12 @@ export default function CvPage(props: Props) {
             }
           </div>
           ||
-          <P styleType={['w500', 'medium']}>Без опыта</P>
+          <P styleType={['w500', 'medium']}>{t('cv_page_noExperience')}</P>
         }
       </div>
 
       <div className={styles.item}>
-        <P styleType={['large', 'w600']}>Образование</P>
+        <P styleType={['large', 'w600']}>{t('cv_page_education')}</P>
         <P styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education, t)}</P>
         {currentCv.educationInfo.length > 0 && 
           <div className={styles.cards}>
@@ -404,14 +399,14 @@ export default function CvPage(props: Props) {
 
       {currentCv.bio && currentCv.bio.length > 1 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>Обо мне</P>
+          <P styleType={['large', 'w600']}>{t('cv_page_about')}</P>
           <HtmlText text={currentCv.bio} className={styles.bio}/>
         </div>
       }
 
       {currentCv.skills?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>Навыки</P>
+          <P styleType={['large', 'w600']}>{t('cv_page_skills')}</P>
           <TagList tagClassName={styles.tag} tags={currentCv.skills.map(el=> {
             return {name: el.title}
           })}/>
@@ -421,33 +416,33 @@ export default function CvPage(props: Props) {
 
       {currentCv.languageKnowledges?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>Владения языками</P>
+          <P styleType={['large', 'w600']}>{t('cv_page_languageKnowledges')}</P>
           <TagList 
           tagClassName={styles.tag} 
-          tags={currentCv.languageKnowledges.map(el=>({name: languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} 
+          tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} 
           />
         </div>
       }
 
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>Портфолио</P>
+          <P styleType={['large', 'w600']}>{t('cv_page_portfolio')}</P>
           {currentCv.portfolio &&
             <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
           }
-          <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
+          <FilesList disabledRemoving previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
         </div>
       }
 
       <div className={styles.item}>
         {currentCv.relocation &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
+            <GradientDotSvg/> {currentCv.relocation === Answer.No ? t('cv_page_noRelocation') : t('cv_page_relocation')}
           </P>
         }
         {currentCv.businessTrips &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
+            <GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? t('cv_page_businesstrips') : t('cv_page_noBusinesstrips')}
           </P>
         }
       </div>
@@ -459,14 +454,20 @@ export default function CvPage(props: Props) {
           title={'openProfileBottom'}         
           onClick={openContacts}
           >
-            Открыть профиль
+            {t('cv_page_openProfile')}
           </Button>
         }
         {currentCv.isContactsOpen &&
-          <Button styleType={['gradient']} title={'invite'}>Пригласить</Button>
+          <Button 
+          styleType={['gradient']} 
+          onClick={makeResponse} 
+          title={'invite'}
+          >
+            {t('cv_page_invite')}
+          </Button>
         }
         {(currentCv.proposalsByCurrentUser?.length>0 || currentCv.applicationsToCurrentUser?.length > 0) &&
-          <Button styleType={['borderGradient']} onClick={goToChat}>Чат</Button>
+          <Button styleType={['borderGradient']} onClick={goToChat}>{t('cv_page_chat')}</Button>
         }
       </div>
 

@@ -12,6 +12,7 @@ import { TranslateHirerRole } from 'utils/enumsTranslations'
 import ManagerDropdownMenu from '../ManagerDropdown'
 import { useUserContext } from 'context/user_state'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface ManagerProps {
@@ -21,13 +22,15 @@ interface ManagerProps {
 }
 
 export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
+  const {t} = useTranslation()
   const managerContext = useManagerContext()
   const userContext = useUserContext()
   const [loading, setIsLoading] = useState<boolean>(false)
   const [dropdownActive, setDropDown] = useState<boolean>()
 
   const setAdminHandler = () => {
-    const changeRoleTo = manager.hirerRole === HirerRole.Admin&&HirerRole.Manager||manager.hirerRole === HirerRole.Manager&&HirerRole.Admin
+    const changeRoleTo = manager.hirerRole === HirerRole.Admin&&HirerRole.Manager
+      ||manager.hirerRole === HirerRole.Manager&&HirerRole.Admin
     const data: IManagerCreate = {
       firstName: manager.firstName,
       lastName: manager.lastName,
@@ -45,14 +48,15 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
     })
   }
 
-  const canIEdit = (!userContext.currentProfile?.hirerRole || userContext.currentProfile?.hirerRole === HirerRole.Admin) && manager.id !== userContext.currentProfile?.id
+  const canIEdit = (!userContext.currentProfile?.hirerRole || userContext.currentProfile?.hirerRole === HirerRole.Admin) 
+  && manager.id !== userContext.currentProfile?.id
 
   return (
     <div className={styles.item}>
       <div className={styles.top}>
         <UserPic size={42} className={styles.userPic}/>
         <p className={styles.name}>{manager.firstName} {manager.lastName}</p>
-        <p className={styles.role}>{TranslateHirerRole(manager.hirerRole)}</p>
+        <p className={styles.role}>{TranslateHirerRole(manager.hirerRole, t)}</p>
         {canIEdit &&
           <ThreeDotsButton onClick={()=>setDropDown(state=> state&&false||!state&&true)} className={styles.edit}/>
         }
@@ -64,16 +68,18 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
           />     
         }
       </div>
-      <P styleType={['medium', 'w500', 'greyLight']}>Количество вакансий <span className={styles.count}>0</span></P>
-      <P styleType={['medium', 'w500', 'greyLight']}>Отклики <span className={styles.count}>0</span></P>
-      <P styleType={['medium', 'w500', 'greyLight']}>Просмотрено <span className={styles.count}>0</span></P>
-      <P styleType={['medium', 'w500', 'greyLight']}>Отвечено <span className={styles.count}>0</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_vcCount')} <span className={styles.count}>{manager.viewsOfVacanciesCount}</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_feedbacks')} <span className={styles.count}>0</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_watched')} <span className={styles.count}>{manager.viewsOfVacanciesCount}</span></P>
+      <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_answered')} <span className={styles.count}>{manager.applicationsToVacanciesCount}</span></P>
       {canIEdit &&
-        <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>Сделать {
-          manager.hirerRole===HirerRole.Manager&&'администратором'
+        <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>
+        {
+          manager.hirerRole===HirerRole.Manager&&t('managers_setAdmin')
         ||
-        manager.hirerRole===HirerRole.Admin&&'менеджером'
-        }</Button>
+          manager.hirerRole===HirerRole.Admin&&t('managers_setManager')
+        }
+        </Button>
       }
     </div>
   )

@@ -140,7 +140,7 @@ export default function CvPreview(props: Props) {
       >
         {currentCv.employment &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment)} занятость
+            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment, t, true)} 
           </P>
         }
         {currentCv.relocation &&
@@ -250,7 +250,7 @@ export default function CvPreview(props: Props) {
         title='Владение языками'
         onClick={() => props.onBack(5)}
         >
-          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
 

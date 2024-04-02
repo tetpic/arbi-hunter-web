@@ -1,5 +1,5 @@
-import ModalLayout from '@/components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
+import ModalLayout from '@/components/layout/Modal/ModalLayout'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import { IPurchase, ITariff, PurchaseForm } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
@@ -22,9 +22,12 @@ import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
 import { PurchaseType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 enum PurchaseStep {
@@ -52,7 +55,7 @@ export default function PurchasePreviewModal(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const balance = useRef(userContext.user?.balance)
-  const args:PurchasePreviewModalArgs = appContext.modalArguments
+  const args:PurchasePreviewModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
   const [date, setDate] = useState<string|undefined>(undefined)
   const items: ICV[]|IVacancy[] = (args.cvs||args.vacancies)?.filter(el=> {
@@ -87,7 +90,7 @@ export default function PurchasePreviewModal(props: Props) {
     <div className={styles.root}>
       <div className={styles.top}>
         <P styleType={['w600', 'large']}>{t('shop_purchase')}</P>
-        <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       <P styleType={['w600', 'huge', 'textCenter']}>{t('shop_tariffPurchase')} <br /> {args.tariff.name}</P>
       <div className={styles.balanceLine}>
@@ -96,7 +99,7 @@ export default function PurchasePreviewModal(props: Props) {
       <P styleType={['alignCenter', 'w600', 'huge' ]} ><ArbiCoinSvg/> {balance.current - args.tariff.price}</P>
       </div>
       <P styleType={['w600', 'fs32', 'alignCenter']} className={styles.balance}><ArbiCoinGradientSvg/>{args.tariff.price}</P>
-      <Button styleType={['gradient']} onClick={props.onClose}>{t('ready')}</Button>
+      <Button type='button' styleType={['gradient']} onClick={props.onClose}>{t('ready')}</Button>
     </div>
   )
 
@@ -104,7 +107,7 @@ export default function PurchasePreviewModal(props: Props) {
     <div className={classNames(styles.root, styles.rootConfirm)}>
       <div className={styles.top}>
         <P styleType={['w600', 'large']}>{t('shop_purchaseConfirmation')}</P>
-        <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       <div className={styles.balanceLine}>
         <P styleType={['w600', 'huge']}>{t('shop_balance')}</P>
@@ -132,12 +135,14 @@ export default function PurchasePreviewModal(props: Props) {
 
       <div className={styles.buttonsWrapper}>
         <Button 
+        type='button'
         styleType={['grey', 'wide']} 
         onClick={() => {setType(PurchaseStep.default)}}
         >
           {t('cancel')}
         </Button>
         <Button 
+        type='button'
         styleType={['gradient', 'wide']} 
         onClick={formik.submitForm} >{t('shop_buy')}</Button> 
       </div>
@@ -148,7 +153,7 @@ export default function PurchasePreviewModal(props: Props) {
     <div className={styles.root}>
       <div className={styles.top}>
         <P styleType={['w600', 'large']}>{t('shop_setActivationTime')}</P>
-        <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       {formik.values.startAt &&
         <P>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
@@ -161,6 +166,7 @@ export default function PurchasePreviewModal(props: Props) {
       </div>
       <div className={styles.buttonsWrapper}>
         <Button 
+        type='button'
         styleType={['grey', 'wide']} 
         onClick={() => {
           formik.setFieldValue('date', undefined)
@@ -170,7 +176,7 @@ export default function PurchasePreviewModal(props: Props) {
         >
           {formik.values.startAt?t('delete'):t('cancel')}
         </Button>
-        <Button styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.default)}>{t('save')}</Button> 
+        <Button type='button' styleType={['gradient', 'wide']} onClick={() => setType(PurchaseStep.default)}>{t('save')}</Button> 
       </div>
     </div>
   )
@@ -186,7 +192,7 @@ export default function PurchasePreviewModal(props: Props) {
             args.tariff.purchaseType === PurchaseType.VacancyTariff && t('shop_chooseVacancy')    
           }
         </P>
-        <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       {items.length > 0 && args.tariff.purchaseType !== PurchaseType.AddContactsOpen &&
         <RadioListField 
@@ -230,6 +236,7 @@ export default function PurchasePreviewModal(props: Props) {
       }
       
       <Button 
+      type='button'
       styleType={['gradient']} 
       onClick={()=>setType(PurchaseStep.confirmation)}
       disabled={
@@ -246,7 +253,7 @@ export default function PurchasePreviewModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Button styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+      <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       {args.tariff.icon &&
         <Image className={styles.tariffIcon} src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={96} height={96}/>
       }
@@ -267,8 +274,9 @@ export default function PurchasePreviewModal(props: Props) {
         <P styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey', 'wide']} onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
+        <Button styleType={['grey', 'wide']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
         <Button 
+        type='button'
         styleType={['gradient', 'wide']} 
         onClick={() => (
           args.tariff.purchaseType === PurchaseType.CvTariff&&!args.data.cvId
@@ -283,7 +291,25 @@ export default function PurchasePreviewModal(props: Props) {
     </div>
   )
 
-  return (<ModalLayout className={styles.modalLayout}>
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          <FormikProvider value={formik}>
+          <Form className={styles.form}>
+            {type === 'default' && body}
+            {type === 'calendar' && calendar}
+            {type === 'confirmation' && confirmation}
+            {type === 'purchase' && purchase}
+            {type === 'setItems' && setItems}
+          </Form>
+          </FormikProvider>
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
+
+  return (<ModalLayout className={styles.modalLayout} mobileFullScreen>
     <ModalBody>
       <FormikProvider value={formik}>
       <Form>

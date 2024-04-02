@@ -60,7 +60,6 @@ export default function MainPageEmployee() {
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
     {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
-
   ]
 
   const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
@@ -191,22 +190,26 @@ export default function MainPageEmployee() {
         </div>
       </div>
 
-      <Title title={t('mainPage_em_categories')} className={styles.title}/>
-      <CategoriesList hideNav categories={[...categories.values()].filter(e=> e.image)} link={'/recruiting?categories='}/>
+      <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{}}/>
+      <CategoriesList 
+      hideNav 
+      categories={[...categories.values()].filter(e=> e.image)} 
+      link={'/recruiting?categories='}
+      itemClassName={styles.categoryItem}
+      />
 
-      <Title title={t('mainPage_em_bestVCs')} className={styles.title}/>
+      <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
       <CvVcCompilation/>
 
-      <Title title={t('mainPage_em_articles')} className={styles.title}/>
+      <Title title={t('mainPage_em_articles')} className={styles.title}  onAllWatchClick={()=>{}}/>
       {news.size > 0 &&
         <ArticlesList news={[...news.values()]}/>
       }
 
-      <Title title={t('mainPage_em_freeeCourses')} className={styles.title}/>
+      <Title title={t('mainPage_em_freeeCourses')} className={styles.title}  onAllWatchClick={()=>{}}/>
       {popularCourses.size > 0 &&
         <CoursesList courses={[...popularCourses.values()]}/>
       }
-
     </div>
   )
 

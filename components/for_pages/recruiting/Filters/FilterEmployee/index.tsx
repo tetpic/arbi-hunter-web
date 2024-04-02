@@ -15,7 +15,7 @@ import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/i
 import { periods } from 'utils/commonObjects'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType,  TranslateCurrency, TranslateScheduleType, TranslateSearchInType } from 'utils/enumsTranslations'
+import { TranslateCompensationType,  TranslateCurrency, TranslateEmploymentType, TranslateScheduleType, TranslateSearchInType } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import P from '@/components/ui/P'
 import InputField from '@/components/fields/InputField'
@@ -104,7 +104,7 @@ export default function FilterEmployee(props: Props) {
       onSubmit: (activeSources)=>{
         const newObject = {...creationContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         creationContext.setHelpObjects(newObject)
-        appContext.hideModal()
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       },
       data: [...sourcesContext[t.type].values()],
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
@@ -200,7 +200,7 @@ export default function FilterEmployee(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <Title title={t('search_cv')}/>
-      <MainSearchBar initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
+      <MainSearchBar fullWidth  initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
@@ -474,9 +474,9 @@ export default function FilterEmployee(props: Props) {
             rootClass={styles.radioField}
             name={'employment'} 
             options={[
-              {value: EmploymentType.FullTime, label: 'Полная занятость'},
-              {value: EmploymentType.PartTime, label: 'Частичная занятость'},
-              {value: EmploymentType.Project, label: 'Проектная работа'}
+              {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
+              {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
+              {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
             ]}/>
             {isTabletWidth&&<Spacer basis={4}/>}
         </div>

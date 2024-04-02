@@ -14,7 +14,7 @@ import Formatter from 'utils/formatter'
 
 type FormatType = 'phone'
 
-interface Props extends IField<string> {
+interface Props extends IField<string>{
   obscure?: boolean
   format?: FormatType
   success?: boolean
@@ -42,6 +42,7 @@ interface Props extends IField<string> {
   labelClassName?: string
   inputClassName?: string
   backgroundColor?: string
+  inputMode?: 'email' | 'search' | 'text' | 'tel' | 'url' | 'numeric' | 'none' | 'decimal'
 }
 
 
@@ -145,6 +146,7 @@ export default function InputField(props: Props) {
           placeholder={props.placeholder}
           {...(props.format === 'phone'?{value: value}: '') }
           {...(props.onChange&&{onChange: props.onChange}) }
+          inputMode={props.inputMode}
         />
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}

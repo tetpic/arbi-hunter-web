@@ -6,7 +6,7 @@
   max-width: 638px;
   min-height: 70vh;
   @include mq($TabletWidth, max) {
-    margin-top: 8px;
+    margin-top: 16px;
     padding-inline: 16px;
     padding-bottom: 100px !important;
   }

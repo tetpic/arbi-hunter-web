@@ -9,6 +9,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
     padding: unset;
+    padding-inline: 16px;
     margin-top: 16px;
     min-height: calc(100% - 32px);
     display: flex;
@@ -20,7 +21,11 @@
 .item {
   display: flex;
   width: 100%;
-  margin-bottom: 48px;
+  margin-bottom: Clamp(24px, 4vw, 48px);
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+    row-gap: 16px;
+  }
 }
 
 .itemContent {
@@ -46,6 +51,7 @@
   font-weight: $medium;
   width: 30%;
   flex-shrink: 0;
+  white-space: nowrap;
   // @include mq($TabletWidth, max) {
   //   padding: 16px;
   //   height: 56px;
@@ -67,7 +73,6 @@
 
 .addButton {
   margin-top: unset !important;
-  margin-bottom: 24px !important;
 }
 
 .itemsWrapper {
@@ -80,6 +85,9 @@
 
 .radioField {
   margin-bottom: 24px;
+  @include mq($TabletWidth, max) {
+    margin-bottom: unset;
+  }
 }
 
 .inputsWrapper {

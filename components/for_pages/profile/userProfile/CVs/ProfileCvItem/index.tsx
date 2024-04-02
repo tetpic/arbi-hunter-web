@@ -61,7 +61,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const removeHandler =()=> {
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: 'Вы действительно хотите удалить резюме?',
+      {text: t('cv_item_removeConfirm'),
       callback: ()=>{
         cvContext.deleteCv(cv.id)
       }
@@ -74,13 +74,13 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const defaultOptions:IOptionList[] = [
-    {title: cv?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
-    {title: 'Дублировать'},
-    {title: 'Поделиться'},
-    {title: 'Продлить и Поднять'},
-    {title: 'Улучшить', onClick: upgradeTariffHandler},
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_double')},
+    {title: t('item_share')},
+    {title: t('item_prolong')},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
   const draftOptions:IOptionList[] = [
@@ -114,7 +114,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
       <p className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</p>
-      <p className={styles.refreshed}>{t('cv_item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</p>
+      <p className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()

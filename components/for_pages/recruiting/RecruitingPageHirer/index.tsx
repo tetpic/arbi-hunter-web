@@ -12,8 +12,6 @@ import hirer from 'images/recruiting/vacancy_back.jpg'
 import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
-import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
-import { ModalType } from 'types/enums'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import P from '@/components/ui/P'
@@ -70,25 +68,19 @@ function RecruitingPageHirerInner(props: Props) {
   }
 
   const onFilterClick = ()=>{
-    if(!isTabletWidth) {
-      setPage('filters')
-      return 
-    }
-    appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
-      onFilterChange: (data)=>onFilterChange(data)
-    })
+    setPage('filters')
   }
 
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
+    const clearedObj = clearObject({...data})
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
     setSearchString(data.search)
-    setCurrentFilters( data)
-    findVacanciesThrottle.callback(data)
-    const clearedObj = clearObject({...data})
+    setCurrentFilters(clearedObj)
+    findVacanciesThrottle.callback(clearedObj)
     router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
@@ -107,7 +99,7 @@ function RecruitingPageHirerInner(props: Props) {
   }, [])
 
   useEffect(()=>{
-    isInited.current && findCvs()  
+    findCvs()  
   }, [cvContext.page])
 
   if(page === 'filters'){

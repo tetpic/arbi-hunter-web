@@ -60,7 +60,6 @@ export default function SourcesModal(props: Props) {
       props.onClose()
     }}
     onSave={()=>{
-      
       saveSourcesHandler()
     }}
     >

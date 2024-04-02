@@ -33,6 +33,7 @@ interface Props {
 export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const tariffContext = useTariffContext()
   const userContext = useUserContext()  
   const router = useRouter()
@@ -117,14 +118,18 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       appContext.showSnackbar(t('shop_Insufficient_funds'), SnackbarType.error)
       return
     }
-    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+    const args:PurchasePreviewModalArgs = {
       tariff: tariff,
       tariffs: tariffContext.packets,
       activeSubscriptions: [...tariffContext.activeSubscriptions.values()],
       cvs,
       vacancies,
       onBuy: buyHandler
-    })
+    }
+    isTabletWidth?
+    appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
+    :
+    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
   }
 
   useEffect(()=>{

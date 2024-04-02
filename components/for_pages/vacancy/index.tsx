@@ -33,6 +33,7 @@ import classNames from 'classnames'
 import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
 import ContactsModal from './ContactsModal'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -40,6 +41,7 @@ interface Props {
 }
 
 export default function VacancyPage(props: Props) {
+  const {t} = useTranslation()
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
@@ -103,7 +105,7 @@ export default function VacancyPage(props: Props) {
 
   const companyCard = (
     <Link href={'/personal/'+currentVacancy.profile?.id} className={styles.companyCard}>
-      <UserPic image={FILES + currentVacancy.profile?.logo?.source} size={67}/>
+      <UserPic image={currentVacancy.profile?.logo&&FILES + currentVacancy.profile?.logo?.source} size={67}/>
       <div className={styles.companyInfo}>
         <P styleType={['w600', 'medium']}>{currentVacancy.profile?.company}</P>
         {currentVacancy.city?.locName &&
@@ -112,9 +114,7 @@ export default function VacancyPage(props: Props) {
       </div>
       <Button className={styles.companyArrow} styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
     </Link>
-  )
-
-  
+  ) 
 
 
   return (
@@ -129,13 +129,13 @@ export default function VacancyPage(props: Props) {
           onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)} 
           className={styles.edit}
           >
-            <PencilSvg color={colors.blue}/> Редактировать
+            <PencilSvg color={colors.blue}/> {t('vacancy_page_edit')}
           </P>
         }
       </div>
       <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
       {salary &&
-        <P styleType={['w600', 'large']}>{salary} на руки</P>
+        <P styleType={['w600', 'large']}>{salary} {t('vacancy_page_salaryCounter')}</P>
       }
       {isMyVacancy && 
         <div className={styles.topLine}>
@@ -150,7 +150,7 @@ export default function VacancyPage(props: Props) {
           styleType={['small', 'green']} 
           className={styles.expires}
           >
-            Истекает {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30})}
+            {t('vacancy_page_expires')} {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30})}
           </P>
         </div>
       }
@@ -159,11 +159,11 @@ export default function VacancyPage(props: Props) {
         <Statistics 
         className={styles.stats}
         items={[
-          {name: 'Показы', count: currentVacancy.totalShows},
-          {name: 'Просмотры', count: currentVacancy.totalViews},
-          {name: 'Отклики', count: currentVacancy.totalApplications},
+          {name: t('vacancy_page_shows'), count: currentVacancy.totalShows},
+          {name: t('vacancy_page_views'), count: currentVacancy.totalViews},
+          {name: t('vacancy_page_applications'), count: currentVacancy.totalApplications},
         ]} 
-        title={'Статистика за все время'} 
+        title={t('vacancy_page_statsTitle')} 
         />
       }
 
@@ -175,17 +175,21 @@ export default function VacancyPage(props: Props) {
               router.push(`/responses/${currentVacancy.id}/`)
           }} 
           >
-            Посмотреть отклики
+            {t('vacancy_page_viewApplicetions')}
           </Button>
-          <Button styleType={['black', 'borderBlue']}>Пригласить подходящих</Button>
+          <Button styleType={['black', 'borderBlue']}>{t('vacancy_page_invite')}</Button>
         </div>
       }
 
       {!isMyVacancy &&
         <div className={styles.buttonsWrapper}>
-          <Button styleType={['gradient' ]} onClick={makeResponse}>Откликнуться</Button>
+          <Button styleType={['gradient' ]} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
           {currentVacancy.showContactName &&
-            <Button styleType={['black', 'borderBlue']} onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>Показать контакты</Button>
+            <Button 
+            styleType={['black', 'borderBlue']} 
+            onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
+              {t('vacancy_page_showContacts')}
+            </Button>
           }
           <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
           <Button styleType={['icon', 'black']} onClick={()=>vacancyContext.addToBlackList()}><CloseEyeSvg/></Button>
@@ -207,47 +211,58 @@ export default function VacancyPage(props: Props) {
       }
       {currentVacancy.skills?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Навыки</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_skills')}</P>
           <TagList tags={currentVacancy.skills.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.sources?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Источники</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_sources')}</P>
           <TagList tags={currentVacancy.sources.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.geos?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Гео</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_geos')}</P>
           <TagList tags={currentVacancy.geos.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.verticals?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Вертикали</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_verticals')}</P>
           <TagList tags={currentVacancy.verticals.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Владение языками</P>
-          <TagList tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <P styleType={['w600', 'large']}>{t('vacancy_page_languagesKnowledges')}</P>
+          <TagList 
+          tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </div>
       }
 
       {currentVacancy.showContactName && !isMyVacancy &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Контакты</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_contacts')}</P>
           <div className={styles.contacts}>
             <P styleType={['w500', 'medium']}>{currentVacancy.contactName}</P>
-            <Button styleType={['black', 'wide', 'borderBlue']} onClick={()=>setIsShowContacts(state=> ([state[0], true]))}>Показать контакты</Button>
+            <Button 
+            styleType={['black', 'wide', 'borderBlue']} 
+            onClick={()=>setIsShowContacts(state=> ([state[0], true]))}
+            >
+              {t('vacancy_page_showContacts')}
+            </Button>
             {currentVacancy.showContactName && isShowContacts[1]&&
-              <ContactsModal key={'contacts2'} vacancy={currentVacancy} isActive={isShowContacts[1]} onClose={()=>setIsShowContacts(state=> ([state[0], false]))}/>
+              <ContactsModal 
+              key={'contacts2'} 
+              vacancy={currentVacancy} 
+              isActive={isShowContacts[1]} 
+              onClose={()=>setIsShowContacts(state=> ([state[0], false]))}
+              />
             }
           </div>
         </div>
@@ -255,13 +270,13 @@ export default function VacancyPage(props: Props) {
       
       {!isMyVacancy &&
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['gradient']} onClick={makeResponse}>Откликнуться</Button>
+        <Button styleType={['gradient']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
       </div>
       }
       
       {!isMyVacancy &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>Похожие вакансии</P>
+          <P styleType={['w600', 'large']}>{t('vacancy_page_sameVacancies')}</P>
           <div className={styles.vacancies}>
             {otherCompanyVacncies.map(el => <VacancyItem key={el.id} vacancy={el} />)}
           </div>

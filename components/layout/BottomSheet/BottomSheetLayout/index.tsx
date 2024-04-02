@@ -2,6 +2,7 @@ import styles from './index.module.scss'
 import Sheet from 'react-modal-sheet'
 import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
+import classNames from 'classnames'
 // import CloseModalBtn from 'components/ui/CloseModalBtn'
 
 
@@ -10,6 +11,7 @@ interface Props {
   lineOver?: boolean
   closeIconColor?: string,
   backgroundColor? : string
+  className?: string
 
 }
 
@@ -17,9 +19,9 @@ export default function BottomSheetLayout(props: Props) {
   const appContext = useAppContext()
   return (
     <>
-      <Sheet.Container style={{ background: props.backgroundColor ? props.backgroundColor: colors.white, borderRadius: '10px 10px 0 0' }}>
+      <Sheet.Container style={{ background: props.backgroundColor ? props.backgroundColor: colors.white, borderRadius: '10px 10px 0 0' }} >
         <Sheet.Content dragListener={false}>
-          <div className={styles.root}>
+          <div className={classNames(styles.root, props.className)}>
             <Sheet.Header style={{ position: props.lineOver ? 'absolute' : 'static', zIndex: 1 }} />
             <div className={styles.content}>
               {props.children}

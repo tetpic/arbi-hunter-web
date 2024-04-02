@@ -13,13 +13,14 @@ import languages from '@cospired/i18n-iso-languages'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { IPortfolioModal } from 'components/modals/AddPortfolioModal'
 import { ICVCreate } from 'data/interfaces/ICV'
-import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { TranslateLanguage, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ISkillModalProps } from '@/components/modals/CvModals/Skills'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import FilesList from '@/components/ui/FilesList'
 import { useSourcesContext } from 'context/sources_state'
+import useTranslation from 'next-translate/useTranslation'
 
 
 type SkillsFields = {
@@ -47,6 +48,7 @@ export default function Skills(props: Props) {
   const appContext  = useAppContext()
   const sourcesContext = useSourcesContext()
   const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
@@ -125,7 +127,7 @@ export default function Skills(props: Props) {
       onSubmit: (activeSources)=>{
         const newObject = {...cvContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         cvContext.setHelpObjects(newObject)
-        appContext.hideModal()
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       },
       data: [...sourcesContext[t.type].values()],
       choosenElements: new Map(cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
@@ -274,7 +276,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.size > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&& [...cvContext.helpObjects?.languageKnowledges.values()]
-        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={(languages.getName(el.language, 'ru') + ', ' + TranslateLanguageKnowLevel(el.level, true))} /> )
+        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={(TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true))} /> )
         }
       </div>
     } 

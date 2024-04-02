@@ -7,6 +7,9 @@
   row-gap: 8px;
   margin-top: auto;
   column-gap: 8px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
 }
 
 .item {
@@ -75,6 +78,12 @@
   
 }
 
+.info{
+  @include mq($TabletWidth, max) {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
 
 .time {
   color: $greyLight;

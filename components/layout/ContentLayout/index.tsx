@@ -7,6 +7,7 @@ import { useResize } from 'components/hooks/useResize'
 import { useEffect } from 'react'
 import { useUserContext } from 'context/user_state'
 import classnames from 'classnames'
+import MobileBottomMenu from '@/components/ui/MobileBottomMenu'
 
 interface Props {
   title?: string,
@@ -15,6 +16,7 @@ interface Props {
   withFooter?: boolean
   disabledNavBar?: boolean
   hideMobileHeader?: boolean
+  withMobileMenu?: boolean
 }
 
 /**
@@ -41,8 +43,6 @@ export default function ContentLayout(props: Props) {
   
   }, [isTabletWidth])
 
-
-
   return (
   <>
     {
@@ -59,8 +59,10 @@ export default function ContentLayout(props: Props) {
       {props.withFooter &&
         <Footer/>
       }
+      {props.withMobileMenu && isTabletWidth &&
+        <MobileBottomMenu/>
+      }
     </div>
-
   </>
   )
 }

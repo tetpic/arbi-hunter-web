@@ -19,6 +19,7 @@ import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import Formatter from 'utils/formatter'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id?: number
@@ -29,6 +30,7 @@ interface Props {
 
 
 export default function VacancyPreview(props: Props) {
+  const {t} = useTranslation()
   const creationContext = useCreateVcCvContext()
   const currentVacancy = props.vacancy
   const userContext = useUserContext()
@@ -126,7 +128,7 @@ export default function VacancyPreview(props: Props) {
 
       {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
         <PreviewItem title='Владение языками' onClick={()=>props.onBack(5)}>
-          <TagList tagClassName={styles.langTag} tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tagClassName={styles.langTag} tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
     </div>

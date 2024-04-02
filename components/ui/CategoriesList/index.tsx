@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { FILES } from 'types/constants'
 import SwiperList from '../SwiperList'
 import useTranslation from 'next-translate/useTranslation'
+import classNames from 'classnames'
 
 interface Props<T> {
   categories: T[]
@@ -14,19 +15,22 @@ interface Props<T> {
   title?: string
   articlesCounter?:boolean
   link?: string
+  itemClassName?: string
 }
 
 
 export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
   const {t} = useTranslation()
-  // const swiper= useRef<SwiperRef>(null!)
-  // const {isTabletWidth} = useResize()
 
   return (
     <SwiperList hideNav={props.hideNav} className={props.className}>
       {props.categories && props.categories.map(category=> {
         return (
-          <Link href={(props.link||'/media/page?page=categories&category=')+category.id} replace={true} className={styles.categoryItem}>
+          <Link 
+          href={(props.link||'/media/page?page=categories&category=')+category.id} 
+          replace={true} 
+          className={classNames(styles.categoryItem, props.itemClassName)}
+          >
             <div className={styles.imageWrapper}>
               <Image 
               src={FILES + category.image.source}

@@ -10,6 +10,8 @@ import Button from '@/components/ui/Button'
 import CrossSvg from '@/components/svg/CrossSvg'
 import Validator from 'utils/Validator'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose?: () => void
@@ -58,6 +60,16 @@ export default function RefillBalanceModal(props: Props) {
       </FormikProvider>
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout className={styles.modalLayout}>
+      <BottomSheetBody>
+        {body}
+      </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>

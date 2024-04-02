@@ -1,5 +1,6 @@
-import Button from '@/components/ui/Button'
 import styles from './index.module.scss'
+
+import Button from '@/components/ui/Button'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import P from '@/components/ui/P'
 import classnames from 'classnames'
@@ -30,6 +31,7 @@ export default function SetTariff(props: Props) {
   const creationContext = useCreateVcCvContext()
   const tariffs = creationContext.tariffs
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const router = useRouter()
 
   useEffect(()=>{
@@ -49,26 +51,23 @@ export default function SetTariff(props: Props) {
     const purchaseData = {
       cvId: props.type === 'cv'? creationContext.draftItem.current.id:null,
       vacancyId: props.type === 'vacancy'? creationContext.draftItem.current.id:null
-    }
-    
+    }    
 
     if(tariff.id === creationContext.currentVc?.subscriptions?.tariff?.id) {
       props.onSave()
       return
     }
 
-    if(tariff.price === 0) {
-      
+    if(tariff.price === 0) {      
       PurchaseRepository.cvVcPurchase({...clearObject(purchaseData), tariffId: tariff.id})
       .then(res => {
         props.onSave()
       })
       return 
     }
-    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+    const args:PurchasePreviewModalArgs = {
       tariff,
-      tariffs: tariffs,
-      
+      tariffs: tariffs,      
       data: purchaseData,
       onBuy: (data) => {
         PurchaseRepository.cvVcPurchase({...clearObject(data), tariffId: tariff.id})
@@ -85,7 +84,12 @@ export default function SetTariff(props: Props) {
           })
         })
       }
-    })
+    }
+    isTabletWidth?
+    appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args, 600)
+    :
+    appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
+
   }
 
 

@@ -18,22 +18,22 @@ export default function EmploymentBoard({type,cv,vacancy}: Props) {
   return (        
   <div className={classNames(styles.badges, type&&styles[type])} data-cy='employment_board'>
     <div className={styles.badge}>
-      <P styleType={['medium', 'w500']}>Занятость</P>
-      <P styleType={['medium', 'w500']}>{TranslateEmploymentType(cv?.employment||vacancy?.employment)}</P>
+      <P styleType={['medium', 'w500']}>{t('employmentBoard_employment')}</P>
+      <P styleType={['medium', 'w500']}>{TranslateEmploymentType(cv?.employment||vacancy?.employment, t)}</P>
     </div>
     <div className={styles.divider}></div>
     <div className={styles.badge}>
-      <P styleType={['medium', 'w500']}>График работы</P>
+      <P styleType={['medium', 'w500']}>{t('employmentBoard_schedule')}</P>
       <P styleType={['medium', 'w500']}>{TranslateScheduleType(cv?.schedule||vacancy?.schedule, t)}</P>
     </div>
     <div className={styles.divider}></div>
     <div className={styles.badge}>
-      <P styleType={['medium', 'w500']}>Место</P>
+      <P styleType={['medium', 'w500']}>{t('employmentBoard_place')}</P>
       <P styleType={['medium', 'w500']}>
         {
-          (cv&&(cv?.schedule === ScheduleType.Remote?'Удаленно': cv?.city?.locName||'Офис'))
+          (cv&&(cv?.schedule === ScheduleType.Remote?t('employmentBoard_remote'): cv?.city?.locName||t('employmentBoard_office')))
           ||
-          (vacancy &&(vacancy.isRemote?'Удаленно': 'Офис'))
+          (vacancy &&(vacancy.isRemote?t('employmentBoard_remote'): t('employmentBoard_office')))
         }
       </P>
     </div>

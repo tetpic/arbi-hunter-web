@@ -5,6 +5,10 @@
   min-width: 436px;
   width: auto;
   height: auto;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+    height: unset;
+  }
 }
 
 .root {
@@ -13,10 +17,15 @@
   flex-direction: column;
   row-gap: 16px;
   align-items: center;
+  height: 100%;
 }
 
 .tariffIcon {
   object-fit: contain;
+}
+
+.form {
+  height: 100%;
 }
 
 .top {
@@ -50,6 +59,9 @@
   width: 100%;
   column-gap: 16px;
   white-space: nowrap;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .closeButton {

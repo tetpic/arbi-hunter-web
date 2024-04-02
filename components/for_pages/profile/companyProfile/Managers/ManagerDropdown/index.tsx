@@ -1,9 +1,10 @@
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
-import IconButton from 'components/ui/IconButton'
 import { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
+import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -12,8 +13,8 @@ interface Props {
 }
 
 export default function ManagerDropdownMenu(props: Props) {
+  const {t} = useTranslation()
   const dropDownRef = useRef<HTMLDivElement>()
-
   const [isActive, setIsActive] = useDetectOutsideClick(dropDownRef, true)
 
   const onEditHandler = () => {
@@ -27,7 +28,7 @@ export default function ManagerDropdownMenu(props: Props) {
 
   return ( 
   <div className={styles.dropDown} ref={dropDownRef}>
-    <IconButton onClick={onEditHandler} bgColor={'transparent'} className={styles.drpButton}><EditPencilSvg/> <span>Редактировать профиль</span></IconButton>
-    <IconButton onClick={props.onRemove} bgColor={'transparent'} className={styles.drpButton}><TrashBasketSvg/> <span>Удалить профиль</span></IconButton>
+    <P onClick={onEditHandler} styleType={['alignCenter', 'w500', 'medium']} className={styles.drpButton}><EditPencilSvg/> {t('managers_editProfile')}</P>
+    <P onClick={props.onRemove} styleType={['alignCenter', 'w500', 'medium']} className={styles.drpButton}><TrashBasketSvg/> {t('managers_removeProfile')}</P>
   </div>)
 }

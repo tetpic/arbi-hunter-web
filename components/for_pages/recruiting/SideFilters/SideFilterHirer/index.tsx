@@ -20,7 +20,7 @@ import ChevronDownSvg from '@/components/svg/ChevronDownSvg'
 import { useLocationContext } from 'context/location_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { ICityModalArgs } from '@/components/modals/CityModal'
-import { TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -300,9 +300,9 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'employment'} 
           options={[
-            {value: EmploymentType.FullTime, label: 'Полная занятость'},
-            {value: EmploymentType.PartTime, label: 'Частичная занятость'},
-            {value: EmploymentType.Project, label: 'Проектная работа'}
+            {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
+            {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
+            {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>

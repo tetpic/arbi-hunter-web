@@ -17,6 +17,9 @@
     align-items: center;
     row-gap: 8px;
     text-align: center;
+    @include mq($PhoneWidth, max) {
+      flex: unset;
+    }
   }
 
   .divider {

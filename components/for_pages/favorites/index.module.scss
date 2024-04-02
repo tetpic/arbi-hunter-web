@@ -1,9 +1,12 @@
 @import 'styles/index';
 
 .root {
-  margin-top: 48px;
+  margin-top: clamp(24px, 7vw, 48px);
   max-width: 556px;
   margin-bottom: 42px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .top {

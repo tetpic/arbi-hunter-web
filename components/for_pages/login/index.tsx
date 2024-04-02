@@ -115,6 +115,7 @@ export default function Login() {
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
             {loginType=== LoginType.Email &&
               <InputField   
+              inputMode='email'
               label={'E-mail:'}
               className={styles.input} 
               data-testid={'email'}

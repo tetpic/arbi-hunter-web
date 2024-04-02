@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import RadioListField from 'components/fields/RadioListField'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
@@ -5,7 +7,6 @@ import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import ClosingTitle from 'components/ui/ClosingTitle'
-import Spinner from 'components/ui/Spinner'
 import { useAppContext } from 'context/state'
 import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
@@ -13,9 +14,9 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
 import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
-import styles from './index.module.scss'
 import { IProposalTextModalProps } from './ProposalTextModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -42,15 +43,15 @@ export interface IProposalModalProps {
 }
 
 export default function ProposalModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const modalArguments: IProposalModalProps = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments 
   const [page, setPage] = useState<ProposalModalPager>(modalArguments.page||ProposalModalPager.Invite)
-  const [loading, setIsLoading] = useState<boolean>(false)
 
 
   const submit = (data: FormikState) => {
     if(!data.vcId) {
-      appContext.showSnackbar('Выберите вакансию', SnackbarType.error)
+      appContext.showSnackbar(t('proposalModal_chooseVc'), SnackbarType.error)
       return
     }
     if(data.type === ApplicationBSSelectType.AnotherVacancy && page === ProposalModalPager.Invite) {
@@ -69,11 +70,11 @@ export default function ProposalModal(props: Props) {
     onSubmit: submit
   })
 
-  const title = (<ClosingTitle title={'Пригласить'} classNames={{wrapper: styles.titleWrapper}} onClose={props.onClose}/>)
+  const title = (<ClosingTitle title={t('proposalModal_invite')} classNames={{wrapper: styles.titleWrapper}} onClose={props.onClose}/>)
 
   const body = (
     <FormikProvider value={formik} >
-      <Form>
+      <Form className={styles.form}>
         {
         page === ProposalModalPager.Invite &&
           <RadioListField 
@@ -84,7 +85,7 @@ export default function ProposalModal(props: Props) {
             return {value: el, label: TranslateApplicationBSSelectType(el)}
           })}/>
         ||
-        page === ProposalModalPager.OtherVacancy && !loading &&
+        page === ProposalModalPager.OtherVacancy &&
           <RadioListField 
           wrapperClassName={styles.radioWrapper} 
           name={'vcId'} 
@@ -92,10 +93,8 @@ export default function ProposalModal(props: Props) {
           .map(el => {
             return {value: el.id, label: el.name}
           })}/>          
-        ||
-        loading && <Spinner size={24}/>
         }
-        <Button type='button' onClick={formik.submitForm} className={styles.buttonGradient}>Продолжить</Button>
+        <Button styleType={['gradient']} type='button' onClick={formik.submitForm} className={styles.buttonGradient}>{t('continue')}</Button>
       </Form>
     </FormikProvider>
   )

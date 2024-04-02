@@ -144,6 +144,9 @@
 .logo {
   display: flex;
   position: relative;
+  @include mq($TabletWidth, max) {
+    z-index: 2;
+  }
 }
 
 

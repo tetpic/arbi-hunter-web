@@ -1,6 +1,6 @@
-import P from '@/components/ui/P'
 import styles from './index.module.scss'
 
+import P from '@/components/ui/P'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import InputField from 'components/fields/InputField'
 import PasswordField from 'components/fields/PasswordField'
@@ -17,6 +17,7 @@ import Validator from 'utils/Validator'
 import { useState } from 'react'
 import TextAreaField from '@/components/fields/TextAreaField'
 import { useUserContext } from 'context/user_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function AddManager(props: Props) {
+  const {t} = useTranslation()
   const managerToEdit = props.managerToEdit
   const userContext = useUserContext()
   const [page, setPage] = useState<number>(1)
@@ -69,28 +71,28 @@ export default function AddManager(props: Props) {
   const page1 = (<>
     {!userContext.currentProfile?.hirerRole &&
     <>
-      <P styleType={['large', 'w600']}>Статус</P>     
+      <P styleType={['large', 'w600']}>{t('managers_status')}</P>     
       <RadioListField 
       name={'hirerRole'} 
       itemLabelClassName={styles.radioItem_label}
       labelClassName={styles.radioWrapper_label}
-      options={Object.values(HirerRole).map(el=> {return {value: el, label: TranslateHirerRole(el)}})}
+      options={Object.values(HirerRole).map(el=> {return {value: el, label: TranslateHirerRole(el, t)}})}
       />
     </>
   }
 
-    <P styleType={['large', 'w600']}>Права</P>     
+    <P styleType={['large', 'w600']}>{t('managers_permissions')}</P>     
     <CheckboxListField 
     name={'permissions'}
-    options={Object.values(HirerRolePermission).map(el=>{return {value: el, label: TranslateHirerRolePermission(el)}})} 
+    options={Object.values(HirerRolePermission).map(el=>{return {value: el, label: TranslateHirerRolePermission(el, t)}})} 
     />
   </>)
 
   const page2 = (<>
-    <P styleType={['large', 'w600']}>Личные данные</P>  
+    <P styleType={['large', 'w600']}>{t('managers_personalData')}</P>  
     
     <InputField 
-    label='Фамилия:'
+    label={t('lastName')}
     labelType={'top'}
     name={'lastName'}
     styleType={'default'} 
@@ -99,7 +101,7 @@ export default function AddManager(props: Props) {
 
     <InputField 
     name={'firstName'}
-    label={'Имя:'}
+    label={t('name')}
     labelType={'top'}
     styleType={'default'} 
     color={'default'} 
@@ -108,28 +110,20 @@ export default function AddManager(props: Props) {
 
     <InputField 
     name={'patronymic'}
-    label={'Отчество:'}
+    label={t('patronymic')}
     labelType={'top'}
     styleType={'default'} 
     color={'default'} 
     />
 
     <InputField 
-    label='Должность:'
+    label={t('managers_position')}
     labelType={'top'}
     name={'position'}
     styleType={'default'} 
     color={'default'} 
     validate={Validator.required}
-    />
-      
-    {/* <InputField 
-    label='Регион:'
-    labelType={'top'}
-    name={'region'}
-    styleType={'default'} 
-    color={'default'} 
-    /> */}
+    />     
 
     <PhoneCountryField 
     styleType={'horizontal'} 
@@ -137,7 +131,7 @@ export default function AddManager(props: Props) {
     name={'phone'}  
     inputClassName={styles.input} 
     defaultCountry={'RU'}
-    label={'Телефон:'}
+    label={t('phone')}
     validate={Validator.required}
     />
 
@@ -145,12 +139,13 @@ export default function AddManager(props: Props) {
 
     <PasswordField notRequired={managerToEdit?true:false} 
     name='passwordConfirm'
-    label='Подтвердите пароль:'
+    label={t('login_repeatPassword')}
     />
 
     <InputField   
     label={'E-mail:'}
     className={styles.input} 
+    inputMode='email'
     labelType='top' 
     styleType={'default'} 
     color={'default'} 
@@ -164,7 +159,7 @@ export default function AddManager(props: Props) {
 
   return (<div className={styles.root}> 
     <BackTextButton onClick={page===1?props.onClose:()=>setPage(1)}/>
-    <P styleType={['huge','w600']} className={styles.title}>{managerToEdit? 'Редактирование данных менеджера ' : 'Добавить менеджера'}</P>
+    <P styleType={['huge','w600']} className={styles.title}>{managerToEdit? t('managers_editData') : t('managers_addManager')}</P>
     <FormikProvider value={formik} >
       <Form className={styles.form}>
         {page === 1 && page1}
@@ -173,9 +168,9 @@ export default function AddManager(props: Props) {
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
       {page === 2 &&
-        <Button styleType={['gradient']} onClick={formik.submitForm}>Сохранить</Button>
+        <Button styleType={['gradient']} onClick={formik.submitForm}>{t('save')}</Button>
         ||
-        <Button styleType={['gradient']} type='button' onClick={()=>setPage(2)}>Продолжить</Button>
+        <Button styleType={['gradient']} type='button' onClick={()=>setPage(2)}>{t('continue')}</Button>
       }
     </div>
   </div>)
