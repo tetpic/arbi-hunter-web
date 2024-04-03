@@ -57,7 +57,7 @@ export default function FilesField(props: Props) {
   return ( <div className={classNames(styles.imagesField, props.className)}>
     <label>
       <div className={classNames(styles.imageButton, props.inputClassName)}>{props.buttonName||t('fields_addImage')}</div>
-      <FileInput accept={props.accept} getController={(c) => setController(c)}  setImages={(image) => setImages(state=>new Map([...state, [image.rawId, image]]))}/>
+      <FileInput accept={props.accept} name={field.name} getController={(c) => setController(c)}  setImages={(image) => setImages(state=>new Map([...state, [image.rawId, image]]))}/>
     </label>
     {images.size > 0 &&
       <FilesList previews={[...images.values()]} controller={controller} onRemove={removeImage}/>

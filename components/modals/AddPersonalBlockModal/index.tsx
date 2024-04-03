@@ -12,8 +12,12 @@ import RichTextField from 'components/fields/RichTextField'
 import Button from 'components/ui/Button'
 import FilesField from 'components/fields/FilesField'
 import { IFile } from 'data/interfaces/Common'
-import { useState } from 'react'
+import {  useState } from 'react'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import Image from 'next/image'
+import { FILES } from 'types/constants'
+import classNames from 'classnames'
 
 interface Props {
   onClose: () => void
@@ -22,7 +26,7 @@ interface Props {
 
 export interface IAddPersonalBlockModalProps {
   type: PersonalBlockType
-  onSubmit: (data: Partial<IPersonalPageBlock>, images?: IFile[]) => void
+  onSubmit: (data: Partial<IPersonalPageBlock>, images?: IFile[], layout?: any) => void
   initialData?: {block: Partial<IPersonalPageBlock>, assets: IFile[]}
 }
 /**
@@ -34,12 +38,18 @@ export default function AddPersonalBlockModal(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const args = appContext.modalArguments as IAddPersonalBlockModalProps
-  const [images, setImages] = useState<Map<number, IFile>>(new Map(args.initialData&&args.initialData.assets.map(el=> [el.id, el])))
-
+  const [images, setImages] = useState<Map<number, IFile>>(new Map(args.initialData&&args.initialData.assets.map(el=> [el.id, el]))||new Map)
+  const [layout, setLayout] = useState<any>()
+ 
   const submit = (data: Partial<IPersonalPageBlock>) => {
     const submitData = {
       ...data,
+      layout: (layout as number[][]).map(el => el.map(e => images.get(e).id))
     }
+
+    data.assetsList.length > 0 && (submitData.assets = data.assetsList.flat(1))
+    delete submitData.assetsList 
+    // const imagesLayout = (layout as number[][]).map(el => el.map(e => images.get(e).id))
     args.onSubmit(submitData, [...images.values()])
     appContext.hideModal()
   }
@@ -50,12 +60,53 @@ export default function AddPersonalBlockModal(props: Props) {
       text: args.initialData?.block?.text||'',
       title: args.initialData?.block?.title||'',
       assets: [],
+      assetsList: [],
     },
     onSubmit: submit
   })
 
   const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
   const richText = <RichTextField hideButtons={{helpers: true}} name='text'/>
+  const layoutGrid = <div className={styles.layoutGrid}>
+    <P>Выберите расположение картинок</P>
+    <div className={styles.buttonsWrapper}>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([[1, 2, 3], [4, 5, 6]])}>1|2|3 <br /> 4|5|6</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([[1, 1],[1, 1], [2, 3]])}>1|1 <br /> 1|1 <br /> 2|3</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([[1, 2, 3], [4,2,5], [6,2,7]])}>1|2|3 <br /> 4|2|5 <br /> 6|2|7</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([[1, 2, 3], [1,4,5]])}>1|2|3 <br /> 1|4|5</Button>
+    </div>
+
+    {layout&&
+      <div className={styles.gridContainer} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
+        {[...new Set((layout as number[][]).flat(1)).values()].map((el, i) => {
+          return <div className={classNames(styles.collageImageWrapper, images.has(el)&&styles.collageImageLoaded)} style={{gridArea: `o${el}`}}> 
+          {(!images.has(el)) &&
+            <FilesField 
+            name={`assetsList[${i}]`}
+            getImages={(ind) => setImages(state=> {
+              ind.forEach(e=> state.set(el, e))
+              return state
+            })}
+            />
+            ||
+            <Image src={FILES + images.get(el).source} alt={''} width={600} height={600} className={styles.collageImage}/>
+          }
+          
+          </div>
+        })}
+      </div>
+    }
+
+  </div>
+  const layoutPlace = <div className={styles.layoutPlace}>
+
+  </div>
+  const layoutColumns = <div className={styles.layoutColumns}>
+
+  </div>
+  const layoutSocial = <div className={styles.layoutSocial}>
+
+  </div>
   const imageField = <FilesField 
   name={'assets'} 
   initialImages={args.initialData?.assets} 
@@ -86,6 +137,14 @@ export default function AddPersonalBlockModal(props: Props) {
         return [titleInput, imageField]
       case PersonalBlockType.Video:
         return [titleInput, videoField]
+      case PersonalBlockType.Banner:
+        return [richText, imageField, layoutPlace]
+      case PersonalBlockType.Collage:
+        return [titleInput, imageField, layoutGrid]
+      case PersonalBlockType.Columns:
+        return [titleInput, imageField, richText, layoutColumns]
+      case PersonalBlockType.Social: 
+        return [titleInput, layoutSocial]
     }
   }
 

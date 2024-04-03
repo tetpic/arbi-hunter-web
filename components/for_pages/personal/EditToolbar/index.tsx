@@ -14,6 +14,7 @@ import { usePersonalContext } from 'context/personal_state'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
+import { useEffect } from 'react'
 
 interface Props {
 }
@@ -24,8 +25,9 @@ export default function EditToolbar(props: Props) {
   const personalContext = usePersonalContext()
 
   const showModal = (type: PersonalBlockType) => {
-    appContext.showModal<IAddPersonalBlockModalProps>(ModalType.AddPersonalBlockModal, {type, onSubmit: (data, images)=> {
-      personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: data as IPersonalPageBlock, assets: images as IFile[]}]]))
+    appContext.showModal<IAddPersonalBlockModalProps>(ModalType.AddPersonalBlockModal, {type, onSubmit: (data, images, layout)=> {
+      debugger
+      personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: data as IPersonalPageBlock, assets: images as IFile[], layout: layout}]]))
     }})
   }
 
@@ -35,8 +37,17 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_gallery'), icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
     {name: t('personal_video'), icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
     {name: t('personal_address'), icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
-    {name: t('personal_divider'), icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {}},
+    {name: t('personal_divider'), icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
+      personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
+    }},
+    {name: 'Баннер', icon: <ScaleSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
+    {name: 'Колонки', icon: <ScaleSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
+    {name: 'Коллаж', icon: <ScaleSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
   ]
+  
+  useEffect(()=>{
+    showModal(PersonalBlockType.Collage)
+  }, [])
 
   return (<div className={styles.root}> 
     <p className={styles.title}>{t('personal_addBlock')}</p>

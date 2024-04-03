@@ -58,3 +58,23 @@
   }
 }
 
+.gridContainer {
+  display: grid;
+  min-height: 600px;
+  row-gap: 8px;
+  column-gap: 8px;
+
+  .collageImageWrapper {
+    border-radius: 16px;
+    background-color: $greyLight;
+    overflow: hidden;
+  }
+
+  .collageImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+  }
+}
+

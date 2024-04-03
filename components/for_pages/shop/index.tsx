@@ -46,10 +46,10 @@ export default function Shop(props: Props) {
       tariffContext.setActiveSubscriptions([PurchaseType.ContactsOpen])   
       .then(res => {
         if(res.length > 0) {
-          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen])
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen, PurchaseType.PersonalPage])
         }
         else {
-          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen])
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.PersonalPage])
         }
       })  
     }

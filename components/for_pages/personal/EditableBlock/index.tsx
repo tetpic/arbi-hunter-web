@@ -38,6 +38,15 @@ export default function EditableBlock(props: Props) {
         )
       })
     }
+    {props.assets && props.block.type === PersonalBlockType.Collage &&
+      <div className={styles.gridContainer} style={{gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`}}>
+        {props.assets.map((el, i) => {
+          return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
+            <Image src={FILES + el.source} alt={''} width={600} height={600} className={styles.collageImage}/>
+          </div>
+        })}
+      </div>
+    }
     {props.assets && props.block.type === PersonalBlockType.Gallery &&
       <Swiper 
       className={styles.swiper}
