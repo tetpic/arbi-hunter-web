@@ -60,16 +60,10 @@ export default function AddPersonalBlockModal(props: Props) {
     const result =  args.initialData.block.layout.map(el=> el.map(e=> {
       return args.initialData.block.assets.indexOf(Number(e))+1
     }))
-    console.log(result)
+
     setLayout(result)
       
   }, [args.initialData?.block?.layout])
-
-
-  useEffect(()=>{
-    console.log(JSON.stringify(layout))
-  }, [layout])
-
 
  
   const submit = (data: Partial<IPersonalPageBlock>) => {
