@@ -8,6 +8,14 @@ import { FILES } from 'types/constants'
 import { PersonalBlockType } from 'types/enums'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import ReactPlayer from 'react-player'
+import P from '@/components/ui/P'
+import { SocialSites } from '@/components/modals/AddPersonalBlockModal'
+import twitter from 'images/footer/twitter_footer.svg'
+import insta from 'images/footer/instagram_footer.svg'
+import youtube from 'images/footer/youtube_footer.svg'
+import linkedIn from 'images/footer/linkedIn_footer.svg'
+import telegram from 'images/footer/tg_footer.svg'
+
 
 
 interface Props {
@@ -18,10 +26,42 @@ interface Props {
 
 export default function EditableBlock(props: Props) {
 
-  return (<div className={styles.root}> 
-    <p className={styles.title}>{props.block.title}</p>
-    {props.block.text &&
+  const titles = (props.block.title&&props.block.type === PersonalBlockType.Columns) &&
+    JSON.parse(props.block.title)
+    
+
+  const texts = (props.block.text&&(props.block.type === PersonalBlockType.Columns||props.block.type === PersonalBlockType.Social)) &&
+    JSON.parse(props.block.text)
+
+
+  const  getSocialLogo = (key: SocialSites)  => {
+    switch(key) {
+      case SocialSites.TWITTER:
+        return <Image src={twitter} alt={'twitter'}/>
+      case SocialSites.INSTAGRAM:
+        return <Image src={insta} alt={'insta'}/>
+      case SocialSites.YOUTUBE:
+        return <Image src={youtube} alt={'youtube'}/>
+      case SocialSites.TELEGRAM:
+        return <Image src={telegram} alt={'telegram'}/>
+      case SocialSites.LINKEDIN:
+        return <Image src={linkedIn} alt={'linkedIn'}/>
+    }
+  }
+  
+  return (
+  <div className={styles.root}> 
+    {(props.block.type === PersonalBlockType.Text
+      ||props.block.type === PersonalBlockType.Image
+      ||props.block.type === PersonalBlockType.Gallery
+      ||props.block.type === PersonalBlockType.Video
+    ) &&
+      <>
+      <p className={styles.title}>{props.block.title}</p>
+      {props.block.text &&
       <div className={styles.text}><HtmlText text={props.block.text}/></div>
+      }
+      </>
     }
     {props.assets && props.block.type === PersonalBlockType.Image &&
       props.assets.map(el=>{
@@ -38,8 +78,58 @@ export default function EditableBlock(props: Props) {
         )
       })
     }
+    {props.block.type === PersonalBlockType.Banner &&
+      <div className={styles.banner}>
+        <Image src={FILES + props.assets[0].source} alt='' width={800} height={800}/>
+        <div className={styles.bannerOverlay}  style={{gridArea: props.block.layout?.[0][0]}}>
+          <HtmlText text={props.block.text}/>
+        </div>
+
+      </div>
+    }
+    {props.block.type === PersonalBlockType.Columns &&
+      <div 
+      className={styles.gridContainer} 
+      style={{
+        gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
+        gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
+        gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+      }}>
+        {props.block.layout[0].map((el, ind) => {
+          return(
+            <div className={styles.columnWrapper} style={{gridArea: `o${el}`}}>
+              {titles && titles[ind] &&
+                <P styleType={['huge', 'w700']}>{titles[ind]}</P>
+              }
+              {props.assets.find(img => img.id === el) &&
+                <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.collageImage}/>
+              }
+              {texts && texts[ind] &&
+                <HtmlText text={texts[ind]}/>
+              }
+            </div>
+          )
+        })}
+      </div>
+    }
+    {props.block.type === PersonalBlockType.Social &&
+      <div className={styles.socialWrapper}>
+        <p className={styles.title}>{props.block.title}</p>
+        <div className={styles.socials}>
+          {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => { {
+            return <P styleType={['alignCenter', 'w500', 'large']}>{getSocialLogo(key as SocialSites)} {value}</P>
+          } }))}
+        </div>
+      </div>
+    }
     {props.assets && props.block.type === PersonalBlockType.Collage &&
-      <div className={styles.gridContainer} style={{gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`}}>
+      <div 
+      className={styles.gridContainer} 
+      style={{
+        gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
+        gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
+        gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+      }}>
         {props.assets.map((el, i) => {
           return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
             <Image src={FILES + el.source} alt={''} width={600} height={600} className={styles.collageImage}/>
@@ -56,14 +146,14 @@ export default function EditableBlock(props: Props) {
         {props.assets.map(el=>{
           return (
             <SwiperSlide className={styles.swiperSlide}>
-                <Image 
-                priority
-                src={FILES + el.source}
-                alt={props.block.title + ' image'} 
-                width={300}
-                height={350}
-                style={{objectFit:'cover', display: 'block'}}
-                />
+              <Image 
+              priority
+              src={FILES + el.source}
+              alt={props.block.title + ' image'} 
+              width={300}
+              height={350}
+              style={{objectFit:'cover', display: 'block'}}
+              />
             </SwiperSlide>
           )
         })}        

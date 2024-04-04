@@ -314,7 +314,10 @@ export enum PersonalBlockType {
   Banner = 'banner',
   Social = 'social',
   Columns = 'columns',
-  Collage = 'collage'
+  Collage = 'collage',
+  VideoText = 'videoText',
+  Html = 'html',
+
 }
 
 export enum LoginType {

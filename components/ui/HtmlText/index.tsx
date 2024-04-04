@@ -1,10 +1,12 @@
 import styles from './index.module.scss'
 import classNames from 'classnames'
 import {runtimeConfig} from 'config/runtimeConfig'
+import { CSSProperties } from 'react'
 
 interface Props {
   text: string
   className?: string
+  style?: CSSProperties
 }
 
 /**
@@ -17,7 +19,7 @@ export default function HtmlText(props: Props) {
   //  filtered = Converter.replaceTextImageSource(filtered)
   }
   return (
-    <div className={classNames([styles.root, props.className])} dangerouslySetInnerHTML={{ __html: filtered }}/>
+    <div style={props.style} className={classNames([styles.root, props.className])} dangerouslySetInnerHTML={{ __html: filtered }}/>
   )
 }
 

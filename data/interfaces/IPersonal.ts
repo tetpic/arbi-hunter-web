@@ -7,8 +7,10 @@ export interface IPersonalPageBlock {
   order?: number,
   title?: string,
   assets?: number[]
-  layout?: any
+  layout?: (number|string)[][]
   assetsList?: number[][]
+  texts?: string[]
+  titles?: string[]
 }
 
 

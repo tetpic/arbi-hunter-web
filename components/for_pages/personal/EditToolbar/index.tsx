@@ -14,7 +14,6 @@ import { usePersonalContext } from 'context/personal_state'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
-import { useEffect } from 'react'
 
 interface Props {
 }
@@ -26,7 +25,6 @@ export default function EditToolbar(props: Props) {
 
   const showModal = (type: PersonalBlockType) => {
     appContext.showModal<IAddPersonalBlockModalProps>(ModalType.AddPersonalBlockModal, {type, onSubmit: (data, images, layout)=> {
-      debugger
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: data as IPersonalPageBlock, assets: images as IFile[], layout: layout}]]))
     }})
   }
@@ -43,11 +41,10 @@ export default function EditToolbar(props: Props) {
     {name: 'Баннер', icon: <ScaleSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
     {name: 'Колонки', icon: <ScaleSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
     {name: 'Коллаж', icon: <ScaleSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
+    {name: 'Ссылки', icon: <ScaleSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
+    {name: 'Текст и видео', icon: <ScaleSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
+    {name: 'HTML', icon: <ScaleSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
   ]
-  
-  useEffect(()=>{
-    showModal(PersonalBlockType.Collage)
-  }, [])
 
   return (<div className={styles.root}> 
     <p className={styles.title}>{t('personal_addBlock')}</p>
