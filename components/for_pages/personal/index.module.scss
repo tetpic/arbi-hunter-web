@@ -1,7 +1,5 @@
 @import 'styles/index';
 
-
-
 .content {
   margin-top: 32px;
   @include mq($TabletWidth, max) {
@@ -12,7 +10,21 @@
   }
 }
 
-
+.root {
+  .bodyItem {
+    padding: 32px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    @include mq($TabletWidth, max) {
+      background-color: unset;
+      padding: 0px;
+      &_edit {
+        padding: 16px;
+        background-color: $black;        
+      }
+    }
+  }
+}
 
 .body {
   display: flex;
@@ -25,18 +37,7 @@
     row-gap: 8px;
   }
 
-  .bodyItem {
-    padding: 32px;
-    border-radius: 16px;
-    @include mq($TabletWidth, max) {
-      background-color: unset;
-      padding: 0px;
-      &_edit {
-        padding: 16px;
-        background-color: $black;        
-      }
-    }
-  }
+
 }
 
 .aside {
@@ -54,4 +55,11 @@
     max-width: calc(100% - 32px);
     margin: auto;
   }  
+}
+
+.saveButton {
+  position: sticky;
+  bottom: 16px;
+  margin-left: auto;
+  min-width: 209px;
 }

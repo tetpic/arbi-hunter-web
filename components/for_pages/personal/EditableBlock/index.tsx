@@ -15,6 +15,7 @@ import insta from 'images/footer/instagram_footer.svg'
 import youtube from 'images/footer/youtube_footer.svg'
 import linkedIn from 'images/footer/linkedIn_footer.svg'
 import telegram from 'images/footer/tg_footer.svg'
+import classNames from 'classnames'
 
 
 
@@ -92,8 +93,8 @@ export default function EditableBlock(props: Props) {
       className={styles.gridContainer} 
       style={{
         gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
-        gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
-        gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+        // gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
+        // gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
       }}>
         {props.block.layout[0].map((el, ind) => {
           return(
@@ -122,13 +123,16 @@ export default function EditableBlock(props: Props) {
         </div>
       </div>
     }
+    {props.block.type === PersonalBlockType.Html &&
+      <HtmlText text={props.block.text}/>
+    }
     {props.assets && props.block.type === PersonalBlockType.Collage &&
       <div 
       className={styles.gridContainer} 
       style={{
         gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
-        gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
-        gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+        // gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
+        // gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
       }}>
         {props.assets.map((el, i) => {
           return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
@@ -162,9 +166,21 @@ export default function EditableBlock(props: Props) {
     {props.assets && props.block.type === PersonalBlockType.Video &&
       props.assets.map(el=>
         <div className={styles.video}>
-        <ReactPlayer width={'100%'} height={'auto'} url={FILES + el.source} controls/>
+          <ReactPlayer width={'fit-content'} height={'100%'} url={FILES + el.source} controls/>
         </div>
       )
+    }
+    {props.block.type === PersonalBlockType.VideoText &&
+      <div
+      className={classNames(styles.gridContainer, styles.videoText)} 
+      style={{
+        gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> el).join(' ')).join('" "')}"`, 
+      }}>
+        <div style={{gridArea: 'video'}}>
+          <ReactPlayer width={'fit-content'} height={'100%'} url={FILES + props.assets[0].source} controls/>
+        </div>
+        <HtmlText text={props.block.text} style={{gridArea: 'text'}}/>
+      </div>
     }
   </div>)
 }

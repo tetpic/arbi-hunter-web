@@ -23,6 +23,7 @@ import HtmlText from '@/components/ui/HtmlText'
 import { colors } from 'styles/variables'
 import TextAreaField from '@/components/fields/TextAreaField'
 import ReactPlayer from 'react-player'
+import CollageLayoutSvg from '@/components/svg/CollageLayoutSvg'
 
 interface Props {
   onClose: () => void
@@ -56,13 +57,15 @@ export default function AddPersonalBlockModal(props: Props) {
   const [layout, setLayout] = useState<(number|string)[][]>()
 
   useEffect(()=>{
-    if(!args.initialData) return
+    if(!args.initialData || !args.initialData.block.layout) return
+    if(args.type === PersonalBlockType.VideoText||args.type === PersonalBlockType.Banner||args.type === PersonalBlockType.Columns) {
+      setLayout(args.initialData.block.layout)
+      return
+    }
     const result =  args.initialData.block.layout.map(el=> el.map(e=> {
       return args.initialData.block.assets.indexOf(Number(e))+1
     }))
-
     setLayout(result)
-      
   }, [args.initialData?.block?.layout])
 
  
@@ -77,10 +80,23 @@ export default function AddPersonalBlockModal(props: Props) {
     delete submitData.assetsList 
     delete submitData.titles
     delete submitData.texts
-    debugger
-    // const imagesLayout = (layout as number[][]).map(el => el.map(e => images.get(e).id))
     args.onSubmit(submitData, [...images.values()])
     appContext.hideModal()
+  }
+
+  const getInitialTexts = () => {
+    if(args.type===PersonalBlockType.Social
+      ||
+      args.type === PersonalBlockType.Columns
+    ){
+      return JSON.parse(args.initialData?.block?.text)
+    }
+  }
+
+  const getInitialTitles = () => {
+    if(args.type === PersonalBlockType.Columns) {
+      return JSON.parse(args.initialData?.block?.title)
+    }
   }
 
   const formik = useFormik<Partial<IPersonalPageBlock>>({
@@ -88,26 +104,59 @@ export default function AddPersonalBlockModal(props: Props) {
       type: args.type,
       text: args.initialData?.block?.text||'',
       title: args.initialData?.block?.title||'',
-      titles: [],
-      texts: [],
+      titles: getInitialTitles()||[],
+      texts: getInitialTexts()||[],
       assets: args.initialData?.block?.assets||[],
       assetsList: [],
     },
     onSubmit: submit
   })
 
+  const imagesLayoutArray = [
+    '[[1,2,2],[1,3,3]]', 
+    '[[1,2,3],[4,2,5]]', 
+    '[[1,2,3],[1,4,5]]',
+    '[[1,2,3],[4,5,6]]',
+    '[[1,2,3],[1,2,4]]',
+    '[[1,2],[3,2]]',
+    '[[1,2,3],[4,2,3]]',
+    '[[1,2,3]]',
+    '[[1,2],[1,3]]',
+    '[[1,2,2,3]]'
+  ]
+
+  const textPositionsArray = [
+    '1/1', 
+    '1/2', 
+    '1/3',
+    '2/1',
+    '2/2',
+    '2/3',
+    '3/1',
+    '3/2',
+    '3/3',
+  ]
+
+
   const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
 
   const richText = <RichTextField hideButtons={{helpers: true}} name='text'/>
 
   const layoutGrid = <div className={styles.layoutGrid}>
-    <P styleType={['large', 'w500']}>Выберите расположение картинок</P>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseImageLayout')}</P>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' styleType={[JSON.stringify(layout) === '[[1,2,3],[4,5,6]]'?'gradient':'black']} onClick={()=>setLayout([[1, 2, 3], [4, 5, 6]])}>1|2|3 <br /> 4|5|6</Button>
-      <Button type='button' styleType={[JSON.stringify(layout) === '[[1,1],[1,1],[2,3]]'?'gradient':'black']} onClick={()=>setLayout([[1, 1],[1, 1], [2, 3]])}>1|1 <br /> 1|1 <br /> 2|3</Button>
-      <Button type='button' styleType={[JSON.stringify(layout) === '[[1,1],[2,3]]'?'gradient':'black']} onClick={()=>setLayout([[1, 1], [2, 3]])}> 1|1 <br /> 2|3</Button>
-      <Button type='button' styleType={[JSON.stringify(layout) === '[[1,2,3],[4,2,5],[6,2,7]]'?'gradient':'black']} onClick={()=>setLayout([[1, 2, 3], [4,2,5], [6,2,7]])}>1|2|3 <br /> 4|2|5 <br /> 6|2|7</Button>
-      <Button type='button' styleType={[JSON.stringify(layout) === '[[1,2,3],[1,4,5]]'?'gradient':'black']} onClick={()=>setLayout([[1, 2, 3], [1,4,5]])}>1|2|3 <br /> 1|4|5</Button>
+      {imagesLayoutArray.map((el, i) => {
+        const isActive = JSON.stringify(layout) === el
+        return (
+          <Button 
+          type='button' 
+          styleType={['icon', isActive?'gradient':'black']} 
+          className={isActive?styles.layoutButtonActive:''}
+          onClick={()=>setLayout(JSON.parse(el))}>
+            <CollageLayoutSvg type={i+1} />
+          </Button>
+        )
+      })}
     </div>
 
     {layout&&
@@ -132,22 +181,27 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutHTML = <div className={styles.layoutHTML}>
-    <P  styleType={['large', 'w500']}>Вставьте свой HTML код</P>
+    <P  styleType={['large', 'w500']}>{t('constructor_addHTML')}</P>
     <TextAreaField autoSize name='text' onChange={(e)=>formik.setFieldValue('text', e.target.value)}/>
+    {formik.values.text &&<>
+      <P styleType={['large', 'w500']}>{t('constructor_preview')}</P>
+      <HtmlText text={formik.values.text}/>
+    </>}
   </div>
 
-  const layoutPlace = <div className={styles.layoutPlace}>
-    <P styleType={['large', 'w500']}>Выберите расположение текста</P>
+  const layoutBanner = <div className={styles.layoutPlace}>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseTextLayout')}</P>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['1/1']])}><DotSvg color={layout?.[0]?.[0]==='1/1'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['1/2']])}><DotSvg color={layout?.[0][0]==='1/2'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['1/3']])}><DotSvg color={layout?.[0][0]==='1/3'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['2/1']])}><DotSvg color={layout?.[0][0]==='2/1'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['2/2']])}><DotSvg color={layout?.[0][0]==='2/2'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['2/3']])}><DotSvg color={layout?.[0][0]==='2/3'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['3/1']])}><DotSvg color={layout?.[0][0]==='3/1'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['3/2']])}><DotSvg color={layout?.[0][0]==='3/2'&&colors.blue}/></Button>
-      <Button type='button' styleType={['black', 'icon']} onClick={()=>setLayout([['3/3']])}><DotSvg color={layout?.[0][0]==='3/3'&&colors.blue}/></Button>
+      {textPositionsArray.map((el, i) => {
+        return (
+          <Button 
+          type='button' 
+          styleType={['black', 'icon']} 
+          onClick={()=>setLayout([[el]])}>
+            <DotSvg color={layout?.[0]?.[0]===el&&colors.blue}/>
+          </Button>
+        )
+      })}
     </div>
     {images.size > 0 && layout &&
       <div className={styles.banner}>
@@ -160,7 +214,7 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutColumns = <div className={styles.layoutColumns}>
-    <P styleType={['large', 'w500']}>Выберите количество колонок</P>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseColunmsCount')}</P>
     <div className={styles.buttonsWrapper}>
       <Button type='button' styleType={['black']} onClick={()=>setLayout([[1, 2]])}>2</Button>
       <Button type='button' styleType={['black']} onClick={()=>setLayout([[1,2,3]])}>3</Button>
@@ -177,7 +231,7 @@ export default function AddPersonalBlockModal(props: Props) {
             labelType='top'
             />
 
-            {(!images.has(Number(el))) &&
+            {(!images.has(i+1)) &&
               <FilesField 
               name={`assetsList[${i}]`}
               getImages={(ind) => setImages(state=> {
@@ -186,7 +240,7 @@ export default function AddPersonalBlockModal(props: Props) {
               })}
               />
               ||
-              <Image src={FILES + images.get(Number(el)).source} alt={''} width={600} height={600} className={styles.columnImage}/>
+              <Image src={FILES + images.get(i+1).source} alt={''} width={600} height={600} className={styles.columnImage}/>
             }
             <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
           </div>
@@ -196,18 +250,17 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutSocial = <div className={styles.layoutSocial}>
-    <P styleType={['large', 'w500']}>Укажите ссылки на ваши соцсети</P>
-
+    <P styleType={['large', 'w500']}>{t('constructor_setSocialLinks')}</P>
     {Object.values(SocialSites).map((el, ind) => {
       return <InputField styleType={'default'} color={'default'} name={`texts[${ind}].${el}`} label={el} labelType='top'/>
     })}
   </div>
 
   const layoutVideoText = <div className={styles.videoText}>
-    <P styleType={['large', 'w500']}> Выберите раслоложение текста и видео</P>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseTextVideoLayout')}</P>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' styleType={['black']} onClick={()=>setLayout([['video', 'text']])}>Видео | Текст</Button>
-      <Button type='button' styleType={['black']} onClick={()=>setLayout([['text','video' ]])}>Текст | Видео</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([['video', 'text']])}>{t('constructor_video')} | {t('constructor_text')}</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([['text','video' ]])}> {t('constructor_text')} | {t('constructor_video')}</Button>
     </div>
     {layout &&
       <div className={styles.videoTextWrapper} style={{gridTemplateAreas: `"${layout?.[0].join(' ')}"`}}>
@@ -225,8 +278,8 @@ export default function AddPersonalBlockModal(props: Props) {
           })}
           />
           ||
-          images.has(formik.values.assets?.[0]) &&
-          <ReactPlayer width={'100%'} height={'auto'} url={FILES + images.get(formik.values.assets?.[0]).source} controls/>
+          images.has(1) &&
+          <ReactPlayer width={'100%'} height={'auto'} url={FILES + images.get(1).source} controls/>
          }
         </div>
         <div className={styles.item} style={{gridArea:'text'}}>
@@ -268,7 +321,7 @@ export default function AddPersonalBlockModal(props: Props) {
       case PersonalBlockType.Video:
         return [titleInput, videoField]
       case PersonalBlockType.Banner:
-        return [richText, imageField, layoutPlace]
+        return [richText, imageField, layoutBanner]
       case PersonalBlockType.Collage:
         return [titleInput, layoutGrid]
       case PersonalBlockType.Columns:

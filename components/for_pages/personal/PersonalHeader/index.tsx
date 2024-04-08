@@ -54,8 +54,7 @@ export default function PersonalHeader(props: Props) {
                 currentBuild: cBuild?.image || null,
                 hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
                 withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
-                onSave: (background, building) => {
-                  
+                onSave: (background, building) => {                  
                   BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
                   .then(_ => {
                     personalContext.refreshBackgrounds()

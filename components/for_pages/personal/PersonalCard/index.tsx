@@ -21,12 +21,14 @@ import { colors } from 'styles/variables'
 import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   isEditing?: boolean
   switchMode?: () => void
   save?: () => void
   isEditable?: boolean
+  noHeader?: boolean
 }
 
 export default function PersonalCard(props: Props) {
@@ -95,43 +97,45 @@ export default function PersonalCard(props: Props) {
   ]} 
   onMouseLeave={()=>{}}/>
 
-  return (<div className={styles.root}>
+  return (<div className={classNames(styles.root, props.noHeader && styles.noHeader)}>
     <div className={styles.imageWrapper}>
     {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage && personalContext.currentProfile.profileType === ProfileType.Employee &&
       <UserPic 
       className={styles.userPic} 
       image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + ((!personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.image?.source)||(personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.logo.source))} 
-      size={188}
+      size={152}
       />
       ||
       personalContext.currentProfile?.profileType === ProfileType.Hirer && personalContext.currentProfile?.logo && 
-      <UserPic className={styles.userPic} image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + personalContext?.currentProfile?.logo.source} size={188}/>
+      <UserPic className={styles.userPic} image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + personalContext?.currentProfile?.logo.source} size={152}/>
       ||
       props.isEditing && 
-      <UserPic image={(logoImage?.image?URL.createObjectURL(logoImage?.image):logoImage?.data&&FILES + logoImage?.data?.source)||'/icons/photoCamera.svg'} className={styles.userPic} size={188}/>
+      <UserPic image={(logoImage?.image?URL.createObjectURL(logoImage?.image):logoImage?.data&&FILES + logoImage?.data?.source)||'/icons/photoCamera.svg'} className={styles.userPic} size={152}/>
       ||
       isTabletWidth && 
       <UserPic className={styles.userPic} size={188}/>
     }
     {
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
-      <Button onClick={openUserImageModal} styleType={['wide']} className={styles.photoButton}>
-        {!isTabletWidth && (personalContext.currentProfile?.image?'Изменить фото':'Добавить фото')}
-        {isTabletWidth && <EditPencilSvg/>}
+      <Button onClick={openUserImageModal} styleType={['icon', 'backTransparent']} className={styles.photoButton}>
+        {/* {!isTabletWidth && (personalContext.currentProfile?.image?'Изменить фото':'Добавить фото')} */}
+       <EditPencilSvg/>
       </Button>
       ||
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
       <label>
       <FileInput setImages={(data)=> saveLogo(data)}/>
       <div  className={styles.photoButton}>
-        {!isTabletWidth && (personalContext.currentProfile?.logo?'Изменить логотип':'Добавить логотип')}
-        {isTabletWidth && <EditPencilSvg/>}
+        {/* {!isTabletWidth && (personalContext.currentProfile?.logo?'Изменить логотип':'Добавить логотип')} */}
+        <EditPencilSvg/>
       </div>
     </label>
     }
     </div>
-    
-    <p className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</p>
+    <div className={styles.nameWrapper}>
+      <P useThemeColor className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
+      <P styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile.city.locName}</P>
+    </div>
 
     {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
     <>
@@ -158,8 +162,8 @@ export default function PersonalCard(props: Props) {
       <RatingLine rating={4}/>
       <p className={styles.ratingCount}>23 отзыва</p>
     </div> */}
-    {props.isEditable &&
-      <Button className={styles.button} onClick={()=> saveHandler()}>{props.isEditing?'Сохранить':'Редактировать профиль'}</Button>
+    {props.isEditable && !props.isEditing &&
+      <Button styleType={['gradient']} onClick={()=> saveHandler()}>{'Редактировать профиль'}</Button>
     }
   </div>)
 }

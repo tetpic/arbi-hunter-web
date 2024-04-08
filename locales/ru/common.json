@@ -37,6 +37,7 @@
   "apply": "Применить",
   "all": "Все",
   "foreignLanguages":"Иностранные языки",
+  "logout": "Выйти",
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -464,6 +465,14 @@
   "personal_addBlock":"Добавить блок",
   "personal_addVideo": "Добавить видео",
   "personal_header": "Заголовок",
+  "personal_banner": "Баннер",
+  "personal_columns": "Колонки",
+  "personal_collage": "Коллаж",
+  "personal_links": "Ссылки",
+  "personal_textVideo": "Текст и видео",
+  "personal_html": "HTML",
+  
+
 
   "filters_searchOnlyIn": "Искать только",
   "filters_findCompany": "Поиск по компании:",
@@ -510,6 +519,18 @@
 
   "proposalModal_chooseVc":"Выберите вакансию",
   "proposalModal_invite":"Пригласить",
+
+  "constructor_chooseImageLayout": "Выберите расположение изображений",
+  "constructor_addHTML":"Вставьте свой HTML код", 
+  "constructor_chooseTextLayout":"Выберите расположение текста",  
+  "constructor_chooseColunmsCount": "Выберите количество колонок",
+  "constructor_setSocialLinks":"Укажите ссылки на ваши соцсети",
+  "constructor_chooseTextVideoLayout":"Выберите раслоложение текста и видео",
+  "constructor_text": "Текст",
+  "constructor_video": "Видео",
+  "constructor_preview": "Предпросмотр",
+
+
 
 
 

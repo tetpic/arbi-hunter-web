@@ -12,6 +12,8 @@
 }
 
 .modalLayout {
+  width: 100vw;
+  max-width: 1128px;
   @include mq($TabletWidth, max) {
     padding-top: 16px
   }
@@ -20,6 +22,7 @@
 .buttonsWrapper {
   display: flex;
   row-gap: 8px;
+  column-gap: 8px;
 
   button {
     height: auto
@@ -29,6 +32,7 @@
 .gridContainer {
   display: grid;
   min-height: 600px;
+  max-height: 700px;
   row-gap: 8px;
   column-gap: 8px;
 
@@ -66,13 +70,17 @@
   }
 }
 
+.layoutGrid {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
 
 .layoutSocial {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  
-
 }
 
 .layoutPlace {
@@ -96,6 +104,7 @@
     overflow: hidden;
     border-radius: 16px;
     padding: 16px;
+    margin-top: 16px;
 
     img {
       position: absolute;
@@ -120,14 +129,22 @@
   margin-top: 24px;
 }
 
-.videoText {
+.layoutColumns {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
 
-  
+.videoText {  
   .videoTextWrapper {
     display: grid;
     column-gap: 16px;
     grid-template-columns: repeat(2, 1fr);
     margin-top: 24px;
+
+    video {
+      border-radius: 16px;
+    }
   }
 
   .buttonsWrapper{
@@ -137,8 +154,13 @@
   }
 }
 
-
-
+.layoutButtonActive {
+  svg {
+    path{
+      stroke: $white
+    }
+  }
+}
 
 .submitButton {
   @include buttonGradient;

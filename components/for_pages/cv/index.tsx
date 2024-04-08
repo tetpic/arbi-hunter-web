@@ -41,6 +41,7 @@ import Link from 'next/link'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 
 
 interface Props {
@@ -105,6 +106,10 @@ export default function CvPage(props: Props) {
     }
   }
 
+  const openProfile = () => {
+    router.push(`/personal/${currentCv?.profileId}`)
+  }
+
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     vacancyContext.setVacancies()
@@ -127,7 +132,7 @@ export default function CvPage(props: Props) {
   }
 
   const userCard = (<>
-    <div className={styles.top}>
+    <div className={classNames(styles.top, currentCv.isContactsOpen&&styles.topActive)} onClick={()=>currentCv.isContactsOpen&&openProfile()}>
       <UserPic size={80} image={profileImage}/>
       {currentCv.isContactsOpen &&
         <P 
@@ -136,6 +141,9 @@ export default function CvPage(props: Props) {
         >
           {currentCv?.profile?.firstName} {currentCv?.profile?.lastName}
         </P>
+      }
+      {currentCv.isContactsOpen &&
+       <ArrowRightSvg/>
       }
     </div>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&

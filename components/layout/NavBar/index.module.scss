@@ -175,6 +175,11 @@
   column-gap: 8px
 }
 
+.exitButton {
+  margin-top: 42px;
+  cursor: pointer;
+}
+
 @include animationJello;
 
 

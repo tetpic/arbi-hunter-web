@@ -22,6 +22,7 @@ import { AppTheme } from 'types/enums'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import ExitSvg from '@/components/svg/ExitSvg'
 
 interface Props {
 }
@@ -144,6 +145,16 @@ export default function NavBar(props: Props) {
             )
           })
         }
+        <div 
+        className={classNames(styles.exitButton, styles.link)}
+        onClick={()=>userContext.logout()}
+        >
+          <div className={classNames(styles.icon)}>
+            <ExitSvg/>
+          </div>
+          <p className={styles.linkText}>{t('logout')}</p>
+        </div>
+
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <p >Ночной режим</p>
           <Switch

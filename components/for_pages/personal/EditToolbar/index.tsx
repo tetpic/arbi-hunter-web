@@ -38,12 +38,12 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_divider'), icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
     }},
-    {name: 'Баннер', icon: <ScaleSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
-    {name: 'Колонки', icon: <ScaleSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
-    {name: 'Коллаж', icon: <ScaleSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
-    {name: 'Ссылки', icon: <ScaleSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
-    {name: 'Текст и видео', icon: <ScaleSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
-    {name: 'HTML', icon: <ScaleSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
+    {name: t('personal_banner'), icon: <ScaleSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
+    {name: t('personal_columns'), icon: <ScaleSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
+    {name: t('personal_collage'), icon: <ScaleSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
+    {name: t('personal_links'), icon: <ScaleSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
+    {name: t('personal_textVideo'), icon: <ScaleSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
+    {name: t('personal_html'), icon: <ScaleSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
   ]
 
   return (<div className={styles.root}> 
