@@ -1,6 +1,10 @@
 import styles from './index.module.scss'
 import { Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import TextAlign from '@tiptap/extension-text-align'
+import { Color } from '@tiptap/extension-color'
+import TextStyle from '@tiptap/extension-text-style'
+
 
 import Underline from '@tiptap/extension-underline'
 import {Placeholder} from '@tiptap/extension-placeholder'
@@ -82,6 +86,15 @@ export default function RichTextField(props: Props) {
         code: false,
         codeBlock: false,
       }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+        defaultAlignment: 'left',
+      }),
+      TextStyle, 
+      Color.configure({
+        types: ['textStyle'],
+      }),
+      
 
       Image.configure({}),
       Underline,

@@ -92,15 +92,15 @@ export default function EditableBlock(props: Props) {
       <div 
       className={styles.gridContainer} 
       style={{
-        gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
-        // gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
-        // gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+        gridTemplateAreas: `"${(JSON.parse(props.block.layout).layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
       }}>
-        {props.block.layout[0].map((el, ind) => {
+        {(JSON.parse(props.block.layout).layout as number[][])[0].map((el, ind) => {
+          const color = JSON.parse(props.block.layout).color[ind]
           return(
-            <div className={styles.columnWrapper} style={{gridArea: `o${el}`}}>
+            <div className={styles.columnWrapper} style={{gridArea: `o${el}`, backgroundColor: color}}>
               {titles && titles[ind] &&
-                <P styleType={['huge', 'w700']}>{titles[ind]}</P>
+                <HtmlText text={titles[ind]}/>
+                // <P styleType={['huge', 'w700']}>{titles[ind]}</P>
               }
               {props.assets.find(img => img.id === el) &&
                 <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.collageImage}/>

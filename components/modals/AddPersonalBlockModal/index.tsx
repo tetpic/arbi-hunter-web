@@ -58,11 +58,15 @@ export default function AddPersonalBlockModal(props: Props) {
 
   useEffect(()=>{
     if(!args.initialData || !args.initialData.block.layout) return
-    if(args.type === PersonalBlockType.VideoText||args.type === PersonalBlockType.Banner||args.type === PersonalBlockType.Columns) {
+    if(args.type === PersonalBlockType.VideoText||args.type === PersonalBlockType.Banner) {
       setLayout(args.initialData.block.layout)
       return
     }
-    const result =  args.initialData.block.layout.map(el=> el.map(e=> {
+    else if(args.type === PersonalBlockType.Columns) {
+      setLayout(JSON.parse(args.initialData.block.layout).layout)
+      return
+    }
+    const result =  (args.initialData.block.layout as string[][]).map(el=> el.map(e=> {
       return args.initialData.block.assets.indexOf(Number(e))+1
     }))
     setLayout(result)
@@ -73,29 +77,42 @@ export default function AddPersonalBlockModal(props: Props) {
     const submitData = {
       ...data
     }
-    layout && (submitData.layout = (layout.map(el => el.map(e => images.get(Number(e))?.id||e))))
+    if(args.type === PersonalBlockType.Columns && layout) {
+      submitData.layout = JSON.stringify({layout: (layout.map(el => el.map(e => images.get(Number(e))?.id||e))), color: data.color})
+    }
+    else {
+      layout && (submitData.layout = (layout.map(el => el.map(e => images.get(Number(e))?.id||e))))
+    }
     data.texts.length > 0 && (submitData.text = JSON.stringify(data.texts))
     data.titles.length > 0 && (submitData.title = JSON.stringify(data.titles))
     data.assetsList.length > 0 && (submitData.assets = data.assetsList.flat(1))
     delete submitData.assetsList 
     delete submitData.titles
     delete submitData.texts
+    delete submitData.color
     args.onSubmit(submitData, [...images.values()])
     appContext.hideModal()
   }
 
   const getInitialTexts = () => {
-    if(args.type===PersonalBlockType.Social
+    if((args.type===PersonalBlockType.Social
       ||
-      args.type === PersonalBlockType.Columns
+      args.type === PersonalBlockType.Columns) 
+      && args.initialData?.block?.text
     ){
       return JSON.parse(args.initialData?.block?.text)
     }
   }
 
   const getInitialTitles = () => {
-    if(args.type === PersonalBlockType.Columns) {
+    if(args.type === PersonalBlockType.Columns && args.initialData?.block?.title) {
       return JSON.parse(args.initialData?.block?.title)
+    }
+  }
+
+  const getInitialColors = () => {
+    if(args.type === PersonalBlockType.Columns && args.initialData?.block) {
+      return JSON.parse(args.initialData?.block?.layout).color
     }
   }
 
@@ -108,6 +125,7 @@ export default function AddPersonalBlockModal(props: Props) {
       texts: getInitialTexts()||[],
       assets: args.initialData?.block?.assets||[],
       assetsList: [],
+      color: getInitialColors()||[]
     },
     onSubmit: submit
   })
@@ -220,20 +238,22 @@ export default function AddPersonalBlockModal(props: Props) {
       <Button type='button' styleType={['black']} onClick={()=>setLayout([[1,2,3]])}>3</Button>
     </div>
     {layout&&
-      <div className={styles.gridContainer} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
+      <div className={classNames(styles.gridContainer, styles.gridContainerColumns)} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
         {layout[0].map((el, i) => {
-          return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`}}>
-            <InputField 
-            styleType={'default'} 
-            color={'white'} 
+          return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`, backgroundColor: formik.values.color[i]}}>
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Цвет колонки</P>
+            <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange}/>
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Заголовок</P>
+            <RichTextField
+            hideButtons={{helpers: true}}
             name={`titles[${i}]`}
-            label='Заголовок'
-            labelType='top'
             />
 
             {(!images.has(i+1)) &&
               <FilesField 
               name={`assetsList[${i}]`}
+              accept={['.jpeg', '.jpg', '.png', '.svg', '.webp', '.avif', '.gif']}
+
               getImages={(ind) => setImages(state=> {
                 ind.forEach(e=> state.set(Number(el), e))
                 return state
@@ -242,6 +262,7 @@ export default function AddPersonalBlockModal(props: Props) {
               ||
               <Image src={FILES + images.get(i+1).source} alt={''} width={600} height={600} className={styles.columnImage}/>
             }
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Текст</P>
             <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
           </div>
         })}

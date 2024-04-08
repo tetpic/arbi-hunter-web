@@ -25,6 +25,8 @@ interface Props extends IField<any>{
  * @initialImages ? IFile[]
  * @className ? string
  * @inputClassName ? string
+ * @accept ? string[]
+
  */
 export default function FilesField(props: Props) {
   const {t} = useTranslation()
