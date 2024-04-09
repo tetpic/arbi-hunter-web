@@ -24,6 +24,7 @@ import FilterEmployee from '../Filters/FilterEmployee'
 import { clearObject } from 'utils/helpers'
 import { CvWrapper, useCvContext } from 'context/cv_state'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   filters: Partial<IVacancyCvSearchParams>
@@ -118,10 +119,14 @@ function RecruitingPageEmployeeInner(props: Props) {
       <div className={styles.back}>
         <Image src={employee} className={styles.backImage} alt={'back'} />
       </div>
-      <p className={styles.title}>{t('recruiting_em_placeCv')}</p>
-      <p className={styles.description}>
+
+
+      <P styleType={['huge', 'w700']} useThemeColor className={styles.title}>{t('recruiting_em_placeCv')}</P>
+
+
+      <P styleType={['large']} useThemeColor  className={styles.description}>
         {t('recruiting_em_desc1')} <br/> {t('recruiting_em_desc2')}    
-      </p>
+      </P>
       <Link className={styles.createLink} href={'/create/cv'}>{t('create_cv')}</Link>
     </div>
   }

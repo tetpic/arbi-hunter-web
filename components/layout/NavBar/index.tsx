@@ -138,7 +138,7 @@ export default function NavBar(props: Props) {
           .map((el, i)=> {
             return (
               <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path + i}>
-                <Button className={styles.buttonIcon} altStyleType={['icon','blue']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'black']} >
+                <Button className={styles.buttonIcon} altStyleType={['icon','white', 'invertSvg']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'black']} >
                   {el.icon}
                 </Button>
                 <P useThemeColor className={styles.linkText}>{el.text}</P>

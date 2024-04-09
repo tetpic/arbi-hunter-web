@@ -7,6 +7,7 @@ import { FILES } from 'types/constants'
 import SwiperList from '../SwiperList'
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
+import P from '../P'
 
 interface Props<T> {
   categories: T[]
@@ -23,7 +24,7 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
   const {t} = useTranslation()
 
   return (
-    <SwiperList hideNav={props.hideNav} className={props.className}>
+    <SwiperList hideNav={props.hideNav} className={props.className} swiperProps={{freeMode: false}}>
       {props.categories && props.categories.map(category=> {
         return (
           <Link 
@@ -41,7 +42,9 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
               className={styles.image}
               />
             </div>
-            <p className={styles.name} title={category.name}>{category.name}</p>
+
+
+            <P useThemeColor styleType={['large', 'w600']} className={styles.name} title={category.name}>{category.name}</P>
             {props.articlesCounter && category.articlesCount &&
               <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, t('articlesCounter1'), t('articlesCounter2'), t('articlesCounter3') )}</span></div>
             }

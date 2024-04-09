@@ -125,7 +125,7 @@ export default function Footer(props: Props) {
           <P styleType={['medium', 'w500']} useThemeColor>
             {t('footer_download1')} <br /> {t('footer_download2')} <br /> {t('footer_download3')}
           </P>
-          <Image src={qrCode} alt={'qrCode'} />
+          <Image src={qrCode} alt={'qrCode'} width={100} height={100} />
         </div>
       </div>
     </div>

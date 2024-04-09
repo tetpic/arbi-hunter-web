@@ -113,7 +113,7 @@
     left: 0px;
     right: 0px;
     border-radius: 16px;
-    background-color: $grey;
+    background-color: var(--secondaryColor);
     @include mq($TabletWidth, max) {
       width: 70%;
       height: 100%;
@@ -129,9 +129,6 @@
 
   .name{
     grid-area: t;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
     position: relative;
     min-height: 40px;
     text-align: center;

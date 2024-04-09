@@ -200,13 +200,14 @@
     scale: 1.05;
     box-shadow: 0px 0px 20px 0px $purple;
   }
+  img {
+    border-radius: 8px ;
+  }
+
 
 
   &_light {
     border: 2px $whitePurple solid;
-    img {
-      filter: invert(1);
-    }
   }
 }
 

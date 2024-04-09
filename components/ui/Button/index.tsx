@@ -30,7 +30,8 @@ type ButtonStyle =
 'whiteTransparent'|
 'backTransparent'|
 'phoneWide'|
-'wide'
+'wide'|
+'invertSvg'
 
 
 interface Props extends IButton {
