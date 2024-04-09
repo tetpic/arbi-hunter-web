@@ -83,8 +83,8 @@ export default function AppPromo(props: Props) {
             className={classNames(styles.img, activeCard === cardsRef.current[index]&&styles.active)} 
             src={el} 
             alt={index.toString()} 
-            width={178} 
-            height={300}/>
+            width={160} 
+            height={280}/>
           })}
         </div>
         <div className={styles.buttons}>

@@ -11,8 +11,9 @@ import Reasons from './Reasons'
 import Head from './Head'
 import users from 'images/recruiting/users.png'
 import usersLight from 'images/recruiting/usersLight.png'
-import slide1 from 'images/recruiting/recruiting_swipe1.png'
-import slide2 from 'images/recruiting/recruiting_swipe2.png'
+import slide1 from 'images/recruiting/recCard1.jpg'
+import slide2 from 'images/recruiting/recCard2.jpg'
+import slide3 from 'images/recruiting/recCard3.jpg'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
 import recruitingCatWallet from 'images/recruiting/scene1.png'
@@ -48,7 +49,7 @@ export default function RecruitingHirer(props: Props) {
       <Title className={styles.title} title={t('landing_hir_startSearching')}/>
       <FindEmployees/>
       
-      <AppPromo cards={[slide1, slide2]}/>
+      <AppPromo cards={[slide1, slide2, slide3]}/>
     
       <Title className={styles.title} title={t('landing_hir_searchCategories')}/>
       <Categories 

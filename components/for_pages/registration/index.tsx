@@ -25,6 +25,7 @@ import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
+import { AlertModalArgs } from '@/components/modals/AlertModal'
 
 interface Props {
   token?: string
@@ -108,6 +109,14 @@ export default function Registration(props: Props) {
   }
 
   const  nextPageValidator = (page?: number) => {
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
+    return 
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
         formik.setFieldError(val, err||' ')
@@ -310,7 +319,15 @@ export default function Registration(props: Props) {
   }, [props.token])
 
   useEffect(()=>{
-    isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
+    //эту строчку не удалять. Пока что регистрация запрещена на основном сайте, когда откроют - раскомментировать
+    // isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
   }, [])
 
   return ( 

@@ -47,6 +47,7 @@ import CityModal from '@/components/modals/CityModal'
 import BackgroundSwitchModal from '@/components/modals/BackgroundSwitchModal'
 import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
 import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
+import AlertModal from '@/components/modals/AlertModal'
 
 
 interface Props { }
@@ -232,6 +233,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.RefillBalanceModal:
         return <Modal isOpen {...commonSettings} >
         <RefillBalanceModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.AlertModal:
+        return <Modal isOpen {...commonSettings} >
+        <AlertModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

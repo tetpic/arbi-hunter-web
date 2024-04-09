@@ -26,6 +26,7 @@ interface Props {
 }
 
 export default function EditableBlock(props: Props) {
+  
 
   const titles = (props.block.title&&props.block.type === PersonalBlockType.Columns) &&
     JSON.parse(props.block.title)
@@ -100,7 +101,6 @@ export default function EditableBlock(props: Props) {
             <div className={styles.columnWrapper} style={{gridArea: `o${el}`, backgroundColor: color}}>
               {titles && titles[ind] &&
                 <HtmlText text={titles[ind]}/>
-                // <P styleType={['huge', 'w700']}>{titles[ind]}</P>
               }
               {props.assets.find(img => img.id === el) &&
                 <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.collageImage}/>
@@ -130,7 +130,7 @@ export default function EditableBlock(props: Props) {
       <div 
       className={styles.gridContainer} 
       style={{
-        gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
+        gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr`, 
         // gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
         // gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
       }}>

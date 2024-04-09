@@ -74,7 +74,7 @@ export default function AddPortfolioModal(props: Props) {
         accept={['image/*', '.doc', '.docx','application/msword', 'application/pdf']}
         getImages={(setFiles)}  
         className={styles.filesWrapper} 
-        inputClassName={styles.filesInput} 
+        buttonClassName={styles.filesInput} 
         buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} 
         />
       </Form>

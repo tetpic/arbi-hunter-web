@@ -37,7 +37,9 @@ export interface Buttons {
   headings?: number[],
   ol?: boolean,
   ul?: boolean,
-  helpers?: boolean
+  helpers?: boolean,
+  alignment?: boolean,
+  color?: boolean,
 }
 
 interface Props extends IField<string | null>{

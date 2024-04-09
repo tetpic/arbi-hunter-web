@@ -157,22 +157,25 @@ export default function RichTextToolbar(props: Props) {
     <UnorderedListSvg className={styles.svg}/>
   </ToolbarButton>
 
-  <TextAlignButton editor={editor} alignment={'left'}>
-    <AlignLeftSvg className={styles.svg}/>
-  </TextAlignButton>
+  {!hideButtons.alignment &&<>
+    <TextAlignButton editor={editor} alignment={'left'}>
+      <AlignLeftSvg className={styles.svg}/>
+    </TextAlignButton>
 
-  <TextAlignButton editor={editor} alignment={'center'}>
-    <AlignCenterSvg className={styles.svg}/>
-  </TextAlignButton>
+    <TextAlignButton editor={editor} alignment={'center'}>
+      <AlignCenterSvg className={styles.svg}/>
+    </TextAlignButton>
 
-  <TextAlignButton editor={editor} alignment={'right'}>
-    <AlignRightSvg className={styles.svg}/>
-  </TextAlignButton>
-
-  <ToolbarButton
-  >
-    <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
-  </ToolbarButton>
+    <TextAlignButton editor={editor} alignment={'right'}>
+      <AlignRightSvg className={styles.svg}/>
+    </TextAlignButton>
+  </>}
+  
+  {!hideButtons.color &&
+    <ToolbarButton>
+      <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
+    </ToolbarButton>
+  }
 
 
 
