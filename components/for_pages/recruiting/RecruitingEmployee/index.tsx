@@ -77,18 +77,17 @@ export default function RecruitingEmployee(props: Props) {
       CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
       ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
     ])
-
     setPopularCourses(state => {
       courses.data.forEach(c => {
         state.set(c.id, c)
       })
-      return state
+      return new Map(state)
     })
     setNews(state => {
       news.data.forEach(el => {
         state.set(el.id, el)
       })
-      return state
+      return new Map(state)
     })
   }
 

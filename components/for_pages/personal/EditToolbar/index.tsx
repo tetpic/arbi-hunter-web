@@ -51,7 +51,7 @@ export default function EditToolbar(props: Props) {
     <div className={styles.buttonsWrapper}>
       {buttons.map((el, i) => {
         return (
-          <Button className={styles.button} key={i} onClick={el.onClick}>
+          <Button className={styles.button} altStyleType={['gradient']} key={i} onClick={el.onClick}>
             {el.icon} <p>{el.name}</p>
           </Button>
         )

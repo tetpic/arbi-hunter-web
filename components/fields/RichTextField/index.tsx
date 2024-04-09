@@ -92,7 +92,9 @@ export default function RichTextField(props: Props) {
         types: ['heading', 'paragraph'],
         defaultAlignment: 'left',
       }),
-      TextStyle, 
+      TextStyle.configure({
+        HTMLAttributes: {style: {color: 'white'}}
+      }), 
       Color.configure({
         types: ['textStyle'],
       }),

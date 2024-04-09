@@ -23,6 +23,7 @@ import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import ExitSvg from '@/components/svg/ExitSvg'
+import Button from '@/components/ui/Button'
 
 interface Props {
 }
@@ -137,10 +138,10 @@ export default function NavBar(props: Props) {
           .map((el, i)=> {
             return (
               <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path + i}>
-                <div className={classNames(styles.icon, activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)}>
+                <Button className={styles.buttonIcon} altStyleType={['icon','blue']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'black']} >
                   {el.icon}
-                </div>
-                <p className={styles.linkText}>{el.text}</p>
+                </Button>
+                <P useThemeColor className={styles.linkText}>{el.text}</P>
               </Link>
             )
           })
@@ -149,14 +150,14 @@ export default function NavBar(props: Props) {
         className={classNames(styles.exitButton, styles.link)}
         onClick={()=>userContext.logout()}
         >
-          <div className={classNames(styles.icon)}>
+          <Button className={styles.buttonIcon} styleType={['icon','black']} altStyleType={['icon','whitePurple']} >
             <ExitSvg/>
-          </div>
-          <p className={styles.linkText}>{t('logout')}</p>
+          </Button>
+          <P useThemeColor className={styles.linkText}>{t('logout')}</P>
         </div>
 
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
-          <p >Ночной режим</p>
+          <P useThemeColor >Ночной режим</P>
           <Switch
           onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
           checked={appContext.theme ===AppTheme.Dark}

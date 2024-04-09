@@ -6,4 +6,5 @@
 .imageButton {
   @include buttonGray;
   height: 40px;
+  align-self: flex-start;
 }

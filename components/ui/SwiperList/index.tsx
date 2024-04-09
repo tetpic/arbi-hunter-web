@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
 import { useRef } from 'react'
-import {Autoplay} from 'swiper/modules'
+import {Autoplay, FreeMode} from 'swiper/modules'
 import Button from '../Button'
 import LinkBlack from '../LinkBlack'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
@@ -12,7 +12,7 @@ import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
-  children: JSX.Element[]
+  children: JSX.Element[]|JSX.Element
   className?: string
   wrapperClassName?: string
   hideNav?: boolean
@@ -37,25 +37,30 @@ export default function SwiperList(props: Props) {
     spaceBetween={10}
     autoplay={true}
     loop={true}
-    modules={[Autoplay]}
+    modules={[Autoplay, FreeMode]}
     className={classNames(styles.swiper, props.swiperClassname)}
     wrapperClass={props.wrapperClassName}
     {...props.swiperProps}
     >
-      {props.children.length > 0 && props.children.map(item=> {
+      {Array.isArray(props.children) &&props.children.length > 0 && props.children.map(item=> {
         return (
           <SwiperSlide className={props.slideClassName||styles.swiperSlide} >
             {item}
           </SwiperSlide>
         )
-      })}
+      })
+      ||
+      <SwiperSlide className={props.slideClassName||styles.swiperSlide} >
+        {props.children}
+      </SwiperSlide>
+      }
       </Swiper>
-      {/* {!props.hideNav && !isTabletWidth &&
-        <> */}
+      {!props.hideNav && 
+        <>
           <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
           <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
-        {/* </>
-      } */}
+        </>
+      }
       {!props.hideNav && !isTabletWidth &&
         <LinkBlack href={'/media/page?page=categories'}>{t('watchAll')}</LinkBlack>
       }

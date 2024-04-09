@@ -38,6 +38,7 @@
   "all": "Все",
   "foreignLanguages":"Иностранные языки",
   "logout": "Выйти",
+  "free": "Бесплатно",
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -78,6 +79,12 @@
   "vacancies1":"вакансия",
   "vacancies2":"вакансии",
   "vacancies3":"вакансий",  
+  "lesson1": "урок",
+  "lesson2": "урока",
+  "lesson3": "уроков",
+  "student1": "ученик",
+  "student2": "ученика",
+  "student3": "учеников",
 
   "isRemote_true": "Удаленная",
   "isRemote_false": "В офисе",
@@ -216,7 +223,7 @@
 
   "landing_help_needHelp": "Нужна помощь?",
   "landing_help_leaveOrder": "Оставьте заявку и мы с вами свяжемся!",
-  "landing_help_writeUs": "Написать в поддержку в Telegramm",
+  "landing_help_writeUs": "Написать в поддержку в Telegram",
 
 
   "footer_about": "О компании",

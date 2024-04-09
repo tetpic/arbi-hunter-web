@@ -15,6 +15,7 @@ import { PreviewImage } from 'data/interfaces/Common'
 import AlignLeftSvg from '@/components/svg/AlignLeftSvg'
 import AlignCenterSvg from '@/components/svg/AlignCenterSvg'
 import AlignRightSvg from '@/components/svg/AlignRightSvg'
+import Button from '@/components/ui/Button'
 
 interface Props {
   editor?: Editor | null
@@ -44,12 +45,16 @@ const TextAlignButton = ({editor, alignment, path, children}: {editor: Editor, a
 
 const ToolbarButton = ({onClick, children, isActive, disabled}: {onClick?: () => void, children: ReactElement, isActive?: boolean, disabled?: boolean}) => {
  return ( 
-  <div
+  <Button
+  type='button'
+  styleType={['icon', 'black']}
+  altStyleType={['gradient']}
+  
   onClick={!disabled ? onClick : undefined}
   className={classNames(styles.button, {[styles.active]: isActive, [styles.disabled]: disabled})}
   >
     {children}
-  </div>)
+  </Button>)
 }
 
 

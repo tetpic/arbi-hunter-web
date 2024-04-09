@@ -116,7 +116,7 @@ function RecruitingPageHirerInner(props: Props) {
           {t('recruiting_hir_placeVacancy')}
         </P>
         <P styleType={['large']} className={styles.description} useThemeColor>
-          {t('rectuing_hir_description')}        
+          {t('recruiting_hir_description')}        
         </P>
         <Link className={styles.createLink} href={'/create/vacancy'}>{t('recruiting_hir_toPlaceVacancy')}</Link>
       </div>

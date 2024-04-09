@@ -219,13 +219,14 @@ export default function AddPersonalBlockModal(props: Props) {
 
     {layout&&
       <div className={styles.gridContainer} style={{
-        gridTemplate: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr`, 
+        gridTemplate: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((layout as number[][])[0].length)}`, 
       }}>
         {[...new Set((layout as number[][]).flat(1)).values()].map((el, i) => {
           return <div className={classNames(styles.collageImageWrapper, images.get(el)&&styles.collageImageLoaded)} style={{gridArea: `o${el}`}}> 
           {(!images.get(el)) &&
             <FilesField 
             name={`assetsList[${i}]`}
+            accept={['.jpeg', '.jpg', '.png', '.svg', '.webp', '.avif', '.gif']}
             button={<div className={styles.addCollageImage}>
               <PlusThinSvg/>
             </div>}

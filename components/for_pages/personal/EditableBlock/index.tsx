@@ -16,6 +16,7 @@ import youtube from 'images/footer/youtube_footer.svg'
 import linkedIn from 'images/footer/linkedIn_footer.svg'
 import telegram from 'images/footer/tg_footer.svg'
 import classNames from 'classnames'
+import SwiperList from '@/components/ui/SwiperList'
 
 
 
@@ -59,7 +60,7 @@ export default function EditableBlock(props: Props) {
       ||props.block.type === PersonalBlockType.Video
     ) &&
       <>
-      <p className={styles.title}>{props.block.title}</p>
+      <P styleType={['fs32', 'w700']} useThemeColor >{props.block.title}</P>
       {props.block.text &&
       <div className={styles.text}><HtmlText text={props.block.text}/></div>
       }
@@ -72,8 +73,8 @@ export default function EditableBlock(props: Props) {
             <Image 
             src={FILES + el.source}
             alt={props.block.title + ' image'} 
-            width={600}
-            height={350}
+            width={1240}
+            height={610}
             style={{objectFit:'cover', display: 'block'}}
             />
           </div>
@@ -90,10 +91,24 @@ export default function EditableBlock(props: Props) {
       </div>
     }
     {props.block.type === PersonalBlockType.Columns &&
+      <SwiperList
+      slideClassName={styles.columnsSlide}
+      swiperProps={{
+        loop: false,
+        autoplay: false, 
+        freeMode: {
+          enabled: true,
+          sticky: false,
+        }
+      }}
+      hideNav
+      >
+
       <div 
       className={styles.gridContainer} 
       style={{
-        gridTemplateAreas: `"${(JSON.parse(props.block.layout).layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, 
+        gridTemplateAreas: `"${(JSON.parse(props.block.layout).layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}" `, 
+        gridTemplateColumns: `repeat(${(JSON.parse(props.block.layout).layout as number[][])[0].length}, 1fr)`,
       }}>
         {(JSON.parse(props.block.layout).layout as number[][])[0].map((el, ind) => {
           const color = JSON.parse(props.block.layout).color[ind]
@@ -103,7 +118,7 @@ export default function EditableBlock(props: Props) {
                 <HtmlText text={titles[ind]}/>
               }
               {props.assets.find(img => img.id === el) &&
-                <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.collageImage}/>
+                <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.columnImage}/>
               }
               {texts && texts[ind] &&
                 <HtmlText text={texts[ind]}/>
@@ -112,10 +127,11 @@ export default function EditableBlock(props: Props) {
           )
         })}
       </div>
+        </SwiperList>
     }
     {props.block.type === PersonalBlockType.Social &&
       <div className={styles.socialWrapper}>
-        <p className={styles.title}>{props.block.title}</p>
+        <P styleType={['fs32', 'w700']} useThemeColor>{props.block.title}</P>
         <div className={styles.socials}>
           {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => { {
             return <P styleType={['alignCenter', 'w500', 'large']}>{getSocialLogo(key as SocialSites)} {value}</P>
@@ -130,9 +146,7 @@ export default function EditableBlock(props: Props) {
       <div 
       className={styles.gridContainer} 
       style={{
-        gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr`, 
-        // gridTemplateColumns: `repeat(${(props.block.layout as number[][])[0].length}, 1fr)`, 
-        // gridTemplateRows: `repeat(${(props.block.layout as number[][]).length}, 1fr)`
+        gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((props.block.layout as number[][])[0].length)}`, 
       }}>
         {props.assets.map((el, i) => {
           return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
@@ -154,8 +168,8 @@ export default function EditableBlock(props: Props) {
               priority
               src={FILES + el.source}
               alt={props.block.title + ' image'} 
-              width={300}
-              height={350}
+              width={1240}
+              height={610}
               style={{objectFit:'cover', display: 'block'}}
               />
             </SwiperSlide>

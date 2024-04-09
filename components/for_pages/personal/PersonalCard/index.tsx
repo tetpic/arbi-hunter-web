@@ -133,8 +133,8 @@ export default function PersonalCard(props: Props) {
     }
     </div>
     <div className={styles.nameWrapper}>
-      <P useThemeColor className={styles.name}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
-      <P styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile.city.locName}</P>
+      <P useThemeColor styleType={['w600', 'huge']}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
+      <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile.city.locName}</P>
     </div>
 
     {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
@@ -162,7 +162,7 @@ export default function PersonalCard(props: Props) {
       <RatingLine rating={4}/>
       <p className={styles.ratingCount}>23 отзыва</p>
     </div> */}
-    {props.isEditable && !props.isEditing &&
+    {props.isEditable && !props.isEditing && !isTabletWidth &&
       <Button styleType={['gradient']} onClick={()=> saveHandler()}>{'Редактировать профиль'}</Button>
     }
   </div>)

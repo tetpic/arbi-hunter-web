@@ -26,7 +26,7 @@ export default function Help(props: Props) {
   return (
     <section className={styles.root} ref={triggerRef}>
       <p className={styles.title}>{t('landing_help_needHelp')} <br/> {t('landing_help_leaveOrder')}</p>
-      <Button className={styles.button}>
+      <Button className={styles.button} href={'https://t.me/arbihunter'}>
         <Image src={telegram} alt={'telegram icon'}/>
         {t('landing_help_writeUs')}
       </Button>

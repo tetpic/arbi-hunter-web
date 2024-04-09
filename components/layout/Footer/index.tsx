@@ -52,7 +52,9 @@ export default function Footer(props: Props) {
           <Image src={twitter} alt={'twitter'}/>
           <Image src={insta} alt={'insta'}/>
           <Image src={youtube} alt={'youtube'}/>
-          <Image src={telegram} alt={'telegram'}/>
+          <Link href={'https://t.me/arbihunter'}>
+            <Image src={telegram} alt={'telegram'}/>
+          </Link>
           <Image src={linkedIn} alt={'linkedIn'}/>
         </div>
       </div>

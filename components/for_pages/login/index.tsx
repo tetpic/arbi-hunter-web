@@ -144,9 +144,8 @@ export default function Login() {
             
             <div className={styles.buttonsWrapper}>
               <Button 
-              className={styles.submitButton} 
               type='button' 
-              styleType={['phoneWide']}
+              styleType={[ 'gradient','phoneWide']}
               onClick={()=>formik.submitForm()}>
                 <span>{t('enter')}</span>
               </Button>
@@ -155,7 +154,7 @@ export default function Login() {
               type='button' 
               onClick={googleLogin} 
               styleType={['black', 'phoneWide']}
-              className={styles.googleButton}
+             
               icon={
                 <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
               }>
