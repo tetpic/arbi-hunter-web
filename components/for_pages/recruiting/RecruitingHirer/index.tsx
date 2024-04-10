@@ -41,7 +41,6 @@ export default function RecruitingHirer(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
-  const {isTabletWidth} = appContext.size
 
   return (
     <div className={styles.root}> 

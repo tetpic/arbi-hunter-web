@@ -14,6 +14,7 @@ import LinkSvg from '@/components/svg/LinkSvg'
 import ShareSvg from '@/components/svg/ShareSvg'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
 import { copyToClipboard } from 'utils/helpers'
+import P from '@/components/ui/P'
 
 
 
@@ -68,7 +69,7 @@ export default function SavedMedia() {
         })
         ||
         loaded&&mediaContext.savedArticles.size === 0&&
-        <p className={'empty'}>Нет добавленных медиа</p>
+        <P useThemeColor className={'empty'}>Нет добавленных медиа</P>
      }
     </InfiniteScroll>
   </div>)

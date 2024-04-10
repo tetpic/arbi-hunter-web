@@ -49,7 +49,7 @@ export default function Footer(props: Props) {
         }
         <P styleType={['large', 'w600', 'alignCenter']} useThemeColor className={styles.mail}>
           <MailConvertSvg color={isLightTheme&&colors.black}/>
-          <Link href={'mailto:arbihunter@mail.com'} type='email'>arbihunter@mail.com</Link>
+          <Link href={'mailto:support@arbihunter.com'} type='email'>support@arbihunter.com</Link>
         </P>
         <div className={styles.links}>
           <Image src={twitter} alt={'twitter'}/>

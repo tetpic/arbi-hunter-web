@@ -5,8 +5,9 @@ import UserRepository from 'data/repositories/UserRepository'
 import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useRef, useState } from 'react'
 import { useUserContext } from './user_state'
 import { useAppContext } from './state'
-import { SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import { useRouter } from 'next/router'
+import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 
 interface IState {
   init: ()=> Promise<boolean>,
@@ -164,11 +165,40 @@ export function CharacterWrapper(props: Props) {
     if(!userContext.currentProfile) {
       return    
     }
-    setSavingProcess(true)    
-    await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
-    .then(res=> {
-      characterId.current = res.id
+    setSavingProcess(true)   
+    if(!characterId.current) {
+      await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
+      .then(res=> {
+        characterId.current = res.id
+      })
+    } 
+
+    const lockedItems = [...choosenItems.values()].filter(el => el.isLocked)
+    if(lockedItems.length > 0) {
+      const purchaseItemsRes = await Promise.all(lockedItems.map(item => {
+        return CharacterRepository.buyItem(item.id)
+      }))
+      .catch(_ => {
+        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+          text: 'Недостаточно средств. Хотите пополнить баланс?',
+          callback: () => {
+            router.push('/shop')
+          }
+        })
+        setSavingProcess(false)
+        return false
+      })
+      if(!purchaseItemsRes) {
+        return
+      }
+    }
+
+    await CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
+    .catch(_ => {
+      debugger 
+      return
     })
+
     const file = new File([dataBaseBlob], 'test.png', {type: 'image/png'})
     const fileId = await FileRepository.uploadFile(file)
     .then(res=> {
@@ -176,22 +206,20 @@ export function CharacterWrapper(props: Props) {
     })
     
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
-    await Promise.all([...choosenItems.values()].filter(el => el.isLocked).map(item => {
-      return CharacterRepository.buyItem(item.id)
-    }))
-    CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
-    .then(res=> {
-      appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
-      userContext.updateUser()
-      setSavingProcess(false)
-    })  
+    .catch(err => {
+      debugger 
+      return
+    })
+      
+    appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
+    userContext.updateUser()
+    setSavingProcess(false)
+
     setTimeout(()=> {
       userContext.updateUser()      
     },1500)
     return true
   }
-
-
 
   const setActiveSet = (data: [ICharCategory, ICharItem[]]) => {
     const filteredItems = data[0].key  === 'model'?data[1]: data[1]?.filter(f=> f.gender === (variant.model==='man'?'male':'female'))

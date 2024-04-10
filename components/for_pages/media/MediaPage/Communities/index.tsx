@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
 import CommunityItem from './CommunityItem'
+import P from '@/components/ui/P'
 
 const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 
@@ -76,7 +77,7 @@ export default function Communities() {
               <Spinner size={34} color={colors.blue}/>
               ||
               loaded &&
-              <p className={'empty'}>Нет загруженных сообществ</p>
+              <P useThemeColor className={'empty'}>Нет загруженных сообществ</P>
             }
           </div>
         </InfiniteScroll>

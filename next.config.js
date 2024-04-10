@@ -15,6 +15,7 @@ const nextConfig = nextTranslate({
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
     ROBOTS_FILE: process.env.ROBOTS_FILE,
+    FREE_COURSES_ID: process.env.FREE_COURSES_ID
   },
   serverRuntimeConfig: {
     HOST: process.env.HOST,
@@ -23,9 +24,10 @@ const nextConfig = nextTranslate({
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
     ROBOTS_FILE: process.env.ROBOTS_FILE,
+    FREE_COURSES_ID: process.env.FREE_COURSES_ID
   },
   images: {
-    domains: ['api.arbi-hunter.dev.glob-com.ru', 'api.arbi.com', 'arbi-hunter.dev.glob-com.ru'],
+    domains: ['api.arbi-hunter.dev.glob-com.ru', 'api.arbi.com', 'arbi-hunter.dev.glob-com.ru', 'arbihunter.com', 'api.arbihunter.com'],
     formats: ['image/webp'],
     minimumCacheTTL: 60 * 60 * 24,
   },

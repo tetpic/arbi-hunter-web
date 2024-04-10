@@ -10,6 +10,7 @@ import Formatter from 'utils/formatter'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import useTranslation from 'next-translate/useTranslation'
 import { Translate } from 'next-translate'
+import P from '@/components/ui/P'
 
 enum ReviewsNavigation {
   Any = 'any',
@@ -163,7 +164,7 @@ export default function Feedbacks() {
           loading &&
           <Spinner size={24}/>
           ||
-          <p className={'empty'}>{t('profile_feedbacks_noFeed')}</p>
+          <P useThemeColor className={'empty'}>{t('profile_feedbacks_noFeed')}</P>
         }
       </div>
     </div>)

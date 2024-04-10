@@ -4,16 +4,17 @@ import SwiperList from '@/components/ui/SwiperList'
 import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useEffect } from 'react'
-import { FILES } from 'types/constants'
+
 import PlayButtonSvg from '@/components/svg/PlayButtonSvg'
 import Formatter from 'utils/formatter'
 import UserSmallSvg from '@/components/svg/UserSmallGreySvg'
 import StarSmallFilledSvg from '@/components/svg/StarSmallFilledSvg'
 import classNames from 'classnames'
 import { useAppContext } from 'context/state'
-import { AppTheme } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
+import ImageHelper from 'utils/ImageHelper'
 // import { useEffect } from 'react'
 
 interface Props {
@@ -66,7 +67,7 @@ export default function CoursesList(props: Props) {
                 onClick={()=> !props.disableLink&&router.push('/courses/' + course.id)} 
                 key={course.id}
                 >
-                  <Image src={FILES + course.image.source} alt={'course image'} width={185} height={185} className={styles.image}/>
+                  <Image unoptimized src={ImageHelper.urlFromFile(course.image, Preset.smResize)} alt={'course image'} width={185} height={185} className={styles.image}/>
                   <div className={styles.content}>
                     <P 
                     styleType={['small', 'w500']} 

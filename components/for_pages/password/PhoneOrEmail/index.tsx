@@ -7,8 +7,9 @@ import InputField from 'components/fields/InputField'
 import Validator from 'utils/Validator'
 import Button from 'components/ui/Button'
 import P from '@/components/ui/P'
-import { ModalType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import RegistrationRepository from 'data/repositories/RegistrationRepository'
 
 
 
@@ -21,12 +22,24 @@ export default function PhoneOrEmail() {
     email: '',
   }
 
-  const submit = (data : ILogin) => {   
-    appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
-      email: formik.values.email,
-      onComplete: () => {
+  const submit = async (data : ILogin) => {   
+    const isRegistered = await RegistrationRepository.checkEmailOrPhoneExists(data.email)
+    .then(res => {
+      if(!res.exists || !res.isRegistrationCompleted || res.profilesCount > 0) {
+        return false
       }
     })
+    if(!isRegistered) {
+      appContext.showSnackbar('Аккаунта не существует', SnackbarType.error)
+      return 
+    }
+    else {
+      appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
+        email: formik.values.email,
+        onComplete: () => {
+        }
+      })
+    }
   }
 
   const formik = useFormik({

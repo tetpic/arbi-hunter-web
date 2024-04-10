@@ -3,6 +3,7 @@ import UserPic from 'components/ui/UserPic'
 import { useCoursesContext } from 'context/courses_state'
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
+import P from '@/components/ui/P'
 
 interface Props {
   id: number
@@ -44,7 +45,7 @@ export default function CourseFeedbacks(props: Props) {
         ) 
     })
     ||
-    <p className={'empty'}>Вы можете оставить отзыв о курсе первым</p>
+    <P useThemeColor className={'empty'}>Вы можете оставить отзыв о курсе первым</P>
   }
 
   </div>)

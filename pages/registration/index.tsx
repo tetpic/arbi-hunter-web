@@ -15,6 +15,9 @@ interface Props extends Query {
 
 
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } }, query: Query }) => {
+  return {
+    redirect: {destination: '/', permanent: false}   
+  }
   const token = context.req.cookies[CookiesType.accessToken]
   const socialToken = context.query?.token
   if(token) {

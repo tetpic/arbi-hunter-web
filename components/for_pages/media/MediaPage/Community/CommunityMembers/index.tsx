@@ -1,3 +1,4 @@
+import P from '@/components/ui/P'
 import styles from './index.module.scss'
 
 import Spinner from 'components/ui/Spinner'
@@ -29,7 +30,7 @@ export default function CommunityMembers(props: Props) {
     ||
     props.loading && <Spinner size={24} color={colors.blue}/>
     ||
-    <p className={'empty'}>Нет участников</p>
+    <P useThemeColor className={'empty'}>Нет участников</P>
   }
   </div>
 

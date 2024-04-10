@@ -7,6 +7,7 @@ export default class ImageHelper {
     if (!file || !file.source) {
       return ''
     }
+    
     const imageParamsStr = file.type === 'IMAGE'
       ? `w=${this.getImageSize(preset)}&h=${this.getImageSize(preset)}&mode=${this.needCrop(preset) ? 'crop' : 'resize'}&fpx=${file.focalPoint?.x || '0.5'}&fpy=${file.focalPoint?.y || '0.5'}`
       : ''

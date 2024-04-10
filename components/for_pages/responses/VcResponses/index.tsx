@@ -13,6 +13,7 @@ import { IStat } from 'data/interfaces/IProposal'
 import FiltersSvg from 'components/svg/FiltersSvg'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
+import P from '@/components/ui/P'
 
 interface Props {
   id?: number
@@ -145,7 +146,7 @@ export default function VCFeedbacks(props: Props) {
         ||
         loading && <Spinner size={24} />
         ||
-        <p className={'empty'}>Нет откликов</p>
+        <P useThemeColor className={'empty'}>Нет откликов</P>
       }
       </>
     }

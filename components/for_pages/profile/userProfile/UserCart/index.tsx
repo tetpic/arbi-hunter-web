@@ -33,10 +33,6 @@ export default function UserCart(props: Props) {
     router.push('/shop')
   }
 
-
-
-
-
   return (    
   <div className={styles.cart}>
     <div className={styles.balance}>
