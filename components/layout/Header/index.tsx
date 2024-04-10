@@ -20,6 +20,7 @@ import NotificationSvg from '@/components/svg/NotificationSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
 import StarSvg from '@/components/svg/StarSvg'
 import useTranslation from 'next-translate/useTranslation'
+import { AlertModalArgs } from '@/components/modals/AlertModal'
 
 interface Props {
   distanceFromTop: number
@@ -42,6 +43,16 @@ export default function Header(props: Props) {
   const onSearchbarSubmit = (data: {search?: string}) => {
     const filters = JSON.parse(router?.query?.filters as string||'{}')
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({...filters, search: data?.search})}})
+  }
+
+  const showInfo = () => {
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
   }
 
   useEffect(()=>{
@@ -96,7 +107,8 @@ export default function Header(props: Props) {
               <Button 
               styleType={['black', 'borderBlue', 'backTransparent']}
               altStyleType={['white', 'borderGrey']}
-              href={regPath}
+              // href={regPath}
+              onClick={()=> showInfo()}
               disabled={activePath === regPath}
               >
                 {t('registration')}

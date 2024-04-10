@@ -13,12 +13,12 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { LoginType, SnackbarType } from 'types/enums'
+import { LoginType, ModalType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import useTranslation from 'next-translate/useTranslation'
-import Image from 'next/image'
+import { AlertModalArgs } from '@/components/modals/AlertModal'
 
 
 
@@ -36,6 +36,16 @@ export default function Login() {
 
   const passwordHandler = () => {
     setPasswordOpen(!passwordIsOpen)
+  }
+
+  const showInfo = () => {
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
   }
 
   const initialValues: ILogin = {
@@ -81,9 +91,9 @@ export default function Login() {
     }
   }
 
-  const googleLogin = () => {
-    router.push(HOST +'/api/auth/google/login')
-  }
+  // const googleLogin = () => {
+  //   router.push(HOST +'/api/auth/google/login')
+  // }
 
   useEffect(()=>{
     if(userContext.currentProfile) {
@@ -107,9 +117,9 @@ export default function Login() {
         </p>
         <p className={styles.subTitle}>
           {t('login_stillNoAccount')}
-          <Link className={styles.loginLink} href={'/registration'}>
+          <div className={styles.loginLink} onClick={showInfo}>
             {t('login_getRegister')}
-          </Link>
+          </div>
         </p>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
@@ -150,7 +160,7 @@ export default function Login() {
                 <span>{t('enter')}</span>
               </Button>
               
-              <Button 
+              {/* <Button 
               type='button' 
               onClick={googleLogin} 
               styleType={['black', 'phoneWide']}
@@ -159,7 +169,7 @@ export default function Login() {
                 <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
               }>
                 {t('login_viaGoogle')}
-              </Button>
+              </Button> */}
             </div>
 
           </Form>
