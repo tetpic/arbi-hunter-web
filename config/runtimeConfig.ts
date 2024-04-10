@@ -9,6 +9,7 @@ interface IRuntimeConfig {
   MAP_KEY: string
   CACHE_TIME_HOURS: number
   BOOKING_COMPLETE_ANYTIME: boolean
+  FREE_COURSES_ID: number
 }
 
 interface IServerRuntimeConfig {

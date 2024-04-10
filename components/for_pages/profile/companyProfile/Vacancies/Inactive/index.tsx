@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import ProfileVacancyItem from '../ProfileVacancyItem'
+import P from '@/components/ui/P'
 
 interface Props {
   type: 'drafts' | 'archive'
@@ -26,7 +27,7 @@ export default function VacanciesInactive(props: Props) {
     })
     ||
     !vacancyContext.isLoading&&vacancyContext.archiveVacancies.size === 0 &&
-    <p className={'empty'}>Нет архивных вакансий</p>  
+    <P useThemeColor className={'empty'}>Нет архивных вакансий</P>  
     ||
     vacancyContext.isLoading &&
     <Spinner size={24}/>

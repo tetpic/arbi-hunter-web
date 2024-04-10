@@ -3,6 +3,7 @@ import { useCoursesContext } from 'context/courses_state'
 import { useEffect } from 'react'
 import styles from './index.module.scss'
 import { MediaWrapper } from 'context/media_state'
+import P from '@/components/ui/P'
 
 interface Props {
   id: number
@@ -21,7 +22,7 @@ export default function CourseNews(props: Props) {
     return <MediaWrapper><MediaItem type={el.articleType} showContent  media={el} key={el.id}/></MediaWrapper>
   })
   ||
-  <p className={'empty'}>Нет новостей</p>
+  <P useThemeColor className={'empty'}>Нет новостей</P>
   }
   </div>)
 }

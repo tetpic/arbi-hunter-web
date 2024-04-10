@@ -15,6 +15,7 @@ import Formatter from 'utils/formatter'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { FILES } from 'types/constants'
+import P from '@/components/ui/P'
 
 interface Props {
   course: ICourse
@@ -84,7 +85,7 @@ export default function CourseModules({course}: Props) {
       ||
       loadingBlocks && <Spinner size={32} color={colors.blue}/>
       ||
-      <p className={'empty'}>Нет добавленных образовательных модулей</p>
+      <P useThemeColor  className={'empty'}>Нет добавленных образовательных модулей</P>
     }
   </div>)
 }

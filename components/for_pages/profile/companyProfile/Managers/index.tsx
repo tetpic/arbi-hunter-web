@@ -13,6 +13,7 @@ import Manager from './ManagerItem'
 import Title from '@/components/ui/TitleForSection'
 import { useUserContext } from 'context/user_state'
 import { HirerRole } from 'types/enums'
+import P from '@/components/ui/P'
 
 
 export default function Managers() {
@@ -58,7 +59,7 @@ export default function Managers() {
            })
            ||
            managerContext.managers.size === 0 && managerContext.managersTotal === 0 &&
-           <p className={'empty'}>Нет добавленных менеджеров</p>
+           <P useThemeColor className={'empty'}>Нет добавленных менеджеров</P>
          }
       </InfiniteScroll>
       {isTabletWidth && 

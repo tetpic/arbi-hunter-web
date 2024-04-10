@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import ProfileVacancyItem from '../ProfileVacancyItem'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -26,7 +27,7 @@ export default function VacanciesActive(props: Props) {
           })  
           ||
           !vacancyContext.isLoading &&vacancyContext.activeVacancies.size === 0 &&
-          <p className={'empty'}>Нет активных вакансий</p>  
+          <P useThemeColor className={'empty'}>Нет активных вакансий</P>  
           ||
           vacancyContext.isLoading &&
           <Spinner  size={24}/>

@@ -13,6 +13,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
 import { useAppContext } from 'context/state'
 import { IPagination } from 'types/types'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose: ()=> void
@@ -84,7 +85,7 @@ export default function MembersModal(props: Props) {
       )
     })
     ||
-    <p className={'empty'}>Участников не найдено</p>
+    <P useThemeColor className={'empty'}>Участников не найдено</P>
     }
   </InfiniteScroll>
   </div>)

@@ -32,6 +32,8 @@ import useTranslation from 'next-translate/useTranslation'
 import Reasons from '../RecruitingHirer/Reasons'
 import FindEmployees from '../RecruitingHirer/FindEmployees'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { runtimeConfig } from 'config/runtimeConfig'
+
 
 
 const Categories = dynamic(() => import('../sections/Categories'), {
@@ -74,7 +76,7 @@ export default function RecruitingEmployee(props: Props) {
 
   const init = async() => {
     const [ courses, news] = await Promise.all([
-      CoursesRepository.getCourses({page: 1, limit: 20, categories: [31]},Languages.ru),
+      CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       ArticlesRepository.getNews({page: 1, limit: 20, isTop: true}),
     ])
     setPopularCourses(state => {
