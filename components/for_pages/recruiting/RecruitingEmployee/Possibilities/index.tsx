@@ -17,9 +17,9 @@ interface Props {
 
 export default function Possibilities(props: Props) {
   const {t} = useTranslation()
-  const companies: [ICompany, ICompany, ICompany] = [
+  const companies: ICompany[] = [
     {name: 'Beats',  
-      logo: '/images/companyLogos/beatsLogo.png', 
+      logo: '/images/companyLogos/planetCompany1.png', 
       id: 1,
       descriptions: [
         'Dre (Beats) — ведущий бренд в мире музыки, созданный Dr. Dre и Джимми Айовином в 2006 году.',
@@ -27,7 +27,7 @@ export default function Possibilities(props: Props) {
       ]
     },
     {name: 'Google',  
-      logo: '/images/companyLogos/googleLogo.png', 
+      logo: '/images/companyLogos/planetCompany2.jpg', 
       id: 2,
       descriptions: [
         'Google (Google) — американская компания, созданная в 1998 году и основанная в 2004 году. ',
@@ -35,8 +35,24 @@ export default function Possibilities(props: Props) {
       ]
     },
     {name: 'The North Face',  
-      logo: '/images/companyLogos/northFaceLogo.png', 
+      logo: '/images/companyLogos/planetCompany3.png', 
       id: 3,
+      descriptions: [
+        'The North Face (рус. Северный склон) — американская компания, специализирующаяся на производстве высококачественной технологичной спортивной, горной одежды, туристического инвентаря.',
+        'Продукция предназначается для альпинистов, скалолазов, туристов и людей, ведущих активный образ жизни.'
+      ]
+    },
+    {name: 'The North Face',  
+      logo: '/images/companyLogos/planetCompany4.png', 
+      id: 4,
+      descriptions: [
+        'The North Face (рус. Северный склон) — американская компания, специализирующаяся на производстве высококачественной технологичной спортивной, горной одежды, туристического инвентаря.',
+        'Продукция предназначается для альпинистов, скалолазов, туристов и людей, ведущих активный образ жизни.'
+      ]
+    },
+    {name: 'The North Face',  
+      logo: '/images/companyLogos/planetCompany5.jpg', 
+      id: 5,
       descriptions: [
         'The North Face (рус. Северный склон) — американская компания, специализирующаяся на производстве высококачественной технологичной спортивной, горной одежды, туристического инвентаря.',
         'Продукция предназначается для альпинистов, скалолазов, туристов и людей, ведущих активный образ жизни.'

@@ -45,7 +45,7 @@ export default function MainPageHirer() {
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10},Languages.ru),
       CategoryRepository.getCategories(),
-      ArticlesRepository.getNews(true),
+      ArticlesRepository.getNews({full: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 
     ])
     setStats(stats)

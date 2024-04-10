@@ -1,8 +1,7 @@
 import styles from './index.module.scss'
 
 import Image, { StaticImageData } from 'next/image'
-import qr from 'images/recruiting/recruiting_qr.svg'
-import qrGradient from 'images/recruiting/recruiting_qrGradient.svg'
+import qrCode from 'images/footer/qrCode.svg'
 import check from 'images/recruiting/check.svg'
 import cross from 'images/recruiting/recruiting_cross.svg'
 import appleIcon from 'images/recruiting/recruiting_apple.png'
@@ -99,7 +98,7 @@ export default function AppPromo(props: Props) {
         <P styleType={['large', 'w600']} useThemeColor >{t('landing_promo_download')}</P>
         <P styleType={['small']} useThemeColor >{t('landing_promo_scan')}</P>
         <div className={classNames(styles.imageWrapper, isLightTheme&&styles.imageWrapper_light)}>
-          <Image src={isLightTheme?qrGradient:qr} alt={'qr code'}/>
+          <Image src={qrCode} alt={'qr code'} width={150} height={150}/>
         </div>
       </div>
     } 

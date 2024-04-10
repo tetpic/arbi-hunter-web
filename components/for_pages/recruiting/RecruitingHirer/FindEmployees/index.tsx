@@ -14,8 +14,10 @@ import { useTriggerOnVisible } from 'components/hooks/useTriggerOnVisible'
 import P from '@/components/ui/P'
 import { AppTheme } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
+  profileType: ProfileType
 }
 
 export default function FindEmployees(props: Props) {
@@ -37,6 +39,26 @@ export default function FindEmployees(props: Props) {
   useTriggerOnVisible(triggerRef3, ()=> {
     triggerRef3.current?.classList.add(styles['image_active'], styles['image_3'])
   })
+
+  const hireTexts = {
+    step1_title: 'landing_hir_step1_title',
+    step1_desc: 'landing_hir_step1_desc',
+    step2_title: 'landing_hir_step2_title',
+    step2_desc: 'landing_hir_step2_desc',
+    step3_title: 'landing_hir_step3_title',
+    step3_desc: 'landing_hir_step3_desc',
+  }
+
+  const employeeTexts = {
+    step1_title: 'landing_em_step1_title',
+    step1_desc: 'landing_em_step1_desc',
+    step2_title: 'landing_em_step2_title',
+    step2_desc: 'landing_em_step2_desc',
+    step3_title: 'landing_em_step3_title',
+    step3_desc: 'landing_em_step3_desc',
+  }
+
+  const texts = props.profileType === ProfileType.Hirer?hireTexts:employeeTexts
   
 
   return (<div className={styles.root} > 
@@ -49,13 +71,13 @@ export default function FindEmployees(props: Props) {
       alt={'register'}/>
 
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.step}>
-        {t('landing_hir_step')} 1
+        {t('landing_step')} 1
       </P>
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
-        {t('landing_hir_step1_title')}
+        {t(texts.step1_title)}
       </P>
       <P styleType={['large']} useThemeColor className={styles.desc}>
-        {t('landing_hir_step1_desc')}
+        {t(texts.step1_desc)}
       </P>
     </div>
     {!isTabletWidth &&
@@ -71,13 +93,13 @@ export default function FindEmployees(props: Props) {
       alt={'land vacancy'}/>
 
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.step}>
-        {t('landing_hir_step')} 2
+        {t('landing_step')} 2
       </P>
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
-        {t('landing_hir_step2_title')}
+        {t(texts.step2_title)}
       </P>
       <P styleType={['large']} useThemeColor className={styles.desc}>
-        {t('landing_hir_step2_desc')}
+        {t(texts.step2_desc)}
       </P>
     </div>
     {!isTabletWidth &&
@@ -93,13 +115,13 @@ export default function FindEmployees(props: Props) {
       alt={'star'}/>
 
       <P styleType={['fs20', 'w600']} useThemeColor  className={styles.step}>
-        {t('landing_hir_step')} 3
+        {t('landing_step')} 3
       </P>
       <P styleType={['fs20', 'w600']} useThemeColor className={styles.title}>
-        {t('landing_hir_step3_title')}
+        {t(texts.step3_title)}
       </P>
       <P styleType={['large']} useThemeColor className={styles.desc}>
-        {t('landing_hir_step3_desc')}
+        {t(texts.step3_desc)}
       </P>
     </div>
   </div>)

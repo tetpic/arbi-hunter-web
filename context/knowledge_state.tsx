@@ -34,7 +34,8 @@ export function KnowledgeWrapper(props: Props) {
       setArticlesState(new Map)
     }
     const articleRes = await Promise.all(categoriesRes.data.map(c => {
-      return ArticlesRepository.getNews(true, {
+      return ArticlesRepository.getNews({
+        full: true,
         categories: [c.id], 
         articleType: CategoryType.Knowledge, 
         limit: 50, 

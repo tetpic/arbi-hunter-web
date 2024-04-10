@@ -4,10 +4,11 @@ import Image, { StaticImageData } from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AppTheme } from 'types/enums'
 import classNames from 'classnames'
+import Formatter from 'utils/formatter'
 
 
 interface Props {
-  image: string| StaticImageData
+  imagesExamples: (string| StaticImageData)[]
   count: string
   titles: [string, string, string]
   images: [StaticImageData, StaticImageData, StaticImageData]
@@ -28,7 +29,9 @@ export default function Categories(props: Props) {
       <p className={styles.item__title}>{props.titles[0]}</p>
       <Image className={styles.item__image} src={props.images[0]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
-        <Image src={props.image} alt={''} width={163} height={56}/>
+        {Formatter.randomElementsFromArray<(string| StaticImageData)>(props.imagesExamples, 3).map(el => {
+          return <Image src={el} alt={''} width={54} height={54}/>
+        })}
       </div>
     </div>
     </SwiperSlide>
@@ -38,7 +41,9 @@ export default function Categories(props: Props) {
       <p className={styles.item__title}>{props.titles[1]}</p>
       <Image className={styles.item__image} src={props.images[1]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
-        <Image src={props.image} alt={''} width={163} height={56}/>
+        {Formatter.randomElementsFromArray<(string| StaticImageData)>(props.imagesExamples, 3).map(el => {
+          return <Image src={el} alt={''} width={54} height={54}/>
+        })}
       </div>
     </div>
     </SwiperSlide>
@@ -48,7 +53,9 @@ export default function Categories(props: Props) {
       <p className={styles.item__title}>{props.titles[2]}</p>
       <Image className={styles.item__image} src={props.images[2]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
-        <Image src={props.image} alt={''} width={163} height={56}/>
+        {Formatter.randomElementsFromArray<(string| StaticImageData)>(props.imagesExamples, 3).map(el => {
+          return <Image src={el} alt={''} width={54} height={54}/>
+        })}
       </div>
     </div>
     </SwiperSlide>

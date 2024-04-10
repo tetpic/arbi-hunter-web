@@ -11,12 +11,14 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 interface Props {
+  profileType: ProfileType
 }
 
-export default function Reasons(props: Props) {
+export default function Reasons({profileType}: Props) {
   const {t} = useTranslation()
   const {theme} = useAppContext()
   const isLightTheme = theme === AppTheme.Light
@@ -36,13 +38,37 @@ export default function Reasons(props: Props) {
   {offset: 100}
   )  
 
+  const hireTexts = {
+    title1: 'landing_hir_reason_title1',
+    title2: 'landing_hir_reason_title2',
+    subtitle1: 'landing_hir_reason_subTitile1',
+    subtitle2: 'landing_hir_reason_subTitile2',
+    subtitle3: 'landing_hir_reason_subTitile3',
+    desc1: 'landing_hir_reason_desc1',
+    desc2: 'landing_hir_reason_desc2',
+    desc3: 'landing_hir_reason_desc3',
+  }
+
+  const employeeTexts = {
+    title1: 'landing_em_reason_title1',
+    title2: 'landing_em_reason_title2',
+    subtitle1: 'landing_em_reason_subTitile1',
+    subtitle2: 'landing_em_reason_subTitile2',
+    subtitle3: 'landing_em_reason_subTitile3',
+    desc1: 'landing_em_reason_desc1',
+    desc2: 'landing_em_reason_desc2',
+    desc3: 'landing_em_reason_desc3',
+  }
+
+  const texts = profileType === ProfileType.Hirer?hireTexts:employeeTexts
+
 
 
   return (<div className={styles.root} ref={triggerRef}> 
     <div className={styles.left}>
       <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
-        {t('landing_hir_reason_title1')} <br/>
-        {t('landing_hir_reason_title2')} <br/>
+        {t(texts.title1)} <br/>
+        {t(texts.title2)} <br/>
         {t('landing_in')} <span className={styles.title_purple}>Arbi</span>Hunter?
       </P>
       <Image src={isLightTheme?bucketLight:bucket} className={styles.bucket}  width={200} height={200} alt={'bucket'}/>
@@ -53,10 +79,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
-          {t('landing_hir_reason_subTitile1')}
+          {t(texts.subtitle1)}
         </P>
         <P styleType={['large', ]} useThemeColor className={styles.desc}>
-          {t('landing_hir_reason_desc1')}
+          {t(texts.desc1)}
         </P>
       </div>
       <div className={classNames(styles.item, isLightTheme&&styles.item_light)}>
@@ -64,10 +90,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
-          {t('landing_hir_reason_subTitile2')}
+          {t(texts.subtitle2)}
         </P>
         <P styleType={['large', ]} useThemeColor className={styles.desc}>
-          {t('landing_hir_reason_desc2')}
+          {t(texts.desc2)}
         </P>
       </div>
       <div className={classNames(styles.item, isLightTheme&&styles.item_light)}>
@@ -75,10 +101,10 @@ export default function Reasons(props: Props) {
           <Image src={walletWhite} alt={'wallet'}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
-          {t('landing_hir_reason_subTitile3')}
+          {t(texts.subtitle3)}
         </P>
         <P styleType={['large',]} useThemeColor className={styles.desc}>
-          {t('landing_hir_reason_desc3')}
+          {t(texts.desc3)}
         </P>
       </div>
     </div>

@@ -81,7 +81,7 @@ export default function MainPageEmployee() {
       UserRepository.getStats(),
       CategoryRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
-      ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
+      ArticlesRepository.getNews({page: 1, limit: 20, isTop: false, full: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])
     setStats(stats)

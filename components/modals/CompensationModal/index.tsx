@@ -2,7 +2,6 @@ import ModalLayout from '@/components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import SectionSubtitle from '@/components/for_pages/create/utils/SectionSubtitle'
-import IconButton from '@/components/ui/IconButton'
 import CrossSvg from '@/components/svg/CrossSvg'
 import InputField from '@/components/fields/InputField'
 import { Form, FormikProvider, useFormik } from 'formik'
@@ -51,9 +50,9 @@ export default function CompensationModal(props: Props) {
   const header = (
     <div className={styles.header}>
       <SectionSubtitle text={t('create_cv_salaryLevel')} className={styles.title}/>
-      <IconButton bgColor={'transparent'} onClick={props.onClose}>
+      <Button styleType={['icon', 'backTransparent']} altStyleType={['icon', 'invertSvg']} onClick={props.onClose}>
         <CrossSvg/>
-      </IconButton>
+      </Button>
     </div>
   )
 

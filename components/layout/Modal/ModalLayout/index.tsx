@@ -20,11 +20,11 @@ interface Props {
   * @mobileFullScreen boolean
  */
 export default function ModalLayout(props: Props) {
-  const context = useAppContext()
+  const {theme, ...context} = useAppContext()
 
   return (
     <div 
-      className={classNames(styles.root, {[styles.fixed]: props.fixed || context.isMobile}, props.className, props.mobileFullScreen&&styles.fullScreen)}
+      className={classNames(styles.root, styles[theme], {[styles.fixed]: props.fixed || context.isMobile}, props.className, props.mobileFullScreen&&styles.fullScreen)}
       style={{background: props.backgroundColor}}
     >
       {props.children}

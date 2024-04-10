@@ -31,7 +31,7 @@ $purple: #BB6BD9;
 $purpleText: #AC6CDB;
 $purpleSmell: #985AFC20;
 
-#mainLayout[data-theme="dark"] {
+#body[data-theme="dark"] {
   --backGroundColor: #{$backgroundBlack};
   --pTextColor: #{$white};
   --secondaryColor: #{$grey};
@@ -40,12 +40,12 @@ $purpleSmell: #985AFC20;
   --backColor: #{$black};
   --backColorAlt: #{$black};
   --greyToPurpleGrey: #{$grey};
-  
+
 }
 
-#mainLayout[data-theme="light"] {
+#body[data-theme="light"] {
   --backGroundColor: #{$backgroundWhite};
-  --pTextColor: #{$black};
+  --pTextColor: #{$grey};
   --secondaryColor: #{$white};
   --borderColor: #{$whitePurple};
   --buttonDefaultColor:  #{$white};

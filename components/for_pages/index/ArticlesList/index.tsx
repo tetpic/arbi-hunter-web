@@ -12,6 +12,7 @@ import classNames from 'classnames'
 
 interface Props {
   news: IArticle[]
+  onlyTitles?: boolean
 }
 
 
@@ -32,12 +33,14 @@ export default function ArticlesList(props: Props) {
           <div className={classNames(styles.news, isLightTheme && styles.news_light) }>
             <Image src={FILES + el.image.source} alt={'news'} width={372} height={180} className={styles.image}/>
             <div className={styles.content}>
-              <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{el.name}</P>
-              <P styleType={['medium','greyLight']} className={styles.description}><TextNode html={el.blocks[0].body}/></P>
-              <div className={styles.bottom}>
-                <div className={styles.tag}>{el.articleCategory.translations.find(el => el.languageCode === 'ru').name.split(' ')[0]}</div>
-                <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt)} назад</P>
-              </div>
+              <P styleType={['fs20', 'w600']} useThemeColor className={classNames(props.onlyTitles?styles.titleOnly:styles.title)}>{el.name}</P>
+                {!props.onlyTitles &&
+                <P styleType={['medium','greyLight']} className={styles.description}><TextNode html={el.blocks[0].body}/></P>
+                }
+                <div className={styles.bottom}>
+                  <div className={styles.tag}>{el.articleCategory.translations.find(el => el.languageCode === 'ru').name.split(' ')[0]}</div>
+                  <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt)} назад</P>
+                </div>
             </div>
           </div>
         )

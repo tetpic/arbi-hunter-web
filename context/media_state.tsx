@@ -89,7 +89,7 @@ export function MediaWrapper(props: Props) {
     args.categories&&(data.categories = args.categories)
     args.page&&setPage(args.page)
     
-    ArticlesRepository.getNews(true, data)
+    ArticlesRepository.getNews({isTop: true, ...data})
     .then(res => {
       setCurrentNews({articles: res.data})
       setTotal(res.total)

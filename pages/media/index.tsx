@@ -24,7 +24,7 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
   }
   const categories = await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit:20})
   const communities = await CommunitiesRepository.getCommunities(1)
-  const news = await ArticlesRepository.getNews(true)
+  const news = await ArticlesRepository.getNews({full: true})
   const newsCompilations = (await ArticlesRepository.getCategoryList({categoryType: CategoryType.News, page: 1, limit: 20})).data
   return {props: {categories: categories.data, communities: communities.data, news: news.data, newsCompilations}}
 }) 
