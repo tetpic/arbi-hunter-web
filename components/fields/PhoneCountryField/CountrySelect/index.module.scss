@@ -4,6 +4,10 @@
 .arrow{
   rotate: 0deg;
   transition: .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+  path {
+    stroke: var(--pTextColor);
+  }
   
   // @include dropDownArrow;
 }

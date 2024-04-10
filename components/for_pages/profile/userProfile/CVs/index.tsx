@@ -11,6 +11,7 @@ import { useTariffContext } from 'context/tariff_state'
 import { PurchaseType } from 'types/enums'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -79,7 +80,7 @@ export default function CVs(props: Props) {
         />
       )
       ||
-      <p className={'empty'}>{t('profile_cvs_empty')}</p>
+      <P useThemeColor className={'empty'}>{t('profile_cvs_empty')}</P>
       }
       <Spacer basis={24}/>
     </div>

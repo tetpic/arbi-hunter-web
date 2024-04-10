@@ -111,14 +111,15 @@ export default function SearchBar(props: Props) {
             <Button 
             title='search button' 
             onClick={()=> formik.submitForm} 
-            styleType={['black']}
-            className={!isTabletWidth&&styles.button}
+            styleType={['black', 'borderBlue']}
+            altStyleType={['gradient']}
             >
               {t('search')}
             </Button>
             {props.onFilterClick &&
               <Button 
               styleType={['icon', 'black']}
+              altStyleType={['icon', 'gradient']}
               title='filter button' 
               onClick={openFilters} 
               // className={(activeCategories.size>0||activePeriod)&&styles.filterButton_active}

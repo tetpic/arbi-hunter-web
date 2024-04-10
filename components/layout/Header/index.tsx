@@ -122,12 +122,14 @@ export default function Header(props: Props) {
               </Button>
               <Button               
               styleType={['icon', 'black']} 
+              altStyleType={['icon','white']}
               className={styles.iconButton}
               >
                 <NotificationSvg/>
               </Button>
               <Button  
               styleType={['icon', 'black', 'svg24']} 
+              altStyleType={['icon','white', 'svg24', 'invertSvg']}
               className={styles.iconButton}
               href={'/favorites'}
               >

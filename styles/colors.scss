@@ -1,5 +1,6 @@
 $white: #ffffff;
 $whitePurple: #E8E2F1;
+$purpleGrey: #E3D9EA;
 
 $backgroundBlack: #16161B;
 $backgroundWhite: #F5F2F7;
@@ -31,23 +32,26 @@ $purpleText: #AC6CDB;
 $purpleSmell: #985AFC20;
 
 #mainLayout[data-theme="dark"] {
-  --backGroundColor:#16161B;
-  --pTextColor: #ffffff;
-  --secondaryColor: #2D2D37;
-  --borderColor: #2D2D37;
-  --buttonDefaultColor:  #737389;
-  --backColor: #22222A;
-  --backColorAlt: #22222A;
+  --backGroundColor: #{$backgroundBlack};
+  --pTextColor: #{$white};
+  --secondaryColor: #{$grey};
+  --borderColor: #{$grey};
+  --buttonDefaultColor:  #{$greyLight};
+  --backColor: #{$black};
+  --backColorAlt: #{$black};
+  --greyToPurpleGrey: #{$grey};
+  
 }
 
 #mainLayout[data-theme="light"] {
-  --backGroundColor: #F5F2F7;
-  --pTextColor: #22222A;
-  --secondaryColor: #ffffff;
-  --borderColor: #E8E2F1;
-  --buttonDefaultColor: #ffffff;
+  --backGroundColor: #{$backgroundWhite};
+  --pTextColor: #{$black};
+  --secondaryColor: #{$white};
+  --borderColor: #{$whitePurple};
+  --buttonDefaultColor:  #{$white};
   --backColor: #E4DEEB;
   --backColorAlt: #FBF9FD;
+  --greyToPurpleGrey: #{$purpleGrey};
 }
 
 

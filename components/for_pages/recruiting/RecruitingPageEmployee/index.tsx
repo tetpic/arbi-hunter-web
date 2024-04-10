@@ -140,7 +140,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   initialSearch= {currentFilters.search}
   />
   {!loading &&
-    <p className={styles.found}>{t('found')} {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</p>
+    <P styleType={['huge', 'w600']} useThemeColor className={styles.found}>{t('found')} {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
     ||
     <Spacer basis={88}/>
   }
@@ -170,7 +170,7 @@ function RecruitingPageEmployeeInner(props: Props) {
             return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies()}/>
           })
           ||
-          <p className='empty'>{t('recruiting_em_noFoundVacancies')}</p>
+          <P useThemeColor className='empty'>{t('recruiting_em_noFoundVacancies')}</P>
         }
       </div>
       </InfiniteScroll>

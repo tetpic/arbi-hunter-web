@@ -1,5 +1,15 @@
 @import 'styles/index';
 
+
+.dark {
+  --hoverColor: #{$white};
+}
+
+.light {
+  --hoverColor: #{$blue};
+}
+
+
 .root {
   margin-top: 24px;
   min-width: 100%;
@@ -10,8 +20,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
-
 }
+
+
 
 .wrapper {
   min-width: 100%;
@@ -23,13 +34,8 @@
 .items {
   display: flex;
   padding-right: 16px;
-
-  // column-gap: clamp(30px, 7%, 120px);
   
   .item {
-    color: $greyLight;
-    font-size: $largeText;
-    font-weight: $semibold;
     cursor: pointer;
     white-space: nowrap;
     display: block;
@@ -39,7 +45,7 @@
       margin-right: clamp(30px, 5vw, 120px);
     }
     @include hover {
-      color: $white;
+      color: var(--hoverColor);
     }
     @include mq($PhoneWidth, max) {
       font-size: $smallText;
@@ -54,7 +60,7 @@
 
 .bottomString {
   width: 100%;
-  background-color: $grey;
+  background-color: var(--greyToPurpleGrey);
   height: 2px;
   margin-top: 16px;
   min-width: 100%;

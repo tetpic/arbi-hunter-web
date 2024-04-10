@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import styles from './index.module.scss'
 import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 export type ParagraphStyleType = 
 'small'|'medium'|'large'|'huge'|
@@ -17,14 +18,24 @@ interface Props extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLParagraphEleme
   children?: any
   className?: string
   useThemeColor?: boolean
+  getRef?: (r: HTMLParagraphElement) => void
 }
 
 export default function P(props: Props) {
-  const {styleType, className, ...rest} = props
+  const {styleType, className, altStyleType, getRef, ...rest} = props
+
   const {theme} = useAppContext()
 
   return (
-    <p {...rest} className={classNames(styleType?.map(el=> styles[el]), styles.p, props.useThemeColor&&styles.themeColor, className)} >
+    <p {...rest} ref={r=>getRef?.(r)} className={
+      classNames(
+        theme===AppTheme.Light&&altStyleType
+        ?altStyleType.map(el=> styles[el])
+        :styleType?.map(el=> styles[el]), 
+        styles.p, 
+        props.useThemeColor&&styles.themeColor, 
+        className
+        )} >
       {props.children}
     </p>
   )

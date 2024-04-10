@@ -43,7 +43,7 @@ export function CvWrapper(props: Props) {
   
 
   const setSavedCvs = async():Promise<boolean> => {
-    if(currentProfile.profileType === ProfileType.Hirer){
+    if(currentProfile?.profileType === ProfileType.Hirer){
       return CvRepository.getSavedByCurrentUser()
       .then(res=> {
         res = res.map(el=> {return {...el, isSavedByCurrentProfile: true}})
@@ -54,7 +54,7 @@ export function CvWrapper(props: Props) {
         return false
       })
     }
-    else if(currentProfile.profileType === ProfileType.Employee) {
+    else if(currentProfile?.profileType === ProfileType.Employee) {
       return CvRepository.getCVListOfCurrentUser()
       .then(res=> {
         setSavedCvsState(res)

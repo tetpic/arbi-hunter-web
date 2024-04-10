@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import { ISpecializationCategory } from 'data/interfaces/Common'
 import LoupeSvg from '@/components/svg/LoupeSvg'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onSuggestionClick: (activeSubCategory: ISpecializationCategory[]) => void
@@ -79,7 +80,8 @@ export default function CvName(props: Props) {
         </div>
         }
       </div>
-      <p className={styles.categoryName}>{cvCreateContext.activeSubCategory[0]?.name}</p>
+
+      <P useThemeColor styleType={['large', 'w700']}>{cvCreateContext.activeSubCategory[0]?.name}</P>
       { taglist.length>0 && 
         <TagList 
         title={t('create_tags')} 

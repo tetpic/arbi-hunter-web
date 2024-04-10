@@ -11,6 +11,7 @@ import CrossSvg from 'components/svg/CrossSvg'
 import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
 import Formatter from 'utils/formatter'
+import { useAppContext } from 'context/state'
 
 type FormatType = 'phone'
 
@@ -48,6 +49,7 @@ interface Props extends IField<string>{
 
 //TODO: отрефакторить на несколько разных компонентов: InputField, PriceInputField, PhoneInputField, NumberInputField например
 export default function InputField(props: Props) {  
+  const {theme} = useAppContext()
   const [wrapperRef, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)
   const showError = meta.touched && !!meta.error
@@ -99,7 +101,7 @@ export default function InputField(props: Props) {
   
 
   return (
-    <div className={classNames(styles.root, props.className)} data-cy={'input_'+props.name} data-field={props.name}>
+    <div className={classNames(styles.root, props.className, styles[theme] )} data-cy={'input_'+props.name} data-field={props.name}>
       {props.labelType === 'top' ? <FieldLabel className={styles.topLabel}>{props.label}</FieldLabel> : null}
       <div className={classNames(
         styles.wrapper, 

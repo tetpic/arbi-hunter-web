@@ -1,6 +1,8 @@
-import classNames from 'classnames'
 import styles from './index.module.scss'
+
+import classNames from 'classnames'
 import {ReactElement} from 'react'
+import { useAppContext } from 'context/state'
 
 
 interface Props {
@@ -10,9 +12,10 @@ interface Props {
 }
 
 export default function FieldLabel(props: Props) {
+  const {theme} = useAppContext()
 
   return (
-    <div className={classNames(styles.label, props.className)}>
+    <div className={classNames(styles.label, props.className, styles[theme])}>
       {props.children}
     </div>
   )

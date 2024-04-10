@@ -167,7 +167,7 @@ function RecruitingPageHirerInner(props: Props) {
                 return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy} key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
-              !loading && <p className='empty'>{t('recruiting_noFoundCvs')}</p>
+              !loading && <P useThemeColor className='empty'>{t('recruiting_noFoundCvs')}</P>
             }
           </div>
         </InfiniteScroll>

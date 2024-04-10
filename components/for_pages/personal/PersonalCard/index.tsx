@@ -118,7 +118,6 @@ export default function PersonalCard(props: Props) {
     {
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
       <Button onClick={openUserImageModal} styleType={['icon', 'backTransparent']} className={styles.photoButton}>
-        {/* {!isTabletWidth && (personalContext.currentProfile?.image?'Изменить фото':'Добавить фото')} */}
        <EditPencilSvg/>
       </Button>
       ||
@@ -126,7 +125,6 @@ export default function PersonalCard(props: Props) {
       <label>
       <FileInput setImages={(data)=> saveLogo(data)}/>
       <div  className={styles.photoButton}>
-        {/* {!isTabletWidth && (personalContext.currentProfile?.logo?'Изменить логотип':'Добавить логотип')} */}
         <EditPencilSvg/>
       </div>
     </label>
@@ -134,7 +132,7 @@ export default function PersonalCard(props: Props) {
     </div>
     <div className={styles.nameWrapper}>
       <P useThemeColor styleType={['w600', 'huge']}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
-      <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile.city.locName}</P>
+      <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile?.city?.locName}</P>
     </div>
 
     {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&

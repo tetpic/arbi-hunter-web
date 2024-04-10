@@ -16,6 +16,7 @@ import Validator from 'utils/Validator'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import { TranslateCurrency } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -28,6 +29,7 @@ export interface ICompensationModalArgs {
 }
 
 export default function CompensationModal(props: Props) {
+  const {t} = useTranslation()
 
   const appContext = useAppContext()
   const args: ICompensationModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
@@ -48,7 +50,7 @@ export default function CompensationModal(props: Props) {
 
   const header = (
     <div className={styles.header}>
-      <SectionSubtitle text={'Уровень дохода'} className={styles.title}/>
+      <SectionSubtitle text={t('create_cv_salaryLevel')} className={styles.title}/>
       <IconButton bgColor={'transparent'} onClick={props.onClose}>
         <CrossSvg/>
       </IconButton>
@@ -61,7 +63,7 @@ export default function CompensationModal(props: Props) {
       <>
         <InputField 
         styleType={'blueBottomBorder'} 
-        label='Уровень дохода'
+        label={t('create_cv_salaryLevel')}
         labelClassName={styles.salaryLabel}
         inputClassName={styles.salaryInput}
         className={styles.salary}
@@ -84,11 +86,11 @@ export default function CompensationModal(props: Props) {
       </>
       }
       <Checkbox 
-      label='Договорная'
+      label={t('create_compensatoinContract')}
       value={formik.values.compensation} 
       isActive={formik.values.compensation === CompensationType.Contract} 
       onChange={(v)=>formik.setFieldValue('compensation', v?undefined:CompensationType.Contract)}/>
-      <Button className={styles.button} title='saveAndNext'>Сохранить и продолжить</Button>
+      <Button className={styles.button} title='saveAndNext'>{t('saveAndContinue')}</Button>
     </div>
   )
 
