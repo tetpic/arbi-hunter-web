@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 
 interface Props {
   courses: ICourse[]
+  disableLink?: boolean
 }
 
 export default function CoursesList(props: Props) {
@@ -60,7 +61,11 @@ export default function CoursesList(props: Props) {
           <div className={styles.itemPack}>
             {el.map((course)=>{
               return (
-                <div className={classNames(styles.item, isLightTheme&&styles.item_light)} onClick={()=> router.push('/courses/' + course.id)} key={course.id}>
+                <div 
+                className={classNames(styles.item, isLightTheme&&styles.item_light)} 
+                onClick={()=> !props.disableLink&&router.push('/courses/' + course.id)} 
+                key={course.id}
+                >
                   <Image src={FILES + course.image.source} alt={'course image'} width={185} height={185} className={styles.image}/>
                   <div className={styles.content}>
                     <P 

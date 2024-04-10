@@ -147,7 +147,7 @@ export default function RecruitingEmployee(props: Props) {
     itemClassName={styles.titleLink} 
     onAllWatchClick={()=>{}}/>
     {popularCourses.size > 0 &&
-      <CoursesList courses={[...popularCourses.values()]}/>
+      <CoursesList courses={[...popularCourses.values()]} disableLink/>
     }
 
     {!isTabletWidth &&
