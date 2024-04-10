@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .p {
-  color: $white;
+  color: var(--pTextColor);
 }
 
 .small{
@@ -35,6 +35,9 @@
 }
 .w700{
   font-weight: $bold;
+}
+.w800{
+  font-weight: 800;
 }
 
 .fs32{

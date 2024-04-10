@@ -23,8 +23,9 @@
 .button {
   @include buttonGray;
   padding: 10px;
-  width: 104px;
+  width: clamp(100px, 15.5% ,300px);
   height: 96px;
+
 
   span {
     flex-direction: column;

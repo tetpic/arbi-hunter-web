@@ -26,6 +26,17 @@ export default class CharacterRepository {
     return res
   }
 
+  static async buyItem(itemId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/character-item/${itemId}/buy`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async fetchCharacterCategoryList(): Promise<ICharCategory[]|null> {
     const res = await request({
       method: 'get',

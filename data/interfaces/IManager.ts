@@ -18,4 +18,8 @@ export interface IManagerCreate {
 export interface IManager extends IUserProfile {
   owner?: IUserProfile
   user?: IUser,
+  applicationsToVacanciesCount?: number
+  vacanciesCount?: number
+  viewsOfVacanciesCount?: number
+
 }

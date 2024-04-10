@@ -5,8 +5,6 @@ import { useUserContext } from 'context/user_state'
 import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { useCharacterContext } from 'context/character_state'
-import { PurchaseType } from 'types/enums'
 
 interface Props {
 }
@@ -16,14 +14,27 @@ export default function ShopPackets(props: Props) {
   const userContext = useUserContext()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
-  const characterContext = useCharacterContext()
+
+  const onCvVcUpdate = () => {
+    switch(userContext.currentProfile.profileType) {
+      case ProfileType.Employee: {
+        cvContext.setSavedCvs()
+        break
+      }
+      case ProfileType.Hirer: {
+        vacancyContext.setVacancies()
+        break
+      }
+    }
+  }
 
   return (<div className={styles.root}> 
-    {[...tariffContext.packets.entries()].filter(([key, value]) => value.price > 0 && (characterContext.currentCharacter.current?.purchased?value.purchaseType !== PurchaseType.Character:true) ).map(([key, value])=> {
+    {[...tariffContext.packets.entries()].filter(([key, value]) => value.price > 0).map(([key, value])=> {
       return <PurchaseItem 
       type='buy'
       tariff={value} 
-      cvs={userContext.currentProfile.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true && el.moderationStatus === 'approved'/*&&!el.subscriptions*/)} 
+      onCvVcUpdate={onCvVcUpdate}
+      cvs={userContext.currentProfile.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true/*&&!el.subscriptions*/)} 
       vacancies={userContext.currentProfile.profileType === ProfileType.Hirer&&[...vacancyContext.activeVacancies.values()]/*.filter(el=>!el.subscriptions)*/}/>
     })}
   </div>)

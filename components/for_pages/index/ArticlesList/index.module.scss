@@ -40,6 +40,11 @@
   @include lineClamp(1);
 }
 
+.titleOnly {
+  @include lineClamp(3);
+  height: 75px;
+}
+
 .description {
   @include lineClamp(3);
   min-height: 54px;

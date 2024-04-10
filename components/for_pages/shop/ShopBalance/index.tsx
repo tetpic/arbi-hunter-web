@@ -9,15 +9,21 @@ import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import Button from '@/components/ui/Button'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function ShopBalance(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   const openRefillModal = () => {
+    isTabletWidth?
+    appContext.showBottomSheet(ModalType.RefillBalanceModal, undefined, 350)
+    :
     appContext.showModal(ModalType.RefillBalanceModal)
   }
 
@@ -27,13 +33,13 @@ export default function ShopBalance(props: Props) {
     <Image src={shopImage} alt={'balance bucket'}  width={200} height={200}/>
   </div>
 
-  <Title title={'Баланс профиля'} className={styles.title}/>
+  <Title title={t('shop_profileBalance')} className={styles.title}/>
 
   <div className={styles.balance}>
     <ArbiCoinGradientSvg/>
-    <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user.balance)||0}</P>
+    <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user?.balance)||0}</P>
   </div>
 
-  <Button styleType={['gradient', 'wide']} onClick={openRefillModal}>Пополнить</Button>
+  <Button className={styles.button} styleType={['gradient', 'wide']} onClick={openRefillModal}>{t('shop_fill')}</Button>
   </div>)
 }

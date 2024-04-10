@@ -26,7 +26,7 @@ import { clearObject } from 'utils/helpers'
 import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
-import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -46,6 +46,7 @@ enum CvNavigation {
 }
 
 export default function Cv(props: Props) {
+  const {t, lang} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const creationContext = useCreateVcCvContext()
@@ -87,7 +88,7 @@ export default function Cv(props: Props) {
   const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
-      appContext.showSnackbar('Укажите специализацию', SnackbarType.error)
+      appContext.showSnackbar(t('create_setSpecialization'), SnackbarType.error)
       setLoading(false)
       return 
     }
@@ -97,7 +98,7 @@ export default function Cv(props: Props) {
     if(props.id) {
       CvRepository.updateCV(props.id, sendData)
       .then(_=>{
-        appContext.showSnackbar('Резюме успешно обновлено', SnackbarType.success)
+        appContext.showSnackbar(t('create_cv_refreshSuccess'), SnackbarType.success)
         if(!noReplace) {
           router.push('/profile?page=cvs')      
         }
@@ -109,7 +110,7 @@ export default function Cv(props: Props) {
     else {
       CvRepository.updateCV(creationContext.draftId.current, sendData)
       .then(res => {
-        appContext.showSnackbar('Резюме успешно сохранено', SnackbarType.success)
+        appContext.showSnackbar(t('create_cv_savedSuccess'), SnackbarType.success)
         if(!noReplace) {
           router.push('/profile?page=cvs')      
         }
@@ -121,22 +122,9 @@ export default function Cv(props: Props) {
     }
   }
 
-  const submit = (data: ICVCreate, noReplace?: boolean, tariffId?: number) => {
+  const submit = (data: ICVCreate, noReplace?: boolean) => {
     setLoading(true)
-
-    if(tariffId && !creationContext.currentCv?.subscriptions && !creationContext.draftItem.current.subscriptions) {
-      PurchaseRepository.cvVcPurchase({cvId:creationContext.draftId.current||props.id, tariffId})
-      .then(res=> {
-        saveCV(data, noReplace)
-      })
-      .catch(err=> {
-        appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
-        router.push('/shop')
-      })
-    }
-    else {
-      saveCV(data, noReplace)
-    }
+    saveCV(data, noReplace)    
   }
 
   const initialValues:ICVCreate  = {
@@ -145,8 +133,8 @@ export default function Cv(props: Props) {
     patronymic: props.cv?.patronymic|| userContext.currentProfile?.patronymic,
     birthday: props.cv?.birthday|| userContext.currentProfile?.birthday,
     compensation: props.cv?.compensation||null,
-    phone: userContext.currentProfile?.phone,
-    email: userContext.currentProfile?.email,
+    phone: props.cv?.phone||userContext.currentProfile?.phone,
+    email: props.cv?.email||userContext.currentProfile?.email,
     telegramNickname: props.cv?.telegramNickname||userContext.currentProfile?.telegramNickname, 
     cityId: props.cv?.cityId||userContext.currentProfile?.cityId,
     countryId: props.cv?.countryId||userContext.currentProfile?.countryId,
@@ -188,10 +176,11 @@ export default function Cv(props: Props) {
   })
 
   const nextPageValidator = (pageNumber?: number) => {
-    const setErr = (val: string, err?: string) => {
-      formik.setFieldTouched(val, true).then(_=>{
-        formik.setFieldError(val, err||' ')
+    const setErr = (fieldName: string, err?: string) => {
+      formik.setFieldTouched(fieldName, true).then(_=>{
+        formik.setFieldError(fieldName, err||' ')
       })
+      document.querySelector('[data-field="'+fieldName+'"]')?.scrollIntoView({block: 'center', behavior: 'smooth'})
     }
 
     switch(progress) {
@@ -223,7 +212,7 @@ export default function Cv(props: Props) {
                 appContext.showModal<ICompensationModalArgs>(ModalType.CompensationModal, args)
               },
             })
-            appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+            appContext.showSnackbar(t('create_setSpecializationAlt'), SnackbarType.error)
           }
         })()
         break
@@ -231,9 +220,8 @@ export default function Cv(props: Props) {
       case 2: {
         formik.validateField('birthday')
         .then(v => {
-          
           if(v) {
-            setErr('birthday', 'Укажите дату рождения')
+            setErr('birthday', t('create_cv_setBirthday'))
           }
           else {
             setProgress(pageNumber||progress+1)
@@ -250,7 +238,7 @@ export default function Cv(props: Props) {
           setProgress(pageNumber||progress+1)
         }
         else {
-          appContext.showSnackbar('Укажите место обучения', SnackbarType.error)
+          appContext.showSnackbar(t('create_cv_setEducationPlace'), SnackbarType.error)
           appContext.showModal<IDetailsModalProps>(ModalType.DetailsModal, {
             values: {
               educationInfo: [{
@@ -259,7 +247,7 @@ export default function Cv(props: Props) {
                 fromDate: '',
                 toDate: '',
                 toPresent: true,
-                faculity: '',
+                faculty: '',
               }]
             },
             initialValues: null,
@@ -300,25 +288,26 @@ export default function Cv(props: Props) {
     }
   }, [creationContext])
 
-  const getTitle = (t: CvNavigation): string => {
-    switch(t) {
+  const getTitle = (navigation: CvNavigation): string => {
+    switch(navigation) {
       case CvNavigation.Specialization: 
-        return 'Специализация'
+        return t('create_specialization')
       case CvNavigation.Salary:
-        return 'Уровень дохода'
+        return t('create_incomeLevel')
       case CvNavigation.Experience:
-        return 'Опыт работы'
+        return t('create_workExperience')
       case CvNavigation.Education:
-        return 'Образование'
+        return t('create_education')
       case CvNavigation.About:
-        return 'Описание'
+        return t('create_description')
       case CvNavigation.Skills:
-        return 'Навыки и инструменты'
+        return t('create_skills')
       case CvNavigation.Busyness:
-        return 'Занятость'
+        return t('create_busyness')
     }
   }
 
+  //TODO: дописать в словадь
   const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
 
   const changeComponent = (p: number) => {
@@ -352,7 +341,7 @@ export default function Cv(props: Props) {
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
-    return <Rive src={image.src} animations={image.animations}  key={image.src} artboard={image.artboards&&image.artboards[0]} className={styles.rive}/>
+    return <Rive src={image.src} animations={image.animations}  key={image.src} artboard={image.artboards&&lang.toUpperCase()} className={styles.rive}/>
   }, [progress])
 
   useEffect(()=>{
@@ -360,7 +349,6 @@ export default function Cv(props: Props) {
       creationContext.getCurrentCv(props.id, props.cv)
     }  
   }, [])
-
 
   useEffect(()=>{
     if(creationContext.activeSubCategory.length > 0 && progress === 1) {
@@ -416,10 +404,10 @@ export default function Cv(props: Props) {
         }
         setShowPreview(false)
       }} 
-      cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values}) as ICV}/>
+      cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values, assets: creationContext.helpObjects.assets}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
-      <SetTariff onPreview={()=>setShowPreview(true)} setText='Разместить резюме' onSave={(noReplace?: boolean, tariffId?: number)=>submit(formik.values, noReplace, tariffId)} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff onPreview={()=>setShowPreview(true)} setText={t('create_cv_place')} onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>
@@ -439,7 +427,7 @@ export default function Cv(props: Props) {
               title={'prev'} 
               onClick={()=>setProgress(progress-1)}
               >
-                Назад
+                {t('back')}
               </Button>
             }
             {progress < CVItemsCount &&
@@ -449,7 +437,7 @@ export default function Cv(props: Props) {
               title={'next'} 
               onClick={()=>nextPageValidator()}
               >
-                Продолжить
+                {t('continue')}
               </Button>
             }
             { progress === CVItemsCount &&
@@ -462,7 +450,7 @@ export default function Cv(props: Props) {
               type='button' 
               onClick={()=> formik.submitForm()}
               >
-                Сохранить резюме
+                {t('create_cv_save')}
               </Button>
             }
           </div>

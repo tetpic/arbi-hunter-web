@@ -25,11 +25,9 @@ export default function UserPic(props: Props) {
   
   const router = useRouter()
 
-  const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    
+  const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
     e.stopPropagation()
-    e.preventDefault()
-    
+    e.preventDefault()    
     props.link&&router.push(props.link)
     props.onClick&&props.onClick()
   }
@@ -39,7 +37,7 @@ export default function UserPic(props: Props) {
       {
       props.icon !== null && props.icon 
       ||
-      <Image src={props.image?props.image: '/icons/defaultUser.svg'} alt={'sefault user pic'} width={props.size||40} height={props.size||40}/>
+      <Image src={props.image?props.image: '/icons/defaultUser.svg'} alt={'default user pic'} width={props.size||40} height={props.size||40}/>
       }
     </div>
   )

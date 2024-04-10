@@ -1,5 +1,6 @@
-import {  PreviewImage } from 'data/interfaces/Common'
 import styles from './index.module.scss'
+
+import {  PreviewImage } from 'data/interfaces/Common'
 import Spinner from '../Spinner'
 import classNames from 'classnames'
 import CrossSvg from '@/components/svg/CrossSvg'
@@ -12,6 +13,7 @@ interface Props {
   previews: PreviewImage[],
   controller?: AbortController
   onRemove?: (rawId?: string, id?: string) => void
+  disabledRemoving?: boolean
 }
 
 export default function FilesList(props: Props) {
@@ -33,7 +35,9 @@ export default function FilesList(props: Props) {
       return (
         <div className={classNames(styles.image, (el.image?.type.includes('video')||el.data?.type === 'VIDEO')&&styles.video)}>
            {!el.loaded && <Spinner className={styles.spinner} size={24}/>}
-           <Button type='button' className={styles.removeButton} onClick={()=>{props.onRemove(el.rawId, el.id.toString())}}><CrossSvg/></Button>
+           {!props.disabledRemoving &&
+            <Button type='button' className={styles.removeButton} onClick={()=>{props.onRemove(el.rawId, el.id.toString())}}><CrossSvg/></Button>
+           }
            {(el.image?.type.includes('image')||el.data?.type === 'IMAGE') &&
              <img key={i} src={(el?.data?.source&&FILES+el?.data?.source)||el.image&&URL.createObjectURL(el.image)} alt={''}/>
            }

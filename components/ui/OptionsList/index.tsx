@@ -1,6 +1,7 @@
 import { useAppContext } from 'context/state'
 import styles from './index.module.scss'
 import { CSSProperties } from 'react'
+import classNames from 'classnames'
 
 export interface IOptionList {
   title: string, 
@@ -12,12 +13,13 @@ export interface IOptionList {
 interface Props {
   options: IOptionList[]
   onMouseLeave: () => void
+  className?: string
 }
 
 export default function OptionsList(props: Props) {
   const appContext = useAppContext()
 
-  return (<div className={styles.options} onMouseLeave={()=>props.onMouseLeave&&props.onMouseLeave()} >
+  return (<div className={classNames(styles.options, props.className)} onMouseLeave={()=>props.onMouseLeave&&props.onMouseLeave()} >
   {props.options &&
     props.options.map((el, index) => {
       return <p 
@@ -27,7 +29,6 @@ export default function OptionsList(props: Props) {
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
-        appContext.hideBottomSheet()
         el.onClick&&el.onClick(e)
       }}
       >

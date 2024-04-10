@@ -21,6 +21,9 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
+import ExitSvg from '@/components/svg/ExitSvg'
+import Button from '@/components/ui/Button'
 
 interface Props {
 }
@@ -29,61 +32,62 @@ export default function NavBar(props: Props) {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const profileType = userContext.currentProfile?.profileType
 
   const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element}} = {
     cvs: {
       path: '/profile',
       query: {page: 'cvs'},
-      text: 'Мои резюме',
+      text: t('nav_myCvs'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },
     vacancies: {
       path: '/profile',
       query: {page: 'vacancies'},
-      text: 'Мои вакансии',
+      text: t('nav_myVacancies'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },
     feedBacksEmp: {
       path: '/profile',
       query: {page: 'feedbacks'},
-      text: 'Мои отклики',
+      text: t('nav_myFeedbacks'),
       icon: <ChatFeedbackSvg className={styles.linkSvg}/>
     },
     feedBacksHir: {
       path: '/responses',
-      text: 'Мои отклики',
+      text: t('nav_myFeedbacks'),
       icon: <ChatFeedbackSvg className={styles.linkSvg}/>
     },
     messages: {
       path: '/messenger',
-      text: 'Сообщения',
+      text: t('nav_messenger'),
       icon: <MessageSvg className={styles.linkSvg}/>
     },
     shop: {
       path: '/shop',
-      text: 'Магазин',
+      text: t('nav_shop'),
       icon: <ShopSmallSvg className={styles.linkSvg}/>
     },
     settings: {
       path: '/settings',
-      text: 'Настройки',
+      text: t('nav_settings'),
       icon: <SettingSvg className={styles.linkSvg}/>
     },
     personality: {
       path: '/profile',
       query: {page: 'edit'},
-      text: 'Персонаж',
+      text: t('nav_character'),
       icon: <ManSvg className={styles.linkSvg}/>
     },
     managers: {
       path: '/managers',
-      text: 'Менеджеры',
+      text: t('nav_managers'),
       icon: <UserDoubleSvg className={styles.linkSvg}/>
     },
     knowledge: {
       path: '/base',
-      text: 'База знаний',
+      text: t('nav_knowlegdeBase'),
       icon: <QuestionSvg className={styles.linkSvg}/>
     }
   }
@@ -121,7 +125,7 @@ export default function NavBar(props: Props) {
           <ArbiLogoTextSvg className={styles.linkText}/>
         </Link>
 
-        <Link aria-label='to chats'  className={classNames(styles.coloredLink, styles.link)} href={'/profile?page=shop'}>
+        <Link aria-label='to shop'  className={classNames(styles.coloredLink, styles.link)} href={'/shop'}>
           <div className={classNames(styles.coloredIcon, styles.icon)}>
             <WalletSvg className={styles.linkSvg}/>
           </div>
@@ -134,16 +138,26 @@ export default function NavBar(props: Props) {
           .map((el, i)=> {
             return (
               <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path + i}>
-                <div className={classNames(styles.icon, activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)}>
+                <Button className={styles.buttonIcon} altStyleType={['icon','white', 'invertSvg']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'black']} >
                   {el.icon}
-                </div>
-                <p className={styles.linkText}>{el.text}</p>
+                </Button>
+                <P useThemeColor className={styles.linkText}>{el.text}</P>
               </Link>
             )
           })
         }
+        <div 
+        className={classNames(styles.exitButton, styles.link)}
+        onClick={()=>userContext.logout()}
+        >
+          <Button className={styles.buttonIcon} styleType={['icon','black']} altStyleType={['icon','whitePurple']} >
+            <ExitSvg/>
+          </Button>
+          <P useThemeColor className={styles.linkText}>{t('logout')}</P>
+        </div>
+
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
-          <p >Ночной режим</p>
+          <P useThemeColor >Ночной режим</P>
           <Switch
           onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
           checked={appContext.theme ===AppTheme.Dark}

@@ -7,6 +7,11 @@ export interface IPersonalPageBlock {
   order?: number,
   title?: string,
   assets?: number[]
+  layout?: any
+  assetsList?: number[][]
+  texts?: string[]
+  titles?: string[]
+  color?: string[]
 }
 
 

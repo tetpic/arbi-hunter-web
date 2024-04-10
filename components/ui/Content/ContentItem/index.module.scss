@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .root {  
-  background-color: $black;
+  background-color: var(--backColorAlt);
   padding: 16px;
   border-radius: 32px;
   width: 100%;

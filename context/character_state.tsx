@@ -9,7 +9,7 @@ import { SnackbarType } from 'types/enums'
 import { useRouter } from 'next/router'
 
 interface IState {
-  init: ()=> void,
+  init: ()=> Promise<boolean>,
   modelLoaded: boolean,
   setModelLoad: Dispatch<SetStateAction<boolean>>
   activeSet: [ICharCategory, ICharItem[]],
@@ -62,7 +62,7 @@ export function CharacterWrapper(props: Props) {
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
   const [durations, setDurations ] = useState<{[key: string]: number}>({})
 
-  const init = async() => {
+  const init = async():Promise<boolean> => {
     if(!userContext.currentProfile) {
       return    
     }
@@ -76,7 +76,7 @@ export function CharacterWrapper(props: Props) {
 
     const sortedCategories = categoriesList.sort((a, b)=> a.sort-b.sort)
 
-    if(categoriesList) {
+    if(categoriesList && categories.size === 0) {
       setCategoriesState(state=> {
         sortedCategories.forEach(category=> {
           state.set(category, itemsList.filter(item => item.categoryId === category.id))
@@ -108,20 +108,23 @@ export function CharacterWrapper(props: Props) {
       setVariantState(setItems)
       setChoosenItemsState(state=> {
         state.clear()
-        currentChar.items.forEach(el=> el.gender===currentChar.gender&&state.set(el.category.id, el))
+        currentChar.items.forEach(el=> el.gender===currentChar.gender&&state.set(el.category.id, itemsList.find(e => e.id === el.id)))
         return new Map(state)
       })
     }
+    setDataLoaded(true)
     if(!currentChar) {
       setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
+      return false
     }
-    setDataLoaded(true)
+    
+    return currentChar.purchased
   }
 
   const buyCharacter = async():Promise<boolean> => {
+    await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
     return CharacterRepository.buyCharacter()
     .then(res => {
-      debugger
       return true
     })
     .catch(err => {
@@ -171,7 +174,11 @@ export function CharacterWrapper(props: Props) {
     .then(res=> {
       return res.id
     })
+    
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
+    await Promise.all([...choosenItems.values()].filter(el => el.isLocked).map(item => {
+      return CharacterRepository.buyItem(item.id)
+    }))
     CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .then(res=> {
       appContext.showSnackbar('Изображение сохранено', SnackbarType.success)

@@ -20,6 +20,8 @@ import ChevronDownSvg from '@/components/svg/ChevronDownSvg'
 import { useLocationContext } from 'context/location_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { ICityModalArgs } from '@/components/modals/CityModal'
+import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -34,6 +36,7 @@ export default function SideFilterHirer(props: Props) {
   const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
   const [showMore, setShowMore] = useState(false)
+  const {t} = useTranslation()
 
 
   const formik = useFormik<IVacancyCvSearchParams>({
@@ -297,9 +300,9 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'employment'} 
           options={[
-            {value: EmploymentType.FullTime, label: 'Полная занятость'},
-            {value: EmploymentType.PartTime, label: 'Частичная занятость'},
-            {value: EmploymentType.Project, label: 'Проектная работа'}
+            {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
+            {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
+            {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -314,9 +317,9 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'schedule'} 
           options={[
-            {label: 'Полный день', value: ScheduleType.FullDay},
-            {label: 'Гибкий график', value: ScheduleType.Flexible},
-            {label: 'Удаленная работа', value: ScheduleType.Remote},
+            {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
+            {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
+            {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
           ]} 
           />
           {isTabletWidth&&<Spacer basis={4}/>}

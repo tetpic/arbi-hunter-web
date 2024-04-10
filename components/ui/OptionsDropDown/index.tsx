@@ -8,11 +8,12 @@ interface Props {
   isLast?: boolean
   getRef:(r: HTMLDivElement) => void
   onClose: () => void
+  className?: string
 }
 
 export default function OptionsDropDown(props: Props) {
 
-  return (<div ref={r=> props.getRef(r)} className={classNames(styles.modalWrapper, props.active&&styles.modalWrapper_active)}>
+  return (<div ref={r=> props.getRef(r)} className={classNames(styles.modalWrapper, props.active&&styles.modalWrapper_active, props.className)}>
   <OptionsModal isLast={props.isLast}  onClose={props.onClose}>
     {props.options}
   </OptionsModal>

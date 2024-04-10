@@ -17,6 +17,8 @@ import { useAppContext } from 'context/state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import { IChatsFilter } from 'data/interfaces/IChat'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   isBottomSheet?: boolean
@@ -24,12 +26,24 @@ interface Props {
 }
 
 enum Pages {
-  Main= 'Поиск по фильтрам',
-  Vacancies= 'Чаты по вакансиям',
-  Status= 'Статус отклика',
-  Activity= 'Активность чатов'
+  Main= 'main',
+  Vacancies= 'vacancies',
+  Status= 'status',
+  Activity= 'activity'
 }
 
+const pagesTitleTranslations = (p: Pages, t: Translate) => {
+  switch(p) {
+    case Pages.Main:
+      return t('chatFilterModal_title_main')
+    case Pages.Activity:
+      return t('chatFilterModal_title_activity')
+    case Pages.Status:
+      return t('chatFilterModal_title_status')
+    case Pages.Vacancies:
+      return t('chatFilterModal_title_vacancies')
+  }
+}
 
 
 
@@ -41,7 +55,7 @@ export interface IChatFilterModalProps {
 }
 
 export default function ChatFilterModal(props: Props) {
-
+  const {t} = useTranslation()
   const [currentPage, setCurrentPage] = useState<Pages>(Pages.Main)
   const appContext = useAppContext()
   const args: IChatFilterModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
@@ -65,15 +79,15 @@ export default function ChatFilterModal(props: Props) {
   const main = (<>
     <div className={styles.filters}>
       <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Vacancies)}>
-        Чаты по вакансиям
+        {t('chatFilterModal_title_vacancies')}
         <ArrowRightSvg/>
       </p>
       <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Status)}>
-        Статус отклика
+        {t('chatFilterModal_title_status')}
         <ArrowRightSvg/>
       </p>
       <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Activity)} >
-        Активность чатов
+        {t('chatFilterModal_title_activity')}
         <ArrowRightSvg/>
       </p>
     </div>
@@ -87,17 +101,17 @@ export default function ChatFilterModal(props: Props) {
   <RadioListField
   wrapperClassName={styles.radioWrapper}
   options={[
-    {value: 'all', label: 'Все этапы подбора'},
-    {value: ApplicationStatus.Applied, label: 'Неразобранные'},
-    {value: ApplicationStatus.Accepted, label: 'Приглашение'},
-    {value: ApplicationStatus.Rejected, label: 'Отказ'},
+    {value: 'all', label: t('chatFilterModal_allStages')},
+    {value: ApplicationStatus.Applied, label: t('chatFilterModal_unsorted')},
+    {value: ApplicationStatus.Accepted, label: t('chatFilterModal_accepted')},
+    {value: ApplicationStatus.Rejected, label: t('chatFilterModal_rejected')},
   ]} 
   name={'status'}/>
   </>)
 
   const activity = (<>
     <p className={styles.activity}>
-      Показать только непрочитанные 
+      {t('chatFilterModal_showUnread')} 
       <SwitchField 
       onColor={colors.green}
       offColor={colors.greyLight}
@@ -106,7 +120,7 @@ export default function ChatFilterModal(props: Props) {
       name={'unreaded'}/>
     </p>
     <p className={styles.activity}>
-      Показать неактивные чаты 
+      {t('chatFilterModal_showUnactive')} 
       <SwitchField 
       name={'inactive'}
       onColor={colors.green}
@@ -139,16 +153,16 @@ export default function ChatFilterModal(props: Props) {
 
   const body = (<div className={styles.body}>
     <p className={styles.title}>
-      {currentPage}
+      {pagesTitleTranslations(currentPage, t)}
       <Button className={styles.closeButton} onClick={onCloseHandler}><CrossSvg/></Button>
     </p> 
     <FormikProvider value={formik}>
-      <Form>
+      <Form className={styles.form}>
         {currentElement()}
         {currentPage === Pages.Main &&
           <div className={styles.buttons}>
-            <Button type='button' onClick={args.onClear} className={styles.greyButton}>Oчистить</Button>
-            <Button type='submit' className={styles.yellowButton}>Применить</Button>
+            <Button type='button' onClick={args.onClear} className={styles.greyButton}>{t('clear')}</Button>
+            <Button type='submit' className={styles.yellowButton}>{t('apply')}</Button>
           </div>
         }
       </Form>

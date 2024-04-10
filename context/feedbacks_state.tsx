@@ -9,6 +9,7 @@ import { createContext, Dispatch, SetStateAction, useContext, useEffect, useStat
 import { EducationTypes, Genders, ProposalRequestType, WorkExperience } from 'types/enums'
 import { arrayFromEnum, TranslateEducationType, TranslateGenderType, TranslateWorkExperience } from 'utils/enumsTranslations'
 import { useUserContext } from './user_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   currentVacancy: IVacancy
@@ -49,6 +50,7 @@ interface Props {
 
 export function FeedbacksWrapper(props: Props) {
   const userContext = useUserContext()
+  const {t} = useTranslation()
 
   const [currentCvResponses, setCurrentCvResponsesState] = useState<{cvId?: number, vacancyId?: number}>({})
 
@@ -228,7 +230,7 @@ export function FeedbacksWrapper(props: Props) {
         return {type:p, items: arr, translatedItems: ['от 18 до 30 лет', 'от 30 до 40 лет', 'от 40 до 50 лет', 'больше 60 лет'], activeItem: null, translatedActiveItem: null,  translation: 'Возраст'}
       case FilterItems.Education:
         arr = arrayFromEnum(EducationTypes)
-        return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el)), activeItem: null, translatedActiveItem: null, translation: 'Образование'}
+        return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el, t)), activeItem: null, translatedActiveItem: null, translation: 'Образование'}
       case FilterItems.Experience:
         arr = arrayFromEnum(WorkExperience)
         return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el)), activeItem: null, translatedActiveItem: null,  translation: 'Опыт'}

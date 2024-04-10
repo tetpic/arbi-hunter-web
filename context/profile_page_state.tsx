@@ -11,6 +11,7 @@ import EditMessageSvg from 'components/svg/EditMessageSvg'
 import UsersSvg from 'components/svg/UsersSvg'
 import HeartSvg from 'components/svg/HeartSvg'
 import PencilSvg from 'components/svg/PencilSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 export enum ProfilePages {
@@ -50,7 +51,7 @@ const ProfilePageContext = createContext<Partial<IState>>({})
 
 
 export function ProfilePageWrapper(props: Props) {
-
+  const {t} = useTranslation()
   const router = useRouter()
   const userContext = useUserContext()
   const profileType = userContext?.currentProfile?.profileType||null
@@ -92,31 +93,31 @@ export function ProfilePageWrapper(props: Props) {
     result = Object.values(availablePages).map(page => {
       switch(page) {
         case ProfilePages.Shop:
-        return {name: 'Магазин', type: page, icon: <ShopSvg/>}
+        return {name: t('profile_title_shop'), type: page, icon: <ShopSvg/>}
 
         case ProfilePages.Vacancies:
-        return {name: 'Вакансии', type: page, icon: <FolderSvg/>}
+        return {name: t('profile_title_vacancies'), type: page, icon: <FolderSvg/>}
 
         case ProfilePages.Edit:
-        return {name: 'Редактировать профиль', type: page, icon: <SettingsSvg/>}
+        return {name: t('profile_title_editProfile'), type: page, icon: <SettingsSvg/>}
 
         case ProfilePages.FeedBacks:
-        return {name: 'Отклики', type: page, icon: <EditMessageSvg/>}
+        return {name: t('profile_title_feedbacks'), type: page, icon: <EditMessageSvg/>}
 
         case ProfilePages.Cvs:
-        return {name: 'Мои резюме', type: page, icon: <FolderSvg/>}
+        return {name: t('profile_title_myCVs'), type: page, icon: <FolderSvg/>}
 
         case ProfilePages.Managers:
-        return {name: 'Менеджеры вакансий', type: page, icon: <UsersSvg/>}
+        return {name: t('profile_title_managers'), type: page, icon: <UsersSvg/>}
 
         case ProfilePages.Saved:
-        return {name: 'Сохранённое', type: page, icon: <HeartSvg/>}
+        return {name: t('profile_title_saved'), type: page, icon: <HeartSvg/>}
 
         case ProfilePages.Patterns:
-        return {name: 'Шаблоны писем', type: page, icon: <EditMessageSvg/>}
+        return {name: t('profile_title_patterns'), type: page, icon: <EditMessageSvg/>}
 
         case ProfilePages.Personal:
-        return {name: 'Личная информация', type: page, icon: <PencilSvg/>}
+        return {name: t('profile_title_personalInfo'), type: page, icon: <PencilSvg/>}
       }
     })
     return result

@@ -8,6 +8,7 @@ import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
 import P from '../P'
 import { AppTheme } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   title: string|JSX.Element
@@ -28,11 +29,14 @@ interface Props {
  * @onBackClick ()=>void
  * @showButton boolean 
  * @link string
+ * @rightButton ?: JSX.Element
+ * @onAllWatchClick ?: ()=>void
  */
 export default function Title(props: Props) {
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
 
   return (
@@ -49,7 +53,11 @@ export default function Title(props: Props) {
         <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>Все <ArrowRightSvg color={isLightTheme&&'black'}/></Link>
       }
       {isTabletWidth && props.onAllWatchClick && 
-        <div className={classNames(styles.link, props.itemClassName)} onClick={props.onAllWatchClick}><P useThemeColor>Все</P> <ArrowRightSvg color={isLightTheme&&'black'}/></div>
+        <div 
+        className={classNames(styles.link, props.itemClassName)} 
+        onClick={props.onAllWatchClick}>
+          <P useThemeColor>{t('watchAllAlt')}</P> <ArrowRightSvg color={isLightTheme&&'black'}/>
+        </div>
       }
       {props.rightButton}
     </div>

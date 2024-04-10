@@ -19,6 +19,7 @@ import { useCharacterContext } from 'context/character_state'
 import { ModelActions } from '../../profile/userProfile/UserEditor'
 import { IBackgroundSwitchModalArgs } from '@/components/modals/BackgroundSwitchModal'
 import { IBackgroundPickModalArguments } from '@/components/modals/BackgroundPickModal'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   isEditing?: boolean
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function PersonalHeader(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const personalContext = usePersonalContext()
   const userContext = useUserContext()
@@ -42,27 +44,7 @@ export default function PersonalHeader(props: Props) {
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
     const cBuild = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
-    const cnt = personalContext
-    
 
-    // if(currentProfile.profileType === ProfileType.Employee) {
-    //   appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
-    //     currentBackground: cBack?.image|| null,
-    //     currentBuild: cBuild?.image || null,
-    //     hirerLogo: null,
-    //     withBuildPicker: false,
-    //     onSave: (background, building) => {
-    //       BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
-    //       .then(_ => {
-    //         personalContext.refreshBackgrounds()
-    //       })
-    //       if(currentProfile.profileType === ProfileType.Hirer) {
-    //         userContext.editCurrentProfile({imageId: building?.image?.id||null})        
-    //       }
-    //     }
-    //   })
-    // } 
-    // else {
       appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, {
         onSave: (data) => {
           if(data.type === 'place') {
@@ -72,8 +54,7 @@ export default function PersonalHeader(props: Props) {
                 currentBuild: cBuild?.image || null,
                 hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
                 withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
-                onSave: (background, building) => {
-                  
+                onSave: (background, building) => {                  
                   BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
                   .then(_ => {
                     personalContext.refreshBackgrounds()
@@ -86,47 +67,34 @@ export default function PersonalHeader(props: Props) {
             }, 100)
           }
           else if(data.type === 'custom' && data.image) {
-            
-            
             BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
             .then(res => {
-              
               BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile.profileType)
               .then(r=> {               
                 personalContext.refreshBackgrounds()
                 if(userContext.currentProfile.profileType === ProfileType.Hirer) {                  
                   userContext.editCurrentProfile({useOwnLogo: true})        
                 }
-
               })
             })
-          }
-          // 
-          // BackgroundRepository.setBackgrounds({backgroundsIds: [data.image?.data?.id]}, currentProfile.profileType)
-          // .then(_ => {
-          //   personalContext.refreshBackgrounds()
-          // })
-          // if(currentProfile.profileType === ProfileType.Hirer) {
-          //   userContext.editCurrentProfile({imageId: data.image?.data?.id})        
-          // }
+          }          
         },
         currentBackground: cBack||null,
       })
-    // }
   }
 
   const editingButton = (()=>{
     if(!isTabletWidth) {
       return <div className={styles.editButton} onClick={openBackgroundPickModal}>
-      Изменить фон <EditPencilSvg/>
+      {t('personal_changeBackground')} <EditPencilSvg/>
       </div>
     }
     else {
-      return <div className={styles.editButton}>
+      return <div className={styles.editButton} onClick={openBackgroundPickModal}>
       <DownloadCloudSvg color='white'/>
       <div>
-        <p>Изменить баннер</p>      
-        <span>Фото, видео, gif</span>      
+        <p>{t('personal_changeBanner')}</p>      
+        <span>{t('personal_photoVideoGif')}</span>      
       </div>
       </div>
     }
@@ -140,12 +108,24 @@ export default function PersonalHeader(props: Props) {
 
   const transportRive = useMemo(()=>{
     if(!personalContext.transport) return null
-    return <Rive stateMachines={'State Machine 1'}  key={personalContext.transport.id} className={styles.transport} src={FILES + personalContext.transport.image.source} animations={personalContext.transport.riveKeys.map(el=> el.key)}/>
+    return <Rive 
+    stateMachines={'State Machine 1'}  
+    key={personalContext.transport.id} 
+    className={styles.transport} 
+    src={FILES + personalContext.transport.image.source} 
+    animations={personalContext.transport.riveKeys.map(el=> el.key)}
+    />
   }, [personalContext.transport])
 
   const weatherRive = useMemo(()=>{
     if(!personalContext.weather) return null
-    return <Rive stateMachines={'State Machine 1'} key={personalContext.weather.id} className={styles.rive} src={FILES + personalContext.weather.image.source} animations={personalContext.weather.riveKeys.map(el=> el.key)}/>
+    return <Rive 
+    stateMachines={'State Machine 1'} 
+    key={personalContext.weather.id} 
+    className={styles.rive} 
+    src={FILES + personalContext.weather.image.source} 
+    animations={personalContext.weather.riveKeys.map(el=> el.key)}
+    />
   }, [personalContext.weather])
 
 
@@ -158,13 +138,6 @@ export default function PersonalHeader(props: Props) {
     width={1148} 
     height={300} />
     ||
-    // personalContext.currentProfile.useOwnLogo && personalContext.currentProfile.image && profileType===ProfileType.Hirer &&
-    // <Image 
-    // src={FILES + personalContext.currentProfile.image.source} 
-    // className={styles.background} alt={'moscow'} 
-    // width={1148} 
-    // height={300} />
-    // ||
     backImage && profileType===ProfileType.Employee &&
     <Image 
     src={FILES + backImage.image.source} 
@@ -173,7 +146,6 @@ export default function PersonalHeader(props: Props) {
     width={1148} 
     height={300} />
     ||
-    // profileType===ProfileType.Hirer &&
     <Image 
     src={personalContext.currentProfile?.profileType===ProfileType.Hirer?'/images/cities/companyDefaultBack.png':'/images/rooms/coworking.png'} 
     className={styles.background} alt={'moscow'} 
@@ -215,7 +187,8 @@ export default function PersonalHeader(props: Props) {
         />
       </>
       }
-      {personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && !props.useModel && personalContext.currentProfile?.logo &&
+      {personalContext.currentProfile.profileType === ProfileType.Employee 
+      && personalContext.currentProfile.useOwnLogo && !props.useModel && personalContext.currentProfile?.logo &&
         <Image
         className={styles.userLogo}
         src={FILES + personalContext.currentProfile.logo.source}
@@ -224,28 +197,17 @@ export default function PersonalHeader(props: Props) {
         height={370}
         />
         ||
-        personalContext.currentProfile.profileType === ProfileType.Employee && personalContext.currentProfile.useOwnLogo && props.useModel &&
+        personalContext.currentProfile.profileType === ProfileType.Employee 
+        && personalContext.currentProfile.useOwnLogo && props.useModel &&
         <div className={styles.modelWrapper} >
           <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
           {characterContext.variant &&  characterContext.dataLoaded &&
-            <ThreeModelVariant disableControls  data={characterContext.variant } actions={props.action} r={4}/> 
+            <ThreeModelVariant disableControls  data={characterContext.variant } actions={props.action} r={0}/> 
           }
         </div>
       </div>
-  
       }
-
-
-
     </div>
-    {/* {personalContext.currentProfile?.image &&
-      <Image 
-      className={styles.userPic} 
-      src={personalContext.currentProfile?.image&& FILES+ personalContext.currentProfile?.image.source} 
-      alt={'user Picture'} 
-      width={300} 
-      height={300}/>
-    } */}
     {props.isEditing &&  editingButton }
   </div>)
 }

@@ -13,8 +13,8 @@ interface IState {
   setPersonalPage: (data?: {profileId?: number, profile?: IUserProfile}) => Promise<IUserProfile>
   personalPage: IPersonalPage
   updatePersonalPage: (data?: Partial<IPersonalPageBlock[]>) => Promise<IPersonalPage>
-  blocks: Map<number, {block: IPersonalPageBlock, assets: IFile[]}>
-  setBlocks: Dispatch<SetStateAction<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>>
+  blocks: Map<number, {block: IPersonalPageBlock, assets?: IFile[]}>
+  setBlocks: Dispatch<SetStateAction<Map<number, {block: IPersonalPageBlock, assets?: IFile[], layout?: any}>>>
   currentProfile: IUserProfile,
   backgrounds: Map<number, IBackground>
   refreshBackgrounds: () => void
@@ -34,7 +34,7 @@ interface Props {
 export function PersonalWrapper(props: Props) {
   const userContext = useUserContext()
   const [personalPage, setPersonalPageState] = useState<IPersonalPage>(null)
-  const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets: IFile[]}>>(new Map)
+  const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets?: IFile[], layout?: any}>>(new Map)
   const [currentProfile, setCurrentProfile] = useState<IUserProfile>(null) 
   const [backgrounds, setBackgroundsState] = useState<Map<BackgroundCategoryType, IBackground>>(undefined)
   const [weather, setWeater] = useState<IBackground>()
@@ -114,6 +114,7 @@ export function PersonalWrapper(props: Props) {
 
   const updatePersonalPage = async (): Promise<IPersonalPage> => {
     const orderedBlocks = [...blocks.values()].map((el, index)=> ({...el.block, order: index+1}))
+    debugger
     if(personalPage === undefined) {
       return PersonalRepository.createPersonalPage(orderedBlocks)
       .then(res=> {

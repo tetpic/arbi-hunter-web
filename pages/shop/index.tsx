@@ -11,7 +11,7 @@ interface Props {
 export default function ShopPage(props: Props) {
 
   return (
-    <ContentLayout>
+    <ContentLayout withMobileMenu>
       <TariffWrapper>
       <VacancyWrapper>
       <CvWrapper>

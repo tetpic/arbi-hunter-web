@@ -7,6 +7,11 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
+import { useTariffContext } from 'context/tariff_state'
+import { PurchaseType } from 'types/enums'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -17,26 +22,29 @@ enum CVNavigation {
   Archive = 'archive',
 }
 
-function translate (n: CVNavigation) {
+function translate (n: CVNavigation, t: Translate) {
   switch(n) {
     case CVNavigation.Active:
-      return 'Активные'
+      return t('profile_active')
     case CVNavigation.Drafts:
-      return 'Черновики'
+      return t('profile_drafts')
     case CVNavigation.Archive:
-      return 'Архив'
+      return t('profile_archive')
   }
 }
 
 export default function CVs(props: Props) {
+  const {t} = useTranslation()
   const cvContext = useCvContext()
   const userContext = useUserContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
-  const items = Object.values(CVNavigation).map(el=> {return {name: translate(el), type: el}})
+  const items = Object.values(CVNavigation).map(el=> {return {name: translate(el, t), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
+  const tariffContext = useTariffContext()
 
   useEffect(()=>{
     cvContext.setSavedCvs()
+    tariffContext.setPackets([PurchaseType.CvTariff])
   }, [])
 
   useEffect(()=>{
@@ -57,12 +65,6 @@ export default function CVs(props: Props) {
     }
   }, [activeItem, cvContext.savedCvs])
 
-  // useEffect(()=>{
-  //   console.log(filteredCvs);
-    
-  // }, [filteredCvs])
-
-
   return (
     <div className={styles.root}> 
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
@@ -78,7 +80,7 @@ export default function CVs(props: Props) {
         />
       )
       ||
-      <p className={'empty'}>Нет созданных резюме</p>
+      <P useThemeColor className={'empty'}>{t('profile_cvs_empty')}</P>
       }
       <Spacer basis={24}/>
     </div>

@@ -80,6 +80,8 @@ export interface IUser extends TimeStamp {
   blockedUntil: string|null,
   profiles: IUserProfile[]
   company?: string|null,
+  firstName?: string|null,
+  lastName?: string|null,
 }
 
 

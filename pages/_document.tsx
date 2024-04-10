@@ -17,6 +17,7 @@ class MyDocument extends Document {
 
     return initialProps
   }
+  
   render() {
     return (
       <Html>
@@ -33,7 +34,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content={colors.backgroundBlack}/>
         </Head>
 
-        <body>
+        <body data-theme="dark" id='body'>
           <Main />
           <NextScript />
 

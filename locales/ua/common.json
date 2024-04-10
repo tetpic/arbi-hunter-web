@@ -1,0 +1,40 @@
+{
+  "search": "Пошук",
+  "employee": "Employee",
+  "hirer": "Company",
+  "search_cv": "Search CV",
+  "search_vacancy": "Search vacancies",
+  "cv": "CV",
+  "vacancy": "Vacancy",
+  "create_cv": "Create CV",
+  "create_vacancy": "Create vacancy",
+  "country": "Країна",
+
+
+  "settings": "Налаштування",
+  "settings_access": "Налаштування доступу",
+  "settings_site": "Site settings",
+  "settings_personal": "Персональна iнформацiя",
+  "settings_blackList": "Чорний список",
+  "settings_notification": "Повiдомлення",
+  "settings_patterns": "Patterns",
+
+  "nav_myCvs": "My CVs",
+  "nav_myVacancies": "My vacancies",
+  "nav_myFeedbacks": "Feedbacks",
+  "nav_messenger": "Messenger",
+  "nav_character": "Character",
+  "nav_knowlegdeBase": "Knowledge base",
+  "nav_shop": "Shop",
+  "nav_settings": "Settings",
+  "nav_managers": "Managers",
+
+
+
+
+
+  "app_language": "App language",
+  "ru": "Русский",
+  "en": "English",
+  "ua": "Українська"
+}

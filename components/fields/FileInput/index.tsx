@@ -12,7 +12,10 @@ interface Props {
   setImages: (imageData: PreviewImage) => void
   getController?: (controller: AbortController) => void
   accept?: string[]
-  multiple?: boolean}
+  multiple?: boolean
+  name?: string
+}
+  
 
 export default function FileInput(props: Props) {
   const appContext = useAppContext()
@@ -40,5 +43,5 @@ export default function FileInput(props: Props) {
   }
 
 
-  return (<input accept={props.accept?.length > 0?props.accept?.join(', '):'*/*'} type="file" multiple={props.multiple??true} className={styles.input} onChange={onChangeInput} />)
+  return (<input name={props.name} accept={props.accept?.length > 0?props.accept?.join(', '):'*/*'} type="file" multiple={props.multiple??true} className={styles.input} onChange={onChangeInput} />)
 }

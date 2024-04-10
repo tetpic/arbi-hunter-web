@@ -46,17 +46,17 @@ export default function Buildings(props: Props) {
   //todo: отрефакторить условия
   return (
   <div className={styles.imageSettings}>
-    {(props.background || props.useDefaultImage) && props.profile.profileType === ProfileType.Hirer &&
+    {(props.background || props.useDefaultImage) && props.profile?.profileType === ProfileType.Hirer &&
       <Image className={styles.background} src={props.background?FILES + props.background.image.source:'/images/cities/newyork.png'} alt={'back'} width={770} height={300} />
       ||
-      props.profile.useOwnLogo && props.profile.profileType === ProfileType.Hirer && props.profile.image &&
+      props.profile?.useOwnLogo && props.profile?.profileType === ProfileType.Hirer && props.profile?.image &&
       <Image className={styles.background} src={FILES+ props.profile.image.source} alt={'back'} width={770} height={300} />
-      ||props.profile.profileType === ProfileType.Employee && props.background &&
+      ||props.profile?.profileType === ProfileType.Employee && props.background &&
       <Image className={styles.background} src={FILES+ props.background.image.source} alt={'back'} width={770} height={300} />
 
     }
     {
-      props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile.useOwnLogo &&
+      props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile?.useOwnLogo &&
       <div className={styles.buildingWrapper}>
         <Image className={styles.building} src={FILES + props.profile?.image.source} width={250} height={300} alt={''}/>
         <Image 
@@ -76,8 +76,8 @@ export default function Buildings(props: Props) {
       />
     }
 
-    {props.profile.profileType === ProfileType.Hirer&&weatherRive}
-    {props.profile.profileType === ProfileType.Hirer&&transportRive}
+    {props.profile?.profileType === ProfileType.Hirer&&weatherRive}
+    {props.profile?.profileType === ProfileType.Hirer&&transportRive}
   </div>
   )
 }

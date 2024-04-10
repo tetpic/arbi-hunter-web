@@ -7,17 +7,15 @@ import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalTy
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
-import languages from '@cospired/i18n-iso-languages'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
-import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType,  TranslateCurrency,  TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { TranslateCompensationType,  TranslateCurrency,  TranslateEducationType,  TranslateEmploymentType,  TranslateLanguage,  TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import P from '@/components/ui/P'
@@ -28,6 +26,9 @@ import Title from '@/components/ui/TitleForSection'
 import { useSourcesContext } from 'context/sources_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { useLocationContext } from 'context/location_state'
+import useTranslation from 'next-translate/useTranslation'
+import AddButton from '@/components/ui/AddButton'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -35,6 +36,7 @@ interface Props {
 }
 
 export default function FilterHirer(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const creationContext = useCreateVcCvContext()
@@ -42,23 +44,27 @@ export default function FilterHirer(props: Props) {
   const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
 
+  const initialValues:IVacancyCvSearchParams = {
+    employment: [],
+    schedule: [],
+    compensation: undefined,
+    forLastNumberOfDays: undefined,
+    languageKnowledges: [],
+    experience: [],
+    categories: [],
+    salaryMax: undefined,
+    salaryMin: undefined,
+    currency: undefined,
+    vacancyLookType: undefined,
+    countries: [],
+    cities: [],
+    education: [],
+    search: undefined,
+  }
+
   const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
-      employment: [],
-      schedule: [],
-      compensation: undefined,
-      forLastNumberOfDays: undefined,
-      languageKnowledges: [],
-      experience: [],
-      categories: [],
-      salaryMax: undefined,
-      salaryMin: undefined,
-      currency: undefined,
-      vacancyLookType: undefined,
-      countries: [],
-      cities: [],
-      education: [],
-      search: undefined,
+      ...initialValues,
       ...props.initialFields
     },
     onSubmit: props.onFilterChange
@@ -105,6 +111,7 @@ export default function FilterHirer(props: Props) {
         const newObject = {...creationContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         creationContext.setHelpObjects(newObject)
         appContext.hideModal()
+        appContext.hideBottomSheet()
       },
       data: [...sourcesContext[t.type].values()],
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
@@ -134,7 +141,7 @@ export default function FilterHirer(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
+      initials: formik.values.countries?.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
@@ -147,10 +154,6 @@ export default function FilterHirer(props: Props) {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== category.id):state)
     formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category.id))
   }
-  
-  useEffect(()=>{
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-  }, [])
 
   useEffect(()=>{
       const _newGeos: Map<number, ISource> = new Map()
@@ -171,10 +174,9 @@ export default function FilterHirer(props: Props) {
           activeSources: _newSources,
           activeGeos: _newGeos,
           activeVerticals: _newVerticals,
-          countries: props.initialFields?.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+          countries: props.initialFields?.countries?.map(el => locationContext.countries.get(el)).filter(Boolean)||[],
         }
-      )
-      
+      )      
   }, [props.initialFields])
 
 
@@ -192,43 +194,45 @@ export default function FilterHirer(props: Props) {
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
+
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <Title title={'Поиск резюме'}/>
-      <MainSearchBar initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
+      <MainSearchBar fullWidth initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>
       <Form>
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Специализация:
+            {t('filters_specs')}
           </p>
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory.length === 0 && 
+          {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && 
             <P styleType={['medium', 'w500']}>
-              Любая
+              {t('filters_any')}
             </P>
           }
-          {creationContext.activeSubCategory.length > 0 &&
+          {creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
             creationContext.activeSubCategory.map(el=> {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
             })
           }
           {!isTabletWidth &&
-            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={()=>openSpecializationModal()}
             >
-              Указать специализации
+              {t('filters_addSpecs')}
             </P>
+            ||
+            <AddButton className={styles.addButton} text={t('filters_addSpecs')} onClick={()=>openSpecializationModal()}/>
           }
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle}>
-            Зарплата:
+            {t('filters_salary')}
           </p>
           <div className={styles.itemContent}>
             <div className={styles.inputsWrapper}>
@@ -243,7 +247,7 @@ export default function FilterHirer(props: Props) {
               labelType={'static'}
               labelClassName={styles.label}
               priceFormatting
-              error='Одно из полей должно быть заполнено'
+              error={t('filters_oneFieldShouldBeFilled')}
               suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
               />
               <span> – </span>
@@ -258,7 +262,7 @@ export default function FilterHirer(props: Props) {
               name={'salaryMax'} 
               label={'до'} 
               priceFormatting
-              error='Одно из полей должно быть заполнено'
+              error={t('filters_oneFieldShouldBeFilled')}
               suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
               />
             </div>
@@ -276,13 +280,12 @@ export default function FilterHirer(props: Props) {
             label={TranslateCompensationType(CompensationType.Contract)} 
             value={CompensationType.Contract} 
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
           </div>
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>Показать период</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+            <span>{t('filters_showPeriod')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
           </p>
             <RadioListField 
             name={'forLastNumberOfDays'}
@@ -294,29 +297,26 @@ export default function FilterHirer(props: Props) {
               })         
             ]} 
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>Статус поиска</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>}
+            <span>{t('filters_vacancyLookType')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
           </p>
-            <RadioListField 
+            <CheckboxListField 
             name={'vacancyLookType'}
             rootClass={styles.radioField}
             options={[
-              // {value: undefined, label: 'Без статуса поиска'},
-              {value: VacancyLookType.NotLooking, label: 'Не ищет работу'},
-              {value: VacancyLookType.ActivelyLooking, label: 'Активно ищет работу'},
-              {value: VacancyLookType.PassivelyLooking, label: 'Рассматривает предложения'},
+              {value: VacancyLookType.NotLooking, label: TranslateVacancyLookType(VacancyLookType.NotLooking, ProfileType.Hirer, t)},
+              {value: VacancyLookType.ActivelyLooking, label: TranslateVacancyLookType(VacancyLookType.ActivelyLooking, ProfileType.Hirer, t)},
+              {value: VacancyLookType.PassivelyLooking, label: TranslateVacancyLookType(VacancyLookType.PassivelyLooking, ProfileType.Hirer, t)},
             ]} 
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Страна:
+            {t('filters_country')}
           </p>
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
@@ -325,19 +325,22 @@ export default function FilterHirer(props: Props) {
             })
           }
           {!isTabletWidth &&
-            // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSpecializationModal()}/>
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCountryModal}
             >
-              Добавить страну
+             {t('filters_addCountry')}
             </P>
+            ||
+            <AddButton className={styles.addButton} text={t('filters_addCountry')} onClick={openCountryModal}/>
           }
           </div>
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>
+            {t('filters_verticals')}
+          </p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeVerticals?.size > 0 && creationContext.helpObjects && 
               [...creationContext.helpObjects?.activeVerticals?.entries()]
@@ -346,20 +349,23 @@ export default function FilterHirer(props: Props) {
               )
             }
             {!isTabletWidth &&
-              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
-                Добавить вертикали
+                {t('filters_addVerticals')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addVerticals')} onClick={()=>openSourcesModal({type: 'verticals'})}/>
             }
           </div>
         </div>
 
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>Источники трафика:</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>
+            {t('filters_sources')}
+          </p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeSources?.size > 0 && creationContext.helpObjects && 
               [...creationContext.helpObjects?.activeSources.entries()]
@@ -368,19 +374,22 @@ export default function FilterHirer(props: Props) {
               )
             }
             {!isTabletWidth &&
-              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'sources'})}/>
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'sources'})}
               >
-                Добавить источники трафика
+                {t('filters_addSources')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={()=>openSourcesModal({type: 'sources'})}/>
             }
           </div>
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>Гео</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>
+            {t('filters_geos')}
+          </p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
                 [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
@@ -388,13 +397,14 @@ export default function FilterHirer(props: Props) {
                 )
             }
             {!isTabletWidth &&
-              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'geos'})}/>
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'geos'})}            
               >
-                Добавить гео
+                {t('filters_addGeos')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addGeos')} onClick={()=>openSourcesModal({type: 'geos'})}/>
             }
           </div>
         </div>
@@ -402,71 +412,68 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            Тип занятости
+            {t('filters_employmentType')}
           </p>
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'employment'} 
             options={[
-              {value: EmploymentType.FullTime, label: 'Полная занятость'},
-              {value: EmploymentType.PartTime, label: 'Частичная занятость'},
-              {value: EmploymentType.Project, label: 'Проектная работа'}
-            ]}/>
-            {isTabletWidth&&<Spacer basis={4}/>}
+              {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
+              {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
+              {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
+            ]}/>           
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
-            <span>График работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>}
+            <span>{t('filters_schedule')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
           </p>
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'schedule'}
             options={[
-              {value: ScheduleType.Flexible, label: 'Гибкий график'},
-              {value: ScheduleType.FullDay, label: 'Полный день'},
-              {value: ScheduleType.Remote, label: 'Удаленная работа'}
+              {value: ScheduleType.Flexible, label:  TranslateScheduleType(ScheduleType.Flexible, t)},
+              {value: ScheduleType.FullDay, label:  TranslateScheduleType(ScheduleType.FullDay, t)},
+              {value: ScheduleType.Remote, label:  TranslateScheduleType(ScheduleType.Remote, t)}
             ]} 
-            />
-            {isTabletWidth&&<Spacer basis={4}/>}
+            />          
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+            <span>{t('filters_experience')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
           </p>
             <CheckboxListField 
             name={'experience'} 
             rootClass={styles.radioField}
             options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
-            />
-            {isTabletWidth&&<Spacer basis={4}/>}
+            />           
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            Образование
+            {t('filters_education')}
           </p>
             <CheckboxListField 
             name={'education'} 
             rootClass={styles.radioField}
             options={[
-              {label: 'Нет образования', value: EducationTypes.No},
-              {label: 'Среднее', value: EducationTypes.Secondary},
-              {label: 'Средне специальное', value: EducationTypes.SecondarySpecial},
-              {label: 'Неоконченное высшее', value: EducationTypes.IncompleteHigher},
-              {label: 'Высшее', value: EducationTypes.Higher},
-              {label: 'Бакалавр', value: EducationTypes.Bachelor},
-              {label: 'Магистр', value:EducationTypes.Master},
-              {label: 'Кандидат наук', value:EducationTypes.PhD},
-              {label: 'Доктор наук', value: EducationTypes.Doctor},
+              {label: TranslateEducationType(EducationTypes.No, t), value: EducationTypes.No},
+              {label: TranslateEducationType(EducationTypes.Secondary, t), value: EducationTypes.Secondary},
+              {label: TranslateEducationType(EducationTypes.SecondarySpecial, t), value: EducationTypes.SecondarySpecial},
+              {label: TranslateEducationType(EducationTypes.IncompleteHigher, t), value: EducationTypes.IncompleteHigher},
+              {label: TranslateEducationType(EducationTypes.Higher, t), value: EducationTypes.Higher},
+              {label: TranslateEducationType(EducationTypes.Bachelor, t), value: EducationTypes.Bachelor},
+              {label: TranslateEducationType(EducationTypes.Master, t), value:EducationTypes.Master},
+              {label: TranslateEducationType(EducationTypes.PhD, t), value:EducationTypes.PhD},
+              {label: TranslateEducationType(EducationTypes.Doctor, t), value: EducationTypes.Doctor},
             ]} 
             />
             {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle}>Знания языков</p>
+          <p className={styles.fieldTitle}>{t('filters_languageKnowledgedges')}</p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.languageKnowledges?.size > 0 
             && creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
@@ -474,18 +481,19 @@ export default function FilterHirer(props: Props) {
                 <RemovableItem 
                 key={el.language} 
                 onClick={()=>removeLanguage(el)} 
-                text={`${languages.getName(el.language, 'ru')}, ${TranslateLanguageKnowLevel(el.level)}`} 
+                text={`${TranslateLanguage(el.language, t)}, ${TranslateLanguageKnowLevel(el.level, true)}`} 
                 /> 
               )
             } 
             {!isTabletWidth &&
-              // <AddButton className={styles.addButton} title='Добавить' onClick={()=>openLangsModal()}/>
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openLangsModal()}            
               >
-                Добавить язык
+                {t('filters_addLanguage')}
               </P>
+              ||
+              <AddButton className={styles.addButton} text={t('filters_addLanguage')} onClick={()=>openLangsModal()}/>
             }
           </div>
         </div>
@@ -494,17 +502,17 @@ export default function FilterHirer(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey']} 
-      onClick={formik.handleReset}
+      onClick={()=>formik.setValues(initialValues)}
       className={styles.resetButton}
       >
-        Сбросить всё
+        {t('filters_clearAll')}
       </Button>
 
       <Button
       styleType={['gradient']}
       onClick={()=>props.onFilterChange(formik.values)}
       >
-        Найти
+        {t('searchAlt')}
       </Button>
     </div>
   </div>)

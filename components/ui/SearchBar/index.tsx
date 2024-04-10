@@ -15,6 +15,7 @@ import { colors } from 'styles/variables'
 import SettingsTwoSlidersSvg from '@/components/svg/SettingsTwoSlidersSvg'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface ISearchBarReturnParams {
   activeCategories?: number[]
@@ -41,6 +42,7 @@ interface Props {
 export default function SearchBar(props: Props) {
   const {isTabletWidth} = useResize()
   const userContext = useUserContext()
+  const {t} = useTranslation()
   // const appContext = useAppContext()
 
   // const [activeCategories, setActiveCategories] = useState<Map<number, ICategory>>(new Map())
@@ -104,19 +106,20 @@ export default function SearchBar(props: Props) {
             color={'default'} 
             name={'search'} 
             prefix={<LoupeSvg color={colors.greyLight}/>} 
-            placeholder={`Поиск ${userContext.currentProfile?.profileType===ProfileType.Employee?'вакансий':'резюме'}`}
+            placeholder={userContext.currentProfile?.profileType===ProfileType.Employee?t('search_vacancy'):t('search_cv')}
             />
             <Button 
             title='search button' 
             onClick={()=> formik.submitForm} 
-            styleType={['black']}
-            className={!isTabletWidth&&styles.button}
+            styleType={['black', 'borderBlue']}
+            altStyleType={['gradient']}
             >
-              Найти
+              {t('search')}
             </Button>
             {props.onFilterClick &&
               <Button 
               styleType={['icon', 'black']}
+              altStyleType={['icon', 'gradient']}
               title='filter button' 
               onClick={openFilters} 
               // className={(activeCategories.size>0||activePeriod)&&styles.filterButton_active}

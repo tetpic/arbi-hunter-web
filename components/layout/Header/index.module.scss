@@ -88,8 +88,6 @@
   }
 }
 
-
-
 @keyframes buttonAppear {
   from {
     opacity: 0;
@@ -140,6 +138,14 @@
 .iconButton {
   &_active {
     @include buttonGradient;
+  }
+}
+
+.logo {
+  display: flex;
+  position: relative;
+  @include mq($TabletWidth, max) {
+    z-index: 2;
   }
 }
 

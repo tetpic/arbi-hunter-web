@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction, createContext, useContext, useState} from 'react'
-import { AppTheme, ModalType, SnackbarType } from 'types/enums'
+import { AppTheme,  ModalType, SnackbarType } from 'types/enums'
 import ReactModal from 'react-modal'
 import { SnackbarData } from 'types/types'
 import { IResize, useResize } from 'components/hooks/useResize'
@@ -107,9 +107,7 @@ export function AppWrapper(props: Props) {
 
   const hideBottomSheet = () => {
     setBottomSheet(null)
-  }
-
- 
+  } 
 
   const value: IState = {
     isMobile,

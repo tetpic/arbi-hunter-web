@@ -5,6 +5,10 @@
   border-radius: 16px;
   background-color: $black;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: flex-start;
 }
 
 .modalWrapper {
@@ -27,12 +31,17 @@
 }
 
 .buttonsWrapper {
-  margin-top: 24px;
+  margin-top: 8px;
   display: flex;
   align-items: flex-end;
   column-gap: 8px;
+  row-gap: 8px;
   @include mq($TabletWidth, max) {
     justify-content: space-between;
+    flex-wrap: wrap;
+    button {
+      width: 100%;
+    }
   }
 }
 
@@ -44,6 +53,7 @@
   align-items: flex-start;
   column-gap: 16px;
   row-gap: 8px;
+  width: 100%;
 
   .position {
     grid-area: p;
@@ -72,6 +82,14 @@
   margin-right: auto;
 }
 
-.stats {
-  margin-top: 24px;
+
+.tariff {
+  background: $blue;
+  background: linear-gradient(90deg, var(--gradientColor1) 0%, var(--gradientColor2) 100%);
+  padding: 4px 8px;
+  border-radius: 8px;
+
+  &_vip {
+    background: $goldGradient;
+  }
 }

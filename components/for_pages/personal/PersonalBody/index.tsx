@@ -64,10 +64,10 @@ export default function PersonalBody(props: Props) {
           <div className={classNames(styles.item, props.isEditing&&styles.item_edit)}>
             <div className={classNames(styles.buttonsWrapper, props.isEditing && styles.buttonsWrapper_active)}>
               <SortableKnob>
-                <div className={styles.button}><PointerExpandSvg/></div>
+                <Button className={styles.button}  altStyleType={['gradient']}><PointerExpandSvg/></Button>
               </SortableKnob>
-              <Button className={classNames(styles.button, styles.trash)} onClick={() => removeBlock(order)}><TrashBasketAltSvg/></Button>
-              <Button className={styles.button} onClick={() => {editBlock(order)}}><EditSvg/></Button>
+              <Button className={classNames(styles.button, styles.trash)} altStyleType={['gradient']} onClick={() => removeBlock(order)}><TrashBasketAltSvg/></Button>
+              <Button className={styles.button}  altStyleType={['gradient']} onClick={() => {editBlock(order)}}><EditSvg/></Button>
             </div>
             <EditableBlock  block={block} assets={assets}/>
           </div>

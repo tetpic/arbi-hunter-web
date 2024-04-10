@@ -13,7 +13,7 @@ import {ISearchCountryResult, ISearchCityResult} from 'data/interfaces/ILocation
 import LocationDropDownInput from '../../fields/LocationDropdownInput'
 import BackBtn from 'components/ui/BackBtn'
 import { useRouter } from 'next/navigation'
-import { LoginType, ModalType, SnackbarType } from 'types/enums'
+import { ModalType, SnackbarType } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
 import FormErrorScroll from 'components/ui/FormErrorScroll'
@@ -23,13 +23,16 @@ import UserRegImage from 'components/ui/UserRegImage'
 import ProgressBar from 'components/ui/ProgressBar'
 import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
-import Modes from '@/components/ui/Modes'
 import { clearObject } from 'utils/helpers'
+import useTranslation from 'next-translate/useTranslation'
+import { AlertModalArgs } from '@/components/modals/AlertModal'
 
+interface Props {
+  token?: string
+}
 
-
-
-export default function Registration() {
+export default function Registration(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -37,8 +40,7 @@ export default function Registration() {
   const [cityId, setCityId] = useState<number>(undefined)
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
   const [country, setCountry] = useState<ISearchCountryResult>()
-  const [progress, setProgress] = useState<number>(1)
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
+  const [progress, setProgress] = useState<number>(props.token?2:1)
 
 
   const [disableButton, setDisableButton] = useState<boolean>(false)
@@ -64,7 +66,7 @@ export default function Registration() {
 
   const submit = async (data: IRegistrationComplete) => {
     if((!cityId || !country) && userContext.profileType === ProfileType.Hirer) {
-      appContext.showSnackbar('Выберите страну и город из списка', SnackbarType.error)
+      appContext.showSnackbar(t('registration_chooseCityAndCountry'), SnackbarType.error)
       return
     }
     else {
@@ -85,7 +87,7 @@ export default function Registration() {
       })
       .catch(err=> {
         setDisableButton(false)
-        appContext.showSnackbar('Такой email уже есть в системе', SnackbarType.error)
+        appContext.showSnackbar(t('registration_emailExist'), SnackbarType.error)
         return
       })
     }
@@ -106,12 +108,15 @@ export default function Registration() {
     setCityId(obj.id)
   }
 
-  const changeLoginTypeHandler = (s: LoginType) => {
-    setLoginType(s)
-    formik.resetForm()
-  }
-
   const  nextPageValidator = (page?: number) => {
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
+    return 
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
         formik.setFieldError(val, err||' ')
@@ -124,45 +129,41 @@ export default function Registration() {
       filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
       if(filteredErrors.length > 0) return false
       else return true
-      // filteredErrors.length === 0 && setProgress(page||progress+1)
     }
 
     switch(page||progress) {
       case 1: (async() => {
-        const values = loginType === LoginType.Phone ? ['phone', 'password'] : ['email', 'password']
+        const values = ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values[loginType])
+        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
         if(filteredErrors.length === 0 && (!isLoginExist.exists ||(!isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0))) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
-            [loginType]: formik.values[loginType],
+            email: formik.values.email,
             onComplete: () => {
               setProgress(page||progress+1)
             }
           })
         }
         else {
-          setErr(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
-          // formik.setFieldError(loginType, `Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`)
-          // formik.setFieldTouched(loginType, true)
-          // appContext.showSnackbar(`Такой ${loginType === 'email' ? 'email' : 'телефон'} уже есть в системе`, SnackbarType.error)
+          setErr('email', t('registration_emailExist'))
         }
       })()
       break
       case 2:(async() => {  
-        const values = loginType === LoginType.Phone? ['email'] : ['phone']
+        const values = ['phone']
         validateValues(values)
         .then(res=> {
           
           if(res === false) {
-            setErr(loginType, `Введите корректный ${loginType === 'email' ? 'email' : 'номер'}`)
+            setErr('email', t('registration_enterCorrectEmail'))
           }
           else {
-            RegistrationRepository.checkEmailOrPhoneExists(loginType === 'email' ? formik.values.phone : formik.values.email)
+            RegistrationRepository.checkEmailOrPhoneExists(formik.values.phone)
             .then(r=> {
-              if(r.exists === true) setErr(loginType==='phone' ?'email':'phone', `Такой ${loginType === 'email' ? 'телефон' : 'email'} уже есть в системе`)
+              if(r.exists === true) setErr('phone', t('registration_phoneExist'))
               else { setProgress(page||progress+1) }
             })
           }
@@ -184,50 +185,6 @@ export default function Registration() {
   }
 
   const stage1 = (<>
-
-    <Modes 
-    className={styles.modes}
-    buttonClassName={styles.modesButtons}
-    buttons={[
-      {name: 'Телефон', type: LoginType.Phone},
-      {name: 'Почта', type: LoginType.Email}
-    ]} 
-    activeButton={loginType} 
-    onSet={(type)=> changeLoginTypeHandler(type)}
-    />   
-
-    {loginType===LoginType.Phone && 
-      <PhoneCountryField 
-      styleType={'horizontal'} 
-      disabled={false} 
-      placeholder={'000 000 00 00'} 
-      name={'phone'}  
-      className={styles.input} 
-      defaultCountry={'RU'}
-      label={'Телефон:'}
-      validate={Validator.phone}
-      />
-      ||
-      <InputField   
-      label={'E-mail:'}
-      className={styles.input} 
-      labelType='top' 
-      styleType={'default'} 
-      color={'default'} 
-      name={'email'} 
-      validate={Validator.combine([Validator.required, Validator.email])}
-      />
-    }
-
-    <PasswordField label={'Пароль:'} name={'password'} className={styles.input} />
-    </>
-  )
-
-  const stage2 = (<>
-    <p className={styles.uneditable}>
-      {loginType === LoginType.Phone ? `Телефон: ${formik.values.phone}` : `E-mail: ${formik.values.email}`}
-    </p>
-   {loginType === LoginType.Phone && 
     <InputField   
     label={'E-mail:'}
     className={styles.input} 
@@ -237,7 +194,14 @@ export default function Registration() {
     name={'email'} 
     validate={Validator.combine([Validator.required, Validator.email])}
     />
-    ||
+    <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
+    </>
+  )
+
+  const stage2 = (<>
+    <p className={styles.uneditable}>
+      {`E-mail: ${formik.values.email}`}
+    </p>
     <PhoneCountryField 
     styleType={'horizontal'} 
     disabled={false} 
@@ -245,16 +209,14 @@ export default function Registration() {
     name={'phone'}  
     className={styles.input} 
     defaultCountry={'RU'}
-    label={'Телефон:'}
+    label={`${t('phone')}:`}
     validate={Validator.phone}
     />   
-   }
-  
   </>)
 
   const stage3 =(<>
     <InputField 
-    label={'Имя:'}
+    label={`${t('name')}:`}
     className={styles.input} 
     labelType='top' 
     styleType={'default'} 
@@ -264,7 +226,7 @@ export default function Registration() {
     />
 
     <InputField 
-    label={'Фамилия:'}
+    label={`${t('lastName')}:`}
     className={styles.input} 
     labelType='top' 
     styleType={'default'} 
@@ -274,7 +236,7 @@ export default function Registration() {
     />
 
     <InputField 
-    label={'Отчество:'}
+    label={`${t('patronymic')}:`}
     className={styles.input} 
     labelType='top' 
     styleType={'default'} 
@@ -294,7 +256,7 @@ export default function Registration() {
 
   const stage4 = (<>
     <InputField 
-    label={'Название компании:'}
+    label={`${t('registration_companyName')}:`}
     className={styles.input} 
     labelType='top' 
     styleType={'default'} 
@@ -306,7 +268,7 @@ export default function Registration() {
     <LocationDropDownInput 
     onSetOption={countryHandler} 
     name={'countryId'} 
-    labelName={'Страна: '}
+    labelName={`${t('country')}: `}
     requestFn={LocationRepository.searchCountry}
     className={styles.dropInput}
     />
@@ -314,7 +276,7 @@ export default function Registration() {
     <LocationDropDownInput 
     onSetOption={cityHandler} 
     name={'cityId'} 
-    labelName={'Город: '}
+    labelName={`${t('city')}: `}
     requestFn={LocationRepository.searchCity}
     country={country&&country.country_code}
     value={cityNameValue}
@@ -332,14 +294,41 @@ export default function Registration() {
   }, [userContext.currentProfile])
 
   useEffect(()=>{
-    setProgress(1)
-    formik.resetForm()
+    if(!props.token) {
+      setProgress(1)
+      formik.resetForm()
+    }
   }, [userContext.profileType])
 
   useEffect(()=>{
-    isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
-  }, [])
+    if(userContext.user) {
+      const dataToSet: Partial<IRegistrationComplete> = {
+        email: userContext.user.email,
+        lastName: userContext.user.lastName,
+        firstName: userContext.user.firstName,
+        phone: userContext.user.phone
+      }
+      formik.setValues({...formik.values, ...clearObject(dataToSet)})      
+    }
+  }, [userContext.user])
 
+  useEffect(()=>{
+    if(props.token) {
+      userContext.setToken(props.token)
+    }  
+  }, [props.token])
+
+  useEffect(()=>{
+    //эту строчку не удалять. Пока что регистрация запрещена на основном сайте, когда откроют - раскомментировать
+    // isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
+    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br /> 
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+      </>,
+      onClick: ()=>{appContext.hideModal()}
+    })
+  }, [])
 
   return ( 
     <div className={styles.root}>
@@ -349,12 +338,12 @@ export default function Registration() {
       <div className={styles.content}>
         <p className={styles.title}>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-          Регистрация 
+          {t('registration')} 
           {!isTabletWidth&&<Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/>}
         </p>
         <p className={styles.subTitle}>
-          Уже есть аккаунт? 
-          <Link className={styles.loginLink} href={'/login'}>Войти</Link>
+          {t('registration_haveAccount')}
+          <Link className={styles.loginLink} href={'/login'}>{t('login')}</Link>
         </p>
         {progress > 1 &&
         <ProgressBar fullWidth progress={progress} pointsCount={stepsCount}/>
@@ -370,14 +359,14 @@ export default function Registration() {
 
             <div className={styles.buttons}>
               {((userContext.profileType ===ProfileType.Employee &&progress <= 3)||(userContext.profileType ===ProfileType.Hirer &&progress <= 4)) && progress > 2 &&
-                <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator(progress - 1)}>Назад</Button>
+                <Button className={styles.submitButton} type='button' onClick={()=> nextPageValidator(progress - 1)}>{t('back')}</Button>
               }
               {((userContext.profileType ===ProfileType.Employee &&progress === 3)||(userContext.profileType ===ProfileType.Hirer &&progress === 4)) &&
                 <Button title={'register'} disabled={disableButton} className={styles.submitButton} type='button' onClick={()=> formik.submitForm()}>
-                  Зарегистрироваться
+                  {t('registration_getRegister')}
                 </Button>
                 ||
-                <Button title="next" className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>Продолжить</Button>
+                <Button title="next" className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>{t('continue')}</Button>
               }
             </div>
           </Form>

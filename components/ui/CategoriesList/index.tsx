@@ -5,6 +5,9 @@ import Formatter from 'utils/formatter'
 import Link from 'next/link'
 import { FILES } from 'types/constants'
 import SwiperList from '../SwiperList'
+import useTranslation from 'next-translate/useTranslation'
+import classNames from 'classnames'
+import P from '../P'
 
 interface Props<T> {
   categories: T[]
@@ -13,18 +16,22 @@ interface Props<T> {
   title?: string
   articlesCounter?:boolean
   link?: string
+  itemClassName?: string
 }
 
 
 export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
-  // const swiper= useRef<SwiperRef>(null!)
-  // const {isTabletWidth} = useResize()
+  const {t} = useTranslation()
 
   return (
-    <SwiperList hideNav={props.hideNav} className={props.className}>
+    <SwiperList hideNav={props.hideNav} className={props.className} swiperProps={{freeMode: false}}>
       {props.categories && props.categories.map(category=> {
         return (
-          <Link href={(props.link||'/media/page?page=categories&category=')+category.id} replace={true} className={styles.categoryItem}>
+          <Link 
+          href={(props.link||'/media/page?page=categories&category=')+category.id} 
+          replace={true} 
+          className={classNames(styles.categoryItem, props.itemClassName)}
+          >
             <div className={styles.imageWrapper}>
               <Image 
               src={FILES + category.image.source}
@@ -35,9 +42,11 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
               className={styles.image}
               />
             </div>
-            <p className={styles.name} title={category.name}>{category.name}</p>
+
+
+            <P useThemeColor styleType={['large', 'w600']} className={styles.name} title={category.name}>{category.name}</P>
             {props.articlesCounter && category.articlesCount &&
-              <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, 'статья', 'статьи', 'статей' )}</span></div>
+              <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, t('articlesCounter1'), t('articlesCounter2'), t('articlesCounter3') )}</span></div>
             }
           </Link>
         )

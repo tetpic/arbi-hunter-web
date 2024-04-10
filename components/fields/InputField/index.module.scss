@@ -4,8 +4,24 @@
   position: relative;
 }
 
+.dark {
+  --border: #{$grey};
+  --placeholder: #{$grey};
+  --inputColor: #{$white};
+}
+.light {
+  --border: #{$purpleGrey};
+  --placeholder: #{$grey};
+  --inputColor: #{$black};
+
+  .wrapper {
+    background-color: $white;
+    box-shadow: 0px 0px 10px 0px $purpleSmell;
+  }
+}
+
 .input {
-  color: $white;
+  color: var(--inputColor);
   font-weight: $medium;
   font-size: $mediumText;
   padding-inline: 0px 0px;
@@ -21,6 +37,10 @@
 
   &:-webkit-autofill {
     webkit-text-fill-color: $blue !important;
+  }
+
+  &::placeholder {
+    color: var(--placeholder);
   }
 }
 
@@ -43,7 +63,7 @@
   align-items: center;
   width: 100%;
   border-radius: 8px;
-  border: 1px $grey solid;
+  border: 1px var(--border) solid;
   height: 46px;
   column-gap: 10px;
   padding-inline: 10px;
@@ -93,7 +113,7 @@
 }
 
 .topLabel {
-  position: absolute;
+  margin-bottom: 8px;
 }
 
 .fieldError {

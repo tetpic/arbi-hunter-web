@@ -12,6 +12,7 @@ import {AsYouType} from 'libphonenumber-js'
 import { IField } from 'types/types'
 import FieldLabel from '@/components/ui/FieldLabel'
 import FieldError from '@/components/ui/FieldError'
+import { useAppContext } from 'context/state'
 
 // @ts-ignore
 const metadata = new Metadata(minMetadata)
@@ -33,6 +34,7 @@ interface Props extends IField<string> {
 
 export default function PhoneCountryField(props: Props & FieldConfig) {
   const [field, meta, helpers] = useField(props as FieldHookConfig<any>)
+  const {theme} = useAppContext()
   const { value } = field
   const [focused, setFocus] = useState(false)
   const [country, setCountry] = useState<string | null>(null)
@@ -67,7 +69,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
     }
 }
   return (
-    <div className={classNames(styles.root, props.className)}>
+    <div className={classNames(styles.root, props.className, styles[theme])}>
       <div className={styles.wrapper}>
         <div className={classNames(styles.inputWrapper, { [styles.withLabel]: props.label })}>
           {props.label &&
@@ -97,6 +99,7 @@ export default function PhoneCountryField(props: Props & FieldConfig) {
                 setFocus(false)
                 field.onBlur(e)
               }}
+              
               countrySelectProps={{
                 offsetLeft: props.styleType === 'horizontal' ? 20 : 0,
                 offsetTop: props.styleType === 'horizontal' ? 12 : 8,

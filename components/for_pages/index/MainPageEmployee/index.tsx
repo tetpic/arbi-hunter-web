@@ -25,9 +25,11 @@ import CategoryRepository from 'data/repositories/CategoryRepository'
 import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
+import Link from 'next/link'
 
 export default function MainPageEmployee() {
-
+  const {t} = useTranslation()
   const personalContext = usePersonalContext()
   const characterContext = useCharacterContext()
   const userContext  = useUserContext()
@@ -44,18 +46,13 @@ export default function MainPageEmployee() {
 
   const actionsAllowedMap: {type: ModelActions, duration: number}[] = characterContext.variant.model === 'man'?
   [
-    // {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)||2115},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
-    // {type: ModelActions.New, duration: ~~(characterContext.durations[ModelActions.New]*1000)},
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
     {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
-    // {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
     {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
   ]:
   [
-    // {type: ModelActions.Appearance, duration: ~~(characterContext.durations[ModelActions.Appearance]*1000)||2115},
-    // {type: ModelActions.TurnsAway, duration: ~~(characterContext.durations[ModelActions.TurnsAway]*1000)},
     {type: ModelActions.Laughter, duration: ~~(characterContext.durations[ModelActions.Laughter]*1000)},
     {type: ModelActions.Sadness, duration: ~~(characterContext.durations[ModelActions.Sadness]*1000)},
     {type: ModelActions.Shrug, duration: ~~(characterContext.durations[ModelActions.Shrug]*1000)},
@@ -63,7 +60,6 @@ export default function MainPageEmployee() {
     {type: ModelActions.No, duration: ~~(characterContext.durations[ModelActions.No]*1000)},
     {type: ModelActions.ShakesHead, duration: ~~(characterContext.durations[ModelActions.ShakesHead]*1000)},
     {type: ModelActions.Yes, duration: ~~(characterContext.durations[ModelActions.Yes]*1000)},
-
   ]
 
   const [temporaryAnimation, setTemporaryAnimation] = useState<{type: ModelActions, duration: number}>(actionsAllowedMap[0])
@@ -85,7 +81,7 @@ export default function MainPageEmployee() {
       UserRepository.getStats(),
       CategoryRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
-      ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
+      ArticlesRepository.getNews({page: 1, limit: 20, isTop: false, full: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])
     setStats(stats)
@@ -142,13 +138,11 @@ export default function MainPageEmployee() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        {/* {personalContext.personalPage && personalContext.backgrounds && */}
-          <PersonalHeader action={action} showNextAnimation={()=>!disableClick&&showNextAnimation()} useModel/>
-        {/* } */}
+        <PersonalHeader action={action} showNextAnimation={()=>!disableClick&&showNextAnimation()} useModel/>
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
-            <div className={styles.card}>
-              <p className={styles.desc}>{isTabletWidth?'Отклики':'Отклики и приглашения'}</p>
+            <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_feedBacks'):t('mainPage_em_feedBacksAlt')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -161,9 +155,9 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
-              <p className={styles.desc}>{isTabletWidth?'Просмотры':'Просмотры резюме'}</p>
+            </Link>
+            <Link className={styles.card} href={{pathname: '/'}}>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_watches'):t('mainPage_em_watchesAlt')}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -176,9 +170,9 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
-            <div className={styles.card}>
-              <p className={styles.desc}>Вакансии</p>
+            </Link>
+            <Link className={styles.card} href={{pathname: 'recruiting'}}>
+              <p className={styles.desc}>{t('mainPage_em_vacancies')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -191,27 +185,31 @@ export default function MainPageEmployee() {
                 }
               </p>
               }
-            </div>
+            </Link>
           </div>
         </div>
       </div>
 
-      <Title title={'Категории'} className={styles.title}/>
-      <CategoriesList hideNav categories={[...categories.values()].filter(e=> e.image)} link={'/recruiting?categories='}/>
+      <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{}}/>
+      <CategoriesList 
+      hideNav 
+      categories={[...categories.values()].filter(e=> e.image)} 
+      link={'/recruiting?categories='}
+      itemClassName={styles.categoryItem}
+      />
 
-      <Title title={'Подборки лучших вакансий'} className={styles.title}/>
+      <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
       <CvVcCompilation/>
 
-      <Title title={'Статьи'} className={styles.title}/>
+      <Title title={t('mainPage_em_articles')} className={styles.title}  onAllWatchClick={()=>{}}/>
       {news.size > 0 &&
         <ArticlesList news={[...news.values()]}/>
       }
 
-      <Title title={'Бесплатные курсы'} className={styles.title}/>
+      <Title title={t('mainPage_em_freeeCourses')} className={styles.title}  onAllWatchClick={()=>{}}/>
       {popularCourses.size > 0 &&
         <CoursesList courses={[...popularCourses.values()]}/>
       }
-
     </div>
   )
 

@@ -1,4 +1,6 @@
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, WorkExperience } from 'types/enums'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import { Translate } from 'next-translate'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -6,31 +8,31 @@ export const arrayFromEnum = (k: {[key: string|number]: string}) => {
 }
 
 
-export const TranslateHirerRolePermission = (p: HirerRolePermission) => {
+export const TranslateHirerRolePermission = (p: HirerRolePermission, t: Translate)  => {
   switch (p) {
     case HirerRolePermission.ChangeEmail:
-      return 'Изменение почты'
+      return t('hirerRolePermission_changeEmail')
     case HirerRolePermission.ChangePassword:
-      return 'Изменение пароля'
+      return t('hirerRolePermission_changePassword')
     case HirerRolePermission.ViewStats:
-      return 'Просмотр статистики'
+      return t('hirerRolePermission_viewStats')
     case HirerRolePermission.ManageApplications:
-      return 'Отклики на соискателей'
+      return t('hirerRolePermission_manageApplications')
     case HirerRolePermission.CreateVacancies:
-      return 'Создание и продление вакансий'
+      return t('hirerRolePermission_createVacancies')
     case HirerRolePermission.EditCompanyProfile:
-      return 'Изменения профиля компании'
+      return t('hirerRolePermission_editCompanyProfile')
     case HirerRolePermission.EditCompanyBlog:
-      return 'Изменение блога компании'
+      return t('hirerRolePermission_editCompanyBlog')
   }
 }
 
-export const TranslateHirerRole = (p: HirerRole) => {
+export const TranslateHirerRole = (p: HirerRole, t: Translate) => {
   switch (p) {
     case HirerRole.Admin:
-      return 'Администратор'
+      return t('hirerRole_admin')
     case HirerRole.Manager:
-      return 'Менеджер'
+      return t('hirerRole_manager')
   }
 }
 
@@ -81,27 +83,6 @@ export const TranslateGenderType = (g: Genders) => {
     return 'Женский'
     case Genders.Male: 
     return 'Мужской'  
-  }
-}
-
-export const TranslateEducationType = (e: EducationTypes) => {
-  switch(e) {
-    case EducationTypes.Bachelor:
-      return 'Бакалавр'
-    case EducationTypes.Doctor: 
-      return 'Доктор наук'
-    case EducationTypes.Higher: 
-      return 'Высшее'
-    case EducationTypes.IncompleteHigher: 
-      return 'Неоконченное высшее'
-    case EducationTypes.Master:
-      return 'Магистр'
-    case EducationTypes.PhD:
-      return 'Кандидат наук'
-    case EducationTypes.Secondary:
-      return 'Среднее'
-    case EducationTypes.SecondarySpecial:
-      return 'Средне специальное'
   }
 }
 
@@ -203,65 +184,99 @@ export const TranslateInterfaceLanguage = (t: InterfaceLanguage) => {
   }
 }
 
-export const TranslateLanguage = (t: Languages) => {
-  switch(t) {
+export const TranslateLanguage = (l: Languages, t: Translate) => {
+  switch(l) {
     case Languages.en:
-      return 'Английский'
+      return t('language_en')
     case Languages.de:
-      return 'Немецкий'
+      return t('language_de')
     case Languages.fr:
-      return 'Французский'
+      return t('language_fr')
     case Languages.cs:
-      return 'Чешский'
+      return t('language_cs')
     case Languages.nl:
-      return 'Нидерландский'
+      return t('language_nl')
     case Languages.et:
-      return 'Эфиопский'
+      return t('language_et')
     case Languages.pt:
-      return 'Португальский'
+      return t('language_pt')
     case Languages.it:
-      return 'Итальянский'
+      return t('language_it')
     case Languages.ja:
-      return 'Японский'
+      return t('language_ja')
     case Languages.ko:
-      return 'Корейский'
+      return t('language_ko')
     case Languages.es:
-      return 'Польский'
+      return t('language_es')
     case Languages.ru:
-      return 'Русский'
+      return t('language_ru')
     case Languages.zh:
-      return 'Китайский'
+      return t('language_zh')
     case Languages.lv:
-      return 'Литовский'
+      return t('language_lv')
     case Languages.uk:
-      return 'Украинский'
+      return t('language_uk')
       
   }
 
 }
 
-export const TranslateScheduleType = (s: ScheduleType) => {
+export const TranslateScheduleType = (s: ScheduleType, t: Translate) => {
   switch(s) {
     case ScheduleType.FullDay:
-      return 'Полный день'
+      return t('schedule_fullDay')
     case ScheduleType.Flexible:
-      return 'Гибкий график'
+      return t('schedule_flexible')
     case ScheduleType.Remote:
-      return 'Удаленная работа'
-
+      'schedule_remote'
+      return t('schedule_remote')
   }
 }
 
-export const TranslateEmploymentType = (e: EmploymentType) => {
+export const TranslateEmploymentType = (e: EmploymentType, t: Translate, full?: boolean) => {
   switch(e) {
     case EmploymentType.FullTime:
-      return 'Полная'
+      return full?t('employment_fullTimeAlt'):t('employment_fullTime')
     case EmploymentType.PartTime:
-      return 'Частичная'
+      return full?t('employment_partTimeAlt'):t('employment_partTime')
     case EmploymentType.Project:
-      return 'Проектная'
+      return full?t('employment_projectAlt'):t('employment_project')
   }
-  
+}
+
+
+export const TranslateEducationType = (e: EducationTypes, t: Translate) => {
+  switch(e) {
+    case EducationTypes.Secondary:
+      return t('education_secondary')
+    case EducationTypes.SecondarySpecial:
+      return t('education_secondarySpecial')
+    case EducationTypes.IncompleteHigher:
+      return t('education_incompleteHigher')
+    case EducationTypes.Higher:
+      return t('education_higher')
+    case EducationTypes.Bachelor:
+      return t('education_bachelor')
+    case EducationTypes.Master:
+      return t('education_master')
+    case EducationTypes.PhD:
+      return t('education_phD')
+    case EducationTypes.Doctor:
+      return t('education_doctor')
+    default: 
+      return t('education_noEducation')
+  }
+}
+
+export const TranslateVacancyLookType = (v: VacancyLookType, profileType: ProfileType, t: Translate) => {
+  switch(v) {
+    case VacancyLookType.ActivelyLooking:
+      return profileType===ProfileType.Employee? t('vacancyLookType_activelyLooking'): t('vacancyLookType_activelyLookingAlt')
+    case VacancyLookType.NotLooking:
+      return profileType === ProfileType.Employee? t('vacancyLookType_notLooking'): t('vacancyLookType_notLookingAlt')
+    case VacancyLookType.PassivelyLooking:
+      return profileType === ProfileType.Employee? t('vacancyLookType_passivelyLooking'): t('vacancyLookType_passivelyLookingAlt')
+  }
 }
 
 export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])

@@ -3,11 +3,14 @@ import { EmploymentType, ScheduleType } from 'types/enums'
 import styles from './index.module.scss'
 import WorkPlace from '../WorkPlace'
 import SectionSubtitle from '../../SectionSubtitle'
+import { TranslateEmploymentType } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function Busyness(props: Props) {
+  const {t} = useTranslation()
 
   return ( <div className={styles.root}>   
     <div className={styles.fieldItem}>
@@ -16,9 +19,9 @@ export default function Busyness(props: Props) {
     name={'employment'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {label: 'Частичная', value: EmploymentType.PartTime},
-      {label: 'Полная', value: EmploymentType.FullTime},
-      {label: 'Гибкий рабочий день', value: EmploymentType.Project},
+      {label: TranslateEmploymentType(EmploymentType.PartTime, t, true), value: EmploymentType.PartTime},
+      {label: TranslateEmploymentType(EmploymentType.FullTime, t, true), value: EmploymentType.FullTime},
+      {label: TranslateEmploymentType(EmploymentType.Project, t, true), value: EmploymentType.Project},
     ]} 
     />
     </div>

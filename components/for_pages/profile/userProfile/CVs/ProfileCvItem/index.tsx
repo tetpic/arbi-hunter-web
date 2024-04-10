@@ -7,21 +7,22 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
-import { ModalType } from 'types/enums'
+import { ModalType} from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
-import { useProfilePageContext } from 'context/profile_page_state'
-import { useFeedbacksContext } from 'context/feedbacks_state'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
-import Progress from '../../../companyProfile/Vacancies/VacancyItem/Progress'
+import Progress from '../../../companyProfile/Vacancies/ProfileVacancyItem/Progress'
 import { useRouter } from 'next/router'
+import { useTariffContext } from 'context/tariff_state'
+import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cv: ICV
@@ -33,18 +34,24 @@ interface Props {
 }
 
 export default function ProfileCvItem({cv, isLast, ...props}: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
-  const profilePageContext = useProfilePageContext()
-  const feedBackContext = useFeedbacksContext()
   const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
+  const tariffContext = useTariffContext()
+  const tariff = tariffContext.packets?.get(cv.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
+
 
   const archiveHandler =(e: React.MouseEvent<HTMLElement>)=> {
     e.preventDefault()
     e.stopPropagation()
+    if(!cv?.subscriptions && !cv.published) {
+      router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7}})
+      return
+    }
     cvContext.updateCv(cv.id, {published: !cv?.published})
   }
 
@@ -54,7 +61,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const removeHandler =()=> {
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: 'Вы действительно хотите удалить резюме?',
+      {text: t('cv_item_removeConfirm'),
       callback: ()=>{
         cvContext.deleteCv(cv.id)
       }
@@ -62,14 +69,18 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     )
   }
 
+  const upgradeTariffHandler = () => {
+    router.push({pathname: '/shop', query: {page: 'packets'}})
+  }
+
   const defaultOptions:IOptionList[] = [
-    {title: cv?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
-    {title: 'Дублировать'},
-    {title: 'Поделиться'},
-    {title: 'Продлить и Поднять'},
-    {title: 'Улучшить'},
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_double')},
+    {title: t('item_share')},
+    {title: t('item_prolong')},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
   const draftOptions:IOptionList[] = [
@@ -92,8 +103,6 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const showVacancies = () => {
-    // feedBackContext.setCurrentCvResponsesState({cvId: cv.id})
-    // profilePageContext.pager(ProfilePages.FeedBacks)
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories: [cv.categories[0]?.baseId]})}})
   }
 
@@ -104,8 +113,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
-      <p className={styles.position}>{cv.categories[0]?.name||'Должность не указана'}</p>
-      <p className={styles.refreshed}>Обновлено {Formatter.formatToShortYear(cv.updatedAt)}</p>
+      <p className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</p>
+      <p className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</p>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()
@@ -121,14 +130,25 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       }
     </div>
 
+    {tariff &&
+      <P
+      styleType={['medium', 'w500']}
+      className={styles.tariff} 
+      // @ts-ignore
+      style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}
+      >
+        {tariff.name}
+      </P>
+    }
+
+
     {(props.type !== 'drafts' || !cv.completedSteps) &&
       <Statistics 
-      title='Статистика за неделю'
-      className={styles.stats}
+      title={t('item_statistics')}     
       items={[
-        {name: 'Показы', count: cv.totalProposals},
-        {name: 'Просмотры', count: cv.totalViews},
-        {name: 'Отклики', count: cv.totalApplications},
+        {name: t('item_shows'), count: cv.totalProposals},
+        {name: t('item_views'), count: cv.totalViews},
+        {name: t('item_feedbacks'), count: cv.totalApplications},
       ]}
       />
       ||
@@ -139,14 +159,14 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     {!props.cardMode &&    
       <div className={styles.buttonsWrapper}>
         {cv.moderationStatus !== 'approved' && props.type !== 'drafts' &&
-          <p className={styles.refreshed}>На модерации</p>
+          <p className={styles.refreshed}>{t('item_onModeration')}</p>
         }
 
         {cv.published && cv.moderationStatus === 'approved' &&
           <Button
           styleType={['gradient']}
           >
-            Поднять в поиске
+            {t('item_upriseInSearch')}
           </Button>
         }
 
@@ -159,7 +179,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           styleType={['gradient']}
           onClick={archiveHandler}
           >
-            Опубликовать
+            {t('item_publish')}
           </Button>
         }
 
@@ -170,12 +190,12 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.stopPropagation()
             router.push({pathname: '/create/cv/', query: {id: cv.id, progress: cv.completedSteps.length}})}
           }>
-            Продолжить заполнение
+            {t('item_continueEditing')}
           </Button>
         }
 
         {props.type === 'drafts' && cv.completedSteps?.length > 5 &&
-          <Button styleType={['black']}>Редактировать</Button>
+          <Button styleType={['black']}>{t('item_edit')}</Button>
         }
 
         {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 
@@ -186,7 +206,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.preventDefault()
             showVacancies()}
           }>
-            {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, 'вакансия', 'вакансии', 'вакансий')}
+            {vacanciesCounter} {Formatter.pluralize(vacanciesCounter, t('vacancies1'), t('vacancies2'), t('vacancies3'))}
           </Button>
         }
         {!props.type &&
@@ -197,7 +217,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
             e.preventDefault()
             showVacancies()}
           }>
-            Подходящие вакансии
+            {t('vacancy_item_relevant')}
           </Button>
         }
       </div>

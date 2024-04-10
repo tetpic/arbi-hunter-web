@@ -1,3 +1,4 @@
+import P from '@/components/ui/P'
 import styles from './index.module.scss'
 
 import CourseItem from 'components/ui/CourseItem'
@@ -22,7 +23,7 @@ export default function SavedCourses(props: Props) {
   return (<div className={styles.root}> 
     {courseCountext.courseLoading && <Spinner size={24}/>}
     {!courseCountext.courseLoading && courseCountext.courses.size === 0 &&
-    <p className='empty'>Нет сохраненных курсов</p>
+    <P useThemeColor className='empty'>Нет сохраненных курсов</P>
     }
     <InfiniteScroll
     next={()=>setPage(p => p+1)}

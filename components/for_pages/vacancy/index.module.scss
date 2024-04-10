@@ -77,6 +77,10 @@
   position: relative;
   width: fit-content;
   z-index: 2;
+  @include mq($TabletWidth, max) {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
 }
 
 .contacts {

@@ -1,0 +1,13 @@
+@import 'styles/index';
+
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  align-items: center;
+}
+
+.modalLayout {
+  max-width: 380px;
+}

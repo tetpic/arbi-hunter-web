@@ -1,6 +1,9 @@
 import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
+import P from '../P'
+import { useAppContext } from 'context/state'
 
 interface Props<T> {
   activeItem: T
@@ -22,13 +25,14 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
 
   const [transition, setTransition] = useState<number>(0)
   const [activeWidth, setActiveWidth] = useState<number>(0)
+  const {theme} = useAppContext()
 
   const itemsRef = useRef<Map<string|number, HTMLParagraphElement>>(new Map())
   const wrapperRef = useRef<HTMLDivElement>()
   const itemsListRef = useRef<HTMLDivElement>()
 
   useEffect(()=>{
-    if(props.activeItem) {
+    if(props.activeItem && itemsRef.current.size > 0) {
       let box = wrapperRef.current.getBoundingClientRect()
       let activeItem = itemsRef.current.get(props.activeItem)
       let activeItemSize = activeItem.getBoundingClientRect()
@@ -41,21 +45,25 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
 
 
   return (
-      <div className={classNames(styles.root, props.className) }> 
+      <div className={classNames(styles.root, props.className, styles[theme]) }> 
 
         <div className={styles.wrapper} ref={wrapperRef} >
           <div className={styles.items} ref={itemsListRef}>
             {props.items.length > 0 && props.items
               .map((el, index)=> {
                 return (
-                  <p 
+                  <P 
+                  styleType={['large', 'w600', 'greyLight']}
+                  altStyleType={['w600', 'large']}
                   className={classNames(styles.item, props.pClassName, props.activeItem === el.type&&styles.item_active)} 
-                  ref={(r)=> itemsRef.current.set(el.type, r)} 
+                  getRef={(r)=> {
+                    itemsRef.current.set(el.type, r)
+                  }} 
                   onClick={()=> props.onClick(el.type)}
                   key={index} 
                   >
                   {el.name}
-                </p>)
+                </P>)
               })
             }
           </div>

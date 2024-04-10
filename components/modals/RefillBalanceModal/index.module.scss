@@ -3,6 +3,9 @@
 .modalLayout {
   background-color: $backgroundBlack;
   max-width: 550px;
+  @include mq($TabletWidth, max) {
+    border-radius: 10px 10px 0px 0px;
+  }
 }
 
 .root {

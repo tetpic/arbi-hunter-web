@@ -5,6 +5,13 @@
   min-height: 150vh;
   min-height: 150dvh;
 
+
+  .categoryItem {
+    @include mq($TabletWidth, max){
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
 .top {
@@ -53,6 +60,10 @@
     background-color: #737389b3;
     backdrop-filter: blur(3px);
     width: calc(33% - 10px);
+    @include transitionDefault;
+    @include hover {
+      scale: 1.05;
+    }
     @include mq($TabletWidth, max) {
       grid-template-areas: 'i' 'd' 'c';
       grid-template-columns: unset;

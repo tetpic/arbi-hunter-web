@@ -9,6 +9,7 @@ import styles from './index.module.scss'
 import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import { TariffWrapper } from 'context/tariff_state'
+import { useRouter } from 'next/router'
 
 
 interface Props {
@@ -20,9 +21,10 @@ interface Props {
 export default function CompanyProfile(props: Props) {
 
   const choosenNav = props.navSet.find(s => s.type === props.currentPage)
+  const router = useRouter()
 
   const title =  (
-    <Title title={choosenNav.name} onBackClick={props.onBackClick}/>
+    <Title title={choosenNav.name} onBackClick={router.back}/>
   )
 
   const body = ((): JSX.Element=> {

@@ -30,7 +30,7 @@ export default function VacancyExperience(props: Props) {
       onSubmit: (activeSources)=>{
         const newObject = {...cvContext.helpObjects, [t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals']: activeSources}
         cvContext.setHelpObjects(newObject)
-        appContext.hideModal()
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       },
       data: [...sourcesContext[t.type].values()],
       choosenElements: new Map(cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
@@ -43,9 +43,7 @@ export default function VacancyExperience(props: Props) {
   }
 
   useEffect(()=>{
-    // if(cvContext?.helpObjects?.categoryIds[0]?.withGeos || cvContext?.helpObjects?.categoryIds[0]?.withSources) {
-      sourcesContext.init(['geos', 'sources', 'verticals'])
-    // }
+    sourcesContext.init(['geos', 'sources', 'verticals'])
   }, [])
 
   

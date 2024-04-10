@@ -5,7 +5,8 @@
   position: relative;
   margin-top: 48px;
   @include mq($TabletWidth, max) {
-    margin-top: unset;
+    margin-top: 16px;
+    padding-inline: 16px;
   }
 }
 
@@ -27,14 +28,6 @@
 
 .addButton {
   @include buttonGradient;
-  @include mq($TabletWidth, max) {
-    margin-left: unset;
-    position: fixed;
-    bottom: 100px;
-    left: 20px;
-    width: calc(100% - 40px);
-    max-width: 360px;
-  }
 }
 
 .findButton {
@@ -58,6 +51,8 @@
   @include mq($TabletWidth, max) {
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 160px);
+    height: calc(100dvh - 160px);
   }
 
   >div {

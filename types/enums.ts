@@ -45,6 +45,8 @@ export enum ModalType {
   BackgroundSwitchModal = 'backgroundSwitchModal',
   PurchasePreviewModal = 'purchasePreviewModal',
   RefillBalanceModal = 'refillBalanceModal',
+  CharacterCartModal = 'characterCartModal',
+  AlertModal = 'alertModal'
 }
 
 export enum AppTheme {
@@ -304,13 +306,19 @@ export enum MessageType  {
 }
 
 export enum PersonalBlockType {
-  Text ='text',
+  Text = 'text',
   Image = 'image',
   Gallery = 'gallery',
   Video = 'video',
-  Banner = 'banner',
   Location = 'location',
-  Separator = 'separator'
+  Separator = 'separator',
+  Banner = 'banner',
+  Social = 'social',
+  Columns = 'columns',
+  Collage = 'collage',
+  VideoText = 'videoText',
+  Html = 'html',
+
 }
 
 export enum LoginType {
@@ -342,10 +350,13 @@ export enum SearchIn {
   Company = 'company'
 }
 
-export  enum PurchaseType {
+export enum PurchaseType {
   Character = 'character',
   CharacterItem = 'characterItem',
   VacancyTariff = 'vacancyTariff',
   CvTariff = 'cvTariff',
+  ContactsOpen = 'contactsOpen',
+  AddContactsOpen = 'addContactsOpen',
+  PersonalPage = 'personalPage'
 }
 

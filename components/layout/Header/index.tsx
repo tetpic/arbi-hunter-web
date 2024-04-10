@@ -8,11 +8,8 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
-import Spinner from 'components/ui/Spinner'
-import dynamic from 'next/dynamic'
 import { FILES } from 'types/constants'
 import Modes from 'components/ui/Modes'
-import { useResize } from 'components/hooks/useResize'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
@@ -22,39 +19,27 @@ import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
 import StarSvg from '@/components/svg/StarSvg'
-
-const UserDropdownMenu = dynamic(()=>import('components/ui/UserDropdownMenu'), {ssr: false, loading: ()=> <Spinner size={24}/>},) 
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   distanceFromTop: number
 }
 
 export default function Header(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const router = useRouter()
+  const {isTabletWidth} = appContext.size
   const {profileType, setProfileType} = userContext
-  const {isTabletWidth} = useResize()
-
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
-  // const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
-
-  /*очень странный сайд эффект... 
-  что при смене профиля, 
-  когда появляется currentProfile, 
-  useState становится почему-то true */
-  // useEffect(()=>{
-  //   setDropDownOpen(false)
-  // }, [userContext.currentProfile])
-
-  const router = useRouter()
   const activePath = router.asPath
   const regPath = '/registration'
   const loginPath = '/login'
 
   const onSearchbarSubmit = (data: {search?: string}) => {
-    
     const filters = JSON.parse(router?.query?.filters as string||'{}')
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({...filters, search: data?.search})}})
   }
@@ -68,7 +53,6 @@ export default function Header(props: Props) {
       }
       else if(props.distanceFromTop < fromTop && props.distanceFromTop <= -40) {
         setDirection('down')
-        // !isTabletWidth && setDropDownOpen(false)
         setFromTop(props.distanceFromTop)
       }
       else {
@@ -90,8 +74,8 @@ export default function Header(props: Props) {
         {(!userContext.isLogged || !userContext.currentProfile) &&
           <Modes 
           buttons={[
-            {name: 'Соискатель', type: ProfileType.Employee},
-            {name: 'Компания', type: ProfileType.Hirer}
+            {name: t('employee'), type: ProfileType.Employee},
+            {name: t('hirer'), type: ProfileType.Hirer}
           ]} 
           activeButton={profileType} 
           onSet={(type)=>setProfileType(type)}/>  
@@ -103,9 +87,6 @@ export default function Header(props: Props) {
             onSubmit={(data)=> onSearchbarSubmit(data)}
             onFilterClick={()=>{}}
             />
-            {/* <Link className={styles.link} href={'/recruiting'} >Рекрутинг</Link>
-            <Link className={styles.link} href={'/media'}>Медиа</Link>
-            <Link className={styles.link} href={'/courses'}>Онлайн обучение</Link> */}
           </div>
         }
         
@@ -118,7 +99,7 @@ export default function Header(props: Props) {
               href={regPath}
               disabled={activePath === regPath}
               >
-                Регистрация
+                {t('registration')}
               </Button>
 
               <Button 
@@ -127,7 +108,7 @@ export default function Header(props: Props) {
               styleType={['grey', 'borderWhite', 'backTransparent']}
               altStyleType={['gradient']}
               >
-                Вход
+                {t('login')}
               </Button>
             </>}
 
@@ -137,16 +118,18 @@ export default function Header(props: Props) {
               href={'/create/cv'} 
               styleType={['gradient']}
               >
-                Создать резюме
+                {t('create_cv')}
               </Button>
               <Button               
               styleType={['icon', 'black']} 
+              altStyleType={['icon','white']}
               className={styles.iconButton}
               >
                 <NotificationSvg/>
               </Button>
               <Button  
               styleType={['icon', 'black', 'svg24']} 
+              altStyleType={['icon','white', 'svg24', 'invertSvg']}
               className={styles.iconButton}
               href={'/favorites'}
               >
@@ -166,7 +149,7 @@ export default function Header(props: Props) {
               href={'/create/vacancy'} 
               styleType={['gradient']}
               >
-                Создать вакансию
+                 {t('create_vacancy')}
               </Button>
               <Button 
               href={'/notifications'}

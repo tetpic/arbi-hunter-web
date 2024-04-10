@@ -12,6 +12,10 @@ import { Buttons } from '..'
 import PhotoSvg from 'components/svg/PhotoSvg'
 import FileRepository from 'data/repositories/FileRepository'
 import { PreviewImage } from 'data/interfaces/Common'
+import AlignLeftSvg from '@/components/svg/AlignLeftSvg'
+import AlignCenterSvg from '@/components/svg/AlignCenterSvg'
+import AlignRightSvg from '@/components/svg/AlignRightSvg'
+import Button from '@/components/ui/Button'
 
 interface Props {
   editor?: Editor | null
@@ -29,14 +33,28 @@ const HeadingButton = ({editor, level, path, children}: {editor: Editor, level: 
   </ToolbarButton>
 )
 
-const ToolbarButton = ({onClick, children, isActive, disabled}: {onClick: () => void, children: ReactElement, isActive?: boolean, disabled?: boolean}) => {
+const TextAlignButton = ({editor, alignment, path, children}: {editor: Editor, alignment: string, path?: string, children: JSX.Element}) => (
+  <ToolbarButton
+  onClick={() => editor.chain().focus().setTextAlign(alignment).run()}
+  isActive={editor.isActive('alignment', {alignment})}
+  >
+   {children}
+  </ToolbarButton>
+
+)
+
+const ToolbarButton = ({onClick, children, isActive, disabled}: {onClick?: () => void, children: ReactElement, isActive?: boolean, disabled?: boolean}) => {
  return ( 
-  <div
+  <Button
+  type='button'
+  styleType={['icon', 'black']}
+  altStyleType={['gradient']}
+  
   onClick={!disabled ? onClick : undefined}
   className={classNames(styles.button, {[styles.active]: isActive, [styles.disabled]: disabled})}
   >
     {children}
-  </div>)
+  </Button>)
 }
 
 
@@ -143,6 +161,28 @@ export default function RichTextToolbar(props: Props) {
   >
     <UnorderedListSvg className={styles.svg}/>
   </ToolbarButton>
+
+  {!hideButtons.alignment &&<>
+    <TextAlignButton editor={editor} alignment={'left'}>
+      <AlignLeftSvg className={styles.svg}/>
+    </TextAlignButton>
+
+    <TextAlignButton editor={editor} alignment={'center'}>
+      <AlignCenterSvg className={styles.svg}/>
+    </TextAlignButton>
+
+    <TextAlignButton editor={editor} alignment={'right'}>
+      <AlignRightSvg className={styles.svg}/>
+    </TextAlignButton>
+  </>}
+  
+  {!hideButtons.color &&
+    <ToolbarButton>
+      <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
+    </ToolbarButton>
+  }
+
+
 
   {!hideButtons?.helpers && <>
     <ToolbarButton

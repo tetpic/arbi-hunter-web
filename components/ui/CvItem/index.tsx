@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, VacancyLookType } from 'types/enums'
+import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, SnackbarType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -22,6 +22,9 @@ import { useRouter } from 'next/router'
 import FolderPlusSvg from '@/components/svg/FolderPlusSvg'
 import DotSvg from '@/components/svg/DotSvg'
 import { useState } from 'react'
+import { TranslateVacancyLookType } from 'utils/enumsTranslations'
+import { ProfileType } from 'data/interfaces/IRegistration'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cv: ICV
@@ -30,8 +33,8 @@ interface Props {
 }
 
 export default function CvItem({cv, ...props}: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
-  const {isTabletWidth} = appContext.size
   const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
 
@@ -89,6 +92,10 @@ export default function CvItem({cv, ...props}: Props) {
       setIsOpenContacts(true)
       setIsLoading(false)
     })
+    .catch(err => {
+      appContext.showSnackbar(t('cv_item_noOpensAvailable'), SnackbarType.error)
+      setIsLoading(false)
+    })
   }
 
   const likeHandler = () => {
@@ -120,8 +127,8 @@ export default function CvItem({cv, ...props}: Props) {
       <CvItemTop cv={cv} userImage={userImage}/>
 
       {cv.vacancyLookType &&
-        <p className={classNames(styles.lookType, cv.vacancyLookType === VacancyLookType.NotLooking?styles.lookType_red:styles.lookType_green)}>
-          {cv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'Активно ищет работу'}
+        <p className={classNames(styles.lookType, styles[cv.vacancyLookType])}>
+          {TranslateVacancyLookType(cv.vacancyLookType, ProfileType.Hirer, t)}
         </p>
       }
 
@@ -131,11 +138,11 @@ export default function CvItem({cv, ...props}: Props) {
 
       {cv.isRemote &&
         <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>
-          Удаленно
+          {t('cv_item_remote')}
         </P>
       }
 
-      <P styleType={['alignCenter', 'w500']}>
+      <P styleType={['alignCenter', 'w500', 'medium']} className={styles.info}>
         {[getSalary({cv}), getAge(cv.age), cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
           return (
             <>{el} {index < arr.length - 1 && <DotSvg/>}</>
@@ -146,16 +153,18 @@ export default function CvItem({cv, ...props}: Props) {
       {cv.experienceInfo && cv.experienceInfo.length > 0 &&
         <div className={styles.item__block}>
           <P styleType={['small', 'greyLight']}>
-            Опыт работы 
+            {t('cv_item_experience')} 
           </P>
-          <P styleType={['medium', 'w500']}>{Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}</P>
+          <P styleType={['medium', 'w500']}>
+            {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
+          </P>
         </div>
       }
 
       {cv.lastExperienceInfo &&
       <div className={styles.item__block}>
         <P styleType={['small', 'greyLight']}>
-          Последнее место работы 
+          {t('cv_item_lastWorkPlace')} 
         </P>
         <P styleType={['medium', 'w500']}>{cv.lastExperienceInfo.company}</P>
       </div>
@@ -163,17 +172,19 @@ export default function CvItem({cv, ...props}: Props) {
     </div>
     <div className={styles.buttonsWrapper}>
       {!isOpenContacts &&
-        <Button styleType={['gradient', 'wide']} disabled={isLoading} isProcess={isLoading} onClick={openContacts}>Открыть профиль</Button>
+        <Button styleType={['gradient', 'wide']} disabled={isLoading} isProcess={isLoading} onClick={openContacts}>
+          {t('cv_item_openProfile')}
+        </Button>
       }
       {
         cv.proposalsByCurrentUser.length === 0 && isOpenContacts &&
-        <Button styleType={['gradient', 'wide']}  onClick={respondHandler}>Пригласить</Button>
+        <Button styleType={['gradient', 'wide']}  onClick={respondHandler}>{t('cv_item_invite')}</Button>
         ||
         isOpenContacts &&
-        <Button styleType={['gradient', 'phoneWide']}  onClick={openChat}>Чат</Button>
+        <Button styleType={['gradient', 'phoneWide']}  onClick={openChat}>{t('cv_item_chat')}</Button>
       }
       {isOpenContacts && 
-        <Button styleType={['borderBlue', 'black', 'wide']}>Контакты</Button>
+        <Button styleType={['borderBlue', 'black', 'wide']}>{t('cv_item_contacts')}</Button>
       }
       {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
         <Button styleType={['icon', 'black']}><FolderPlusSvg/></Button>

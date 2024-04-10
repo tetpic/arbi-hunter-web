@@ -1,0 +1,111 @@
+@import 'styles/index';
+
+.root {
+  
+  :global {
+
+    .react-datepicker {
+      background-color: $grey;
+      border-radius: 16px;
+      overflow: hidden;
+      padding: 0;
+      width: 100%;
+      border: unset !important;
+    }
+    .react-datepicker__day {
+      width: 44px !important;
+      height: 44px;
+      background-color: unset !important;
+    }
+
+    .react-datepicker__day-name {
+      width: 44px;
+      color: $greyLight;
+      font-size: $largeText;
+      font-weight: $semibold;
+      text-transform: uppercase;
+    }
+
+    .react-datepicker__header {
+      background-color: $grey;
+      border: unset !important;
+    }
+
+    .react-datepicker__month {
+      background-color: $grey;
+    }
+  }
+
+  .popper {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: unset !important;
+  }
+}
+
+
+
+.day {
+  height: 44px;
+  width: 44px;
+  background-color: $grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+
+  &_past {
+    background-color: $greyLight;
+    opacity: 0.4;
+  }
+
+  &_future {
+    background-color: $greyLight;
+  }
+
+  &_chosen {
+    background: $gradientAlt;
+  }
+  
+
+
+}
+
+.header {
+  padding-inline: 16px;
+  background-color: $grey;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+
+  &__month {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 16px;
+    width: 160px;
+    text-transform: capitalize;
+
+    svg {
+      path {
+        stroke: $greyLight;
+      }
+    }
+  }
+
+  .timePicker {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: $greyLight;
+    position: relative;
+  }
+
+  .timeOptions {
+    overflow: scroll;
+    max-height: 300px;
+    background-color: $black;
+    width: 100px;
+    margin-top: 8px;
+  }
+}

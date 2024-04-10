@@ -3,21 +3,17 @@ import styles from './index.module.scss'
 import Link from 'next/link'
 import Title from 'components/ui/TitleForSection'
 import Button from 'components/ui/Button'
-import Possibilities from './Possibilities'
 import AppPromo from '../sections/AppPromo'
 import Help from '../sections/Help'
 import Search from '../sections/Search'
-import recruitingCatCompanies from 'images/recruiting/recruitingCatCompanies.png'
-import recruitingCatCompaniesLight from 'images/recruiting/recruitingCatCompaniesLight.png'
 import Rive  from '@rive-app/react-canvas'
 import { useEffect, useMemo, useState } from 'react'
-import slide3 from 'images/recruiting/recruiting_swipe3.png'
-import slide4 from 'images/recruiting/recruiting_swipe4.png'
-import slide5 from 'images/recruiting/recruiting_swipe5.png'
+import slide3 from 'images/recruiting/recCard4.jpg'
+import slide4 from 'images/recruiting/recCard5.jpg'
+import slide5 from 'images/recruiting/recCard6.jpg'
 import { useAppContext } from 'context/state'
 import dynamic from 'next/dynamic'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import { ISpecializationCategory } from 'data/interfaces/Common'
 import ICourse from 'data/interfaces/ICourse'
 import { IArticle } from 'data/interfaces/IArticle'
 import CoursesRepository from 'data/repositories/CoursesRepository'
@@ -32,6 +28,10 @@ import s2Light from 'images/recruiting/scene2Light.png'
 import s3 from 'images/recruiting/scene3.png'
 import s3Light from 'images/recruiting/scene3Light.png'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
+import Reasons from '../RecruitingHirer/Reasons'
+import FindEmployees from '../RecruitingHirer/FindEmployees'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 const Categories = dynamic(() => import('../sections/Categories'), {
@@ -49,10 +49,9 @@ export default function RecruitingEmployee(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
-  const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
-  const [load, setLoad] = useState<boolean>(false)
+  const {t} = useTranslation()
 
 
 
@@ -75,26 +74,21 @@ export default function RecruitingEmployee(props: Props) {
 
   const init = async() => {
     const [ courses, news] = await Promise.all([
-      CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
-      ArticlesRepository.getNews(true, {page: 1, limit: 20, isTop: false}),
+      CoursesRepository.getCourses({page: 1, limit: 20, categories: [31]},Languages.ru),
+      ArticlesRepository.getNews({page: 1, limit: 20, isTop: true}),
     ])
-
     setPopularCourses(state => {
       courses.data.forEach(c => {
         state.set(c.id, c)
       })
-      return state
+      return new Map(state)
     })
     setNews(state => {
       news.data.forEach(el => {
         state.set(el.id, el)
       })
-      return state
+      return new Map(state)
     })
-
-    setTimeout(()=> {
-      setLoad(true)
-    }, 100)
   }
 
   useEffect(()=>{
@@ -106,69 +100,60 @@ export default function RecruitingEmployee(props: Props) {
     <div className={styles.top}>
       {riveAnimation}
       <P styleType={['fs32', 'w600']} useThemeColor className={styles.title}>
-        Найдите работу мечты 
-        <span className={styles.title_big}> в <span className={styles.title_purple}>Arbi</span>Hunter</span>
+        {t('landing_em_findWork')}
+        <span className={styles.title_big}> {t('landing_in')} <span className={styles.title_purple}>Arbi</span>Hunter</span>
       </P>
-      {/* <p className={styles.description}>
-        Ежедневно более 1000 людей находят работу в ArbiHunter которая позволяет им расти и становиться успешными!
-      </p>
-      <div className={styles.found}>
-        <Image src={usersTopEmployee} alt={''}/>
-        <p>
-          <span className={styles.found_bold}>+25 500</span> <br/> уже нашли
-        </p>
-      </div> */}
-      <Link className={styles.createLink} href={'/create/cv'} ><span>Создать резюме</span></Link>
+      <Link className={styles.createLink} href={'/create/cv'} ><span>{t('landing_em_createCV')}</span></Link>
     </div>
 
-    <Search title={'Поиск вакансий'} tags={['Media Buyer', 'Affiliate Manger', 'Sales Manager', 'Team Lead']}/>
+    <Search title={t('search_vacancy')} tags={['Media Buyer', 'Affiliate Manger', 'Sales Manager', 'Team Lead']}/>
     
     <Title 
-    title="Поиск по популярным категориям" 
+    title={t('landing_em_findCategories')}
     className={styles.title} 
     itemClassName={styles.titleLink} 
     onAllWatchClick={()=>{}}/>
     <Categories 
-    count='вакансий' 
-    image={isLightTheme? recruitingCatCompaniesLight:recruitingCatCompanies} 
+    count={t('landing_em_vcCounter')}
+    imagesExamples={['/images/companyLogos/planetCompany1.png', '/images/companyLogos/planetCompany2.jpg', '/images/companyLogos/planetCompany3.png', '/images/companyLogos/planetCompany4.png', '/images/companyLogos/planetCompany5.jpg']} 
     titles={['CPA-сети', 'Маркетинг', 'Media Buying']} 
     images={isLightTheme?[s3Light, s1Light, s2Light]:[s3, s1, s2]}/>
     {!isTabletWidth &&
-      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
+      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
-    <Possibilities/>
+    <Reasons profileType={ProfileType.Employee}/>
+
+    <Title className={styles.title} title={t('landing_em_startSearching')}/>
+    <FindEmployees profileType={ProfileType.Employee} />
+
+    {/* <Possibilities/> */}
 
     <Title 
-    title={'Полезные статьи'} 
+    title={t('landing_em_articles')} 
     className={styles.title} 
     itemClassName={styles.titleLink} 
     onAllWatchClick={()=>{}}/>
     {news.size > 0 &&
-      <ArticlesList news={[...news.values()]}/>
+      <ArticlesList news={[...news.values()]} onlyTitles/>
     }
     {!isTabletWidth &&
-      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
+      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
     <Title 
-    title={'Бесплатные курсы'} 
+    title={t('landing_em_freeCourses')} 
     className={styles.title} 
     itemClassName={styles.titleLink} 
     onAllWatchClick={()=>{}}/>
     {popularCourses.size > 0 &&
-      <CoursesList courses={[...popularCourses.values()]}/>
-    }
-    {/* {props.vacancies.length > 0 &&  
-    <>
-      <Title title={'Вакансии дня'} className={styles.title}/>
-      <Vacancies vacancies={props.vacancies}/>
-    </>
-    } */}
-    {!isTabletWidth &&
-      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
+      <CoursesList courses={[...popularCourses.values()]} disableLink/>
     }
 
+    {!isTabletWidth &&
+      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+    }
+    
     <AppPromo cards={[slide3, slide4, slide5]}/>
 
     <Help/>

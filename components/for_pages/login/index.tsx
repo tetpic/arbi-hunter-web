@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
+import { runtimeConfig} from 'config/runtimeConfig'
 import InputField from 'components/fields/InputField'
-import PhoneCountryField from 'components/fields/PhoneCountryField'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -15,20 +15,23 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { LoginType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
-import Modes from 'components/ui/Modes'
 import Button from 'components/ui/Button'
-// import Rive from '@rive-app/react-canvas'
 import UserRegImage from 'components/ui/UserRegImage'
+import useTranslation from 'next-translate/useTranslation'
+import Image from 'next/image'
 
 
 
 export default function Login() {
+  const { HOST } = runtimeConfig
+
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
-  const [loginType, setLoginType] = useState<LoginType>(LoginType.Phone)
+  const [loginType, setLoginType] = useState<LoginType>(LoginType.Email)
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
 
   const passwordHandler = () => {
@@ -48,10 +51,10 @@ export default function Login() {
     .catch(err=> {
       let errString: string
       if(err.message === 'Wrong login or password') {
-        errString = 'Неправильный логин или пароль'
+        errString = t('login_wrongPassword')
       }
       else if(err.message === 'Network Error') {
-        errString = 'Прервано соединение с интернетом'
+        errString = t('login_connectionLost')
       }
       appContext.showSnackbar(errString, SnackbarType.error)
     })
@@ -78,10 +81,9 @@ export default function Login() {
     }
   }
 
-  // const memoedRive = useMemo(()=>{
-  //   const src = userContext.profileType===ProfileType.Hirer?'/rive/login/company.riv':'/rive/login/user_RU.riv'
-  //   return <Rive src={src} key={src} className={styles.regImage}/>
-  // }, [userContext.currentProfile])
+  const googleLogin = () => {
+    router.push(HOST +'/api/auth/google/login')
+  }
 
   useEffect(()=>{
     if(userContext.currentProfile) {
@@ -101,28 +103,19 @@ export default function Login() {
       <div className={styles.content}>
         <p className={styles.title}>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-          Войти
+          {t('login')}
         </p>
         <p className={styles.subTitle}>
-          Еще нет аккаунта? 
+          {t('login_stillNoAccount')}
           <Link className={styles.loginLink} href={'/registration'}>
-            Зарегистрируйтесь
+            {t('login_getRegister')}
           </Link>
         </p>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
-            <Modes 
-            className={styles.modes}
-            buttonClassName={styles.modesButtons}
-            buttons={[
-              {name: 'Телефон', type: LoginType.Phone},
-              {name: 'Почта', type: LoginType.Email}
-            ]} 
-            activeButton={loginType} 
-            onSet={(type)=> changeLoginTypeHandler(type)}
-            />   
             {loginType=== LoginType.Email &&
               <InputField   
+              inputMode='email'
               label={'E-mail:'}
               className={styles.input} 
               data-testid={'email'}
@@ -133,19 +126,8 @@ export default function Login() {
               validate={Validator.combine([Validator.required, Validator.email])}
               />
             }
-            {loginType === LoginType.Phone &&
-              <PhoneCountryField 
-              styleType={'horizontal'} 
-              disabled={false} 
-              placeholder={'000 000 00 00'} 
-              name={'login'}  
-              className={styles.input} 
-              defaultCountry={'RU'}
-              label={'Телефон:'}
-              />
-            }
             <InputField 
-            label={'Пароль:'}
+            label={`${t('password')}:`}
             className={styles.input} 
             labelType='top' 
             styleType={'default'} 
@@ -157,8 +139,29 @@ export default function Login() {
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
-            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>Забыли пароль?</p> Восстановить</Link>
-            <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>Войти</span></Button>
+            
+            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>{t('login_forgot')}</p> {t('login_restorePassword')}</Link>
+            
+            <div className={styles.buttonsWrapper}>
+              <Button 
+              type='button' 
+              styleType={[ 'gradient','phoneWide']}
+              onClick={()=>formik.submitForm()}>
+                <span>{t('enter')}</span>
+              </Button>
+              
+              <Button 
+              type='button' 
+              onClick={googleLogin} 
+              styleType={['black', 'phoneWide']}
+             
+              icon={
+                <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
+              }>
+                {t('login_viaGoogle')}
+              </Button>
+            </div>
+
           </Form>
         </FormikProvider>
       </div>

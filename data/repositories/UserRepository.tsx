@@ -1,5 +1,6 @@
 import { ILogin, IToken, ProfileType } from 'data/interfaces/IRegistration'
 import { IStats, IUser, IUserProfile } from 'data/interfaces/IUser'
+import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class UserRepository {
@@ -15,11 +16,45 @@ export default class UserRepository {
     return res
   }
 
+  static async editCurrentUser(data: Pick<IUser, 'email'|'phone'>): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/auth/currentUser',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async loginByEmailOrPhone(data: ILogin): Promise<IToken|null> {
     const res = await request({
       method: 'post',
       url: '/api/auth/login',
       data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async loginViaGoogle(): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/auth/google/login',
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getBlackListedProfiles(): Promise<IPagination<IUserProfile>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/profile/blackList',
     })
     if(res.err) {
       return null

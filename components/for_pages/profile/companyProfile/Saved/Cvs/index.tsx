@@ -5,6 +5,7 @@ import CvItem from 'components/ui/CvItem'
 import { ICV } from 'data/interfaces/ICV'
 import Spinner from 'components/ui/Spinner'
 import Spacer from 'components/ui/Spacer'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -34,7 +35,7 @@ export default function SavedCVs() {
         ||
         load && <Spinner size={24}/>
         ||
-        <p className='empty'>Нет сохраненных резюме</p>
+        <P useThemeColor className='empty'>Нет сохраненных резюме</P>
         }
       </div>
       <Spacer basis={24}/>

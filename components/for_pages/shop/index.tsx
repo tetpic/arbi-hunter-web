@@ -11,6 +11,9 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useCharacterContext } from 'context/character_state'
+import { PurchaseType } from 'types/enums'
+import { useRouter } from 'next/router'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -22,37 +25,52 @@ enum ShopPages  {
 }
 
 export default function Shop(props: Props) {
+  const {t} = useTranslation()
   const [page, setPage] = useState<ShopPages>(ShopPages.Balance)
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const characterContext = useCharacterContext()
+  const router = useRouter()
 
   useEffect(()=>{
-    tariffContext.setPackets(userContext.currentProfile)
     if(userContext.currentProfile.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
-      characterContext.init()
+      characterContext.init().then((res)=>{        
+        tariffContext.setPackets([PurchaseType.CvTariff, !res&&PurchaseType.Character].filter(Boolean))
+      })
     }
     else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
-      vacancyContext.setVacancies()      
+      vacancyContext.setVacancies()
+      tariffContext.setActiveSubscriptions([PurchaseType.ContactsOpen])   
+      .then(res => {
+        if(res.length > 0) {
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.AddContactsOpen, PurchaseType.PersonalPage])
+        }
+        else {
+          tariffContext.setPackets([PurchaseType.VacancyTariff, PurchaseType.ContactsOpen, PurchaseType.PersonalPage])
+        }
+      })  
     }
   }, [])
 
-
-
+  useEffect(()=>{
+    if(router.query.page) {
+      setPage(router.query.page as ShopPages)
+    }
+  }, [router])
 
   const navSet = (()=>{
     const obj = Object.values(ShopPages)
     let result = obj.map(page => {
       switch(page) {
         case ShopPages.Balance:
-          return {name: 'Баланс', type: page}
+          return {name: t('shop_balance'), type: page}
         case ShopPages.Packets:
-          return {name: 'Пакеты услуг', type: page}
+          return {name: t('shop_packets'), type: page}
         case ShopPages.Orders:
-          return {name: 'Заказы', type: page}
+          return {name: t('shop_orders'), type: page}
       }
     })
     return result
@@ -70,7 +88,7 @@ export default function Shop(props: Props) {
   })()
 
   return (<div className={styles.root}> 
-  <Title title={'Магазин'}/>
+  <Title title={t('shop')}/>
   <ItemNavigation className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
 
   {getPage}

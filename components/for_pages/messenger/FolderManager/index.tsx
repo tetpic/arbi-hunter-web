@@ -25,6 +25,7 @@ import Title from 'components/ui/TitleForSection'
 import classNames from 'classnames'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { IChatsFolderModalProps } from 'components/modals/ChatsFolderModal'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onBack?: () => void
@@ -33,6 +34,7 @@ interface Props {
 }
 
 function FolderEditor(props: Props) {
+  const {t} = useTranslation()
   const chatContext = useChatContext()
   const appContext= useAppContext()
   const userContext = useUserContext()
@@ -100,8 +102,8 @@ function FolderEditor(props: Props) {
         {isTabletWidth &&
           <>
             <BackBtn onClick={props.onBack} bgColor={'transparent'}/>
-            <Title title={'Настройки чата'}/>
-            <p className={styles.change} onClick={formik.submitForm}>{'Готово'}</p>
+            <Title title={t('chat_settings')}/>
+            <p className={styles.change} onClick={formik.submitForm}>{t('chat_ready')}</p>
           </>
         ||
         <BackTextButton onClick={props.onBack}/>
@@ -111,18 +113,22 @@ function FolderEditor(props: Props) {
         <div className={styles.imageWrapper}>
           <Image src={folderImage} alt={'folder image'} width={186} height={150} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
         </div>
-        <p className={styles.tip}>Вы можете создать папки с нужными чатами и переключаться между ними.</p>
+        <p className={styles.tip}>{t('chat_folders_description')}</p>
       </>}
     <FormikProvider value={formik}>
       <Form className={styles.folderWrapper}>
-
-        <p className={styles.folderTitle}>НАЗВАНИЕ ПАПКИ</p>
+        <p className={styles.folderTitle}>{t('chat_folderName')}</p>
         <InputField validate={Validator.required}  name={'name'} styleType={'profile'} color={'white'}/>
         <Spacer basis={24}/>
 
-        <p className={styles.folderTitle}>ВЫБРАТЬ ЧАТЫ</p>
+        <p className={styles.folderTitle}>{t('chat_shooseChats')}</p>
         <div className={styles.chatsWrapper}>
-          <div className={classNames(styles.item, choosenChats.size === 1&&styles.item_add)} onClick={addModalHandler}><PlusSvg color={colors.blue} /><span>Добавить чаты</span></div>
+          <div 
+          className={classNames(styles.item, choosenChats.size === 1&&styles.item_add)} 
+          onClick={addModalHandler}
+          >
+            <PlusSvg color={colors.blue} /><span>{t('chat_folder_add')}</span>
+          </div>
           {[...choosenChats.values()].map(chat=> {
             const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
             return (
@@ -138,7 +144,7 @@ function FolderEditor(props: Props) {
         </div>
         {!isTabletWidth &&
           <Button className={styles.createBtn} type='button' onClick={formik.submitForm}>
-            {props.folderToEdit?'Сохранить': 'Создать папку'}
+            {props.folderToEdit?t('save'): t('chat_folder_create')}
           </Button>
         }
       </Form>

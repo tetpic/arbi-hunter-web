@@ -2,16 +2,34 @@
 
 .root {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  column-gap: 24px;
   row-gap: 16px;
-  background-color: $black;
-  padding: 24px 16px;
-  border-radius: 16px;
+  padding-left: 16px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 3;
+  height: 74px;
   @include mq($TabletWidth, max) {
     background-color: unset;
+    padding-right: 16px;
   }
+  @include mq($PhoneWidth, max) {
+    flex-wrap: wrap;
+  }
+}
+
+.noHeader {
+  height: unset;
+  margin-top: 24px;
+}
+
+.nameWrapper {
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
 }
 
 .name {
@@ -38,11 +56,6 @@
   }
 }
 
-.button {
-  @include buttonGradient;
-  width: 100%;
-}
-
 .userPic {
   @include mq($TabletWidth, max) {    
     margin-top: Clamp(-150px, -15vw, -70px);
@@ -60,24 +73,55 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 16px;
-
+  align-self: flex-end;
+  flex-shrink: 0;
 }
 
 .photoButton {
-  @include mq ($TabletWidth, min) {    
-    @include buttonGray;
-  }
-  @include mq ($TabletWidth, max) {
+    width: unset;
     position: absolute;
     bottom: 0px;
     right: 0px;
     background-color: $grey;
     border-radius: 50%;
     border: 4px $black solid;
+    padding: 6px;
+    cursor: pointer;
     svg {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
     }
+}
+
+.optionsWrapper {
+  position: relative;
+  width: 100%;
+
+  .options {
+    top: 8px;
   }
 }
+
+.lookType {
+  white-space: nowrap;
+  font-size: $smallText;
+}
+
+.vacancyLookType {
+  
+  .activelyLooking {
+    background-color: $greenLight;
+    color: $green;
+  }
+  
+  .passivelyLooking {
+    background-color: $yellowLight;
+    color: $yellow;
+  }
+  
+  .notLooking {
+    color: $red;
+    background-color: $redLight;
+  }
+}
+

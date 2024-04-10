@@ -527,7 +527,7 @@
 }
 
 @mixin textFormatter {
-  color: white;
+  color: var(--pTextColor);
 
   *{
     line-height: 140% !important;
@@ -555,6 +555,7 @@
 
   p {
     font-size: 14px;
+    min-height: 16px;
   }
 
   ol {
@@ -585,6 +586,10 @@
 
   img {
     width: 100%;
+  }
+
+  p {
+    color: var(--pTextColor);
   }
   
 }

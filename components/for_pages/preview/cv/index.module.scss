@@ -44,6 +44,9 @@
 }
 
 .experience {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
   @include exeptLast {
     margin-bottom: 30px;
   }
@@ -63,4 +66,8 @@
 
 .backButton {
   margin-bottom: 24px;
+}
+
+.educationGrade {
+  margin-bottom: 16px;
 }

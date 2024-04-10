@@ -15,27 +15,29 @@ import DateField from '@/components/fields/DateField'
 import Image from 'next/image'
 import { useUserContext } from 'context/user_state'
 import Validator from 'utils/Validator'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function CvAbout(props: Props) {
+  const {t} = useTranslation()
   const {values, setFieldValue} = useFormikContext<ICVCreate>()
   const userContext = useUserContext()
 
   const [isActive, setIsActive] = useState<boolean>(true)
 
   return (<div className={styles.root}> 
-  <SectionSubtitle text='Основная информация:'/>
+  <SectionSubtitle text={t('create_cv_mainInfo')}/>
   <div className={styles.inputsWrapper}>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.firstName)} color={'default'} name={'firstName'} label='Имя' labelType='top'/>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.lastName)} color={'default'} name={'lastName'} label='Фамилия' labelType='top'/>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.patronymic)} color={'default'} name={'patronymic'} label='Отчество' labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.firstName)} color={'default'} name={'firstName'} label={t('firstName')} labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.lastName)} color={'default'} name={'lastName'} label={t('lastName')} labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.patronymic)} color={'default'} name={'patronymic'} label={t('patronymic')} labelType='top'/>
   </div>
 
   <TagsRadioList<string> 
   name='gender' 
-  label={'Пол'}
+  label={t('gender')}
   options={[
     {label: TranslateGenderType(Genders.Male), value: Genders.Male},
     {label: TranslateGenderType(Genders.Female), value: Genders.Female},
@@ -50,10 +52,10 @@ export default function CvAbout(props: Props) {
     formatOptions={{
       formatMatcher: 'best fit', year: 'numeric', month: '2-digit', day: '2-digit'
     }}
-    label='Дата рождения'
+    label={t('birthday')}
     className={styles.dateField}
     inputClassName={styles.dateInput}
-    error='Укажите дату рождения'
+    error={t('create_cv_setBirthday')}
     validate={Validator.required}
     />
     <PhoneCountryField 
@@ -61,15 +63,15 @@ export default function CvAbout(props: Props) {
     disabled={false} 
     placeholder={''} 
     name={'phone'}
-    label='Телефон'
+    label={t('phone')}
     />
-    <InputField styleType={'default'} color={'default'} name={'email'} label='Электронная почта'  labelType='top'/>
+    <InputField styleType={'default'} color={'default'} name={'email'} label={t('email')}  labelType='top'/>
     <InputField styleType={'default'} color={'default'} name={'telegramNickname'} label='Telegram'  labelType='top'/>
   </div>
 
   <SectionSubtitle 
   onClick={()=>setIsActive(!isActive)} 
-  text={<>Добавить другие способы связи <ArrowDownSvg className={isActive&&styles.rotated} /></>}
+  text={<>{t('create_cv_addOtherConnectInfo')} <ArrowDownSvg className={isActive&&styles.rotated} /></>}
   />
   <div className={classNames(styles.inputsWrapper, !isActive&&styles.disabled)}>
     <InputField 
@@ -105,7 +107,7 @@ export default function CvAbout(props: Props) {
     labelType='top'/>
   </div>
 
-  <SectionSubtitle text='Добавить текст о себе'/>
-  <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder='Опишите ваш опыт подробнее' onChange={(el)=>setFieldValue('bio', el.target.value)}/>
+  <SectionSubtitle text={t('create_cv_attTextAbout')}/>
+  <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder={t('create_cv_describeYOutExperience')} onChange={(el)=>setFieldValue('bio', el.target.value)}/>
   </div>)
 }

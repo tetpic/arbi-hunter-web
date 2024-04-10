@@ -10,13 +10,15 @@ import { ICVCreate } from 'data/interfaces/ICV'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import P from '@/components/ui/P'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import useTranslation from 'next-translate/useTranslation'
+import { TranslateEducationType } from 'utils/enumsTranslations'
 
 interface Props {
   name: string
 }
 
 export default function Education(props: Props) {
-
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const {values, setFieldValue, setFieldError, setFieldTouched} = useFormikContext<ICVCreate>()
 
@@ -33,7 +35,7 @@ export default function Education(props: Props) {
           fromDate: '',
           toDate: '',
           toPresent: true,
-          faculity: '',
+          faculty: '',
         }]
       },
       initialValues: initial? {educationInfo: [{...initial, toPresent: !initial.toDate}]}:null,
@@ -65,15 +67,15 @@ export default function Education(props: Props) {
   <RadioListField 
   wrapperClassName={styles.radiosWrapper}
   options={[
-    {label: 'Нет образования', value: undefined},
-    {label: 'Среднее', value: EducationTypes.Secondary},
-    {label: 'Средне специальное', value: EducationTypes.SecondarySpecial},
-    {label: 'Неоконченное высшее', value: EducationTypes.IncompleteHigher},
-    {label: 'Высшее', value: EducationTypes.Higher},
-    {label: 'Бакалавр', value: EducationTypes.Bachelor},
-    {label: 'Магистр', value:EducationTypes.Master},
-    {label: 'Кандидат наук', value:EducationTypes.PhD},
-    {label: 'Доктор наук', value: EducationTypes.Doctor},
+    {label: TranslateEducationType(undefined, t), value: undefined},
+    {label: TranslateEducationType(EducationTypes.Secondary, t), value: EducationTypes.Secondary},
+    {label: TranslateEducationType(EducationTypes.SecondarySpecial, t), value: EducationTypes.SecondarySpecial},
+    {label: TranslateEducationType(EducationTypes.IncompleteHigher, t), value: EducationTypes.IncompleteHigher},
+    {label: TranslateEducationType(EducationTypes.Higher, t), value: EducationTypes.Higher},
+    {label: TranslateEducationType(EducationTypes.Bachelor, t), value: EducationTypes.Bachelor},
+    {label: TranslateEducationType(EducationTypes.Master, t), value:EducationTypes.Master},
+    {label: TranslateEducationType(EducationTypes.PhD, t), value:EducationTypes.PhD},
+    {label: TranslateEducationType(EducationTypes.Doctor, t), value: EducationTypes.Doctor},
   ]} 
   name={'education'} 
   />
@@ -97,7 +99,7 @@ export default function Education(props: Props) {
     </div>
   }
   {values.education !== undefined && values.education !== EducationTypes.Secondary &&
-  <AddButton test={'addEducation'} onClick={()=> onAddButtonClick()} text={'Добавить место учебы'}/>
+  <AddButton test={'addEducation'} onClick={()=> onAddButtonClick()} text={t('create_addEducationPlace')}/>
   }
   </>)
 }

@@ -147,19 +147,6 @@ export default function MobileSideBar(props: Props) {
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
         </Link>
       }
-
-      {/* {profileType === ProfileType.Hirer && 
-        <Link 
-        href={'/responses'} 
-        className={styles.link}
-        >
-          <div className={styles.icon}><ChatFeedbackSvg/></div>
-          <P styleType={['w500', 'medium']}>Мои отклики</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
-        </Link>
-      } */}
-
-
       <Link 
       href={'/messenger'} 
       onClick={props.onClose}
@@ -173,10 +160,7 @@ export default function MobileSideBar(props: Props) {
 
     <div className={styles.links}>
       <Link 
-      href={{
-        pathname: '/profile',
-        query: {page: 'shop'},
-      }} 
+      href={{pathname: '/shop'}} 
       onClick={props.onClose}
       className={styles.link}
       >

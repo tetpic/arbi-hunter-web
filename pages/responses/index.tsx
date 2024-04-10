@@ -1,11 +1,15 @@
+import Responses from '@/components/for_pages/responses'
+import ContentLayout from '@/components/layout/ContentLayout'
 
 
 interface Props {
 }
 
-export default function Responses(props: Props) {
+export default function ResponsesPage(props: Props) {
 
-  return (<div > 
-
-  </div>)
+  return (  
+    <ContentLayout title={'Отклики'} hideMobileHeader>
+      <Responses/>
+    </ContentLayout>
+  )
 }

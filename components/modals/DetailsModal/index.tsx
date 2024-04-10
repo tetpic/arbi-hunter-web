@@ -156,7 +156,7 @@ export default function DetailsModal(props: Props) {
       validate={Validator.required}
       />
       <InputField 
-      name={'educationInfo[0].faculity'} 
+      name={'educationInfo[0].faculty'} 
       styleType={'default'} 
       color={'default'} 
       label='Факультет' 

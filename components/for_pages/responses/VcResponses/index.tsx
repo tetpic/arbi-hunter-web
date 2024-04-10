@@ -128,7 +128,7 @@ export default function VCFeedbacks(props: Props) {
     {
       ((isTabletWidth&&showNav)||!isTabletWidth)&&<Title onBackClick={()=>router.back()} title='Отклики' className={styles.title}/>
       ||
-      isTabletWidth&&!showNav&&<Title className={styles.title} title={TranslateVCNavigation(currentPage)} onBackClick={()=>setShowNav(true)}/>
+      isTabletWidth&&!showNav&&<Title className={styles.title} title={TranslateVCNavigation(currentPage)} onBackClick={responsesContext.filteredVcResponses.length > 0?()=>setShowNav(true):()=>{router.back()}}/>
     }
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&

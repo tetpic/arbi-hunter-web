@@ -9,10 +9,16 @@ import Title from 'components/ui/TitleForSection'
 import FindEmployees from './FindEmployees'
 import Reasons from './Reasons'
 import Head from './Head'
-import users from 'images/recruiting/users.png'
-import usersLight from 'images/recruiting/usersLight.png'
-import slide1 from 'images/recruiting/recruiting_swipe1.png'
-import slide2 from 'images/recruiting/recruiting_swipe2.png'
+import userExample1 from 'images/recruiting/userExample1.png'
+import userExample2 from 'images/recruiting/userExample2.png'
+import userExample3 from 'images/recruiting/userExample3.png'
+import userExample4 from 'images/recruiting/userExample4.webp'
+import userExample5 from 'images/recruiting/userExample5.webp'
+import userExample6 from 'images/recruiting/userExample6.webp'
+
+import slide1 from 'images/recruiting/recCard1.jpg'
+import slide2 from 'images/recruiting/recCard2.jpg'
+import slide3 from 'images/recruiting/recCard3.jpg'
 import { ICV } from 'data/interfaces/ICV'
 import { useAppContext } from 'context/state'
 import recruitingCatWallet from 'images/recruiting/scene1.png'
@@ -22,6 +28,8 @@ import recruitingCatPointLight from 'images/recruiting/scene3Light.png'
 import recruitingCatMessage from 'images/recruiting/scene2.png'
 import recruitingCatMessageLight from 'images/recruiting/scene2Light.png'
 import { AppTheme } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 
@@ -30,6 +38,7 @@ interface Props {
 }
 
 export default function RecruitingHirer(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
@@ -37,23 +46,30 @@ export default function RecruitingHirer(props: Props) {
   return (
     <div className={styles.root}> 
       <Head/>
-      <Search title={'Поиск резюме'} tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}/>
-      <Reasons/>
+      <Search 
+      title={t('landing_hir_findVc')} 
+      tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}
+      />
+      <Reasons profileType={ProfileType.Hirer}/>
     
-      <Title className={styles.title} title={'Начни поиск в три шага'}/>
-      <FindEmployees/>
+      <Title className={styles.title} title={t('landing_hir_startSearching')}/>
+      <FindEmployees profileType={ProfileType.Hirer}/>
       
-      <AppPromo cards={[slide1, slide2]}/>
+      <AppPromo cards={[slide1, slide2, slide3]}/>
     
-      <Title className={styles.title} title={'Поиск по популярным категориям'}/>
+      <Title className={styles.title} title={t('landing_hir_searchCategories')}/>
       <Categories 
-      count='резюме' 
-      image={isLightTheme?usersLight:users} 
+      count={t('landing_hir_cvCounter')} 
+      imagesExamples={[userExample1, userExample2, userExample3, userExample4, userExample5, userExample6]} 
       titles={['Маркетинг', 'Разработка', 'Менеджмент']} 
       images={isLightTheme?[recruitingCatWalletLight, recruitingCatPointLight, recruitingCatMessageLight]:[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}
       />
-      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>Смотреть все</Button>
-    
+      <Button 
+      styleType={['grey']} 
+      altStyleType={['white', 'borderGrey']} 
+      className={styles.watchAll}>
+        {t('watchAll')}
+      </Button>
       <Help/>
     </div>
   )

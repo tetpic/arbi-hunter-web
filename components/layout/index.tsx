@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
 import Header from './Header'
 import NavBar from './NavBar'
 import { Sticky, StickyContainer } from 'react-sticky'
@@ -16,8 +16,12 @@ export default function Layout(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
 
+  useEffect(()=>{
+    document.body.dataset.theme = appContext.theme
+  }, [appContext.theme])
+
   return ( 
-  <div className={styles.root} data-theme={appContext.theme} id={'mainLayout'}>
+  <div className={styles.root}  id={'mainLayout'}>
     <StickyContainer>
       {!appContext.hideHeader &&
       <Sticky>

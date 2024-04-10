@@ -1,8 +1,7 @@
 import styles from './index.module.scss'
 
 import Image, { StaticImageData } from 'next/image'
-import qr from 'images/recruiting/recruiting_qr.svg'
-import qrGradient from 'images/recruiting/recruiting_qrGradient.svg'
+import qrCode from 'images/footer/qrCode.svg'
 import check from 'images/recruiting/check.svg'
 import cross from 'images/recruiting/recruiting_cross.svg'
 import appleIcon from 'images/recruiting/recruiting_apple.png'
@@ -14,6 +13,7 @@ import classNames from 'classnames'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cards: string[]|StaticImageData[]
@@ -22,6 +22,7 @@ interface Props {
 
 
 export default function AppPromo(props: Props) {
+  const {t} = useTranslation()
   const cardsRef = useRef<HTMLImageElement[]>([])
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
@@ -56,10 +57,10 @@ export default function AppPromo(props: Props) {
   return (<div className={styles.root}> 
     <div className={classNames(styles.left, isLightTheme&&styles.left_light) }>
       <P styleType={['w700', 'huge']} useThemeColor className={styles.title}>
-        Представляем вам наше мобильное приложение
+        {t('landing_promo_intro')}
       </P>
       <P styleType={['w500', 'large']} useThemeColor className={styles.desc}>
-        С полным функционалом платформы, поиск сотрудников стал еще более удобный!
+        {t('landing_promo_desc')}
       </P>
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey']} altStyleType={['whitePurple']} className={styles.button}>
@@ -81,8 +82,8 @@ export default function AppPromo(props: Props) {
             className={classNames(styles.img, activeCard === cardsRef.current[index]&&styles.active)} 
             src={el} 
             alt={index.toString()} 
-            width={178} 
-            height={300}/>
+            width={160} 
+            height={280}/>
           })}
         </div>
         <div className={styles.buttons}>
@@ -94,10 +95,10 @@ export default function AppPromo(props: Props) {
 
     {!isTabletWidth &&
       <div className={classNames(styles.right, isLightTheme&&styles.right_light)}>
-        <P styleType={['large', 'w600']} useThemeColor >Скачайте приложение по&nbsp;QR коду</P>
-        <P styleType={['small']} useThemeColor >Отсканируйте код с&nbsp;камеры своего телефона</P>
+        <P styleType={['large', 'w600']} useThemeColor >{t('landing_promo_download')}</P>
+        <P styleType={['small']} useThemeColor >{t('landing_promo_scan')}</P>
         <div className={classNames(styles.imageWrapper, isLightTheme&&styles.imageWrapper_light)}>
-          <Image src={isLightTheme?qrGradient:qr} alt={'qr code'}/>
+          <Image src={qrCode} alt={'qr code'} width={150} height={150}/>
         </div>
       </div>
     } 

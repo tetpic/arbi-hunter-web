@@ -10,8 +10,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import React from 'react'
 import StickyBox from 'react-sticky-box'
 import { useAppContext } from 'context/state'
-import { IRecruitingFiltersModalProps } from 'components/modals/RecruitingFiltersModal'
-import { ModalType, SearchIn } from 'types/enums'
+import { SearchIn } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -24,6 +23,8 @@ import SideFilterEmployee from '../SideFilters/SideFilterEmployee'
 import FilterEmployee from '../Filters/FilterEmployee'
 import { clearObject } from 'utils/helpers'
 import { CvWrapper, useCvContext } from 'context/cv_state'
+import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   filters: Partial<IVacancyCvSearchParams>
@@ -40,6 +41,7 @@ export default function RecruitingPageEmployee(props: Props) {
 }
 
 function RecruitingPageEmployeeInner(props: Props) {
+  const {t} = useTranslation()
   const router = useRouter()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
@@ -50,10 +52,10 @@ function RecruitingPageEmployeeInner(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
   const [page, setPage] = useState<'filters' | 'vacancies'>('vacancies')
-  const [searchString, setSearchString] = useState<string>(props?.filters?.search||'')
 
 
   const findVacancies = (data?: IVacancyCvSearchParams):void => {
+    
     vacancyContext.findVacancies(currentFilters)
     .then(_=>setLoading(false))
   }
@@ -83,13 +85,13 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   const onFilterClick = ()=>{
-    if(!isTabletWidth) {
+    // if(!isTabletWidth) {
       setPage('filters')
-      return 
-    }
-    appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
-      onFilterChange: (data)=>onFilterChange(data)
-    })
+    //   return 
+    // }
+    // appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
+    //   onFilterChange: (data)=>onFilterChange(data)
+    // })
   }
 
   useEffect(()=>{
@@ -102,7 +104,8 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
   useEffect(()=>{
-    isInited.current && findVacancies()  
+    
+    findVacancies()  
   }, [vacancyContext.page])
 
 
@@ -116,24 +119,28 @@ function RecruitingPageEmployeeInner(props: Props) {
       <div className={styles.back}>
         <Image src={employee} className={styles.backImage} alt={'back'} />
       </div>
-      <p className={styles.title}>Найти работу в ArbiHunter</p>
-      <p className={styles.description}>
-        Ежедневно более 1000 людей находят работу в&nbsp;ArbiHunter <br/> которая позволяет им&nbsp;расти и&nbsp;становиться успешными!    
-      </p>
-      <Link className={styles.createLink} href={'/create/cv'}>Создать резюме</Link>
+
+
+      <P styleType={['huge', 'w700']} useThemeColor className={styles.title}>{t('recruiting_em_placeCv')}</P>
+
+
+      <P styleType={['large']} useThemeColor  className={styles.description}>
+        {t('recruiting_em_desc1')} <br/> {t('recruiting_em_desc2')}    
+      </P>
+      <Link className={styles.createLink} href={'/create/cv'}>{t('create_cv')}</Link>
     </div>
   }
   {isTabletWidth && 
     <TitleForSection title={' '} onBackClick={router.back}/>
   }
 
-  <MainSearchBar placeholder={'Поиск вакансий'} fullWidth className={styles.searchBar} 
+  <MainSearchBar placeholder={t('recruiting_em_searchVcs')} fullWidth className={styles.searchBar} 
   onChange={(s)=>onFilterChange({...currentFilters,  ...s})}
   onFilterClick={onFilterClick}
   initialSearch= {currentFilters.search}
   />
   {!loading &&
-    <p className={styles.found}>Найдено {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, 'вакансия', 'вакансии', 'вакансий')}</p>
+    <P styleType={['huge', 'w600']} useThemeColor className={styles.found}>{t('found')} {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
     ||
     <Spacer basis={88}/>
   }
@@ -163,7 +170,7 @@ function RecruitingPageEmployeeInner(props: Props) {
             return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies()}/>
           })
           ||
-          <p className='empty'>Нет найденных вакансий</p>
+          <P useThemeColor className='empty'>{t('recruiting_em_noFoundVacancies')}</P>
         }
       </div>
       </InfiniteScroll>

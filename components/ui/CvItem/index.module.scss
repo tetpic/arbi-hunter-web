@@ -7,6 +7,9 @@
   row-gap: 8px;
   margin-top: auto;
   column-gap: 8px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
 }
 
 .item {
@@ -56,16 +59,29 @@
     font-weight: $medium;
     font-size: $mediumText;
     border-radius: 10px;
+  }
 
-    &_red {
-      color: $red;
-      background-color: #E7605650;
-    }
+  .activelyLooking {
+    background-color: $greenLight;
+    color: $green;
+  }
+  
+  .passivelyLooking {
+    background-color: $yellowLight;
+    color: $yellow;
+  }
+  
+  .notLooking {
+    background-color: $redLight;
+    color: $red;
+  }
+  
+}
 
-    &_green {
-      color: $green;
-      background-color: #339B6250;
-    }
+.info{
+  @include mq($TabletWidth, max) {
+    flex-wrap: wrap;
+    row-gap: 8px;
   }
 }
 

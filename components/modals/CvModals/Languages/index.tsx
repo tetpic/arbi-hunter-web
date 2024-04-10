@@ -4,15 +4,15 @@ import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { useEffect,  useState } from 'react'
 import Body from '../Body'
-import languages from '@cospired/i18n-iso-languages'
 import classNames from 'classnames'
 import { LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
-import { TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
+import { TranslateLanguage, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
 import { useAppContext } from 'context/state'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -26,19 +26,16 @@ export interface ILangaugesModalArgs {
   
 export default function LangaugesModal(props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const args: ILangaugesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
 
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [activeDropDown, setActiveDropDown] = useState<'langs'|'levels'|undefined>('langs')
-  // const [levelsDropdownActive, setLevelsActive] = useState<boolean>(false)
-  // const [langsDropdownActive, setLangsActive] = useState<boolean>(false)
   const [langRadioActive, setLangRadioActive] = useState<Languages>(null)
   const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
   
   useEffect(()=>{
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
-    languages.registerLocale(require('@cospired/i18n-iso-languages/langs/en.json'))
-    const langsObj = Object.entries(Languages).map(([key, value])=> {return {en: value, ru: languages.getName(value, 'ru')}
+    const langsObj = Object.entries(Languages).map(([key, value])=> {return {en: value, ru: TranslateLanguage(value, t)}
     })
     setLangs(langsObj)
   }, [])
@@ -52,7 +49,7 @@ export default function LangaugesModal(props: Props) {
     <Body 
     onClose={props.onClose} 
     onSave={onSaveHandler}  
-    title={'Иностранные языки'} 
+    title={t('foreignLanguages')} 
     withInput={false}
     disabledButton={!langRadioActive || !levelRadioActive}
     >
@@ -62,7 +59,7 @@ export default function LangaugesModal(props: Props) {
           activeDropDown==='langs'?setActiveDropDown(undefined):setActiveDropDown('langs')
         }}
         >
-          Язык <ArrowDownSvg className={activeDropDown==='langs'&&styles.arrow_active}/>
+          {t('language')} <ArrowDownSvg className={activeDropDown==='langs'&&styles.arrow_active}/>
         </p>
         <div className={classNames(styles.list, activeDropDown==='langs'&&styles.list_active)}>
           {langs&&langs.map((el, index) => {
@@ -85,7 +82,7 @@ export default function LangaugesModal(props: Props) {
           activeDropDown==='levels'?setActiveDropDown(undefined):setActiveDropDown('levels')
         }} 
         >
-          Уровень владения 
+          {t('language_knowLevel')}
           <ArrowDownSvg className={activeDropDown==='levels'&&styles.arrow_active}/>
         </p>
         <div className={classNames(styles.list, activeDropDown==='levels'&&styles.list_active)}>

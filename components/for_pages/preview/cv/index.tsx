@@ -1,7 +1,5 @@
 import styles from './index.module.scss'
-import { useCvContext } from 'context/cv_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { useRouter } from 'next/router'
 import Title from '@/components/ui/TitleForSection'
 import PreviewItem from '@/components/ui/PreviewItem'
 import UserPic from '@/components/ui/UserPic'
@@ -25,10 +23,10 @@ import LinkedInSvg from '@/components/svg/LinkedInSvg'
 import SkypeSvg from '@/components/svg/SkypeSvg'
 import WhatsAppSvg from '@/components/svg/WhatsAppSvg'
 import MailAltSvg from '@/components/svg/MailAltSvg'
-import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -39,13 +37,10 @@ interface Props {
 }
 
 export default function CvPreview(props: Props) {
-  const cvContext = useCvContext()
+  const {t} = useTranslation()
   const creationContext = useCreateVcCvContext()
-  const appContext = useAppContext()
-  const currentCv = props.cv
-  
-  const router = useRouter()
   const userContext = useUserContext()
+  const currentCv = props.cv
 
   const personalHead = (
     <div className={styles.head}>
@@ -145,7 +140,7 @@ export default function CvPreview(props: Props) {
       >
         {currentCv.employment &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment)} занятость
+            <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment, t, true)} 
           </P>
         }
         {currentCv.relocation &&
@@ -156,7 +151,7 @@ export default function CvPreview(props: Props) {
         }
         {currentCv.schedule &&
           <P styleType={['w500', 'medium', 'alignCenter']}>
-            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule)}
+            <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule, t)}
           </P>
         }
         {currentCv.compensation &&
@@ -190,6 +185,9 @@ export default function CvPreview(props: Props) {
               return <div className={styles.experience}>
                 <P styleType={['w500', 'medium']}>{el.position}</P>
                 <P styleType={['w500', 'medium']}>{el.company}</P>
+                {el.description &&
+                  <P styleType={['w500', 'medium']}>{el.description}</P>
+                }
                 <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })
@@ -202,11 +200,17 @@ export default function CvPreview(props: Props) {
         title={'Образование'}
         onClick={() => props.onBack(4)}
         > 
-          <P styleType={['w500', 'medium']}>{TranslateEducationType(currentCv.education)}</P>
+          <P styleType={['w500', 'medium']} className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
           { currentCv.educationInfo.length > 0 && 
             currentCv.educationInfo.map(el=> {
               return <div className={styles.experience}>
                 <P styleType={['w500', 'medium']}>{el.institution}</P>
+                {el.speciality &&
+                <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                }
+                {el.faculty &&
+                <P styleType={['w500', 'medium']}>{el.faculty}</P>
+                }
                 <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })
@@ -246,7 +250,7 @@ export default function CvPreview(props: Props) {
         title='Владение языками'
         onClick={() => props.onBack(5)}
         >
-          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
 

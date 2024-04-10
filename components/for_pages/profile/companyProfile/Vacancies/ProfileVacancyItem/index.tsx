@@ -22,6 +22,7 @@ import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from './Progress'
 import P from '@/components/ui/P'
 import { useTariffContext } from 'context/tariff_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy: IVacancy
@@ -29,9 +30,12 @@ interface Props {
   isLast?: boolean
   cardMode?: boolean
   type?: 'drafts' | 'archive'
+  onChange?: (v: Partial<IVacancy>) => void
+  onRemove?: (vacancyId: number) => void
 }
 
-export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props) {
+export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}: Props) {
+  const {t} = useTranslation()
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
@@ -39,18 +43,13 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
-  const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
-
-
-
-  const setActiveHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    vacancyContext.editVacancy({...vacancy, published: true}, vacancy.id)
-    .then(res=> res&&vacancyContext.setVacancies(true))
-  }
+  const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)
 
   const archiveHandler =()=> {
+    if(!vacancy.subscriptions && !vacancy.published) {
+      router.push({pathname: '/create/vacancy', query: {id: vacancy.id, progress: 8}})
+      return
+    }
     vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salaryMin: Number(vacancy.salaryMin), salaryMax: Number(vacancy.salaryMax)}, vacancy.id, vacancy.published?'active':'archive')
   }
 
@@ -60,26 +59,33 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
 
   const removeHandler =()=> {
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: 'Вы действительно хотите удалить вакансию?',
+      {text: t('vacancy_item_areYouShureToDelete'),
       callback: ()=>{
         vacancyContext.removeVacancy(vacancy.id, props.type)
+        props.onRemove(vacancy.id)
       }
     })
   }
 
+  const upgradeTariffHandler = () => {
+    router.push({pathname:'/shop', query: {page: 'packets'}})
+  }
+
   const options = <OptionsList options={[
-    {title: vacancy?.published?'Архивировать':'Опубликовать', onClick: archiveHandler},
-    {title: 'Дублировать'},
-    {title: 'Поделиться'},
-    {title: 'Продлить и Поднять'},
-    {title: 'Улучшить'},
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_double')},
+    {title: t('item_share')},
+    {title: t('item_prolong')},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]}
   onMouseLeave={()=>openDropDown(false)}
   />
 
-  const openModalHandler =()=> {
+  const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {
+    e.preventDefault()
+    e.stopPropagation()
     if (isTabletWidth) {
       appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 430)
     }
@@ -88,7 +94,8 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
     }
   }
 
-  return (<div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
+  return (
+    <div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
           <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
@@ -108,8 +115,15 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
         }
         <SalaryItem vacancy={vacancy}/>
 
-        {/* @ts-ignore */}
-        <p className={styles.tariff} style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}>{tariff.name}</p>
+        {tariff &&
+          <p 
+          className={styles.tariff} 
+          /* @ts-ignore */
+          style={tariff.colors&&{'--gradientColor1': '#'+tariff.colors?.[0], '--gradientColor2': '#'+tariff.colors?.[1]}}
+          >
+            {tariff.name}
+          </p>
+        }
 
         <ThreeDotsButton  onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.dots}/>
         {!isTabletWidth && 
@@ -192,6 +206,7 @@ export default function VacancyItem({vacancy, isActive, isLast, ...props}: Props
           }
         </div>
       }
-  </div>)
+    </div>
+  )
 }
 

@@ -12,34 +12,133 @@ import RichTextField from 'components/fields/RichTextField'
 import Button from 'components/ui/Button'
 import FilesField from 'components/fields/FilesField'
 import { IFile } from 'data/interfaces/Common'
-import { useState } from 'react'
+import {  useEffect, useState } from 'react'
+import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import Image from 'next/image'
+import { FILES } from 'types/constants'
+import classNames from 'classnames'
+import DotSvg from '@/components/svg/DotSvg'
+import HtmlText from '@/components/ui/HtmlText'
+import { colors } from 'styles/variables'
+import TextAreaField from '@/components/fields/TextAreaField'
+import ReactPlayer from 'react-player'
+import CollageLayoutSvg from '@/components/svg/CollageLayoutSvg'
+import CrossSvg from '@/components/svg/CrossSvg'
+import ColumnLayoutSvg from '@/components/svg/ColumnLayoutSvg'
+import PlusThinSvg from '@/components/svg/PlusThinSvg'
 
 interface Props {
   onClose: () => void
   isBottomSheet?: boolean
 }
 
+export enum SocialSites {
+  TWITTER = 'twitter',
+  INSTAGRAM = 'instagram',
+  YOUTUBE = 'youtube',
+  TELEGRAM='telegram',
+  LINKEDIN = 'linkedin',
+}
+
 export interface IAddPersonalBlockModalProps {
   type: PersonalBlockType
-  onSubmit: (data: Partial<IPersonalPageBlock>, images?: IFile[]) => void
+  onSubmit: (data: Partial<IPersonalPageBlock>, images?: IFile[], layout?: any) => void
   initialData?: {block: Partial<IPersonalPageBlock>, assets: IFile[]}
 }
 /**
  * чтобы понять что происходит в этой модалке, я объясню...
  * с бэка приходит personalPage, в ней есть массив с блоками, в каждом блоке есть массив с айдишниками изображений, но нет самих объектов изображений
- * потому что они лежат в отдельном массиве. поэтому чтобы все ок работало, приходится писать такую дичь...
+ * потому что они лежат в отдельном массиве. поэтому чтобы все ок работало, приходится получать массив картинок в одном месте, и подставлять их в этом
  */
+
 export default function AddPersonalBlockModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args = appContext.modalArguments as IAddPersonalBlockModalProps
-  const [images, setImages] = useState<Map<number, IFile>>(new Map(args.initialData&&args.initialData.assets.map(el=> [el.id, el])))
+  const [images, setImages] = useState<Map<number, IFile>>(new Map)
+  const [layout, setLayout] = useState<(number|string)[][]>()
 
+  useEffect(()=>{
+    if(!args.initialData || !args.initialData.block.layout) return
+    if(args.type === PersonalBlockType.VideoText||args.type === PersonalBlockType.Banner) {
+      setLayout(args.initialData.block.layout)
+      return
+    }
+    else if(args.type === PersonalBlockType.Columns) {
+      const columnLayout = JSON.parse(args.initialData.block.layout)
+      setLayout([(columnLayout.layout as number[][]).flat(1).map((_, i) => i+1)])
+      setImages(new Map(args.initialData&&args.initialData.assets.map((el, ind)=> [ind+1, el])))
+      return
+    }
+
+    const realAssets = new Set((args.initialData.block.layout as number[][]).flat(1))
+    const result =  (args.initialData.block.layout as string[][]).map((el, index1)=> el.map((e, index2)=> {
+        return [...realAssets.values()].indexOf(Number(e))+1
+    }))
+    setLayout(result)
+    setImages(new Map([...realAssets.values()].map((el, ind)=> [ind+1, args.initialData.assets.find(e => Number(e.id) === Number(el))])))
+  }, [args.initialData?.block?.layout])
+
+ 
   const submit = (data: Partial<IPersonalPageBlock>) => {
     const submitData = {
-      ...data,
+      ...data
     }
-    args.onSubmit(submitData, [...images.values()])
+    if(args.type === PersonalBlockType.Columns && layout) {
+      submitData.layout = JSON.stringify({layout: (layout.map(el => el.map(e => images.get(Number(e))?.id||e))), color: data.color})
+    }
+    else {
+      layout && (submitData.layout = (layout.map(el => el.map(e => images.get(Number(e))?.id||e))))
+    }
+    data.texts.length > 0 && (submitData.text = JSON.stringify(data.texts))
+    data.titles.length > 0 && (submitData.title = JSON.stringify(data.titles))
+    data.assetsList.length > 0 && (submitData.assets = data.assetsList.flat(1))
+    delete submitData.assetsList 
+    delete submitData.titles
+    delete submitData.texts
+    delete submitData.color
+    args.onSubmit(submitData, [...images.values()].filter(Boolean))
     appContext.hideModal()
+  }
+
+
+
+  const getInitialTexts = () => {
+    if((args.type===PersonalBlockType.Social
+      ||
+      args.type === PersonalBlockType.Columns) 
+      && args.initialData?.block?.text
+    ){
+      return JSON.parse(args.initialData?.block?.text)
+    }
+  }
+
+  const getInitialTitles = () => {
+    if(args.type === PersonalBlockType.Columns && args.initialData?.block?.title) {
+      return JSON.parse(args.initialData?.block?.title)
+    }
+  }
+
+  const getInitialColors = () => {
+    if(args.type === PersonalBlockType.Columns && args.initialData?.block) {
+      return JSON.parse(args.initialData?.block?.layout).color
+    }
+  }
+
+  const getInitialAssetsList = () => {
+    if(args.initialData?.block?.layout && args.initialData.assets && args.type === PersonalBlockType.Collage) {
+      const realAssets = new Set((args.initialData.block.layout as number[][]).flat(1))
+      const initialAssetsList = [...realAssets.values()].map(el => {
+        if(args.initialData.block.assets.includes(el)) {
+          return [el]
+        }
+        else {
+          return []
+        }
+      })
+      return initialAssetsList
+    }
   }
 
   const formik = useFormik<Partial<IPersonalPageBlock>>({
@@ -47,26 +146,248 @@ export default function AddPersonalBlockModal(props: Props) {
       type: args.type,
       text: args.initialData?.block?.text||'',
       title: args.initialData?.block?.title||'',
-      assets: [],
+      titles: getInitialTitles()||[],
+      texts: getInitialTexts()||[],
+      assets: args.initialData?.block?.assets||[],
+      assetsList: getInitialAssetsList()||[],
+      color: getInitialColors()||[]
     },
     onSubmit: submit
   })
 
-  const titleInput = <InputField placeholder={'Заголовок'} styleType={'default'} color={'default'} name={'title'}/>
-  const richText = <RichTextField hideButtons={{helpers: true}} name='text'/>
+  const removeAsset = (assetId: number) => {
+    setImages(state => {
+      state.delete(assetId)
+      return new Map(state)
+    })
+    formik.setFieldValue('assets', formik.values.assets.filter(el => Number(el) !== Number(assetId)))
+  }
+
+  const imagesLayoutArray = [
+    '[[1,2,2],[1,3,3]]', 
+    '[[1,2,3],[4,2,5]]', 
+    '[[1,2,3],[1,4,5]]',
+    '[[1,2,3],[4,5,6]]',
+    '[[1,2,3],[1,2,4]]',
+    '[[1,2],[3,2]]',
+    '[[1,2,3],[4,2,3]]',
+    '[[1,2,3]]',
+    '[[1,2],[1,3]]',
+    '[[1,2,2,3]]'
+  ]
+
+  const textPositionsArray = [
+    '1/1', 
+    '1/2', 
+    '1/3',
+    '2/1',
+    '2/2',
+    '2/3',
+    '3/1',
+    '3/2',
+    '3/3',
+  ]
+
+  const columnsLayoutArray = [
+    '[[1,2]]',
+    '[[1,2,3]]'
+  ]
+
+
+  const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
+
+  const richText = <RichTextField hideButtons={{helpers: true, alignment: true, color: true}} name='text'/>
+
+  const layoutCollage = <div className={styles.layoutGrid}>
+    {!args.initialData?.block?.layout && <>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseImageLayout')}</P>
+    <div className={styles.buttonsWrapper}>
+      {imagesLayoutArray.map((el, i) => {
+        const isActive = JSON.stringify(layout) === el
+        return (
+          <Button 
+          type='button' 
+          styleType={['icon', isActive?'gradient':'black']} 
+          className={isActive?styles.layoutButtonActive:''}
+          onClick={()=>setLayout(JSON.parse(el))}>
+            <CollageLayoutSvg type={i+1} />
+          </Button>
+        )
+      })}
+    </div>
+      </>}
+
+    {layout&&
+      <div className={styles.gridContainer} style={{
+        gridTemplate: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((layout as number[][])[0].length)}`, 
+      }}>
+        {[...new Set((layout as number[][]).flat(1)).values()].map((el, i) => {
+          return <div className={classNames(styles.collageImageWrapper, images.get(el)&&styles.collageImageLoaded)} style={{gridArea: `o${el}`}}> 
+          {(!images.get(el)) &&
+            <FilesField 
+            name={`assetsList[${i}]`}
+            accept={['.jpeg', '.jpg', '.png', '.svg', '.webp', '.avif', '.gif']}
+            button={<div className={styles.addCollageImage}>
+              <PlusThinSvg/>
+            </div>}
+            getImages={(ind) => setImages(state=> {
+              ind.forEach(e=> state.set(el, e))
+              return state
+            })}
+            />
+            ||
+            <>
+            <Image src={FILES + images.get(el).source} alt={''} width={600} height={600} className={styles.collageImage}/>
+            <Button type='button' styleType={['backTransparent', 'icon']} className={styles.removeButton} onClick={()=>removeAsset(el)}><CrossSvg/></Button>
+            </>
+          }
+          </div>
+        })}
+      </div>
+    }
+  </div>
+
+  const layoutHTML = <div className={styles.layoutHTML}>
+    <P  styleType={['large', 'w500']}>{t('constructor_addHTML')}</P>
+    <TextAreaField autoSize name='text' onChange={(e)=>formik.setFieldValue('text', e.target.value)}/>
+    {formik.values.text &&<>
+      <P styleType={['large', 'w500']}>{t('constructor_preview')}</P>
+      <HtmlText text={formik.values.text}/>
+    </>}
+  </div>
+
+  const layoutBanner = <>
+    <RichTextField hideButtons={{helpers: true}} name='text'/>
+    <div className={styles.layoutPlace}>
+      <P styleType={['large', 'w500']}>{t('constructor_chooseTextLayout')}</P>
+      <div className={styles.buttonsWrapper}>
+        {textPositionsArray.map((el, i) => {
+          return (
+            <Button 
+            type='button' 
+            styleType={['black', 'icon']} 
+            onClick={()=>setLayout([[el]])}>
+              <DotSvg color={layout?.[0]?.[0]===el&&colors.blue}/>
+            </Button>
+          )
+        })}
+      </div>
+      {images.size > 0 && layout &&
+        <div className={styles.banner}>
+          <Image src={FILES + [...images.values()][0].source} alt={''} width={600} height={600} className={styles.bannerImage}/>
+          <div className={styles.bannerOverlay}  style={{gridArea: layout[0][0]}}>
+            <HtmlText text={formik.values.text}/>
+          </div>
+        </div>
+      }
+    </div>
+  </>
+
+  const layoutColumns = <div className={styles.layoutColumns}>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseColunmsCount')}</P>
+    <div className={styles.buttonsWrapper}>
+      {columnsLayoutArray.map((el, index) => {
+        const isActive = JSON.stringify(layout) === el
+        return  <Button 
+        type='button' 
+        className={isActive?styles.layoutButtonActive: ''} 
+        styleType={['icon',isActive?'gradient':'black']} 
+        onClick={()=>setLayout(JSON.parse(el))}>
+          <ColumnLayoutSvg type={index+2}/>
+        </Button>
+      })}
+    </div>
+    {layout&&
+      <div className={classNames(styles.gridContainer, styles.gridContainerColumns)} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
+        {layout[0].map((el, i) => {
+          return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`, backgroundColor: formik.values.color[i]}}>
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Цвет колонки</P>
+            <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange}/>
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Заголовок</P>
+            <RichTextField
+            hideButtons={{helpers: true}}
+            name={`titles[${i}]`}
+            />
+
+            {(!images.get(i+1)) &&
+              <FilesField 
+              name={`assetsList[${i}]`}
+              accept={['.jpeg', '.jpg', '.png', '.svg', '.webp', '.avif', '.gif']}
+              getImages={(ind) => setImages(state=> {
+                ind.forEach(e=> state.set(Number(el), e))
+                return state
+              })}
+              />
+              ||
+              <Image src={FILES + images.get(i+1).source} alt={''} width={600} height={600} className={styles.columnImage}/>
+            }
+            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Текст</P>
+            <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
+          </div>
+        })}
+      </div>
+    }
+  </div>
+
+  const layoutSocial = <div className={styles.layoutSocial}>
+    <P styleType={['large', 'w500']}>{t('constructor_setSocialLinks')}</P>
+    {Object.values(SocialSites).map((el, ind) => {
+      return <InputField styleType={'default'} color={'default'} name={`texts[${ind}].${el}`} label={el} labelType='top'/>
+    })}
+  </div>
+
+  const layoutVideoText = <div className={styles.videoText}>
+    <P styleType={['large', 'w500']}>{t('constructor_chooseTextVideoLayout')}</P>
+    <div className={styles.buttonsWrapper}>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([['video', 'text']])}>{t('constructor_video')} | {t('constructor_text')}</Button>
+      <Button type='button' styleType={['black']} onClick={()=>setLayout([['text','video' ]])}> {t('constructor_text')} | {t('constructor_video')}</Button>
+    </div>
+    {layout &&
+      <div className={styles.videoTextWrapper} style={{gridTemplateAreas: `"${layout?.[0].join(' ')}"`}}>
+        <div className={styles.item} style={{gridArea:'video'}}>
+          {images.size === 0 &&
+          <FilesField 
+          name={'assets'} 
+          accept={['.mp4', '.webm', '.ogg', '.mov']}
+          buttonClassName={styles.addImageButton}
+          buttonName={t('personal_addVideo')} 
+          initialImages={args.initialData?.assets}
+          getImages={(i)=> setImages(_=> {
+            const newImages = new Map()
+            i.forEach(el=> newImages.set(el.id, el))
+            return newImages
+          })}
+          />
+          ||
+          images.has(1) &&
+          <ReactPlayer width={'100%'} height={'auto'} url={FILES + images.get(1).source} controls/>
+         }
+        </div>
+        <div className={styles.item} style={{gridArea:'text'}}>
+          <RichTextField hideButtons={{helpers: true}} name={'text'}/>  
+        </div>
+      </div>
+    }
+  </div>
+
   const imageField = <FilesField 
   name={'assets'} 
+  accept={['.jpeg', '.jpg', '.png', '.svg', '.webp', '.avif', '.gif']}
   initialImages={args.initialData?.assets} 
+  className={styles.addImageButton}
   getImages={(i) => setImages(_=> {
     const newImages = new Map()
     i.forEach(el=> newImages.set(el.id, el))
     return newImages
   })}
   />
+
   const videoField = <FilesField 
   name={'assets'} 
-  buttonName='Добавить видео' 
+  accept={['.mp4', '.webm', '.ogg', '.mov']}
+  buttonName={t('personal_addVideo')} 
   initialImages={args.initialData?.assets}
+  className={styles.addImageButton}
   getImages={(i)=> setImages(_=> {
     const newImages = new Map()
     i.forEach(el=> newImages.set(el.id, el))
@@ -84,6 +405,18 @@ export default function AddPersonalBlockModal(props: Props) {
         return [titleInput, imageField]
       case PersonalBlockType.Video:
         return [titleInput, videoField]
+      case PersonalBlockType.Banner:
+        return [imageField, layoutBanner]
+      case PersonalBlockType.Collage:
+        return [titleInput, layoutCollage]
+      case PersonalBlockType.Columns:
+        return [layoutColumns]
+      case PersonalBlockType.Social: 
+        return [titleInput, layoutSocial]
+      case PersonalBlockType.Html:
+        return [layoutHTML]
+      case PersonalBlockType.VideoText:
+        return [layoutVideoText]
     }
   }
 
@@ -93,13 +426,13 @@ export default function AddPersonalBlockModal(props: Props) {
       <FormikProvider value={formik}>
         <Form className={styles.form}>
           {getInputs()}
-          <Button className={styles.submitButton} type='submit'>Сохранить</Button>
+          <Button className={styles.submitButton} type='submit'>{t('save')}</Button>
         </Form>
       </FormikProvider>
     </div>
   )
 
-  return (<ModalLayout className={styles.modalLayout} >
+  return (<ModalLayout className={styles.modalLayout} mobileFullScreen>
     <ModalBody>
       {body}
     </ModalBody>
