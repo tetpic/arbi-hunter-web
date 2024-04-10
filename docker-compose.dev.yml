@@ -44,7 +44,7 @@ services:
         environment:
           API_HOST: http://arbi-hunter-api-nginx
           ADMIN_HOST: http://arbi-hunter-admin
-          VIRTUAL_HOST: arbi-hunter.dev.glob-com.ru,arbihunter.com
+          VIRTUAL_HOST: arbi-hunter.dev.glob-com.ru
           LETSENCRYPT_HOST: arbi-hunter.dev.glob-com.ru
           LETSENCRYPT_EMAIL: sites.globcom@yandex.ru
           VIRTUAL_PORT: 80
