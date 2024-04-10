@@ -28,6 +28,7 @@ export default function Footer(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
 
   return (<div className={styles.root}> 
@@ -40,10 +41,12 @@ export default function Footer(props: Props) {
     height={457}/>
 
       <div className={styles.left}>
+        {!isTabletWidth &&
         <div className={classNames(styles.logo, isLightTheme && styles.logo_light)}>
             <Image src={'/favicon.svg'} alt={'logo'} width={74} height={76}/>
             <ArbiLogoTextSvg/>
         </div>
+        }
         <P styleType={['large', 'w600', 'alignCenter']} useThemeColor className={styles.mail}>
           <MailConvertSvg color={isLightTheme&&colors.black}/>
           <Link href={'mailto:arbihunter@mail.com'} type='email'>arbihunter@mail.com</Link>
@@ -121,15 +124,18 @@ export default function Footer(props: Props) {
           </Link>
         </div>
 
+        {!isTabletWidth &&
         <div className={classNames(styles.qrCode, isLightTheme&&styles.qrCode_light)}>
           <P styleType={['medium', 'w500']} useThemeColor>
             {t('footer_download1')} <br /> {t('footer_download2')} <br /> {t('footer_download3')}
           </P>
           <Image src={qrCode} alt={'qrCode'} width={100} height={100} />
         </div>
+        }
       </div>
     </div>
 
+    {!isTabletWidth &&
     <div className={classNames(styles.bottom, isLightTheme&&styles.bottom_light)}>
       <p className={styles.license}>
         © {new Date().getFullYear()} All rights reserved
@@ -144,6 +150,7 @@ export default function Footer(props: Props) {
         <P styleType={['huge', 'w600']} className={styles.paymentMethod}>€</P>
       </div>
     </div >
+    }
   </div>
   </div>)
 }

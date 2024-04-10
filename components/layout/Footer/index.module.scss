@@ -4,12 +4,21 @@
   position: relative;
   overflow: hidden;
   background-color: var(--backColorAlt);
+  @include mq($TabletWidth, max) {
+    margin-bottom: -72px;
+  }
 
   .background {
     position: absolute;
     top: 0;
     right: -80px;
     z-index: 0;
+    @include mq($TabletWidth, max) {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      right: unset;
+    }
 
     &_light {
       opacity: .2;
@@ -23,6 +32,10 @@
   padding-top: 60px;
   padding-bottom: 24px;
   column-gap: 24px;
+  @include mq($TabletWidth, max) {
+    padding-top: 24px;
+    flex-direction: column-reverse;
+  }
 }
 
 .left {
@@ -33,6 +46,14 @@
   position: relative;
   z-index: 2;
   height: 290px;
+  @include mq($TabletWidth, max) {
+   height: unset;   
+   row-gap: 16px;
+   max-width: unset;
+   padding-inline: 16px;
+   margin-top: 42px;
+
+  }
 
   .logoWrapper {
     perspective: 800px;
@@ -45,6 +66,8 @@
     column-gap: 6px;
     margin-bottom: 8px;
     @include transitionDefault;
+
+
 
     svg {
       width: 136px;
@@ -92,11 +115,20 @@
   width: 70%;
   position: relative;
   z-index: 2;
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+    row-gap: 20px;
+    padding-inline: 16px;
+  }
+
 
   .column {
     display: flex;
     flex-direction: column;
     row-gap: 24px;
+    @include mq($TabletWidth, max) {
+      row-gap: 20px;
+    }
 
     a {
       @include transitionDefault;
