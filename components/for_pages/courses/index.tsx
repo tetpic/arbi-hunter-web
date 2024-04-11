@@ -142,15 +142,18 @@ export default function CoursesMain(props: Props) {
       <LinkBlack href={'/feedbacks'}>Смотреть все</LinkBlack>
     }
 
-    <Title 
-    title={isTabletWidth?'Популярное':'Популярные курсы'}
-    link='/courses/compilations?page=all'
-    className={styles.sectionTitle} 
-    emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
-    />
-    <CoursesBlock courses={popularCourses}/>
-    {!isTabletWidth &&
-    <LinkBlack href='/courses/compilations?page=all'>Смотреть все</LinkBlack>
-    }
+    {popularCourses.length > 0 &&
+    <>
+      <Title 
+      title={isTabletWidth?'Популярное':'Популярные курсы'}
+      link='/courses/compilations?page=all'
+      className={styles.sectionTitle} 
+      emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
+      />
+      <CoursesBlock courses={popularCourses}/>
+      {!isTabletWidth &&
+        <LinkBlack href='/courses/compilations?page=all'>Смотреть все</LinkBlack>
+      }
+    </>}
   </div>
 }

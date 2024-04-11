@@ -7,8 +7,7 @@ export default class ImageHelper {
     if (!file || !file.source) {
       return ''
     }
-    
-    const imageParamsStr = file.type === 'IMAGE'
+    const imageParamsStr = file.type === 'IMAGE'||file.mimeType.includes('image')
       ? `w=${this.getImageSize(preset)}&h=${this.getImageSize(preset)}&mode=${this.needCrop(preset) ? 'crop' : 'resize'}&fpx=${file.focalPoint?.x || '0.5'}&fpy=${file.focalPoint?.y || '0.5'}`
       : ''
     return `${runtimeConfig.HOST}/api/asset/files/${file.source}?${imageParamsStr}`

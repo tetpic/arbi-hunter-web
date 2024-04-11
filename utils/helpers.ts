@@ -1,27 +1,27 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
-import { FILES } from 'types/constants'
 import Formatter from './formatter'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import { TranslateCompensationType, TranslateCurrency } from './enumsTranslations'
-import { CompensationType } from 'types/enums'
+import { CompensationType, Preset } from 'types/enums'
+import ImageHelper from './ImageHelper'
 
-export const getUserImageSource = (userProfile: IUserProfile): string|null => {
+export const getUserImageSource = (userProfile: IUserProfile, preset?: Preset): string|null => {
   switch(userProfile?.profileType) {
     case ProfileType.Employee:
       if(userProfile.useOwnLogo && userProfile.logo){
-        return FILES + userProfile.logo.source
+        return ImageHelper.urlFromFile(userProfile.logo, preset||Preset.xsResize)
       }
       else if(!userProfile.useOwnLogo && userProfile?.image){
-        return FILES + userProfile?.image?.source
+        return ImageHelper.urlFromFile(userProfile?.image, preset||Preset.xsResize)
       }
       else {
         return null
       }
     case ProfileType.Hirer:
       if(userProfile.logo){
-        return FILES + userProfile.logo.source
+        return ImageHelper.urlFromFile(userProfile.logo, Preset.xsResize)
       }
       else {
         return null

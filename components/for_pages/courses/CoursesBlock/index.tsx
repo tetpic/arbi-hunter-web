@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import Image from 'next/image'
 import CourseItem from 'components/ui/CourseItem'
 import ICourse from 'data/interfaces/ICourse'
-import { FILES } from 'types/constants'
 import PlayButtonSvg from 'components/svg/PlayButtonSvg'
 import Formatter from 'utils/formatter'
 import UserSvg from 'components/svg/UserSvg'
@@ -11,6 +10,8 @@ import StarSvg from 'components/svg/StarSvg'
 import { useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/router'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 
 interface Props {
@@ -24,9 +25,10 @@ function BigCourseItem (props: {courseItem: ICourse}) {
   return (
     <div className={styles.left} onClick={()=>router.push(`/courses/${firstItem.id}`)}>
       <div className={styles.imageWrapper}>
-        {firstItem.image &&
+        {firstItem?.image &&
           <Image 
-          src={FILES+ firstItem.image.source} 
+          unoptimized
+          src={ImageHelper.urlFromFile(firstItem.image, Preset.smResize)} 
           alt={firstItem.name + ' image'}
           width={372}
           height={766}

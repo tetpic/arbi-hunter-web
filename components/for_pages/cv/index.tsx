@@ -5,7 +5,6 @@ import { useCvContext } from 'context/cv_state'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import DotSvg from 'components/svg/DotSvg'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
@@ -42,6 +41,7 @@ import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import { getUserImageSource } from 'utils/helpers'
 
 
 interface Props {
@@ -115,15 +115,6 @@ export default function CvPage(props: Props) {
     vacancyContext.setVacancies()
   }, [])
 
-  const profileImage = 
-  currentCv?.profile.useOwnLogo 
-  && currentCv?.profile?.logo?.source 
-  && FILES+currentCv?.profile?.logo?.source
-  ||
-  !currentCv?.profile.useOwnLogo 
-  && currentCv?.profile?.image?.source 
-  && FILES+currentCv?.profile?.image?.source
-
 
   if(!currentCv) {
     return <div className={styles.root}>
@@ -133,7 +124,7 @@ export default function CvPage(props: Props) {
 
   const userCard = (<>
     <div className={classNames(styles.top, currentCv.isContactsOpen&&styles.topActive)} onClick={()=>currentCv.isContactsOpen&&openProfile()}>
-      <UserPic size={80} image={profileImage}/>
+      <UserPic size={80} image={getUserImageSource(currentCv?.profile)}/>
       {currentCv.isContactsOpen &&
         <P 
         styleType={['large', 'w600']} 

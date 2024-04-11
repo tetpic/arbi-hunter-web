@@ -16,7 +16,7 @@ import userExample4 from 'images/recruiting/userExample4.webp'
 import userExample5 from 'images/recruiting/userExample5.webp'
 import userExample6 from 'images/recruiting/userExample6.webp'
 
-import slide1 from 'images/recruiting/recCard1.jpg'
+import slide1 from 'images/recruiting/recCard1.png'
 import slide2 from 'images/recruiting/recCard2.jpg'
 import slide3 from 'images/recruiting/recCard3.jpg'
 import { ICV } from 'data/interfaces/ICV'

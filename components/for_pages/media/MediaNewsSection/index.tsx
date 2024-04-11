@@ -3,12 +3,12 @@ import styles from './index.module.scss'
 // import { useRouter } from 'next/router'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
-import { Languages } from 'types/enums'
+import { Languages, Preset } from 'types/enums'
 import LinkBlack from 'components/ui/LinkBlack'
 import TextNode from 'components/ui/TextNode'
 import { useResize } from 'components/hooks/useResize'
 import Link from 'next/link'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   link?: string
@@ -41,7 +41,8 @@ export default function MediaNewsSection(props: Props) {
           {firstItem.image &&  
             <Image 
             priority 
-            src={FILES + firstItem.image.source} 
+            unoptimized
+            src={ImageHelper.urlFromFile(firstItem.image, Preset.mdResize)} 
             alt={firstItem.name} 
             style={{objectFit:'cover', width: '100%'}}
             width={664}
@@ -72,7 +73,8 @@ export default function MediaNewsSection(props: Props) {
             <div className={styles.imageWrapper}>
               {item.image && 
                 <Image 
-                src={FILES + item.image.source} 
+                unoptimized
+                src={ImageHelper.urlFromFile(item.image, Preset.xsCrop)} 
                 alt={item.name} 
                 width={230} 
                 height={260} 

@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import { useResize } from 'components/hooks/useResize'
-// import EditSvg from 'components/svg/EditSvg'
 import PhotoCameraSvg from 'components/svg/PhotoCameraSvg'
 import UsersSvg from 'components/svg/UsersSvg'
 import BackBtn from 'components/ui/BackBtn'
@@ -10,15 +9,14 @@ import UserPic from 'components/ui/UserPic'
 import { useCommunityContext } from 'context/community_state'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
-// import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { FILES } from 'types/constants'
-import { ModalType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SettingSvg from 'components/svg/SettingSvg'
 import { ICommunityMembersModalProps } from 'components/modals/MembersModal'
+import ImageHelper from 'utils/ImageHelper'
 
 
 
@@ -55,7 +53,11 @@ export default function CommunityHeader() {
   return (<div className={styles.root}> 
     <div className={styles.background}>
       {communityContext.currentCommunity.image &&
-        <Image key={communityContext.currentCommunity.image.source} src={FILES+ communityContext.currentCommunity.image.source} alt={communityContext.currentCommunity.name + ' background'} fill/>
+        <Image 
+        key={communityContext.currentCommunity.image.source} 
+        src={ImageHelper.urlFromFile(communityContext.currentCommunity.image, Preset.lgResize)} 
+        alt={communityContext.currentCommunity.name + ' background'} 
+        fill/>
       }
       {//isAdmin && !isTabletWidth &&
         //<Button className={styles.editCover} ><EditSvg/> Изменить обложку</Button>
@@ -67,7 +69,7 @@ export default function CommunityHeader() {
     <div className={styles.content}>
       <UserPic 
       className={styles.userPic} 
-      image={communityContext.currentCommunity?.logo?.source&&FILES + communityContext.currentCommunity.logo.source} 
+      image={communityContext.currentCommunity?.logo?.source&&ImageHelper.urlFromFile(communityContext.currentCommunity.logo)} 
       icon={communityContext.currentCommunity.profile?.id === userContext.currentProfile?.id&&!communityContext.currentCommunity.logo&&camera} 
       size={size}
       />

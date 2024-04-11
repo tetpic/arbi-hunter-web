@@ -199,7 +199,7 @@ export function CharacterWrapper(props: Props) {
       return
     })
 
-    const file = new File([dataBaseBlob], 'test.png', {type: 'image/png'})
+    const file = new File([dataBaseBlob], `user_${userContext?.currentProfile.id}_modelImage.png`, {type: 'IMAGE'})
     const fileId = await FileRepository.uploadFile(file)
     .then(res=> {
       return res.id

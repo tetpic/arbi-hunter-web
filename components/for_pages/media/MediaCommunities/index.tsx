@@ -4,7 +4,6 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import {Autoplay} from 'swiper/modules'
 import ICommunity from 'data/interfaces/ICommunity'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import { useRouter } from 'next/router'
 import Button from 'components/ui/Button'
@@ -13,6 +12,8 @@ import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { useRef } from 'react'
 import LinkBlack from 'components/ui/LinkBlack'
 import { useResize } from 'components/hooks/useResize'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   communities: ICommunity[]
@@ -42,7 +43,8 @@ export default function MediaCommunities(props: Props) {
               <div className={styles.imageWrapper}>
                 {comm.image&& 
                   <Image 
-                  src={FILES + comm.image.source} 
+                  unoptimized
+                  src={ImageHelper.urlFromFile(comm.image, Preset.smResize)} 
                   alt={comm.name + ' background'} 
                   width={286} 
                   height={134} 
@@ -52,7 +54,14 @@ export default function MediaCommunities(props: Props) {
               </div>
               <div className={styles.logoWrapper}>
                 <div className={styles.logo}>
-                  {comm.logo&&<Image src={FILES+comm.logo.source}  width={52} height={52} alt={comm.name + ' logo'}/>}
+                  {comm.logo&&
+                  <Image 
+                  unoptimized
+                  src={ImageHelper.urlFromFile(comm.logo, Preset.xsResize)}  
+                  width={52} 
+                  height={52} 
+                  alt={comm.name + ' logo'}
+                  />}
                 </div>
               </div>
               <p className={styles.name}>{comm.name}</p>

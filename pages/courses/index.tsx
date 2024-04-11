@@ -1,5 +1,6 @@
 import CoursesMain from 'components/for_pages/courses'
 import ContentLayout from 'components/layout/ContentLayout'
+import { runtimeConfig, } from 'config/runtimeConfig'
 import { CoursesWrapper } from 'context/courses_state'
 import { MediaWrapper } from 'context/media_state'
 import { ICategory } from 'data/interfaces/Common'
@@ -17,6 +18,7 @@ interface Props {
   feedbacks: ICourseFeedback[]
 }
 
+
 export const getServerSideProps = (async (context: { req: { cookies: { [x: string]: any } } }) => {
   const [
     categoryList, 
@@ -27,7 +29,7 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
   ] = await Promise.all([
     ArticlesRepository.getCategoryList({categoryType: CategoryType.Course, page: 1, limit: 5}), 
     ArticlesRepository.getCategoryList({categoryType: CategoryType.CourseCompilation, page: 1, limit: 10}),
-    CoursesRepository.getCourses({page: 1, limit: 10, categories: [30]},Languages.ru),
+    CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.POPULAR_COURSES_ID]},Languages.ru),
     CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
     CoursesRepository.getFeedbacks(undefined,  1, 10, Languages.ru)
   ])
