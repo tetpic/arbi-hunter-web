@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, SnackbarType} from 'types/enums'
+import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, SnackbarType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -39,7 +39,7 @@ export default function CvItem({cv, ...props}: Props) {
   const vacancyContext = useVacancyContext()
 
   const defaultImage = '/icons/defaultUser.svg'
-  const userImage = getUserImageSource(cv.profile)
+  const userImage = getUserImageSource(cv.profile, Preset.smResize)
   const router = useRouter()
   const [isOpenContacts, setIsOpenContacts] = useState<boolean>(cv.isContactsOpen)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -117,11 +117,20 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   return (<Link className={styles.item} href={'cv/'+cv.id}> 
-    <Image 
-    className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
-    src={userImage||defaultImage} 
-    alt={'def image'} width={320} height={320} 
-    />
+    {userImage &&
+      <Image 
+      unoptimized
+      className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
+      src={userImage} 
+      alt={'def image'} width={320} height={320} 
+      />
+      ||
+      <Image 
+      className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
+      src={defaultImage} 
+      alt={'def image'} width={320} height={320} 
+      />
+    }
 
     <div className={styles.content}>
       <CvItemTop cv={cv} userImage={userImage}/>

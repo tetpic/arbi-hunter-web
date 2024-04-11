@@ -10,14 +10,14 @@ import { ICreateNews, IArticleBlock, PreviewImage } from 'data/interfaces/Common
 import { IArticle } from 'data/interfaces/IArticle'
 import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { CategoryType } from 'types/enums'
+import { CategoryType, Preset } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
 import classNames from 'classnames'
 import PlusSvg from 'components/svg/PlusSvg'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import CrossSvg from 'components/svg/CrossSvg'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   article?: IArticle
@@ -88,7 +88,7 @@ export default function CreateNewCommunityArticle(props: Props) {
       <Form className={styles.form}>
         <div className={styles.addCover}>
           {(props.article?.image?.source || previewImage?.image) &&
-          <Image src={props.article?.image?.source?FILES+props.article.image.source:URL.createObjectURL(previewImage?.image)} alt={''} width={700} height={400}/>
+          <Image src={props.article?.image?.source?ImageHelper.urlFromFile(props.article.image, Preset.mdResize):URL.createObjectURL(previewImage?.image)} alt={''} width={700} height={400}/>
           }
           {(!props.article?.image?.source && !previewImage?.image) &&
           <p className={styles.subTitle}>Добавить обложку <br/> (не обязательно)</p>
@@ -119,7 +119,7 @@ export default function CreateNewCommunityArticle(props: Props) {
           <div className={styles.imagesWrapper}>
             {images.map(i=> {
               return  <div className={styles.image}>
-              <img key={i.id} src={i.source?FILES+i.source:URL.createObjectURL(i.image)} alt={''}/>
+              <img key={i.id} src={i.source?ImageHelper.urlFromSource(i.source):URL.createObjectURL(i.image)} alt={''}/>
               <Button type='button' className={styles.removeButton} onClick={()=> removeImage(i.id)}><CrossSvg/></Button>
               </div>
             })}

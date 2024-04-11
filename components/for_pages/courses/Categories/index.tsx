@@ -7,7 +7,8 @@ import Formatter from 'utils/formatter'
 import { useResize } from 'components/hooks/useResize'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Link from 'next/link'
-import { FILES } from 'types/constants'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   categoryList: ICategory[]
@@ -27,7 +28,8 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
       {props.item.image &&
         <Image 
         priority
-        src={FILES + props.item.image.source}
+        unoptimized
+        src={ImageHelper.urlFromFile(props.item.image, Preset.xsResize)}
         alt={props.item.name + ' image'} 
         width={props.size===50?222:147}
         height={props.size===50?222:147}

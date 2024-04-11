@@ -15,7 +15,8 @@ const nextConfig = nextTranslate({
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
     ROBOTS_FILE: process.env.ROBOTS_FILE,
-    FREE_COURSES_ID: process.env.FREE_COURSES_ID
+    FREE_COURSES_ID: process.env.FREE_COURSES_ID,
+    POPULAR_COURSES_ID: process.env.POPULAR_COURSES_ID
   },
   serverRuntimeConfig: {
     HOST: process.env.HOST,

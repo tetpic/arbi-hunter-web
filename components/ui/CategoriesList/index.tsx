@@ -3,11 +3,12 @@ import styles from './index.module.scss'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Link from 'next/link'
-import { FILES } from 'types/constants'
 import SwiperList from '../SwiperList'
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
 import P from '../P'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props<T> {
   categories: T[]
@@ -34,7 +35,8 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
           >
             <div className={styles.imageWrapper}>
               <Image 
-              src={FILES + category.image.source}
+              unoptimized
+              src={ImageHelper.urlFromFile(category.image, Preset.xsResize)}
               alt={category.name+ ' image'} 
               width={100} 
               height={100}

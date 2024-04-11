@@ -4,8 +4,9 @@ import Button from 'components/ui/Button'
 import Image from 'next/image'
 import { ICategory } from 'data/interfaces/Common'
 import Formatter from 'utils/formatter'
-import { FILES } from 'types/constants'
 import classNames from 'classnames'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   category: ICategory
@@ -25,8 +26,9 @@ export default function Banner(props: Props) {
     <div className={styles.imageWrapper}>
       {props.category.image &&
       <Image 
-      src={FILES + props.category.image.source} 
-      alt={'girl'} 
+      unoptimized
+      src={ImageHelper.urlFromFile(props.category.image, Preset.smResize)} 
+      alt={'banner image'} 
       width={440} 
       height={336} 
       style={{width:'100%', height:'100%', objectFit: 'contain'}}

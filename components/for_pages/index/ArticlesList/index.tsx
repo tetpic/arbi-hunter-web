@@ -31,7 +31,7 @@ export default function ArticlesList(props: Props) {
       {props.news && props.news.map(el=>{
         return (
           <div className={classNames(styles.news, isLightTheme && styles.news_light) }>
-            <Image unoptimized src={ImageHelper.urlFromFile(el.image, Preset.smCrop)} alt={'news'} width={372} height={180} className={styles.image}/>
+            <Image unoptimized src={ImageHelper.urlFromFile(el.image, Preset.smResize)} alt={'news'} width={372} height={180} className={styles.image}/>
             <div className={styles.content}>
               <P styleType={['fs20', 'w600']} useThemeColor className={classNames(props.onlyTitles?styles.titleOnly:styles.title)}>{el.name}</P>
                 {!props.onlyTitles &&
