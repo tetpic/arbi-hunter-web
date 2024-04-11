@@ -16,6 +16,10 @@
   flex-direction: column;
   align-items: center;
   max-width: 237px;
+  align-self: flex-start;
+  @include mq($TabletWidth, max) {
+    align-self: center;
+  }
 
   .step {
 
