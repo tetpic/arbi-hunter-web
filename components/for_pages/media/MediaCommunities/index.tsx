@@ -57,7 +57,7 @@ export default function MediaCommunities(props: Props) {
                   {comm.logo&&
                   <Image 
                   unoptimized
-                  src={ImageHelper.urlFromFile(comm.logo, Preset.xsResize)}  
+                  src={ImageHelper.urlFromFile(comm.logo, Preset.smallIconCrop)}  
                   width={52} 
                   height={52} 
                   alt={comm.name + ' logo'}

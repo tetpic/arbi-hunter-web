@@ -67,7 +67,13 @@ export default function CoursesList(props: Props) {
                 onClick={()=> !props.disableLink&&router.push('/courses/' + course.id)} 
                 key={course.id}
                 >
-                  <Image unoptimized src={ImageHelper.urlFromFile(course.image, Preset.smResize)} alt={'course image'} width={185} height={185} className={styles.image}/>
+                  <Image 
+                  unoptimized 
+                  src={ImageHelper.urlFromFile(course.image, Preset.xsCrop)} 
+                  alt={'course image'} 
+                  width={185} 
+                  height={185} 
+                  className={styles.image}/>
                   <div className={styles.content}>
                     <P 
                     styleType={['small', 'w500']} 

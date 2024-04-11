@@ -4,7 +4,7 @@ import UserPic from '@/components/ui/UserPic'
 import P from '@/components/ui/P'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Formatter from 'utils/formatter'
-import { ActivityStatus } from 'types/enums'
+import { ActivityStatus, Preset } from 'types/enums'
 import DotSvg from '@/components/svg/DotSvg'
 import { colors } from 'styles/variables'
 import { TranslateWorkExperience } from 'utils/enumsTranslations'
@@ -20,7 +20,7 @@ interface Props {
 export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
 
   const isOnline = vacancy.profile.activityStatus === ActivityStatus.Online
-  const image = getUserImageSource(vacancy.profile)
+  const image = getUserImageSource(vacancy.profile, Preset.smallIconCrop)
   
 
   return (<Link href={'/vacancy/'+vacancy.id} className={styles.root}> 

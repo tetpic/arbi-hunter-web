@@ -7,12 +7,12 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ICategory } from 'data/interfaces/Common'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import { CategoryType } from 'types/enums'
+import { CategoryType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import Title from 'components/ui/TitleForSection'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onClose: () => void
@@ -71,7 +71,12 @@ export default function CoursesCategoriesModal(props: Props) {
                     </span>
                   </p>
                   {category.image &&
-                  <Image src={FILES + category.image.source} alt={'category image'} width={100} height={100}/>
+                  <Image 
+                  unoptimized
+                  src={ImageHelper.urlFromFile(category.image, Preset.xsResize)} 
+                  alt={'category image'} 
+                  width={100} 
+                  height={100}/>
                   }
                   
                 </div>

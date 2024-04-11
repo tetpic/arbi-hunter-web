@@ -7,12 +7,13 @@ import { useCommunityContext } from 'context/community_state'
 import ICommunity from 'data/interfaces/ICommunity'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import { useResize } from 'components/hooks/useResize'
 import CheckSvg from 'components/svg/CheckSvg'
 import PlusSvg from 'components/svg/PlusSvg'
 import { colors } from 'styles/variables'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   community: ICommunity
@@ -35,7 +36,7 @@ export default function CommunityItem({community}: Props) {
 
 
   return ( <div className={styles.item} onClick={()=>router.push(`/media/community/${community.id}`)}>
-    <UserPic  className={styles.userPic} image={community.logo&&FILES + community.logo.source} size={isTabletWidth?42:80} />
+    <UserPic  className={styles.userPic} image={community.logo&&ImageHelper.urlFromFile(community.logo, Preset.xsCrop)} size={isTabletWidth?42:80} />
     <p className={styles.counter}>
       <UserSvg/>
       {Formatter.formatNumber(Number(community.membersCount))}

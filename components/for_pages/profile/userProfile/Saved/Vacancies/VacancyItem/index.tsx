@@ -13,7 +13,7 @@ import { useRef } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
-import { ApplicationStatus, ModalType, ProposalRequestType, SnackbarType } from 'types/enums'
+import { ApplicationStatus, ModalType, Preset, ProposalRequestType, SnackbarType } from 'types/enums'
 import ProposalRepository from 'data/repositories/ProposalRepository'
 import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
@@ -79,7 +79,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc.profile)}/>
+      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc.profile, Preset.smallIconCrop)}/>
       <p className={styles.company}>{vc.company||vc.contactName}</p>
 
       <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>

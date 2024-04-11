@@ -5,18 +5,18 @@ import UserPic from 'components/ui/UserPic'
 import {  useEffect } from 'react'
 import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
-import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
 import { CharCategoryKey } from 'data/interfaces/ICharacter'
 import { useRouter } from 'next/router'
-import { PurchaseType } from 'types/enums'
+import { Preset, PurchaseType } from 'types/enums'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import useTranslation from 'next-translate/useTranslation'
 import UserCart from '../UserCart'
+import ImageHelper from 'utils/ImageHelper'
 
 
 interface Props {
@@ -84,7 +84,13 @@ export default function UserEditor(props: Props) {
         {[...categories.entries()].map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
-              <UserPic size={64} active={el.id === activeSet[0].id} image={el.key === CharCategoryKey.Model?el.image&&FILES + el.image.source: `/images/charCategories/${el.key}_${variant.model}.webp`}/>
+              <UserPic 
+              size={64} 
+              active={el.id === activeSet[0].id} 
+              image={el.key === CharCategoryKey.Model
+                ?el.image&&ImageHelper.urlFromFile(el.image, Preset.xsCrop)
+                : `/images/charCategories/${el.key}_${variant.model}.webp`
+              }/>
               <p>{el.name}</p>
             </div>
           )
@@ -111,7 +117,7 @@ export default function UserEditor(props: Props) {
             size={80} 
             onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} 
             active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} 
-            image={item.image&&FILES + item.image.source}/>
+            image={item.image&&ImageHelper.urlFromFile(item.image, Preset.xsCrop)}/>
             {item.price > 0 &&
               <P styleType={['alignCenter', 'w600', 'small']} className={styles.price}><ArbiCoinSvg/> {item.price}</P>
             }
@@ -122,43 +128,7 @@ export default function UserEditor(props: Props) {
     </div>
     {!isTabletWidth &&
       <UserCart onSave={save}/>
-    }
-    {/* <div className={styles.cart}>
-      <div className={styles.balance}>
-        <div className={styles.balanceLeft}>
-          <P styleType={['w500', 'medium']}>{t('profile_editor_balance')}</P>
-          <P styleType={['w800', 'fs20', 'alignCenter']}><ArbiCoinSvg/> {userContext.user.balance}</P>
-        </div>
-        <Button styleType={['white']}>{t('profile_editor_fill')}</Button>
-      </div>
-      <div className={styles.choosenItems}>
-        <P styleType={['w600', 'large']}>{t('profile_editor_choosenItems')}</P>
-        <div className={styles.choosenItemsWrapper}>
-          {[...characterContext.choosenItems.values()].map(item=> {
-            return (
-              <div className={styles.variantItem}>
-                <UserPic 
-                active
-                size={76} 
-                image={item.image&&FILES + item.image.source}/>
-                {item.price > 0 && item.isLocked === true &&
-                  <P styleType={['alignCenter', 'w600', 'small']} className={styles.price}><ArbiCoinSvg/> {item.price}</P>
-                }
-              </div>
-            )
-          })}
-        </div>
-        <Button 
-        className={styles.buyButton} 
-        styleType={['gradient']}
-        isProcess={characterContext.savingProcess}  
-        disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
-        onClick={save}  
-        >
-          {t('profile_editor_buyFor')} {[...characterContext.choosenItems.values()].filter(el=> el.isLocked===true).map(el => el.price).reduce((p, c)=> {return p+c}, 0)} <ArbiCoinSvg />
-        </Button>
-      </div>
-    </div> */}
+    }  
     </div>
 
   )

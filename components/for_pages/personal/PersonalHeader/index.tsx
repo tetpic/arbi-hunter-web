@@ -1,14 +1,13 @@
 import styles from './index.module.scss'
 
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { useAppContext } from 'context/state'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
 import DownloadCloudSvg from 'components/svg/DownloadCloudSvg'
 import { useEffect, useMemo, useState } from 'react'
 import { usePersonalContext } from 'context/personal_state'
-import { ModalType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
@@ -20,6 +19,7 @@ import { ModelActions } from '../../profile/userProfile/UserEditor'
 import { IBackgroundSwitchModalArgs } from '@/components/modals/BackgroundSwitchModal'
 import { IBackgroundPickModalArguments } from '@/components/modals/BackgroundPickModal'
 import useTranslation from 'next-translate/useTranslation'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   isEditing?: boolean
@@ -112,7 +112,7 @@ export default function PersonalHeader(props: Props) {
     stateMachines={'State Machine 1'}  
     key={personalContext.transport.id} 
     className={styles.transport} 
-    src={FILES + personalContext.transport.image.source} 
+    src={ImageHelper.urlFromSource(personalContext.transport.image.source)} 
     animations={personalContext.transport.riveKeys.map(el=> el.key)}
     />
   }, [personalContext.transport])
@@ -123,7 +123,7 @@ export default function PersonalHeader(props: Props) {
     stateMachines={'State Machine 1'} 
     key={personalContext.weather.id} 
     className={styles.rive} 
-    src={FILES + personalContext.weather.image.source} 
+    src={ImageHelper.urlFromSource(personalContext.weather.image.source)} 
     animations={personalContext.weather.riveKeys.map(el=> el.key)}
     />
   }, [personalContext.weather])
@@ -132,7 +132,8 @@ export default function PersonalHeader(props: Props) {
   return (<div className={styles.root}> 
     {backImage && profileType===ProfileType.Hirer &&
     <Image 
-    src={FILES + backImage.image.source} 
+    unoptimized
+    src={ImageHelper.urlFromFile(backImage.image, Preset.lgResize)} 
     className={styles.background} 
     alt={'back'} 
     width={1148} 
@@ -140,14 +141,18 @@ export default function PersonalHeader(props: Props) {
     ||
     backImage && profileType===ProfileType.Employee &&
     <Image 
-    src={FILES + backImage.image.source} 
+    unoptimized
+    src={ImageHelper.urlFromFile(backImage.image, Preset.lgResize)} 
     className={styles.background} 
     alt={'back'} 
     width={1148} 
     height={300} />
     ||
     <Image 
-    src={personalContext.currentProfile?.profileType===ProfileType.Hirer?'/images/cities/companyDefaultBack.png':'/images/rooms/coworking.png'} 
+    src={personalContext.currentProfile?.profileType===ProfileType.Hirer
+      ?'/images/cities/companyDefaultBack.png'
+      :'/images/rooms/coworking.png'
+    } 
     className={styles.background} alt={'moscow'} 
     width={1148} 
     height={300} />
@@ -173,13 +178,15 @@ export default function PersonalHeader(props: Props) {
       && personalContext.currentProfile.logo &&
       <>
         <Image 
+        unoptimized
         className={styles.building} 
-        src={FILES + building.image.source} alt={''} 
+        src={ImageHelper.urlFromFile(building.image, Preset.sResize)} alt={''} 
         width={250} height={300}
         />
         <Image 
+        unoptimized
         className={styles.hirerLogo} 
-        src={FILES + personalContext.currentProfile.logo.source} 
+        src={ImageHelper.urlFromFile(personalContext.currentProfile.logo, Preset.xsCrop)} 
         style={{top: building.image.focalPoint.y*100 + '%', left: building.image.focalPoint.x*100 + '%'}}  
         alt={'logo'}
         width={54}
@@ -190,8 +197,9 @@ export default function PersonalHeader(props: Props) {
       {personalContext.currentProfile.profileType === ProfileType.Employee 
       && personalContext.currentProfile.useOwnLogo && !props.useModel && personalContext.currentProfile?.logo &&
         <Image
+        unoptimized
         className={styles.userLogo}
-        src={FILES + personalContext.currentProfile.logo.source}
+        src={ImageHelper.urlFromFile(personalContext.currentProfile.logo, Preset.smCrop)}
         alt={'logo'}
         width={370}
         height={370}

@@ -7,12 +7,13 @@ import { IFile, PreviewImage} from 'data/interfaces/Common'
 import CrossSvg from 'components/svg/CrossSvg'
 import Button from 'components/ui/Button'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 import { BackgroundCategoryType, IBackground } from 'data/interfaces/IBackground'
 import { useUserContext } from 'context/user_state'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import classNames from 'classnames'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -89,13 +90,33 @@ export default function BackgroundPickModal(props: Props) {
       <Button className={styles.closeModal} onClick={props.onClose}><CrossSvg/></Button>
       <div className={styles.backgroundWrapper}>
         {currentBackground && 
-          <Image className={styles.backgroundImage} src={currentBackground&& FILES+ currentBackground.source} alt={'background'} width={700} height={300}/>
+          <Image 
+          unoptimized
+          className={styles.backgroundImage} 
+          src={currentBackground&& ImageHelper.urlFromFile(currentBackground, Preset.mdResize)} 
+          alt={'background'} 
+          width={700} 
+          height={300}/>
         }
       </div>
       {currentBuild?.source &&
       <div className={styles.buildWrapper}>        
-        <Image className={styles.build} src={currentBuild?.source && FILES+ currentBuild?.source} alt={'build'} width={250} height={300}/>
-        {args.hirerLogo && <Image className={styles.logo} style={{left: currentBuild?.focalPoint.x * 100 +'%', top: currentBuild?.focalPoint.y * 100 + '%'}} src={args.hirerLogo.source && FILES+ args.hirerLogo.source} alt={'logo'} width={60} height={60}/>}
+        <Image 
+        unoptimized
+        className={styles.build} 
+        src={currentBuild?.source && ImageHelper.urlFromFile(currentBuild, Preset.sResize)} 
+        alt={'build'} 
+        width={250} 
+        height={300}/>
+        {args.hirerLogo && 
+          <Image 
+          unoptimized
+          className={styles.logo} 
+          style={{left: currentBuild?.focalPoint.x * 100 +'%', top: currentBuild?.focalPoint.y * 100 + '%'}} 
+          src={args.hirerLogo.source && ImageHelper.urlFromFile(args.hirerLogo, Preset.smallIconCrop)} 
+          alt={'logo'} 
+          width={60} 
+          height={60}/>}
       </div>
       }
     </div>
@@ -114,9 +135,22 @@ export default function BackgroundPickModal(props: Props) {
             className={classNames(styles.build, currentBuild?.id === b.image.id && styles.build_active)} 
             onClick={() => setCurrentBuild(currentBuild?.id !== b.image.id?b.image:null)}
             >
-              <Image className={styles.buildImg} src={FILES + b.image.source} alt={b.image.source} width={155} height={170}/>
+              <Image 
+              unoptimized
+              className={styles.buildImg} 
+              src={ImageHelper.urlFromFile(b.image, Preset.xsResize)} 
+              alt={b.image.source} 
+              width={155} 
+              height={170}
+              />
               {currentBackground &&
-                <Image className={styles.buildBack} src={FILES + currentBackground?.source} width={155} height={170} alt={'build back'}/>
+                <Image 
+                unoptimized
+                className={styles.buildBack} 
+                src={ImageHelper.urlFromFile(currentBackground, Preset.xsResize)} 
+                width={155} 
+                height={170} 
+                alt={'build back'}/>
               }
             </div>
           </SwiperSlide>
@@ -139,21 +173,16 @@ export default function BackgroundPickModal(props: Props) {
             className={classNames(styles.place, currentBackground?.id === b.image.id && styles.place_active)}
             onClick={() => setCurrentBackground(currentBackground?.id !== b.image.id?b.image:null)}
             >
-              <Image src={FILES + b.image.source} alt={b.image.source} width={155} height={115}/>
+              <Image
+              unoptimized
+               src={ImageHelper.urlFromFile( b.image, Preset.xsResize)} 
+               alt={b.image.source} 
+               width={155} 
+               height={115}/>
             </div>
           </SwiperSlide>
         )
       })}
-        {/* <SwiperSlide className={styles.slide} style={{width: 155}}>
-          <label 
-          className={styles.place}
-          onClick={() => customBackground&&setCurrentBackground(customBackground.data)}
-          >
-            <Image src={(customBackground?.image&&URL.createObjectURL(customBackground.image))||(customBackground?.data&&FILES+customBackground.data.source)||''} alt={' '} width={155} height={115}/>
-
-            <FileInput setImages={setCustomBackground} />
-          </label>
-        </SwiperSlide> */}
       </Swiper>
     </div>
   )

@@ -9,7 +9,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
 import { RefObject, useEffect, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { MessageType } from 'types/enums'
+import { MessageType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
@@ -131,7 +131,7 @@ export default function Messages(props: Props) {
           {isTabletWidth &&
             <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
           }
-          <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor)}/>
+          <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
           <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
           <p className={styles.time}>{collocutor.online?<span className={styles.online}>В сети</span>:'Был(а) в сети  '+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
           {!isTabletWidth &&

@@ -39,7 +39,7 @@ export default function CvItem({cv, ...props}: Props) {
   const vacancyContext = useVacancyContext()
 
   const defaultImage = '/icons/defaultUser.svg'
-  const userImage = getUserImageSource(cv.profile, Preset.smResize)
+  const userImage = getUserImageSource(cv.profile, Preset.sCrop)
   const router = useRouter()
   const [isOpenContacts, setIsOpenContacts] = useState<boolean>(cv.isContactsOpen)
   const [isLoading, setIsLoading] = useState<boolean>(false)

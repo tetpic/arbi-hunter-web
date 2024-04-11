@@ -1,3 +1,4 @@
+import { runtimeConfig } from 'config/runtimeConfig'
 
 export const CONTACTS = {
   instagram: '#',
@@ -50,6 +51,4 @@ export const Timers: {
 
 }
 
-export const LOAD_LIMIT:number|string = process.env.NEXT_PUBLIC_LOAD_LIMIT
-
-export const FILES = process.env.files
+export const LOAD_LIMIT:number|string = runtimeConfig.LOAD_LIMIT

@@ -4,10 +4,11 @@ import {  PreviewImage } from 'data/interfaces/Common'
 import Spinner from '../Spinner'
 import classNames from 'classnames'
 import CrossSvg from '@/components/svg/CrossSvg'
-import { FILES } from 'types/constants'
 import ReactPlayer from 'react-player'
 import Image from 'next/image'
 import Button from '../Button'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   previews: PreviewImage[],
@@ -39,10 +40,13 @@ export default function FilesList(props: Props) {
             <Button type='button' className={styles.removeButton} onClick={()=>{props.onRemove(el.rawId, el.id.toString())}}><CrossSvg/></Button>
            }
            {(el.image?.type.includes('image')||el.data?.type === 'IMAGE') &&
-             <img key={i} src={(el?.data?.source&&FILES+el?.data?.source)||el.image&&URL.createObjectURL(el.image)} alt={''}/>
+             <img 
+             key={i} 
+             src={(el?.data?.source&&ImageHelper.urlFromFile(el?.data, Preset.sResize))||el.image&&URL.createObjectURL(el.image)} 
+             alt={''}/>
            }
            {(el.image?.type.includes('video')||el.data?.type === 'VIDEO') &&
-             <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&FILES+el?.source)||URL.createObjectURL(el.image)} controls/>
+             <ReactPlayer width={'100%'} height={'auto'} url={(el?.source&&ImageHelper.urlFromSource(el?.source))||URL.createObjectURL(el.image)} controls/>
            }
            {el.data?.type === 'BINARY' &&
            <>

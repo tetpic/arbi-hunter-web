@@ -4,7 +4,6 @@ import ModalBody from '@/components/layout/Modal/ModalBody'
 import { IPurchase, ITariff, PurchaseForm } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import Formatter from 'utils/formatter'
@@ -20,10 +19,11 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
-import { PurchaseType } from 'types/enums'
+import { Preset, PurchaseType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onClose: () => void
@@ -119,7 +119,12 @@ export default function PurchasePreviewModal(props: Props) {
           {/* @ts-ignore */}
           <div className={styles.imageWrapper} style={{'--gradientColor1': '#'+args.tariff.colors[0], '--gradientColor2': '#'+args.tariff.colors[1]}}>
             {args.tariff.icon &&
-              <Image src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={24} height={24}/>
+              <Image 
+              unoptimized 
+              src={ImageHelper.urlFromFile(args.tariff.icon, Preset.smallIconCrop)} 
+              alt={'tariff icon'} 
+              width={24} 
+              height={24}/>
             }
           </div>
           {args.tariff.name}
@@ -255,7 +260,13 @@ export default function PurchasePreviewModal(props: Props) {
     <div className={styles.root}>
       <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       {args.tariff.icon &&
-        <Image className={styles.tariffIcon} src={FILES+ args.tariff.icon.source} alt={'tariff icon'} width={96} height={96}/>
+        <Image 
+        unoptimized
+        className={styles.tariffIcon} 
+        src={ImageHelper.urlFromFile(args.tariff.icon, Preset.iconCrop)} 
+        alt={'tariff icon'} 
+        width={96} 
+        height={96}/>
       }
       <P styleType={['w600', 'huge']}>{args.tariff.name}</P>
       {args.tariff.price > 0 &&

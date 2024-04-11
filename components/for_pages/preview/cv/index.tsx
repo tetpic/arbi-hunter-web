@@ -7,7 +7,7 @@ import { useUserContext } from 'context/user_state'
 import { getAge, getUserImageSource, getUserName } from 'utils/helpers'
 import P from '@/components/ui/P'
 import classNames from 'classnames'
-import { Answer, VacancyLookType } from 'types/enums'
+import { Answer, Preset, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
@@ -44,7 +44,7 @@ export default function CvPreview(props: Props) {
 
   const personalHead = (
     <div className={styles.head}>
-      <UserPic image={getUserImageSource(userContext.currentProfile)} size={80}/>
+      <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} size={80}/>
       <P styleType={['w600', 'large']}>{getUserName(userContext.currentProfile)}</P>
     </div>
   )

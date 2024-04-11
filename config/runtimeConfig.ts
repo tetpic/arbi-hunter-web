@@ -11,6 +11,7 @@ interface IRuntimeConfig {
   BOOKING_COMPLETE_ANYTIME: boolean
   FREE_COURSES_ID: number
   POPULAR_COURSES_ID: number
+  LOAD_LIMIT: number
 }
 
 interface IServerRuntimeConfig {

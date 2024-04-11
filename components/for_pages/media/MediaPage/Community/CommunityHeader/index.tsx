@@ -54,6 +54,7 @@ export default function CommunityHeader() {
     <div className={styles.background}>
       {communityContext.currentCommunity.image &&
         <Image 
+        unoptimized
         key={communityContext.currentCommunity.image.source} 
         src={ImageHelper.urlFromFile(communityContext.currentCommunity.image, Preset.lgResize)} 
         alt={communityContext.currentCommunity.name + ' background'} 

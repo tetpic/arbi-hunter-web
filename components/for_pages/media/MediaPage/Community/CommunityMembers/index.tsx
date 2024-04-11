@@ -6,6 +6,7 @@ import UserPic from 'components/ui/UserPic'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { colors } from 'styles/variables'
 import { getUserImageSource } from 'utils/helpers'
+import { Preset } from 'types/enums'
 
 interface Props {
   members: IUserProfile[]
@@ -22,7 +23,7 @@ export default function CommunityMembers(props: Props) {
     props.members.slice(0, 8).map(user=> {
       return(
         <div className={styles.user} key={user.id}>
-          <UserPic image={getUserImageSource(user)} size={60}/>
+          <UserPic image={getUserImageSource(user, Preset.smallIconCrop)} size={60}/>
           <p className={styles.name}>{user.firstName}</p>
         </div>
       )

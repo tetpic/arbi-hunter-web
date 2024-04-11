@@ -62,7 +62,7 @@ export default function MediaArticle(props: Props) {
       titleName={props.article?.community?.name} 
       isOpen 
       options={getOptions(mediaContext.currentNews.get(props.article.id))}
-      titleImg={props.article.community?.image?.source} 
+      titleImg={props.article.community?.image} 
       disableLikes={props.article?.articleCategory?.categoryType === CategoryType.Knowledge}
       />
     }  

@@ -9,10 +9,10 @@ import ICommunity from 'data/interfaces/ICommunity'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { FILES } from 'types/constants'
-import { Languages } from 'types/enums'
+import { Languages, Preset } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onClose: ()=> void
@@ -42,7 +42,10 @@ export default function CommunityNewsViewModal(props: Props) {
 
   const body = (<>
     <div className={styles.top}>
-      <UserPic size={46} className={styles.userPic} image={community.logo && FILES + community.logo.source}/>
+      <UserPic 
+      size={46} 
+      className={styles.userPic} 
+      image={community.logo && ImageHelper.urlFromFile(community.logo, Preset.smallIconCrop)}/>
       <p className={styles.commName}>{item.community.name}</p>
       <p className={styles.published}>{Formatter.formatDateRelative(item.createdAt)}</p>
       {!isAdmin &&
@@ -63,7 +66,12 @@ export default function CommunityNewsViewModal(props: Props) {
         {article&&article.images&&article.images.map(image=> {
           return(
             <div key={image.id} className={styles.image} style={{width: article.images.length > 1?'50%': '100%'}}>
-              <Image src={FILES+ image.source} alt={'article Image'} layout="fill" objectFit='cover' />
+              <Image 
+              unoptimized
+              src={ImageHelper.urlFromFile(image, Preset.smResize)} 
+              alt={'article Image'} 
+              layout="fill" 
+              objectFit='cover' />
             </div>
           )
         })}

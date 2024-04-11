@@ -9,8 +9,9 @@ import UserPic from 'components/ui/UserPic'
 import classNames from 'classnames'
 import { useUserContext } from 'context/user_state'
 import Button from 'components/ui/Button'
-import { FILES } from 'types/constants'
 import FileInput from 'components/fields/FileInput'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -40,7 +41,7 @@ export default function UserImageModal(props: Props) {
           <UserPic 
           className={styles.userPic}
           size={88}
-          image={userContext?.currentProfile?.logo&&FILES+userContext?.currentProfile?.logo.source}
+          image={userContext?.currentProfile?.logo&&ImageHelper.urlFromFile(userContext?.currentProfile?.logo, Preset.iconCrop)}
           />
           <p>Индивидуальный аватар</p>
         </div>
@@ -49,7 +50,9 @@ export default function UserImageModal(props: Props) {
           <UserPic
           className={styles.userPic}
           size={88}
-          image={image? (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) : userContext?.currentProfile?.image&&FILES+userContext?.currentProfile?.image.source}
+          image={image
+            ?(image?.data?ImageHelper.urlFromFile(image?.data, Preset.iconCrop):URL.createObjectURL(image.image)) 
+            :userContext?.currentProfile?.image&&ImageHelper.urlFromFile(userContext?.currentProfile?.image, Preset.iconCrop)}
           />
           <p>Загрузить фото</p>
         </label>

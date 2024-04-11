@@ -5,14 +5,15 @@ import ModalBody from 'components/layout/Modal/ModalBody'
 import { IArticle } from 'data/interfaces/IArticle'
 import { useAppContext } from 'context/state'
 import { useEffect, useRef, useState } from 'react'
-import { IArticleBlock } from 'data/interfaces/Common'
+import { IArticleBlock, IFile } from 'data/interfaces/Common'
 import classNames from 'classnames'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import UserPic from 'components/ui/UserPic'
 import TextNode from 'components/ui/TextNode'
 import Button from 'components/ui/Button'
 import CrossSvg from 'components/svg/CrossSvg'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: ()=>void
@@ -109,12 +110,27 @@ export default function StoriesViewerModal(props: Props) {
       {
       (currentBlock.block.image.type === 'IMAGE' || currentBlock.block.image.type === 'BINARY') &&
       <>
-        <Image className={styles.mainImage} src={FILES + currentBlock.block.image.source} alt={''} width={600} height={800} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-        <Image className={styles.imageBackground} src={FILES + currentBlock.block.image.source} alt={''} width={600} height={800} style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
+        <Image 
+        unoptimized
+        className={styles.mainImage} 
+        src={ImageHelper.urlFromFile((currentBlock.block.image as IFile), Preset.bannerResize)} 
+        alt={''} 
+        width={600} 
+        height={800} 
+        style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+        <Image 
+        unoptimized
+        className={styles.imageBackground} 
+        src={ImageHelper.urlFromFile((currentBlock.block.image as IFile), Preset.bannerResize)} 
+        alt={''} 
+        width={600} 
+        height={800} 
+        style={{width: '100%', height: '100%', objectFit: 'cover'}}
+        />
       </>
       ||
       currentBlock.block.image.type === 'VIDEO' &&
-        <video autoPlay playsInline src={FILES + currentBlock.block.image.source}/>
+        <video autoPlay playsInline src={ImageHelper.urlFromSource(currentBlock.block.image.source)}/>
       }
       <div className={styles.navigation}>
         <div className={styles.prev} onClick={prevHandler}></div>
@@ -122,7 +138,11 @@ export default function StoriesViewerModal(props: Props) {
       </div>
 
       <div className={styles.description}>
-        <UserPic className={styles.userPic} size={32} image={FILES + currentStory.story.image.source}/>
+        <UserPic 
+        className={styles.userPic} 
+        size={32} 
+        image={ImageHelper.urlFromFile(currentStory.story.image, Preset.smallIconCrop)}
+        />
         <p className={styles.title}>{currentBlock.block.title||'TITLE'}</p>
         {currentBlock.block.body &&
           <p className={styles.body}><TextNode html={currentBlock.block.body}/></p>

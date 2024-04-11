@@ -4,12 +4,13 @@ import languages from '@cospired/i18n-iso-languages'
 import UserPic from 'components/ui/UserPic'
 import ReactPlayer from 'react-player'
 import { useEffect, useState } from 'react'
-import { FILES } from 'types/constants'
 import Button from 'components/ui/Button'
 import GlobusSvg from 'components/svg/GlobusSvg'
 import TimerSvg from 'components/svg/TimerSvg'
 import EducationSvg from 'components/svg/EducationSvg'
 import styles from './index.module.scss'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   course: ICourse
@@ -27,7 +28,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
 
   languages.registerLocale(require(`@cospired/i18n-iso-languages/langs/${course.language}.json`))
   const courseLang = languages.getName(course.language, course.language)
-  const filePath = FILES
+
 
   return (<div className={styles.root}> 
     <div className={styles.item}>
@@ -58,7 +59,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
     {course.video && loaded &&
       <div className={styles.item}>
         <div className={styles.videoWrapper}>
-          <ReactPlayer width={'100%'} height={'auto'} url={filePath + course.video.source} controls/>
+          <ReactPlayer width={'100%'} height={'auto'} url={ImageHelper.urlFromSource(course.video.source)} controls/>
         </div>
       </div>
     }
@@ -68,7 +69,10 @@ export default function CoursesInformation({course, isMobile}: Props) {
         {course.authors.length>0&&
         course.authors.map((el, index)=> {
           return <div key={index} className={styles.author_wrapper}>
-            <UserPic className={styles.author_image} image={filePath+el.image.source} size={75}/>
+            <UserPic 
+            className={styles.author_image} 
+            image={ImageHelper.urlFromFile(el.image, Preset.iconCrop)} 
+            size={75}/>
             <p className={styles.author_name}>{el.name}</p>
             <p className={styles.author_description}>{el.description}</p>
           </div>

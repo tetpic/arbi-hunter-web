@@ -3,9 +3,8 @@ import styles from './index.module.scss'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import {  ModalType } from 'types/enums'
+import {  ModalType, Preset } from 'types/enums'
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import { useCvContext } from 'context/cv_state'
@@ -34,6 +33,7 @@ import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
 import ContactsModal from './ContactsModal'
 import useTranslation from 'next-translate/useTranslation'
+import ImageHelper from 'utils/ImageHelper'
 
 
 interface Props {
@@ -105,7 +105,9 @@ export default function VacancyPage(props: Props) {
 
   const companyCard = (
     <Link href={'/personal/'+currentVacancy.profile?.id} className={styles.companyCard}>
-      <UserPic image={currentVacancy.profile?.logo&&FILES + currentVacancy.profile?.logo?.source} size={67}/>
+      <UserPic 
+      image={currentVacancy.profile?.logo&&ImageHelper.urlFromFile(currentVacancy.profile?.logo, Preset.smallIconCrop)} 
+      size={67}/>
       <div className={styles.companyInfo}>
         <P styleType={['w600', 'medium']}>{currentVacancy.profile?.company}</P>
         {currentVacancy.city?.locName &&

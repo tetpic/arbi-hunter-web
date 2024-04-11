@@ -5,7 +5,6 @@ import { ApplicationStatus, MessageType, ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
@@ -17,8 +16,8 @@ import Spacer from 'components/ui/Spacer'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
-import { useChatDialogContext } from 'context/chat_dialog_state'
 import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   profileId: number
@@ -31,7 +30,6 @@ export default function MessageFactory(props: Props) {
   const {isPhoneWidth} = useResize()
   const appContext = useAppContext()
   const userContext = useUserContext()
-  const dialogContext = useChatDialogContext()
   const profileType = userContext?.currentProfile?.profileType
 
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message.profileId?styles.rightMessage:styles.leftMessage
@@ -67,7 +65,14 @@ export default function MessageFactory(props: Props) {
         }
       {msg.assets&&msg.assets.length>0&&msg.assets.map(image=> {
         return <div className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
-          <Image onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: FILES+ image.source})} src={FILES+ image.source} alt={'asset'} width={msg.assets.length>1?200:400} height={msg.assets.length>1?200:400} style={{width: '100%', objectFit: 'cover'}} />
+          <Image 
+          unoptimized
+          onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromSource(image.source)})} 
+          src={ImageHelper.urlFromSource(image.source)} 
+          alt={'asset'} 
+          width={msg.assets.length>1?200:400} 
+          height={msg.assets.length>1?200:400} 
+          style={{width: '100%', objectFit: 'cover'}} />
         </div>
       })}
       </div>
@@ -112,7 +117,7 @@ export default function MessageFactory(props: Props) {
   const voiceMessage = (
     <div className={side} key={props.message.id}>
       {msg?.assets?.length > 0 &&
-        <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(FILES + msg?.assets[0]?.source):(URL.createObjectURL(msg?.voiceMessage))}/>
+        <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
       }
       {stats}
     </div>

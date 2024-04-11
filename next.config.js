@@ -4,7 +4,6 @@ const nextConfig = nextTranslate({
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    files: 'https://arbi-hunter.dev.glob-com.ru/api/asset/files/',
     host: process.env.HOST
   },
 
@@ -15,6 +14,7 @@ const nextConfig = nextTranslate({
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
     ROBOTS_FILE: process.env.ROBOTS_FILE,
+    LOAD_LIMIT: process.env.LOAD_LIMIT,
     FREE_COURSES_ID: process.env.FREE_COURSES_ID,
     POPULAR_COURSES_ID: process.env.POPULAR_COURSES_ID
   },

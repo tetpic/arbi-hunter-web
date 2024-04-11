@@ -18,15 +18,27 @@ export default class ImageHelper {
 
   static getImageSize(preset: Preset): number {
     switch (preset) {
+      case Preset.smallIconCrop:
+      case Preset.smallIconResize:
+        return 80
+      case Preset.iconResize:
+      case Preset.iconCrop:
+        return 150
       case Preset.xsResize:
       case Preset.xsCrop:
-        return 200
+        return 300
+      case Preset.sResize:
+      case Preset.sCrop:
+        return 400
       case Preset.smResize:
       case Preset.smCrop:
         return 600
       case Preset.mdResize:
       case Preset.mdCrop:
-        return 900
+        return 800
+      case Preset.bannerResize:
+      case Preset.bannerCrop:
+        return 1000
       case Preset.lgResize:
       case Preset.lgCrop:
         return 1200
@@ -38,11 +50,15 @@ export default class ImageHelper {
 
   static needCrop(preset: Preset): boolean {
     return (
-      preset === Preset.xsCrop
-      || preset === Preset.smCrop
-      || preset === Preset.mdCrop
-      || preset === Preset.lgCrop
-      || preset === Preset.xlCrop
+      preset === Preset.smallIconCrop
+      ||preset === Preset.iconCrop
+      ||preset === Preset.xsCrop
+      ||preset === Preset.sCrop
+      ||preset === Preset.smCrop
+      ||preset === Preset.mdCrop
+      ||preset === Preset.bannerCrop
+      ||preset === Preset.lgCrop
+      ||preset === Preset.xlCrop
     )
   }
 }

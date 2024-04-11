@@ -15,7 +15,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { colors } from 'styles/variables'
-import { FILES } from 'types/constants'
 import { NavigationSet } from 'types/types'
 import Formatter from 'utils/formatter'
 import CourseFeedbacks from './CourseFeedbacks'
@@ -29,8 +28,9 @@ import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
 import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import { SnackbarType } from 'types/enums'
+import { Preset, SnackbarType } from 'types/enums'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   id: number
@@ -168,7 +168,12 @@ export default function CurrentCourse(props: Props) {
           }
         </div>
     
-        <Image className={styles.courseImage} src={FILES + course.image.source} alt={course.name} fill/>
+        <Image 
+        unoptimized 
+        className={styles.courseImage} 
+        src={ImageHelper.urlFromFile(course.image, Preset.lgResize)} 
+        alt={course.name} 
+        fill/>
           <div className={styles.iconButtonsWrapper}>
             <Button className={styles.iconButton} >
               <ShareSvg/>

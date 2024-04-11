@@ -7,8 +7,7 @@ import Button from '@/components/ui/Button'
 import Image from 'next/image'
 import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
 import { useAppContext } from 'context/state'
-import { ModalType, PurchaseType, SnackbarType } from 'types/enums'
-import { FILES } from 'types/constants'
+import { ModalType, Preset, PurchaseType, SnackbarType } from 'types/enums'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import { useTariffContext } from 'context/tariff_state'
@@ -19,6 +18,7 @@ import { clearObject } from 'utils/helpers'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
+import ImageHelper from 'utils/ImageHelper'
 
 
 interface Props {
@@ -147,7 +147,13 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
     style={{'--gradientColor1': '#'+tariff.colors[0], '--gradientColor2': '#'+tariff.colors[1]}}
     >
       {tariff.icon &&
-        <Image src={FILES + tariff.icon?.source} alt={'item icon'} width={60} height={60} className={styles.icon}/>
+        <Image 
+        unoptimized 
+        src={ImageHelper.urlFromFile(tariff.icon, Preset.xsCrop)} 
+        alt={'item icon'} 
+        width={60} 
+        height={60} 
+        className={styles.icon}/>
       }
       <P styleType={['w600', 'large']} className={styles.title}>{tariff.name}</P>
       {tariff.price > 0 &&
@@ -166,7 +172,12 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{t('shop_buy')}</Button>
       }
       {props.type === 'info' &&
-        <P className={styles.button}  styleType={['medium', 'w500']}>{t('shop_bought')} {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P 
+        className={styles.button}  
+        styleType={['medium', 'w500']}
+        >
+          {t('shop_bought')} {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}
+        </P>
       }
     </div>
   )

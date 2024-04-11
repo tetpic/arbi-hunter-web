@@ -4,7 +4,7 @@ import { useAppContext } from 'context/state'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import BackTextButton from 'components/ui/BackTextButton'
-import { PersonalBlockType } from 'types/enums'
+import { PersonalBlockType, Preset } from 'types/enums'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { Form, FormikProvider, useFormik } from 'formik'
 import InputField from 'components/fields/InputField'
@@ -16,7 +16,6 @@ import {  useEffect, useState } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import classNames from 'classnames'
 import DotSvg from '@/components/svg/DotSvg'
 import HtmlText from '@/components/ui/HtmlText'
@@ -27,6 +26,7 @@ import CollageLayoutSvg from '@/components/svg/CollageLayoutSvg'
 import CrossSvg from '@/components/svg/CrossSvg'
 import ColumnLayoutSvg from '@/components/svg/ColumnLayoutSvg'
 import PlusThinSvg from '@/components/svg/PlusThinSvg'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onClose: () => void
@@ -237,7 +237,13 @@ export default function AddPersonalBlockModal(props: Props) {
             />
             ||
             <>
-            <Image src={FILES + images.get(el).source} alt={''} width={600} height={600} className={styles.collageImage}/>
+            <Image 
+            unoptimized
+            src={ImageHelper.urlFromFile(images.get(el), Preset.mdCrop)} 
+            alt={''} 
+            width={600} 
+            height={600} 
+            className={styles.collageImage}/>
             <Button type='button' styleType={['backTransparent', 'icon']} className={styles.removeButton} onClick={()=>removeAsset(el)}><CrossSvg/></Button>
             </>
           }
@@ -274,7 +280,13 @@ export default function AddPersonalBlockModal(props: Props) {
       </div>
       {images.size > 0 && layout &&
         <div className={styles.banner}>
-          <Image src={FILES + [...images.values()][0].source} alt={''} width={600} height={600} className={styles.bannerImage}/>
+          <Image 
+          unoptimized
+          src={ImageHelper.urlFromFile([...images.values()][0], Preset.mdCrop)} 
+          alt={''} 
+          width={600} 
+          height={600} 
+          className={styles.bannerImage}/>
           <div className={styles.bannerOverlay}  style={{gridArea: layout[0][0]}}>
             <HtmlText text={formik.values.text}/>
           </div>
@@ -319,7 +331,7 @@ export default function AddPersonalBlockModal(props: Props) {
               })}
               />
               ||
-              <Image src={FILES + images.get(i+1).source} alt={''} width={600} height={600} className={styles.columnImage}/>
+              <Image src={ImageHelper.urlFromFile(images.get(i+1), )} alt={''} width={600} height={600} className={styles.columnImage}/>
             }
             <P styleType={['w500', 'medium']} className={styles.columnTitle}>Текст</P>
             <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
@@ -360,7 +372,7 @@ export default function AddPersonalBlockModal(props: Props) {
           />
           ||
           images.has(1) &&
-          <ReactPlayer width={'100%'} height={'auto'} url={FILES + images.get(1).source} controls/>
+          <ReactPlayer width={'100%'} height={'auto'} url={ImageHelper.urlFromSource(images.get(1).source)} controls/>
          }
         </div>
         <div className={styles.item} style={{gridArea:'text'}}>

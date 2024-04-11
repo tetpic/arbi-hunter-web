@@ -6,11 +6,11 @@ import { IArticle } from 'data/interfaces/IArticle'
 import UserPic from 'components/ui/UserPic'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
-import { CategoryType } from 'types/enums'
+import { CategoryType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
-import { FILES } from 'types/constants'
 import classNames from 'classnames'
 import { useMediaContext } from 'context/media_state'
+import ImageHelper from 'utils/ImageHelper'
 
 
 interface Props {
@@ -38,7 +38,10 @@ export default function MediaItem({media, showContent, type}: Props) {
   return (  <div className={styles.item}>
     <div className={styles.head}>
       {(!type || !isNews) &&
-        <UserPic size={48} className={styles.userPic} image={media.image?.source&&FILES+media.image.source}/>
+        <UserPic 
+        size={48} 
+        className={styles.userPic} 
+        image={media.image?.source&&ImageHelper.urlFromFile(media.image, Preset.smallIconCrop)}/>
       }
       <p className={styles.name} title={media.name}>{media.community?.name||media.shortDescription||media.name}</p>
       <p className={styles.date}>{Formatter.formatDateRelative(media.createdAt)}</p>

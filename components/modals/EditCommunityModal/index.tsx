@@ -14,10 +14,11 @@ import ICommunity from 'data/interfaces/ICommunity'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Image from 'next/image'
 import { useState } from 'react'
-import { FILES } from 'types/constants'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useResize } from 'components/hooks/useResize'
 import styles from './index.module.scss'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -61,7 +62,13 @@ export default function EditCommunityModal(props: Props) {
       <label className={styles.logoLabel}>
         <FileInput setImages={setPreviewLogo}/>
         {communityContext.currentCommunity?.logo?.source && !previewLogo &&
-          <Image width={114} height={114} src={FILES + communityContext.currentCommunity.logo.source} alt={communityContext.currentCommunity.name + ' logo'}/>  
+          <Image 
+          unoptimized
+          width={114} 
+          height={114} 
+          src={ImageHelper.urlFromFile(communityContext.currentCommunity.logo, Preset.xsCrop)} 
+          alt={communityContext.currentCommunity.name + ' logo'}
+          />  
           ||
           !communityContext.currentCommunity?.logo?.source && !previewLogo &&
           <UserSvg className={styles.userSvg}/>
@@ -84,7 +91,14 @@ export default function EditCommunityModal(props: Props) {
           </p>
         </div>
         ||
-        <Image width={340} height={181}  className={classnames(styles.bannerImage)} alt={'name'} src={FILES + communityContext.currentCommunity?.image?.source} />
+        <Image 
+        unoptimized
+        width={340} 
+        height={181}  
+        className={classnames(styles.bannerImage)} 
+        alt={'name'} 
+        src={ImageHelper.urlFromFile(communityContext.currentCommunity?.image, Preset.sResize)} 
+        />
       }
       </label>
       

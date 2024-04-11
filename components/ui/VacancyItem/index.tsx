@@ -6,7 +6,7 @@ import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
 import Image from 'next/image'
 import { useAppContext } from 'context/state'
-import { ActivityStatus,  ApplicationStatus, ModalType, ProposalRequestType } from 'types/enums'
+import { ActivityStatus,  ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
 import { useCvContext } from 'context/cv_state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import VacancyRepository from 'data/repositories/VacancyRepository'
@@ -14,13 +14,13 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import UserPic from '../UserPic'
 import useAbortController from 'components/hooks/useAbortController'
-import { FILES } from 'types/constants'
 import P from '../P'
 import { TranslateWorkExperience } from 'utils/enumsTranslations'
 import BriefCaseSvg from '@/components/svg/BriefCaseSvg'
 import FavoritesButton from '../FavoritesButton'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { useRouter } from 'next/router'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   vacancy?: IVacancy
@@ -141,19 +141,27 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     {!smallCard &&
       <div className={(vacancy?.profile?.logo && vacancy.profile.image)?styles.buildWrapper:styles.imageWrapper}>
         {vacancy?.profile?.logo && !vacancy.profile.image &&
-          <Image className={styles.image} src={FILES + vacancy?.profile?.logo?.source} alt={'def image'} width={150} height={150}/>          
+          <Image 
+          unoptimized
+          className={styles.image} 
+          src={ImageHelper.urlFromFile(vacancy?.profile?.logo, Preset.xsResize)} 
+          alt={'def image'} 
+          width={150} 
+          height={150}/>          
           ||
           vacancy?.profile?.logo && vacancy.profile.image && 
           <>
             <Image 
+            unoptimized
             className={styles.build} 
-            src={FILES + vacancy?.profile?.image.source} 
+            src={ImageHelper.urlFromFile(vacancy?.profile?.image, Preset.sResize)} 
             alt='build' 
             width={256} height={300}
             />
             <Image 
+            unoptimized
             className={styles.logo} 
-            src={ FILES + vacancy?.profile?.logo?.source} 
+            src={ImageHelper.urlFromFile(vacancy?.profile?.logo, Preset.smallIconCrop)} 
             alt={'def image'} 
             style={{top: vacancy?.profile?.image.focalPoint.y*100 + '%', left: vacancy?.profile?.image.focalPoint.x*100 + '%'}} 
             width={60} height={60}/>

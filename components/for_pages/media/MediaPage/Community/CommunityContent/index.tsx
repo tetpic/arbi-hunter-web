@@ -79,7 +79,12 @@ export default function CommunityContent(props: Props) {
         {communityContext.communityNews&&communityContext.communityNews.size > 0 && 
         [...communityContext.communityNews.values()].map(news=> {
           return (
-            <NewsArticle key={news.id} options={getOptions(news)} titleName={communityContext.currentCommunity?.name} article={news} titleImg={communityContext.currentCommunity?.logo?.source}/>
+            <NewsArticle 
+            key={news.id} 
+            options={getOptions(news)} 
+            titleName={communityContext.currentCommunity?.name} 
+            article={news} 
+            titleImg={communityContext.currentCommunity?.logo}/>
             )
           })
           ||

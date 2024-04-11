@@ -72,31 +72,41 @@ export enum LocalStorageKey {
   addresses = 'addresses',
   currentAddressId = 'currentAddressId'
 }
-
 export enum Preset {
-  /** 250px */
+  //80
+  smallIconResize,
+  smallIconCrop,
+
+  //150
+  iconResize,
+  iconCrop,
+
+  //300
   xsResize,
-  /** 250px */
   xsCrop,
 
-  /** 500px */
+  //400
+  sResize,
+  sCrop,
+
+  //600
   smResize,
-  /** 500px */
   smCrop,
 
-  /** 800px */
+  //800
   mdResize,
-  /** 800px */
   mdCrop,
+  
+  //1000
+  bannerResize,
+  bannerCrop,
 
-  /** 1200px */
+  //1200
   lgResize,
-  /** 1200px */
   lgCrop,
 
-  /** 1800px */
+  //1800
   xlResize,
-  /** 1800px */
   xlCrop,
 }
 

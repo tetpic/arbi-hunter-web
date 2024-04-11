@@ -105,7 +105,7 @@ export default function Subscriptions(props: Props) {
       article={n} 
       options={getOptions(n)} 
       titleName={n.community.name} 
-      titleImg={n.community?.image?.source} 
+      titleImg={n.community?.image} 
       withDefaultIcon/>
     )
   } 

@@ -7,9 +7,10 @@ import UserSvg from 'components/svg/UserSvg'
 import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { FILES } from 'types/constants'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   image?: string
@@ -31,7 +32,14 @@ export default function CourseItem(props: Props) {
       <div className={styles.top}>
         <div className={styles.imageWrapper}>
           { 
-            (props.image|| props.course.image.source) &&<Image src={props.image||FILES + props.course.image.source} alt={'courses image'} fill/>
+            (props.image|| props.course.image.source) &&
+            <Image 
+            unoptimized
+            src={props.image||ImageHelper.urlFromFile(props.course.image, Preset.sResize)} 
+            alt={'courses image'} 
+            width={370}
+            height={180}
+            />
             ||
             <FolderSvg/>
           }

@@ -12,7 +12,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/navigation'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, Genders, ModalType, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, Genders, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -124,7 +124,7 @@ export default function CvPage(props: Props) {
 
   const userCard = (<>
     <div className={classNames(styles.top, currentCv.isContactsOpen&&styles.topActive)} onClick={()=>currentCv.isContactsOpen&&openProfile()}>
-      <UserPic size={80} image={getUserImageSource(currentCv?.profile)}/>
+      <UserPic size={80} image={getUserImageSource(currentCv?.profile, Preset.iconCrop)}/>
       {currentCv.isContactsOpen &&
         <P 
         styleType={['large', 'w600']} 

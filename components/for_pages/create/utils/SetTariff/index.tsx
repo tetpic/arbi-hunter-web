@@ -6,9 +6,8 @@ import P from '@/components/ui/P'
 import classnames from 'classnames'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import { useEffect } from 'react'
-import { ModalType, PurchaseType } from 'types/enums'
+import { ModalType, Preset, PurchaseType } from 'types/enums'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { ITariff } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
@@ -17,6 +16,7 @@ import { clearObject } from 'utils/helpers'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onSave?: (replace?: boolean) =>void
@@ -113,7 +113,13 @@ export default function SetTariff(props: Props) {
         onClick={()=>buyTariff(el)}
         >
           <div className={styles.top}>
-            <Image src={FILES + el.icon.source} alt={''} width={70} height={70} className={el.key.includes('Vip')?styles.crown:styles.topIcon}/>
+            <Image 
+            alt={''} 
+            width={70} 
+            height={70} 
+            src={ImageHelper.urlFromFile(el.icon, Preset.xsCrop)} 
+            className={el.key.includes('Vip')?styles.crown:styles.topIcon}
+            />
             <P styleType={['w500', 'large']} className={styles.tariffType}>{el.name}</P>
             <P styleType={['w500', 'medium', 'alignCenter']}><ArbiCoinSvg/>{el.price === 0? t('shop_free'): (<><span className={styles.big}>{el.price}</span>/ {el.period} {t('day3')}</>)}</P>
           </div>

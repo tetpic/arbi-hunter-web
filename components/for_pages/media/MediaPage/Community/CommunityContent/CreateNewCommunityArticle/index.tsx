@@ -88,7 +88,16 @@ export default function CreateNewCommunityArticle(props: Props) {
       <Form className={styles.form}>
         <div className={styles.addCover}>
           {(props.article?.image?.source || previewImage?.image) &&
-          <Image src={props.article?.image?.source?ImageHelper.urlFromFile(props.article.image, Preset.mdResize):URL.createObjectURL(previewImage?.image)} alt={''} width={700} height={400}/>
+          <Image 
+          unoptimized 
+          src={props.article?.image?.source
+            ?ImageHelper.urlFromFile(props.article.image, Preset.mdResize)
+            :URL.createObjectURL(previewImage?.image)
+          } 
+          alt={''} 
+          width={700} 
+          height={400}
+          />
           }
           {(!props.article?.image?.source && !previewImage?.image) &&
           <p className={styles.subTitle}>Добавить обложку <br/> (не обязательно)</p>

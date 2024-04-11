@@ -4,12 +4,13 @@ import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import { useUserContext } from 'context/user_state'
 import Button from '@/components/ui/Button'
 import UserPic from '@/components/ui/UserPic'
-import { FILES } from 'types/constants'
 import { useCharacterContext } from 'context/character_state'
 import useTranslation from 'next-translate/useTranslation'
 import { ICharItem } from 'data/interfaces/ICharacter'
 import { useRouter } from 'next/router'
 import { useAppContext } from 'context/state'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onSave?: () => void
@@ -51,7 +52,7 @@ export default function UserCart(props: Props) {
               <UserPic 
               active
               size={76} 
-              image={item.image&&FILES + item.image.source}/>
+              image={item.image&&ImageHelper.urlFromFile(item.image, Preset.xsCrop)}/>
               {item.price > 0 && item.isLocked === true &&
                 <P styleType={['alignCenter', 'w600', 'small']} className={styles.price}><ArbiCoinSvg/> {item.price}</P>
               }

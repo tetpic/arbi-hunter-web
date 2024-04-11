@@ -23,6 +23,7 @@ import QuestionSvg from '@/components/svg/QuestionSvg'
 import { useRouter } from 'next/router'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
 import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: ()=>void
@@ -96,7 +97,7 @@ export default function MobileSideBar(props: Props) {
     }} 
     className={styles.userCard}
     >
-      <UserPic image={getUserImageSource(userContext.currentProfile)} size={64}/>
+      <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} size={64}/>
       <div className={styles.userCardContent}>
         <P styleType={['w500', 'medium']}>{getUserName(userContext.currentProfile)}</P>
         <P styleType={['w500', 'medium', 'greyLight']}>{userContext.currentProfile.profileType === ProfileType.Employee?'Соискатель':'Работодатель'}</P>

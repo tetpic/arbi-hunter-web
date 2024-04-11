@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -11,7 +10,7 @@ import { usePersonalContext } from 'context/personal_state'
 import FileInput from 'components/fields/FileInput'
 import { useUserContext } from 'context/user_state'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
-import { ModalType, VacancyLookType } from 'types/enums'
+import { ModalType, Preset, VacancyLookType } from 'types/enums'
 import { IUserImageModalProps } from 'components/modals/UserImageModal'
 import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
@@ -22,6 +21,7 @@ import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   isEditing?: boolean
@@ -102,15 +102,33 @@ export default function PersonalCard(props: Props) {
     {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage && personalContext.currentProfile.profileType === ProfileType.Employee &&
       <UserPic 
       className={styles.userPic} 
-      image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + ((!personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.image?.source)||(personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.logo.source))} 
+      image={logoImage?.image
+        ?URL.createObjectURL(logoImage?.image)
+        :ImageHelper.urlFromFile(
+          !personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.image
+          ||personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.logo
+          ,Preset.sCrop
+        ) 
+      }
       size={152}
       />
       ||
       personalContext.currentProfile?.profileType === ProfileType.Hirer && personalContext.currentProfile?.logo && 
-      <UserPic className={styles.userPic} image={logoImage?.image?URL.createObjectURL(logoImage?.image):FILES + personalContext?.currentProfile?.logo.source} size={152}/>
+      <UserPic 
+      className={styles.userPic} 
+      image={logoImage?.image
+        ?URL.createObjectURL(logoImage?.image)
+        :ImageHelper.urlFromFile(personalContext?.currentProfile?.logo ,Preset.sCrop)} 
+        size={152}/>
       ||
       props.isEditing && 
-      <UserPic image={(logoImage?.image?URL.createObjectURL(logoImage?.image):logoImage?.data&&FILES + logoImage?.data?.source)||'/icons/photoCamera.svg'} className={styles.userPic} size={152}/>
+      <UserPic 
+      image={(logoImage?.image
+        ?URL.createObjectURL(logoImage?.image)
+        :logoImage?.data&&ImageHelper.urlFromFile(logoImage?.data, Preset.sCrop))||'/icons/photoCamera.svg'
+      } 
+      className={styles.userPic} 
+      size={152}/>
       ||
       isTabletWidth && 
       <UserPic className={styles.userPic} size={188}/>

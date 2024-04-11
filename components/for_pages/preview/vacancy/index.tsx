@@ -20,6 +20,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import Formatter from 'utils/formatter'
 import useTranslation from 'next-translate/useTranslation'
+import { Preset } from 'types/enums'
 
 interface Props {
   id?: number
@@ -37,7 +38,7 @@ export default function VacancyPreview(props: Props) {
 
   const header = (
     <div className={styles.header}>
-      <UserPic size={67} image={getUserImageSource(userContext.currentProfile)}/>
+      <UserPic size={67} image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)}/>
       <div className={styles.headerInfo}>
         <P styleType={['w600', 'large']}>{currentVacancy.company}</P>
         <P styleType={['medium','w500', 'greyLight']}>{currentVacancy.city?.locName}</P>

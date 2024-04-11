@@ -28,8 +28,7 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
       {props.item.image &&
         <Image 
         priority
-        unoptimized
-        src={ImageHelper.urlFromFile(props.item.image, Preset.xsResize)}
+        src={ImageHelper.urlFromFile(props.item.image, Preset.xsCrop)}
         alt={props.item.name + ' image'} 
         width={props.size===50?222:147}
         height={props.size===50?222:147}

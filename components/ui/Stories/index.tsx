@@ -4,15 +4,15 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import { IStoriesViewerProps } from 'components/modals/StoriesViewerModal'
 import { useRef } from 'react'
 import Button from '../Button'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import ArrowLeftSvg from 'components/svg/ArrowLeftSvg'
 import classNames from 'classnames'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   stories: IArticle[]
@@ -47,7 +47,14 @@ export default function Stories(props: Props) {
             <SwiperSlide key={index} className={styles.swiperSlide}>
               <div className={styles.item} onClick={()=>openStoriesViewer(el)}>
                 <div className={styles.imageWrapper}>
-                  <Image src={FILES + el.image.source } alt={el.name} width={200} height={200} style={{objectFit: 'cover', width: '100%', height: '100%'}}/>
+                  <Image 
+                  unoptimized
+                  src={ImageHelper.urlFromFile(el.image, Preset.sResize)} 
+                  alt={el.name} 
+                  width={200} 
+                  height={200} 
+                  style={{objectFit: 'cover', width: '100%', height: '100%'}}
+                  />
                 </div>
                 <p className={styles.description}>
                   {el.name}

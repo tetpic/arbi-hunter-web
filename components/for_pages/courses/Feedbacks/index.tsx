@@ -5,9 +5,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import RatingLine from 'components/ui/RatingLine'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
 import dollasMan from 'images/dollarS_man.png'
 import { useResize } from 'components/hooks/useResize'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   feedbacks: ICourseFeedback[]
@@ -32,7 +33,8 @@ export default function Feedbacks(props: Props) {
                 <div className={styles.imageWrapper}>
                   {item.profile.image &&
                     <Image 
-                    src={FILES + item.profile.image.source} 
+                    unoptimized
+                    src={ImageHelper.urlFromFile(item.profile.image, Preset.sResize)} 
                     alt={item.profile.firstName}
                     width={176}
                     height={250}

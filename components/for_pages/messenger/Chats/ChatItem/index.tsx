@@ -6,6 +6,7 @@ import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
 import IChat from 'data/interfaces/IChat'
 import { getUserImageSource } from 'utils/helpers'
+import { Preset } from 'types/enums'
 
 interface Props {
   chat: IChat
@@ -24,7 +25,11 @@ export default function ChatItem(props: Props) {
 
   return (
     <div className={classNames(styles.root, props.isActive&&styles.active)} onClick={onClickHandler}> 
-      <UserPic size={56} className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  image={getUserImageSource(collocutor)}/>
+      <UserPic 
+      size={56} 
+      className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
+      image={getUserImageSource(collocutor, Preset.smallIconCrop)}
+      />
       <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</p>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>

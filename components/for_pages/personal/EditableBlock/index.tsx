@@ -4,8 +4,7 @@ import HtmlText from 'components/ui/HtmlText'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import Image from 'next/image'
-import { FILES } from 'types/constants'
-import { PersonalBlockType } from 'types/enums'
+import { PersonalBlockType, Preset } from 'types/enums'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import ReactPlayer from 'react-player'
 import P from '@/components/ui/P'
@@ -17,6 +16,7 @@ import linkedIn from 'images/footer/linkedIn_footer.svg'
 import telegram from 'images/footer/tg_footer.svg'
 import classNames from 'classnames'
 import SwiperList from '@/components/ui/SwiperList'
+import ImageHelper from 'utils/ImageHelper'
 
 
 
@@ -71,7 +71,8 @@ export default function EditableBlock(props: Props) {
         return (
           <div className={styles.imageWrapper} key={el.id}>
             <Image 
-            src={FILES + el.source}
+            unoptimized
+            src={ImageHelper.urlFromFile(el, Preset.xlResize)}
             alt={props.block.title + ' image'} 
             width={1240}
             height={610}
@@ -83,7 +84,12 @@ export default function EditableBlock(props: Props) {
     }
     {props.block.type === PersonalBlockType.Banner &&
       <div className={styles.banner}>
-        <Image src={FILES + props.assets[0].source} alt='' width={800} height={800}/>
+        <Image 
+        unoptimized 
+        src={ImageHelper.urlFromFile(props.assets[0], Preset.mdCrop)} 
+        alt='' 
+        width={800} 
+        height={800}/>
         <div className={styles.bannerOverlay}  style={{gridArea: props.block.layout?.[0][0]}}>
           <HtmlText text={props.block.text}/>
         </div>
@@ -118,7 +124,13 @@ export default function EditableBlock(props: Props) {
                 <HtmlText text={titles[ind]}/>
               }
               {props.assets.find(img => img.id === el) &&
-                <Image src={FILES + props.assets.find(img => img.id === el)?.source} alt={''} width={600} height={600} className={styles.columnImage}/>
+                <Image 
+                unoptimized
+                src={ImageHelper.urlFromFile(props.assets.find(img => img.id === el), Preset.mdCrop)} 
+                alt={''} 
+                width={600} 
+                height={600} 
+                className={styles.columnImage}/>
               }
               {texts && texts[ind] &&
                 <HtmlText text={texts[ind]}/>
@@ -150,7 +162,13 @@ export default function EditableBlock(props: Props) {
       }}>
         {props.assets.map((el, i) => {
           return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
-            <Image src={FILES + el.source} alt={''} width={600} height={600} className={styles.collageImage}/>
+            <Image 
+            unoptimized
+            src={ImageHelper.urlFromFile(el, Preset.mdCrop) + el.source} 
+            alt={''} 
+            width={600} 
+            height={600} 
+            className={styles.collageImage}/>
           </div>
         })}
       </div>
@@ -165,8 +183,9 @@ export default function EditableBlock(props: Props) {
           return (
             <SwiperSlide className={styles.swiperSlide}>
               <Image 
+              unoptimized
               priority
-              src={FILES + el.source}
+              src={ImageHelper.urlFromFile(el, Preset.xlCrop)}
               alt={props.block.title + ' image'} 
               width={1240}
               height={610}
@@ -180,7 +199,7 @@ export default function EditableBlock(props: Props) {
     {props.assets && props.block.type === PersonalBlockType.Video &&
       props.assets.map(el=>
         <div className={styles.video}>
-          <ReactPlayer width={'fit-content'} height={'100%'} url={FILES + el.source} controls/>
+          <ReactPlayer width={'fit-content'} height={'100%'} url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
     }
@@ -191,7 +210,7 @@ export default function EditableBlock(props: Props) {
         gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> el).join(' ')).join('" "')}"`, 
       }}>
         <div style={{gridArea: 'video'}}>
-          <ReactPlayer width={'fit-content'} height={'100%'} url={FILES + props.assets[0].source} controls/>
+          <ReactPlayer width={'fit-content'} height={'100%'} url={ImageHelper.urlFromSource(props.assets[0].source)} controls/>
         </div>
         <HtmlText text={props.block.text} style={{gridArea: 'text'}}/>
       </div>

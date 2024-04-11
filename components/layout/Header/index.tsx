@@ -8,12 +8,11 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
-import { FILES } from 'types/constants'
 import Modes from 'components/ui/Modes'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import { getUserImageSource } from 'utils/helpers'
 import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
@@ -21,6 +20,7 @@ import HeartSvg from '@/components/svg/HeartSvg'
 import StarSvg from '@/components/svg/StarSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { AlertModalArgs } from '@/components/modals/AlertModal'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   distanceFromTop: number
@@ -149,7 +149,7 @@ export default function Header(props: Props) {
               </Button>
               <UserPic 
               key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
-              image={getUserImageSource(userContext.currentProfile)} 
+              image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} 
               className={styles.userPic} 
               onClick={()=>router.push('/personal/my')}
               />
@@ -179,7 +179,7 @@ export default function Header(props: Props) {
               </Button>
               <UserPic 
               key={1} 
-              image={userContext.currentProfile?.logo&&FILES+userContext.currentProfile?.logo.source} 
+              image={userContext.currentProfile?.logo&&ImageHelper.urlFromFile(userContext.currentProfile?.logo, Preset.smallIconCrop)} 
               className={styles.userPic} 
               onClick={()=>router.push('/personal/my')}
               />

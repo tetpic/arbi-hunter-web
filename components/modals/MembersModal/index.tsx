@@ -7,13 +7,14 @@ import BackBtn from 'components/ui/BackBtn'
 import UserPic from 'components/ui/UserPic'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { useEffect, useState } from 'react'
-import { FILES } from 'types/constants'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
 import { useAppContext } from 'context/state'
 import { IPagination } from 'types/types'
 import P from '@/components/ui/P'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: ()=> void
@@ -78,7 +79,10 @@ export default function MembersModal(props: Props) {
     {filtered.length > 0 &&filtered.map(member=> {
       return (
         <div className={styles.member} key={member.id}>
-          <UserPic size={42} image={member.image&&FILES+member.image.source}/>
+          <UserPic 
+          size={42} 
+          image={member.image&&ImageHelper.urlFromFile(member.image, Preset.smallIconCrop)}
+          />
           <p className={styles.name}>{member.firstName} {member.lastName}</p>
           <p className={classNames(styles.status, styles[member.activityStatus])}>{member.activityStatus}</p>
         </div>

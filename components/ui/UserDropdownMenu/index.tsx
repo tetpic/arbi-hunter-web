@@ -16,6 +16,7 @@ import UserPic from '../UserPic'
 import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
 import UserSvg from 'components/svg/UserSvg'
 import { getUserImageSource } from 'utils/helpers'
+import { Preset } from 'types/enums'
 
 interface Props {
   className?: string
@@ -79,7 +80,7 @@ export default function UserDropdownMenu(props: Props) {
 
   return ( 
     <div className={classNames(styles.root, props.className)} ref={(ref)=> props.reference(ref)}>
-      <UserPic size={80} image={getUserImageSource(currentProfile)}/>
+      <UserPic size={80} image={getUserImageSource(currentProfile, Preset.iconCrop)}/>
 
       <div className={styles.userData}>
         <p className={styles.name}>{getUserData()?.name}</p>

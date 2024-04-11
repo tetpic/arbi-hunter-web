@@ -7,11 +7,11 @@ import Image from 'next/image'
 import prise from '/images/superprice.webp'
 import { useAppContext } from 'context/state'
 import ICourse from 'data/interfaces/ICourse'
-import { FILES } from 'types/constants'
 import Link from 'next/link'
 import CrossSvg from 'components/svg/CrossSvg'
 import { ModalType } from 'types/enums'
 import { ICourseFeedbackModalProps } from '../CourseFeedbackModal'
+import ImageHelper from 'utils/ImageHelper'
 
 interface Props {
   onClose: ()=>void
@@ -39,7 +39,12 @@ export default function CongratulationsModal(props: Props) {
       <p className={styles.info}>Скачайте сертификат о прохождении курса</p>
       
       <div className={styles.buttonsWrapper}>
-        <Link target='_blank'  download rel="noopener noreferrer" href={FILES + args.course.certificate.source} className={styles.buttonGradient}>Скачать сертификат</Link>
+        <Link 
+        target='_blank'  
+        download 
+        rel="noopener noreferrer" 
+        href={ImageHelper.urlFromSource(args.course.certificate.source)} 
+        className={styles.buttonGradient}>Скачать сертификат</Link>
         <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >Оставить отзыв</Button>
       </div>
     </div>

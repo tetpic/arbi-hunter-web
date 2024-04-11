@@ -28,7 +28,7 @@ function BigCourseItem (props: {courseItem: ICourse}) {
         {firstItem?.image &&
           <Image 
           unoptimized
-          src={ImageHelper.urlFromFile(firstItem.image, Preset.smResize)} 
+          src={ImageHelper.urlFromFile(firstItem.image, Preset.mdResize)} 
           alt={firstItem.name + ' image'}
           width={372}
           height={766}

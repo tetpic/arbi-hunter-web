@@ -7,13 +7,14 @@ import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { useState } from 'react'
 import { PreviewImage } from 'data/interfaces/Common'
-import { FILES } from 'types/constants'
 import FileInput from '@/components/fields/FileInput'
 import Button from '@/components/ui/Button'
 import { IBackground } from 'data/interfaces/IBackground'
 import Image from 'next/image'
 import PhotoCameraSvg from '@/components/svg/PhotoCameraSvg'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import ImageHelper from 'utils/ImageHelper'
+import { Preset } from 'types/enums'
 
 interface Props {
   onClose: () => void
@@ -58,11 +59,13 @@ export default function BackgroundSwitchModal(props: Props) {
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
         <FileInput setImages={setImage} accept={['image/png', 'image/jpeg']}/>
         {(image?.data?.source) &&
-           <Image src={
+          <Image 
+          unoptimized
+           src={
             image? 
-            (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) 
+            (image?.data?ImageHelper.urlFromFile(image?.data, Preset.smResize):URL.createObjectURL(image.image)) 
             : userContext.currentProfile.useOwnLogo
-            &&FILES+args.currentBackground?.image?.source
+            &&ImageHelper.urlFromFile(args.currentBackground?.image, Preset.smResize)
           } 
           className={styles.customBack}
           alt={'user custom background'}
@@ -75,14 +78,6 @@ export default function BackgroundSwitchModal(props: Props) {
             <PhotoCameraSvg color='#7C7C8C'/>
           </div>
         }
-        {/* <UserPic
-        className={styles.userPic}
-        size={88}
-        image={image? 
-          (image?.data?FILES + image?.data?.source:URL.createObjectURL(image.image)) 
-          : userContext.currentProfile.useOwnLogo
-          &&FILES+args.currentBackground.image.source}
-        /> */}
         <p>Загрузить фото</p>
       </label>
     </div>

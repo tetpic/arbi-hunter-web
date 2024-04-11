@@ -5,7 +5,6 @@ import Image from 'next/image'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-// import { FILES } from 'types/constants'
 import LinkBlack from 'components/ui/LinkBlack'
 import nft from 'images/nft.png'
 import manyNfts from 'images/many_nfts.png'
@@ -31,21 +30,19 @@ function MediaCompilationItem(props: {el: ICategory, index: number}) {
     <div className={styles.imageWrapper}>
       {el.image && !isTabletWidth &&
         <Image 
-        // src={FILES + el.image.source} 
         src={index===0&&nft||index===1&&bigS||index === 2&&manyNfts}
         alt={el.name + ' image'}
         width={index===2?428:203}
         height={index===2?338:203}
-        style={{objectFit:'cover', /* height: '100%', width: '100%',*/ borderRadius: 16}}
+        style={{objectFit:'cover',borderRadius: 16}}
         />
         ||
         <Image 
-        // src={FILES + el.image.source} 
         src={nft}
         alt={el.name + ' image'}
         width={100}
         height={100}
-        style={{objectFit:'cover', /* height: '100%', width: '100%',*/ borderRadius: 16}}
+        style={{objectFit:'cover',borderRadius: 16}}
         />
 
       }
