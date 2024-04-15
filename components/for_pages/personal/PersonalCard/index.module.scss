@@ -23,6 +23,9 @@
 .noHeader {
   height: unset;
   margin-top: 24px;
+  .userPic {
+    margin-top: unset;
+  }
 }
 
 .nameWrapper {

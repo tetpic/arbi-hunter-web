@@ -9,8 +9,8 @@
   @include mq($PhoneWidth, max) {
     max-width: unset;
     min-height: 450px;
-    height: calc(100vh - 250px);
-    height: calc(100dvh - 250px);
+    height: calc(100vh - 340px);
+    height: calc(100dvh - 340px);
   }
 }
 

@@ -4,6 +4,20 @@
   max-width: 342px;
   justify-content: space-between;
   margin-bottom: 32px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+    width: 100%;
+  }
+}
+
+.form {
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 165px);
+    height: calc(100dvh - 165px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .label {
@@ -17,6 +31,8 @@
 }
 
 .saveButton {
-  @include buttonGradient;
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }

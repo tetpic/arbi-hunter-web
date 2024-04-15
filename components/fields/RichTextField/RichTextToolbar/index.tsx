@@ -162,7 +162,7 @@ export default function RichTextToolbar(props: Props) {
     <UnorderedListSvg className={styles.svg}/>
   </ToolbarButton>
 
-  {!hideButtons.alignment &&<>
+  {!hideButtons?.alignment &&<>
     <TextAlignButton editor={editor} alignment={'left'}>
       <AlignLeftSvg className={styles.svg}/>
     </TextAlignButton>
@@ -176,7 +176,7 @@ export default function RichTextToolbar(props: Props) {
     </TextAlignButton>
   </>}
   
-  {!hideButtons.color &&
+  {!hideButtons?.color &&
     <ToolbarButton>
       <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
     </ToolbarButton>

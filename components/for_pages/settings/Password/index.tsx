@@ -101,8 +101,8 @@ export default function ChangePassword(props: Props) {
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <div className={styles.buttonsWrapper}>
-          <Button className={styles.button} type='submit'>{t('save')}</Button>
-          <Button type='button' onClick={userContext.removeCurrentProfile} className={styles.blackButton}>{t('login_removeAccount')}</Button>
+          <Button styleType={['gradient', 'phoneWide']} className={styles.saveButton} type='submit'>{t('save')}</Button>
+          <Button  styleType={['black', 'phoneWide']} type='button' onClick={userContext.removeCurrentProfile} className={styles.deleteButton}>{t('login_removeAccount')}</Button>
         </div>
       </Form>
     </FormikProvider>

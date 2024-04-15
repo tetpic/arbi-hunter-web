@@ -127,7 +127,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       onBuy: buyHandler
     }
     isTabletWidth?
-    appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
+    appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args, 580)
     :
     appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
   }

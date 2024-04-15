@@ -103,7 +103,7 @@ function RecruitingPageHirerInner(props: Props) {
   }, [cvContext.page])
 
   if(page === 'filters'){
-    return <FilterHirer onFilterChange={onFilterChange} initialFields={currentFilters}/>
+    return <FilterHirer onFilterChange={onFilterChange} onCancel={()=>setPage('cvs')} initialFields={currentFilters}/>
   }
 
   return (<div className={styles.root}> 

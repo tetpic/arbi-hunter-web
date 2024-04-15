@@ -14,6 +14,7 @@ import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
 import Validator from 'utils/Validator'
 import CrossSvg from '@/components/svg/CrossSvg'
+import Title from '@/components/ui/TitleForSection'
 
 
 interface Props {
@@ -30,6 +31,7 @@ export interface IDetailsModalProps {
 
 export default function DetailsModal(props: Props) {
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const args: IDetailsModalProps = appContext.modalArguments
 
   const formik = useFormik<Partial<ICVCreate>>({
@@ -50,7 +52,11 @@ export default function DetailsModal(props: Props) {
 
 
   const experienceInfoForm = (<>
+    {isTabletWidth && 
+    <Title title={'Период работы'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    ||
     <SectionSubtitle text={'Период работы'} title='Укажите место работы' className={styles.title}/>
+    }
     <div className={styles.period}>
       <DateField 
       name={'experienceInfo[0].fromDate'} 
@@ -110,7 +116,11 @@ export default function DetailsModal(props: Props) {
   </>)
 
   const educationInfoForm = (<>
+    {isTabletWidth && 
+    <Title title={'Годы обучения'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    ||
     <SectionSubtitle text={'Годы обучения'} title='Укажите дату начала и конца обучения' className={styles.title}/>
+    }
     <div className={styles.period}>
       <DateField 
       name={'educationInfo[0].fromDate'} 
@@ -174,7 +184,11 @@ export default function DetailsModal(props: Props) {
   </>)
 
   const coursesInfoForm = (<>
+    {isTabletWidth && 
+    <Title title={'Повышение квалификации и курсы'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    ||
     <SectionSubtitle text={'Повышение квалификации и курсы'} title='Укажите дату начала и конца обучения' className={styles.title}/>
+    }
     <Spacer basis={24}/>
     <div className={styles.period}>
       <DateField 
@@ -213,7 +227,9 @@ export default function DetailsModal(props: Props) {
     <ModalLayout mobileFullScreen  className={styles.modalLayout}>
       <ModalBody>
         <FormikProvider value={formik}>
-          <Button styleType={['backTransparent', 'icon']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+          {!isTabletWidth &&
+            <Button styleType={['backTransparent', 'icon']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+          }
           <Form>
             <div className={styles.detailsRoot}>
               {args.type === 'experienceInfo' && formik.values.experienceInfo && experienceInfoForm}

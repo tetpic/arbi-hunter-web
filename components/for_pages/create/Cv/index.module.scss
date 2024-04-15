@@ -6,8 +6,8 @@
   position: relative;
   @include container;
   @include mq($PhoneWidth, max) {
-    height: calc(100vh - 74px);
-    height: calc(100dvh - 74px);
+    min-height: 100vh;
+    min-height: 100dvh;
     margin-top: unset;
     padding-top: 8px;
   }
@@ -32,7 +32,7 @@
     // height: 100%;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 76px);
+    height: calc(100vh - 100px);
     overflow: auto;
     padding-bottom: 70px;
   }

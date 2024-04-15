@@ -2,6 +2,9 @@
 
 .root {
   width: 100%;
+  @include mq($TabletWidth, max) {
+    margin-top: 24px;
+  }
 }
 
 .tariffItems {

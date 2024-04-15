@@ -5,13 +5,15 @@
   max-width: 518px;
   // overflow: auto;
    @include mq($TabletWidth, max) {
-    // min-height: calc(100vh - 195px);
+    min-height: calc(100vh - 220px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     // min-height: calc(100dvh - 195px);
   }
 }
 
 .createNew {
-  @include buttonGradient;
   align-self: flex-end;
 
   @include mq($TabletWidth, max) {

@@ -34,13 +34,13 @@ export default function Notifications(props: Props) {
 
   return (<div className={styles.root}> 
   <FormikProvider value={formik}>
-    <Form>
+    <Form className={styles.form}>
       <div className={styles.wrapper}>
         <SwitchField {...switchSet} name={'sms'} label='СМС-уведомления' fluid className={styles.switch} labelClassName={styles.label}/>
         <SwitchField {...switchSet} name={'email'} label='Почтовые рассылки' fluid className={styles.switch} labelClassName={styles.label}/>
         <SwitchField {...switchSet} name={'push'} label='Пуш-уведомления' fluid className={styles.switch} labelClassName={styles.label}/>
       </div>
-      <Button className={styles.saveButton}>Сохранить</Button>
+      <Button styleType={['gradient', 'phoneWide']}  className={styles.saveButton}>Сохранить</Button>
     </Form>
   </FormikProvider>
 

@@ -8,7 +8,7 @@ import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
 import { useTariffContext } from 'context/tariff_state'
-import { PurchaseType } from 'types/enums'
+import { Preset, PurchaseType } from 'types/enums'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
@@ -75,7 +75,7 @@ export default function CVs(props: Props) {
         cv={el} 
         key={index}
         isLast={index > 0 &&index===filteredCvs.length -1} 
-        image={getUserImageSource(userContext.currentProfile)}  
+        image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)}  
         type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
         />
       )

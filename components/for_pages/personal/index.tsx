@@ -73,7 +73,9 @@ export default function PersonalPage(props: Props) {
       {personalContext.blocks.size > 0 &&
       <PersonalBody isEditing={!props.id&&isEditing}/>
       ||
-      <P styleType={['w500', 'medium']}>Нет информации</P>
+      <div className={styles.emptyWrapper}>
+        <P styleType={['w500', 'medium']}>Нет информации</P>
+      </div>
       }
     </ContentItem>
     {isEditing &&

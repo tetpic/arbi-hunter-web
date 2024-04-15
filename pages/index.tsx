@@ -4,6 +4,7 @@ import MainPageHirer from 'components/for_pages/index/MainPageHirer'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CharacterWrapper } from 'context/character_state'
 import { PersonalWrapper } from 'context/personal_state'
+import { useAppContext } from 'context/state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
@@ -33,8 +34,9 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 }) 
 
 export default function Page(props: Props) {
+  const {isTabletWidth} = useAppContext().size
   return (
-    <ContentLayout withFooter disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
+    <ContentLayout withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
       <VacancyWrapper>
         <PersonalWrapper>
         {

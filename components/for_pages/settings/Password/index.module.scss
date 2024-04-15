@@ -6,56 +6,25 @@
   row-gap: 24px;
   max-width: 495px;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 220px);
-    height: calc(100dvh - 220px);
+    height: calc(100vh - 165px);
+    height: calc(100dvh - 165px);
+    max-width: unset;
   }
-
 }
 
 .buttonsWrapper {
   display: flex;
   align-items: center;
   column-gap: 8px;
-}
-
-
-.button {
-  align-self: flex-start;
-  white-space: nowrap;
-  @include buttonGradient;
   @include mq($TabletWidth, max) {
-    order: 3;
-    width: 100%;
     margin-top: auto;
+    flex-wrap: wrap;
+    row-gap: 16px;
   }
 }
 
-.blackButton {
-  white-space: nowrap;
-  @include buttonGray;
-  color: $red;
-}
-
-.deleteAccountButton {
-  display: flex;
-  align-items: center;
-  column-gap: 8px;
-  color: $red;
-  font-size: $mediumText;
-  font-weight: $medium;
-  cursor: pointer;
-  @include transitionDefault;
-  @include hover {
-    color: $white;
-    path{
-      fill: $white
-    }
-  }
-  @include mq($TabletWidth, max) {
-    order: 2
-  }
-
-  path {
-    @include transitionDefault;
+.deleteButton {
+  span {
+    color: $red;
   }
 }

@@ -236,13 +236,14 @@ export default function PurchasePreviewModal(props: Props) {
         name={'subscriptionId'}
         />
         ||
-        args.activeSubscriptions&&args.activeSubscriptions?.length === 0 &&
+        args.activeSubscriptions&&args.activeSubscriptions?.length === 0 && args.tariff.purchaseType === PurchaseType.AddContactsOpen && 
         <P styleType={['w500', 'medium']}>{t('shop_noAvailableTariffs')}</P>
       }
       
       <Button 
       type='button'
-      styleType={['gradient']} 
+      styleType={['gradient', 'phoneWide']} 
+      className={styles.continueButton}
       onClick={()=>setType(PurchaseStep.confirmation)}
       disabled={
         balance.current < args.tariff.price
@@ -290,9 +291,9 @@ export default function PurchasePreviewModal(props: Props) {
         type='button'
         styleType={['gradient', 'wide']} 
         onClick={() => (
-          args.tariff.purchaseType === PurchaseType.CvTariff&&!args.data.cvId
-          ||args.tariff.purchaseType === PurchaseType.VacancyTariff&&!args.data.vacancyId
-          ||(args.tariff.purchaseType === PurchaseType.AddContactsOpen&&args.tariffs.size > 1))
+          args.tariff?.purchaseType === PurchaseType.CvTariff&&!args.data?.cvId
+          ||args.tariff?.purchaseType === PurchaseType.VacancyTariff&&!args?.data?.vacancyId
+          ||(args.tariff.purchaseType === PurchaseType.AddContactsOpen&&args?.tariffs?.size > 1))
           ?setType(PurchaseStep.setItems)
           :setType(PurchaseStep.confirmation)}
         >

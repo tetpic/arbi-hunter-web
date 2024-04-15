@@ -62,7 +62,7 @@ export default function SiteSettings(props: Props) {
   return (
     <div className={styles.root}>
       <FormikProvider value={formik}>
-        <Form>
+        <Form className={styles.form}>
           <LocationDropDownInput
           onSetOption={countryHandler} 
           name={'countryName'} 
@@ -84,7 +84,7 @@ export default function SiteSettings(props: Props) {
             <ArrowRightSvg/>
           </div>
           
-          <Button onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
+          <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
         </Form>
       </FormikProvider>
     </div>

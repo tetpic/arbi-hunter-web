@@ -27,6 +27,7 @@ import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
+import { runtimeConfig } from 'config/runtimeConfig'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -80,7 +81,7 @@ export default function MainPageEmployee() {
     const [stats, categories, courses, news, backs] = await Promise.all([
       UserRepository.getStats(),
       CategoryRepository.getCategories(),
-      CoursesRepository.getCourses({page: 1, limit: 20},Languages.ru),
+      CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       ArticlesRepository.getNews({page: 1, limit: 20, isTop: false, full: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])

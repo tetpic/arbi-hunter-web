@@ -33,6 +33,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
   initialFields?: IVacancyCvSearchParams
+  onCancel?: () => void
 }
 
 export default function FilterHirer(props: Props) {
@@ -197,7 +198,7 @@ export default function FilterHirer(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Title title={'Поиск резюме'}/>
+      <Title onBackClick={()=>props?.onCancel?.()} title={'Поиск резюме'}/>
       <MainSearchBar fullWidth initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>

@@ -25,6 +25,7 @@ import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useAppContext } from 'context/state'
+import { runtimeConfig } from 'config/runtimeConfig'
 
 
 
@@ -43,7 +44,7 @@ export default function MainPageHirer() {
   const init = async() => {
     const [ stats, courses, categories, news, backs] = await Promise.all([
       UserRepository.getStats(), 
-      CoursesRepository.getCourses({page: 1, limit: 10},Languages.ru),
+      CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       CategoryRepository.getCategories(),
       ArticlesRepository.getNews({full: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 

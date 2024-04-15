@@ -171,7 +171,7 @@ export default function Skills(props: Props) {
       initialFiles: cvContext.helpObjects?.assets
     }
     if(isTabletWidth) {
-      appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 240)
+      appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 400)
     }
     else {
       appContext.showModal<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps)

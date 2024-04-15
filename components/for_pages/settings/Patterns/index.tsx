@@ -31,7 +31,7 @@ export default function Patterns() {
   </div>
     {/* </Scrollbars> */}
     {patternContext.patternsNotExist?.size > 0 && !creation &&
-    <Button className={styles.createNew} onClick={createPatternHandler}>Создать</Button>
+    <Button styleType={['gradient']} className={styles.createNew} onClick={createPatternHandler}>Создать</Button>
     }
   </div>)
 }

@@ -34,6 +34,7 @@ import AddButton from '@/components/ui/AddButton'
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
   initialFields?: IVacancyCvSearchParams
+  onCancel?: () => void
 }
 
 export default function FilterEmployee(props: Props) {
@@ -199,7 +200,7 @@ export default function FilterEmployee(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Title title={t('search_cv')}/>
+      <Title title={t('search_cv')} onBackClick={props.onCancel}/>
       <MainSearchBar fullWidth  initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>

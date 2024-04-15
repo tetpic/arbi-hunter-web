@@ -110,7 +110,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
   if(page === 'filters') {
-    return <FilterEmployee onFilterChange={onFilterChange} initialFields={currentFilters}/>
+    return <FilterEmployee onFilterChange={onFilterChange} initialFields={currentFilters} onCancel={()=>setPage('vacancies')}/>
   }
 
   return (<div className={styles.root}> 

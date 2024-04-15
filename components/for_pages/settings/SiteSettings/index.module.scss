@@ -1,11 +1,27 @@
 @import 'styles/index';
 
 .button {
-  @include buttonGradient;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .root {
   max-width: 495px;
+  @include mq($TabletWidth, max) {
+    height: calc(100vh - 165px);
+    height: calc(100dvh - 165px);
+    max-width: unset;
+  }
+}
+
+.form {
+  @include mq($TabletWidth, max) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .langSelection {

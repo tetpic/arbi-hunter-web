@@ -6,8 +6,9 @@
   row-gap: 16px;
   max-width: 360px;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 220px);
-    height: calc(100dvh - 220px);
+    height: calc(100vh - 165px);
+    height: calc(100dvh - 165px);
+    max-width: unset;
   }
 }
 
