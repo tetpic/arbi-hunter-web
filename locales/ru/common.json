@@ -40,6 +40,7 @@
   "logout": "Выйти",
   "free": "Бесплатно",
   "saveAndContinue": "Сохранить и продолжить",
+  "set": "Выбрать",
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -434,6 +435,9 @@
   "vacancy_page_languagesKnowledges":"Владение языками",
   "vacancy_page_sameVacancies":"Похожие вакансии",
   "vacancy_page_contacts": "Контакты",
+  "vacancy_page_contactInfo": "Контактная информация",
+  "vacancy_page_writeInChat": "Написать в чат",
+
   
   "employmentBoard_employment": "Занятость",
   "employmentBoard_schedule": "График работы",
@@ -559,6 +563,8 @@
   "constructor_text": "Текст",
   "constructor_video": "Видео",
   "constructor_preview": "Предпросмотр",
+
+  "chatsfolder_chatInFolder": "Чат в папке",
 
 
 

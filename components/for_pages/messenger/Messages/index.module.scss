@@ -91,9 +91,14 @@
   font-size: $smallText;
   font-weight: $regular;
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 266px);
-    height: calc(100dvh - 266px);
+    height: calc(100vh - 195px);
+    height: calc(100dvh - 195px);
     padding: unset;
+  }
+
+  &_withCv {
+    height: calc(100vh - 228px);
+    height: calc(100dvh - 228px);
   }
 
   >div {
@@ -116,7 +121,7 @@
   display: flex;
   row-gap: 8px;
   align-items: center;
-  padding: 12px 24px;
+  padding: 12px clamp(16px, 4vw, 24px);
   justify-content: space-between;
   flex-wrap: wrap;
   .input {

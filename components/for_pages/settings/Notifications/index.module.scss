@@ -28,6 +28,9 @@
 
 .wrapper {
   margin-top: 32px;
+  @include mq($TabletWidth, max) {
+    margin-top: unset;
+  }
 }
 
 .saveButton {

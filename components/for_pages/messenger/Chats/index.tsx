@@ -8,6 +8,7 @@ import { useChatContext } from 'context/chat_state'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import P from '@/components/ui/P'
 
 interface Props {
   chats: IChat[]
@@ -57,6 +58,9 @@ export default function Chats(props: Props) {
               <ChatItem chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
             )
           })
+          ||
+          chatContext.totalChats === 0 && props.chats.length === 0 && !chatContext.loading &&
+          <P styleType={['medium', 'w500']} className={styles.empty}>Чатов не найдено</P>
           ||
           <Spinner size={32} color={colors.blue}/>
         }

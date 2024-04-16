@@ -21,6 +21,9 @@
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    min-height: calc(100% - 24px);
+  }
 }
 
 .buttonGradient {

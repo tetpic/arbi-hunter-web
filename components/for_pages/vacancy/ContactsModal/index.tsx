@@ -10,6 +10,7 @@ import UserSvg from '@/components/svg/UserSvg'
 import MailConvertSvg from '@/components/svg/MailConvertSvg'
 import PhoneSvg from '@/components/svg/PhoneSvg'
 import TelegramSvg from '@/components/svg/TelegramSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy: IVacancy
@@ -18,8 +19,29 @@ interface Props {
 }
 
 export default function ContactsModal(props: Props) {
+  const {t} = useTranslation()
   const ref = useRef()
   const [active, setActive] = useDetectOutsideClick(ref, props.isActive)
+
+  const contacts = [
+    {
+      text: props.vacancy.contactName, 
+      icon: <UserSvg/>
+    },
+    {
+      text: props.vacancy.email, 
+      icon: <MailConvertSvg/>
+    },
+    {
+      text: props.vacancy.phone, 
+      icon: <PhoneSvg/>
+    },
+    {
+      text: props.vacancy.telegramNickname, 
+      icon: <TelegramSvg/>
+    }
+  ].filter(el => Boolean(el.text))
+
   
   useEffect(()=>{
     if(!active) {
@@ -28,17 +50,27 @@ export default function ContactsModal(props: Props) {
   }, [active])
 
 
-
   return (<div className={classNames(styles.root, active&&styles.active)} ref={ref} > 
     <div className={styles.top}>
-      <P styleType={['large', 'w600']}>Контактная информация</P>
-      <Button styleType={['icon', 'backTransparent']} onClick={()=> setActive(false)}><CrossSvg/></Button>
+      <P styleType={['large', 'w600']}>{t('vacancy_page_contactInfo')}</P>
+      <Button 
+      styleType={['icon', 'backTransparent']} 
+      altStyleType={['icon', 'invertSvg']}
+      onClick={()=> setActive(false)}><CrossSvg/></Button>
     </div>
-    
-    <P styleType={['alignCenter', 'medium', 'w500']}><Button styleType={['icon', 'black']}><UserSvg/></Button> {props.vacancy.contactName}</P>
-    <P styleType={['alignCenter', 'medium', 'w500']}><Button styleType={['icon', 'black']}><MailConvertSvg/></Button> {props.vacancy.email}</P>
-    <P styleType={['alignCenter', 'medium', 'w500']}><Button styleType={['icon', 'black']}><PhoneSvg/></Button> {props.vacancy.phone}</P>
-    <P styleType={['alignCenter', 'medium', 'w500']}><Button styleType={['icon', 'black']}><TelegramSvg/></Button> {props.vacancy.telegramNickname}</P>
-    <Button styleType={['gradient', 'wide']}>Написать в чат</Button>
+    {contacts.map(el => {
+      return (
+        <P 
+        styleType={['alignCenter', 'medium', 'w500']}
+        >
+        <Button 
+        styleType={['icon', 'black']}
+        altStyleType={['icon', 'gradient']}
+        >{el.icon}</Button> 
+          {el.text}
+        </P>
+      )
+    })}    
+    <Button styleType={['gradient', 'wide']}>{t('vacancy_page_writeInChat')}</Button>
   </div>)
 }

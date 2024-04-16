@@ -16,6 +16,7 @@ interface Props {
   className?: string
   wrapperClassName?: string
   hideNav?: boolean
+  hideWatchMore?: boolean
   slideClassName?: string
   swiperClassname?: string
   swiperProps?: SwiperProps
@@ -61,7 +62,7 @@ export default function SwiperList(props: Props) {
           <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
         </>
       }
-      {!props.hideNav && !isTabletWidth &&
+      {!props.hideWatchMore && !isTabletWidth &&
         <LinkBlack href={'/media/page?page=categories'}>{t('watchAll')}</LinkBlack>
       }
     </section>

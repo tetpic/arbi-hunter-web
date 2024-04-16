@@ -19,6 +19,7 @@ import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import useTranslation from 'next-translate/useTranslation'
 import { AlertModalArgs } from '@/components/modals/AlertModal'
+import P from '@/components/ui/P'
 
 
 
@@ -111,16 +112,16 @@ export default function Login() {
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
-        <p className={styles.title}>
+        <P styleType={['alignCenter', 'w500', 'huge']} useThemeColor>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
           {t('login')}
-        </p>
-        <p className={styles.subTitle}>
+        </P>
+        <P styleType={['w500', 'alignCenter', 'large']} useThemeColor>
           {t('login_stillNoAccount')}
-          <div className={styles.loginLink} onClick={showInfo}>
+          <span className={styles.loginLink} onClick={showInfo}>
             {t('login_getRegister')}
-          </div>
-        </p>
+          </span>
+        </P>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
             {loginType=== LoginType.Email &&
@@ -150,7 +151,9 @@ export default function Login() {
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
             
-            <Link className={styles.forgot} href={'/password'}><p className={styles.subTitle}>{t('login_forgot')}</p> {t('login_restorePassword')}</Link>
+            <Link className={styles.forgot} href={'/password'}>
+              <P styleType={['w500', 'large']} useThemeColor>{t('login_forgot')}</P> {t('login_restorePassword')}
+            </Link>
             
             <div className={styles.buttonsWrapper}>
               <Button 

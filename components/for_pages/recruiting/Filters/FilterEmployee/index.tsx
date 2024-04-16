@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
@@ -46,26 +46,31 @@ export default function FilterEmployee(props: Props) {
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
   const {t} = useTranslation()
 
+  const initialValues:IVacancyCvSearchParams = {
+    employment: [],
+    schedule: [],
+    compensation: undefined,
+    forLastNumberOfDays: undefined,
+    languageKnowledges: [],
+    experience: [],
+    categories: [],
+    salaryMax: undefined,
+    salaryMin: undefined,
+    currency: undefined,
+    vacancyLookType: undefined,
+    countries: [],
+    cities: [],
+    education: [],
+    search: undefined,
+    searchCompany: '',
+    keywords: '',
+    exclude: '',
+
+  }
+
   const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
-      employment: [],
-      schedule: [],
-      compensation: undefined,
-      forLastNumberOfDays: undefined,
-      languageKnowledges: [],
-      experience: [],
-      categories: [],
-      salaryMax: undefined,
-      salaryMin: undefined,
-      currency: undefined,
-      vacancyLookType: undefined,
-      countries: [],
-      cities: [],
-      education: [],
-      search: undefined,
-      searchCompany: '',
-      keywords: '',
-      exclude: '',
+      ...initialValues,
       ...props.initialFields
     },
     onSubmit: props.onFilterChange
@@ -111,7 +116,7 @@ export default function FilterEmployee(props: Props) {
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.6)
       return
     }
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
@@ -120,7 +125,7 @@ export default function FilterEmployee(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
+      initials: formik.values?.countries?.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
@@ -154,10 +159,26 @@ export default function FilterEmployee(props: Props) {
     formik.setFieldValue('cities', formik.values.cities.filter(f=> f !== el.id))
     creationContext.setHelpObjects({...creationContext.helpObjects, cities: creationContext.helpObjects.cities.filter(f=> f.id !== el.id)})
   }
+
+  const resetAll = () => {
+    formik.setValues(initialValues)
+    creationContext.setActiveSubcategory([])
+    const newHelpObject:HelpObject = {
+      countries: [],
+      cities: [],
+      activeGeos: new Map,
+      activeSources: new Map,
+      activeVerticals: new Map,
+      languageKnowledges: new Map,
+    }
+    creationContext.setHelpObjects(newHelpObject)
+  }
   
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
+    sourcesContext.init(['sources', 'verticals', 'geos'])
   }, [])
+
 
   useEffect(()=>{
       const _newGeos: Map<number, ISource> = new Map()
@@ -179,6 +200,7 @@ export default function FilterEmployee(props: Props) {
           activeGeos: _newGeos,
           activeVerticals: _newVerticals,
           countries: props.initialFields?.countries?.map(el => locationContext.countries?.get(el)).filter(Boolean),
+          cities: props.initialFields?.cities?.map(el => locationContext.cities?.get(el)).filter(Boolean),
         }
       )
   }, [props.initialFields])
@@ -197,6 +219,8 @@ export default function FilterEmployee(props: Props) {
     Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
+
+
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
@@ -427,7 +451,7 @@ export default function FilterEmployee(props: Props) {
                 {t('filters_addSources')}
               </P>
               ||
-              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={openCityModal}/>
+              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={()=>openSourcesModal({type: 'sources'})}/>
 
             }
           </div>
@@ -521,7 +545,7 @@ export default function FilterEmployee(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey']} 
-      onClick={formik.handleReset}
+      onClick={resetAll}
       className={styles.resetButton}
       >
         Сбросить всё

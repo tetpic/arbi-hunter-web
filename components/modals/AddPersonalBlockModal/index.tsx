@@ -195,6 +195,7 @@ export default function AddPersonalBlockModal(props: Props) {
 
 
   const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
+  const videoLink = <InputField placeholder={'Добавьте ссылку'} styleType={'default'} color={'default'} name={'title'}/>
 
   const richText = <RichTextField hideButtons={{helpers: true, alignment: true, color: true}} name='text'/>
 
@@ -416,7 +417,7 @@ export default function AddPersonalBlockModal(props: Props) {
       case PersonalBlockType.Gallery:
         return [titleInput, imageField]
       case PersonalBlockType.Video:
-        return [titleInput, videoField]
+        return [videoLink,  videoField]
       case PersonalBlockType.Banner:
         return [imageField, layoutBanner]
       case PersonalBlockType.Collage:

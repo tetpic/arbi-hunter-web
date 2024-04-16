@@ -71,7 +71,7 @@ function CityModalInner(props: Props) {
   )
 
   return (
-    <ModalLayout className={styles.modalLayout}>
+    <ModalLayout className={styles.modalLayout} mobileFullScreen>
       <ModalBody>
         <FormikProvider value={formik}>
           <Form>

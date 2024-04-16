@@ -76,7 +76,7 @@
   margin-top: 24px;
   @include mq($PhoneWidth, max) {
     margin-top: auto;
-    position: fixed;
+    position: absolute;
     bottom: 16px;
     right: 16px;
   }

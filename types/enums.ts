@@ -328,7 +328,6 @@ export enum PersonalBlockType {
   Collage = 'collage',
   VideoText = 'videoText',
   Html = 'html',
-
 }
 
 export enum LoginType {

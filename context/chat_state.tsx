@@ -52,7 +52,7 @@ export function ChatWrapper(props: Props) {
   const scrollableTarget = useRef<HTMLElement | null>(null)
   const [chats, setChats] = useState<Map<number, IChat>>(new Map)
   const [currentChatId, setCurrentChatId] = useState<number | null>(props.initialChat)
-  const [totalChats, setTotalChats] = useState<number>(0)
+  const [totalChats, setTotalChats] = useState<number>(null)
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState(true)
   const [foldersActive, setFoldersActiveState] = useState<boolean>(false)

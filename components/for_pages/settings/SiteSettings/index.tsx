@@ -27,13 +27,16 @@ interface SiteSettings {
 export default function SiteSettings(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const {t} = useTranslation()
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
 
 
   const submit = (data: SiteSettings) => {
+    
     Cookies.set('NEXT_LOCALE', data.language, {path: '/'})
     setLanguage(data.language, false)
+    userContext.editCurrentProfile({countryId: data.countryId, cityId: data.cityId})
   }
 
   const formik = useFormik<SiteSettings>({
@@ -46,17 +49,22 @@ export default function SiteSettings(props: Props) {
   })
 
   const countryHandler = (c: ISearchCountryResult) => {
+    
+    formik.setFieldValue('countryId', c.geoname.geonameid)
     formik.setFieldValue('cityName', '')
     setCurrentCountryCode(c.country_code)
   }
 
   const cityHandler = (c: ISearchCityResult) => {
+    
+    formik.setFieldValue('cityId', c.id)
   }
 
   const onLangChange =()=> {
-    appContext.showModal<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, {
-      onSave: (data) => formik.setFieldValue('language', data.value)
-    })
+    const args:IChangeLanguageModalArgs = {onSave: (data) => formik.setFieldValue('language', data.value)}
+    isTabletWidth
+    ?appContext.showBottomSheet<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, args, 300)
+    :appContext.showModal<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, args)
   }
 
   return (
@@ -75,7 +83,7 @@ export default function SiteSettings(props: Props) {
           name={'cityName'} 
           value = {userContext?.currentProfile?.city?.locName}
           labelName={'Город:'}
-          requestFn={LocationRepository.searchCity} 
+          requestFn={() => LocationRepository.searchCity({country: currentCountryCode})} 
           />
           
           <div className={styles.langSelection} onClick={onLangChange}>

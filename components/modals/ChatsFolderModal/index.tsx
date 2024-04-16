@@ -10,6 +10,7 @@ import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import { useState } from 'react'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -18,13 +19,15 @@ interface Props {
 
 export interface IChatsFolderModalProps {
   chats: IChat[], 
+  choosenChats?: IChat[]
   onSave: (a: IChat[])=>void
 }
 
 export default function ChatsFolderModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args: IChatsFolderModalProps = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
-  const [chats, setChats] = useState<Map<IChat, boolean>>(new Map(args.chats.map(el=> [el, false])))
+  const [chats, setChats] = useState<Map<IChat, boolean>>(new Map(args.chats.map(el=> [el, args.choosenChats.findIndex(c=> c.id === el.id) !== -1])))
 
   const onSaveHandler = () => {
     const choosen = new Map([...chats.entries()].filter(([key, value]) => value===true))
@@ -34,9 +37,9 @@ export default function ChatsFolderModal(props: Props) {
 
   const top = (
     <div className={styles.top}>
-      <Button className={styles.button} /*onClick={} */>Отмена</Button>
-      <p className={styles.title}>Чат в папке</p>
-      <Button className={styles.buttonBlue} onClick={onSaveHandler}>Готово</Button>
+      <Button className={styles.button} onClick={props.onClose}>{t('cancel')}</Button>
+      <p className={styles.title}>{t('chatsfolder_chatInFolder')}</p>
+      <Button className={styles.buttonBlue} onClick={onSaveHandler}>{t('ready')}</Button>
     </div>
   )
 
@@ -55,7 +58,6 @@ export default function ChatsFolderModal(props: Props) {
           <div className={styles.item} key={chat.id} onClick={(e)=>{e.stopPropagation(); checkHandler(chat, isActive)}}>
             <UserPic className={styles.userPic}/>
             <p className={styles.name}>{collocutor?.firstName} {collocutor?.lastName}</p>
-            <p className={styles.vacancy}>test</p>
             <Checkbox className={styles.checkBox} value={chat.id} isActive={isActive} onChange={()=>checkHandler(chat, isActive)}/>
           </div>
         )

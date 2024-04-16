@@ -9,9 +9,12 @@ import Button from '@/components/ui/Button'
 import { InterfaceLanguage } from 'types/enums'
 import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 interface FormikValues {
@@ -25,7 +28,7 @@ export interface IChangeLanguageModalArgs {
 
 export default function ChangeLanguageModal(props: Props) {
   const appContext = useAppContext()
-  const args: IChangeLanguageModalArgs = appContext.modalArguments
+  const args: IChangeLanguageModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const {t} = useTranslation()
   
   const submit = (data: FormikValues) => {
@@ -51,11 +54,25 @@ export default function ChangeLanguageModal(props: Props) {
       ]}
       />
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.greyBtn}>Отменить</Button>
-        <Button className={styles.blueBtn}>Сохранить</Button>
+        <Button styleType={['black', 'phoneWide']}>{t('cancel')}</Button>
+        <Button styleType={['gradient', 'phoneWide']}>{t('save')}</Button>
       </div>
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+        <FormikProvider value={formik}>
+        <Form>
+          {body}
+        </Form>
+        </FormikProvider>
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (<ModalLayout>
     <ModalBody>

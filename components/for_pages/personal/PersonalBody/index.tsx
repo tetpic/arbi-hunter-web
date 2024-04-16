@@ -57,7 +57,7 @@ export default function PersonalBody(props: Props) {
 
 
   return (<div className={styles.root}> 
-    <SortableList onSortEnd={onSortEnd}>
+    <SortableList onSortEnd={onSortEnd} allowDrag={props.isEditing}>
     {blocks.size > 0 &&
       [...blocks.entries()].map(([order, {block, assets}], i) => {
         return <SortableItem key={i}>

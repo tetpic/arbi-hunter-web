@@ -7,7 +7,7 @@ import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalTy
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
-import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
@@ -56,7 +56,7 @@ export default function FilterHirer(props: Props) {
     salaryMax: undefined,
     salaryMin: undefined,
     currency: undefined,
-    vacancyLookType: undefined,
+    vacancyLookType: [],
     countries: [],
     cities: [],
     education: [],
@@ -118,7 +118,7 @@ export default function FilterHirer(props: Props) {
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.6)
       return
     }
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
@@ -155,6 +155,23 @@ export default function FilterHirer(props: Props) {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== category.id):state)
     formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category.id))
   }
+
+  const resetAll = () => {
+    formik.setValues(initialValues)
+    creationContext.setActiveSubcategory([])
+    const newHelpObject:HelpObject = {
+      countries: [],
+      activeGeos: new Map,
+      activeSources: new Map,
+      activeVerticals: new Map,
+      languageKnowledges: new Map,
+    }
+    creationContext.setHelpObjects(newHelpObject)
+  }
+
+  useEffect(()=>{
+    sourcesContext.init(['sources', 'verticals', 'geos'])
+  }, [])
 
   useEffect(()=>{
       const _newGeos: Map<number, ISource> = new Map()
@@ -194,6 +211,8 @@ export default function FilterHirer(props: Props) {
     Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
+
+
 
 
   return (<div className={styles.root}> 
@@ -503,7 +522,7 @@ export default function FilterHirer(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey']} 
-      onClick={()=>formik.setValues(initialValues)}
+      onClick={resetAll}
       className={styles.resetButton}
       >
         {t('filters_clearAll')}

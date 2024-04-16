@@ -6,6 +6,7 @@ import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
 import { ChangeEvent} from 'react'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
@@ -32,6 +33,7 @@ interface Props {
  * @disabledButton  boolean|undefined
  */
 export default function Body(props: Props) {
+  const {t} = useTranslation()
 
   const {isPhoneWidth} = useResize()
 
@@ -58,9 +60,15 @@ export default function Body(props: Props) {
       <Button className={styles.buttonDefault} type='button' onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        props.onClose()}} >Отменить</Button>
+        props.onClose()}} >{t('cancel')}</Button>
     }
-    <Button className={classNames(styles.buttonGradient, props.disabledButton&&styles.disabled)} onClick={props.onSave} title={'saveSkill'}>Выбрать</Button>
+    <Button 
+    styleType={['gradient']}
+    disabled={props.disabledButton}
+    onClick={props.onSave} 
+    title={'saveSkill'}>
+      {t('set')}
+    </Button>
   </div>
   </>)
 }

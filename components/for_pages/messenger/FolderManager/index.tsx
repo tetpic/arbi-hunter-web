@@ -51,9 +51,14 @@ function FolderEditor(props: Props) {
   }
 
   const addModalHandler = () => {
+    const modalArgs:IChatsFolderModalProps = {
+      chats: [...chatContext.chats.values()], 
+      choosenChats: [...choosenChats.values()], 
+      onSave: saveHandler
+    }
     isTabletWidth
-    ?appContext.showBottomSheet<IChatsFolderModalProps>(ModalType.ChatsFolderModal, {chats: [...chatContext.chats.values()], onSave: saveHandler})
-    :appContext.showModal<IChatsFolderModalProps>(ModalType.ChatsFolderModal, {chats: [...chatContext.chats.values()], onSave: saveHandler})
+    ?appContext.showBottomSheet<IChatsFolderModalProps>(ModalType.ChatsFolderModal, modalArgs)
+    :appContext.showModal<IChatsFolderModalProps>(ModalType.ChatsFolderModal, modalArgs)
   }
 
   const removeChatFromlist = (c: IChat) => {

@@ -114,7 +114,7 @@ export function PersonalWrapper(props: Props) {
 
   const updatePersonalPage = async (): Promise<IPersonalPage> => {
     const orderedBlocks = [...blocks.values()].map((el, index)=> ({...el.block, order: index+1}))
-    debugger
+    
     if(personalPage === undefined) {
       return PersonalRepository.createPersonalPage(orderedBlocks)
       .then(res=> {

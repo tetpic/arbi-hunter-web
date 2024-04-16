@@ -63,6 +63,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
   const onFilterChange =(data: IVacancyCvSearchParams) => {
+    
     const dataToSend = {...data}
     switch (dataToSend.searchIn) {
       case SearchIn.Name:

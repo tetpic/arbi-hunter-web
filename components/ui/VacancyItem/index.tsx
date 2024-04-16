@@ -134,7 +134,12 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
           </Button>
         }
         {vacancy.showContactName && 
-          <Button styleType={['black', 'borderBlue']}>Контакты</Button>
+          <Button 
+          styleType={['black', 'borderBlue']}
+          altStyleType={['whitePurple', 'borderBlue']}
+          >
+            Контакты
+          </Button>
         }
       </div>
     </div>

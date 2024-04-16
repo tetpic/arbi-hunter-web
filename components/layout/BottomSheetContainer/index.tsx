@@ -20,6 +20,7 @@ import CompensationModal from '@/components/modals/CompensationModal'
 import CharacterCartModal from '@/components/modals/CharacterCartModal'
 import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
 import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
+import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
 
 
 interface Props { }
@@ -106,6 +107,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <SoursesModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -114,6 +116,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <LangaugesModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -164,6 +167,14 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={false}
         >
           <RefillBalanceModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ChangeLanguageModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+        >
+          <ChangeLanguageModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

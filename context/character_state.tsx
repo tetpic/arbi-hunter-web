@@ -195,7 +195,7 @@ export function CharacterWrapper(props: Props) {
 
     await CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
     .catch(_ => {
-      debugger 
+       
       return
     })
 
@@ -207,7 +207,7 @@ export function CharacterWrapper(props: Props) {
     
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
     .catch(err => {
-      debugger 
+       
       return
     })
       

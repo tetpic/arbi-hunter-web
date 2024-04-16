@@ -114,7 +114,13 @@ export default function VacancyPage(props: Props) {
           <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.city.locName}</P>
         }
       </div>
-      <Button className={styles.companyArrow} styleType={['icon', 'backTransparent']}><ArrowRightSvg/></Button>
+      <Button 
+      className={styles.companyArrow} 
+      styleType={['icon', 'backTransparent']} 
+      altStyleType={['icon', 'backTransparent', 'invertSvg']}
+      >
+        <ArrowRightSvg/>
+      </Button>
     </Link>
   ) 
 
@@ -174,7 +180,7 @@ export default function VacancyPage(props: Props) {
           <Button 
           styleType={['gradient']}  
           onClick={(e)=>{
-              router.push(`/responses/${currentVacancy.id}/`)
+            router.push(`/responses/${currentVacancy.id}/`)
           }} 
           >
             {t('vacancy_page_viewApplicetions')}
@@ -189,18 +195,25 @@ export default function VacancyPage(props: Props) {
           {currentVacancy.showContactName &&
             <Button 
             styleType={['black', 'borderBlue']} 
+            altStyleType={['whitePurple', 'borderBlue']}
             onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
               {t('vacancy_page_showContacts')}
             </Button>
           }
           <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
-          <Button styleType={['icon', 'black']} onClick={()=>vacancyContext.addToBlackList()}><CloseEyeSvg/></Button>
+          <Button 
+          styleType={['icon', 'black']} 
+          altStyleType={['icon', 'whitePurple', 'invertSvg', 'borderBlue']}
+          onClick={()=>vacancyContext.addToBlackList()}
+          >
+            <CloseEyeSvg/>
+          </Button>
           {currentVacancy.showContactName && isShowContacts[0] &&
             <ContactsModal 
             key={'contacts1'}
             vacancy={currentVacancy} 
             isActive={isShowContacts[0]} 
-            onClose={()=>setIsShowContacts(state=> ([false, state[0]]))}
+            onClose={()=>setIsShowContacts(state=> ([false, state[1]]))}
             />
           }
         </div>
@@ -254,6 +267,7 @@ export default function VacancyPage(props: Props) {
             <P styleType={['w500', 'medium']}>{currentVacancy.contactName}</P>
             <Button 
             styleType={['black', 'wide', 'borderBlue']} 
+            altStyleType={['gradient']}
             onClick={()=>setIsShowContacts(state=> ([state[0], true]))}
             >
               {t('vacancy_page_showContacts')}

@@ -5,7 +5,6 @@ import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import Image from 'next/image'
 import { PersonalBlockType, Preset } from 'types/enums'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import ReactPlayer from 'react-player'
 import P from '@/components/ui/P'
 import { SocialSites } from '@/components/modals/AddPersonalBlockModal'
@@ -17,6 +16,7 @@ import telegram from 'images/footer/tg_footer.svg'
 import classNames from 'classnames'
 import SwiperList from '@/components/ui/SwiperList'
 import ImageHelper from 'utils/ImageHelper'
+import Link from 'next/link'
 
 
 
@@ -57,7 +57,6 @@ export default function EditableBlock(props: Props) {
     {(props.block.type === PersonalBlockType.Text
       ||props.block.type === PersonalBlockType.Image
       ||props.block.type === PersonalBlockType.Gallery
-      ||props.block.type === PersonalBlockType.Video
     ) &&
       <>
       <P styleType={['fs32', 'w700']} useThemeColor >{props.block.title}</P>
@@ -108,10 +107,11 @@ export default function EditableBlock(props: Props) {
         }
       }}
       hideNav
+      hideWatchMore
       >
 
       <div 
-      className={styles.gridContainer} 
+      className={classNames(styles.gridContainer, styles.columnsContainer)} 
       style={{
         gridTemplateAreas: `"${(JSON.parse(props.block.layout).layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}" `, 
         gridTemplateColumns: `repeat(${(JSON.parse(props.block.layout).layout as number[][])[0].length}, 1fr)`,
@@ -145,8 +145,9 @@ export default function EditableBlock(props: Props) {
       <div className={styles.socialWrapper}>
         <P styleType={['fs32', 'w700']} useThemeColor>{props.block.title}</P>
         <div className={styles.socials}>
-          {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => { {
-            return <P styleType={['alignCenter', 'w500', 'large']}>{getSocialLogo(key as SocialSites)} {value}</P>
+          {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => {{
+            if(!Boolean(value.trim())) return null
+            return <Link href={value}>{getSocialLogo(key as SocialSites)}</Link>
           } }))}
         </div>
       </div>
@@ -156,7 +157,7 @@ export default function EditableBlock(props: Props) {
     }
     {props.assets && props.block.type === PersonalBlockType.Collage &&
       <div 
-      className={styles.gridContainer} 
+      className={classNames(styles.gridContainer, styles.collageContainer)} 
       style={{
         gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((props.block.layout as number[][])[0].length)}`, 
       }}>
@@ -174,34 +175,62 @@ export default function EditableBlock(props: Props) {
       </div>
     }
     {props.assets && props.block.type === PersonalBlockType.Gallery &&
-      <Swiper 
+      // <Swiper 
+      // className={styles.swiper}
+      // spaceBetween={10}
+      // slidesPerView={'auto'}
+      // >
+      //   {props.assets.map(el=>{
+      //     return (
+      //       <SwiperSlide className={styles.swiperSlide}>
+      //         <Image 
+      //         unoptimized
+      //         priority
+      //         src={ImageHelper.urlFromFile(el, Preset.xlResize)}
+      //         alt={props.block.title + ' image'} 
+      //         width={1240}
+      //         height={610}
+      //         style={{objectFit:'cover', display: 'block'}}
+      //         />
+      //       </SwiperSlide>
+      //     )
+      //   })}        
+      // </Swiper>
+      <SwiperList
       className={styles.swiper}
-      spaceBetween={10}
-      slidesPerView={'auto'}
+      slideClassName={styles.swiperSlide}
+      swiperProps={{
+        loop: false,
+        freeMode: false,
+      }}
+      hideWatchMore
       >
         {props.assets.map(el=>{
           return (
-            <SwiperSlide className={styles.swiperSlide}>
               <Image 
               unoptimized
               priority
-              src={ImageHelper.urlFromFile(el, Preset.xlCrop)}
+              src={ImageHelper.urlFromFile(el, Preset.xlResize)}
               alt={props.block.title + ' image'} 
               width={1240}
               height={610}
               style={{objectFit:'cover', display: 'block'}}
               />
-            </SwiperSlide>
           )
-        })}        
-      </Swiper>
+        })}    
+      </SwiperList>
     }
-    {props.assets && props.block.type === PersonalBlockType.Video &&
+    {props.assets.length > 0 && props.block.type === PersonalBlockType.Video &&
       props.assets.map(el=>
         <div className={styles.video}>
-          <ReactPlayer width={'fit-content'} height={'100%'} url={ImageHelper.urlFromSource(el.source)} controls/>
+          <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
+      ||
+      props.assets.length === 0 && props.block.type === PersonalBlockType.Video &&
+      <div className={styles.video}>
+        <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop  url={props.block.title}  controls/>
+      </div>
     }
     {props.block.type === PersonalBlockType.VideoText &&
       <div

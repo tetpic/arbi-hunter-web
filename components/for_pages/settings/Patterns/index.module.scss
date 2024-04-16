@@ -3,13 +3,12 @@
 .root {
   margin-top: 24px;
   max-width: 518px;
-  // overflow: auto;
    @include mq($TabletWidth, max) {
-    min-height: calc(100vh - 220px);
+    min-height: calc(100vh - 165px);
+    min-height: calc(100dvh - 165px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    // min-height: calc(100dvh - 195px);
   }
 }
 

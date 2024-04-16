@@ -104,6 +104,11 @@ export default function Messages(props: Props) {
     router.push('/personal/' + collocutor.id)
   }
 
+  const onBackClick = (e:React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
+    props.onBackClick()
+  }
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
 
@@ -129,7 +134,7 @@ export default function Messages(props: Props) {
         {dialog.chat &&
         <>
           {isTabletWidth &&
-            <BackBtn className={styles.backButton} onClick={props.onBackClick} bgColor={'transparent'}/>
+            <BackBtn className={styles.backButton} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
           <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
@@ -150,7 +155,7 @@ export default function Messages(props: Props) {
           </Link>
       </div>
       <div 
-      className={styles.messagesWrapper} 
+      className={classNames(styles.messagesWrapper, cv && cv.categories[0] && styles.messagesWrapper_withCv)} 
       id={'chat-messages'}
       ref={dialog.scrollableTarget as RefObject<HTMLDivElement>}
       >

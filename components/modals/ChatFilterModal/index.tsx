@@ -66,6 +66,13 @@ export default function ChatFilterModal(props: Props) {
     props.onClose()
   }
 
+  const initialValues:IChatsFilter = {
+    vacanciesIds: [],
+    status: 'all',
+    unreaded: false,
+    inactive:false
+  }
+
   const formik = useFormik<IChatsFilter>({
     initialValues: {
       vacanciesIds: args.filters?.vacanciesIds||[],
@@ -75,6 +82,10 @@ export default function ChatFilterModal(props: Props) {
     },
     onSubmit: submit
   })
+
+  const onClear = () => {
+    formik.setValues(initialValues)
+  }
 
   const main = (<>
     <div className={styles.filters}>
@@ -161,7 +172,7 @@ export default function ChatFilterModal(props: Props) {
         {currentElement()}
         {currentPage === Pages.Main &&
           <div className={styles.buttons}>
-            <Button type='button' onClick={args.onClear} className={styles.greyButton}>{t('clear')}</Button>
+            <Button type='button' onClick={onClear} className={styles.greyButton}>{t('clear')}</Button>
             <Button type='submit' className={styles.yellowButton}>{t('apply')}</Button>
           </div>
         }
