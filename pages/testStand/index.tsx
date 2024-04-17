@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function TestStand(props: Props) {
-    console.count('page refreshed')
+    // console.count('page refreshed')
 
 
   return (
