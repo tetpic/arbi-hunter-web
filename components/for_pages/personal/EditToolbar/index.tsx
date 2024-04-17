@@ -14,6 +14,7 @@ import { usePersonalContext } from 'context/personal_state'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
+import { useTariffContext } from 'context/tariff_state'
 
 interface Props {
 }
@@ -22,6 +23,7 @@ export default function EditToolbar(props: Props) {
   const {t}= useTranslation()
   const appContext = useAppContext()
   const personalContext = usePersonalContext()
+  const tariffContext = useTariffContext()
 
   const showModal = (type: PersonalBlockType) => {
     appContext.showModal<IAddPersonalBlockModalProps>(ModalType.AddPersonalBlockModal, {type, onSubmit: (data, images, layout)=> {
@@ -53,6 +55,9 @@ export default function EditToolbar(props: Props) {
         return (
           <Button className={styles.button} altStyleType={['gradient']} key={i} onClick={el.onClick}>
             {el.icon} <p>{el.name}</p>
+            {tariffContext.activeSubscriptions.size === 0 &&
+              <div className={styles.topDot}></div>
+            } 
           </Button>
         )
       })}

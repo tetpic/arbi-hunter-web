@@ -332,6 +332,7 @@
   "shop_free": "Бесплатно",
   "shop_Insufficient_funds": "Недостаточно средств",
   "shop_tariffRefreshed": "Тариф успешно обновлен",
+  "shop_tariffPurchased": "Тариф успешно приобретен",
   "shop_purchaseConfirmation": "Подтверждение покупки",
   "shop_setActivationTime": "Выбрать дату и время активации",
   "shop_setActivationTimeAlt": "Выбрать дату активации",

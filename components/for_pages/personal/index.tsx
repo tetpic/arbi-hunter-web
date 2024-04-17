@@ -15,6 +15,15 @@ import { useUserContext } from 'context/user_state'
 import Button from '@/components/ui/Button'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
+import { ModalType, PurchaseType, SnackbarType} from 'types/enums'
+import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
+import { useTariffContext } from 'context/tariff_state'
+import { useRouter } from 'next/router'
+import { ShopPages } from '../shop'
+import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import { clearObject } from 'utils/helpers'
 
 interface Props {
   id?: number
@@ -23,14 +32,59 @@ interface Props {
 export default function PersonalPage(props: Props) {
   const {t} = useTranslation()
   const personalContext = usePersonalContext()
+  const appContext = useAppContext()
+  const tariffContext = useTariffContext()
   const [isEditing, setIsEditing] = useState(false)
   const userContext = useUserContext()
+  const router = useRouter()
+
+  const saveBranding = () => {
+    personalContext.updatePersonalPage()
+    .then(res => {
+      const personalTariff = [...tariffContext.packets.values()][0]
+      if(res === null && personalTariff.price < userContext.user.balance) {
+        appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+          tariff: [...tariffContext.packets.values()][0], 
+          onBuy: (data) => {
+            PurchaseRepository.purchaseItem({...clearObject(data), tariffId: personalTariff.id})
+            .then(res => {
+              personalContext.updatePersonalPage()
+              .then(_ => {
+                setIsEditing(!isEditing)
+                appContext.showSnackbar(t('shop_tariffPurchased'), SnackbarType.success)
+              })
+              .catch(e=> {
+                return null
+              })
+            })
+          },
+          tariffs: tariffContext.packets,
+        })
+        return
+      }
+      else if(res === null && personalTariff.price > userContext.user.balance) {
+        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+          text: t('shop_insufficientBalance'),
+          maxWidth: 320,
+          callback: () => {
+            router.push({pathname: '/shop', query: {page: ShopPages.Balance}})
+          }
+        })
+        return
+      }
+      else {
+        setIsEditing(!isEditing)
+      }
+    })
+  }
 
   useEffect(()=>{
     personalContext.setPersonalPage({profileId: props.id}) 
     .then(res => {
       personalContext.setBackgrounds(res)
     })
+    tariffContext.setActiveSubscriptions([PurchaseType.PersonalPage])
+    tariffContext.setPackets([PurchaseType.PersonalPage])
   }, [])
 
   if(personalContext.loading) {
@@ -70,6 +124,9 @@ export default function PersonalPage(props: Props) {
       </ContentItem>
     }
     <ContentItem  className={styles.bodyItem}>
+      {tariffContext.activeSubscriptions.size === 0 && !isEditing &&
+        <P>----Здесь будет рекламный баннер для покупки брендирования -----</P>
+      }
       {personalContext.blocks.size > 0 &&
       <PersonalBody isEditing={!props.id&&isEditing}/>
       ||
@@ -81,10 +138,7 @@ export default function PersonalPage(props: Props) {
     {isEditing &&
       <Button 
       styleType={['gradient']} 
-      onClick={() => {
-        personalContext.updatePersonalPage()
-        setIsEditing(!isEditing)
-      }} 
+      onClick={saveBranding} 
       className={styles.saveButton}>{t('save')}</Button>
     }
   </div>)

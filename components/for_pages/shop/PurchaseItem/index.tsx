@@ -39,6 +39,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   const router = useRouter()
 
   const buyHandler = (data: PurchaseForm) => {
+    debugger
     switch (tariff.purchaseType) {
       case PurchaseType.Character : {
         CharacterRepository.createCharacter({gender: 'male'})
@@ -96,7 +97,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         return
       }     
       default: {
-        PurchaseRepository.cvVcPurchase(clearObject({
+        PurchaseRepository.purchaseItem(clearObject({
           startAt: data.startAt,
           cvId: data.cvId,
           vacancyId: data.vacancyId,

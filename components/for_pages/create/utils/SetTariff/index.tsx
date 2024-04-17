@@ -59,7 +59,7 @@ export default function SetTariff(props: Props) {
     }
 
     if(tariff.price === 0) {      
-      PurchaseRepository.cvVcPurchase({...clearObject(purchaseData), tariffId: tariff.id})
+      PurchaseRepository.purchaseItem({...clearObject(purchaseData), tariffId: tariff.id})
       .then(res => {
         props.onSave()
       })
@@ -70,7 +70,7 @@ export default function SetTariff(props: Props) {
       tariffs: tariffs,      
       data: purchaseData,
       onBuy: (data) => {
-        PurchaseRepository.cvVcPurchase({...clearObject(data), tariffId: tariff.id})
+        PurchaseRepository.purchaseItem({...clearObject(data), tariffId: tariff.id})
         .then(res=>{
           props.onSave()
         })

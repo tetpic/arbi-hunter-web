@@ -18,7 +18,7 @@ import useTranslation from 'next-translate/useTranslation'
 interface Props {
 }
 
-enum ShopPages  {
+export enum ShopPages  {
   Balance = 'balance',
   Packets = 'packets',
   Orders =  'orders'

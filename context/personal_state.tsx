@@ -121,6 +121,9 @@ export function PersonalWrapper(props: Props) {
         setPersonalPageState(res)
         return res
       })
+      .catch(_ => {
+        return null
+      })
     }
     else {
       return PersonalRepository.updatePersonalPage(personalPage?.id , orderedBlocks)

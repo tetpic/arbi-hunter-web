@@ -65,6 +65,7 @@ export default function Registration(props: Props) {
   }
 
   const submit = async (data: IRegistrationComplete) => {
+    debugger
     if((!cityId || !country) && userContext.profileType === ProfileType.Hirer) {
       appContext.showSnackbar(t('registration_chooseCityAndCountry'), SnackbarType.error)
       return
@@ -109,14 +110,14 @@ export default function Registration(props: Props) {
   }
 
   const  nextPageValidator = (page?: number) => {
-    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br /> 
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
-      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
-      </>,
-      onClick: ()=>{appContext.hideModal()}
-    })
-    return 
+    // appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+    //   text: <>Всем привет! <br /> 
+    //   Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+    //   следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
+    //   </>,
+    //   onClick: ()=>{appContext.hideModal()}
+    // })
+    // return 
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
         formik.setFieldError(val, err||' ')
@@ -139,7 +140,7 @@ export default function Registration(props: Props) {
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
         
-        if(filteredErrors.length === 0 && (!isLoginExist.exists ||(!isLoginExist.isRegistrationCompleted && isLoginExist.profilesCount === 0))) {
+        if(filteredErrors.length === 0 && (!isLoginExist.exists || !isLoginExist.isRegistrationCompleted || isLoginExist.profilesCount === 0)) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
             email: formik.values.email,
             onComplete: () => {
@@ -155,16 +156,15 @@ export default function Registration(props: Props) {
       case 2:(async() => {  
         const values = ['phone']
         validateValues(values)
-        .then(res=> {
-          
+        .then(res=> {          
           if(res === false) {
             setErr('email', t('registration_enterCorrectEmail'))
           }
           else {
             RegistrationRepository.checkEmailOrPhoneExists(formik.values.phone)
             .then(r=> {
-              if(r.exists === true) setErr('phone', t('registration_phoneExist'))
-              else { setProgress(page||progress+1) }
+              if(!r.exists||!r.isRegistrationCompleted||r.profilesCount === 0) setProgress(page||progress+1) 
+              else {setErr('phone', t('registration_phoneExist'))}
             })
           }
         })

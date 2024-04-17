@@ -40,7 +40,6 @@ $purpleSmell: #985AFC20;
   --backColor: #{$black};
   --backColorAlt: #{$black};
   --greyToPurpleGrey: #{$grey};
-
 }
 
 #body[data-theme="light"] {
@@ -53,11 +52,6 @@ $purpleSmell: #985AFC20;
   --backColorAlt: #FBF9FD;
   --greyToPurpleGrey: #{$purpleGrey};
 }
-
-
-
-
-
 
 $blueGradient: linear-gradient(241deg, #7A5EFE 7.14%, #54ADFF 100%);
 $gradient: linear-gradient(152deg, #AC6CDB 0%, #586DE4 50%, #AC6CDB 100%);
