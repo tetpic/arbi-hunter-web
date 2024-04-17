@@ -1,12 +1,12 @@
 import { IPattern, IPatternBase } from 'data/interfaces/IPattern'
 import PatternRepository from 'data/repositories/PatternRepository'
 import { createContext, useContext, useState } from 'react'
-import { PatternTypes, SnackbarType } from 'types/enums'
+import {  ProposalRequestType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 
 interface IState {
   patterns: Map<number,IPattern>
-  patternsNotExist: Set<PatternTypes>
+  patternsNotExist: Set<ProposalRequestType>
   setPatterns: ()=>void
   createPattern: (p: IPatternBase) => void
   editPattern: (p: IPatternBase, id: number)=>void
@@ -22,11 +22,11 @@ interface Props {
 export function PatternWrapper(props: Props) {
   const appContext = useAppContext()
   const [patterns, setPatternsState] = useState<Map<number, IPattern>>(new Map())
-  const [patternsNotExist, setPatternsNotExistState] = useState<Set<PatternTypes>>(new Set())
+  const [patternsNotExist, setPatternsNotExistState] = useState<Set<ProposalRequestType>>(new Set())
 
   const setPatterns = () => {
     setPatternsNotExistState(new Set)
-    Object.values(PatternTypes).forEach(el=> {
+    Object.values(ProposalRequestType).forEach(el=> {
       PatternRepository.getPatternByType(el)
       .then(res=>{   
         

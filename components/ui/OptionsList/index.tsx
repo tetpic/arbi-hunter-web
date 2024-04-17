@@ -30,6 +30,7 @@ export default function OptionsList(props: Props) {
         e.stopPropagation()
         e.preventDefault()
         el.onClick&&el.onClick(e)
+        appContext.hideBottomSheet()
       }}
       >
         {el.icon} {el.title}

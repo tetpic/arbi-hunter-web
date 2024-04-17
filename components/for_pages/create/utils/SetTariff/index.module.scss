@@ -4,6 +4,10 @@
   width: 100%;
   @include mq($TabletWidth, max) {
     margin-top: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+
   }
 }
 
@@ -16,7 +20,6 @@
   margin-bottom: 82px;
   align-items: stretch;
   row-gap: 24px;
-
 }
 
 .tariff {
@@ -69,6 +72,9 @@
   align-items: center;
   column-gap: 16px;
   margin-top: 24px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .tariffType {

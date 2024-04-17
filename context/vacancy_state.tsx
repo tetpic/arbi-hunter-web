@@ -17,6 +17,7 @@ interface IState {
 
   addToBlackList: (id?: number) => void
   setBlackListedVacancies: () => void
+  removeFromBlackList: (id?: number) => void
 
 
   editVacancy: (v: IVacancyCreate, id: number, published?: 'archive'|'active'|undefined)=>Promise<boolean>
@@ -118,6 +119,13 @@ export function VacancyWrapper(props: Props) {
     .then(_=> {
       router.back()
       appContext.showSnackbar('Вакансия добавлена в черный список', SnackbarType.success)
+    })
+  }
+
+  const removeFromBlackList = (id?: number)  => {
+    VacancyRepository.removeFromBlackList(id)
+    .then(_ => {
+      setSavedVCState(state=> state.filter(el => el.id !== id))
     })
   }
 
@@ -225,6 +233,7 @@ export function VacancyWrapper(props: Props) {
     findVacancies,
     setVacancies,
     addToBlackList,
+    removeFromBlackList,
     setBlackListedVacancies,
     activeVacancies,
     editVacancy,

@@ -5,6 +5,7 @@
   "search_vacancy": "Поиск вакансий",
   "employee": "Соискатель",
   "hirer": "Компания",
+  "company": "Компания",
   "cv": "Резюме",
   "vacancy": "Вакансия",
   "create_vacancy": "Создать вакансию",
@@ -344,6 +345,7 @@
   "shop_noActiveVacancies": "Нет активных вакансий",
   "shop_noAvailableTariffs": "Нет активных тарифов для улучшения",
   "shop_insufficientBalance": "Недостаточно арбикоинов, хотите пополнить баланс?",
+  "shop_brandingSubcriptionNotFound": "Подписка на брендирование не оформлена.",
 
   "create_description": "Описание",
   "create_setSpecialization": "Укажите специализацию",
@@ -506,6 +508,7 @@
   "personal_links": "Ссылки",
   "personal_textVideo": "Текст и видео",
   "personal_html": "HTML",
+  "personal_noInfo":"Нет информации",
   
 
 

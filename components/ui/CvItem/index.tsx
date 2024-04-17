@@ -43,29 +43,31 @@ export default function CvItem({cv, ...props}: Props) {
   const router = useRouter()
   const [isOpenContacts, setIsOpenContacts] = useState<boolean>(cv.isContactsOpen)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const {isTabletWidth} = appContext.size
 
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     if(props.initialVacancy) {
-      appContext.showModal<IProposalTextModalProps>
-      (ModalType.ProposalTextModal, 
-        {application: null, 
-          type: ApplicationBSSelectType.ThisVacancy, 
-          vcId: props.initialVacancy.id, 
-          cv, 
-          onSubmit: props.onChangeItem
-        })
+      const args:IProposalTextModalProps = {application: null, 
+        type: ApplicationBSSelectType.ThisVacancy, 
+        vcId: props.initialVacancy.id, 
+        cv, 
+        onSubmit: props.onChangeItem
+      }
+      isTabletWidth
+      ? appContext.showBottomSheet<IProposalTextModalProps>(ModalType.ProposalTextModal, args)
+      :appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, args)
       return
     }
-    appContext.showModal<IProposalModalProps>(
-      ModalType.ProposalModal, 
-      { cv, 
-        page: ProposalModalPager.OtherVacancy,
-        activeVacancies: [...vacancyContext.activeVacancies.values()],
-      }
-    )
+    const args = { cv, 
+      page: ProposalModalPager.OtherVacancy,
+      activeVacancies: [...vacancyContext.activeVacancies.values()],
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, args)
+    :appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, args)
   }
 
   const openChat = (e: React.MouseEvent) => {

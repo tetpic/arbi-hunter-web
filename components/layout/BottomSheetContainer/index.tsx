@@ -35,6 +35,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[400]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <ProposalModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>

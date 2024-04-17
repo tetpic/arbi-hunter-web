@@ -4,7 +4,7 @@ import HtmlText from 'components/ui/HtmlText'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import Image from 'next/image'
-import { PersonalBlockType, Preset } from 'types/enums'
+import { ModalType, PersonalBlockType, Preset } from 'types/enums'
 import ReactPlayer from 'react-player'
 import P from '@/components/ui/P'
 import { SocialSites } from '@/components/modals/AddPersonalBlockModal'
@@ -17,6 +17,8 @@ import classNames from 'classnames'
 import SwiperList from '@/components/ui/SwiperList'
 import ImageHelper from 'utils/ImageHelper'
 import Link from 'next/link'
+import { useAppContext } from 'context/state'
+import { ImageViewerModalProps } from '@/components/modals/ImageViewerModal'
 
 
 
@@ -27,15 +29,12 @@ interface Props {
 }
 
 export default function EditableBlock(props: Props) {
-  
-
+  const appContext = useAppContext()
   const titles = (props.block.title&&props.block.type === PersonalBlockType.Columns) &&
     JSON.parse(props.block.title)
-    
 
   const texts = (props.block.text&&(props.block.type === PersonalBlockType.Columns||props.block.type === PersonalBlockType.Social)) &&
     JSON.parse(props.block.text)
-
 
   const  getSocialLogo = (key: SocialSites)  => {
     switch(key) {
@@ -50,6 +49,10 @@ export default function EditableBlock(props: Props) {
       case SocialSites.LINKEDIN:
         return <Image src={linkedIn} alt={'linkedIn'}/>
     }
+  }
+
+  const showImagePreview = (src: string) => {
+    appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src})
   }
   
   return (
@@ -166,7 +169,8 @@ export default function EditableBlock(props: Props) {
           return <div className={styles.collageImageWrapper} style={{gridArea: `o${el.id}`}}>              
             <Image 
             unoptimized
-            src={ImageHelper.urlFromFile(el, Preset.mdCrop) + el.source} 
+            onClick={()=>showImagePreview(ImageHelper.urlFromFile(el, Preset.mdResize))}
+            src={ImageHelper.urlFromFile(el, Preset.mdResize)} 
             alt={''} 
             width={600} 
             height={600} 
@@ -187,15 +191,16 @@ export default function EditableBlock(props: Props) {
       >
         {props.assets.map(el=>{
           return (
-              <Image 
-              unoptimized
-              priority
-              src={ImageHelper.urlFromFile(el, Preset.xlResize)}
-              alt={props.block.title + ' image'} 
-              width={1240}
-              height={610}
-              style={{objectFit:'cover', display: 'block'}}
-              />
+            <Image 
+            unoptimized
+            priority
+            src={ImageHelper.urlFromFile(el, Preset.xlResize)}
+            onClick={()=>showImagePreview(ImageHelper.urlFromFile(el, Preset.xlResize))}
+            alt={props.block.title + ' image'} 
+            width={1240}
+            height={610}
+            style={{objectFit:'cover', display: 'block'}}
+            />
           )
         })}    
       </SwiperList>

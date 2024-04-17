@@ -1,6 +1,6 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { Translate } from 'next-translate'
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages, PatternTypes, ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
+import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages,  ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -66,13 +66,13 @@ export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
 }
 
 
-export const TranslatePatternType = (p: PatternTypes) => {
+export const TranslatePatternType = (p: ProposalRequestType) => {
   switch (p) {
-    case PatternTypes.InfoRequest:
+    case ProposalRequestType.InfoRequest:
       return 'Запрос информации'
-    case PatternTypes.Interview:
+    case ProposalRequestType.Interview:
       return 'Собеседование'
-    case PatternTypes.Rejection:
+    case ProposalRequestType.Rejection:
       return 'Отказ'
   }
 }

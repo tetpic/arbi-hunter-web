@@ -25,6 +25,12 @@ import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { clearObject } from 'utils/helpers'
 import Spacer from '@/components/ui/Spacer'
+import { Form, FormikProvider, useFormik } from 'formik'
+import InputField from '@/components/fields/InputField'
+import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
+import LocationRepository from 'data/repositories/LocationRepository'
+import { ISearchCityResult } from 'data/interfaces/ILocation'
+import { IUserProfile } from 'data/interfaces/IUser'
 
 interface Props {
   id?: number
@@ -38,6 +44,14 @@ export default function PersonalPage(props: Props) {
   const [isEditing, setIsEditing] = useState(false)
   const userContext = useUserContext()
   const router = useRouter()
+
+  const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'>>({
+    initialValues: {
+      company: userContext.currentProfile?.company || '',
+      cityId: userContext.currentProfile?.cityId || null,
+    },
+    onSubmit: () => {}
+  })
 
   const saveBranding = () => {
     personalContext.updatePersonalPage()
@@ -76,12 +90,29 @@ export default function PersonalPage(props: Props) {
       else {
         setIsEditing(!isEditing)
       }
-    })
+      return true
+    }
+  )
+  .then(_ => {
+    if(personalContext.currentProfile.profileType === ProfileType.Hirer 
+      && (formik.values.cityId !== userContext.currentProfile.cityId||formik.values.company !== userContext.currentProfile.company)) {
+      userContext.editCurrentProfile(formik.values)
+    }
+  })
+}
+
+
+
+  const cityHandler = (c: ISearchCityResult) => {
+    formik.setFieldValue('cityId', c.id)
   }
 
   useEffect(()=>{
     personalContext.setPersonalPage({profileId: props.id}) 
     .then(res => {
+      if(res) {
+        formik.setFieldValue('company', res.company)
+      }
       personalContext.setBackgrounds(res)
     })
     tariffContext?.setActiveSubscriptions?.([PurchaseType.PersonalPage])
@@ -99,9 +130,12 @@ export default function PersonalPage(props: Props) {
   }
 
   const isHeaderExist = (
-    (personalContext.currentProfile?.profileType === ProfileType.Hirer && personalContext.backgrounds?.get(BackgroundCategoryType.Places) && personalContext.currentProfile?.logo)
+    (personalContext.currentProfile?.profileType === ProfileType.Hirer 
+      && personalContext.backgrounds?.get(BackgroundCategoryType.Places) 
+      && personalContext.currentProfile?.logo)
     ||
-    (personalContext.currentProfile?.profileType === ProfileType.Employee && personalContext.backgrounds?.get(BackgroundCategoryType.Places)) 
+    (personalContext.currentProfile?.profileType === ProfileType.Employee 
+      && personalContext.backgrounds?.get(BackgroundCategoryType.Places)) 
   )
 
   return (<div className={styles.root}> 
@@ -119,6 +153,27 @@ export default function PersonalPage(props: Props) {
     switchMode={() => !props.id&&setIsEditing(!isEditing)}
     />
 
+    {isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
+      <FormikProvider value={formik}>
+        <Form className={styles.form}>
+          <InputField 
+          label={t('company')} 
+          labelType={'top'} 
+          styleType={'default'} 
+          color={'white'} 
+          name={'company'}
+          />
+          <LocationDropDownInput
+          onSetOption={cityHandler} 
+          name={'cityName'} 
+          value = {userContext?.currentProfile?.city?.locName}
+          labelName={t('city')}
+          requestFn={() => LocationRepository.searchCity({country: personalContext.currentProfile.country.country})} 
+          />
+        </Form>
+      </FormikProvider>
+    }
+
     {isEditing && 
       <ContentItem className={classNames(styles.bodyItem, isEditing&&styles.bodyItem_edit)}>
         <EditToolbar/>
@@ -127,7 +182,7 @@ export default function PersonalPage(props: Props) {
     <ContentItem  className={styles.bodyItem}>
       {tariffContext?.activeSubscriptions?.size === 0 && !isEditing &&
       <>
-        <P styleType={['grey', 'medium', 'w500']}>Подписка на брендирование не оформлена.</P>
+        <P styleType={['grey', 'medium', 'w500']}>{t('shop_brandingSubcriptionNotFound')}</P>
         <Spacer basis={24}/>
       </>
       }
@@ -135,7 +190,7 @@ export default function PersonalPage(props: Props) {
       <PersonalBody isEditing={!props.id&&isEditing}/>
       ||
       <div className={styles.emptyWrapper}>
-        <P styleType={['w500', 'medium']}>Нет информации</P>
+        <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
       </div>
       }
     </ContentItem>

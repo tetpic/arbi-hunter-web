@@ -16,9 +16,9 @@ import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { IPattern } from 'data/interfaces/IPattern'
 import { IProposal } from 'data/interfaces/IProposal'
-import { Form, FormikProvider, useFormik } from 'formik'
+import { Form,  FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ApplicationBSSelectType, ModalType, PatternTypes, ProposalRequestType, SnackbarType } from 'types/enums'
+import { ApplicationBSSelectType, ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 
 interface Props {
@@ -43,19 +43,25 @@ export default function ProposalTextModal(props: Props) {
   const [pattern, setPattern] = useState<IPattern>(null)
 
   const submit = async(data: IProposal) => {
-    proposalRepository.createProposal(data)
+    debugger
+    const dataToSend:IProposal = {
+      ...data,
+      coverLetter: pattern.template,
+      type: pattern.type
+    }
+    proposalRepository.createProposal(dataToSend)
     .then(res=>{
       res
       if(typeof res === 'object' && modalArguments.onSubmit) {
         modalArguments.onSubmit()
       }
-      res&&appContext.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'vc', id: vcId})
+      res&&appContext.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'vc', id: vcId, cv: modalArguments.cv})
       if(!res){
         throw Error()
       }
     })
     .catch(err=>{
-      appContext.showSnackbar(`Невозможно отправить ${pattern.type === PatternTypes.Rejection?'отказ': 'приглашение'}. Вакансия или резюме удалено или не опубликовано`, SnackbarType.error)
+      appContext.showSnackbar(`Невозможно отправить ${pattern.type === ProposalRequestType.Rejection?'отказ': 'приглашение'}. Вакансия или резюме удалено или не опубликовано`, SnackbarType.error)
     })
   }
 
@@ -77,7 +83,7 @@ export default function ProposalTextModal(props: Props) {
   useEffect(()=>{
     if(patternContext.patterns) {
       const initialPattern = [...patternContext.patterns.values()].find(el=> {
-        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?PatternTypes.Rejection:PatternTypes.Interview)
+        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview)
       })
       setPattern(initialPattern)
       formik.setFieldValue('coverLetter', initialPattern?.template||'')

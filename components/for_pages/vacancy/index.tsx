@@ -57,11 +57,10 @@ export default function VacancyPage(props: Props) {
 
 
   const makeResponse = () => {
-    if(isTabletWidth) {
-      appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, {vacancyId: currentVacancy.id, cvs: cvContext.savedCvs})
-      return
-    }
-    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {vacancyId: currentVacancy.id, cvs: cvContext.savedCvs})
+    const args:  IApplicationModalProps={vacancy: currentVacancy, cvs: cvContext.savedCvs}
+    isTabletWidth
+      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args)
+      :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
   }
 
   const likeHandler = () => {

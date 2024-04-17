@@ -46,7 +46,7 @@ export default function BlackList(props: Props) {
 
     <div className={styles.items}>
       {type === BlackListModes.Vacancies && vacancyContext.savedVCs?.map(el=> {
-        return <BlackListedItem key={el.id} vacancy={el} />
+        return <BlackListedItem key={el.id} vacancy={el} onRestore={()=>vacancyContext.removeFromBlackList(el.id)} />
       })}
 
       {type === BlackListModes.Companies && profiles.map(el=> {

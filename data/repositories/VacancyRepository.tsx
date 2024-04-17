@@ -32,6 +32,17 @@ export default class VacancyRepository {
     return res
   }
 
+  static async removeFromBlackList(vacancyId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/vacancy/${vacancyId}/removeFromBlackList`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   // static async getActiveVacancies(): Promise<IVacancy[]|null> {
   //   const res = await request({
   //     method: 'get',

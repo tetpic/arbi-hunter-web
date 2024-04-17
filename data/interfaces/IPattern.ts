@@ -1,8 +1,8 @@
-import { PatternTypes } from 'types/enums'
+import { PatternTypes, ProposalRequestType } from 'types/enums'
 import { TimeStamp } from './Common'
 
 export interface IPatternBase {
-  type?: PatternTypes,
+  type?: ProposalRequestType,
   template?: string
 }
 

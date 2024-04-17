@@ -9,10 +9,11 @@ import { IUserProfile } from 'data/interfaces/IUser'
 interface Props {
   vacancy?: IVacancy
   profile?: IUserProfile
+  onRestore?: () => void
 }
 
 export default function BlackListedItem(props: Props) {
-  
+
 
   return (<div className={styles.root}> 
    <div className={styles.top}>
@@ -28,7 +29,7 @@ export default function BlackListedItem(props: Props) {
     <P>{getSalary({vacancy: props.vacancy})}</P>
    </>
    }
-   <Button className={styles.button} styleType={['gradient']}>Восстановить</Button>
+   <Button className={styles.button} onClick={()=>props.onRestore?.()} styleType={['gradient']}>Восстановить</Button>
 
   </div>)
 }

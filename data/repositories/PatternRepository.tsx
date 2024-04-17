@@ -1,9 +1,9 @@
 import { IPattern, IPatternBase, IPatternRequest, IPatternResponce } from 'data/interfaces/IPattern'
-import { PatternTypes } from 'types/enums'
+import {  ProposalRequestType } from 'types/enums'
 import request from 'utils/request'
 
 export default class PatternRepository {
-  static async getPatternByType(data: PatternTypes): Promise<IPattern|null> {
+  static async getPatternByType(data: ProposalRequestType): Promise<IPattern|null> {
     const res = await request({
       method: 'get',
       url: `/api/cover-letter?type=${data}`,

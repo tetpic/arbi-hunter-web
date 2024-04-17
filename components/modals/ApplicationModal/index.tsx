@@ -18,6 +18,7 @@ import CrossSvg from 'components/svg/CrossSvg'
 import { IApplicationSuccessModalProps } from '../ApplicationSuccessModal'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import { IVacancy } from 'data/interfaces/IVacancy'
 
 interface Props {
   onClose: ()=>void
@@ -25,7 +26,7 @@ interface Props {
 }
 
 export interface IApplicationModalProps {
-  vacancyId: number,
+  vacancy: IVacancy,
   cvs: ICV[]
 }
 
@@ -40,14 +41,14 @@ export default function ApplicationModal(props: Props) {
       return
     }
     ApplicationRepository.sendApplication(data as IApplication)
-    .then(res=> {
-      appContex.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'cv'})
+    .then(_=> {
+      appContex.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'cv', vacancy: modalArguments.vacancy})
     })
   }
 
   const formik = useFormik<{vacancyId: number, cvId: number, coverLetter: string}>({
     initialValues: {
-      vacancyId: modalArguments.vacancyId,
+      vacancyId: modalArguments.vacancy.id,
       cvId: undefined,
       coverLetter: undefined
     },

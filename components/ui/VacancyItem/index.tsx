@@ -39,7 +39,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs.filter(el => el.published), vacancyId: vacancy.id})
+    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs.filter(el => el.published), vacancy: vacancy})
   }
 
   const openChat = (e: React.MouseEvent) => {
