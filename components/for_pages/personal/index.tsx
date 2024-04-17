@@ -42,7 +42,7 @@ export default function PersonalPage(props: Props) {
   const saveBranding = () => {
     personalContext.updatePersonalPage()
     .then(res => {
-      const personalTariff = [...tariffContext.packets.values()][0]
+      const personalTariff = [...tariffContext?.packets.values()][0]
       if(res === null && personalTariff.price < userContext.user.balance) {
         appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
           tariff: [...tariffContext.packets.values()][0], 
@@ -59,7 +59,7 @@ export default function PersonalPage(props: Props) {
               })
             })
           },
-          tariffs: tariffContext.packets,
+          tariffs: tariffContext?.packets,
         })
         return
       }
@@ -84,8 +84,8 @@ export default function PersonalPage(props: Props) {
     .then(res => {
       personalContext.setBackgrounds(res)
     })
-    tariffContext.setActiveSubscriptions([PurchaseType.PersonalPage])
-    tariffContext.setPackets([PurchaseType.PersonalPage])
+    tariffContext?.setActiveSubscriptions?.([PurchaseType.PersonalPage])
+    tariffContext?.setPackets?.([PurchaseType.PersonalPage])
   }, [])
 
   if(personalContext.loading) {
@@ -125,7 +125,7 @@ export default function PersonalPage(props: Props) {
       </ContentItem>
     }
     <ContentItem  className={styles.bodyItem}>
-      {tariffContext.activeSubscriptions.size === 0 && !isEditing &&
+      {tariffContext?.activeSubscriptions?.size === 0 && !isEditing &&
       <>
         <P styleType={['grey', 'medium', 'w500']}>Подписка на брендирование не оформлена.</P>
         <Spacer basis={24}/>

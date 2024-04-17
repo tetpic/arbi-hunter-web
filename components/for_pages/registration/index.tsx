@@ -65,7 +65,7 @@ export default function Registration(props: Props) {
   }
 
   const submit = async (data: IRegistrationComplete) => {
-    debugger
+    
     if((!cityId || !country) && userContext.profileType === ProfileType.Hirer) {
       appContext.showSnackbar(t('registration_chooseCityAndCountry'), SnackbarType.error)
       return

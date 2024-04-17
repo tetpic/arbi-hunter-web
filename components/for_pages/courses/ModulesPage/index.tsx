@@ -52,7 +52,7 @@ export default function ModulesPage() {
   }  
 
   const checkIsEnd =(buttonPushed?: boolean)=> {
-    currentStepIndex.current = courseContext.allStepsRef.current.findIndex(el => el.id === courseContext.activeStep.id)
+    currentStepIndex.current = courseContext.allStepsRef.current.findIndex(el => el.id === courseContext?.activeStep?.id)
     currentBlockIndex.current = [...courseContext.courseBlocks.keys()].findIndex(b=> b===courseContext.activeBlock)
  
     if(courseContext.allStepsRef.current.length === currentStepIndex.current+1 && buttonPushed) {

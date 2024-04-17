@@ -226,6 +226,7 @@ export function MediaWrapper(props: Props) {
   }
 
   useEffect(()=>{
+    
     if(searchParams) {
       refreshPage({categories: searchParams.activeCategories, page: 1})
     }

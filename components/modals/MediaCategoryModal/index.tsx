@@ -8,7 +8,7 @@ import { ICategory } from 'data/interfaces/Common'
 import { useAppContext } from 'context/state'
 import Title from 'components/ui/TitleForSection'
 import BackBtn from 'components/ui/BackBtn'
-import SearchBar from 'components/ui/SearchBar'
+import SearchBar, { ISearchBarReturnParams } from 'components/ui/SearchBar'
 
 interface Props {
   onClose: () => void
@@ -30,10 +30,14 @@ function MediaCategoryModalInner(props: Props) {
     // mediaContext.setCurrentNews({clear: true})
   }
 
+  const search = (data: ISearchBarReturnParams) => {
+    mediaContext.setSearchParams(state=> ({...state, activeCategories: [args.currentCategory.id], search: data.search}))
+  }
+
   const body = (<div className={styles.root}>
     <BackBtn className={styles.backBtn} onClick={onCloseHandler} bgColor={'transparent'}/>
     <Title className={styles.title} title={args.title} />
-    <SearchBar/>
+    <SearchBar onSubmit={search}/>
     <NewsByCategories category={args.currentCategory} scrollableTarget='modalBody'/>
   </div>)
 

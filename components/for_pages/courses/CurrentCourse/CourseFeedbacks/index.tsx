@@ -27,7 +27,9 @@ export default function CourseFeedbacks(props: Props) {
     if(coursesContext.feedBacks.length === 0) {
       coursesContext.setFeedbacks(props.id, page, limit)
     }
-    coursesContext.getCourseFeedbackStats(props.id)
+    if(coursesContext.feedBacks.length === 0) {
+      coursesContext.getCourseFeedbackStats(props.id)
+    }
   }, [])
 
   return (<div className={styles.root}> 

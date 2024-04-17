@@ -13,7 +13,7 @@ import { useCoursesContext } from 'context/courses_state'
 import ICourse from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { colors } from 'styles/variables'
 import { NavigationSet } from 'types/types'
 import Formatter from 'utils/formatter'
@@ -53,7 +53,7 @@ export default function CurrentCourse(props: Props) {
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const course = props.course || currentCourse
   
-  const body = (()=>{
+  const body = useMemo(()=>{
     switch(page) {
       case CurrentCoursesNav.Information:
         return <CoursesInformation course={course} isMobile={isTabletWidth}/>
@@ -64,8 +64,7 @@ export default function CurrentCourse(props: Props) {
           case CurrentCoursesNav.News:
         return <CourseNews id={props.id}/>
       }
-    }
-  )()
+    }, [page])
   
   const pager = (p: CurrentCoursesNav) => {
     setPage(p)    

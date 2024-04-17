@@ -26,6 +26,7 @@
   text-overflow: ellipsis; 
   max-width: 100%;
   background-color: var(--backColor);
+  flex-shrink: 0;
   @include transitionDefault;
   @include hover {
     background-color: var(--hoverBackColor);

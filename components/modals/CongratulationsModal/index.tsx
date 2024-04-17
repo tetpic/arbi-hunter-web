@@ -12,6 +12,7 @@ import CrossSvg from 'components/svg/CrossSvg'
 import { ModalType } from 'types/enums'
 import { ICourseFeedbackModalProps } from '../CourseFeedbackModal'
 import ImageHelper from 'utils/ImageHelper'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose: ()=>void
@@ -35,16 +36,22 @@ export default function CongratulationsModal(props: Props) {
     <div className={styles.root}>
       <Button className={styles.closeModal} onClick={props.onClose}><CrossSvg/></Button>
       <Image src={prise} alt={'prise'} width={222} height={222}/>
-      <p className={styles.title}>Поздравляем вас, <br/> вы прошли курс!</p>
-      <p className={styles.info}>Скачайте сертификат о прохождении курса</p>
+      <P styleType={['w600', 'huge', 'textCenter']} useThemeColor className={styles.title}>Поздравляем вас, <br/> вы прошли курс!</P>
+      {args.course.certificate &&
+        <P styleType={['small']} useThemeColor >Скачайте сертификат о прохождении курса</P>
+      }
       
       <div className={styles.buttonsWrapper}>
-        <Link 
-        target='_blank'  
-        download 
-        rel="noopener noreferrer" 
-        href={ImageHelper.urlFromSource(args.course.certificate.source)} 
-        className={styles.buttonGradient}>Скачать сертификат</Link>
+        {args.course.certificate &&
+          <Link 
+          target='_blank'  
+          download 
+          rel="noopener noreferrer" 
+          href={ImageHelper.urlFromSource(args.course.certificate?.source)} 
+          className={styles.buttonGradient}>
+            Скачать сертификат
+          </Link>
+        }
         <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >Оставить отзыв</Button>
       </div>
     </div>

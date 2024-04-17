@@ -89,8 +89,6 @@ export default function SettingsPage(props: Props) {
     }
   }
 
-
-
   return (    
     <div className={styles.root}> 
       {

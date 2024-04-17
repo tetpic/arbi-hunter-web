@@ -164,6 +164,9 @@
   width: 100%;
   max-width: 344px;
   row-gap: 8px;
+  @include mq($PhoneWidth, max) {
+    max-width: unset;
+  }
 
   button {
     width: 100%;

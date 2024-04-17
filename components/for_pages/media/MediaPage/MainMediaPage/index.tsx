@@ -30,7 +30,12 @@ export default function MainMediaPage(props: Props) {
   </>)
 
   const search = (data: ISearchBarReturnParams) => {
-    mediaContext.setSearchParams({...data, activeCategories: data.activeCategories.length > 0?data.activeCategories : props.categories.map(el=>el.id)}) 
+    const activeCategories = data.activeCategories?.length > 0?data.activeCategories : props.categories.map(el=>el.id)
+    const dataToSend = {
+      ...data, 
+      activeCategories
+    }
+    mediaContext.setSearchParams(dataToSend) 
   }  
 
   useEffect(()=>{

@@ -39,7 +39,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   const router = useRouter()
 
   const buyHandler = (data: PurchaseForm) => {
-    debugger
+    
     switch (tariff.purchaseType) {
       case PurchaseType.Character : {
         CharacterRepository.createCharacter({gender: 'male'})
