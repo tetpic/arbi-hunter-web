@@ -372,8 +372,8 @@ export default function AddPersonalBlockModal(props: Props) {
           })}
           />
           ||
-          images.has(1) &&
-          <ReactPlayer width={'100%'} height={'auto'} url={ImageHelper.urlFromSource(images.get(1).source)} controls/>
+          images.size > 0 &&
+          <ReactPlayer width={'100%'} height={'auto'} url={ImageHelper.urlFromSource([...images.values()][0].source)} controls/>
          }
         </div>
         <div className={styles.item} style={{gridArea:'text'}}>

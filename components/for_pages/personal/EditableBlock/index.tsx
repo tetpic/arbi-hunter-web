@@ -215,6 +215,7 @@ export default function EditableBlock(props: Props) {
     {props.block.type === PersonalBlockType.VideoText &&
       <div
       className={classNames(styles.gridContainer, styles.videoText)} 
+      data-layout={props.block.layout}
       style={{
         gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> el).join(' ')).join('" "')}"`, 
       }}>

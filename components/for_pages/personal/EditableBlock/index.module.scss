@@ -119,8 +119,25 @@
   grid-template-columns: repeat(2, 1fr);
   column-gap: 24px;
   video {
+    display: block;
     border-radius: 16px;
   }
+
+  &[data-layout="text,video"] {
+    @include mq($TabletWidth, max) {
+      display: flex;
+      flex-direction: column-reverse;
+      row-gap: 16px;
+    }
+  }
+  &[data-layout="video,text"] {
+    @include mq($TabletWidth, max) {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+    }
+  }
+
 }
 
 .banner {
