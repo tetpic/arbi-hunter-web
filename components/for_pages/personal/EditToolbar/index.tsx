@@ -15,6 +15,12 @@ import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { IFile } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
 import { useTariffContext } from 'context/tariff_state'
+import TextAndVideoSvg from '@/components/svg/TextAndVideoSvg'
+import HtmlIconSvg from '@/components/svg/HtmlIconSvg'
+import LinkBigSvg from '@/components/svg/LinkBigSvg'
+import CollageIconSvg from '@/components/svg/CollageIconSvg'
+import BannerIconSvg from '@/components/svg/BannerIconSvg'
+import ColumnsIconSvg from '@/components/svg/ColumnsIconSvg'
 
 interface Props {
 }
@@ -40,12 +46,12 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_divider'), icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
     }},
-    {name: t('personal_banner'), icon: <ScaleSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
-    {name: t('personal_columns'), icon: <ScaleSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
-    {name: t('personal_collage'), icon: <ScaleSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
-    {name: t('personal_links'), icon: <ScaleSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
-    {name: t('personal_textVideo'), icon: <ScaleSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
-    {name: t('personal_html'), icon: <ScaleSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
+    {name: t('personal_banner'), icon: <BannerIconSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
+    {name: t('personal_columns'), icon: <ColumnsIconSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
+    {name: t('personal_collage'), icon: <CollageIconSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
+    {name: t('personal_links'), icon: <LinkBigSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
+    {name: t('personal_textVideo'), icon: <TextAndVideoSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
+    {name: t('personal_html'), icon: <HtmlIconSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
   ]
 
   return (<div className={styles.root}> 
@@ -53,7 +59,7 @@ export default function EditToolbar(props: Props) {
     <div className={styles.buttonsWrapper}>
       {buttons.map((el, i) => {
         return (
-          <Button className={styles.button} altStyleType={['gradient']} key={i} onClick={el.onClick}>
+          <Button styleType={[tariffContext.activeSubscriptions.size === 0?'grey':'gradient']} className={styles.button} altStyleType={['gradient']} key={i} onClick={el.onClick}>
             {el.icon} <p>{el.name}</p>
             {tariffContext.activeSubscriptions.size === 0 &&
               <div className={styles.topDot}></div>

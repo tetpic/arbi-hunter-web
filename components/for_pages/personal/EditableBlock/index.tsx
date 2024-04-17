@@ -57,6 +57,7 @@ export default function EditableBlock(props: Props) {
     {(props.block.type === PersonalBlockType.Text
       ||props.block.type === PersonalBlockType.Image
       ||props.block.type === PersonalBlockType.Gallery
+      ||props.block.type === PersonalBlockType.Collage
     ) &&
       <>
       <P styleType={['fs32', 'w700']} useThemeColor >{props.block.title}</P>
@@ -175,27 +176,6 @@ export default function EditableBlock(props: Props) {
       </div>
     }
     {props.assets && props.block.type === PersonalBlockType.Gallery &&
-      // <Swiper 
-      // className={styles.swiper}
-      // spaceBetween={10}
-      // slidesPerView={'auto'}
-      // >
-      //   {props.assets.map(el=>{
-      //     return (
-      //       <SwiperSlide className={styles.swiperSlide}>
-      //         <Image 
-      //         unoptimized
-      //         priority
-      //         src={ImageHelper.urlFromFile(el, Preset.xlResize)}
-      //         alt={props.block.title + ' image'} 
-      //         width={1240}
-      //         height={610}
-      //         style={{objectFit:'cover', display: 'block'}}
-      //         />
-      //       </SwiperSlide>
-      //     )
-      //   })}        
-      // </Swiper>
       <SwiperList
       className={styles.swiper}
       slideClassName={styles.swiperSlide}

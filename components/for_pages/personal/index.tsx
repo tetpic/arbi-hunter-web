@@ -24,6 +24,7 @@ import { ShopPages } from '../shop'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import { clearObject } from 'utils/helpers'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   id?: number
@@ -125,7 +126,10 @@ export default function PersonalPage(props: Props) {
     }
     <ContentItem  className={styles.bodyItem}>
       {tariffContext.activeSubscriptions.size === 0 && !isEditing &&
-        <P>----Здесь будет рекламный баннер для покупки брендирования -----</P>
+      <>
+        <P styleType={['grey', 'medium', 'w500']}>Подписка на брендирование не оформлена.</P>
+        <Spacer basis={24}/>
+      </>
       }
       {personalContext.blocks.size > 0 &&
       <PersonalBody isEditing={!props.id&&isEditing}/>
