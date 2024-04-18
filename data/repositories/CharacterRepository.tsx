@@ -60,11 +60,11 @@ export default class CharacterRepository {
     return res
   }
 
-  static async updateCharacter(itemsIds: number[], characterId: number): Promise<any|null> {
+  static async updateCharacter(itemsIds: number[], characterId: number, gender?: 'female'|'male'): Promise<any|null> {
     const res = await request({
       method: 'patch',
       url: `/api/character/${characterId}`,
-      data: {itemsIds}
+      data: {itemsIds, gender}
     })
     if(res.err) {
       return null

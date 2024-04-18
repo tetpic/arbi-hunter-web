@@ -87,7 +87,7 @@ export function ThreeModel(props: IThreeModelProps) {
               <skinnedMesh name={`Hair_${props.cap||props.hair||'0'}`} geometry={nodes[`Hair_${props.cap||props.hair||'0'}`].geometry} material={materials[`Hair_${props.cap||props.hair||'0'}`]} skeleton={nodes[`Hair_${props.cap||props.hair||'0'}`].skeleton} />
             }        
             <skinnedMesh name={`Head_${props.face !== '1' &&props.emotion||'0'}_${props.face !== '1' &&props.emotion||'0'}`} geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
-            <skinnedMesh name={`Jacket_${props.jacket||'0'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'0'}`]} skeleton={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].skeleton} />
+            <skinnedMesh name={`Jacket_${props.jacket||'3'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'3'}`]} skeleton={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].skeleton} />
           </group>
         </group>
       </group>
@@ -121,7 +121,7 @@ export function ThreeModel(props: IThreeModelProps) {
             <skinnedMesh name={`Hair_${!props.cap&&props.hair||'0'}`} geometry={nodes[`Hair_${!props.cap&&props.hair||'0'}`].geometry} material={materials[`Hair_${!props.cap&&props.hair||'0'}`]} skeleton={nodes[`Hair_${!props.cap&&props.hair||'0'}`].skeleton} />
           }
           <skinnedMesh name={`Head_${props.face !== '1' &&props.emotion||'0'}_${props.face !== '1' &&props.emotion||'0'}`} geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
-          <skinnedMesh name={`Jacket_${props.jacket||'0'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'0'}`]} skeleton={nodes[`Jacket_${props.jacket||'0'}_${props.body||'0'}`].skeleton} />
+          <skinnedMesh name={`Jacket_${props.jacket||'3'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'3'}`]} skeleton={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].skeleton} />
         </group>
       </group>         
     </group>

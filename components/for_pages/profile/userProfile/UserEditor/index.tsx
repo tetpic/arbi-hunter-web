@@ -9,7 +9,7 @@ import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
-import { CharCategoryKey } from 'data/interfaces/ICharacter'
+import { CharCategoryKey, ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
 import { useRouter } from 'next/router'
 import { Preset, PurchaseType } from 'types/enums'
 import P from '@/components/ui/P'
@@ -127,7 +127,12 @@ export default function UserEditor(props: Props) {
       </div>
     </div>
     {!isTabletWidth &&
-      <UserCart onSave={save}/>
+      <UserCart onSave={save} onSet={(charCategoryId: number)=>{
+        const category:[ICharCategory, ICharItem[]] = [...characterContext.categories.entries()].find(([k,v])=> {
+          return k.id === charCategoryId
+        })
+        characterContext.setActiveSet(category)
+      }}/>
     }  
     </div>
 

@@ -137,7 +137,8 @@ export function CharacterWrapper(props: Props) {
 
   const setVariant = (data: ICharItem) => {
     setChoosenItemsState(state=> {
-      if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses'||data.category?.key === 'face'||data.category?.key === 'chain')) {
+      if(data?.id === activeItem?.id && data.category?.key !== 'model'
+      ) {
         state.delete(data.category.id)        
       }
       else {
@@ -147,10 +148,15 @@ export function CharacterWrapper(props: Props) {
     })
     if(data.category.key === 'model' && data.animationKey !== variant.model) {
       setVariantState({...defaultVariant, model: data.gender==='female'?'woman':'man'} )
+      setChoosenItemsState(state => {
+        state.clear()
+        state.set(data.category.id, data)
+        return new Map(state)
+      })
     }
     else {
       setVariantState(state=> {
-        if(data?.id === activeItem?.id && (data.category?.key === 'cap'||data.category?.key === 'jacket'||data.category?.key === 'glasses'||data.category?.key === 'face'||data.category?.key === 'chain')) {
+        if(data?.id === activeItem?.id && data.category?.key !== 'model') {
           delete state[data.category?.key]
           return state
         } 
@@ -193,7 +199,7 @@ export function CharacterWrapper(props: Props) {
       }
     }
 
-    await CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current)
+    await CharacterRepository.updateCharacter([...choosenItems.values()].map(el=> el.id), characterId.current, variant.model==='man'?'male':'female')
     .catch(_ => {
        
       return
@@ -207,7 +213,6 @@ export function CharacterWrapper(props: Props) {
     
     await UserRepository.editProfileByType({logoId: fileId, useOwnLogo: true}, userContext?.currentProfile?.profileType)
     .catch(err => {
-       
       return
     })
       
