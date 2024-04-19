@@ -25,7 +25,6 @@ interface Props<T> {
 export default function CategoriesList<T extends {[key: string]: any}>(props: Props<T>) {
   const {t} = useTranslation()
   const router = useRouter()
-  console.log
 
   const onRedirect = (category: T) => {
     if(props.onClick) {
