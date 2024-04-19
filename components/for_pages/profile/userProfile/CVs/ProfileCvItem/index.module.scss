@@ -39,6 +39,7 @@
   @include mq($TabletWidth, max) {
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
     button {
       width: 100%;
     }
@@ -91,5 +92,12 @@
 
   &_vip {
     background: $goldGradient;
+  }
+}
+
+.stats {
+  @include mq($TabletWidth, max) {
+    background-color: transparent !important;
+    padding: unset !important;
   }
 }

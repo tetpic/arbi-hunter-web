@@ -11,6 +11,7 @@ import EducationSvg from 'components/svg/EducationSvg'
 import styles from './index.module.scss'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   course: ICourse
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function CoursesInformation({course, isMobile}: Props) {
-
+  const {t} = useTranslation()
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(()=>{
@@ -33,7 +34,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
   return (<div className={styles.root}> 
     <div className={styles.item}>
       {!isMobile &&
-        <p className={styles.title}>Описание</p>
+        <p className={styles.title}>{t('courses_description')}</p>
       }
       <p className={styles.text}>{course.fullDescription}</p>
     </div>
@@ -41,18 +42,18 @@ export default function CoursesInformation({course, isMobile}: Props) {
     <div className={classNames(styles.item, styles.stats)}>
       <div className={styles.stat}>
         <Button className={styles.button}><GlobusSvg/></Button>
-        <p className={styles.stat_title}>Язык</p>
+        <p className={styles.stat_title}>{t('courses_lang')}</p>
         <p className={styles.stat_value}>{courseLang&&(courseLang.charAt(0).toUpperCase() + courseLang.slice(1))}</p>
       </div>
       <div className={styles.stat}>
         <Button className={styles.button}><TimerSvg/></Button>
-        <p className={styles.stat_title}>Время</p>
+        <p className={styles.stat_title}>{t('courses_time')}</p>
         <p className={styles.stat_value}>{course.courseTime}</p>
       </div>
       <div className={styles.stat}>
       <Button className={styles.button}><EducationSvg/></Button>
-        <p className={styles.stat_title}>Сертификат</p>
-        <p className={styles.stat_value}>{course.withCertificate?'Выдается': 'Не выдаётся'}</p>
+        <p className={styles.stat_title}>{t('courses_certificate')}</p>
+        <p className={styles.stat_value}>{course.withCertificate?t('courses_certificateIssues'): t('courses_certificateNotIssued')}</p>
       </div>
     </div>
 
@@ -65,7 +66,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
     }
 
     <div className={classNames(styles.item, styles.author)}>
-        <p className={styles.title}>Об {course.authors.length>1?'авторах':'авторе'}</p>
+        <p className={styles.title}>{t('courses_about')} {course.authors.length>1?t('courses_author'):t('courses_authors')}</p>
         {course.authors.length>0&&
         course.authors.map((el, index)=> {
           return <div key={index} className={styles.author_wrapper}>
@@ -81,12 +82,12 @@ export default function CoursesInformation({course, isMobile}: Props) {
       </div>
 
     <div className={styles.item}>
-      <p className={styles.title}>Требования</p>
+      <p className={styles.title}>{t('courses_requirements')}</p>
       <p className={styles.text}>{course.requirements}</p>
     </div>
 
     <div className={styles.item}>
-      <p className={styles.title}>Целевая аудитория</p>
+      <p className={styles.title}>{t('courses_audience')}</p>
       <p className={styles.text}>{course.audience}</p>
     </div>
 

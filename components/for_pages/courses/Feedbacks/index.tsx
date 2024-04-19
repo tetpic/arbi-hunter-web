@@ -9,12 +9,14 @@ import dollasMan from 'images/dollarS_man.png'
 import { useResize } from 'components/hooks/useResize'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   feedbacks: ICourseFeedback[]
 }
 
 export default function Feedbacks(props: Props) {
+  const {t} = useTranslation()
   const {isTabletWidth} = useResize()
 
   return (<div className={styles.root}> 
@@ -54,7 +56,7 @@ export default function Feedbacks(props: Props) {
                   <p className={styles.name}>{item.profile.firstName} {item.profile.lastName} &#183; {item.profile.city.locName} </p>
                   <RatingLine  rating={item.mark} starClass={styles.star}/>
                   <p className={styles.feedback}>{item.content}</p>
-                  <Link className={styles.link} href={'/courses/'+item.course.id}> <span>Курс: &quot;{item.course.name}&quot;</span></Link>
+                  <Link className={styles.link} href={'/courses/'+item.course.id}>{t('courses_course')} <span>: &quot;{item.course.name}&quot;</span></Link>
                 </div>
               </div>
             </SwiperSlide>

@@ -16,6 +16,7 @@ import { ISpecializationModalProps } from '@/components/modals/CvModals/Speciali
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -23,7 +24,7 @@ interface Props {
 }
 
 export default function VacancyName(props: Props) {
-
+  const {t} = useTranslation()
   const [tags, setTagsState]= useState<ISpecializationCategory[]>([])
   const [suggestions, setSuggestions] = useState<ISpecializationCategory[]>([])
   const inputWrapperRef = useRef(null!)
@@ -111,7 +112,7 @@ export default function VacancyName(props: Props) {
         color={'default'} 
         name={'name'} 
         prefix={<LoupeSvg/>}
-        placeholder={'Введите название вакансии'} 
+        placeholder={t('create_vacancy_enterName')} 
         validate={Validator.required}
         />
         <div className={classNames(styles.suggestions, isActive && (suggestions.length > 0||values.name) && styles.active)}>
@@ -133,12 +134,12 @@ export default function VacancyName(props: Props) {
       </div>
       {cvContext.activeSubCategory[0] &&
       <>
-        <P styleType={['w700', 'large']} className={styles.title}>Специализация</P>
+        <P styleType={['w700', 'large']} className={styles.title}>{t('create_specialization')}</P>
         <Tag text={cvContext.activeSubCategory[0].name} onClick={openModalHandler}/>
       </>
       }
 
-      <P styleType={['w700', 'medium']} className={styles.subTitle}>Рекомендованные</P>
+      <P styleType={['w700', 'medium']} className={styles.subTitle}>{t('create_recommended')}</P>
       
       {tags.length > 0 && 
       <div className={styles.tags}>

@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import Link from 'next/link'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   categoryList: ICategory[]
@@ -17,12 +18,13 @@ interface Props {
 
 
 function CategoryItem(props: {size: 33|50, item: ICategory}) {
+  const {t} = useTranslation()
 
   return (<Link href={`/courses/compilations?page=categories&category=${props.item.id}`}  className={classNames(styles.item, props.size === 50 && styles.item_large)} style={{ width: `calc(${props.size}% - 8px)` }} >
     <p className={styles.name}>{props.item.name}</p>
     <p className={styles.counter}>
       {(props.item?.coursesCount||props.item.articlesCount) + ' '} 
-      {Formatter.pluralize(+props.item?.coursesCount||+props.item.articlesCount,'курс', 'курса','курсов')}
+      {Formatter.pluralize(+props.item?.coursesCount||+props.item.articlesCount,t('couse1'), t('couse2'),t('couse3'))}
       </p>
     <div className={styles.imageWrapper}>
       {props.item.image &&

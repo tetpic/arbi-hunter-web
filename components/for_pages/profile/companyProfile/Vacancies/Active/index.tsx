@@ -18,7 +18,7 @@ export default function VacanciesActive(props: Props) {
   <div className={styles.root}> 
       <div className={styles.wrapper}>
         {!vacancyContext.isLoading &&vacancyContext.activeVacancies && vacancyContext.activeVacancies.size > 0 &&
-          [...vacancyContext.activeVacancies.values()].map((el, index)=> {
+          [...vacancyContext.activeVacancies.values()].filter(el => el.name.toLowerCase().includes(vacancyContext.searchString.toLowerCase())).map((el, index)=> {
             return <ProfileVacancyItem 
             key={index} 
             isLast={vacancyContext.activeVacancies.size > 1 && vacancyContext.activeVacancies.size-1 ===index} 

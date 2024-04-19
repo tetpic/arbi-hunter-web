@@ -142,6 +142,10 @@
 }
 
 .userLogo {
-  width: Max(100%, 280px);
+  width: 370px;
+  height: 370px;
+  @include mq($TabletWidth, max) {    
+    width: clamp(190px, 50vw, 300px);
+    height: clamp(190px, 50vw, 300px);
+  }
 }
-

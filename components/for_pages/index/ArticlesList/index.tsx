@@ -9,6 +9,7 @@ import { useAppContext } from 'context/state'
 import { AppTheme, Preset } from 'types/enums'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
+import { useRouter } from 'next/router'
 
 interface Props {
   news: IArticle[]
@@ -20,6 +21,8 @@ interface Props {
 export default function ArticlesList(props: Props) {
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const router = useRouter()
+
 
   return (
     <SwiperList
@@ -30,7 +33,7 @@ export default function ArticlesList(props: Props) {
     >
       {props.news && props.news.map(el=>{
         return (
-          <div className={classNames(styles.news, isLightTheme && styles.news_light) }>
+          <div className={classNames(styles.news, isLightTheme && styles.news_light) } onClick={() => router.push(`/media/article/${el.id}`)}>
             <Image 
             unoptimized 
             src={ImageHelper.urlFromFile(el.image, Preset.smResize)} 

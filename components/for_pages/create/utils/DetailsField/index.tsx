@@ -13,6 +13,7 @@ import { useAppContext } from 'context/state'
 import Validator from 'utils/Validator'
 import { SnackbarType } from 'types/enums'
 import Title from 'components/ui/TitleForSection'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface DetailsFieldProps<T> {
   onClose: ()=> void
@@ -45,8 +46,10 @@ export interface DetailsFieldProps<T> {
 }
 
 export default function DetailsField<T extends TimeLine>(props: DetailsFieldProps<T>) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const [fields, setField] = useState<T>(props.set)
+
 
 
   const onSubmit = (data: {[key: string]: string}) => {
@@ -165,8 +168,8 @@ export default function DetailsField<T extends TimeLine>(props: DetailsFieldProp
       </Form>
       </FormikProvider >
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.buttonBack} type={'button'} onClick={props.onClose}>Отменить</Button>
-      <Button className={styles.buttonSave} type={'button'} onClick={formik.submitForm}>Сохранить</Button>
+      <Button className={styles.buttonBack} type={'button'} onClick={props.onClose}>{t('cancel')}</Button>
+      <Button className={styles.buttonSave} type={'button'} onClick={formik.submitForm}>{t('save')}</Button>
     </div>
   </div>)
 }

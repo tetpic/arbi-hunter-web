@@ -91,7 +91,7 @@ export default function Education(props: Props) {
           >
             <P styleType={['large', 'w600']} >{el.institution}</P>
             <P styleType={['medium', 'w500']} >{el.speciality}</P>
-            <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по настоящее время'}</P>
+            <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - '+t('toPresentLong')}</P>
             <Button type={'button'} className={styles.trashButton}><ArrowRightSvg/></Button>
           </div>)
         }) 

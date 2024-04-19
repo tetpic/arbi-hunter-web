@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 function BigCourseItem (props: {courseItem: ICourse}) {
+  const {t} = useTranslation()
   const firstItem = props.courseItem
   const router = useRouter()
 
@@ -46,18 +48,18 @@ function BigCourseItem (props: {courseItem: ICourse}) {
         }
       </div>
       <div className={styles.bottom}>
-        <p className={styles.lessonsCount}><PlayButtonSvg/>{firstItem.stepsCount} {Formatter.pluralize(Number(firstItem.stepsCount), 'урок', 'урока', 'уроков')}</p>
+        <p className={styles.lessonsCount}><PlayButtonSvg/>{firstItem.stepsCount} {Formatter.pluralize(Number(firstItem.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</p>
         <p className={styles.courseName} title={firstItem.name}>{firstItem.name}</p>
         <p className={styles.shortDescription}>{firstItem.shortDescription}</p>
-        <p className={styles.price}>от {Formatter.formatPrice(firstItem.price)}/месяц</p>
+        <p className={styles.price}>{t('from')} {Formatter.formatPrice(firstItem.price)}/{t('month')}</p>
         <div className={styles.rating}>
           <span>
             <UserSvg className={styles.userSvg}/>
-            {firstItem.completedCount} {Formatter.pluralize(firstItem.completedCount, 'ученик', 'ученика', 'учеников')}
+            {firstItem.completedCount} {Formatter.pluralize(firstItem.completedCount, t('student1'), t('student2'), t('student3'))}
           </span>         
           <span>
             <StarSvg className={styles.starSvg}/>
-            {firstItem?.rating || '0.0'} из 5 
+            {firstItem?.rating || '0.0'} {t('outOf')} 5 
           </span>       
         </div>
       </div>

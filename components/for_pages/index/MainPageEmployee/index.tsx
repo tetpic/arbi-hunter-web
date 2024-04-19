@@ -28,9 +28,11 @@ import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { runtimeConfig } from 'config/runtimeConfig'
+import { useRouter } from 'next/router'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
+  const router =  useRouter()
   const personalContext = usePersonalContext()
   const characterContext = useCharacterContext()
   const userContext  = useUserContext()
@@ -111,6 +113,13 @@ export default function MainPageEmployee() {
     }, 100)
   }
 
+  const onCategoryClickHandler = (c: ISpecializationCategory) => {
+    CategoryRepository.getSubCategoriesByCategoryId(c.id)
+    .then(res => {
+      router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories:res.map(el => el.id)})}})
+    })
+  }
+
   useEffect(()=>{
     characterContext.init()
     cvContext.setSavedCvs()
@@ -157,21 +166,6 @@ export default function MainPageEmployee() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={{pathname: '/'}}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_watches'):t('mainPage_em_watchesAlt')}</p>
-             <EyeOpenSmallSvg className={styles.icon}/>
-              {!stats && <Spinner className={styles.count} size={22}/>
-              ||
-              <p className={styles.count}>
-                {stats?.viewsCount.views_count_prev_interval}
-                { Number(stats?.viewsCount.views_count_interval)>0 &&
-                  <span>
-                    {' + '+ stats?.viewsCount.views_count_interval}
-                  </span>
-                }
-              </p>
-              }
-            </Link>
             <Link className={styles.card} href={{pathname: 'recruiting'}}>
               <p className={styles.desc}>{t('mainPage_em_vacancies')}</p>
               <MessageDownSvg className={styles.icon}/>
@@ -187,12 +181,28 @@ export default function MainPageEmployee() {
               </p>
               }
             </Link>
+            <Link className={styles.card} href={{pathname: '/'}}>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_watches'):t('mainPage_em_watchesAlt')}</p>
+             <EyeOpenSmallSvg className={styles.icon}/>
+              {!stats && <Spinner className={styles.count} size={22}/>
+              ||
+              <p className={styles.count}>
+                {stats?.viewsCount.views_count_prev_interval}
+                { Number(stats?.viewsCount.views_count_interval)>0 &&
+                  <span>
+                    {' + '+ stats?.viewsCount.views_count_interval}
+                  </span>
+                }
+              </p>
+              }
+            </Link>
           </div>
         </div>
       </div>
 
       <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{}}/>
       <CategoriesList 
+      onClick={(c) => onCategoryClickHandler(c)}
       hideNav 
       categories={[...categories.values()].filter(e=> e.image)} 
       link={'/recruiting?categories='}

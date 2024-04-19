@@ -17,6 +17,7 @@ import 'react-circular-progressbar/dist/styles.css'
 import P from '@/components/ui/P'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   course: ICourse
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function CourseModules({course}: Props) {
+  const {t} = useTranslation()
   const {courseModules, setCourseModules} = useCoursesContext()
   const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true)
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
@@ -65,7 +67,7 @@ export default function CourseModules({course}: Props) {
               <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
             </div>
             <p className={styles.title}>{k.title}</p>
-            <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), 'урок', 'урока', 'уроков')}</p>
+            <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</p>
             <ArrowDownSvg className={classNames(styles.arrow, activeModule === k&&styles.arrow_active)}/>
           </div>
           <Accordeon isActive={activeModule === k}>
@@ -91,7 +93,7 @@ export default function CourseModules({course}: Props) {
       ||
       loadingBlocks && <Spinner size={32} color={colors.blue}/>
       ||
-      <P useThemeColor  className={'empty'}>Нет добавленных образовательных модулей</P>
+      <P useThemeColor  className={'empty'}>{t('courses_modulesNotFound')}</P>
     }
   </div>)
 }

@@ -12,6 +12,7 @@ interface Props<T> {
   className?: string
   pClassName?: string 
   bottomStringClass?: string
+  onAllWidth?: boolean
 }
 
 /**
@@ -50,7 +51,7 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
       <div className={classNames(styles.root, props.className, styles[theme]) }> 
 
         <div className={styles.wrapper} ref={wrapperRef} >
-          <div className={styles.items} ref={itemsListRef}>
+          <div className={classNames(styles.items, props.onAllWidth&&styles.itemsWide)} ref={itemsListRef}>
             {props.items.length > 0 && props.items
               .map((el, index)=> {
                 return (

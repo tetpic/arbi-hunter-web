@@ -76,7 +76,7 @@ export default function Experience(props: Props) {
         >
           <P styleType={['large', 'w600']} >{el.position}</P>
           <P styleType={['medium', 'w500']} >{el.company}</P>
-          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - по н.в.'}</P>
+          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - ' + t('toPresent')}</P>
           <Button type='button' className={styles.trashButton} ><ArrowRightSvg/></Button>
         </div>)
       }) 

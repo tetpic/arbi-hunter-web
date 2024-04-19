@@ -48,6 +48,7 @@ import BackgroundSwitchModal from '@/components/modals/BackgroundSwitchModal'
 import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
 import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 import AlertModal from '@/components/modals/AlertModal'
+import SearchModal from '@/components/modals/SearchModal'
 
 
 interface Props { }
@@ -237,6 +238,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.AlertModal:
         return <Modal isOpen {...commonSettings} >
         <AlertModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.SearchModal:
+        return <Modal isOpen {...commonSettings} >
+        <SearchModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

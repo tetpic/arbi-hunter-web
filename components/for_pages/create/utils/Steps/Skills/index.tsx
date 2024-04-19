@@ -190,7 +190,7 @@ export default function Skills(props: Props) {
         appContext.hideModal()
       }
     })} 
-    text={'Добавить навык'}
+    text={t('create_addSkill')}
     />
     {cvContext.helpObjects?.skills?.size > 0 &&
       <div className={styles.itemsWrapper}>
@@ -207,8 +207,8 @@ export default function Skills(props: Props) {
       test={'addSources'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'sources'})}} 
-      text={'Добавить источники'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      text={t('create_addSources')}
+      title={t('create_sourcesDescription')} 
       /> 
       {cvContext.helpObjects?.activeSources?.size > 0 &&
        <>
@@ -224,8 +224,8 @@ export default function Skills(props: Props) {
       test={'addGeos'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'geos'})}} 
-      text={'Добавить гео'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      text={t('create_addGeos')}
+      title={t('create_sourcesDescription')} 
       /> 
       {cvContext.helpObjects?.activeGeos?.size > 0 &&
         <>
@@ -245,8 +245,8 @@ export default function Skills(props: Props) {
       test={'addVerticals'}
       className={styles.addButton} 
       onClick={()=>{openSourcesModal({type: 'verticals'})}} 
-      text={'Добавить вертикали'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      text={t('create_addVerticals')}
+      title={t('create_sourcesDescription')} 
       /> 
       {cvContext.helpObjects?.activeVerticals?.size > 0 &&
         <>
@@ -271,7 +271,7 @@ export default function Skills(props: Props) {
         appContext.hideModal()
       },
     })}} 
-    text={'Иностранные языки'}
+    text={t('foreignLanguages')}
     />
     {cvContext.helpObjects?.languageKnowledges?.size > 0 &&
       <div className={styles.itemsWrapper}>
@@ -281,38 +281,18 @@ export default function Skills(props: Props) {
       </div>
     } 
 
-    {/* {!props.fieldToHide?.courses === true && <>
-      <AddButton 
-      className={styles.addButton} 
-      onClick={onAddCoursesClick} 
-      text={'Повышение квалификации и курсы'}
-      /> 
-      {values?.coursesInfo?.length > 0 &&
-        <div className={styles.itemsWrapper}>
-        {values?.coursesInfo
-          .map((el)=> 
-            <RemovableItem key={el.date} text={el.name} onClick={()=>{
-              setDetailsCoursesInfo(state=> state.filter(f=> f.name !== el.name))
-              }
-            }/>
-          )}
-        </div>
-      }
-    </>} */}
-
-
 
     {!props.fieldToHide?.relocation===true && 
       <div className={styles.radioSection}>
         <p className={styles.subTitle}>
-          Переезд
+          {t('create_cv_relocation')}
         </p>
         <RadioListField 
         name={'relocation'} 
         wrapperClassName={styles.radioWrapper}
         options={[
-          {value: Answer.Yes, label: 'Возможен'},
-          {value: Answer.No, label: 'Не возможен'}
+          {value: Answer.Yes, label: t('create_cv_relocationYes')},
+          {value: Answer.No, label: t('create_cv_relocationNo')}
         ]}/>
       </div>
     }
@@ -322,7 +302,7 @@ export default function Skills(props: Props) {
       test={'addPortfolio'}
       className={styles.addButton} 
       onClick={onAddPortfolioClick} 
-      text={'Добавить порфтолио'} />
+      text={t('create_addPortfolio')} />
       {values.portfolio &&
         <div className={styles.itemsWrapper}>
           <RemovableItem text={values.portfolio} onClick={()=>setFieldValue('portfolio', '')}/>

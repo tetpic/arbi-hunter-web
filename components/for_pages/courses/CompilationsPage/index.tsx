@@ -15,6 +15,7 @@ import AllCourses from './AllCourses'
 import CoursesByCategory from './CoursesByCategory'
 import Spinner from 'components/ui/Spinner'
 import { useUserContext } from 'context/user_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   category?: number
@@ -29,7 +30,7 @@ export enum CompilationsNav {
 }
 
 export default function CoursesCompilations(props: Props) {
-
+  const {t} = useTranslation()
   const coursesContext = useCoursesContext()
   const userContext = useUserContext()
   const {isTabletWidth, width} = useResize()
@@ -45,11 +46,11 @@ export default function CoursesCompilations(props: Props) {
     let result = obj.map(page => {
       switch(page) {
         case CompilationsNav.All:
-          return {name: 'Все курсы', type: page, icon: <DocumentDoubleSvg/>}
+          return {name: t('courses_allCourses'), type: page, icon: <DocumentDoubleSvg/>}
         case CompilationsNav.Categories:
-          return {name: 'Категории', type: page, subSet: subCategories, icon: <AppsAddSvg/>}
+          return {name: t('courses_categories'), type: page, subSet: subCategories, icon: <AppsAddSvg/>}
         case CompilationsNav.Started:
-          return {name: 'Начатые курсы', type: page, icon: <AppsAddSvg/>}
+          return {name: t('courses_started'), type: page, icon: <AppsAddSvg/>}
       }
     })
     result = isTabletWidth?result.filter(el=> el.type !== CompilationsNav.Categories):result
@@ -69,11 +70,11 @@ export default function CoursesCompilations(props: Props) {
   const title = (()=> {
     switch(page) {
       case CompilationsNav.All:
-        return 'Все курсы'
+        return t('courses_allCourses')
       case CompilationsNav.Started:
-        return 'Начатые курсы'
+        return t('courses_started')
       case CompilationsNav.Categories:
-        return currentCategory?.name||'Категории'
+        return currentCategory?.name||t('courses_categories')
     }
   })()
 

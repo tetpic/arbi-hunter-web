@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import styles from './index.module.scss'
 import { MediaWrapper } from 'context/media_state'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id: number
@@ -11,6 +12,7 @@ interface Props {
 
 export default function CourseNews(props: Props) {
   const {coursesNews, setCoursesNews} = useCoursesContext()
+  const {t} = useTranslation()
   
 
   useEffect(()=>{
@@ -22,7 +24,7 @@ export default function CourseNews(props: Props) {
     return <MediaWrapper><MediaItem type={el.articleType} showContent  media={el} key={el.id}/></MediaWrapper>
   })
   ||
-  <P useThemeColor className={'empty'}>Нет новостей</P>
+  <P useThemeColor className={'empty'}>{t('courses_noNews')}</P>
   }
   </div>)
 }

@@ -3,27 +3,29 @@ import InputField from '@/components/fields/InputField'
 import PhoneCountryField from '@/components/fields/PhoneCountryField'
 import SectionSubtitle from '../../SectionSubtitle'
 import CheckboxField from '@/components/fields/CheckboxField'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function Contacts(props: Props) {
+  const {t} = useTranslation()
 
   return (<div className={styles.root}> 
-    <SectionSubtitle text={'Показывать в вакансии:'} className={styles.title}/>
+    <SectionSubtitle text={t('create_showInVacancy')} className={styles.title}/>
 
     <div className={styles.checkboxWrapper}>
-      <CheckboxField name={'showContactName'} label='Контактное лицо' value={true}/>
+      <CheckboxField name={'showContactName'} label={t('create_contactPerson')} value={true}/>
       <CheckboxField name={'showEmail'} label='Email' value={true} />
       <CheckboxField name={'showTelegramNickname'} label='Telegram' value={true} />
-      <CheckboxField name={'showPhone'} label='Телефон' value={true} />
+      <CheckboxField name={'showPhone'} label={t('phone')} value={true} />
     </div>    
 
-    <SectionSubtitle text={'Контакты:'} className={styles.title}/>
+    <SectionSubtitle text={t('create_contacts')} className={styles.title}/>
     <div className={styles.inputsWrapper}>
       <InputField 
       styleType={'default'} 
-      label='Контактное лицо'
+      label={t('create_contactPerson')}
       labelType='top'
       color={'default'} name={'contactName'}
       />
@@ -33,7 +35,7 @@ export default function Contacts(props: Props) {
       color={'default'} 
       name={'email'}
       labelType='top'
-      label='Электронная почта'
+      label={t('email')}
       />
 
       <InputField 
@@ -47,9 +49,9 @@ export default function Contacts(props: Props) {
       <PhoneCountryField 
       styleType={'horizontal'} 
       disabled={true} 
-      placeholder={'Телефон'} 
+      placeholder={t('phone')} 
       name={'phone'}
-      label='Телефон'
+      label={t('phone')}
       />
     </div>
     

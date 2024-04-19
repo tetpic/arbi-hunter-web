@@ -21,6 +21,7 @@ import RichTextToolbar from './RichTextToolbar'
 import Image from '@tiptap/extension-image'
 import { PreviewImage } from 'data/interfaces/Common'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IBubbleShowProps {
   editor: Editor,
@@ -54,6 +55,7 @@ interface Props extends IField<string | null>{
 }
 
 export default function RichTextField(props: Props) {
+  const {t} = useTranslation()
   const {label, placeholder, className} = props
   const [field, meta, helpers] = useField(props as any)
   const {value} = field
@@ -104,7 +106,7 @@ export default function RichTextField(props: Props) {
       Underline,
       Placeholder.configure({
         emptyEditorClass: props.placeholderClassName||'emptyText',
-        placeholder: props.placeholder||'Введите текст',
+        placeholder: props.placeholder||t('fields_insertText'),
       }),
       Link.extend({
 

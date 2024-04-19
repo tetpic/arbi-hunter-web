@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Validator from 'utils/Validator'
 import InputField from '../InputField'
 import styles from './index.module.scss'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   label?: string
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function PasswordField(props: Props) {
+  const {t} = useTranslation()
 
   const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)
 
@@ -22,7 +24,7 @@ export default function PasswordField(props: Props) {
 
   return (
   <InputField 
-  label={props.label||'Пароль:'}
+  label={props.label||t('password')}
   className={props.className||styles.input} 
   labelType='top' 
   styleType={'default'} 

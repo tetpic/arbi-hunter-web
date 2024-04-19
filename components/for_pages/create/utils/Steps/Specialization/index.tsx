@@ -6,12 +6,14 @@ import Image from 'next/image'
 import { ModalType } from 'types/enums'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISpecializationCategory } from 'data/interfaces/Common'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
 }
 
 export default function Specialization(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const cvContext = useCreateVcCvContext()
 
@@ -32,7 +34,7 @@ export default function Specialization(props: Props) {
 
   return ( 
     <div className={styles.root}>
-      <p className={styles.title}>Выберите специализацию <Image src={'/icons/book.png'} alt={'напишите'} width={24} height={24}/></p>
+      <p className={styles.title}>{t('create_setSpecializationAlt')} <Image src={'/icons/book.png'} alt={'write'} width={24} height={24}/></p>
 
       <div className={styles.positionWrapper}>
         {cvContext.activeSubCategory.length > 0 && 
@@ -41,7 +43,7 @@ export default function Specialization(props: Props) {
         <p 
         className={styles.link} 
         onClick={openModalHandler}>
-          {cvContext.helpObjects?.categoryIds?.length > 0? 'Изменить специализацию': 'Выбрать специализацию'}
+          {cvContext.helpObjects?.categoryIds?.length > 0? t('create_changeSpecialization'): t('create_setSpecializationInfinitive')}
         </p>
       </div>
     </div>

@@ -59,7 +59,7 @@ export default function VacancyPreview(props: Props) {
         <PreviewItem 
         onClick={()=>props.onBack(5)}
         titleElement={
-          <P styleType={['medium', 'greyLight', 'w500']}>Опыт работы  {TranslateWorkExperience(currentVacancy.experience)}</P>
+          <P styleType={['medium', 'greyLight', 'w500']}>Опыт работы  {TranslateWorkExperience(currentVacancy.experience, t)}</P>
         }/>
         <PreviewItem 
         onClick={()=>props.onBack(2)}

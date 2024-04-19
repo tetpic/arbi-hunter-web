@@ -6,9 +6,19 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useTariffContext } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
-import { PurchaseType } from 'types/enums'
+import { ModalType, PurchaseType } from 'types/enums'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
+import Title from '@/components/ui/TitleForSection'
+import { useAppContext } from 'context/state'
+import Button from '@/components/ui/Button'
+import SearchBar from '@/components/ui/SearchBar'
+import LoupeSvg from '@/components/svg/LoupeSvg'
+import PlusSvg from '@/components/svg/PlusSvg'
+import DotSvg from '@/components/svg/DotSvg'
+import { colors } from 'styles/variables'
+import { SearchModalArgs } from '@/components/modals/SearchModal'
 
 interface Props {
 }
@@ -35,6 +45,9 @@ export default function Vacancies(props: Props) {
   const vacancyContext = useVacancyContext()
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
+  const router = useRouter()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   useEffect(()=>{
     vacancyContext.setVacancies()
@@ -44,9 +57,42 @@ export default function Vacancies(props: Props) {
   const [activeItem, setActiveItem] = useState<VacanciesNavigation>(VacanciesNavigation.Active)
   const items = Object.values(VacanciesNavigation).map(el=> {return {name: translate(el, t), type: el}})
 
+  const onSearch = (data?: string) => {
+    isTabletWidth && appContext.showModal<SearchModalArgs>(ModalType.SearchModal, {
+      onSearch: (s) => {
+        vacancyContext.setSearchString(s)
+      },
+      placeholder: 'Поиск по названию',
+      suggestions: [...new Set(vacancyContext.savedVCs.map(el=> el.categories[0].name)).values()],
+      initialValue: vacancyContext.searchString
+    })
+    if(data) {
+      vacancyContext.setSearchString(data)
+    }
+  }
 
   return (<div className={styles.root}> 
-    <ItemNavigation activeItem={activeItem} items={items} onClick={(v) => setActiveItem(v)}/> 
+    <Title 
+    title={'Мои вакансии'} 
+    onBackClick={router.back} 
+    rightButton={isTabletWidth &&
+      <div className={styles.buttonsWrapper}>
+        <Button styleType={['icon', 'black']} onClick={()=>router.push('/create/vacancy')}><PlusSvg/></Button>
+        <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{vacancyContext.searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button>
+      </div>
+    }
+    />
+    
+    {!isTabletWidth &&
+      <SearchBar 
+      key={'vacancySearchbar'}
+      className={styles.search} 
+      placeholder='Поиск в моих вакансиях' 
+      onSubmit={(data)=>onSearch(data.search)}
+      />
+    }
+
+    <ItemNavigation onAllWidth={isTabletWidth} activeItem={activeItem} items={items} onClick={(v) => setActiveItem(v)}/> 
     {
       activeItem === VacanciesNavigation.Active && <VacanciesActive/>
       ||

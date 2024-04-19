@@ -8,11 +8,13 @@ import classNames from 'classnames'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import TagsRadioList from '../../TagsRadioList'
 import { TranslateCurrency } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function Compensation(props: Props) {
+  const {t} = useTranslation()
   const [compensation] = useField('compensation')
   const [currency] = useField('currency')
   const {values, setFieldValue} = useFormikContext<IVacancyCreate>()
@@ -22,7 +24,7 @@ export default function Compensation(props: Props) {
     <div className={styles.root}>
       {compensation.value !== CompensationType.Contract &&
       <>
-        <p className={styles.title}>Оплата</p>
+        <p className={styles.title}>{t('create_payments')}</p>
         <div className={styles.inputsWrapper}>
           <InputField  
           isNumbersOnly
@@ -32,10 +34,10 @@ export default function Compensation(props: Props) {
 
           color={'default'} 
           name={'salaryMin'} 
-          label={'От'} 
+          label={t('fromCapitalized')} 
           labelType={'underlined'}
           priceFormatting
-          error='Одно из полей должно быть заполнено'
+          error={t('create_oneOfFieldsMustBeFilled')}
           suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
           />
           <span> – </span>
@@ -47,9 +49,9 @@ export default function Compensation(props: Props) {
           styleType={'bottomBorder'} 
           color={'default'} 
           name={'salaryMax'} 
-          label={'До'} 
+          label={t('toCapitalized')} 
           priceFormatting
-          error='Одно из полей должно быть заполнено'
+          error={t('create_oneOfFieldsMustBeFilled')}
           suffix={<span className={styles.suffix}>{TranslateCurrency(currency.value)}</span>}
 
           />
@@ -67,13 +69,13 @@ export default function Compensation(props: Props) {
         ]}/>
       }
 
-      <p className={styles.title}>Способ</p>
+      <p className={styles.title}>{t('create_method')}</p>
 
       <Checkbox<CompensationType>
       circleClassName={styles.radio}
       className={classNames(styles.radioItem)}
       value={values.compensation} 
-      label={'Договорная'}
+      label={t('create_compensatoinContract')}
       isActive={values.compensation === CompensationType.Contract} 
       onChange={(v) => setFieldValue('compensation', v==CompensationType.Contract?CompensationType.Salary:CompensationType.Contract)}
       />

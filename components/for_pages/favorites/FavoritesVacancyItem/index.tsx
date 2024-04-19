@@ -11,6 +11,7 @@ import { TranslateWorkExperience } from 'utils/enumsTranslations'
 import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
 import LikeButton from '@/components/ui/LikeButton'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy: IVacancy
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
-
+  const {t} = useTranslation()
   const isOnline = vacancy.profile.activityStatus === ActivityStatus.Online
   const image = getUserImageSource(vacancy.profile, Preset.smallIconCrop)
   
@@ -33,7 +34,7 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
       </div>
     </div>
     <P styleType={['medium', 'w500']}>{vacancy.name||vacancy.categories[0]?.description}</P>
-    <P styleType={['medium', 'w500']}>Опыт {TranslateWorkExperience(vacancy.experience).toLowerCase()}</P>
+    <P styleType={['medium', 'w500']}>Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
     <SalaryItem vacancy={vacancy}/>
     <P styleType={['small', 'greyLight']}>Опубликовано {Formatter.formatDate(vacancy.updatedAt)}</P>
     {isOnline &&

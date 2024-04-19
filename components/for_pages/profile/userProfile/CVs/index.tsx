@@ -1,17 +1,28 @@
+import styles from './index.module.scss'
+
 import { useCvContext } from 'context/cv_state'
 import { ICV } from 'data/interfaces/ICV'
 import { useEffect, useState } from 'react'
-import styles from './index.module.scss'
 import Spacer from 'components/ui/Spacer'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
 import { getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
 import { useTariffContext } from 'context/tariff_state'
-import { Preset, PurchaseType } from 'types/enums'
+import { ModalType, Preset, PurchaseType } from 'types/enums'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import Title from '@/components/ui/TitleForSection'
+import { useRouter } from 'next/router'
+import SearchBar from '@/components/ui/SearchBar'
+import { useAppContext } from 'context/state'
+import LoupeSvg from '@/components/svg/LoupeSvg'
+import Button from '@/components/ui/Button'
+import PlusSvg from '@/components/svg/PlusSvg'
+import { SearchModalArgs } from '@/components/modals/SearchModal'
+import DotSvg from '@/components/svg/DotSvg'
+import { colors } from 'styles/variables'
 
 interface Props {
 }
@@ -35,12 +46,17 @@ function translate (n: CVNavigation, t: Translate) {
 
 export default function CVs(props: Props) {
   const {t} = useTranslation()
+  const router = useRouter()
   const cvContext = useCvContext()
   const userContext = useUserContext()
   const [activeItem, setActiveItem] = useState<CVNavigation>(CVNavigation.Active)
   const items = Object.values(CVNavigation).map(el=> {return {name: translate(el, t), type: el}})
   const [filteredCvs, setFilteredCvs] = useState<ICV[]>([])
+  const [searchedCvs, setSearchedCvs] = useState<ICV[]>([])
+  const [searchString, setSearchString] = useState<string>('')
   const tariffContext = useTariffContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
 
   useEffect(()=>{
     cvContext.setSavedCvs()
@@ -51,26 +67,73 @@ export default function CVs(props: Props) {
     setFilteredCvs(cvContext?.savedCvs)
   }, [cvContext.savedCvs])
 
-  useEffect(()=>{
+  const setFiltered = () => {
     switch(activeItem) {
       case CVNavigation.Active :
-        setFilteredCvs(cvContext?.savedCvs.filter(el => el.published === true && el.moderationStatus === 'approved'))
+        setFilteredCvs((searchedCvs.length > 0? searchedCvs :cvContext?.savedCvs).filter(el => el.published === true && el.moderationStatus === 'approved'))
         break
       case CVNavigation.Archive: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => (el.moderationStatus !== 'approved'||!el.published)&& el.publishedAt))
+        setFilteredCvs((searchedCvs.length > 0? searchedCvs :cvContext?.savedCvs).filter(el => (el.moderationStatus !== 'approved'||!el.published)&& el.publishedAt))
         break
       case CVNavigation.Drafts: 
-        setFilteredCvs(cvContext?.savedCvs.filter(el => (el.moderationStatus !== 'approved'||!el.published)&& !el.publishedAt ))
+        setFilteredCvs((searchedCvs.length > 0? searchedCvs :cvContext?.savedCvs).filter(el => (el.moderationStatus !== 'approved'||!el.published)&& !el.publishedAt ))
         break
     }
-  }, [activeItem, cvContext.savedCvs])
+  }
+
+  useEffect(()=>{
+    setFiltered()
+  }, [activeItem, cvContext.savedCvs, searchedCvs])
+
+  const setFilteredData = (s:string) => {
+    const data = cvContext.savedCvs.filter(el => el.categories[0].name.toLowerCase().includes(s.toLowerCase()))
+    setSearchedCvs(data)
+  }
+
+  const onSearch = (data?: string) => {
+    debugger
+    isTabletWidth && appContext.showModal<SearchModalArgs>(ModalType.SearchModal, {
+      onSearch: (s) => {
+        setFilteredData(s)
+        setSearchString(s)
+      },
+      placeholder: 'Поиск по названию',
+      suggestions: [...new Set(cvContext.savedCvs.map(el=> el.categories[0].name)).values()],
+      initialValue: searchString
+    })
+    if(data) {
+      setFilteredData(data)
+      setSearchString(data)
+    }
+    else {
+      setSearchedCvs([])
+    }
+  }
 
   return (
     <div className={styles.root}> 
-      <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>
+      <Title 
+      title={'Мои резюме'} 
+      onBackClick={router.back} 
+      rightButton={isTabletWidth &&
+        <div className={styles.buttonsWrapper}>
+          <Button styleType={['icon', 'black']} onClick={()=>router.push('/create/cv')}><PlusSvg/></Button>
+          <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button>
+        </div>
+      }/>
+      {!isTabletWidth &&
+        <SearchBar 
+        key={'cvsSearchbar'}
+        className={styles.search} 
+        placeholder='Поиск в моих резюме' 
+        onSubmit={(data)=>onSearch(data.search)}
+        />
+      }
+
+      <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}  onAllWidth={isTabletWidth}/>
       {
       filteredCvs?.length > 0 && 
-      filteredCvs.map((el, index) => 
+      (filteredCvs).map((el, index) => 
         <ProfileCvItem  
         cv={el} 
         key={index}
@@ -85,5 +148,4 @@ export default function CVs(props: Props) {
       <Spacer basis={24}/>
     </div>
   )
-
 }

@@ -36,7 +36,6 @@ export default function Notifications(props: Props) {
   <FormikProvider value={formik}>
     <Form className={styles.form}>
       <div className={styles.wrapper}>
-        <SwitchField {...switchSet} name={'sms'} label='СМС-уведомления' fluid className={styles.switch} labelClassName={styles.label}/>
         <SwitchField {...switchSet} name={'email'} label='Почтовые рассылки' fluid className={styles.switch} labelClassName={styles.label}/>
         <SwitchField {...switchSet} name={'push'} label='Пуш-уведомления' fluid className={styles.switch} labelClassName={styles.label}/>
       </div>

@@ -13,8 +13,10 @@ import { periods } from 'utils/commonObjects'
 import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
+import useTranslation from 'next-translate/useTranslation'
 
 export default function BasePage() {
+  const {t} = useTranslation()
   const knowledgeContext = useKnowledgeContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -43,8 +45,8 @@ export default function BasePage() {
   return (
     <Content className={styles.root}>
       <ContentBody className={styles.body}>
-        <TitleForSection onBackClick={router.back} title={'База знаний'} className={styles.title}/>
-        <SearchBar periods={periods} onSubmit={(params)=> knowledgeContext.setSearchParams(params)} placeholder='Поиск по базе знаний'/>
+        <TitleForSection onBackClick={router.back} title={t('nav_knowlegdeBase')} className={styles.title}/>
+        <SearchBar periods={periods} onSubmit={(params)=> knowledgeContext.setSearchParams(params)} placeholder={t('knowledgeBase_search')}/>
         {page &&
           <BaseItems activeCategory={page} />
           ||

@@ -109,7 +109,7 @@ export default function MobileSideBar(props: Props) {
 
       {profileType === ProfileType.Employee &&
         <Link 
-        href={{pathname: '/profile',query: {page: 'cvs'},}} 
+        href={{pathname: '/cvs'}} 
         onClick={props.onClose}
         className={styles.link}
         >
@@ -122,8 +122,7 @@ export default function MobileSideBar(props: Props) {
       {profileType === ProfileType.Hirer &&
         <Link 
         href={{
-          pathname: '/profile',
-          query: {page: 'vacancies'},
+          pathname: '/vacancies',
         }} 
         onClick={props.onClose}
         className={styles.link}

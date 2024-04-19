@@ -7,6 +7,7 @@ import Spinner from 'components/ui/Spinner'
 import CourseItem from 'components/ui/CourseItem'
 import Spacer from 'components/ui/Spacer'
 import Formatter from 'utils/formatter'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export default function AllCourses(props: Props) {
-
+  const {t} = useTranslation()
   const [page, setPage] = useState<number>(1)
   const coursesContext = useCoursesContext()
 
@@ -29,7 +30,7 @@ export default function AllCourses(props: Props) {
 
   return (<div className={styles.root}> 
     {(props.started?coursesContext.startedCourses.size > 0:coursesContext.courses.size > 0)&&
-      <p className={styles.found}>Найдено {props.started?coursesContext.startedCoursesTotal:coursesContext.coursesTotal} {Formatter.pluralize(props.started?coursesContext.startedCoursesTotal:coursesContext.coursesTotal, 'курс', 'курса', 'курсов')}</p>
+      <p className={styles.found}>{t('found')} {props.started?coursesContext.startedCoursesTotal:coursesContext.coursesTotal} {Formatter.pluralize(props.started?coursesContext.startedCoursesTotal:coursesContext.coursesTotal, t('course1'), t('course2'), t('course3'))}</p>
     }
     {coursesContext.courseLoading && (props.started?coursesContext.startedCourses.size ===0:coursesContext.courses.size ===0) &&
       <Spinner className={styles.spinner} size={24}/>

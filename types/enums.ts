@@ -46,7 +46,8 @@ export enum ModalType {
   PurchasePreviewModal = 'purchasePreviewModal',
   RefillBalanceModal = 'refillBalanceModal',
   CharacterCartModal = 'characterCartModal',
-  AlertModal = 'alertModal'
+  AlertModal = 'alertModal',
+  SearchModal = 'searchModal',
 }
 
 export enum AppTheme {

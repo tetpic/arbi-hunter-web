@@ -13,7 +13,7 @@ export default function CvBusyness(props: Props) {
 
   return ( <div className={styles.root}>   
     <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Занятость'} title='Укажите сколько хотите работать'/>
+    <SectionSubtitle text={t('create_cv_employment')} />
     <RadioListField 
     name={'employment'}
     wrapperClassName={styles.radioWrapper}
@@ -27,7 +27,7 @@ export default function CvBusyness(props: Props) {
 
     <div className={styles.fieldItem}>
 
-    <SectionSubtitle text={'График работы'} title='Укажите удобный вам график'/>
+    <SectionSubtitle text={t('create_cv_schedule')} />
     <RadioListField 
     name={'schedule'}
     wrapperClassName={styles.radioWrapper}
@@ -40,25 +40,25 @@ export default function CvBusyness(props: Props) {
     </div>
 
     <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Переезд'}/>
+    <SectionSubtitle text={t('create_cv_relocation')}/>
     <RadioListField 
     name={'relocation'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {label: 'Возможен', value: Answer.Yes},
-      {label: 'Не возможен', value: Answer.No},
+      {label: t('create_cv_relocationYes'), value: Answer.Yes},
+      {label: t('create_cv_relocationNo'), value: Answer.No},
     ]} 
     />
     </div>
 
     <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Командировки'}/>
+    <SectionSubtitle text={t('create_cv_businessTrips')}/>
     <RadioListField 
     name={'businessTrips'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {label: 'Командировки возможны', value: Answer.Yes},
-      {label: 'Командировки не возможны', value: Answer.No},
+      {label: t('create_cv_businessTripsYes'), value: Answer.Yes},
+      {label: t('create_cv_businessTripsNo'), value: Answer.No},
     ]} 
     />
     </div>

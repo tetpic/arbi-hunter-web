@@ -3,7 +3,7 @@ import { EmploymentType, ScheduleType } from 'types/enums'
 import styles from './index.module.scss'
 import WorkPlace from '../WorkPlace'
 import SectionSubtitle from '../../SectionSubtitle'
-import { TranslateEmploymentType } from 'utils/enumsTranslations'
+import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -14,7 +14,7 @@ export default function Busyness(props: Props) {
 
   return ( <div className={styles.root}>   
     <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Занятость'} title='Укажите сколько хотите работать'/>
+    <SectionSubtitle text={t('create_busyness')} />
     <RadioListField 
     name={'employment'}
     wrapperClassName={styles.radioWrapper}
@@ -28,19 +28,19 @@ export default function Busyness(props: Props) {
 
     <div className={styles.fieldItem}>
 
-    <SectionSubtitle text={'График работы'} title='Укажите удобный вам график'/>
+    <SectionSubtitle text={t('create_cv_schedule')} />
     <RadioListField 
     name={'schedule'}
     wrapperClassName={styles.radioWrapper}
     options={[
-      {label: 'Полный день', value: ScheduleType.FullDay},
-      {label: 'Гибкий график', value: ScheduleType.Flexible},
+      {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
+      {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
     ]} 
     />
     </div>
       
     <div className={styles.fieldItem}>
-    <SectionSubtitle text={'Место работы'}/>  
+    <SectionSubtitle text={t('create_workPlace')}/>  
     <WorkPlace/>
     </div>
   </div>)

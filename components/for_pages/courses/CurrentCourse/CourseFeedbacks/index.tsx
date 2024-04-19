@@ -4,13 +4,14 @@ import { useCoursesContext } from 'context/courses_state'
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id: number
 }
 
 export default function CourseFeedbacks(props: Props) {
-
+  const {t} = useTranslation()
   const coursesContext = useCoursesContext()
   const [page, setPage] = useState(1)
   const limit = 10
@@ -47,7 +48,7 @@ export default function CourseFeedbacks(props: Props) {
         ) 
     })
     ||
-    <P useThemeColor className={'empty'}>Вы можете оставить отзыв о курсе первым</P>
+    <P useThemeColor className={'empty'}>{t('courses_leaveFirstFeedback')}</P>
   }
 
   </div>)

@@ -16,7 +16,7 @@ export default function VacanciesInactive(props: Props) {
 
   return (<div className={styles.root}> 
   {!vacancyContext.isLoading&&vacancies && vacancies.length > 0 &&
-    vacancies.map((el, index)=>{
+    vacancies.filter(el => el.name.toLocaleLowerCase().includes(vacancyContext.searchString.toLowerCase())).map((el, index)=>{
       return <ProfileVacancyItem 
       type={props.type} 
       isLast={vacancies.length > 2&&vacancies.length-1 === index} 

@@ -144,6 +144,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
     {(props.type !== 'drafts' || !cv.completedSteps) &&
       <Statistics 
+      className={styles.stats}
       title={t('item_statistics')}     
       items={[
         {name: t('item_shows'), count: cv.totalProposals},

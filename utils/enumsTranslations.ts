@@ -86,16 +86,16 @@ export const TranslateGenderType = (g: Genders) => {
   }
 }
 
-export const TranslateWorkExperience = (w: WorkExperience) => {
+export const TranslateWorkExperience = (w: WorkExperience, t: Translate) => {
   switch(w) {
     case WorkExperience.NoExperience: 
-      return 'Без опыта'
+      return t('workExperience_no')
     case WorkExperience.From1to3:
-      return 'От 1 до 3'
+      return t('workExperience_from1to3')
     case WorkExperience.From3to6:
-      return 'От 3 до 6'
+      return t('workExperience_from3to6')
     case WorkExperience.From6:
-      return 'Более 6 лет'
+      return t('workExperience_from6')
   }
 }
 

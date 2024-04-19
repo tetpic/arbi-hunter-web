@@ -63,6 +63,9 @@
 .vacancies {
   width: 100%;
   min-height: 150vh;
+  @include mq($TabletWidth, max) {
+    min-height: 50vh;
+  }
 }
 
 .header {

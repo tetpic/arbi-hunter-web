@@ -76,6 +76,26 @@ export default function UserEditor(props: Props) {
     init()
   }, [])
 
+  const sortedVariants = (
+    activeSet[1].sort((a, b) => {
+      if(a.price === 0 && b.price !== 0) {
+        return -1
+      }
+      else if(a.price !== 0 && b.price === 0) {
+        return 1
+      }
+      else if (a.price !== 0 && !a.isLocked && (b.price !== 0 || b.isLocked)){
+        return -1
+      }
+      else if(b.price !== 0 && !b.isLocked  && (a.price !== 0 || a.isLocked)) {
+        return 1
+      }
+      else {
+        return 0
+      }
+    })
+  )
+
   return (
     <div className={styles.root}>
     <div className={styles.content}>
@@ -110,7 +130,7 @@ export default function UserEditor(props: Props) {
       </div>
       {/* {saveCharButton} */}
       <div className={styles.variants}>
-       {activeSet[1] && activeSet[1].map(item=> {
+       {activeSet[1] && sortedVariants.map(item=> {
         return (
           <div className={styles.variantItem}>
             <UserPic 
@@ -118,7 +138,7 @@ export default function UserEditor(props: Props) {
             onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} 
             active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} 
             image={item.image&&ImageHelper.urlFromFile(item.image, Preset.xsCrop)}/>
-            {item.price > 0 &&
+            {item.price > 0 && item.isLocked &&
               <P styleType={['alignCenter', 'w600', 'small']} className={styles.price}><ArbiCoinSvg/> {item.price}</P>
             }
           </div>

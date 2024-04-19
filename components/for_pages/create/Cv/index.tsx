@@ -53,7 +53,7 @@ export default function Cv(props: Props) {
   const {isPhoneWidth, isTabletWidth} = appContext.size
 
   
-  const [title, setTitle] = useState<string>('Специализация')
+  const [title, setTitle] = useState<string>(t('create_cv_specialization'))
   const [page, setPage] = useState<JSX.Element>()
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -307,8 +307,7 @@ export default function Cv(props: Props) {
     }
   }
 
-  //TODO: дописать в словадь
-  const titleTips = ['Специализация', 'Доход', 'Опыт', 'Образование', 'О себе', 'Навыки', 'Занятость']
+  const titleTips = [t('create_cv_specialization'), t('create_cv_income'), t('create_cv_experience'), t('create_cv_education'), t('create_cv_about'), t('create_cv_skills'), t('create_cv_employment')]
 
   const changeComponent = (p: number) => {
     if(progress < CVItemsCount) {
@@ -357,10 +356,9 @@ export default function Cv(props: Props) {
   }, [creationContext.activeSubCategory])
 
   useEffect(()=>{
-
     if(progress < 1) {
-      setProgress(1)
       router.back()
+      // setProgress(1)
       return
     }
     changeComponent(progress)

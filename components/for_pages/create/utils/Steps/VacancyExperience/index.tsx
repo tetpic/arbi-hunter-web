@@ -8,11 +8,14 @@ import RemovableItem from '@/components/ui/RemovableItem'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { useSourcesContext } from 'context/sources_state'
 import { useEffect } from 'react'
+import useTranslation from 'next-translate/useTranslation'
+import { TranslateWorkExperience } from 'utils/enumsTranslations'
 
 interface Props {
 }
 
 export default function VacancyExperience(props: Props) {
+  const {t} = useTranslation()
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
   const sourcesContext = useSourcesContext()
@@ -50,24 +53,23 @@ export default function VacancyExperience(props: Props) {
 
   return ( <div className={styles.root}>
 
-    <p className={styles.title}>Опыт работы</p>
+    <p className={styles.title}>{t('create_workExperience')}</p>
     <RadioListField 
     name={'experience'}
     wrapperClassName={styles.radioWrapper}
-    options={[
-      {value: WorkExperience.NoExperience, label: 'Без опыта'},
-      {value: WorkExperience.From1to3, label: '1-3 года'},
-      {value: WorkExperience.From3to6, label: '3-6 лет'},
-      {value: WorkExperience.From6, label: 'От 6 лет'}
-    ]} 
+    options={
+      Object.values(WorkExperience).map(el => {
+        return {value: el, label: TranslateWorkExperience(el, t)}
+      })
+    } 
     />
 
     {cvContext?.activeSubCategory[0].withSources && <>
       <AddButton 
       className={styles.addButton} 
       onClick={()=>openSourcesModal({type: 'sources'})} 
-      text={'Добавить источники'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      text={t('create_addSources')}
+      title={t('create_sourcesDescription')} 
       /> 
       {cvContext.helpObjects?.activeSources?.size > 0 &&
        <>
@@ -85,8 +87,8 @@ export default function VacancyExperience(props: Props) {
       <AddButton 
       className={styles.addButton} 
       onClick={()=>openSourcesModal({type: 'geos'})} 
-      text={'Добавить гео'}
-      title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+      text={t('create_addGeos')}
+      title={t('create_sourcesDescription')} 
       /> 
       {cvContext.helpObjects?.activeGeos?.size > 0 &&
         <>
@@ -104,8 +106,8 @@ export default function VacancyExperience(props: Props) {
     <AddButton 
     className={styles.addButton} 
     onClick={()=>openSourcesModal({type: 'verticals'})} 
-    text={'Добавить вертикали'}
-    title={'Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.'} 
+    text={t('create_addVerticals')}
+    title={t('create_sourcesDescription')} 
     /> 
     {cvContext.helpObjects?.activeVerticals?.size > 0 &&<>
       <div className={styles.itemsWrapper}>

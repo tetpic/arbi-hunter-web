@@ -37,14 +37,12 @@ export default function NavBar(props: Props) {
 
   const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element}} = {
     cvs: {
-      path: '/profile',
-      query: {page: 'cvs'},
+      path: '/cvs',
       text: t('nav_myCvs'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },
     vacancies: {
-      path: '/profile',
-      query: {page: 'vacancies'},
+      path: '/vacancies',
       text: t('nav_myVacancies'),
       icon: <DocumentUserSvg className={styles.linkSvg}/>
     },

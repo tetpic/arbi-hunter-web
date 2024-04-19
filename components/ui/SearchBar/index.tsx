@@ -58,6 +58,7 @@ export default function SearchBar(props: Props) {
   // }
 
   const submit = (data: {search?: string}, helpers: FormikHelpers<{search: string;}>)=>{
+    debugger
     
     if(data) {
       props.onSubmit?.(data)  
@@ -106,11 +107,12 @@ export default function SearchBar(props: Props) {
             color={'default'} 
             name={'search'} 
             prefix={<LoupeSvg color={colors.greyLight}/>} 
-            placeholder={userContext.currentProfile?.profileType===ProfileType.Employee?t('search_vacancy'):t('search_cv')}
+            placeholder={props.placeholder||(userContext.currentProfile?.profileType===ProfileType.Employee?t('search_vacancy'):t('search_cv'))}
             />
             <Button 
+            type='button'
             title='search button' 
-            onClick={()=> formik.submitForm} 
+            onClick={()=> formik.submitForm()} 
             styleType={['black', 'borderBlue']}
             altStyleType={['gradient']}
             >
@@ -118,6 +120,7 @@ export default function SearchBar(props: Props) {
             </Button>
             {props.onFilterClick &&
               <Button 
+              type='button'
               styleType={['icon', 'black']}
               altStyleType={['icon', 'gradient']}
               title='filter button' 

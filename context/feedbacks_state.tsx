@@ -233,7 +233,7 @@ export function FeedbacksWrapper(props: Props) {
         return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el, t)), activeItem: null, translatedActiveItem: null, translation: 'Образование'}
       case FilterItems.Experience:
         arr = arrayFromEnum(WorkExperience)
-        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el)), activeItem: null, translatedActiveItem: null,  translation: 'Опыт'}
+        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el, t)), activeItem: null, translatedActiveItem: null,  translation: 'Опыт'}
       case FilterItems.Gender:
         arr = arrayFromEnum(Genders)
         return { type:p, items: arr, translatedItems: arr.map(el=> TranslateGenderType(el)), activeItem: null, translatedActiveItem: null,  translation: 'Пол'}

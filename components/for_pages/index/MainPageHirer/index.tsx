@@ -26,6 +26,7 @@ import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useAppContext } from 'context/state'
 import { runtimeConfig } from 'config/runtimeConfig'
+import { useRouter } from 'next/router'
 
 
 
@@ -40,6 +41,7 @@ export default function MainPageHirer() {
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
+  const router =  useRouter()
 
   const init = async() => {
     const [ stats, courses, categories, news, backs] = await Promise.all([
@@ -83,6 +85,13 @@ export default function MainPageHirer() {
     }
   }, [])
 
+  const onCategoryClickHandler = (c: ISpecializationCategory) => {
+    CategoryRepository.getSubCategoriesByCategoryId(c.id)
+    .then(res => {
+      router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories:res.map(el => el.id)})}})
+    })
+  }
+
   if(!load) {
     return  (
       <div className={styles.root}>
@@ -118,9 +127,9 @@ export default function MainPageHirer() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={'/recruiting'}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_watches_mobile'):t('mainPage_hir_watches')}</p>
-              <EyeOpenSmallSvg className={styles.icon}/>
+            <Link className={styles.card} href={'/'}>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_cvs_mobile'):t('mainPage_hir_cvs')}</p>
+              <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -133,9 +142,9 @@ export default function MainPageHirer() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={'/'}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_cvs_mobile'):t('mainPage_hir_cvs')}</p>
-              <MessageDownSvg className={styles.icon}/>
+            <Link className={styles.card} href={'/recruiting'}>
+              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_watches_mobile'):t('mainPage_hir_watches')}</p>
+              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -153,7 +162,7 @@ export default function MainPageHirer() {
       </div>
 
       <Title title={t('mainPage_hir_categories')} className={styles.title}/>
-      <CategoriesList hideNav link={'/recruiting?category='} categories={[...categories.values()].filter(e=> e.image)}/>
+      <CategoriesList onClick={onCategoryClickHandler} hideNav link={'/recruiting?category='} categories={[...categories.values()].filter(e=> e.image)}/>
 
 
       <Title title={t('mainPage_hir_bestCvs')} className={styles.title}/>

@@ -37,7 +37,8 @@ interface IState {
   setPage: Dispatch<SetStateAction<number>>,
   total: number,
   isLoading: boolean
-
+  searchString: string
+  setSearchString: Dispatch<SetStateAction<string>>
 }
 
 
@@ -61,6 +62,7 @@ export function VacancyWrapper(props: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(undefined)
+  const [searchString, setSearchString] = useState<string>('')
 
 
   const setVacancies = async(disableLoader?: boolean): Promise<boolean> => {
@@ -68,6 +70,7 @@ export function VacancyWrapper(props: Props) {
     !disableLoader&& setIsLoading(true)
     return VacancyRepository.getUserVacancies()
     .then(res=> {
+      setSavedVCState(res)
       const _drafts = res.filter(e=> (!e.published||e.moderationStatus !== ModerationStatusType.Approved)&& !e.publishedAt)
       const _archive = res.filter(e=> (!e.published ||e.moderationStatus !== ModerationStatusType.Approved)&& e.publishedAt)
       const _active = res.filter(e => e.published && e.moderationStatus === ModerationStatusType.Approved)
@@ -113,6 +116,7 @@ export function VacancyWrapper(props: Props) {
   //   })
   //   .catch(err=> false)
   // }
+  
 
   const addToBlackList = (id?: number)  => {
     VacancyRepository.addToBlackList(id||currentVacancy.id)
@@ -249,6 +253,8 @@ export function VacancyWrapper(props: Props) {
     total,
     isLoading,
     setPage,
+    searchString,
+    setSearchString
   }
 
   return (

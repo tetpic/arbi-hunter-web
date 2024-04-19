@@ -132,7 +132,7 @@ export default function SetTariff(props: Props) {
           >
             {
             ((el.id === creationContext.currentCv?.subscriptions?.tariff.id||el.id === creationContext.currentVc?.subscriptions?.tariff.id)&& t('save'))||
-            props.setText ||'Разместить'}
+            props.setText ||t('post')}
           </Button>
         </div>
 

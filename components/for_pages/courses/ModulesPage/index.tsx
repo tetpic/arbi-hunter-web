@@ -16,10 +16,12 @@ import { useAppContext } from 'context/state'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import { ICongratulationsModalProps } from 'components/modals/CongratulationsModal'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
 export default function ModulesPage() {  
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const courseContext = useCoursesContext()
   const router = useRouter()
@@ -136,7 +138,7 @@ export default function ModulesPage() {
       {courseContext.activeStep?.stepType === CoursesStepType.Question &&
         <Questions activeStep={courseContext.activeStep}/>
       }
-      <Button className={styles.button} onClick={nextButtonHandler} >{endOfCourse?'Завершить курс':'Продолжить'}</Button>
+      <Button className={styles.button} onClick={nextButtonHandler} >{endOfCourse?t('courses_finish'):t('continue')}</Button>
       </>
       ||
       <Spinner size={34} color={colors.blue}/>

@@ -31,6 +31,7 @@ import CoursesRepository from 'data/repositories/CoursesRepository'
 import { Preset, SnackbarType } from 'types/enums'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id: number
@@ -46,6 +47,7 @@ export enum CurrentCoursesNav {
 }
 
 export default function CurrentCourse(props: Props) {
+  const {t} = useTranslation()
   const {isTabletWidth} = useResize()
   const router = useRouter()  
   const appContext = useAppContext()
@@ -75,14 +77,14 @@ export default function CurrentCourse(props: Props) {
       CoursesRepository.removeFromSaved(props.id)
       .then(_=> {
         setCurrentCourse(props.id)
-        appContext.showSnackbar('Курс больше не сохранен.', SnackbarType.success)
+        appContext.showSnackbar(t('courses_courseNoSavedYet'), SnackbarType.success)
       })
     }
     else {
       CoursesRepository.saveCourse(props.id)
       .then(_=>{
         setCurrentCourse(props.id)
-        appContext.showSnackbar('Курс добавлен в сохраненные.', SnackbarType.success)
+        appContext.showSnackbar(t('courses_courseAddToSaved'), SnackbarType.success)
       })
     }
   }
@@ -94,16 +96,16 @@ export default function CurrentCourse(props: Props) {
     result = Object.values(availablePages).map(page => {
       switch(page) {
         case CurrentCoursesNav.Information:
-        return {name: 'Информация', type: page, icon: <InformationSmallSvg/>}
+        return {name: t('courses_info'), type: page, icon: <InformationSmallSvg/>}
 
         case CurrentCoursesNav.Modules:
-        return {name: 'Модули', type: page, icon: <ModulesSvg/>}
+        return {name: t('courses_modules'), type: page, icon: <ModulesSvg/>}
 
         case CurrentCoursesNav.Feedbacks:
-        return {name: 'Отзывы', type: page, icon: <MessageDoubleSvg/>}
+        return {name: t('courses_feedbacks'), type: page, icon: <MessageDoubleSvg/>}
 
         case CurrentCoursesNav.News:
-        return {name: 'Новости', type: page, icon: <NewsPaperSvg/>}
+        return {name: t('courses_news'), type: page, icon: <NewsPaperSvg/>}
       }
     })
     return result
@@ -142,7 +144,7 @@ export default function CurrentCourse(props: Props) {
           <p className={styles.title}>{course.name}</p>
           {isTabletWidth && 
             <p className={styles.titleStats}><SmallStarActiveSvg/> 
-              <span className={styles.yellow}>{(course.rating||0) + ' из 5'}</span> 
+              <span className={styles.yellow}>{(course.rating||0) + t('outOf') +' 5'}</span> 
               <UserSvg/> 
               {course.completedCount} 
             </p>
@@ -154,8 +156,8 @@ export default function CurrentCourse(props: Props) {
               {Formatter.formatPrice(course.price)}
             </p>
             <div className={styles.buttonsWrapper}>
-              <Button className={styles.buttonGradient}>Купить курс</Button>
-              <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
+              <Button className={styles.buttonGradient}>{t('course_purchase')}</Button>
+              <Button className={styles.buttonWhite}>{t('courses_tryForFree')}</Button>
             </div>
           </>}
 
@@ -204,7 +206,7 @@ export default function CurrentCourse(props: Props) {
             <div className={styles.statsLeft}>
               <p className={styles.rating}>{courseStats.raiting.raiting}</p>
               <RatingLine rating={courseStats.raiting.raiting}/>
-              <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, 'отзыв', 'отзыва', 'отзывов')}</p>
+              <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, t('feedback1'), t('feedback2'), t('feedback3'))}</p>
             </div>
             <div className={styles.statsRight}>
               {courseStats.stats.map((el, index)=> {
@@ -225,8 +227,8 @@ export default function CurrentCourse(props: Props) {
 
     {isTabletWidth &&
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.buttonGradient}>Купить курс</Button>
-        <Button className={styles.buttonWhite}>Попробовать бесплатно</Button>
+        <Button className={styles.buttonGradient}>{t('course_purchase')}</Button>
+        <Button className={styles.buttonWhite}>{t('courses_tryForFree')}</Button>
       </div>
     }
   </div>)

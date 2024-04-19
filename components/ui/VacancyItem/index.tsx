@@ -21,6 +21,7 @@ import FavoritesButton from '../FavoritesButton'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { useRouter } from 'next/router'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy?: IVacancy
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const cvContext = useCvContext()
   const {getNewSignal} = useAbortController()
@@ -102,7 +104,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         <P styleType={['purple', 'small']} className={styles.firstApp}>Откликнитесь первым!</P>
       }
 
-      <P styleType={['alignCenter', 'medium', 'w500']}><BriefCaseSvg className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience).toLowerCase()}</P>
+      <P styleType={['alignCenter', 'medium', 'w500']}><BriefCaseSvg className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
 
       <SalaryItem vacancy={vacancy}/>
       <P styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}})}</P>

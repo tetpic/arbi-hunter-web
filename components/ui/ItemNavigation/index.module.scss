@@ -58,6 +58,11 @@
   }
 }
 
+.itemsWide {
+  width: 100%;
+  justify-content: space-between;
+}
+
 .bottomString {
   width: 100%;
   background-color: var(--greyToPurpleGrey);

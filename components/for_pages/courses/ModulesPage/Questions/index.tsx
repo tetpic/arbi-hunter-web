@@ -7,15 +7,15 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import { CourseStepAnswerType } from 'types/enums'
 import styles from './index.module.scss'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   activeStep: ICourseStep
 }
 
 export default function Questions({activeStep}: Props) {
-  
+  const {t} = useTranslation()
   const courseContext = useCoursesContext()
-
   const [activeRadio, setActiveRadio] = useState<number>()
 
   const answerHandler = (data: ICourseStepAnswer) => {
@@ -65,6 +65,6 @@ export default function Questions({activeStep}: Props) {
         }
       </Form>
     </FormikProvider>
-    <Button className={styles.answerButton} type={'button'} onClick={formik.submitForm} >Ответить</Button>
+    <Button className={styles.answerButton} type={'button'} onClick={formik.submitForm} >{t('courses_answer')}</Button>
   </div>)
 }

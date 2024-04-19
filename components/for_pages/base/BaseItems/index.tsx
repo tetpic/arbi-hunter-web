@@ -9,21 +9,23 @@ import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
 import BaseMobileItem from '../BaseMobileItem'
 import { copyToClipboard } from 'utils/helpers'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   activeCategory: number
 }
 
 export default function BaseItems(props: Props) {
+  const {t} = useTranslation()
   const knowledgeContext = useKnowledgeContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
 
   const getOptions = (article: IArticle):IOptionList[] => {
     return [
-      {title: 'Поделиться ссылкой',icon: <ShareSvg/>, onClick: ()=>{
+      {title: t('knowledgeBase_shareLink'),icon: <ShareSvg/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('knowledgeBase_linkCopied'), SnackbarType.success)
       }},
     ]
   }

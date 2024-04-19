@@ -23,6 +23,8 @@ import { ICoursesCategoriesModalProps } from 'components/modals/CoursesCategorie
 import { useRouter } from 'next/navigation'
 import Stories from 'components/ui/Stories'
 import { useMediaContext } from 'context/media_state'
+import useTranslation from 'next-translate/useTranslation'
+import Trans from 'next-translate/Trans'
 
 
 interface Props {
@@ -34,6 +36,7 @@ interface Props {
 }
 
 export default function CoursesMain(props: Props) {
+  const {t} = useTranslation()
   const coursesContext = useCoursesContext()
   const appContext  = useAppContext()
   const mediaContext = useMediaContext()
@@ -60,12 +63,12 @@ export default function CoursesMain(props: Props) {
   return <div className={styles.root}> 
     {isTabletWidth &&
     <>
-      <Title title={'Онлайн обучение'} className={styles.navTitle} onBackClick={()=>router.push('/')} />
+      <Title title={t('courses_onlineEDucation')} className={styles.navTitle} onBackClick={()=>router.push('/')} />
       <SearchBar className={styles.search}/>
     </>
     }
     <div className={styles.top}>
-      <h1 className={styles.title}>Станьте<br/> востребованным<br/> специалистом</h1>
+      <h1 className={styles.title}><Trans i18nKey={'common:courses_beDemandedSpec'} components={[<br/>]}/></h1>
       <div className={styles.tagsWrapper}>
         {coursesContext.categories.length > 0 &&
           randomCategories.map(el=> {
@@ -88,21 +91,21 @@ export default function CoursesMain(props: Props) {
 
     {mediaContext.stories && mediaContext.stories.size > 0 &&
       <>
-        <Title title={'Истории'} className={styles.sectionTitle}/>
+        <Title title={t('stories')} className={styles.sectionTitle}/>
         <Stories className={styles.stories} stories={[...mediaContext.stories?.values()]}/>
       </>
       
     }
 
-    <Title className={styles.sectionTitle} onAllWatchClick={()=> openCategoriesModal()} title={'Категории'}/>
+    <Title className={styles.sectionTitle} onAllWatchClick={()=> openCategoriesModal()} title={t('categories')}/>
     <Categories categoryList={props.categoryList} className={styles.categories}/>
     {!isTabletWidth &&
-    <LinkBlack href='/courses/compilations?page=categories'>Смотреть все</LinkBlack>
+    <LinkBlack href='/courses/compilations?page=categories'>{t('watchAll')}</LinkBlack>
     }
 
     <Title 
     className={styles.sectionTitle} 
-    title={isTabletWidth?'Подборки':'Подборки для вас'} 
+    title={isTabletWidth?t('collections'):t('courses_personalCollections')} 
     link='/courses/compilations?page=categories'
     emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
     />
@@ -133,26 +136,26 @@ export default function CoursesMain(props: Props) {
       </div>
     </section>
     {!isTabletWidth &&
-      <LinkBlack href='/courses/compilations?page=categories'>Смотреть все</LinkBlack>
+      <LinkBlack href='/courses/compilations?page=categories'>{t('watchAll')}</LinkBlack>
     }
 
-    <Title className={styles.sectionTitle} title={isTabletWidth?'Отзывы':'Отзывы учеников'} link='/feedbacks'/>
+    <Title className={styles.sectionTitle} title={isTabletWidth?t('courses_feedbacks'):t('courses_studentsFeedbacks')} link='/feedbacks'/>
     <Feedbacks feedbacks={props.feedbacks}/>
     {!isTabletWidth &&
-      <LinkBlack href={'/feedbacks'}>Смотреть все</LinkBlack>
+      <LinkBlack href={'/feedbacks'}>{t('watchAll')}</LinkBlack>
     }
 
     {popularCourses.length > 0 &&
     <>
       <Title 
-      title={isTabletWidth?'Популярное':'Популярные курсы'}
+      title={isTabletWidth?t('courses_popular'):t('courses_popularCourses')}
       link='/courses/compilations?page=all'
       className={styles.sectionTitle} 
       emoji={!isTabletWidth&&<Image src={'/icons/diamond.png'} alt={'diamond'} width={32} height={32}/>}
       />
       <CoursesBlock courses={popularCourses}/>
       {!isTabletWidth &&
-        <LinkBlack href='/courses/compilations?page=all'>Смотреть все</LinkBlack>
+        <LinkBlack href='/courses/compilations?page=all'>{t('watchAll')}</LinkBlack>
       }
     </>}
   </div>

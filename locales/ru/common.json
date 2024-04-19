@@ -27,7 +27,7 @@
   "watchAllAlt": "Все",
   "unavailable": "Недоступно",
   "error": "Ошибка",
-  "ready": "Готово",
+  "ready": "Готово",  
   "cancel": "Отменить",
   "delete": "Удалить",
   "save":"Сохранить",
@@ -42,6 +42,19 @@
   "free": "Бесплатно",
   "saveAndContinue": "Сохранить и продолжить",
   "set": "Выбрать",
+  "stories": "Истории",
+  "categories": "Категории",
+  "collections": "Подборки",
+  "month": "месяц",
+  "outOf": "из",
+  "from": "от",
+  "toCapitalized": "До",
+  "fromCapitalized":"От",
+  "toPresent":"по н.в.",
+  "toPresentLong":"по настоящее время",
+  "post": "Разместить", 
+  
+
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -88,6 +101,19 @@
   "student1": "ученик",
   "student2": "ученика",
   "student3": "учеников",
+  "course1": "курс",
+  "course2": "курса",
+  "course3": "курсов",
+  "found1":"Найден",
+  "found2":"Найдено",
+  "feedback1":"отзыв",
+  "feedback2":"отзыва",
+  "feedback3":"отзывов",
+  
+  
+  
+
+
 
   "isRemote_true": "Удаленная",
   "isRemote_false": "В офисе",
@@ -105,6 +131,12 @@
   "education_master": "Магистр",
   "education_phD": "Кандидат наук",
   "education_doctor": "Доктор наук",
+
+  "workExperience_no":"Без опыта",
+  "workExperience_from1to3":"От 1 до 3",
+  "workExperience_from3to6":"От 3 до 6",
+  "workExperience_from6":"Более 6 лет",
+  
 
   "employment_fullTime": "Полная",
   "employment_partTime": "Частичная",
@@ -350,7 +382,10 @@
   "create_description": "Описание",
   "create_setSpecialization": "Укажите специализацию",
   "create_setSpecializationAlt": "Выберите специализацию",
+  "create_setSpecializationInfinitive": "Выбрать специализацию",
+  "create_changeSpecialization": "Изменить специализацию",
   "create_specialization": "Специализация",
+  "create_recommended": "Рекомендованные",
   "create_incomeLevel": "Уровень дохода",
   "create_education": "Образование",
   "create_workExperience": "Опыт работы",
@@ -359,6 +394,21 @@
   "create_tags": "Тэги",
   "create_busyness": "Занятость",
   "create_compensatoinContract": "Договорная",
+  "create_infoAboutAgeWarn":"Помните, что нельзя ограничивать кандидатов по<0>полу, возрасту и<0>другим неделовым качествам<0><1> это запрещено законом",
+  "create_workPlace":"Место работы",
+  "create_payments":"Оплата",
+  "create_oneOfFieldsMustBeFilled":"Одно из полей должно быть заполнено",
+  "create_method":"Способ",
+  "create_contactPerson":"Контактное лицо",
+  "create_showInVacancy":"Показывать в вакансии:",
+  "create_contacts":"Контакты:",
+  "create_addSkill":"Добавить навык",
+  "create_addSources":"Добавить источники",
+  "create_sourcesDescription":"Маркетинг/Геомаркетинг. Сайты, платформы и каналы, с которых аудитория переходит на ваш сайт. Взаимодействие с локальной аудиторией, выделенной по географическому признаку.",
+  "create_addGeos":"Добавить гео",
+  "create_addVerticals":"Добавить вертикали",
+  
+  
   
 
   "create_cv_preview": "Предпросмотр резюме",
@@ -375,8 +425,33 @@
   "create_cv_searchProfession": "Поиск профессии",
   "create_cv_addWorkPlace": "Добавить место работы",
   "create_cv_salaryLevel": "Уровень дохода",
+  "create_cv_specialization": "Специализация",
+  "create_cv_income":"Доход",
+  "create_cv_experience":"Опыт",
+  "create_cv_education":"Образование",
+  "create_cv_about":"О себе",
+  "create_cv_skills":"Навыки",
+  "create_cv_employment":"Занятость",
+  "create_cv_schedule":"График работы",
+  "create_cv_relocation":"Переезд",
+  "create_cv_relocationYes":"Возможен",
+  "create_cv_relocationNo":"Не возможен",
+  "create_cv_businessTrips":"Командировки",
+  "create_cv_businessTripsYes":"Командировки возможны",
+  "create_cv_businessTripsNo":"Командировки не возможны",
+  "create_addPortfolio":"Добавить порфтолио",
+  
+
+  
+  
+
+  
+  
 
   "create_vacancy_preview": "Предпросмотр вакансии",
+  "create_vacancy_writeBoutVacancy": "Напишите о работе подробнее, хотя бы 2-3 строки",
+  "create_vacancy_enterName": "Введите название вакансии",
+  
 
   "vacancy_item_areYouShureToDelete": "Вы действительно хотите удалить вакансию?",
   "vacancy_item_relevant": "Подходящие вакансии",
@@ -570,12 +645,57 @@
 
   "chatsfolder_chatInFolder": "Чат в папке",
 
+  "knowledgeBase_search":"Поиск по базе знаний",
+  "knowledgeBase_shareLink":"Поделиться ссылкой",
+  "knowledgeBase_linkCopied":"Ссылка скопирована",
+
+
+  "courses_onlineEDucation": "Онлайн обучение",
+  "courses_beDemandedSpec": "Станьте<0></0> востребованным<0></0> специалистом",
+  "courses_personalCollections":"Подборки для вас",
+  "courses_feedbacks":"Отзывы",
+  "courses_studentsFeedbacks": "Отзывы учеников",
+  "courses_popular": "Популярное",
+  "courses_popularCourses": "Популярные курсы",
+  "courses_chooseFrom": "Выбрать из",
+  "courses_allCourses": "Все курсы",
+  "courses_categories": "Категории",
+  "courses_started": "Начатые курсы",
+  "courses_modulesNotFound":"Нет добавленных образовательных модулей",
+  "courses_noNews":"Нет новостей",
+  "courses_news": "Новости",
+  "courses_courseNoSavedYet":"Курс больше не сохранен.",
+  "courses_courseAddToSaved":"Курс добавлен в сохраненные.",
+  "courses_info": "Информация",
+  "courses_modules": "Модули",
+  "course_purchase": "Купить курс",
+  "courses_tryForFree": "Попробовать бесплатно",
+  "courses_leaveFirstFeedback": "Вы можете оставить отзыв о курсе первым",
+  "courses_description":"Описание",
+  "courses_lang":"Язык",
+  "courses_time":"Время",
+  "courses_certificate":"Сертификат",
+  "courses_certificateIssues":"Выдается",
+  "courses_certificateNotIssued":"Не выдаётся",
+  "courses_about":"Об",
+  "courses_author":"авторе",
+  "courses_authors":"авторах",
+  "courses_requirements":"Требования",
+  "courses_audience": "Целевая аудитория",
+  "courses_course":"Курс",
+  "courses_finish":"Завершить курс",
+  "courses_answer":"Ответить",
+
+  
+  
+  
 
 
 
 
 
-  "fields_addImage": "Добавить изображение"
+  "fields_addImage": "Добавить изображение",
+  "fields_insertText": "Введите текст"
   
   
 

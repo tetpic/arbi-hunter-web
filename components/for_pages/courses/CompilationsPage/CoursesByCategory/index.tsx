@@ -9,12 +9,14 @@ import Spinner from 'components/ui/Spinner'
 import CourseItem from 'components/ui/CourseItem'
 import Spacer from 'components/ui/Spacer'
 import Formatter from 'utils/formatter'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   categoryId: number
 }
 
 export default function CoursesByCategory(props: Props) {
+  const {t} = useTranslation()
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<string>('0')
   const [courses, setCourses] = useState<Map<number, ICourse>>(new Map)
@@ -49,7 +51,7 @@ export default function CoursesByCategory(props: Props) {
   return (
     <div className={styles.root}> 
       {total &&
-      <p className={styles.found}>{Formatter.pluralize(Number(total), 'Найден', 'Найдено', 'Найдено')} {total} {Formatter.pluralize(Number(total), 'курс', 'курса', 'курсов')}</p>
+      <p className={styles.found}>{Formatter.pluralize(Number(total), t('found1'), t('found2'), t('found2'))} {total} {Formatter.pluralize(Number(total), t('course1'), t('course2'), t('course3'))}</p>
       ||
       <Spinner size={24}/>
       }
