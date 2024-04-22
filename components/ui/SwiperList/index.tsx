@@ -20,6 +20,7 @@ interface Props {
   slideClassName?: string
   swiperClassname?: string
   swiperProps?: SwiperProps
+  watchMoreHref?: string
 }
 
 export default function SwiperList(props: Props) {
@@ -62,8 +63,8 @@ export default function SwiperList(props: Props) {
           <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>
         </>
       }
-      {!props.hideWatchMore && !isTabletWidth &&
-        <LinkBlack href={'/media/page?page=categories'}>{t('watchAll')}</LinkBlack>
+      {!props.hideWatchMore && !isTabletWidth && props.watchMoreHref &&
+        <LinkBlack href={props.watchMoreHref}>{t('watchAll')}</LinkBlack>
       }
     </section>
   

@@ -203,7 +203,7 @@ export default function MainPageEmployee() {
       <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{}}/>
       <CategoriesList 
       onClick={(c) => onCategoryClickHandler(c)}
-      hideNav 
+      watchMoreHref={'/recruiting/categories'}       
       categories={[...categories.values()].filter(e=> e.image)} 
       link={'/recruiting?categories='}
       itemClassName={styles.categoryItem}
