@@ -34,6 +34,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 
 interface Props {
   id?: number
+  webView?: boolean
 }
 
 export default function PersonalPage(props: Props) {
@@ -145,13 +146,15 @@ export default function PersonalPage(props: Props) {
       ||
       isEditing && <PersonalHeader isEditing={!props.id&&isEditing}/>
     }
-    <PersonalCard 
-    save={() => personalContext.updatePersonalPage()} 
-    isEditable={!props.id} 
-    noHeader={!isHeaderExist}
-    isEditing={!props.id&&isEditing} 
-    switchMode={() => !props.id&&setIsEditing(!isEditing)}
-    />
+    {!props.webView &&
+      <PersonalCard 
+      save={() => personalContext.updatePersonalPage()} 
+      isEditable={!props.id} 
+      noHeader={!isHeaderExist}
+      isEditing={!props.id&&isEditing} 
+      switchMode={() => !props.id&&setIsEditing(!isEditing)}
+      />
+     }
 
     {isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
       <FormikProvider value={formik}>

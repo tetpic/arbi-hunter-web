@@ -33,6 +33,7 @@ export interface AppProps extends NextAppProps {
     region: string
     user?: IUser
     profileType?: ProfileType
+    webViewOnly?: boolean
   }
 }
 
@@ -77,7 +78,7 @@ function MyApp({Component, pageProps}: AppProps) {
               {loading &&
                 <Spinner className='mainSpinner' size={32}/>        
               }
-            <Layout> 
+            <Layout webView={pageProps.webViewOnly}> 
               <Component {...pageProps} />
             </Layout>
             {clientVisible && <BottomSheetContainer/>}
@@ -113,7 +114,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     props.pageProps.isMobile = false
   }
 
-  
+  props.pageProps.webViewOnly = appContext.ctx.query.webViewOnly
   props.pageProps.region = appContext.ctx.query.region
   
   if (appContext.ctx.req) {

@@ -17,6 +17,7 @@ interface Props {
   disabledNavBar?: boolean
   hideMobileHeader?: boolean
   withMobileMenu?: boolean
+  isMobile?: boolean
 }
 
 /**
@@ -32,7 +33,7 @@ export default function ContentLayout(props: Props) {
   const {isTabletWidth} = useResize()
 
   useEffect(()=>{
-    if(isTabletWidth&&props.hideMobileHeader) {
+    if((isTabletWidth||props.isMobile)&&props.hideMobileHeader) {
       appContext.setHideHeader(true)
     }
     else {
@@ -41,7 +42,7 @@ export default function ContentLayout(props: Props) {
       })
     }
   
-  }, [isTabletWidth])
+  }, [isTabletWidth, props.isMobile])
 
   return (
   <>

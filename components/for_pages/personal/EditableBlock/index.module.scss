@@ -162,8 +162,24 @@
     }
   }
 
-  .columnsSlide {
-    width: 100%;
-    min-width: 800px;
+.columnsSlide {
+  width: 100%;
+  min-width: 800px;
+}
+
+.columnsSlider {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
   }
+}
+
+.columnsWrapper {
+  overflow: unset !important;
+}
+
+.withMobilePadding {
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
+}
 

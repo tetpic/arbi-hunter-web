@@ -58,35 +58,39 @@ export default function EditableBlock(props: Props) {
   return (
   <div className={styles.root}> 
     {(props.block.type === PersonalBlockType.Text
-      ||props.block.type === PersonalBlockType.Image
-      ||props.block.type === PersonalBlockType.Gallery
       ||props.block.type === PersonalBlockType.Collage
     ) &&
       <>
-      <P styleType={['fs32', 'w700']} useThemeColor >{props.block.title}</P>
+      <P styleType={['fs32', 'w700']} useThemeColor  className={styles.withMobilePadding} >{props.block.title}</P>
       {props.block.text &&
-      <div className={styles.text}><HtmlText text={props.block.text}/></div>
+      <div className={classNames(styles.text, styles.withMobilePadding)} ><HtmlText text={props.block.text}/></div>
       }
       </>
     }
     {props.assets && props.block.type === PersonalBlockType.Image &&
       props.assets.map(el=>{
-        return (
-          <div className={styles.imageWrapper} key={el.id}>
-            <Image 
-            unoptimized
-            src={ImageHelper.urlFromFile(el, Preset.xlResize)}
-            alt={props.block.title + ' image'} 
-            width={1240}
-            height={610}
-            style={{objectFit:'cover', display: 'block'}}
-            />
-          </div>
-        )
+        return (<>
+          {props.block.title &&
+            <P styleType={['fs32', 'w700']} useThemeColor className={styles.withMobilePadding} >{props.block.title}</P>
+          }
+          <div className={styles.withMobilePadding} key={el.id}>
+            <div className={styles.imageWrapper}>
+              <Image 
+              unoptimized
+              src={ImageHelper.urlFromFile(el, Preset.xlResize)}
+              alt={props.block.title + ' image'} 
+              width={1240}
+              height={610}
+              style={{objectFit:'cover', display: 'block'}}
+              />
+            </div>
+          </div>+
+          
+        </>)
       })
     }
     {props.block.type === PersonalBlockType.Banner &&
-      <div className={styles.banner}>
+      <div className={classNames(styles.banner, styles.withMobilePadding)}>
         <Image 
         unoptimized 
         src={ImageHelper.urlFromFile(props.assets[0], Preset.mdCrop)} 
@@ -102,6 +106,8 @@ export default function EditableBlock(props: Props) {
     {props.block.type === PersonalBlockType.Columns &&
       <SwiperList
       slideClassName={styles.columnsSlide}
+      swiperClassname={styles.columnsSlider}
+      wrapperClassName={styles.columnsWrapper}
       swiperProps={{
         loop: false,
         autoplay: false, 
@@ -146,7 +152,7 @@ export default function EditableBlock(props: Props) {
         </SwiperList>
     }
     {props.block.type === PersonalBlockType.Social &&
-      <div className={styles.socialWrapper}>
+      <div className={classNames(styles.socialWrapper, styles.withMobilePadding)}>
         <P styleType={['fs32', 'w700']} useThemeColor>{props.block.title}</P>
         <div className={styles.socials}>
           {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => {{
@@ -156,12 +162,18 @@ export default function EditableBlock(props: Props) {
         </div>
       </div>
     }
+
     {props.block.type === PersonalBlockType.Html &&
-      <HtmlText text={props.block.text}/>
+      <HtmlText text={props.block.text} className={styles.withMobilePadding}/>
     }
+
     {props.assets && props.block.type === PersonalBlockType.Collage &&
+    <>
+      {props.block.title && 
+        <P styleType={['fs32', 'w700']} useThemeColor className={styles.withMobilePadding} >{props.block.title}</P>
+      }
       <div 
-      className={classNames(styles.gridContainer, styles.collageContainer)} 
+      className={classNames(styles.gridContainer, styles.collageContainer, styles.withMobilePadding)} 
       style={{
         gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((props.block.layout as number[][])[0].length)}`, 
       }}>
@@ -178,9 +190,16 @@ export default function EditableBlock(props: Props) {
           </div>
         })}
       </div>
+    </>
     }
-    {props.assets && props.block.type === PersonalBlockType.Gallery &&
+
+    {props.assets && props.block.type === PersonalBlockType.Gallery && <>
+      {props.block.title &&
+        <P styleType={['fs32', 'w700']} className={styles.withMobilePadding} useThemeColor >{props.block.title}</P>
+      }
       <SwiperList
+      swiperClassname={styles.columnsSlider}
+      wrapperClassName={styles.columnsWrapper}
       className={styles.swiper}
       slideClassName={styles.swiperSlide}
       swiperProps={{
@@ -204,16 +223,17 @@ export default function EditableBlock(props: Props) {
           )
         })}    
       </SwiperList>
-    }
+    </>}
+
     {props.assets.length > 0 && props.block.type === PersonalBlockType.Video &&
       props.assets.map(el=>
-        <div className={styles.video}>
+        <div className={classNames(styles.video, styles.withMobilePadding)}>
           <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
       ||
       props.assets.length === 0 && props.block.type === PersonalBlockType.Video &&
-      <div className={styles.video}>
+      <div className={classNames(styles.video, styles.withMobilePadding)}>
         <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop  url={props.block.title}  controls/>
       </div>
     }

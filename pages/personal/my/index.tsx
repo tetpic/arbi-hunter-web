@@ -3,16 +3,27 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { PersonalWrapper } from 'context/personal_state'
 import { TariffWrapper } from 'context/tariff_state'
 
-interface Props {
+
+
+interface Query {
+  webViewOnly?: boolean
 }
 
-export default function MyCompanyPage() {
+interface Props extends Query {
+}
+
+export const getServerSideProps = (ctx: {query: Query}) => {
+  const webViewOnly = ctx?.query?.webViewOnly||null
+  return {props: {webViewOnly}}
+}
+
+export default function MyCompanyPage(props: Props) {
 
   return (
-    <ContentLayout hideMobileHeader withMobileMenu>
+    <ContentLayout hideMobileHeader isMobile={props.webViewOnly} withMobileMenu={props.webViewOnly?false:true}>
       <PersonalWrapper key={'my_personal_page'}>
       <TariffWrapper>
-        <PersonalPage/>
+        <PersonalPage webView={props.webViewOnly}/>
       </TariffWrapper>
       </PersonalWrapper>
     </ContentLayout>
