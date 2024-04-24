@@ -1,0 +1,23 @@
+@import 'styles/index';
+
+.modalLayout {
+  max-width: 464px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+}
+
+.makeDeafult {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 8px;
+}

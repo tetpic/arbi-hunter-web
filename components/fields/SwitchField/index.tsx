@@ -40,7 +40,6 @@ export default function SwitchField(props: Props) {
   const handleChange = (val: boolean) => {
     props.onChange?.()
     setFieldValue(field.name, val)
-    formikContext.values
   }
   const label = ( <div className={classnames(styles.label, props.labelClassName)}>
     {props.label}

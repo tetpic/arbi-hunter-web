@@ -49,6 +49,7 @@ import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
 import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 import AlertModal from '@/components/modals/AlertModal'
 import SearchModal from '@/components/modals/SearchModal'
+import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
 
 
 interface Props { }
@@ -242,6 +243,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.SearchModal:
         return <Modal isOpen {...commonSettings} >
         <SearchModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.AddFavoritesFolder:
+        return <Modal isOpen {...commonSettings} >
+        <AddFavoritesFolder onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

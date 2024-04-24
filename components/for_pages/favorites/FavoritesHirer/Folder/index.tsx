@@ -9,6 +9,8 @@ import SortArrowsSvg from '@/components/svg/SortArrowsSvg'
 import { useState } from 'react'
 import classnames from 'classnames'
 import Accordeon from '@/components/ui/Accordeon'
+import Spacer from '@/components/ui/Spacer'
+import ThreeDotsButton from '@/components/ui/ThreeDotsButton'
 
 interface Props {
   folder: IFolder
@@ -26,7 +28,9 @@ export default function FavoritesHirerFolder(props: Props) {
       <div className={styles.folderDesc}>
         <P styleType={['w600', 'large']}>{props.folder.name}</P>
       </div>
+      <ThreeDotsButton className={styles.threeDots}/>
     </div>
+    <Spacer basis={16}/>
     <Accordeon isActive={isActive}>
       <div className={styles.stats}>
         <P>{foldersContext.currentFolderPage.get(props.folder.id)?.total} резюме</P>

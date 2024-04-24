@@ -48,6 +48,7 @@ export enum ModalType {
   CharacterCartModal = 'characterCartModal',
   AlertModal = 'alertModal',
   SearchModal = 'searchModal',
+  AddFavoritesFolder = 'AddFavoritesFolder',
 }
 
 export enum AppTheme {
