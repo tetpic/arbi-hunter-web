@@ -152,7 +152,7 @@ export default function MainPageEmployee() {
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_feedBacks'):t('mainPage_em_feedBacksAlt')}</p>
+              <p className={styles.desc}>{t('mainPage_em_feedBacks')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -182,7 +182,7 @@ export default function MainPageEmployee() {
               }
             </Link>
             <Link className={styles.card} href={{pathname: '/'}}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_em_watches'):t('mainPage_em_watchesAlt')}</p>
+              <p className={styles.desc}>{t('mainPage_em_watches')}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||

@@ -128,7 +128,7 @@ export default function MainPageHirer() {
               }
             </Link>
             <Link className={styles.card} href={'/'}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_cvs_mobile'):t('mainPage_hir_cvs')}</p>
+              <p className={styles.desc}>{t('mainPage_hir_cvs')}</p>
               <MessageDownSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
@@ -143,7 +143,7 @@ export default function MainPageHirer() {
               }
             </Link>
             <Link className={styles.card} href={'/recruiting'}>
-              <p className={styles.desc}>{isTabletWidth?t('mainPage_hir_watches_mobile'):t('mainPage_hir_watches')}</p>
+              <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||

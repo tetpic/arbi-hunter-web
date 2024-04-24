@@ -4,6 +4,7 @@
 .root {
   position: relative;
   margin-top: 48px;
+  min-height: 100vh;
   @include mq($TabletWidth, max) {
     margin-top: 16px;
     padding-inline: 16px;

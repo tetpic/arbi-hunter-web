@@ -74,12 +74,10 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const defaultOptions:IOptionList[] = [
-    {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
-    {title: t('item_double')},
-    {title: t('item_share')},
-    {title: t('item_prolong')},
-    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
     {title: t('item_edit'), onClick: editHandler},
+    {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_share')},
     {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
@@ -88,8 +86,14 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
+  const archiveOptions:IOptionList[] = [
+    {title: 'Редактировать', onClick: editHandler},
+    {title: 'Опубликовать', onClick: archiveHandler},
+    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]
+
   const options = <OptionsList 
-  options={props.type === 'drafts'?draftOptions:defaultOptions} 
+  options={props.type === 'drafts'&&draftOptions||props.type === 'archive'&&archiveOptions||defaultOptions} 
   onMouseLeave={()=>openDropDown(false)}
   />
 

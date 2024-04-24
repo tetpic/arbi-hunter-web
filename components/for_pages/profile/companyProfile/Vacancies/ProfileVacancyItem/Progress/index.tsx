@@ -11,10 +11,10 @@ interface Props {
 export default function Progress(props: Props) {
 
   return (<div className={classNames(styles.root, props.className)}> 
-    <P styleType={['medium', 'w500']}>Вакансия заполнена на {props.progress?.length.toString()}/{props.stepsCount||9}</P>
+    <P styleType={['medium', 'w500']}>Вакансия заполнена на {(props.progress?.length - 1).toString()}/{props.stepsCount||9}</P>
     <div className={styles.progressLine}>
       {new Array(props.stepsCount||9).fill(true).map((el, i) => {
-        return <div className={classNames(styles.progressItem, i+1===props.progress?.length && styles.active)}></div>
+        return <div className={classNames(styles.progressItem, i+1>=props.progress?.length && styles.active)}></div>
       })}
     </div>
     <P styleType={['small']}>Черновик {props.progress.length !== props.stepsCount && ' почти'} готов к публикации</P>

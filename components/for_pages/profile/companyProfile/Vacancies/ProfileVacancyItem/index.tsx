@@ -16,7 +16,7 @@ import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import {  useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { IConfirmModalProps } from 'components/modals/ConfirmModal'
-import OptionsList from 'components/ui/OptionsList'
+import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import Progress from './Progress'
@@ -71,15 +71,26 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     router.push({pathname:'/shop', query: {page: 'packets'}})
   }
 
-  const options = <OptionsList options={[
-    {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
-    {title: t('item_double')},
-    {title: t('item_share')},
-    {title: t('item_prolong')},
-    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+  const defaultOptions:IOptionList[] = [
     {title: t('item_edit'), onClick: editHandler},
-    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
-  ]}
+    {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    {title: t('item_share')},
+    {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]
+
+  const draftOptions:IOptionList[] = [
+    {title: 'Редактировать', onClick: editHandler},
+    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]
+
+  const archiveOptions:IOptionList[] = [
+    {title: 'Редактировать', onClick: editHandler},
+    {title: 'Опубликовать', onClick: archiveHandler},
+    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+  ]
+
+  const options = <OptionsList options={props.type === 'drafts'&&draftOptions||props.type === 'archive'&&archiveOptions||defaultOptions}
   onMouseLeave={()=>openDropDown(false)}
   />
 
