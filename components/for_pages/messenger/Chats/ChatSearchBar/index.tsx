@@ -16,6 +16,7 @@ import { ModalType } from 'types/enums'
 import { IChatFilterModalProps } from 'components/modals/ChatFilterModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
+import PlusSvg from '@/components/svg/PlusSvg'
 
 interface Props {
 }
@@ -75,7 +76,7 @@ export default function ChatSearchBar(props: Props) {
         }
       </div>
       <Button className={styles.filterButton} onClick={openFiltersModal}><FiltersSvg/></Button>
-      <Button className={styles.button} onClick={chatContext.setFoldersActive}><FolderClosedSvg/></Button>
+      <Button className={styles.button} onClick={chatContext.setFoldersActive}><PlusSvg/></Button>
     </div>
   </div>
   )

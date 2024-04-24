@@ -4,7 +4,6 @@ import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from '../ThreeDotsButton'
-import HeartSvg from 'components/svg/HeartSvg'
 import classNames from 'classnames'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
 import { useMediaContext } from 'context/media_state'
@@ -23,6 +22,8 @@ import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import Spacer from '../Spacer'
 import ImageHelper from 'utils/ImageHelper'
 import { IFile } from 'data/interfaces/Common'
+import FavoritesButton from '../FavoritesButton'
+import P from '../P'
 
 interface Props {
   article: IArticle
@@ -151,7 +152,10 @@ export default function NewsArticle(props: Props) {
     </div>
       <div className={styles.stats}>
         {!props.disableLikes &&
-          <p className={styles.likes} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}}><HeartSvg className={classNames(isLiked&&styles.filledHeart)}/> {likesCounter}</p>
+          <P styleType={['textCenter', 'w500','medium']}>
+          <FavoritesButton styleType={['icon', 'backTransparent']} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}} isActive={isLiked}/>
+          {likesCounter}
+          </P>
           ||
           <Spacer/>
         }

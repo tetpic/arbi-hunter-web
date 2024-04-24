@@ -188,7 +188,11 @@ export default function CvPage(props: Props) {
         </Button>
       }
 
-      <FavoritesButton className={styles.favoritesButton} onClick={saveCvToFavorites} isActive={currentCv.isSavedByCurrentProfile}/>
+      <FavoritesButton 
+      showStar
+      className={styles.favoritesButton} 
+      onClick={saveCvToFavorites} 
+      isActive={currentCv.isSavedByCurrentProfile}/>
       <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
     </div>
   </>)

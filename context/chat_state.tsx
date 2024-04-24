@@ -122,6 +122,7 @@ export function ChatWrapper(props: Props) {
     if(chats.size === 0) return
     setChats(state=> {
       const chatNeeded = state.get(chatId)
+      if(!chatNeeded) return state
       chatNeeded.totalUnread = 0
       return new Map(state)
     })

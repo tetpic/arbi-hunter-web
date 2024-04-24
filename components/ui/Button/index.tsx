@@ -10,7 +10,7 @@ import useStopPropagation from 'hooks/useStopPropagation'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 
-type ButtonStyle = 
+export type ButtonStyle = 
 'black'|
 'grey'|
 'gradient'|

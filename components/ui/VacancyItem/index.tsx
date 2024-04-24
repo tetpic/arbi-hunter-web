@@ -82,7 +82,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
 
 
   return (<Link className={styles.item} href={'/vacancy/'+vacancy.id}> 
-    <FavoritesButton className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
+    <FavoritesButton styleType={['icon', 'backTransparent']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>
       <div className={ styles.card}>

@@ -1,25 +1,40 @@
 import classnames from 'classnames'
 import HeartSvg from 'components/svg/HeartSvg'
 import styles from './index.module.scss'
-import Button from '../Button'
+import Button, { ButtonStyle } from '../Button'
+import StarSvg from '@/components/svg/StarSvg'
+import classNames from 'classnames'
 
 interface Props {
   className?: string
   onClick?: (e: React.MouseEvent) => void
   size?: number
   isActive?: boolean
+  styleType?: ButtonStyle[]
+  showStar?: boolean
 }
+
+/**
+ * @param className ?: string
+ * @param onClick ?: (e: React.MouseEvent) => void
+ * @param size ?: number
+ * @param isActive ?: boolean
+ */
 
 export default function FavoritesButton(props: Props) {
 
   return (
     <Button 
-    styleType={['icon', 'black']}
+    styleType={props.styleType||['icon', 'black']}
     altStyleType={['icon', 'whitePurple', 'borderBlue', 'invertSvg'] }
     onClick={(e)=>props.onClick(e)} 
-    className={classnames(styles.heartButton, props.isActive&&styles.heartButton_active, props.className)} 
+    className={classnames(styles.heartButton,  props.className)} 
     >
-      <HeartSvg size={props.size||24} className={props.isActive&&styles.heartRed}/>
+      {props.showStar && 
+      <StarSvg size={props.size||24} className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
+      ||
+      <HeartSvg size={props.size||24} className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
+      }
     </Button>
   )
 }

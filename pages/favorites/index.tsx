@@ -6,7 +6,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { CookiesType } from 'types/enums'
 
 
-const getServerSideProps = async(ctx: {req: {cookies: {[key:string]: string}}}) => {
+export const getServerSideProps = async(ctx: {req: {cookies: {[key:string]: string}}}) => {
   const token = ctx.req.cookies[CookiesType.accessToken]
   const profileType = ctx.req.cookies[CookiesType.profileType]
   if(profileType && token) {

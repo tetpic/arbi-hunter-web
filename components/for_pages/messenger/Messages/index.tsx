@@ -121,6 +121,9 @@ export default function Messages(props: Props) {
           .then(cv=> {
             setCv(cv)
           })
+          .catch(err=> {
+            setCv(null)
+          })
         }
         else {
           setCv(null)

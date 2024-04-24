@@ -6,7 +6,7 @@
   // position: absolute;
   // top: 0;
   // right: 0;
-  background: $backgroundBlack;
+  background: var(--backGroundColor);
   transition: .3s ease-in-out;
   overflow: auto;
   height: 100vh;
@@ -41,7 +41,7 @@
   align-items: center;
   width: 100%;
   padding: 8px 16px;
-  background-color: $black;
+  background-color: var(--backColor);
   border-radius: 16px;
   column-gap: 8px;
   margin-bottom: 24px;
@@ -77,11 +77,12 @@
 }
 
 .links {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   padding: 8px 16px;
   width: 100%;
   border-radius: 16px;
   margin-bottom: 16px;
+  border: 2px var(--borderPerimeter) solid;
 }
 
 .link  {
@@ -91,7 +92,7 @@
   align-items: center;
   column-gap: 16px;
   @include exeptLast {
-    border-bottom: 2px $grey solid;
+    border-bottom: 2px var(--borderColor) solid;
   }
 
   .icon {
@@ -100,7 +101,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $grey;
+    background-color: var(--greyToPurpleGrey);
+    border-radius: 8px;
+
+    svg {
+      path {
+        stroke: var(--pTextColor);
+      }
+    }
+  }
+
+  .shopicon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--greyToPurpleGrey);
     border-radius: 8px;
   }
 }

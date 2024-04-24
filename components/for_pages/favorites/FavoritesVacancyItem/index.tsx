@@ -10,8 +10,8 @@ import { colors } from 'styles/variables'
 import { TranslateWorkExperience } from 'utils/enumsTranslations'
 import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
-import LikeButton from '@/components/ui/LikeButton'
 import useTranslation from 'next-translate/useTranslation'
+import FavoritesButton from '@/components/ui/FavoritesButton'
 
 interface Props {
   vacancy: IVacancy
@@ -25,7 +25,8 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
   
 
   return (<Link href={'/vacancy/'+vacancy.id} className={styles.root}> 
-    <LikeButton active className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/>
+    <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/>
+    {/* <LikeButton active className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/> */}
     <div className={styles.top}>
       <UserPic className={styles.userPic} size={42} image={image}/>
       <div className={styles.topContent}>

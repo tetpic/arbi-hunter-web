@@ -14,7 +14,7 @@ import UserPic from '../UserPic'
 import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
-import LikeButton from '../LikeButton'
+import FavoritesButton from '../FavoritesButton'
 
 interface ItemProps {
   cv: ICV
@@ -88,7 +88,8 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
       <UserPic size={46} className={styles.userPic}/>
       <p className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</p>
       <p className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</p>
-      <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
+      {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}
+      <FavoritesButton showStar className={styles.heartButton} isActive={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
     </div>
     <div className={styles.middle}>
       <p className={styles.title}>Опыт работы</p>

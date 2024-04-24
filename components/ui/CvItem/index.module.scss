@@ -12,6 +12,12 @@
   }
 }
 
+.favoriteButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
 .item {
   border-radius: 16px;
   background-color: $black;

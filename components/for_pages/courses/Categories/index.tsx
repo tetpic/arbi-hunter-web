@@ -24,7 +24,7 @@ function CategoryItem(props: {size: 33|50, item: ICategory}) {
     <p className={styles.name}>{props.item.name}</p>
     <p className={styles.counter}>
       {(props.item?.coursesCount||props.item.articlesCount) + ' '} 
-      {Formatter.pluralize(+props.item?.coursesCount||+props.item.articlesCount,t('couse1'), t('couse2'),t('couse3'))}
+      {Formatter.pluralize(+props.item?.coursesCount||+props.item.articlesCount,t('course1'), t('course2'),t('course3'))}
       </p>
     <div className={styles.imageWrapper}>
       {props.item.image &&

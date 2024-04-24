@@ -8,29 +8,39 @@
   @include hover {
     .heartRed {
       path {
-        fill: $greyLight;
+        fill: $red;
       }
     }
-    path {
-      stroke: $red;      
+    .starYellow{
+      path {
+        fill: $yellow;
+        stroke: $yellow;
+
+      }
+    }
+    .heart {
+      path {
+        stroke: $red;      
+      }
+    }
+    .star {
+      path {
+        stroke: $yellow;
+      }
     }
   }
 
-  &_active {
-    path {
-      stroke: $grey;
-      fill: $grey;
-    }
-    @include hover {
-      path {
-        stroke: $black;
-      }
-    }
-  }
 }
 
 .heartRed {
   path {
-    fill: $white;
+    fill: $red;
+  }
+}
+
+.starYellow{
+  path {
+    fill: $yellow;
+    stroke: $yellow;
   }
 }

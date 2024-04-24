@@ -25,6 +25,7 @@ import { useState } from 'react'
 import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
+import FavoritesButton from '../FavoritesButton'
 
 interface Props {
   cv: ICV
@@ -100,7 +101,9 @@ export default function CvItem({cv, ...props}: Props) {
     })
   }
 
-  const likeHandler = () => {
+  const likeHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault()
+    e.stopPropagation()
     const [signal] = getNewSignal('likeHandler')
     if(!cv.isSavedByCurrentProfile) {
       CvRepository.addCvToSaved(cv.id, {signal})
@@ -119,6 +122,7 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   return (<Link className={styles.item} href={'cv/'+cv.id}> 
+    <FavoritesButton className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
     {userImage &&
       <Image 
       unoptimized

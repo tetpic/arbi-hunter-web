@@ -15,7 +15,6 @@ import P from '@/components/ui/P'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import FolderSvg from '@/components/svg/FolderSvg'
 import ChatFeedbackSvg from '@/components/svg/ChatFeedbackSvg'
-import MessageSvg from '@/components/svg/MessageSvg'
 import ShopSmallSvg from '@/components/svg/ShopSmallSvg'
 import SettingSvg from '@/components/svg/SettingSvg'
 import ManSvg from '@/components/svg/ManSvg'
@@ -23,7 +22,13 @@ import QuestionSvg from '@/components/svg/QuestionSvg'
 import { useRouter } from 'next/router'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
 import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
-import { Preset } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
+import StarSvg from '@/components/svg/StarSvg'
+import HeartSvg from '@/components/svg/HeartSvg'
+import Switch from '@/components/ui/Switch'
+import { useAppContext } from 'context/state'
+import { colors } from 'styles/variables'
+import DayNightSvg from '@/components/svg/DayNightSvg'
 
 interface Props {
   onClose: ()=>void
@@ -32,6 +37,7 @@ interface Props {
 
 export default function MobileSideBar(props: Props) {
   const userContext = useUserContext()
+  const appContext = useAppContext()
   const [active, setActive] = useState<boolean>(false)
   const router = useRouter()
   const profileType = userContext.currentProfile?.profileType||userContext.profileType||ProfileType.Employee
@@ -99,10 +105,10 @@ export default function MobileSideBar(props: Props) {
     >
       <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} size={64}/>
       <div className={styles.userCardContent}>
-        <P styleType={['w500', 'medium']}>{getUserName(userContext.currentProfile)}</P>
+        <P useThemeColor styleType={['w500', 'medium']}>{getUserName(userContext.currentProfile)}</P>
         <P styleType={['w500', 'medium', 'greyLight']}>{userContext.currentProfile.profileType === ProfileType.Employee?'Соискатель':'Работодатель'}</P>
       </div>
-      <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+      <Button styleType={['icon', 'backTransparent']}  className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
     </div>
 
     <div className={styles.links}>
@@ -114,8 +120,8 @@ export default function MobileSideBar(props: Props) {
         className={styles.link}
         >
           <div className={styles.icon}><FolderSvg/></div>
-          <P styleType={['w500', 'medium']}>Мои резюме</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Мои резюме</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
 
@@ -128,8 +134,8 @@ export default function MobileSideBar(props: Props) {
         className={styles.link}
         >
           <div className={styles.icon}><DocumentUserSvg/></div>
-          <P styleType={['w500', 'medium']}>Мои вакансии</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Мои вакансии</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
 
@@ -143,40 +149,28 @@ export default function MobileSideBar(props: Props) {
         className={styles.link}
         >
           <div className={styles.icon}><ChatFeedbackSvg/></div>
-          <P styleType={['w500', 'medium']}>Мои отклики</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Мои отклики</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
+
       <Link 
       href={'/messenger'} 
       onClick={props.onClose}
       className={styles.link}
       >
-        <div className={styles.icon}><MessageSvg/></div>
-        <P styleType={['w500', 'medium']}>Сообщения</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <div className={styles.icon}>{profileType === ProfileType.Hirer?<StarSvg/>:<HeartSvg/>}</div>
+        <P useThemeColor styleType={['w500', 'medium']}>Избранное</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
     </div>
 
     <div className={styles.links}>
-      <Link 
-      href={{pathname: '/shop'}} 
-      onClick={props.onClose}
-      className={styles.link}
-      >
-        <div className={styles.icon}><ShopSmallSvg/></div>
-        <P styleType={['w500', 'medium']}>Магазин</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
-      </Link>
-
       <Link href={'/settings'} className={styles.link} onClick={props.onClose}>
         <div className={styles.icon}><SettingSvg/></div>
-        <P styleType={['w500', 'medium']}>Настройки</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Настройки</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
-    </div>
-
-    <div className={styles.links}>
 
       {profileType === ProfileType.Employee &&
         <Link 
@@ -188,8 +182,8 @@ export default function MobileSideBar(props: Props) {
         className={styles.link}
         >
           <div className={styles.icon}><ManSvg/></div>
-          <P styleType={['w500', 'medium']}>Настройки персонажа</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Настройки персонажа</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
       {profileType === ProfileType.Hirer &&
@@ -199,16 +193,47 @@ export default function MobileSideBar(props: Props) {
         className={styles.link}
         >
           <div className={styles.icon}><UserDoubleSvg/></div>
-          <P styleType={['w500', 'medium']}>Менеджеры</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Менеджеры</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
+    </div>
 
+    <div className={styles.links}>
       <Link href={'/base'} className={styles.link} onClick={props.onClose}>
         <div className={styles.icon}><QuestionSvg/></div>
-        <P styleType={['w500', 'medium']}>База знаний</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>База знаний</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
+
+      <Link 
+      href={{pathname: '/shop'}} 
+      onClick={props.onClose}
+      className={styles.link}
+      >
+        <div className={styles.shopicon}><ShopSmallSvg color={colors.blue}/></div>
+        <P useThemeColor styleType={['w500', 'medium', 'blue']}>Магазин</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.blue}/></Button>
+      </Link>
+    </div>
+
+    <div className={styles.links}>
+      <div className={styles.link}>
+        <div className={styles.icon}><DayNightSvg/></div>
+        <P useThemeColor  styleType={['w500', 'medium']} >Ночной режим</P>
+        <div className={styles.arrow}>
+
+          <Switch
+          onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
+          checked={appContext.theme ===AppTheme.Dark}
+          offColor={colors.white}
+          onColor={colors.blue}
+          offHandleColor={colors.blue}
+          onHandleColor={colors.white}
+          width={50}
+          />
+        </div>
+      </div>
     </div>
     </>}
 
@@ -224,77 +249,78 @@ export default function MobileSideBar(props: Props) {
     <div className={classnames(styles.links, styles.info)}>
       {profileType === ProfileType.Hirer &&
         <Link  href={userContext.currentProfile?'/create/vacancy/':'/login'} onClick={props.onClose} className={styles.link}>
-          <P styleType={['w500', 'medium']}>Разместить вакансию</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Разместить вакансию</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
       {profileType === ProfileType.Employee &&
         <Link  href={userContext.currentProfile?'/create/cv/':'/login'} onClick={props.onClose} className={styles.link}>
-          <P styleType={['w500', 'medium']}>Создать резюме</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Создать резюме</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
 
       <Link  href={'/services'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Услуги</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P  useThemeColor styleType={['w500', 'medium']}>Услуги</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       <Link  href={'/recruiting'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>
+        <P useThemeColor styleType={['w500', 'medium']}>
           {profileType === ProfileType.Hirer?'Поиск сотрудников':'Поиск работы'}
         </P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       {profileType === ProfileType.Hirer &&
         <Link href={userContext.currentProfile?'/recruiting':'/login'} className={styles.link} onClick={props.onClose}>
-          <P styleType={['w500', 'medium']}>Категории специалистов</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>Категории специалистов</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
       }
 
       {!userContext.currentProfile &&
         <Link href={'/base'} className={styles.link} onClick={props.onClose}>
-          <P styleType={['w500', 'medium']}>База знаний</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium']}>База знаний</P>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>    
       }
 
       <Link href={'/sitemap'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Карта сайта</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Карта сайта</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       <Link className={styles.link} href={'/about'} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>О компании</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>О компании</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
       
       <Link href={'/partners'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Партнерам</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Партнерам</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       <Link href={'/advertising'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Реклама на сайте</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Реклама на сайте</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       <Link href={'/serviceterms'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Условия оказания услуг</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Условия оказания услуг</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
       <Link href={'/useterms'} className={styles.link} onClick={props.onClose}>
-        <P styleType={['w500', 'medium']}>Условия использования сайтов</P>
-        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
+        <P useThemeColor styleType={['w500', 'medium']}>Условия использования сайтов</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
     </div>
 
     {userContext.currentProfile &&
       <Button 
+      altStyleType={['wide', 'whitePurple']}
       className={styles.button}
       styleType={['wide', 'black']}
       onClick={()=>userContext.logout()}
