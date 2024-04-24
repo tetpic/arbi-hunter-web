@@ -161,7 +161,7 @@ export default function MainPageHirer() {
         </div>
       </div>
 
-      <Title title={t('mainPage_hir_categories')} className={styles.title}/>
+      <Title title={t('mainPage_hir_categories')} className={styles.title} onAllWatchClick={()=>router.push('/recruiting/categories')}/>
       <CategoriesList onClick={onCategoryClickHandler} hideNav link={'/recruiting?category='} categories={[...categories.values()].filter(e=> e.image)}/>
 
 

@@ -200,7 +200,7 @@ export default function MainPageEmployee() {
         </div>
       </div>
 
-      <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{}}/>
+      <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{router.push('/recruiting/categories')}}/>
       <CategoriesList 
       onClick={(c) => onCategoryClickHandler(c)}
       watchMoreHref={'/recruiting/categories'}       
