@@ -1,0 +1,45 @@
+@import 'styles/index';
+
+.top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: var(--backColor);
+  border-radius: 16px;
+  margin-top: 24px;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block: 16px;
+}
+
+.cvsWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.accordeon {
+  @include transitionDefault;
+  max-height: 0px;
+  overflow: hidden;
+
+  &_active {
+    max-height: 100%;
+  }
+}
+
+.arrow {
+  @include transitionDefault;
+  rotate: 0deg;
+
+  &_active {
+    rotate: 180deg;
+  }
+}
+

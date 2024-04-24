@@ -77,7 +77,7 @@ export default function UserEditor(props: Props) {
   }, [])
 
   const sortedVariants = (
-    activeSet[1].sort((a, b) => {
+    activeSet[1]?.sort((a, b) => {
       if(a.price === 0 && b.price !== 0) {
         return -1
       }

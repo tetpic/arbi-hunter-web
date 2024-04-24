@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import { useAppContext } from 'context/state'
 import Title from '@/components/ui/TitleForSection'
 import P from '@/components/ui/P'
 import { useEffect, useState } from 'react'
@@ -13,14 +12,13 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from '@/components/ui/Spinner'
 import CvItem from '@/components/ui/CvItem'
-import FavoritesVacancyItem from './FavoritesVacancyItem'
+import FavoritesVacancyItem from '../FavoritesVacancyItem'
 import Formatter from 'utils/formatter'
 
 interface Props {
 }
 
-export default function FavoritesPage(props: Props) {
-  const appContext = useAppContext()
+export default function FavoritesPageEmployee(props: Props) {
   const userContext = useUserContext()
   const [vacancies, setVacancies] = useState<Map<number, IVacancy>>(new Map)
   const [cvs, setCvs] = useState<Map<number, ICV>>(new Map)

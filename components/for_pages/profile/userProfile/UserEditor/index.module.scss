@@ -173,6 +173,7 @@
   max-width: 504px;
   align-content: flex-start;
   row-gap: 8px;
+  width: clamp(400px, 30vw, 504px);
   @include mq($TabletWidth, max) {
     justify-self: center;
   }

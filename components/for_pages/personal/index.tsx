@@ -140,7 +140,7 @@ export default function PersonalPage(props: Props) {
   )
 
   return (<div className={styles.root}> 
-    {!isEditing && isHeaderExist
+    {!isEditing && isHeaderExist && !props.webView
       &&
       <PersonalHeader isEditing={!props.id&&isEditing}/>
       ||

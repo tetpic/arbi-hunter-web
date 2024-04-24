@@ -296,6 +296,12 @@
   "footer_download3": "или AppStore",
   "footer_securePayment": "Защищенная оплата",
 
+  "favorites_title":"Избранное",
+  "favorites_add":"Добавить",
+  "favorites_settings":"Настройки",
+  "favorites_searches":"Автопоиски",
+  "favorites_resumes":"Резюме",
+
   "mainPage_hir_feedbacks":"Отклики",
   "mainPage_hir_watches":"Просмотры вакансий",
   "mainPage_hir_watches_mobile":"Просмотры",

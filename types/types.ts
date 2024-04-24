@@ -25,6 +25,9 @@ export type DeepPartial<T> = {
 export interface IPagination<T>{
   data: T[]
   total: number
+  page: number
+  pageCount: number
+  count: number
 }
 export interface IPaginationRequest{
   page: number
