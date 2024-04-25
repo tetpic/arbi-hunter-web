@@ -144,9 +144,9 @@
   display: flex;
   flex-direction: column;
   padding-inline: 16px;
-  background-color: $backgroundBlack;
   @include mq($TabletWidth, max) {
     width: 100%;
+    background-color: $backgroundBlack;
     align-items: center;
     position: relative;
   }
@@ -182,30 +182,33 @@
 }
 
 .optionsWrapper {
-  background-color: $backgroundBlack !important;
-  position: relative;
-  margin-inline: -16px;
-  height: 220px;
-  margin-bottom: -16px;
-
-  .back {
-    background-color: $black;
-    border-radius: 16px;
-    width: 100vw;
-    height: 40px;
+  @include mq($TabletWidth, max) {
+    
+    background-color: $backgroundBlack !important;
+    position: relative;
+    margin-inline: -16px;
+    height: 220px;
+    margin-bottom: -16px;
+    
+    .back {
+      background-color: $black;
+      border-radius: 16px;
+      width: 100vw;
+      height: 40px;
+    }
   }
 }
 
 .topOptions {
-  width: 100vw;
-  background-color: $black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 12px;
-  margin-bottom: 16px;
-  border-radius: 0px 0px 16px 16px;
-  padding-bottom: 16px;
-
-
+  @include mq($TabletWidth, max) {
+    width: 100vw;
+    background-color: $black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 12px;
+    margin-bottom: 16px;
+    border-radius: 0px 0px 16px 16px;
+    padding-bottom: 16px;
+  }
 }

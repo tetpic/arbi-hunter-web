@@ -89,7 +89,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
     .then(res => {
       setChatId(res?.id)
     })
-    .catch((e) => {console.trace(e)})
+    .catch(() => {})
   }, [])
 
   return (<div className={styles.root} onClick={()=>router.push(`/vacancy/${vc.id}`)}> 
