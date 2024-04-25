@@ -17,6 +17,7 @@ enum ReviewsNavigation {
   Invite = 'invite',
   Wait = 'wait',
   Reject = 'reject',
+  Archive = 'archive'
 }
 
 function translate (n: ReviewsNavigation, t:Translate) {
@@ -29,6 +30,8 @@ function translate (n: ReviewsNavigation, t:Translate) {
       return t('profile_feedbacks_paused')
     case ReviewsNavigation.Reject:
       return t('profile_feedbacks_reject')
+    case ReviewsNavigation.Archive:
+      return t('profile_feedbacks_archive')
   }
 }
 
@@ -128,6 +131,24 @@ export default function Feedbacks() {
           return new Map(state)
         })
         break
+
+        case ReviewsNavigation.Archive:
+          setFiltered(state=> {
+            state.clear()
+            itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Rejected && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Rejected)
+            .map(([app, vc])=>{
+              state.set(app, vc)
+            })
+            return new Map(state)
+          })
+          setItemsHidden(state=> {
+            state.clear()
+            itemsHiddenFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Rejected && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Rejected)
+            .map(([app, vc])=>{
+              state.set(app, vc)
+            })
+            return new Map(state)
+          })
     }
   }, [page, CVFeedbacks])
 

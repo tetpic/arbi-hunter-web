@@ -69,6 +69,7 @@
     width: 100%;
     height: 100%;
     position: relative;
+    height: fit-content;
     @include mq($TabletWidth, max) {
       row-gap: 8px;
     }
@@ -129,7 +130,7 @@
 
 .heartButton {
   position: absolute;
-  bottom: 16px;
+  top: 16px;
   right: 16px;
   z-index: 3;
 }

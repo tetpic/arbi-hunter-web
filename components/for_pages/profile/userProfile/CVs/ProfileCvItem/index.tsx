@@ -146,7 +146,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     }
 
 
-    {(props.type !== 'drafts' || !cv.completedSteps) &&
+    {(props.type !== 'drafts' || !cv.completedSteps|| cv.completedSteps.length > 5) &&
       <Statistics 
       className={styles.stats}
       title={t('item_statistics')}     
@@ -157,7 +157,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       ]}
       />
       ||
-      cv.completedSteps &&
+      cv.completedSteps && cv.completedSteps.length < 6 &&
       <Progress stepsCount={7} className={styles.stats} progress={cv.completedSteps}/>
     }
 

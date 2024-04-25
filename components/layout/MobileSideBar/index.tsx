@@ -155,7 +155,7 @@ export default function MobileSideBar(props: Props) {
       }
 
       <Link 
-      href={'/messenger'} 
+      href={'/favorites'} 
       onClick={props.onClose}
       className={styles.link}
       >

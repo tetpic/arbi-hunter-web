@@ -17,6 +17,7 @@
   row-gap: 8px;
   align-items: flex-start;
   grid-template-columns: auto 1fr auto;
+  height: fit-content;
 
   .company {
     grid-area: c;
@@ -97,6 +98,11 @@
   border: $green 2px solid;
 }
 
+.infoRequest {
+  color: $yellow;
+  border: $yellow 2px solid;
+}
+
 
 .bottom {
   display: flex;
@@ -138,9 +144,11 @@
   display: flex;
   flex-direction: column;
   padding-inline: 16px;
+  background-color: $backgroundBlack;
   @include mq($TabletWidth, max) {
     width: 100%;
     align-items: center;
+    position: relative;
   }
 
 
@@ -171,8 +179,33 @@
     font-weight: $semibold;
     font-size: $smallText;
   }
+}
 
-  // .back {
-  //   margin-top: 40px;
-  // }
+.optionsWrapper {
+  background-color: $backgroundBlack !important;
+  position: relative;
+  margin-inline: -16px;
+  height: 220px;
+  margin-bottom: -16px;
+
+  .back {
+    background-color: $black;
+    border-radius: 16px;
+    width: 100vw;
+    height: 40px;
+  }
+}
+
+.topOptions {
+  width: 100vw;
+  background-color: $black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 12px;
+  margin-bottom: 16px;
+  border-radius: 0px 0px 16px 16px;
+  padding-bottom: 16px;
+
+
 }

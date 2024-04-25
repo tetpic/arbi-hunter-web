@@ -31,7 +31,9 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
       <UserPic className={styles.userPic} size={42} image={image}/>
       <div className={styles.topContent}>
         <P styleType={['medium', 'w500']}>{vacancy.company||vacancy.contactName}</P>
-        <P styleType={['medium', 'w500', 'greyLight']}>{vacancy.city.locName}</P>
+        {vacancy.city &&
+          <P styleType={['medium', 'w500', 'greyLight']}>{vacancy.city?.locName}</P>
+        }
       </div>
     </div>
     <P styleType={['medium', 'w500']}>{vacancy.name||vacancy.categories[0]?.description}</P>

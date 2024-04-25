@@ -8,22 +8,23 @@ import { IProposal } from './IProposal'
 import IChat from './IChat'
 
 export interface IApplication extends TimeStamp{
-  id: number,
-  vacancyId?: number,
+  chat: IChat[],
+  cv: ICV,
+  cvDeletedOrHidden?: boolean
   cvId: number,
+  deletedByEmployee?: boolean
+  id: number,
+  proposals: IProposal[],
+  proposal?: IProposal
+  profile: IUserProfile,
   profileId: number,
+  vacancyId?: number,
+  vacancy: IVacancy,
   status: ApplicationStatus, //"applied"
   coverLetter: string,
-  vacancy: IVacancy,
-  profile: IUserProfile,
-  cv: ICV,
-  proposals: [],
-  proposal?: IProposal
-  chat: IChat[],
   notification: INotification
   type?: PatternTypes
-  cvDeletedOrHidden?: boolean
-
+  vacancyDeletedOrHidden?: boolean
 }
 
 

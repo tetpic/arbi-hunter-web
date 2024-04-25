@@ -9,7 +9,7 @@ import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -20,6 +20,8 @@ import { useRouter } from 'next/router'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
 import { getUserImageSource } from 'utils/helpers'
+import ChatRepository from 'data/repositories/ChatRepository'
+import P from '@/components/ui/P'
 
 interface Props {
   vc: IVacancy
@@ -36,6 +38,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   const {isTabletWidth} = useResize()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const [chatId, setChatId] = useState<number>()
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
     if(!proposal.id) {
@@ -57,33 +60,44 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   }
 
   const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
-    <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
-    {(proposal?.status === ApplicationStatus.Accepted||proposal.type === ProposalRequestType.Interview) && 
-      <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
-    }
+    <div className={styles.topOptions}>
+      {isTabletWidth &&
+        <P styleType={['greyLight', 'medium']}>{vc.name}</P>
+      }
+      <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
+      {(proposal?.status === ApplicationStatus.Accepted||proposal.type === ProposalRequestType.Interview) && 
+        <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
+      }
+    </div>
     {isTabletWidth &&
-      <p className={classNames(styles.option, styles.back)}>Отмена</p>
+      <p className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</p>
     }
   </div>)
 
-
-
-  const openModalHandler =()=> {
+  const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {
+    e.stopPropagation()
     if (isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, null, 200)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, itemWrapperClassName: styles.optionsWrapper}, 300)
     }
     else {
       openDropDown(!dropDown)
     }
   }
 
-  return (<div className={styles.root}> 
+  useEffect(()=>{
+    ChatRepository.getChatByContactId(proposal.profile.id, proposal?.applicationId&&{applicationId: proposal?.applicationId}||{proposalId: proposal?.id})
+    .then(res => {
+      setChatId(res?.id)
+    })
+    .catch((e) => {console.trace(e)})
+  }, [])
+
+  return (<div className={styles.root} onClick={()=>router.push(`/vacancy/${vc.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc.profile, Preset.smallIconCrop)}/>
       <p className={styles.company}>{vc.company||vc.contactName}</p>
-
       <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
-      <ThreeDotsButton onMouseEnter={openModalHandler} className={styles.heartButton}/>
+      <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.heartButton}/>
       {!isTabletWidth &&
         <OptionsDropDown 
         options={options} 
@@ -91,24 +105,28 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
         getRef={(r)=>dropRef.current=r} 
         onClose={()=>openDropDown(false)}/>       
       }
-
     </div>
     <p className={styles.vcName}>{vc.name}</p>
   
     <SalaryItem vacancy={vc}/>
   
     {proposal &&
-     <p className={classNames(styles.status, styles[
-       proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status    ])}>
-       {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
-       </p>
+      <p className={classNames(styles.status, styles[
+        proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status])}
+      >
+        {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
+      </p>
     }
     <div className={styles.bottom}>
       <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
-      {proposal &&
-      <Button className={styles.button} onClick={()=> {proposal?.chat[0]&&router.push(`/messenger?chat=${proposal.chat[0].id}`)}}>Перейти в чат</Button>
-      ||
-      <Button className={styles.button}>Откликнуться</Button>
+      {((proposal && proposal.chat[0])|| chatId) &&
+      <Button className={styles.button} 
+      onClick={(e)=> {
+        e.stopPropagation();
+        (proposal.chat[0]||chatId)&&router.push(`/messenger?chat=${proposal.chat[0]?.id||chatId}`)
+      }}>Перейти в чат</Button>
+      // ||
+      // <Button className={styles.button} >Откликнуться</Button>
       }
     </div>
   </div>)

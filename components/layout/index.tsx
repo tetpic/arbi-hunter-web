@@ -24,7 +24,7 @@ export default function Layout(props: Props) {
   return ( 
   <div className={styles.root}  id={'mainLayout'}>
     <StickyContainer>
-      {(!appContext.hideHeader || !props.webView) &&
+      {(!appContext.hideHeader ?? !props.webView) &&
       <Sticky>
         {({style, distanceFromTop}) => <div className={styles.headerWrapper}  style={style}>
           <Header distanceFromTop={distanceFromTop}  />

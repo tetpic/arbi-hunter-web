@@ -152,13 +152,13 @@ export const TranslateProposalType = (p: ApplicationStatus) => {
 export const TranslateProposalRequestType = (p: ProposalRequestType) => {
   switch(p) {
     case ProposalRequestType.InfoRequest:
-      return ''
+      return 'Запрос информации'
     case ProposalRequestType.Interview:
       return 'Приглашение'
     case ProposalRequestType.New:
       return ''
     case ProposalRequestType.Rejection:
-      return ''
+      return 'Отказ'
   }
 }
 

@@ -10,20 +10,21 @@ import { ICV } from './ICV'
 export interface IProposal extends TimeStamp {
   applicationId?: number,
   application?: IApplication
+  chat?: IChat[],
+  coverLetter? : string,
   cvId?: number,
   cv?: ICV,
-  vacancyId?: number,
-  vacancy?: IVacancy
   cvDeletedOrHidden?: boolean
-  vacancyDeletedOrHidden?: boolean
-  type?: ProposalRequestType,
-  coverLetter? : string,
-  chat?: IChat[],
-  status?: ApplicationStatus
+  deletedByEmployee?: boolean
+  id?: number
   notification?: INotification,
   profile?: IUserProfile|null
   profileId?: number
-  id?: number
+  status?: ApplicationStatus
+  type?: ProposalRequestType,
+  vacancy?: IVacancy
+  vacancyDeletedOrHidden?: boolean
+  vacancyId?: number,
 }
 
 export interface IStat {

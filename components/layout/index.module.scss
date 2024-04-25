@@ -6,19 +6,13 @@
   min-height: 100dvh;
   background: var(--backGroundColor);
   @include mq($TabletWidth, max) {
-    padding-bottom: 72px;
-  }
-  @include mq($PhoneWidth, max) {
     padding-bottom: unset;
-    // padding-bottom: 74px;
   }
 }
 
 .headerWrapper {
   position: relative;
   z-index: 10;
-  // height: 2px;
-  // padding-bottom: 76px;
 }
 
 .content {

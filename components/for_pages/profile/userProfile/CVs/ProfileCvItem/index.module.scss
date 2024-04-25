@@ -51,10 +51,11 @@
   display: grid;
   grid-template-areas: 'i p d' 'i r d';
   grid-template-columns: auto 1fr auto;
-  align-items: flex-start;
+  align-items: start;
   column-gap: 16px;
   row-gap: 8px;
   width: 100%;
+  height: fit-content;
 
   .position {
     grid-area: p;

@@ -12,6 +12,8 @@ export interface IOptionsModalProps {
   title?: string
   children?: JSX.Element|JSX.Element[]
   ref?: MutableRefObject<HTMLDivElement>
+  bottomSheetClassName?: string
+  itemWrapperClassName?: string
 } 
 
 interface Props extends IOptionsModalProps{
@@ -43,14 +45,14 @@ export default function OptionsModal(props: Props) {
   }
 
   const body = (
-    <div className={styles.itemWrapper} onClick={hideModal}>
+    <div className={classNames(styles.itemWrapper, args?.itemWrapperClassName)} onClick={hideModal}>
       {children}
     </div>
   )
 
   if (props.isBottomSheet) {
     return (
-      <BottomSheetLayout>
+      <BottomSheetLayout className={args.bottomSheetClassName}>
         <BottomSheetBody>
           {head}
           {body}
