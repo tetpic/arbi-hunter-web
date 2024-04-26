@@ -5,12 +5,20 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import P from '@/components/ui/P'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import CvItem from '@/components/ui/CvItem'
-import SortArrowsSvg from '@/components/svg/SortArrowsSvg'
-import { useState } from 'react'
+// import SortArrowsSvg from '@/components/svg/SortArrowsSvg'
+import { useRef, useState } from 'react'
 import classnames from 'classnames'
 import Accordeon from '@/components/ui/Accordeon'
 import Spacer from '@/components/ui/Spacer'
 import ThreeDotsButton from '@/components/ui/ThreeDotsButton'
+import OptionsList from '@/components/ui/OptionsList'
+import OptionsDropDown from '@/components/ui/OptionsDropDown'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import { useAppContext } from 'context/state'
+import { AddFavoritesFolderArgs } from '@/components/modals/AddFavoritesFolder'
+import { ModalType } from 'types/enums'
+import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   folder: IFolder
@@ -18,8 +26,38 @@ interface Props {
 }
 
 export default function FavoritesHirerFolder(props: Props) {
+  const {t} = useTranslation()
   const foldersContext = useFavoritesFolderContext()
+  const appContext = useAppContext()
   const [isActive, setIsActive] = useState<boolean>(props.initialActive||false) 
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+
+  const editFolder = () => {
+    appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, {
+      onSave: (data) => foldersContext.updateFolder(props.folder.id, data),
+      initialData: {name: props.folder.name, default: props.folder.default}
+    })
+  }
+
+  const deletefolder = () => {
+    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+      text: t('favorites_confirmDeletion'),
+      callback: () => foldersContext.deleteFolder(props.folder.id),
+      maxWidth: 400
+    })
+  }
+
+  const openDropdownHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation()
+    openDropDown(!dropDown)
+  }
+
+
+  const options = <OptionsList options={[
+    {title: t('edit'), onClick: editFolder},
+    props.folder.default?null:{title: t('delete'), onClick: deletefolder}
+  ].filter(Boolean)} onMouseLeave={() => openDropDown(false)}/>
 
 
   return (<div className={styles.root}> 
@@ -28,18 +66,27 @@ export default function FavoritesHirerFolder(props: Props) {
       <div className={styles.folderDesc}>
         <P styleType={['w600', 'large']}>{props.folder.name}</P>
       </div>
-      <ThreeDotsButton className={styles.threeDots}/>
+      <ThreeDotsButton 
+      className={styles.threeDots} 
+      onMouseEnter={openDropdownHandler} 
+      onClick={openDropdownHandler}
+      />
+      <OptionsDropDown 
+      options={options} 
+      active={dropDown} 
+      getRef={  (r) => {dropRef.current = r}} 
+      onClose={()=>openDropDown(false)}/>
     </div>
     <Spacer basis={16}/>
     <Accordeon isActive={isActive}>
       <div className={styles.stats}>
-        <P>{foldersContext.currentFolderPage.get(props.folder.id)?.total} резюме</P>
-        <Button styleType={['icon', 'backTransparent']}><SortArrowsSvg/> По дате</Button>
+        <P>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
+        {/* <Button styleType={['icon', 'backTransparent']}><SortArrowsSvg/> {t('sortBy_date')}</Button> */}
       </div>
       <div className={styles.cvsWrapper}>
         {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
           return el.cvs.map(cv => {
-            return <CvItem cv={cv}/>
+            return <CvItem cv={cv} onChangeItem={() => foldersContext.removeCvFromFolder(props.folder.id, cv.id)} key={cv.id}/>
           })
         })}
       </div>

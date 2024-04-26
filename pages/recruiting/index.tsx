@@ -4,6 +4,7 @@ import RecruitingPageEmployee from 'components/for_pages/recruiting/RecruitingPa
 import RecruitingPageHirer from 'components/for_pages/recruiting/RecruitingPageHirer'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CreateVcCvWrapper } from 'context/createVcCv_state'
+import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
 import { LocationWrapper } from 'context/location_state'
 import { SourcesWrapper } from 'context/sources_state'
 import { useUserContext } from 'context/user_state'
@@ -68,7 +69,9 @@ export default function Recruiting(props: Props) {
           <RecruitingPageEmployee filters={params}/>
         ||
         props.auth && props.profileType === ProfileType.Hirer &&
-        <RecruitingPageHirer vcId={Number(props.vcId)} filters={params}/>
+        <FavoritesFolderWrapper>
+          <RecruitingPageHirer vcId={Number(props.vcId)} filters={params}/>
+        </FavoritesFolderWrapper>
       }
 
     </LocationWrapper>

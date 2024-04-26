@@ -1,5 +1,5 @@
 import { ICV } from 'data/interfaces/ICV'
-import { IFolder } from 'data/interfaces/IFolder'
+import { IFolder, IFolderCreate } from 'data/interfaces/IFolder'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
@@ -29,10 +29,11 @@ export default class FavoritesFolderRepository {
     return res
   }
 
-  static async createNewFolder(): Promise<any|null> {
+  static async createNewFolder(data: IFolderCreate): Promise<IFolder|null> {
     const res = await request({
       method: 'post',
       url: '/api/favourite-folder',
+      data
     })
     if(res.err) {
       return null
@@ -40,9 +41,22 @@ export default class FavoritesFolderRepository {
     return res
   }
 
-  static async updateFolder(folderId: number): Promise<any|null> {
+  static async updateFolder(folderId: number, data: Partial<IFolderCreate>): Promise<IFolder|null> {
     const res = await request({
       method: 'patch',
+      url: `/api/favourite-folder/${folderId}`,
+      data
+      
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async deleteFolder(folderId: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
       url: `/api/favourite-folder/${folderId}`,
     })
     if(res.err) {
@@ -71,6 +85,20 @@ export default class FavoritesFolderRepository {
         savedByCurrentProfile: true,
         page,
         limit
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async setDefaultFolderSaving(profileId:number, addSavedToDefaultFolder:boolean): Promise<any|null> {
+    const res = await request({
+      method: 'put',
+      url: `/api/profile/${profileId}`,
+      data: {
+        addSavedToDefaultFolder
       }
     })
     if(res.err) {

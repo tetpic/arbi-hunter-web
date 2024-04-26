@@ -26,6 +26,9 @@ import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
 import FavoritesButton from '../FavoritesButton'
+import { useUserContext } from 'context/user_state'
+import { useFavoritesFolderContext } from 'context/favorites_folder_state'
+import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 
 interface Props {
   cv: ICV
@@ -38,6 +41,8 @@ export default function CvItem({cv, ...props}: Props) {
   const appContext = useAppContext()
   const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
+  const userContext = useUserContext()
+  const folderContext = useFavoritesFolderContext()
 
   const defaultImage = '/icons/defaultUser.svg'
   const userImage = getUserImageSource(cv.profile, Preset.sCrop)
@@ -101,23 +106,42 @@ export default function CvItem({cv, ...props}: Props) {
     })
   }
 
+
+
+  const addToSaved = (signal: AbortSignal, folderId?: number ) => {
+    CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
+    .then(res=> {
+      props.onChangeItem()      
+    })
+    .catch(_=>{})
+  }
+
+  const removeFromSaved = (signal: AbortSignal) => {
+    CvRepository.removeCvFromSaved(cv.id, {signal})
+    .then(_=> {
+      props.onChangeItem()
+    })
+    .catch(_=>{})
+  }
+
+  const showFolderModal = (signal: AbortSignal) =>{
+    appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, {
+      initialFolders: folderContext.allFolders,
+      onChoose: (folderId) => {
+        addToSaved(signal, folderId)
+      }
+    })
+  }
+
   const likeHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
     const [signal] = getNewSignal('likeHandler')
     if(!cv.isSavedByCurrentProfile) {
-      CvRepository.addCvToSaved(cv.id, {signal})
-      .then(res=> {
-        props.onChangeItem()      
-      })
-      .catch(_=>{})
+      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(signal)
     }
     else {
-      CvRepository.removeCvFromSaved(cv.id, {signal})
-      .then(_=> {
-        props.onChangeItem()
-      })
-      .catch(_=>{})
+      removeFromSaved(signal)
     }
   }
 

@@ -68,7 +68,7 @@ export function CvWrapper(props: Props) {
   
   const saveCv = async (id: number) => {
     try {
-      const res = await CvRepository.addCvToSaved(id)
+      const res = await CvRepository.addCvToSaved({id})
       setSavedCvs()
       return true
     } catch (e) {

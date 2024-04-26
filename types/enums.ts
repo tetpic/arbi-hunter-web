@@ -49,6 +49,8 @@ export enum ModalType {
   AlertModal = 'alertModal',
   SearchModal = 'searchModal',
   AddFavoritesFolder = 'AddFavoritesFolder',
+  FavoritesSettingModal = 'FavoritesSettingModal',
+  ChooseFolderToSave = 'ChooseFolderToSave',
 }
 
 export enum AppTheme {

@@ -101,10 +101,11 @@ export default class CvRepository {
     return res
   }
 
-  static async addCvToSaved(id: number, config?: AxiosRequestConfig): Promise<any|null> {
+  static async addCvToSaved(data:{id: number, favouriteFolderId?: number}, config?: AxiosRequestConfig): Promise<any|null> {
     const res = await request({
       method: 'get',
-      url: `/api/cv/${id}/save`,
+      url: `/api/cv/${data.id}/save`,
+      data: data.favouriteFolderId ? {favouriteFolderId: data.favouriteFolderId} : {},
       config
     })
     if(res.err) {

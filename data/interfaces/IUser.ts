@@ -28,6 +28,7 @@ export interface IStats {
 }
 
 export interface IUserProfile extends TimeStamp {
+  addSavedToDefaultFolder: boolean
   id: number,
   userId: number,
   profileType: ProfileType,

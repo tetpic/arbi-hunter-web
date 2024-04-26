@@ -1,0 +1,28 @@
+@import 'styles/index';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
+}
+
+.modalLayout {
+  max-width: 460px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.closeBtn {
+  align-self: flex-end;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 8px;
+  width: 100%;
+}

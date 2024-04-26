@@ -13,3 +13,8 @@ extends Pick<TimeStamp,
   savedCvCount: number
   profile: IUserProfile
 }
+
+export interface IFolderCreate {
+  name: string, 
+  default: boolean
+}

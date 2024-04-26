@@ -34,7 +34,7 @@ export default function CvVcPageTop(props: Props) {
   const likeItem = ()=>{
     if(props.cv) {
       liked.current === false &&
-      CvRepository.addCvToSaved(props.cv.id)
+      CvRepository.addCvToSaved({id: props.cv.id})
       .then(_=> {
         setIsLiked(true)
         liked.current = true

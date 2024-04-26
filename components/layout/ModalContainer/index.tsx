@@ -50,6 +50,8 @@ import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 import AlertModal from '@/components/modals/AlertModal'
 import SearchModal from '@/components/modals/SearchModal'
 import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
+import FavoritesSettingModal from '@/components/modals/FavoritesSettingModal'
+import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
 
 
 interface Props { }
@@ -247,6 +249,14 @@ export default function ModalContainer(props: Props) {
       case ModalType.AddFavoritesFolder:
         return <Modal isOpen {...commonSettings} >
         <AddFavoritesFolder onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.FavoritesSettingModal:
+        return <Modal isOpen {...commonSettings} >
+        <FavoritesSettingModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.ChooseFolderToSave:
+        return <Modal isOpen {...commonSettings} >
+        <ChooseFolderToSave onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

@@ -11,13 +11,16 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import FavoritesHirerFolder from './Folder'
 import { useAppContext } from 'context/state'
 import { ModalType } from 'types/enums'
+import { AddFavoritesFolderArgs } from '@/components/modals/AddFavoritesFolder'
+import { FavoritesSettingModalArgs } from '@/components/modals/FavoritesSettingModal'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
 }
 
 enum FavoritesPage {
   RESUMES='resumes',
-  SEARCHES = 'searches',
+  // SEARCHES = 'searches',
 }
 
 const pageItems = (t: Translate) =>{
@@ -25,15 +28,30 @@ const pageItems = (t: Translate) =>{
 } 
 
 
-
 export default function FavoritesPageHirer(props: Props) {
   const [page, setPage] = useState<FavoritesPage>(FavoritesPage.RESUMES)
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const foldersContext = useFavoritesFolderContext()
   const {t} = useTranslation()
 
   const openAddFolderModal = () => {
-    appContext.showModal(ModalType.AddFavoritesFolder)
+    appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, {
+      onSave: (data) => foldersContext.createNewFolder(data),
+    })
+  }
+
+  const openSettingsModal = () => {
+    appContext.showModal<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, {
+      initialFolders: foldersContext.allFolders,
+      initialData: {
+        addSavedToDefaultFolder: userContext.currentProfile.addSavedToDefaultFolder,
+        defaultFolderId: foldersContext.allFolders.find(el=> el.default)?.id
+      },
+      onSave: (data) => {
+        foldersContext.setSettings(data)
+      }
+    })
   }
 
   useEffect(()=>{
@@ -43,7 +61,7 @@ export default function FavoritesPageHirer(props: Props) {
   const titleButtons = (
     <div className={styles.buttonsWrapper}>
       <Button styleType={['grey', 'icon']} onClick={openAddFolderModal}><PlusSvg/> {t('favorites_add')}</Button>
-      <Button styleType={['grey', 'icon']}><SettingSvg/> {t('favorites_settings')}</Button>
+      <Button styleType={['grey', 'icon']} onClick={openSettingsModal}><SettingSvg/> {t('favorites_settings')}</Button>
     </div>
   )
 

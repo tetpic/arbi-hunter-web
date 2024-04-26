@@ -22,6 +22,8 @@ import FilterHirer from '../Filters/FilterHirer'
 import SideFilterHirer from '../SideFilters/SideFilterHirer'
 import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 import useTranslation from 'next-translate/useTranslation'
+import { useUserContext } from 'context/user_state'
+import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 
 
 interface Props {
@@ -48,6 +50,8 @@ function RecruitingPageHirerInner(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
   const appContext = useAppContext()
+  const userContext = useUserContext()
+  const folderContext = useFavoritesFolderContext()
   const router = useRouter()
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
   const isInited = useRef<boolean>(false)
@@ -85,6 +89,9 @@ function RecruitingPageHirerInner(props: Props) {
   }
 
   const init = async() => {
+    if (!userContext.currentProfile.addSavedToDefaultFolder) {
+      folderContext.getAllFolders()
+    }
     vacancyContext.setVacancies()
     if(props.vcId) {
       vacancyContext.setCurrentVacancy({id: props.vcId})
