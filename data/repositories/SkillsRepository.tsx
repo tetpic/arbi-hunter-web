@@ -26,4 +26,18 @@ export default class SkillsRepository {
     }
     return res
   }
+
+  static async getRecommendedSkills(categories: number): Promise<IPagination<ISource>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/skill',
+      data: {
+        categories
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

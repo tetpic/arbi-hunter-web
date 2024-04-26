@@ -8,6 +8,7 @@ import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, 
 import { useUserContext } from './user_state'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
+import SkillsRepository from 'data/repositories/SkillsRepository'
 
 
 export interface HelpObject {
@@ -62,6 +63,10 @@ export interface ICreationState {
 
   setEditedItem: (item: ICV|IVacancy, type: 'cv'|'vc') => void
 
+  recommendedSkills: Map<number, ISource>
+  setRecommendedSkills: () => void
+
+
 }
 
 
@@ -100,6 +105,7 @@ export function CreateVcCvWrapper(props: Props) {
   const draftId = useRef<number>()
   const draftItem = useRef<Partial<ICV|IVacancy>>({})
   const [tariffs, setTariffs] = useState<Map<number,ITariff>>(new Map)
+  const [recommendedSkills, setRecommendedSkillsState] = useState<Map<number, ISource>>(new Map)
 
 
   const setCurrentCv = (v: ICVCreate) => {
@@ -275,6 +281,16 @@ export function CreateVcCvWrapper(props: Props) {
     })
   }
 
+  const setRecommendedSkills = () => {
+    SkillsRepository.getRecommendedSkills(activeSubCategory[0].id)
+    .then(res => {
+      if(res) {
+        setRecommendedSkillsState(new Map(res.data.map(el=> [el.id, el])))
+        console.log(res)
+      }
+    })
+  }
+
 
 
 
@@ -322,7 +338,9 @@ export function CreateVcCvWrapper(props: Props) {
     activeSubCategory,
     setActiveCategory,
     setActiveSubcategory,
-    setSubcategoriesToCategory
+    setSubcategoriesToCategory,
+    recommendedSkills,
+    setRecommendedSkills
   }
 
   return (

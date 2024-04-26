@@ -21,6 +21,9 @@ import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import FilesList from '@/components/ui/FilesList'
 import { useSourcesContext } from 'context/sources_state'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import TagList from '@/components/ui/TagList'
+import Spacer from '@/components/ui/Spacer'
 
 
 type SkillsFields = {
@@ -37,18 +40,17 @@ interface Props {
 }
 
 export default function Skills(props: Props) {
+  const cvContext = useCreateVcCvContext()
+  const appContext  = useAppContext()
+  const sourcesContext = useSourcesContext()
+  const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
 
   const initialCoursesData: CoursesInfo = {
     date: '',
     location: '',
     name: ''
   }
-
-  const cvContext = useCreateVcCvContext()
-  const appContext  = useAppContext()
-  const sourcesContext = useSourcesContext()
-  const {isTabletWidth} = appContext.size
-  const {t} = useTranslation()
 
   const [showCoursesDetails, setCoursesDetails] = useState<boolean>(false)
   const [detailsCoursesInfo, setDetailsCoursesInfo] = useState<CoursesInfo[]>(cvContext.currentCv?.coursesInfo||[])
@@ -88,6 +90,10 @@ export default function Skills(props: Props) {
   useEffect(()=>{
     setFieldValue('skillsIds', cvContext.currentCv?.skillsIds)
   }, [cvContext.currentCv])
+
+  useEffect(()=>{
+      cvContext.setRecommendedSkills()
+  }, [cvContext.activeSubCategory])
   
 
   useEffect(()=>{
@@ -98,7 +104,6 @@ export default function Skills(props: Props) {
     else {
       sourcesContext.init(['verticals'])
     }
-
   }, [])
 
   const removeLanguage = (l: ILanguageKnowledge) => {
@@ -179,6 +184,15 @@ export default function Skills(props: Props) {
   }
 
   return ( <div className={styles.root}>
+    {cvContext.recommendedSkills.size>0 &&
+      <>
+      <P styleType={['w600', 'large']}>Рекомендованные навыки</P>
+      <Spacer basis={16}/>
+      <TagList tags={[...cvContext.recommendedSkills.values()].filter(el => !cvContext.helpObjects.skills?.get(el.id)).map(s => ({name: s.title, isActive: false, onClick: ()=>{
+        cvContext.setHelpObjects({...cvContext.helpObjects, skills: new Map([...cvContext.helpObjects.skills, [s.id, s]])})
+      }}))}/>
+      </>
+    }
     <AddButton 
     test={'addSkill'}
     className={styles.addButton} 

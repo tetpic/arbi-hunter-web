@@ -107,7 +107,6 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
 
-
   const addToSaved = (signal: AbortSignal, folderId?: number ) => {
     CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
     .then(res=> {
