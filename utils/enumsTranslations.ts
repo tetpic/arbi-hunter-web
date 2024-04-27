@@ -280,3 +280,4 @@ export const TranslateVacancyLookType = (v: VacancyLookType, profileType: Profil
 }
 
 export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])
+

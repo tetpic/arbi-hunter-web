@@ -21,6 +21,8 @@ import CharacterCartModal from '@/components/modals/CharacterCartModal'
 import PurchasePreviewModal from '@/components/modals/PurchasePreviewModal'
 import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
+import HirerFieldsModal from '@/components/modals/HirerFieldsModal'
+import SalaryModal from '@/components/modals/SalaryModal'
 
 
 interface Props { }
@@ -178,6 +180,24 @@ export default function BottomSheetContainer(props: Props) {
           disableDrag={false}
         >
           <ChangeLanguageModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.HirerFieldsModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <HirerFieldsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.SalaryModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <SalaryModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

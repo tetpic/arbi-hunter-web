@@ -51,6 +51,8 @@ export enum ModalType {
   AddFavoritesFolder = 'AddFavoritesFolder',
   FavoritesSettingModal = 'FavoritesSettingModal',
   ChooseFolderToSave = 'ChooseFolderToSave',
+  HirerFieldsModal = 'hirerFieldsModal',
+  SalaryModal = 'salaryModal',
 }
 
 export enum AppTheme {
@@ -152,6 +154,7 @@ export enum Currency {
 }
 
 export enum EducationTypes {
+  No= 'no',
   Secondary= 'secondary',
   SecondarySpecial= 'secondarySpecial',
   IncompleteHigher= 'incompleteHigher',
@@ -160,7 +163,6 @@ export enum EducationTypes {
   Master= 'master',
   PhD= 'PhD',
   Doctor= 'doctor',
-  No= 'no'
 }
 
 export enum LanguagesLevel {

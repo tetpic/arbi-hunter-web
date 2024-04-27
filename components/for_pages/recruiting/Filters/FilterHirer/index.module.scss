@@ -3,9 +3,8 @@
 .root {
   padding: 24px;
   border-radius: 16px;
-  width: calc(100% - 350px);
+  max-width: 760px;
   margin-bottom: 190px;
-
   @include mq($TabletWidth, max) {
     width: 100%;
     padding: unset;
@@ -52,15 +51,17 @@
   width: 30%;
   flex-shrink: 0;
   white-space: nowrap;
-  // @include mq($TabletWidth, max) {
-  //   padding: 16px;
-  //   height: 56px;
-  //   background-color: $grey;
-  //   border-radius: 16px;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  // }
+  @include mq($TabletWidth, max) {
+    padding: 16px;
+    height: 56px;
+    background-color: $grey;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    
+  }
 
   svg {
     @include transitionDefault;

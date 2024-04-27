@@ -259,7 +259,6 @@ export default function FilterEmployee(props: Props) {
             <P className={styles.subTitle} styleType={['w500', 'medium']}>{t('filters_searchOnlyIn')}</P>
             {isTabletWidth &&
               <TagsRadioList 
-              checkbox
               className={styles.tags} 
               name={'searchIn'} 
               options={TranslateSearchInType.map(el => ({value: el[0], label: el[1]}))}/>
@@ -495,7 +494,6 @@ export default function FilterEmployee(props: Props) {
             options={options.workExperience}
             />
           }
-          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
@@ -515,7 +513,6 @@ export default function FilterEmployee(props: Props) {
             name={'employment'} 
             options={options.employmentType}/>
           }
-          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
@@ -535,7 +532,6 @@ export default function FilterEmployee(props: Props) {
             options={options.schedule} 
             />
           }
-          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
 
@@ -555,7 +551,6 @@ export default function FilterEmployee(props: Props) {
             options={options.forLastNumbersOfDays} 
             />
           }
-            {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
       </Form> 

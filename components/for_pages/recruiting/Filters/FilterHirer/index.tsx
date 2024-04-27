@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperienceTranslate } from 'types/enums'
+import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
@@ -13,9 +13,8 @@ import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
 import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
-import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { TranslateCompensationType,  TranslateCurrency,  TranslateEducationType,  TranslateEmploymentType,  TranslateLanguage,  TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
+import { TranslateCompensationType,  TranslateCurrency,  TranslateEducationType,  TranslateEmploymentType,  TranslateLanguage,  TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType, TranslateWorkExperience } from 'utils/enumsTranslations'
 import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import { ILangaugesModalArgs } from '@/components/modals/CvModals/Languages'
 import P from '@/components/ui/P'
@@ -27,8 +26,10 @@ import { useSourcesContext } from 'context/sources_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { useLocationContext } from 'context/location_state'
 import useTranslation from 'next-translate/useTranslation'
-import AddButton from '@/components/ui/AddButton'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
+import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerFieldsModal'
+import { SalaryModalArgs } from '@/components/modals/SalaryModal'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -105,6 +106,23 @@ export default function FilterHirer(props: Props) {
     })
   }
 
+  const openCompensationModal = (title: string) => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet<SalaryModalArgs>(ModalType.SalaryModal, {
+        initialValues: {
+          salaryMax: formik.values.salaryMax,
+          salaryMin: formik.values.salaryMin,
+          currency: formik.values.currency
+        },
+        title,
+        onSubmit: (data)=>{
+          formik.setValues({...formik.values, ...data})
+          appContext.hideBottomSheet()
+        }
+      }, 300)
+    }
+  }
+
   const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
     const dataToSet:ISoursesModalArgs = {
       type: t.type,
@@ -169,6 +187,21 @@ export default function FilterHirer(props: Props) {
     creationContext.setHelpObjects(newHelpObject)
   }
 
+  const openFieldsModal = (type: HirerFieldType, title: string, height: number) => {
+    if(isTabletWidth) {
+      appContext.showBottomSheet<HirerFieldsModalArgs>(ModalType.HirerFieldsModal, {
+        type,
+        title,
+        initialFields: {[type]: formik.values[type]},
+        onSubmit: (data)=>{
+          formik.setValues({...formik.values, ...data})
+          appContext.hideBottomSheet()
+        },
+      }, height)
+      return
+    } 
+  }
+
   useEffect(()=>{
     sourcesContext.init(['sources', 'verticals', 'geos'])
   }, [])
@@ -223,11 +256,17 @@ export default function FilterHirer(props: Props) {
     <FormikProvider value={formik}>
       <Form>
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            {t('filters_specs')}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=>{
+            isTabletWidth&&openSpecializationModal()
+          }}
+          >
+            <span>{t('filters_specs')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && 
+          {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && !isTabletWidth &&
             <P styleType={['medium', 'w500']}>
               {t('filters_any')}
             </P>
@@ -237,62 +276,77 @@ export default function FilterHirer(props: Props) {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
             })
           }
-          {!isTabletWidth &&
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={()=>openSpecializationModal()}
             >
               {t('filters_addSpecs')}
             </P>
-            ||
-            <AddButton className={styles.addButton} text={t('filters_addSpecs')} onClick={()=>openSpecializationModal()}/>
-          }
           </div>
+          ||
+          creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
+          <div className={styles.itemContent}>
+            {
+              creationContext.activeSubCategory.map(el=> {
+                return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
+              })
+            }
+          </div>
+
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle}>
-            {t('filters_salary')}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=>openCompensationModal(t('filters_salary'))}
+          >
+            <span>{t('filters_salary')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
-            <div className={styles.inputsWrapper}>
-              <InputField  
-              isNumbersOnly
-              maxLength={12} 
-              className={styles.input} 
-              styleType={'default'} 
-              color={'default'} 
-              name={'salaryMin'} 
-              label={'oт'} 
-              labelType={'static'}
-              labelClassName={styles.label}
-              priceFormatting
-              error={t('filters_oneFieldShouldBeFilled')}
-              suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
-              />
-              <span> – </span>
-              <InputField  
-              isNumbersOnly
-              labelType={'static'}
-              labelClassName={styles.label}
-              maxLength={12} 
-              className={styles.input} 
-              styleType={'default'} 
-              color={'default'} 
-              name={'salaryMax'} 
-              label={'до'} 
-              priceFormatting
-              error={t('filters_oneFieldShouldBeFilled')}
-              suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
-              />
-            </div>
+            {!formik.values.compensation &&
+              <>
+              <div className={styles.inputsWrapper}>
+                <InputField  
+                isNumbersOnly
+                maxLength={12} 
+                className={styles.input} 
+                styleType={'default'} 
+                color={'default'} 
+                name={'salaryMin'} 
+                label={'oт'} 
+                labelType={'static'}
+                labelClassName={styles.label}
+                priceFormatting
+                error={t('filters_oneFieldShouldBeFilled')}
+                suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
+                />
+                <span> – </span>
+                <InputField  
+                isNumbersOnly
+                labelType={'static'}
+                labelClassName={styles.label}
+                maxLength={12} 
+                className={styles.input} 
+                styleType={'default'} 
+                color={'default'} 
+                name={'salaryMax'} 
+                label={'до'} 
+                priceFormatting
+                error={t('filters_oneFieldShouldBeFilled')}
+                suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
+                />
+              </div>
 
-            <TagsRadioList className={styles.tags} name={'currency'} options={[
-              {value: Currency.RUB, label: 'Руб'},
-              {value: Currency.USD, label: Currency.USD},
-              {value: Currency.EUR, label: 'Euro'},
-              {value: Currency.GRN, label: 'Гривны'},
-            ]}/>
+              <TagsRadioList className={styles.tags} name={'currency'} options={[
+                {value: Currency.RUB, label: 'Руб'},
+                {value: Currency.USD, label: Currency.USD},
+                {value: Currency.EUR, label: 'Euro'},
+                {value: Currency.GRN, label: 'Гривны'},
+              ]}/>
+            </>
+            }
             
             <CheckboxField 
             itemClassName={styles.radioField} 
@@ -301,12 +355,27 @@ export default function FilterHirer(props: Props) {
             value={CompensationType.Contract} 
             />
           </div>
+          ||
+          (formik.values.salaryMin||formik.values.salaryMax||formik.values.compensation) &&
+          <div className={styles.itemContent}>
+            <RemovableItem text={
+              formik.values.compensation
+              ?TranslateCompensationType(formik.values.compensation)
+              :[formik.values.salaryMin && t('fromCapitalized') + ' ' + formik.values.salaryMin, formik.values.salaryMax && t('to') + ' ' + formik.values.salaryMax].filter(Boolean).join(' - ') + ' ' + TranslateCurrency(formik.values.currency)
+            }/>
+          </div>
+          }
+
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>{t('filters_showPeriod')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=> openFieldsModal('forLastNumberOfDays',t('filters_showPeriod'), 306)}
+          >
+            <span>{t('filters_showPeriod')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <RadioListField 
             name={'forLastNumberOfDays'}
             rootClass={styles.radioField}
@@ -317,75 +386,121 @@ export default function FilterHirer(props: Props) {
               })         
             ]} 
             />
+            ||
+            formik.values.forLastNumberOfDays &&
+            <div className={styles.itemContent}>
+              <RemovableItem 
+              text={periods.find(el => el.value === formik.values.forLastNumberOfDays).name}
+              onClick={()=>formik.setFieldValue('forLastNumberOfDays', null)}
+              /> 
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>{t('filters_vacancyLookType')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=> openFieldsModal('vacancyLookType', t('filters_vacancyLookType'), 300)}
+          >
+            <span>{t('filters_vacancyLookType')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <CheckboxListField 
             name={'vacancyLookType'}
             rootClass={styles.radioField}
-            options={[
-              {value: VacancyLookType.NotLooking, label: TranslateVacancyLookType(VacancyLookType.NotLooking, ProfileType.Hirer, t)},
-              {value: VacancyLookType.ActivelyLooking, label: TranslateVacancyLookType(VacancyLookType.ActivelyLooking, ProfileType.Hirer, t)},
-              {value: VacancyLookType.PassivelyLooking, label: TranslateVacancyLookType(VacancyLookType.PassivelyLooking, ProfileType.Hirer, t)},
-            ]} 
+            options={Object.values(VacancyLookType).map(el => {
+              return {value: el, label: TranslateVacancyLookType(el, ProfileType.Hirer, t)}
+            })} 
             />
+            ||
+            formik.values.vacancyLookType.length > 0 &&
+            <div className={styles.itemContent}>
+              {
+                formik.values.vacancyLookType.map(el => {
+                  return <RemovableItem 
+                  text={TranslateVacancyLookType(el, ProfileType.Hirer, t)}
+                  onClick={()=>formik.setFieldValue('vacancyLookType', formik.values.vacancyLookType.filter(f => f !== el))}
+                  />
+                })
+              }
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            {t('filters_country')}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=>{
+            isTabletWidth&&openCountryModal()
+            setActiveAccordeon(activeAccordeon === 5 ? null : 5)
+          }}
+          >
+            <span>{t('filters_country')}</span>  {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
             creationContext.helpObjects.countries.map(el=> {
               return (<RemovableItem key={el.geonameid} onClick={()=>{}} text={el.locName} />)
             })
           }
-          {!isTabletWidth &&
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCountryModal}
             >
-             {t('filters_addCountry')}
+             <span>{t('filters_addCountry')}</span>  {isTabletWidth &&<ArrowDownSvg/>}
             </P>
-            ||
-            <AddButton className={styles.addButton} text={t('filters_addCountry')} onClick={openCountryModal}/>
-          }
           </div>
+          ||
+          creationContext.helpObjects?.countries?.length > 0 &&
+          <div className={styles.itemContent}>
+            {
+              creationContext.helpObjects.countries.map(el=> {
+                return (<RemovableItem key={el.geonameid} onClick={()=>{}} text={el.locName} />)
+              })
+            }
+          </div>
+          }
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>
-            {t('filters_verticals')}
+            <span>{t('filters_verticals')}</span>  {isTabletWidth &&<ArrowDownSvg/>}
           </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeVerticals?.size > 0 && creationContext.helpObjects && 
               [...creationContext.helpObjects?.activeVerticals?.entries()]
               .map(([key, value])=> 
-              <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
+                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
               )
             }
-            {!isTabletWidth &&
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
-                {t('filters_addVerticals')}
+                <span>{t('filters_addVerticals')}</span>  {isTabletWidth &&<ArrowDownSvg />}
               </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addVerticals')} onClick={()=>openSourcesModal({type: 'verticals'})}/>
+          </div>
+          ||
+          creationContext.helpObjects?.activeVerticals?.size > 0 && creationContext.helpObjects &&
+          <div className={styles.itemContent}>
+            {
+              [...creationContext.helpObjects?.activeVerticals?.entries()]
+              .map(([key, value])=> 
+                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
+              )
             }
           </div>
+          }
         </div>
 
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>
-            {t('filters_sources')}
+            <span>{t('filters_sources')}</span>  {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeSources?.size > 0 && creationContext.helpObjects && 
               [...creationContext.helpObjects?.activeSources.entries()]
@@ -393,110 +508,195 @@ export default function FilterHirer(props: Props) {
                 <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
               )
             }
-            {!isTabletWidth &&
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'sources'})}
               >
-                {t('filters_addSources')}
+                <span>{t('filters_addSources')}</span>  {isTabletWidth &&<ArrowDownSvg />}
               </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={()=>openSourcesModal({type: 'sources'})}/>
+          </div>
+          ||
+          creationContext.helpObjects?.activeSources?.size > 0 && creationContext.helpObjects && 
+          <div className={styles.itemContent}>
+            {
+              [...creationContext.helpObjects?.activeSources.entries()]
+              .map(([key, value])=> 
+                <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
+              )
             }
           </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}>
-            {t('filters_geos')}
+          <p 
+          className={styles.fieldTitle} 
+          onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}
+          >
+            <span>{t('filters_geos')}</span>  {isTabletWidth &&<ArrowDownSvg />}
           </p>
-          <div className={styles.itemContent}>
-            {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
-                [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
-                  <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
+          {!isTabletWidth &&
+            <div className={styles.itemContent}>
+              {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
+                  [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
+                    <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
                 )
-            }
-            {!isTabletWidth &&
+              }
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'geos'})}            
               >
-                {t('filters_addGeos')}
+                <span>{t('filters_addGeos')}</span>  {isTabletWidth &&<ArrowDownSvg />}
               </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addGeos')} onClick={()=>openSourcesModal({type: 'geos'})}/>
-            }
-          </div>
+            </div>
+            ||
+            creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects &&
+            <div className={styles.itemContent}>
+              {creationContext.helpObjects?.activeGeos?.size > 0 && creationContext.helpObjects && 
+                [...creationContext.helpObjects?.activeGeos?.entries()].map(([key, value])=> 
+                    <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
+                )
+              }
+            </div>
+          }
         </div>
 
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            {t('filters_employmentType')}
+          <p className={styles.fieldTitle} onClick={()=> openFieldsModal('employment', t('filters_employmentType'), 300)}>
+            <span>{t('filters_employmentType')}</span>  {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'employment'} 
-            options={[
-              {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
-              {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
-              {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
-            ]}/>           
+            options={Object.values(EmploymentType).map(el => {return {label: TranslateEmploymentType(el, t), value: el}})}/>           
+            ||
+            formik.values.employment.length > 0 &&
+            <div className={styles.itemContent}>
+              {
+                formik.values.employment.map(el =>{
+                  return <RemovableItem 
+                  text={TranslateEmploymentType(el, t)} 
+                  onClick={() => formik.setFieldValue('employment', formik.values.employment.filter(item => item !== el))}
+                  />
+                })
+              }
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
-            <span>{t('filters_schedule')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
+          <p className={styles.fieldTitle} onClick={()=> openFieldsModal('schedule', t('filters_schedule'), 300)
+          }>
+            <span>{t('filters_schedule')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'schedule'}
-            options={[
-              {value: ScheduleType.Flexible, label:  TranslateScheduleType(ScheduleType.Flexible, t)},
-              {value: ScheduleType.FullDay, label:  TranslateScheduleType(ScheduleType.FullDay, t)},
-              {value: ScheduleType.Remote, label:  TranslateScheduleType(ScheduleType.Remote, t)}
-            ]} 
+            options={Object.values(ScheduleType).map(el => {
+              return {label: TranslateScheduleType(el, t), value: el}
+            })} 
             />          
+            ||
+            formik.values.schedule.length > 0 &&
+            <div className={styles.itemContent}>
+              {
+                formik.values.schedule.map(el => {
+                  return <RemovableItem 
+                  text={TranslateScheduleType(el, t)}
+                  onClick={() => formik.setFieldValue('schedule', formik.values.schedule.filter(item => item !== el))}
+                  />
+                })
+              }
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            <span>{t('filters_experience')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
+          <p className={styles.fieldTitle} onClick={()=> openFieldsModal('experience', t('filters_experience'), 340)}>
+            <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <CheckboxListField 
             name={'experience'} 
             rootClass={styles.radioField}
-            options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+            options={Object.values(WorkExperience).map(el => {
+              return {label: TranslateWorkExperience(el, t), value: el}
+            })}
             />           
+            ||
+            formik.values.experience.length > 0 &&
+            <div className={styles.itemContent}>
+              {
+                formik.values.experience.map(el => {
+                  return <RemovableItem 
+                  text={TranslateWorkExperience(el, t)}
+                  onClick={()=>formik.setFieldValue('experience', formik.values.experience.filter(f=> f !== el))}
+                  />
+                })
+              }
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            {t('filters_education')}
+          <p className={styles.fieldTitle} onClick={()=> openFieldsModal('education', t('filters_education'), 542)}>
+            <span>{t('filters_education')}</span>  {isTabletWidth &&<ArrowDownSvg />}
           </p>
+          {!isTabletWidth &&
             <CheckboxListField 
             name={'education'} 
             rootClass={styles.radioField}
-            options={[
-              {label: TranslateEducationType(EducationTypes.No, t), value: EducationTypes.No},
-              {label: TranslateEducationType(EducationTypes.Secondary, t), value: EducationTypes.Secondary},
-              {label: TranslateEducationType(EducationTypes.SecondarySpecial, t), value: EducationTypes.SecondarySpecial},
-              {label: TranslateEducationType(EducationTypes.IncompleteHigher, t), value: EducationTypes.IncompleteHigher},
-              {label: TranslateEducationType(EducationTypes.Higher, t), value: EducationTypes.Higher},
-              {label: TranslateEducationType(EducationTypes.Bachelor, t), value: EducationTypes.Bachelor},
-              {label: TranslateEducationType(EducationTypes.Master, t), value:EducationTypes.Master},
-              {label: TranslateEducationType(EducationTypes.PhD, t), value:EducationTypes.PhD},
-              {label: TranslateEducationType(EducationTypes.Doctor, t), value: EducationTypes.Doctor},
-            ]} 
+            options={
+              Object.values(EducationTypes).map(el=>{
+                return {label: TranslateEducationType(el, t), value: el}
+              })} 
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
+            ||
+            formik.values.education.length > 0 &&
+            <div className={styles.itemContent}>
+              {
+                formik.values.education.map(el => {
+                  return <RemovableItem 
+                  text={TranslateEducationType(el, t)}
+                  onClick={()=>formik.setFieldValue('education', formik.values.education.filter(f=> f !== el))}
+                  />
+                })
+              }
+            </div>
+          }
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle}>{t('filters_languageKnowledgedges')}</p>
+          <p className={styles.fieldTitle} onClick={()=>openLangsModal()}>
+            <span>{t('filters_languageKnowledgedges')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+          </p>
+          {!isTabletWidth &&
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.languageKnowledges?.size > 0 
             && creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
+              .map((el)=> 
+                <RemovableItem 
+              key={el.language} 
+              onClick={()=>removeLanguage(el)} 
+              text={`${TranslateLanguage(el.language, t)}, ${TranslateLanguageKnowLevel(el.level, true)}`} 
+              /> 
+            )
+            } 
+              <P 
+              styleType={['medium', 'w500', 'underlined', 'blue']}
+              onClick={()=>openLangsModal()}            
+              >
+                <span>{t('filters_addLanguage')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+              </P>
+          </div>
+          ||
+          creationContext.helpObjects?.languageKnowledges?.size > 0 && creationContext.helpObjects &&
+          <div className={styles.itemContent}>
+            {
+              [...creationContext.helpObjects?.languageKnowledges.values()]
               .map((el)=> 
                 <RemovableItem 
                 key={el.language} 
@@ -504,18 +704,10 @@ export default function FilterHirer(props: Props) {
                 text={`${TranslateLanguage(el.language, t)}, ${TranslateLanguageKnowLevel(el.level, true)}`} 
                 /> 
               )
-            } 
-            {!isTabletWidth &&
-              <P 
-              styleType={['medium', 'w500', 'underlined', 'blue']}
-              onClick={()=>openLangsModal()}            
-              >
-                {t('filters_addLanguage')}
-              </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addLanguage')} onClick={()=>openLangsModal()}/>
             }
+
           </div>
+          }
         </div>
       </Form> 
     </FormikProvider>
