@@ -5,8 +5,8 @@ import {debounce} from 'debounce'
 import {useChatSocketContext} from 'context/chat_socket_state'
 import useWindowFocus from 'use-window-focus'
 import { useUserContext } from './user_state'
-import { IDialogState } from './chat_dialog_state'
 import { useRouter } from 'next/router'
+import { useAppContext } from './state'
 
 
 interface IState {
@@ -16,12 +16,10 @@ interface IState {
   fetchMore: () => void
   loading: boolean
   filter: IChatsFilter
-  filterIsEmpty: boolean,
   setFilter: (filter?: IChatsFilter) => void,
   decreaseUnreadCount: (chatId: number) => void
   setCurrentChatId: (chatId: number | null) => void,
   scrollableTarget: RefObject<HTMLElement> | null
-  currentDialogContext: MutableRefObject<Partial<IDialogState>>
   foldersActive: boolean
   setFoldersActive: ()=>void
   folders: Map<number, IChatFolder>
@@ -30,6 +28,18 @@ interface IState {
   removeChatFolder: (id: number) => Promise<boolean> 
   setChatsFromFolder: (name: string) => void
   chatsRef:  MutableRefObject<Map<number, IChat>>
+  component: Map<ChatComponent, boolean>
+  setComponent: (_pages: {
+    component: ChatComponent;
+    active: boolean;
+  }[]) => void
+  
+}
+
+export enum ChatComponent {
+  Dialog = 'dialog',
+  Chat = 'chat', 
+  Folder= 'folder'
 }
 
 
@@ -40,8 +50,10 @@ interface Props {
   initialChat?: number
 }
 
+
 export function ChatWrapper(props: Props) {
   const userContext = useUserContext()
+  const {isTabletWidth} = useAppContext().size
   const isLogged = userContext.isLogged
   const router = useRouter()
 
@@ -57,6 +69,12 @@ export function ChatWrapper(props: Props) {
   const [loading, setLoading] = useState(true)
   const [foldersActive, setFoldersActiveState] = useState<boolean>(false)
   const [folders, setFolders] = useState<Map<number, any>>(new Map)
+  const [component, setComponentState] = useState<Map<ChatComponent, boolean>>(new Map([
+    [ChatComponent.Chat, true], 
+    [ChatComponent.Dialog, true], 
+    [ChatComponent.Folder, false]]
+  ))
+
 
   const [filter, setFilterState] = useState<IChatsFilter>(null)
   const chatsRef = useRef<Map<number, IChat>>(new Map)
@@ -179,6 +197,16 @@ export function ChatWrapper(props: Props) {
     }
   }
 
+  const setComponent = (_pages: {component: ChatComponent, active: boolean}[]) => {
+    setComponentState(state=> {
+      if(isTabletWidth) {
+        Object.values(ChatComponent).forEach(el=> state.set(el as ChatComponent, false))
+      }
+      _pages.forEach(el=> state.set(el.component, el.active))
+      return new Map(state)
+    })
+  }
+
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({})
     if(data.data) {
@@ -264,7 +292,7 @@ export function ChatWrapper(props: Props) {
   }, [windowFocused])
 
 
-  const value: Partial<IState> = {
+  const value: IState = {
     currentChatId,
     setCurrentChatId,
     chats,
@@ -275,7 +303,6 @@ export function ChatWrapper(props: Props) {
     scrollableTarget,
     filter,
     setFilter,
-
     foldersActive,
     setFoldersActive,
     createChatFolder,
@@ -283,7 +310,9 @@ export function ChatWrapper(props: Props) {
     removeChatFolder,
     editChatFolder,
     setChatsFromFolder,
-    chatsRef
+    chatsRef,
+    component,
+    setComponent
   }
 
   return (

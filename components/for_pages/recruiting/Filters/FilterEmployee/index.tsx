@@ -29,7 +29,6 @@ import CrossSvg from '@/components/svg/CrossSvg'
 import { ICityModalArgs } from '@/components/modals/CityModal'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
 import useTranslation from 'next-translate/useTranslation'
-import AddButton from '@/components/ui/AddButton'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -173,6 +172,22 @@ export default function FilterEmployee(props: Props) {
     }
     creationContext.setHelpObjects(newHelpObject)
   }
+
+  const options = {
+    workExperience: WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}}),
+    employmentType: Object.values(EmploymentType).map(el => {
+      return  {value: el as EmploymentType, label: TranslateEmploymentType(el as EmploymentType, t, true)}
+    }),
+    schedule: Object.values(ScheduleType).map(el => {
+      return  {value: el as ScheduleType, label: TranslateScheduleType(el as ScheduleType, t)}
+    }),
+    forLastNumbersOfDays: [
+      {value: null, label: 'Все время'},
+      ...periods.map(el=>{
+        return {value: el.value, label: el.name}
+      })         
+    ]
+  }
   
   useEffect(()=>{
     languages.registerLocale(require('@cospired/i18n-iso-languages/langs/ru.json'))
@@ -242,11 +257,19 @@ export default function FilterEmployee(props: Props) {
             suffix={<CrossSvg onClick={() => formik.setFieldValue('keywords', '')}/>}
             />
             <P className={styles.subTitle} styleType={['w500', 'medium']}>{t('filters_searchOnlyIn')}</P>
+            {isTabletWidth &&
+              <TagsRadioList 
+              checkbox
+              className={styles.tags} 
+              name={'searchIn'} 
+              options={TranslateSearchInType.map(el => ({value: el[0], label: el[1]}))}/>
+              ||
             <RadioListField 
             itemClassName={styles.radioField}
             name={'searchIn'}
             options={TranslateSearchInType.map(el => ({value: el[0], label: el[1]}))}            
             />
+          }
           </div>
         </div>
 
@@ -344,15 +367,13 @@ export default function FilterEmployee(props: Props) {
               <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeVerticals')}/>
               )
             }
-            {!isTabletWidth &&
+            {
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
-                Вертикали:
-              </P>
-              ||
-              <AddButton className={styles.addButton} title='Добавить' onClick={()=>openSourcesModal({type: 'verticals'})}/>
+                Добавить вертикали
+              </P>             
             }
           </div>
         </div>
@@ -373,16 +394,12 @@ export default function FilterEmployee(props: Props) {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
             })
           }
-          {!isTabletWidth &&
-            <P 
-            styleType={['medium', 'w500', 'underlined', 'blue']}
-            onClick={()=>openSpecializationModal()}
-            >
-              {t('filters_addSpecs')}
-            </P>
-            ||
-            <AddButton className={styles.addButton} text={t('filters_addSpecs')} onClick={()=>openSpecializationModal()}/>
-          }
+          <P 
+          styleType={['medium', 'w500', 'underlined', 'blue']}
+          onClick={()=>openSpecializationModal()}
+          >
+            {t('filters_addSpecs')}
+          </P>
           </div>
         </div>
 
@@ -396,16 +413,12 @@ export default function FilterEmployee(props: Props) {
               return (<RemovableItem key={el.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el.locName} />)
             })
           }
-          {!isTabletWidth &&            
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCountryModal}
             >
               {t('filters_addCountry')}
             </P>
-            ||
-            <AddButton className={styles.addButton} text={t('filters_addCountry')} onClick={openCountryModal}/>
-          }
           </div>
         </div>
 
@@ -419,16 +432,12 @@ export default function FilterEmployee(props: Props) {
               return (<RemovableItem key={el.id} onClick={()=>onRemoveCity(el)} text={el.name} />)
             })
           }
-          {!isTabletWidth &&            
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCityModal}
             >
               {t('filters_addRegion')}
             </P>
-            ||
-            <AddButton className={styles.addButton} text={t('filters_addRegion')} onClick={openCityModal}/>
-          }
           </div>
         </div>
 
@@ -443,17 +452,12 @@ export default function FilterEmployee(props: Props) {
                 <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeSources')}/>
               )
             }
-            {!isTabletWidth &&
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'sources'})}
               >
                 {t('filters_addSources')}
               </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addSources')} onClick={()=>openSourcesModal({type: 'sources'})}/>
-
-            }
           </div>
         </div>
 
@@ -465,17 +469,12 @@ export default function FilterEmployee(props: Props) {
                   <RemovableItem key={value.id} text={value.title} onClick={()=>removeSource(key, 'activeGeos')}/>
                 )
             }
-            {!isTabletWidth &&
               <P 
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'geos'})}            
               >
                 {t('filters_addGeos')}
               </P>
-              ||
-              <AddButton className={styles.addButton} text={t('filters_addGeos')} onClick={()=>openSourcesModal({type: 'geos'})}/>
-
-            }
           </div>
         </div>
 
@@ -483,43 +482,60 @@ export default function FilterEmployee(props: Props) {
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
             <span>Опыт работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
           </p>
+          {isTabletWidth && 
+            <TagsRadioList 
+            checkbox
+            className={styles.tags} 
+            name={'experience'} 
+            options={options.workExperience}/>
+            ||
             <CheckboxListField 
             name={'experience'} 
             rootClass={styles.radioField}
-            options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+            options={options.workExperience}
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
+          }
+          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
             Тип занятости
           </p>
+          {isTabletWidth &&
+            <TagsRadioList 
+            checkbox
+            className={styles.tags} 
+            name={'employment'} 
+            options={options.employmentType}/>
+            ||
+            
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'employment'} 
-            options={[
-              {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
-              {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
-              {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
-            ]}/>
-            {isTabletWidth&&<Spacer basis={4}/>}
+            options={options.employmentType}/>
+          }
+          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
             <span>График работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
           </p>
+          {isTabletWidth &&
+            <TagsRadioList 
+            checkbox
+            className={styles.tags} 
+            name={'schedule'} 
+            options={options.schedule}/>
+            ||
             <CheckboxListField 
             rootClass={styles.radioField}
             name={'schedule'}
-            options={[
-              {value: ScheduleType.Flexible, label: TranslateScheduleType(ScheduleType.Flexible, t)},
-              {value: ScheduleType.FullDay, label: TranslateScheduleType(ScheduleType.FullDay, t)},
-              {value: ScheduleType.Remote, label: TranslateScheduleType(ScheduleType.Remote, t)}
-            ]} 
+            options={options.schedule} 
             />
-            {isTabletWidth&&<Spacer basis={4}/>}
+          }
+          {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 
 
@@ -527,16 +543,18 @@ export default function FilterEmployee(props: Props) {
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
             <span>Время публикации</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
           </p>
+          {isTabletWidth &&
+            <TagsRadioList 
+            className={styles.tags} 
+            name={'forLastNumberOfDays'} 
+            options={options.forLastNumbersOfDays}/>
+            ||
             <RadioListField 
             name={'forLastNumberOfDays'}
             rootClass={styles.radioField}
-            options={[
-              {value: null, label: 'Все время'},
-              ...periods.map(el=>{
-                return {value: el.value, label: el.name}
-              })         
-            ]} 
+            options={options.forLastNumbersOfDays} 
             />
+          }
             {isTabletWidth&&<Spacer basis={4}/>}
         </div>
 

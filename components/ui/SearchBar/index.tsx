@@ -58,7 +58,7 @@ export default function SearchBar(props: Props) {
   // }
 
   const submit = (data: {search?: string}, helpers: FormikHelpers<{search: string;}>)=>{
-    debugger
+    
     
     if(data) {
       props.onSubmit?.(data)  

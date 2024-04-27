@@ -43,7 +43,7 @@ export default function ProposalTextModal(props: Props) {
   const [pattern, setPattern] = useState<IPattern>(null)
 
   const submit = async(data: IProposal) => {
-    debugger
+    
     const dataToSend:IProposal = {
       ...data,
       coverLetter: pattern.template,

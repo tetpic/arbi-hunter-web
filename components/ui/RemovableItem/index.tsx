@@ -1,5 +1,6 @@
 import CrossSvg from 'components/svg/CrossSvg'
 import styles from './index.module.scss'
+import P from '../P'
 
 interface Props {
   text: string
@@ -8,7 +9,7 @@ interface Props {
 
 export default function RemovableItem(props: Props) {
 
-  return (<p className={styles.item}>
+  return (<P className={styles.item}>
     <span>{props.text}</span> <CrossSvg className={styles.crossSvg} onClick={props.onClick}/>
-  </p>)
+  </P>)
 }

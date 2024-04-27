@@ -25,7 +25,7 @@ export default function MessengerPage(props: Query) {
   
   return <ChatSocketWrapper>
     <ChatWrapper initialChat={Number(props.chat)}>
-      <Messenger/>
+      <Messenger chat={Number(props.chat)}/>
     </ChatWrapper>
   </ChatSocketWrapper>
 }

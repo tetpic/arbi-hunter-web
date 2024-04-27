@@ -6,7 +6,7 @@ import Button from 'components/ui/Button'
 import { useState } from 'react'
 import classNames from 'classnames'
 import FolderClosedSvg from 'components/svg/FolderClosedSvg'
-import { useChatContext } from 'context/chat_state'
+import { ChatComponent, useChatContext } from 'context/chat_state'
 import CrossSvg from 'components/svg/CrossSvg'
 import { colors } from 'styles/variables'
 import { useResize } from 'components/hooks/useResize'
@@ -61,12 +61,12 @@ export default function ChatSearchBar(props: Props) {
       {isTabletWidth &&
         <Title className={styles.title} title={t('chat_main')}/>
       }
-      <div className={classNames(styles.inputWrapper, (active||chatContext.foldersActive)&&styles.inputWrapper_active)}>
-        {chatContext.foldersActive &&
+      <div className={classNames(styles.inputWrapper, (active||chatContext.component.get(ChatComponent.Folder))&&styles.inputWrapper_active)}>
+        {chatContext.component.get(ChatComponent.Folder) &&
         <>
           <FolderClosedSvg/>
           <p className={styles.folderText}>{t('chat_folders')}</p>
-          <CrossSvg color={colors.greyLight} className={styles.closeSvg} onClick={chatContext.setFoldersActive}/>
+          <CrossSvg color={colors.greyLight} className={styles.closeSvg} onClick={()=>{chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Dialog, active: true}])}}/>
         </>
         ||
         <>
@@ -76,7 +76,7 @@ export default function ChatSearchBar(props: Props) {
         }
       </div>
       <Button className={styles.filterButton} onClick={openFiltersModal}><FiltersSvg/></Button>
-      <Button className={styles.button} onClick={chatContext.setFoldersActive}><PlusSvg/></Button>
+      <Button className={styles.button} onClick={()=>{chatContext.setComponent([{component: ChatComponent.Folder, active: true}])}}><PlusSvg/></Button>
     </div>
   </div>
   )

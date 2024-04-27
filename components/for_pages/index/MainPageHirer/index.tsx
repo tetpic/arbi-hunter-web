@@ -172,7 +172,6 @@ export default function MainPageHirer() {
 
       <Title title={t('mainPage_hir_bestCvs')} className={styles.title}/>
       <CvVcCompilation/>
-
       <Title title={t('mainPage_hir_articles')} className={styles.title}/>
       {news.size > 0 &&
         <ArticlesList news={[...news.values()]}/>

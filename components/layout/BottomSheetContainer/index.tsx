@@ -101,6 +101,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <SpecializationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>

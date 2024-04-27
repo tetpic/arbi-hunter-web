@@ -103,6 +103,12 @@
 
 .tags {
   min-width: 100%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    overflow: auto;
+    padding-bottom: 10px;
+  }
+
 }
 
 .buttonsWrapper {

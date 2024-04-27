@@ -91,7 +91,7 @@ export default function CVs(props: Props) {
   }
 
   const onSearch = (data?: string) => {
-    debugger
+    
     isTabletWidth && appContext.showModal<SearchModalArgs>(ModalType.SearchModal, {
       onSearch: (s) => {
         setFilteredData(s)

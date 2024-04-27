@@ -19,6 +19,8 @@ interface Props<T> extends IField<T> {
   flex?: boolean
   rootClass?: string,
   wrapperClassName? : string
+  itemCircleClassname?: string
+  activeItemClassName?: string
 }
 
 

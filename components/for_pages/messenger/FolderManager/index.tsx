@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import BackTextButton from 'components/ui/BackTextButton'
-import { useChatContext } from 'context/chat_state'
+import { ChatComponent, useChatContext } from 'context/chat_state'
 import folderImage from 'images/folder.png'
 import Image from 'next/image'
 import Button from 'components/ui/Button'
@@ -18,7 +18,6 @@ import { ModalType } from 'types/enums'
 import Spacer from 'components/ui/Spacer'
 import Validator from 'utils/Validator'
 import TrashBasketSvg from 'components/svg/TrashBasketSvg'
-import { useUserContext } from 'context/user_state'
 import ChatRepository from 'data/repositories/ChatRepository'
 import BackBtn from 'components/ui/BackBtn'
 import Title from 'components/ui/TitleForSection'
@@ -37,7 +36,6 @@ function FolderEditor(props: Props) {
   const {t} = useTranslation()
   const chatContext = useChatContext()
   const appContext= useAppContext()
-  const userContext = useUserContext()
   const {isTabletWidth} = useResize()
   const [choosenChats, setChoosenChats] = useState<Map<number, IChat>>(new Map)
 
@@ -176,12 +174,15 @@ export default function FolderManager() {
         <div className={styles.top}>
           {isTabletWidth &&
           <>
-            <BackBtn onClick={creationMode?()=>setCreationMode(false):chatContext.setFoldersActive} bgColor={'transparent'}/>
+            <BackBtn 
+            onClick={creationMode
+              ?()=>{setCreationMode(false)}
+              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} bgColor={'transparent'}/>
             <Title title={'Папки с чатами'}/>
             <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?'Готово': 'Изм.'}</p>
           </>
             ||
-            <BackTextButton className={styles.backButton} onClick={creationMode?()=>setCreationMode(false):chatContext.setFoldersActive}/>
+            <BackTextButton className={styles.backButton} onClick={creationMode?()=>setCreationMode(false):()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} />
           }
         </div>
       }

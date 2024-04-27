@@ -92,7 +92,7 @@ export function FavoritesFolderWrapper(props: Props) {
 
   const updateFolder = async (folderId: number, data: Partial<IFolderCreate>) => {
     const res = await FavoritesFolderRepository.updateFolder(folderId, data)
-    debugger
+    
     setAllFoldersState(state => {
       const index = state.findIndex(el => el.id === folderId)
       state[index] = res
