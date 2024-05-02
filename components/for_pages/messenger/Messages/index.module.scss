@@ -11,6 +11,15 @@
   }
 }
 
+.empty {
+  // @include mq($TabletWidth, max) {    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  // }
+}
+
 // .messagesItems {
 //   padding-top: 16px;
 //   display: flex;
@@ -90,6 +99,7 @@
   // padding-inline: 26px;
   font-size: $smallText;
   font-weight: $regular;
+  position: relative;
   @include mq($TabletWidth, max) {
     height: calc(100vh - 195px);
     height: calc(100dvh - 195px);

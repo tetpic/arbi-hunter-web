@@ -17,6 +17,12 @@
   }
 }
 
+.topButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .userCard {
   display: flex;
   flex-direction: column;
@@ -90,13 +96,10 @@
     }
 
     @include mq($TabletWidth, max) {
-      flex-wrap: wrap;
       row-gap: 8px;
     }
 
-    .topButton {
-      flex: 1 1;
-    }
+
 
     .chatButton {
       min-width: 120px;

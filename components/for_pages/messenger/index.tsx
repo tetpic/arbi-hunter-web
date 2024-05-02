@@ -37,7 +37,18 @@ export default function Messenger(props: Props) {
     if(isTabletWidth) {
       appContext.setHideHeader(true)
       if(props.chat) {
-        chatContext.setComponent([{component: ChatComponent.Dialog, active: true}])
+        chatContext.setComponent([
+          {component: ChatComponent.Dialog, active: true}, 
+          {component: ChatComponent.Folder, active: false}, 
+          {component: ChatComponent.Chat, active: false}
+        ])
+      }
+      else {
+        chatContext.setComponent([
+          {component: ChatComponent.Dialog, active: false}, 
+          {component: ChatComponent.Folder, active: false}, 
+          {component: ChatComponent.Chat, active: true}
+        ])
       }
     }
     return (()=> {

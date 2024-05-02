@@ -150,13 +150,15 @@ export default function Messages(props: Props) {
         <Spinner size={48} color={colors.blue}/>
         }
       </div>
-      <div className={styles.invite}>
-        <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
-        <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
-        <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
-          <InformationSvg />
-          </Link>
-      </div>
+      {(dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())&&
+        <div className={styles.invite}>
+          <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
+          <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
+          <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
+            <InformationSvg />
+            </Link>
+        </div>
+      }
       <div 
       className={classNames(styles.messagesWrapper, cv && cv.categories[0] && styles.messagesWrapper_withCv)} 
       id={'chat-messages'}

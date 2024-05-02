@@ -45,6 +45,7 @@ import { getUserImageSource } from 'utils/helpers'
 import useAbortController from '@/components/hooks/useAbortController'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 
 
 interface Props {
@@ -195,7 +196,7 @@ export default function CvPage(props: Props) {
       {!currentCv?.isContactsOpen &&
         <Button 
         className={styles.topButton}
-        styleType={['gradient']} 
+        styleType={['gradient','wide']} 
         title={'openProfileTop'} 
         onClick={openContacts}
         >
@@ -204,7 +205,7 @@ export default function CvPage(props: Props) {
         ||
         <Button
         className={styles.topButton}
-        styleType={['gradient']}
+        styleType={['gradient','wide']}
         title={'inviteTop'}
         onClick={makeResponse}
         >
@@ -213,7 +214,7 @@ export default function CvPage(props: Props) {
       }
       {(currentCv?.proposalsByCurrentUser?.length>0 || currentCv?.applicationsToCurrentUser?.length > 0) &&
         <Button 
-        styleType={['borderGradient']} 
+        styleType={['borderGradient', 'phoneWide']} 
         className={styles.chatButton}
         onClick={goToChat}
         >
@@ -221,19 +222,38 @@ export default function CvPage(props: Props) {
         </Button>
       }
 
-      <FavoritesButton 
-      showStar
-      className={styles.favoritesButton} 
-      onClick={saveCvToFavorites} 
-      isActive={currentCv?.isSavedByCurrentProfile}/>
-      <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
+      {
+        !isTabletWidth &&
+        <>
+          <FavoritesButton 
+          showStar
+          className={styles.favoritesButton} 
+          onClick={saveCvToFavorites} 
+          isActive={currentCv?.isSavedByCurrentProfile}/>
+          <Button styleType={['icon', 'black']}
+          >
+            <CloseEyeSvg/>
+          </Button>
+        </>
+      }
+
     </div>
   </>)
 
 
   return (
     <div className={styles.root}>
-      <BackTextButton onClick={router.back}/>
+      {
+        !isTabletWidth &&
+        <BackTextButton onClick={router.back}/>
+      }
+      {isTabletWidth &&
+        <div className={styles.topButtons}>
+          <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
+          <FavoritesButton showStar  className={styles.favoritesButton}  onClick={saveCvToFavorites} isActive={currentCv?.isSavedByCurrentProfile}/>
+        </div>
+      }
+
 
       {isMyCv &&
       <div className={styles.userTop}>

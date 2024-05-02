@@ -26,6 +26,7 @@ interface Props {
   block: IPersonalPageBlock
   assets?: IFile[]
   isEditing?: boolean
+  webView?: boolean
 }
 
 export default function EditableBlock(props: Props) {
@@ -52,7 +53,9 @@ export default function EditableBlock(props: Props) {
   }
 
   const showImagePreview = (src: string) => {
-    appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src})
+    if(!props.webView) {
+      appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src})
+    }
   }
   
   return (

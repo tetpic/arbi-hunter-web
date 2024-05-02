@@ -16,6 +16,7 @@ import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 
 interface Props {
   isEditing?: boolean
+  webView?: boolean
 }
 
 
@@ -69,7 +70,7 @@ export default function PersonalBody(props: Props) {
               <Button className={classNames(styles.button, styles.trash)} altStyleType={['gradient']} onClick={() => removeBlock(order)}><TrashBasketAltSvg/></Button>
               <Button className={styles.button}  altStyleType={['gradient']} onClick={() => {editBlock(order)}}><EditSvg/></Button>
             </div>
-            <EditableBlock  block={block} assets={assets}/>
+            <EditableBlock  block={block} assets={assets} webView={props.webView}/>
           </div>
         </SortableItem>
       })

@@ -9,6 +9,13 @@
   @include mq($TabletWidth, max) {
     margin-top: unset;
   }
+
+  .categoryItem {
+    @include mq($TabletWidth, max){
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
 

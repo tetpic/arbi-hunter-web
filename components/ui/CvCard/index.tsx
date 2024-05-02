@@ -71,12 +71,16 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   }
 
   const showFolderModal = (signal: AbortSignal) =>{
-    appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, {
+    const _modalArgs:ChooseFolderToSaveArgs = {
       initialFolders: folderContext.allFolders,
       onChoose: (folderId) => {
         addToSaved(signal, folderId)
       }
-    })
+
+    }
+    isTabletWidth
+    ? appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
+    :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
   }
 
   const saveHandler = (e: React.MouseEvent<Element, MouseEvent>) => {

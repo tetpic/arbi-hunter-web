@@ -154,7 +154,7 @@ export default function PersonalPage(props: Props) {
       </>
       }
       {personalContext.blocks.size > 0 &&
-      <PersonalBody isEditing={!props.id&&isEditing}/>
+      <PersonalBody isEditing={!props.id&&isEditing} webView={props.webView}/>
       ||
       <div className={styles.emptyWrapper}>
         <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>

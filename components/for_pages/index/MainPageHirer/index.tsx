@@ -166,6 +166,7 @@ export default function MainPageHirer() {
       onClick={onCategoryClickHandler} 
       watchMoreHref={'/recruiting/categories'}  
       link={'/recruiting?categories='} 
+      itemClassName={styles.categoryItem}
       categories={[...categories.values()].filter(e=> e.image)}
       />
 
