@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import {  ModalType, Preset } from 'types/enums'
+import {  AppTheme, ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
@@ -34,6 +34,8 @@ import Link from 'next/link'
 import ContactsModal from './ContactsModal'
 import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
+import ChatRepository from 'data/repositories/ChatRepository'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 
 
 interface Props {
@@ -54,6 +56,8 @@ export default function VacancyPage(props: Props) {
   const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
   const salary = getSalary({vacancy:currentVacancy})
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
+  const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
+
 
 
   const makeResponse = () => {
@@ -74,6 +78,21 @@ export default function VacancyPage(props: Props) {
     }
   }
 
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const activeChat = currentVacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
+    if(activeChat[0]){
+      ChatRepository.getChatByContactId(currentVacancy.profile.id, {proposalId: lastProposal.id})
+      .then(res=>{
+        if(res) {
+          router.push('/messenger?chat=' + res.id)
+        }
+      })
+    }
+  }
+
   useEffect(()=>{
     if(currentVacancy && !currentVacancy?.profile) {
       router.back()
@@ -81,10 +100,13 @@ export default function VacancyPage(props: Props) {
     }
     if(currentVacancy && currentVacancy.categories.length > 0) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
-      VacancyRepository.searchVacancies({s: JSON.stringify({profileId: currentVacancy.profile?.id})})
+      VacancyRepository.searchVacancies({categories: [currentVacancy.categories[0].id]})
       .then(res=> {
-        const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 2)
-        setOtherCompanyVacancies(randomItems)
+        if(res?.data.length >  1) {
+          const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 3).filter(el => el.id !== currentVacancy.id)
+          
+          setOtherCompanyVacancies(randomItems)
+        }
       })
     }
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
@@ -126,7 +148,15 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
+      {!isTabletWidth &&
       <BackTextButton onClick={router.back}/>
+      }
+      {isTabletWidth &&
+        <div className={styles.topButtons}>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
+          <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+        </div>
+      }
       {!isMyVacancy &&companyCard}
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']}>{currentVacancy.name}</P>
@@ -190,34 +220,56 @@ export default function VacancyPage(props: Props) {
 
       {!isMyVacancy &&
         <div className={styles.buttonsWrapper}>
-          <Button styleType={['gradient' ]} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
+          {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
+            <Button 
+            styleType={['gradient']}
+            onClick={openChat}
+            >
+              Перейти в чат
+            </Button>
+          }
+          {!lastProposal &&
+            <Button 
+            styleType={['gradient', 'phoneWide']}
+            onClick={makeResponse}
+            >
+              {t('vacancy_page_makeApply')}
+            </Button>
+          }
+          
+          {/* <Button styleType={['gradient' ]} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button> */}
           {currentVacancy.showContactName &&
+          <div className={styles.contactsButton}>
             <Button 
             styleType={['black', 'borderBlue']} 
             altStyleType={['whitePurple', 'borderBlue']}
             onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
               {t('vacancy_page_showContacts')}
             </Button>
+            {currentVacancy.showContactName && isShowContacts[0] &&
+              <ContactsModal 
+              key={'contacts1'}
+              vacancy={currentVacancy} 
+              isActive={isShowContacts[0]} 
+              onClose={()=>setIsShowContacts(state=> ([false, state[1]]))}
+              />
+            }
+          </div>
           }
-          <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
-          <Button 
-          styleType={['icon', 'black']} 
-          altStyleType={['icon', 'whitePurple', 'invertSvg', 'borderBlue']}
-          onClick={()=>vacancyContext.addToBlackList()}
-          >
-            <CloseEyeSvg/>
-          </Button>
-          {currentVacancy.showContactName && isShowContacts[0] &&
-            <ContactsModal 
-            key={'contacts1'}
-            vacancy={currentVacancy} 
-            isActive={isShowContacts[0]} 
-            onClose={()=>setIsShowContacts(state=> ([false, state[1]]))}
-            />
-          }
+          {!isTabletWidth && <>
+            <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+            <Button 
+            styleType={['icon', 'black']} 
+            altStyleType={['icon', 'whitePurple', 'invertSvg', 'borderBlue']}
+            onClick={()=>vacancyContext.addToBlackList()}
+            >
+              <CloseEyeSvg/>
+            </Button>
+          </>}
+
         </div>
       }
-      <EmploymentBoard type='black' vacancy={currentVacancy}/>
+      <EmploymentBoard type={(isTabletWidth||appContext.theme === AppTheme.Light) ? 'gradient' : 'black'} vacancy={currentVacancy}/>
       {currentVacancy.description !== '<p></p>' &&
         <div className={styles.description}>
           <HtmlText text={currentVacancy.description}/>
@@ -283,17 +335,17 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       
-      {!isMyVacancy &&
+      {!isMyVacancy && !lastProposal &&
       <div className={styles.buttonsWrapper}>
         <Button styleType={['gradient']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
       </div>
       }
       
-      {!isMyVacancy &&
+      {!isMyVacancy && otherCompanyVacncies.length > 0 &&
         <div className={styles.item}>
           <P styleType={['w600', 'large']}>{t('vacancy_page_sameVacancies')}</P>
           <div className={styles.vacancies}>
-            {otherCompanyVacncies.map(el => <VacancyItem key={el.id} vacancy={el} />)}
+            {otherCompanyVacncies.filter(el=> el.id !== currentVacancy.id).map(el => <VacancyItem key={el.id} vacancy={el} />)}
           </div>
         </div>
       }

@@ -55,7 +55,7 @@ export default function WorkPlace(props: Props) {
       onSetOption={countryHandler} 
       name={'countryName'} 
       value = {cvContext?.currentVc?.country?.locName||userContext?.currentProfile?.country.locName}
-      labelName={'Страна где находится офис:'}
+      labelName={t('create_workplaceCountry')+':'}
       requestFn={LocationRepository.searchCountry} 
       />
 
@@ -66,7 +66,7 @@ export default function WorkPlace(props: Props) {
       name={'cityName'} 
       country={currentCountryCode}
       value = {cvContext?.currentVc?.city?.locName||userContext?.currentProfile?.city.locName}
-      labelName={'Город где находится офис:'}
+      labelName={t('create_workplaceCity')+':'}
       requestFn={LocationRepository.searchCity} 
       />
     </>

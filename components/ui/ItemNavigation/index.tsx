@@ -58,6 +58,7 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
                   <P 
                   styleType={['large', 'w600', 'greyLight']}
                   altStyleType={['w600', 'large']}
+                  useThemeColor
                   className={classNames(styles.item, props.pClassName, props.activeItem === el.type&&styles.item_active)} 
                   getRef={(r)=> {
                     itemsRef.current.set(el.type, r)

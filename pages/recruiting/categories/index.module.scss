@@ -28,5 +28,8 @@
 
   @include mq($TabletWidth, max) {
     width: calc(50% - 8px);
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
   }
 }

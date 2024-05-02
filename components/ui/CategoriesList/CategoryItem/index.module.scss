@@ -14,8 +14,8 @@
 }
 
 .imageWrapper {
-  width: clamp(70px, 10vw, 100px);
-  height: clamp(70px, 10vw, 100px);
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   position: relative;
   grid-area: i;
@@ -93,6 +93,9 @@
   row-gap: 16px;
   cursor: pointer;
   position: relative;
+  height: 100%;
+  justify-content: space-between;
+
   @include mq($TabletWidth, max) {
     display: grid;
     grid-template-areas: 't i' 'b i';

@@ -15,12 +15,14 @@ import { useEffect } from 'react'
 import { copyToClipboard, shareData } from 'utils/helpers'
 import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   article: IArticle
 }
 
 export default function MediaArticle(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const mediaContext = useMediaContext()
@@ -33,21 +35,21 @@ export default function MediaArticle(props: Props) {
   const getOptions = (article: IArticle):IOptionList[] => {
     const arr = [
       {
-        title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
+        title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
           mediaContext.saveOrRemoveArticle(article)
-          .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
+          .then(_=>appContext.showSnackbar(t('media_article_success'), SnackbarType.success))
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+      {title: t('media_article_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
-      navigator.share&&{title: 'Поделиться',icon: <ShareSvg/>, onClick: ()=>{
+      navigator.share&&{title: t('media_article_share'),icon: <ShareSvg/>, onClick: ()=>{
         shareData({url: process.env.host + '/media/article/' + article.id})
       }},
-      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: 'Скрыть',icon: <CloseEyeSvg/>})
+      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg/>})
     ]
     return arr.filter(Boolean)
   }

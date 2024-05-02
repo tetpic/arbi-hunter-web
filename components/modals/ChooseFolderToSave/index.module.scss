@@ -7,12 +7,18 @@
 .buttonsWrapper {
   display: flex;
   column-gap: 8px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .root {
   display: flex;
   flex-direction: column;
-  row-gap: 16px
+  row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    height: 100%;
+  }
 }
 
 .closeButton {
@@ -27,6 +33,9 @@
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    min-height: 85%;
+  }
 }
 
 .title {

@@ -8,3 +8,15 @@
   margin-top: 24px;
 
 }
+
+.tagListRoot {
+  max-width: 100%;
+  overflow: auto;
+}
+
+.tagList {
+  @include mq($TabletWidth, max) {
+    flex-wrap: nowrap !important;
+    overflow: auto;
+  }
+}

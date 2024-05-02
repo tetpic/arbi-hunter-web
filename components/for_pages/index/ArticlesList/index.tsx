@@ -10,6 +10,7 @@ import { AppTheme, Preset } from 'types/enums'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
 import { useRouter } from 'next/router'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   news: IArticle[]
@@ -20,6 +21,7 @@ interface Props {
 
 export default function ArticlesList(props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const isLightTheme = appContext.theme === AppTheme.Light
   const router = useRouter()
 
@@ -45,7 +47,7 @@ export default function ArticlesList(props: Props) {
             <div className={styles.content}>
               <P styleType={['fs20', 'w600']} useThemeColor className={classNames(props.onlyTitles?styles.titleOnly:styles.title)}>{el.name}</P>
                 {!props.onlyTitles &&
-                <P styleType={['medium','greyLight']} className={styles.description}><TextNode html={el.blocks[0].body}/></P>
+                <P styleType={['medium','greyLight']} className={styles.description}><TextNode html={el.blocks[0]?.body}/></P>
                 }
                 <div className={styles.bottom}>
                   <div className={styles.tag}>{el.articleCategory.translations.find(el => el.languageCode === 'ru').name.split(' ')[0]}</div>

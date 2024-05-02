@@ -1,4 +1,4 @@
-import Modes from '@/components/ui/Modes'
+// import Modes from '@/components/ui/Modes'
 import styles from './index.module.scss'
 import { useEffect, useState } from 'react'
 import { useVacancyContext } from 'context/vacancy_state'
@@ -32,7 +32,7 @@ export default function BlackList(props: Props) {
   }, [])
 
   return (<div className={styles.root}> 
-    <div className={styles.top}>
+    {/* <div className={styles.top}>
       <Modes buttons={[
         {name: 'Вакансии', type: BlackListModes.Vacancies},
         {name: 'Компании', type: BlackListModes.Companies}
@@ -42,11 +42,11 @@ export default function BlackList(props: Props) {
       buttonClassName={styles.modesButton}
       />
       
-    </div>
+    </div> */}
 
     <div className={styles.items}>
       {type === BlackListModes.Vacancies && vacancyContext.savedVCs?.map(el=> {
-        return <BlackListedItem key={el.id} vacancy={el} onRestore={()=>vacancyContext.removeFromBlackList(el.id)} />
+        return <BlackListedItem key={el.id} vacancy={el} profile={el.profile} onRestore={()=>vacancyContext.removeFromBlackList(el.id)} />
       })}
 
       {type === BlackListModes.Companies && profiles.map(el=> {

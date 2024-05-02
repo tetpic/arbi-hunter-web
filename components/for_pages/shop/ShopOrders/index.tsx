@@ -19,7 +19,7 @@ export default function ShopOrders(props: Props) {
 
 
   return (<div className={styles.root}> 
-  <TagList tags={[
+  <TagList className={styles.tagListRoot} tagListClassName={styles.tagList} tags={[
     {name: 'Купленные услуги', isActive: type=== PurchasedType.Bought, onClick: ()=>{setType(PurchasedType.Bought)}},
     {name: 'Отложенные заказы', isActive: type===PurchasedType.Delayed, onClick: ()=>{setType(PurchasedType.Delayed)}},
     {name: 'Архив пополнений', isActive: type ===PurchasedType.Archive, onClick: ()=>{setType(PurchasedType.Archive)}},

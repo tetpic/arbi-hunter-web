@@ -10,6 +10,7 @@
   @include mq($TabletWidth, max) {
     padding-top: 8px;
     flex-direction: column;
+    padding-bottom: unset;
   }
 }
 

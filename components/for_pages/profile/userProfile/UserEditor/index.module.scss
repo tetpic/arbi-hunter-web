@@ -5,6 +5,10 @@
   flex-wrap: wrap;
   justify-content: space-between;
   column-gap: 16px;
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
 }
 
 .content {
@@ -17,7 +21,6 @@
   overflow: auto;
   @include mq($DesktopWidth, max) {
     width: 100%;
-    order: 1;
   }
 
   @include mq($TabletWidth, max) {
@@ -100,7 +103,7 @@
   grid-area: m;
   width: Clamp(400px, 30vw, 504px);
   height: Clamp(400px, 30vw, 504px);
-  background-color: $black;
+  background-color: var(--backColor);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
@@ -143,13 +146,6 @@
 
     * {
       pointer-events: none;
-    }
-
-    p {
-      color: $white;
-      font-size: $mediumText;
-      font-weight: $medium;
-      display: block;
     }
 
     &_active {
@@ -209,4 +205,8 @@
   grid-area: save;
   justify-self: flex-end;
   margin-top: 16px;
+}
+
+.light {
+  background-color: $purpleGrey;
 }

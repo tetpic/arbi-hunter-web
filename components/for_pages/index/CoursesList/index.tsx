@@ -93,7 +93,7 @@ export default function CoursesList(props: Props) {
                         </P>
                       }
                       {course.rating &&
-                        <P styleType={['medium', 'w500', 'greyLight']} className={styles.textLine}><StarSmallFilledSvg/> {course.rating} из 5</P>
+                        <P styleType={['medium', 'w500', 'greyLight']} className={styles.textLine}><StarSmallFilledSvg/> {course.rating} / 5</P>
                       }
                     </div>
                   </div>

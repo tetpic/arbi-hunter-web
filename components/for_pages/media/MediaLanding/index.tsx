@@ -14,6 +14,7 @@ import SearchBar from 'components/ui/SearchBar'
 import { useResize } from 'components/hooks/useResize'
 import Image from 'next/image'
 import Title from 'components/ui/TitleForSection'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -27,6 +28,7 @@ interface Props {
 
 export default function MediaLanding(props: Props) {
   const userContext = useUserContext()
+  const {t} = useTranslation()
   const {isTabletWidth} = useResize()
 
   return (
@@ -37,28 +39,28 @@ export default function MediaLanding(props: Props) {
 
       <Title 
       className={styles.title}
-      title={isTabletWidth?'Категории':'Все категории'} 
+      title={isTabletWidth?t('media_page_categories'):t('media_page_categoriesAll')} 
       link={'/media/page?page=categories'}
       />
-      <MediaCategories categories={props.categories} title={isTabletWidth&&'Категории'} articlesCounter/>
+      <MediaCategories categories={props.categories} title={isTabletWidth&&t('media_page_categories')} articlesCounter/>
 
       <Title 
       className={styles.title}
-      title={'Популярное'} 
+      title={t('media_page_popular')} 
       link={'/media/page?page=allArticles'}
       />
       <MediaNewsSection news={props.news.slice(0, 4)}/>
 
       <Title 
       className={styles.title}
-      title={'Cообщества'} 
+      title={t('media_page_communities')} 
       link={'/media/page?page=communities'}/>
       <MediaCommunities communities={props.communities}/>
 
       <Title 
       className={styles.title}
       emoji={!isTabletWidth && <Image src={'/icons/diamond.png'} alt={'diamond icon'} width={32} height={34}/>}
-      title={isTabletWidth?'Подборки':'Подборки для вас'} 
+      title={isTabletWidth?t('media_page_compilations'):t('media_page_personalCompilations')} 
       link={'/media/page?page=categories'}
       />
       <MediaCompilation newsCompilations={props.newsCompilations}/>

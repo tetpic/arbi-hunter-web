@@ -23,6 +23,9 @@ import RefillBalanceModal from '@/components/modals/RefillBalanceModal'
 import ChangeLanguageModal from '@/components/modals/ChangeLanguageModal'
 import HirerFieldsModal from '@/components/modals/HirerFieldsModal'
 import SalaryModal from '@/components/modals/SalaryModal'
+import FavoritesSettingModal from '@/components/modals/FavoritesSettingModal'
+import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
+import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
 
 
 interface Props { }
@@ -198,6 +201,33 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <SalaryModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.FavoritesSettingModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <FavoritesSettingModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.AddFavoritesFolder}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <AddFavoritesFolder isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ChooseFolderToSave}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <ChooseFolderToSave isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

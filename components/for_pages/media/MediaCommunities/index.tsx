@@ -14,13 +14,14 @@ import LinkBlack from 'components/ui/LinkBlack'
 import { useResize } from 'components/hooks/useResize'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   communities: ICommunity[]
 }
 
 export default function MediaCommunities(props: Props) {
-  
+  const {t} = useTranslation()
   const router = useRouter()
   const swiper = useRef<SwiperRef>(null!)
   const {isTabletWidth} = useResize()
@@ -65,7 +66,7 @@ export default function MediaCommunities(props: Props) {
                 </div>
               </div>
               <p className={styles.name}>{comm.name}</p>
-              <p className={styles.stats}>{comm.membersCount} {Formatter.pluralize(+comm.membersCount, 'подписчик', 'подписчика', 'подписчиков')}</p>
+              <p className={styles.stats}>{comm.membersCount} {Formatter.pluralize(+comm.membersCount, t('subscriber1'), t('subscriber2'), t('subscriber3'))}</p>
             </div>
           </SwiperSlide>
         )
@@ -95,7 +96,7 @@ export default function MediaCommunities(props: Props) {
   </div>
   
   {!isTabletWidth &&
-    <LinkBlack href={'/media/page?page=communities'} >Смотреть все</LinkBlack>
+    <LinkBlack href={'/media/page?page=communities'} >{t('watchAll')}</LinkBlack>
   }
 
   </div>)

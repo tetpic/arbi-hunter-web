@@ -29,15 +29,19 @@ export default function FavoritesHirerFolder(props: Props) {
   const {t} = useTranslation()
   const foldersContext = useFavoritesFolderContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const [isActive, setIsActive] = useState<boolean>(props.initialActive||false) 
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const editFolder = () => {
-    appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, {
+    const _modalArgs:AddFavoritesFolderArgs = {
       onSave: (data) => foldersContext.updateFolder(props.folder.id, data),
       initialData: {name: props.folder.name, default: props.folder.default}
-    })
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, _modalArgs, 340)
+    :appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, _modalArgs)
   }
 
   const deletefolder = () => {
@@ -81,7 +85,6 @@ export default function FavoritesHirerFolder(props: Props) {
     <Accordeon isActive={isActive}>
       <div className={styles.stats}>
         <P>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
-        {/* <Button styleType={['icon', 'backTransparent']}><SortArrowsSvg/> {t('sortBy_date')}</Button> */}
       </div>
       <div className={styles.cvsWrapper}>
         {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {

@@ -40,8 +40,6 @@ export default function RecruitingCategories (props: Props) {
           return <CategoryItem category={el} itemClassName={styles.category} onClick={onCategoryClickHandler}/>
         })}
       </div>
-
-
     </div>
   </ContentLayout>)
 }

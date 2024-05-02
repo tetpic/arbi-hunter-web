@@ -17,12 +17,14 @@ import { colors } from 'styles/variables'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
 import { copyToClipboard } from 'utils/helpers'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 const CreateNewCommunityArticle = dynamic(import('./CreateNewCommunityArticle'), {ssr: false})
 interface Props {
 }
 
 export default function CommunityContent(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = useResize()
@@ -42,16 +44,16 @@ export default function CommunityContent(props: Props) {
     if(isAdmin) {
       return [
         {
-          title: 'Редактировать',
+          title: t('community_edit'),
           icon: <EditPencilSvg/>,
           onClick: () => appContext.showModal(ModalType.CreateCommunityArticleModal, {article})
         },
-        {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+        {title: t('community_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
           copyToClipboard(process.env.host + '/media/article/' + article.id)
-          appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+          appContext.showSnackbar(t('community_linkCopied'), SnackbarType.success)
         }},
         {
-          title: 'Удалить',
+          title: t('delete'),
           icon: <TrashBasketSvg/>,           
           style: {color: colors.red},
           onClick: ()=>{
@@ -63,9 +65,9 @@ export default function CommunityContent(props: Props) {
     } 
     else {
       return [
-        {title: 'Скопировать ссылку',icon: <LinkSvg/>,},
-        {title: 'Поделиться',icon: <ShareSvg/>},
-        {title: 'Скрыть',icon: <CloseEyeSvg/>}
+        {title: t('community_copyLink'),icon: <LinkSvg/>,},
+        {title: t('community_share'),icon: <ShareSvg/>},
+        {title: t('community_hide'),icon: <CloseEyeSvg/>}
       ]
     }
   }
@@ -88,7 +90,7 @@ export default function CommunityContent(props: Props) {
             )
           })
           ||
-          <P useThemeColor className={'empty'}>Нет новостей</P>
+          <P useThemeColor className={'empty'}>{t('community_noNews')}</P>
         }
       </div>
   </div>

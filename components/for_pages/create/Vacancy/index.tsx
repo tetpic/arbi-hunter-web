@@ -24,6 +24,7 @@ import Spacer from '@/components/ui/Spacer'
 import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
 import VacancyPreview from '../../preview/vacancy'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id?: number
@@ -49,21 +50,29 @@ export default function Vacancy(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const creationContext = useCreateVcCvContext()
+  const {t} = useTranslation()
 
   const {isPhoneWidth, isTabletWidth} = appContext.size
   const router = useRouter()
   const {progress, setProgress} = creationContext
   const [showPreview, setShowPreview] = useState<boolean>(false)
   
-  const [title, setTitle] = useState<string>('Специализация')
+  const [title, setTitle] = useState<string>(t('create_vacancy_specialization'))
   const [page, setPage] = useState<JSX.Element>()
   const maxProgress = useRef<number>(props.vacancy?.completedSteps?.length||1)
-  const initialDescription = '<p>Обязанности</p><ul><li></li><li></li><li></li></ul><p>Требования</p><ul><li></li><li></li><li></li></ul><p>Условия</p><ul><li></li><li></li><li></li></ul>'
+  const initialDescription = `<p>${t('create_vacancy_responsibilities')}</p><ul><li></li><li></li><li></li></ul><p>${t('create_vacancy_requirements')}</p><ul><li></li><li></li><li></li></ul><p>${t('create_vacancy_conditions')}</p><ul><li></li><li></li><li></li></ul>`
 
   const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
 
   const VCItemsCount = 8
-  const titles = ['Название', 'Специализация', 'Место работы', 'Опыт и график', 'Уровень дохода', 'Описание', 'Навыки и инструменты']
+  const titles = [
+    t('create_vacancy_nameShort'), 
+    t('create_vacancy_specialization'), 
+    t('create_vacancy_workPlace'), 
+    t('create_vacancy_experience'), 
+    t('create_vacancy_salary'), 
+    t('create_vacancy_descriptionShort'), 
+    t('create_vacancy_skills')]
 
   const getContactName = () => {
     if(props.vacancy) {
@@ -149,7 +158,7 @@ export default function Vacancy(props: Props) {
     if(props.id) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
-        appContext.showSnackbar('Вакансия успешно обновлена', SnackbarType.success)
+        appContext.showSnackbar(t('create_vacancy_refreshed'), SnackbarType.success)
         !noRedirect&&router.push('/profile?page=vacancies')  
       })
       .catch(err=>{        
@@ -159,7 +168,7 @@ export default function Vacancy(props: Props) {
     else {
       VacancyRepository.editVacancyById(sendData, creationContext.draftId.current)
       .then(res => {
-        appContext.showSnackbar('Вакансия успешно сохранена', SnackbarType.success)
+        appContext.showSnackbar(t('create_vacancy_saved'), SnackbarType.success)
         setTimeout(()=> {
           !noRedirect&&router.push('/profile?page=vacancies')  
         }, 1500)
@@ -191,11 +200,11 @@ export default function Vacancy(props: Props) {
     switch(progress) {
       case 1:
         if(formik.values.name.trim().length < 1) {
-          setErr('name', 'Укажите название вакансии')
+          setErr('name', t('create_vacancy_setName'))
           return false
         }
         if(creationContext.activeSubCategory.length === 0) {
-          appContext.showSnackbar('Выберите название вакансии из списка', SnackbarType.error)
+          appContext.showSnackbar(t('create_vacancy_setNameFromList'), SnackbarType.error)
           return false
         }
 
@@ -242,7 +251,7 @@ export default function Vacancy(props: Props) {
       break
       case 7: 
         if(formik.values.description.trim().length < 1) {
-          setErr('description', 'Напишите подробнее о вакансии')
+          setErr('description', t('create_vacancy_writeDetails'))
           return false
         } 
         else {
@@ -276,35 +285,35 @@ export default function Vacancy(props: Props) {
       case 5: 
       return [<Skills fieldToHide={{courses: true, portfolio: true, relocation: true, traffic: true}}/>, VacancyNavigation.Skills]
       case 6: 
-      return [<About title={'Описание вакансии'} fieldName={'description'}/> , VacancyNavigation.About]
+      return [<About title={t('create_vacancy_description')} fieldName={'description'}/> , VacancyNavigation.About]
       case 7:
         return [<Contacts/>, VacancyNavigation.Contacts]
 
     }
   }
 
-  const getTitle = (t: VacancyNavigation): string => {
-    switch(t) {
+  const getTitle = (n: VacancyNavigation): string => {
+    switch(n) {
       case VacancyNavigation.Specialization: 
-        return 'Категория и специализация'
+        return t('create_vacancy_caterory')
       case VacancyNavigation.Name:
-        return 'Название вакансии'
+        return t('create_vacancy_name')
       case VacancyNavigation.Salary:
-        return 'Уровень дохода'
+        return t('create_vacancy_salary')
       case VacancyNavigation.WorkPlace:
-        return 'Место работы'
+        return t('create_vacancy_workPlace')
       case VacancyNavigation.Experience:
-        return 'Опыт работы'
+        return t('create_vacancy_experience')
       case VacancyNavigation.Education:
-        return 'Образование'
+        return t('create_vacancy_education')
       case VacancyNavigation.About:
-        return 'Описание'
+        return t('create_vacancy_descriptionShort')
       case VacancyNavigation.Skills:
-        return 'Навыки и инструменты'
+        return t('create_vacancy_skills')
       case VacancyNavigation.Busyness:
-        return 'Занятость'
+        return t('create_vacancy_bysiness')
       case VacancyNavigation.Contacts:
-        return 'Контактная информация'
+        return t('create_vacancy_contactInfo')
     }
   }
 
@@ -404,7 +413,7 @@ export default function Vacancy(props: Props) {
 
     {progress === VCItemsCount && !showPreview &&
       <SetTariff 
-      setText='Разместить вакансию' 
+      setText={t('create_vacancy_publish')} 
       onPreview={()=>setShowPreview(true)} 
       onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} 
       onBack={()=>setProgress(progress-1)} type='vacancy'
@@ -430,13 +439,23 @@ export default function Vacancy(props: Props) {
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBorderGradient} type='button' title='back' onClick={()=>setProgress(progress-1)}>Назад</Button>
+              <Button className={styles.buttonBorderGradient} type='button' title='back' onClick={()=>setProgress(progress-1)}>{t('back')}</Button>
             }
             {progress < VCItemsCount &&
-              <Button className={styles.buttonGradient} type='button' title='next' onClick={()=>nextPageValidator()}>Продолжить</Button>
+              <Button className={styles.buttonGradient} type='button' title='next' onClick={()=>nextPageValidator()}>{t('continue')}</Button>
             }
             { progress === VCItemsCount &&
-              <Button isProcess={formik.isSubmitting} title='create' spinner={formik.isSubmitting} disabled={formik.isSubmitting} className={styles.buttonGradient}  type='button' onClick={()=> formik.submitForm()}>{creationContext.currentVc?'Обновить': 'Сохранить'} вакансию</Button>
+              <Button 
+              isProcess={formik.isSubmitting} 
+              title='create' 
+              spinner={formik.isSubmitting} 
+              disabled={formik.isSubmitting} 
+              className={styles.buttonGradient}  
+              type='button' 
+              onClick={()=> formik.submitForm()}
+              >
+                {creationContext.currentVc?t('create_vacancy_refresh'): t('create_vacancy_save')}
+              </Button>
             }
           </div>
         </Form>

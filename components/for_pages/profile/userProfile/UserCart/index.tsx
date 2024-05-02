@@ -45,12 +45,13 @@ export default function UserCart(props: Props) {
       <Button styleType={['white']} onClick={onAddMoney}>{t('profile_editor_fill')}</Button>
     </div>
     <div className={styles.choosenItems}>
-      <P styleType={['w600', 'large']}>{t('profile_editor_choosenItems')}</P>
+      <P styleType={['w600', 'large']} useThemeColor>{t('profile_editor_choosenItems')}</P>
       <div className={styles.choosenItemsWrapper}>
         {[...choosenItems.values()].map(item=> {
           return (
             <div className={styles.variantItem}>
               <UserPic 
+              className={styles[appContext.theme]}
               active
               size={76} 
               onClick={()=>props.onSet(item.categoryId)}

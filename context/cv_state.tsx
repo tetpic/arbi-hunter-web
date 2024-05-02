@@ -10,7 +10,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 interface IState {
   savedCvs: ICV[],
   foundCvs: Map<number, ICV>,
-  getCv: (id: number) => void
+  getCv: (id: number) => Promise<boolean>
   currentCv: ICV,
   setSavedCvs: ()=>Promise<boolean>
   saveCv: (id: number)=> Promise<boolean>
@@ -119,10 +119,16 @@ export function CvWrapper(props: Props) {
 
 
 
-  const getCv = (id: number) => {
-    CvRepository.getById(id)
+  const getCv = (id: number): Promise<boolean> => {
+    return CvRepository.getById(id)
     .then(res=> {
       setCurrentCvState(res)
+      return true
+    })
+    .catch(err => {
+      setCurrentCvState(undefined)
+      return false
+
     })
   }
 

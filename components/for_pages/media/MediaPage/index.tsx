@@ -22,6 +22,7 @@ import SubCategories from 'components/ui/SubNavigationSet'
 import { useUserContext } from 'context/user_state'
 import { CommunityWrapper } from 'context/community_state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import useTranslation from 'next-translate/useTranslation'
 
 const NewsByCategories = dynamic(()=>import('./NewsByCategories'), {ssr: false})
 
@@ -44,6 +45,7 @@ export enum MediaPageNav {
 
 
 export default function MediaPage(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
   const {isTabletWidth, width} = useResize()
@@ -58,13 +60,13 @@ export default function MediaPage(props: Props) {
     let result = obj.map(page => {
       switch(page) {
         case MediaPageNav.AllArticles:
-          return {name: 'Все статьи', type: page, icon: <DocumentDoubleSvg/>}
+          return {name: t('media_page_allArticles'), type: page, icon: <DocumentDoubleSvg/>}
         case MediaPageNav.Categories:
-          return {name: 'Категории', type: page, subSet: subCategories, icon: <TableSvg/>}
+          return {name: t('media_page_categories'), type: page, subSet: subCategories, icon: <TableSvg/>}
         case MediaPageNav.Subscriptions:
-          return {name: 'Мои подписки', type: page, icon: <AppsAddSvg/>}
+          return {name: t('media_page_mySubscriptions'), type: page, icon: <AppsAddSvg/>}
         case MediaPageNav.Communities:
-          return {name: 'Сообщества', type: page, icon: <UserDoubleSvg/>}
+          return {name: t('media_page_communities'), type: page, icon: <UserDoubleSvg/>}
       }
     })
     result = isTabletWidth?result.filter(el=> el.type !== MediaPageNav.Categories):result
@@ -88,13 +90,13 @@ export default function MediaPage(props: Props) {
   const title = (()=> {
     switch(page) {
       case MediaPageNav.AllArticles:
-        return 'Медиа'
+        return t('media_page_media')
       case MediaPageNav.Subscriptions:
-        return 'Мои подписки'
+        return t('media_page_mySubscriptions')
       case MediaPageNav.Categories:
         return currentCategory?.name||props.categories[0].name
       case MediaPageNav.Communities:
-        return 'Сообщества'
+        return t('media_page_communities')
     }
   })()
 

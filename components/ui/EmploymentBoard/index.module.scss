@@ -19,6 +19,7 @@
     text-align: center;
     @include mq($PhoneWidth, max) {
       flex: unset;
+      padding: 0px 8px;
     }
   }
 

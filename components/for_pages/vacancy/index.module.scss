@@ -11,8 +11,18 @@
   @include mq($TabletWidth, max) {
     margin-top: 22px;
     padding-inline: 16px;
-    padding-bottom: 170px !important;
+    padding-bottom: 100px !important;
   }
+}
+
+.topButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.contactsButton {
+  position: relative;
 }
 
 .topLine {
@@ -89,7 +99,6 @@
   width: fit-content;
   min-width: 320px;
   position: relative;
-  z-index: 4;
 }
 
 .vacancies {

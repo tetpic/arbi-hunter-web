@@ -84,7 +84,7 @@ export default function MainPageEmployee() {
       UserRepository.getStats(),
       CategoryRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
-      ArticlesRepository.getNews({page: 1, limit: 20, isTop: false, full: true}),
+      ArticlesRepository.getNews({isTop: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])
     setStats(stats)
@@ -212,9 +212,9 @@ export default function MainPageEmployee() {
       <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
       <CvVcCompilation/>
 
-      <Title title={t('mainPage_em_articles')} className={styles.title}  onAllWatchClick={()=>{}}/>
+      <Title title={t('mainPage_em_articles')} className={styles.title}  />
       {news.size > 0 &&
-        <ArticlesList news={[...news.values()]}/>
+        <ArticlesList onlyTitles news={[...news.values()]}/>
       }
 
       <Title title={t('mainPage_em_freeeCourses')} className={styles.title}  onAllWatchClick={()=>{}}/>

@@ -58,6 +58,7 @@ export default class ArticlesRepository {
   static async getNews(data?: {categories?: number[], forLastNumberOfDays?: number, search?: string, isTop?: boolean, limit?: number, page?: number, articleType?: CategoryType, full?: boolean}): Promise<IPagination<IArticle>|null> {
     const dataToSend: any = {
       articleType: 'news',
+      sort: 'createdAt,DESC',
       ...data
     }
     data?.categories&&(dataToSend.categories = data.categories?.join(','))

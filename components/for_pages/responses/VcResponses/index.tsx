@@ -14,6 +14,8 @@ import FiltersSvg from 'components/svg/FiltersSvg'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import P from '@/components/ui/P'
+import { useFavoritesFolderContext } from 'context/favorites_folder_state'
+import { ICV } from 'data/interfaces/ICV'
 
 interface Props {
   id?: number
@@ -57,6 +59,7 @@ export default function VCFeedbacks(props: Props) {
   const [showNav, setShowNav] = useState<boolean>(isTabletWidth)
   const [loading, setLoading] = useState<boolean>(true)
   const [navSet, setNavSet] = useState<NavSet[]>([])
+  const folderContext = useFavoritesFolderContext()
 
   const navigationSet = (stats: IStat[]) => {
     let res = Object.values(VCNaviagation).map((el)=> {
@@ -73,8 +76,8 @@ export default function VCFeedbacks(props: Props) {
     }
   }, [stats, responsesContext.VCFeedbacks])
 
-  
-  useEffect(()=>{    
+
+  const sortItems = () => {
     const feedbacks = [...responsesContext.VCFeedbacks.values()]
     let arr: any
     switch(currentPage) {
@@ -95,10 +98,16 @@ export default function VCFeedbacks(props: Props) {
         responsesContext.setSorted(arr)
         break
     }
+  }
+
+  
+  useEffect(()=>{    
+    sortItems()
   }, [currentPage, responsesContext.VCFeedbacks])
 
   useEffect(()=>{
     vacancyContext.setVacancies()
+    folderContext.getAllFolders()
   }, [])
 
   const openFiltersHandler = () => {
@@ -118,6 +127,11 @@ export default function VCFeedbacks(props: Props) {
     .then(_=> {
       setLoading(false)
     })
+  }
+
+  const changeItem = (cv: ICV) => {
+    init()
+    sortItems()
   }
 
   useEffect(()=>{
@@ -141,7 +155,7 @@ export default function VCFeedbacks(props: Props) {
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.map(el=> {
-          return <CvCard onChangeItem={()=>init()} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
+          return <CvCard onChangeItem={changeItem} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||
         loading && <Spinner size={24} />

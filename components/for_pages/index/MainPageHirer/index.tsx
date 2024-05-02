@@ -48,7 +48,7 @@ export default function MainPageHirer() {
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       CategoryRepository.getCategories(),
-      ArticlesRepository.getNews({full: true}),
+      ArticlesRepository.getNews({isTop: true}),
       personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 
     ])
     setStats(stats)
@@ -174,7 +174,7 @@ export default function MainPageHirer() {
       <CvVcCompilation/>
       <Title title={t('mainPage_hir_articles')} className={styles.title}/>
       {news.size > 0 &&
-        <ArticlesList news={[...news.values()]}/>
+        <ArticlesList onlyTitles news={[...news.values()]}/>
       }
 
       <Title title={t('mainPage_hir_freeCourses')} className={styles.title}/>

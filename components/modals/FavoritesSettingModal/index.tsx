@@ -9,6 +9,8 @@ import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import Button from '@/components/ui/Button'
 import CrossSvg from '@/components/svg/CrossSvg'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
@@ -69,6 +71,16 @@ export default function FavoritesSettingModal(props: Props) {
       </FormikProvider>
     </div>  
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>

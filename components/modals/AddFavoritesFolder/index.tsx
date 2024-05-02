@@ -10,6 +10,8 @@ import { IFolderCreate } from 'data/interfaces/IFolder'
 import Validator from 'utils/Validator'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
@@ -82,6 +84,16 @@ export default function AddFavoritesFolder(props: Props) {
       </FormikProvider>
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
 
   return (
     <ModalLayout className={styles.modalLayout}>

@@ -44,12 +44,13 @@ export default function PersonalPage(props: Props) {
   const tariffContext = useTariffContext()
   const [isEditing, setIsEditing] = useState(false)
   const userContext = useUserContext()
+  const currentProfile = userContext.currentProfile
   const router = useRouter()
 
   const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'>>({
     initialValues: {
-      company: userContext.currentProfile?.company || '',
-      cityId: userContext.currentProfile?.cityId || null,
+      company: currentProfile?.company || '',
+      cityId: currentProfile?.cityId || null,
     },
     onSubmit: () => {}
   })
@@ -139,6 +140,33 @@ export default function PersonalPage(props: Props) {
       && personalContext.backgrounds?.get(BackgroundCategoryType.Places)) 
   )
 
+  const hirerEditor = (<>
+    {isEditing && 
+      <ContentItem className={classNames(styles.bodyItem, isEditing&&styles.bodyItem_edit)}>
+        <EditToolbar/>
+      </ContentItem>
+    }
+    <ContentItem  className={styles.bodyItem}>
+      {tariffContext?.activeSubscriptions?.size === 0 && !isEditing &&
+      <>
+        <P styleType={['grey', 'medium', 'w500']}>{t('shop_brandingSubcriptionNotFound')}</P>
+        <Spacer basis={24}/>
+      </>
+      }
+      {personalContext.blocks.size > 0 &&
+      <PersonalBody isEditing={!props.id&&isEditing}/>
+      ||
+      <div className={styles.emptyWrapper}>
+        <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
+      </div>
+      }
+    </ContentItem>
+  </>)
+
+  const employeeEditor = (<>
+
+  </>)
+
   return (<div className={styles.root}> 
     {!isEditing && isHeaderExist && !props.webView
       &&
@@ -176,27 +204,9 @@ export default function PersonalPage(props: Props) {
         </Form>
       </FormikProvider>
     }
+    {currentProfile?.profileType === ProfileType.Hirer && hirerEditor}
 
-    {isEditing && 
-      <ContentItem className={classNames(styles.bodyItem, isEditing&&styles.bodyItem_edit)}>
-        <EditToolbar/>
-      </ContentItem>
-    }
-    <ContentItem  className={styles.bodyItem}>
-      {tariffContext?.activeSubscriptions?.size === 0 && !isEditing &&
-      <>
-        <P styleType={['grey', 'medium', 'w500']}>{t('shop_brandingSubcriptionNotFound')}</P>
-        <Spacer basis={24}/>
-      </>
-      }
-      {personalContext.blocks.size > 0 &&
-      <PersonalBody isEditing={!props.id&&isEditing}/>
-      ||
-      <div className={styles.emptyWrapper}>
-        <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
-      </div>
-      }
-    </ContentItem>
+  
     {isEditing &&
       <Button 
       styleType={['gradient']} 

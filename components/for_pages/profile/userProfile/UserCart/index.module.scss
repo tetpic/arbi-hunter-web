@@ -29,13 +29,35 @@
   }
 }
 
+.price {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $gradient;
+  padding: 4px;
+  border-radius: 20px;
+
+}
+
+.variantItem {
+  position: relative;
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+  .light {
+    background-color: var(--backColor);
+  }
+}
+
 .choosenItems {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   padding: 16px;
   border-radius: 16px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   @include mq($TabletWidth, max) {
     padding: unset;
     height: 100%;

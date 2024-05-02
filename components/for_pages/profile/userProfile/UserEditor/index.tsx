@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import ThreeModelVariant from 'components/for_pages/three'
 import UserPic from 'components/ui/UserPic'
 import {  useEffect } from 'react'
-import classnames from 'classnames'
 import Spinner from 'components/ui/Spinner'
 import { useCharacterContext } from 'context/character_state'
 import { useAppContext } from 'context/state'
@@ -11,12 +10,13 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
 import { CharCategoryKey, ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
 import { useRouter } from 'next/router'
-import { Preset, PurchaseType } from 'types/enums'
+import { ModalType, Preset} from 'types/enums'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import useTranslation from 'next-translate/useTranslation'
 import UserCart from '../UserCart'
 import ImageHelper from 'utils/ImageHelper'
+import { CharacterCartModalArgs } from '@/components/modals/CharacterCartModal'
 
 
 interface Props {
@@ -42,16 +42,26 @@ export default function UserEditor(props: Props) {
   const {t} = useTranslation()
   const characterContext = useCharacterContext()
   const appContext = useAppContext()
+  const theme = appContext.theme
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
+  const choosenItems = characterContext.choosenItems
+  const cost: number = [...choosenItems.values()].filter(el=> el.isLocked===true).map(el => el.price).reduce((p, c)=> {return p+c}, 0)
 
-  const save = () => {
-    if(characterContext.currentCharacter?.current?.purchased) {
+
+  const onSaveHandler = () => {
+    if(!isTabletWidth) {
       characterContext.saveCurrentSet()
     }
-    else {     
-      router.push({pathname:'/shop', query: {page: 'packets', buy: PurchaseType.Character}}) 
+    else {
+      appContext.showBottomSheet<CharacterCartModalArgs>(ModalType.CharacterCartModal, {
+        onSave: ()=>{
+          characterContext.saveCurrentSet()
+          appContext.hideBottomSheet()
+        },
+        choosenItems: characterContext.choosenItems
+      }, 0.7)
     }
   }
 
@@ -59,11 +69,17 @@ export default function UserEditor(props: Props) {
     <Button 
     isProcess={characterContext.savingProcess}  
     disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
-    onClick={save}  
+    onClick={onSaveHandler}  
     styleType={['gradient']}
     className={styles.saveButton}
     >
-      {isTabletWidth?t('ready'):characterContext.currentCharacter?.current?.purchased?t('save'):t('profile_editor_buyCharacter')}
+       {cost > 0 &&
+        <>
+        {t('profile_editor_buyFor')} {cost} <ArbiCoinSvg />
+        </>
+        ||
+        t('save')
+        }
     </Button>
   </>)
 
@@ -103,15 +119,16 @@ export default function UserEditor(props: Props) {
       <div className={styles.settings}>
         {[...categories.entries()].map(([el, val])=> {
           return (
-            <div key={el.id} onClick={()=> setActiveSet([el, val])} className={classnames(styles.set, (el === activeSet[0])&&styles.set_active)}>
+            <div key={el.id} onClick={()=> setActiveSet([el, val])} className={styles.set}>
               <UserPic 
+              className={styles[theme]}
               size={64} 
               active={el.id === activeSet[0].id} 
               image={el.key === CharCategoryKey.Model
                 ?el.image&&ImageHelper.urlFromFile(el.image, Preset.xsCrop)
                 : `/images/charCategories/${el.key}_${variant.model}.webp`
               }/>
-              <p>{el.name}</p>
+              <P styleType={['medium', 'w500', el === activeSet[0]?'blue':null]} altStyleType={['w500', 'medium', el === activeSet[0]?'blue':null]}  useThemeColor>{el.name}</P>
             </div>
           )
         })}
@@ -128,12 +145,12 @@ export default function UserEditor(props: Props) {
           <Spinner size={32} />
         }
       </div>
-      {/* {saveCharButton} */}
       <div className={styles.variants}>
        {activeSet[1] && sortedVariants.map(item=> {
         return (
           <div className={styles.variantItem}>
             <UserPic 
+            className={styles[theme]}
             size={80} 
             onClick={()=> {setVariant(item); setActiveItem(state=> state?.id === item.id?null:item)}} 
             active={item.id === activeItem?.id && activeSet[0].id === item.categoryId} 
@@ -146,8 +163,9 @@ export default function UserEditor(props: Props) {
        })}
       </div>
     </div>
+    {isTabletWidth && saveCharButton}
     {!isTabletWidth &&
-      <UserCart onSave={save} onSet={(charCategoryId: number)=>{
+      <UserCart onSave={onSaveHandler} onSet={(charCategoryId: number)=>{
         const category:[ICharCategory, ICharItem[]] = [...characterContext.categories.entries()].find(([k,v])=> {
           return k.id === charCategoryId
         })

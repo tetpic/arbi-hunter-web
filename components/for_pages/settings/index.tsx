@@ -54,10 +54,10 @@ export default function SettingsPage(props: Props) {
 
   const employeeItems = [
     SettingsNavigation.Personal, 
-    SettingsNavigation.Notifications,
-    SettingsNavigation.BlackList,
     SettingsNavigation.Access,
     SettingsNavigation.SiteSettings,
+    SettingsNavigation.Notifications,
+    SettingsNavigation.BlackList,
   ]
 
   const hirerItems = [

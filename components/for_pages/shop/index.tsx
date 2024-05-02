@@ -14,6 +14,7 @@ import { useCharacterContext } from 'context/character_state'
 import { PurchaseType } from 'types/enums'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
 
 interface Props {
 }
@@ -32,6 +33,7 @@ export default function Shop(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const characterContext = useCharacterContext()
+  const {isTabletWidth} = useAppContext().size
   const router = useRouter()
 
   useEffect(()=>{
@@ -89,7 +91,7 @@ export default function Shop(props: Props) {
 
   return (<div className={styles.root}> 
   <Title title={t('shop')}/>
-  <ItemNavigation className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
+  <ItemNavigation onAllWidth={isTabletWidth}  className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
 
   {getPage}
 

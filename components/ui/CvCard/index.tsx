@@ -6,7 +6,7 @@ import { useAppContext } from 'context/state'
 import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
@@ -15,13 +15,18 @@ import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
 import FavoritesButton from '../FavoritesButton'
+import CvRepository from 'data/repositories/CvRepository'
+import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
+import { useFavoritesFolderContext } from 'context/favorites_folder_state'
+import { useUserContext } from 'context/user_state'
+import useAbortController from '@/components/hooks/useAbortController'
 
 interface ItemProps {
   cv: ICV
   chat?: IChat
   application?: IApplication
   vcId?: number
-  onChangeItem?: ()=> void
+  onChangeItem?: (cv?: ICV)=> void
 }
 
 
@@ -32,6 +37,10 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   const {isTabletWidth} = useResize()
   const [currentCV, setCurrentCV] = useState<ICV>(cv)
   const vacancyContext = useVacancyContext()
+  const folderContext = useFavoritesFolderContext()
+  const userContext = useUserContext()
+  const {getNewSignal} = useAbortController()
+
   
   const experience = 
     (currentCV?.experienceInfo
@@ -45,22 +54,62 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     router.push('/messenger?chat=' + chat.id)
   }
 
-  const saveHandler = useCallback(() => {
-    if(currentCV.isSavedByCurrentProfile) {
-      cvContext.removeCvfromSaved(currentCV.id)
-      .then(res=>{
-        res===true &&
-        setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: false}})
-      })
+  const addToSaved = (signal: AbortSignal, folderId?: number ) => {
+    CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
+    .then(res=> {
+      props.onChangeItem(res)      
+    })
+    .catch(_=>{})
+  }
+
+  const removeFromSaved = (signal: AbortSignal) => {
+    CvRepository.removeCvFromSaved(cv.id, {signal})
+    .then(res=> {
+      props.onChangeItem(res)
+    })
+    .catch(_=>{})
+  }
+
+  const showFolderModal = (signal: AbortSignal) =>{
+    appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, {
+      initialFolders: folderContext.allFolders,
+      onChoose: (folderId) => {
+        addToSaved(signal, folderId)
+      }
+    })
+  }
+
+  const saveHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const [signal] = getNewSignal('likeHandler')
+    if(!cv.isSavedByCurrentProfile) {
+      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(signal)
     }
     else {
-      cvContext.saveCv(currentCV.id)
-      .then(res=> {
-        res===true&&
-        setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: true}})
-      })
+      removeFromSaved(signal)
     }
-  }, [currentCV])
+  }
+
+  useEffect(()=>{
+    setCurrentCV(cv)
+  }, [cv])
+  // const saveHandler = useCallback(() => {
+  //   if(currentCV.isSavedByCurrentProfile) {
+  //     cvContext.removeCvfromSaved(currentCV.id)
+  //     .then(res=>{
+  //       res===true &&
+  //       setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: false}})
+  //     })
+  //   }
+  //   else {
+  //     cvContext.saveCv(currentCV.id)
+  //     .then(res=> {
+  //       res===true&&
+  //       setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: true}})
+  //     })
+  //   }
+  // }, [currentCV])
 
   const inviteHandler = () => {
     if(isTabletWidth) {
@@ -84,7 +133,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
 
   return (
     <div className={styles.itemWrapper}>
-    <div className={styles.top}>
+    <div className={styles.top} onClick={()=>router.push('cv/'+cv.id)}>
       <UserPic size={46} className={styles.userPic}/>
       <p className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</p>
       <p className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</p>

@@ -14,12 +14,14 @@ import Spinner from '@/components/ui/Spinner'
 import CvItem from '@/components/ui/CvItem'
 import FavoritesVacancyItem from '../FavoritesVacancyItem'
 import Formatter from 'utils/formatter'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function FavoritesPageEmployee(props: Props) {
   const userContext = useUserContext()
+  const {t} = useTranslation()
   const [vacancies, setVacancies] = useState<Map<number, IVacancy>>(new Map)
   const [cvs, setCvs] = useState<Map<number, ICV>>(new Map)
   const [page, setPage] = useState<number>(1)
@@ -71,10 +73,10 @@ export default function FavoritesPageEmployee(props: Props) {
 
   return (
     <div className={styles.root}>
-      <Title title={'Избранное'}/>
+      <Title title={t('favorites_title')}/>
       <div className={styles.top}>
-        <P styleType={['medium', 'w500']}>Вакансии</P>
-        <P styleType={['medium', 'w500']}>{total} {profileType === ProfileType.Employee?Formatter.pluralize(total, 'вакансия', 'вакансии', 'вакансий'):'резюме'}</P>
+        <P styleType={['medium', 'w500']}>{t('favorites_vacancies')}</P>
+        <P styleType={['medium', 'w500']}>{total} {Formatter.pluralize(total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
       </div>
 
       <InfiniteScroll 

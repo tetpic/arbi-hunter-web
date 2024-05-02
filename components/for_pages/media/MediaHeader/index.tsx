@@ -20,6 +20,7 @@ import { useResize } from 'components/hooks/useResize'
 import anime from 'animejs'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -58,6 +59,7 @@ interface ImagesAnimate {
 }
 
 export default function MediaPageHeader(props: Props) {
+  const {t} = useTranslation()
   const {isTabletWidth} = useResize()
   const animationRotateRef = useRef<ReturnType<typeof anime>>(null!)
   const animationSlideRef = useRef<ReturnType<typeof anime>>(null!)
@@ -243,9 +245,9 @@ export default function MediaPageHeader(props: Props) {
     }
    
     <div className={styles.content}>
-      <h1 className={styles.title}>Присоединяйся к комьюнити <br /> <span className={styles.title_purple}>Arbi</span> <span className={styles.title_white}>Hunter</span></h1>
-      <p className={styles.text}>Зарегистрируйся и получи доступ к подпискам на сообщества, сохраняйте статьи, подписывайтесь на новости</p>
+      <h1 className={styles.title}>{t('media_page_join')} <br /> <span className={styles.title_purple}>Arbi</span> <span className={styles.title_white}>Hunter</span></h1>
+      <p className={styles.text}>{t('media_page_advertise')}</p>
     </div>
-    <Link className={styles.registerButton} href={'/registration'}><span>Зарегистрироваться</span></Link>
+    <Link className={styles.registerButton} href={'/registration'}><span>{t('media_page_register')}</span></Link>
   </div>)
 }

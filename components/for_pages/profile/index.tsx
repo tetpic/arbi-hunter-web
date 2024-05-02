@@ -11,8 +11,10 @@ import { useAppContext } from 'context/state'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import { CharacterCartModalArgs } from '@/components/modals/CharacterCartModal'
+import NotificationSvg from '@/components/svg/NotificationSvg'
+import { colors } from 'styles/variables'
 
 
 export default function Profile() {
@@ -40,11 +42,10 @@ export default function Profile() {
 
   const saveCharButton = (<>
   <Button 
-  isProcess={characterContext.savingProcess}  
-  disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
-  onClick={onSaveHandler}  
-  className={styles.saveCharButton}>
-    {isTabletWidth?'Готово':'Сохранить'}
+  styleType={['icon', 'black']}
+  altStyleType={['icon', 'white']}
+  >
+    <NotificationSvg color={appContext.theme === AppTheme.Light && colors.black} />
   </Button>
   </>)
 
@@ -71,7 +72,6 @@ export default function Profile() {
         profileType === ProfileType.Hirer && !showNav &&
         <CompanyProfile  currentPage={page} navSet={navSet()} onBackClick={()=>setShowNav(true)}/>
       }
-
     </div>
   )
 }

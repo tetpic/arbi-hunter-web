@@ -42,6 +42,9 @@ import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import { getUserImageSource } from 'utils/helpers'
+import useAbortController from '@/components/hooks/useAbortController'
+import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
+import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 
 
 interface Props {
@@ -51,7 +54,9 @@ interface Props {
 export default function CvPage(props: Props) {
   const {t} = useTranslation()
   const cvContext = useCvContext()
+  const folderContext = useFavoritesFolderContext()
   const userContext = useUserContext()
+  const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
   const router = useRouter()
@@ -91,7 +96,28 @@ export default function CvPage(props: Props) {
     })
   }
 
+  const showFolderModal = (signal: AbortSignal) =>{
+    const _modalArgs:ChooseFolderToSaveArgs = {
+      initialFolders: folderContext.allFolders,
+      onChoose: (folderId) => {
+        addToSaved(signal, folderId)
+      }
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs, 420)
+    :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs )
+  }
+
+  const addToSaved = (signal: AbortSignal, folderId?: number) => {
+    CvRepository.addCvToSaved({id: Number(props.cvId), favouriteFolderId: folderId}, {signal})
+    .then(_=> {
+      cvContext.getCv(Number(props.cvId))
+    })
+  }
+
   const saveCvToFavorites = () => {
+    const [signal] = getNewSignal('likeHandler')
+
     if(currentCv.isSavedByCurrentProfile){
       cvContext.removeCvfromSaved(currentCv.id)
       .then(_=> {
@@ -99,10 +125,7 @@ export default function CvPage(props: Props) {
       })
     }
     else {
-      cvContext.saveCv(currentCv.id)
-      .then(_=> {
-        cvContext.getCv(Number(props.cvId))
-      })
+      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(new AbortController().signal)
     }
   }
 
@@ -112,8 +135,17 @@ export default function CvPage(props: Props) {
 
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
+    .then(res=> {
+      if(res === false ) {
+        appContext.showSnackbar('CV удалено или скрыто', SnackbarType.error)
+        router.back()
+      }
+    })
     vacancyContext.setVacancies()
+    folderContext.getAllFolders()
   }, [])
+
+
 
 
   if(!currentCv) {
@@ -122,10 +154,11 @@ export default function CvPage(props: Props) {
     </div>
   }
 
+
   const userCard = (<>
-    <div className={classNames(styles.top, currentCv.isContactsOpen&&styles.topActive)} onClick={()=>currentCv.isContactsOpen&&openProfile()}>
+    <div className={classNames(styles.top, currentCv?.isContactsOpen&&styles.topActive)} onClick={()=>currentCv?.isContactsOpen&&openProfile()}>
       <UserPic size={80} image={getUserImageSource(currentCv?.profile, Preset.iconCrop)}/>
-      {currentCv.isContactsOpen &&
+      {currentCv?.isContactsOpen &&
         <P 
         styleType={['large', 'w600']} 
         className={styles.userName} 
@@ -133,14 +166,14 @@ export default function CvPage(props: Props) {
           {currentCv?.profile?.firstName} {currentCv?.profile?.lastName}
         </P>
       }
-      {currentCv.isContactsOpen &&
+      {currentCv?.isContactsOpen &&
        <ArrowRightSvg/>
       }
     </div>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
     <P styleType={['medium', 'w500', 'alignCenter']}>
       { [
-          currentCv.gender === Genders.Female&&t('gender_female')||currentCv.gender === Genders.Male&&t('gender_male'),
+          currentCv?.gender === Genders.Female&&t('gender_female')||currentCv?.gender === Genders.Male&&t('gender_male'),
           currentCv?.age && `${currentCv?.age} ${Formatter.pluralize(currentCv?.age, t('year1'), t('year2'), t('year3'))}`,
           currentCv?.profile?.city?.locName
         ].filter(Boolean).map((el, i, arr)=>{
@@ -154,8 +187,8 @@ export default function CvPage(props: Props) {
     </P>
     }
     {currentCv?.vacancyLookType &&
-      <p className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
-        {TranslateVacancyLookType(currentCv.vacancyLookType, ProfileType.Hirer, t)}
+      <p className={classNames(styles.status, currentCv?.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
+        {TranslateVacancyLookType(currentCv?.vacancyLookType, ProfileType.Hirer, t)}
       </p>
     }
     <div className={styles.topButtonsWrapper}>
@@ -192,7 +225,7 @@ export default function CvPage(props: Props) {
       showStar
       className={styles.favoritesButton} 
       onClick={saveCvToFavorites} 
-      isActive={currentCv.isSavedByCurrentProfile}/>
+      isActive={currentCv?.isSavedByCurrentProfile}/>
       <Button styleType={['icon', 'black']}><CloseEyeSvg/></Button>
     </div>
   </>)
@@ -206,7 +239,7 @@ export default function CvPage(props: Props) {
       <div className={styles.userTop}>
         <div className={styles.topLine}>
           <P styleType={['fs20', 'w600']}>
-            {currentCv.categories[0].name}
+            {currentCv?.categories[0].name}
           </P>
           <P 
           styleType={['blue', 'alignCenter', 'medium', 'w500']} 
@@ -220,9 +253,9 @@ export default function CvPage(props: Props) {
         <Statistics 
         className={styles.stats}
         items={[
-          {name: t('cv_pagee_shows'), count: currentCv.totalShows},
-          {name: t('cv_pagee_views'), count: currentCv.totalViews},
-          {name: t('cv_page_applications'), count: currentCv.totalApplications},
+          {name: t('cv_pagee_shows'), count: currentCv?.totalShows},
+          {name: t('cv_pagee_views'), count: currentCv?.totalViews},
+          {name: t('cv_page_applications'), count: currentCv?.totalApplications},
         ]} 
         title={t('cv_page_statsTitle')}/>
         <div className={styles.topLine}>
@@ -237,8 +270,8 @@ export default function CvPage(props: Props) {
           <Button styleType={['gradient']}>
             {t('cv_page_improve')}
           </Button>
-          <Button styleType={['borderGradient']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv.categories[0].id]})}}}>
-            {currentCv.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
+          <Button styleType={['borderGradient']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
+            {currentCv?.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
           </Button>
         </div>
 
@@ -251,7 +284,7 @@ export default function CvPage(props: Props) {
         </div>
       }
 
-      {(currentCv.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
+      {(currentCv?.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
           <P styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
           {currentCv.profile.email &&

@@ -9,6 +9,7 @@ import TextNode from 'components/ui/TextNode'
 import { useResize } from 'components/hooks/useResize'
 import Link from 'next/link'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   link?: string
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function MediaNewsSection(props: Props) {
+  const {t} = useTranslation()
   const firstItem = props.news[0]
   const {isTabletWidth} = useResize()
 
@@ -88,7 +90,7 @@ export default function MediaNewsSection(props: Props) {
     </div>
   </div>
   {props.link && !isTabletWidth &&
-    <LinkBlack href={props.link}>Смотреть все</LinkBlack>
+    <LinkBlack href={props.link}>{t('watchAll')}</LinkBlack>
   }
   </section>)
 }

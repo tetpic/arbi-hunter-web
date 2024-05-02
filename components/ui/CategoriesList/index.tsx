@@ -2,6 +2,7 @@
 import SwiperList from '../SwiperList'
 import { useRouter } from 'next/router'
 import CategoryItem from './CategoryItem'
+import styles from './index.module.scss'
 
 interface Props<T> {
   categories: T[]
@@ -29,7 +30,13 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
   }
 
   return (
-    <SwiperList hideNav={props.hideNav} className={props.className} swiperProps={{freeMode: false}} watchMoreHref={props.watchMoreHref}>
+    <SwiperList 
+    hideNav={props.hideNav} 
+    className={props.className} 
+    swiperProps={{freeMode: false}} 
+    watchMoreHref={props.watchMoreHref}
+    wrapperClassName={styles.wrapper}
+    >
       {props.categories && props.categories.map(category=> {
         return (
           <CategoryItem category={category} onClick={onRedirect} itemClassName={props.itemClassName}/>

@@ -107,6 +107,12 @@
   "student1": "ученик",
   "student2": "ученика",
   "student3": "учеников",
+  "subscriber1": "подписчик",
+  "subscriber2": "подписчика",
+  "subscriber3": "подписчиков",
+  "article1": "статью",
+  "article2": "статьи",
+  "article3": "статей",
   "course1": "курс",
   "course2": "курса",
   "course3": "курсов",
@@ -240,6 +246,17 @@
   "courses_answer":"Ответить",
 
 
+  "community_create": "Создать сообщество",
+  "community_subscribe": "Подписаться",
+  "community_unsubscribe": "Отписаться",
+  "community_edit": "Редактировать",
+  "community_copyLink": "Скопировать ссылку",
+  "community_linkCopied": "Ссылка скопирована",
+  "community_share": "Поделиться",
+  "community_hide": "Скрыть",
+  "community_noNews": "Нет новостей",
+
+
   "chat_searchPlaceholder":"Поиск по чатам",
   "chat_folders":"Папки с чатами",
   "chat_main":"Чаты",
@@ -251,6 +268,11 @@
   "chat_folder_create":"Создать папку",
   "chat_folder_add":"Добавить чаты",
 
+
+  "create_addPortfolio":"Добавить порфтолио",
+  "create_recommendedSkills":"Рекомендованные навыки",
+  "create_workplaceCountry": "Страна где находится офис",
+  "create_workplaceCity": "Город где находится офис",
 
   "create_cv_preview": "Предпросмотр резюме",
   "create_cv_refreshSuccess": "Резюме успешно обновлено",
@@ -280,8 +302,32 @@
   "create_cv_businessTrips":"Командировки",
   "create_cv_businessTripsYes":"Командировки возможны",
   "create_cv_businessTripsNo":"Командировки не возможны",
-  "create_addPortfolio":"Добавить порфтолио",
 
+
+  "create_vacancy_specialization": "Специализация",
+  "create_vacancy_responsibilities": "Обязанности",
+  "create_vacancy_requirements": "Требования",
+  "create_vacancy_conditions": "Условия",
+  "create_vacancy_refreshed": "Вакансия успешно обновлена",
+  "create_vacancy_saved": "Вакансия успешно сохранена",
+  "create_vacancy_description": "Описание вакансии",
+  "create_vacancy_setName": "Укажите название вакансии",
+  "create_vacancy_setNameFromList": "Выберите название вакансии из списка",
+  "create_vacancy_writeDetails": "Напишите подробнее о вакансии",
+  "create_vacancy_caterory": "Категория и специализация",
+  "create_vacancy_name": "Название вакансии",
+  "create_vacancy_nameShort": "Название",
+  "create_vacancy_salary": "Уровень дохода",
+  "create_vacancy_workPlace": "Место работы",
+  "create_vacancy_experience": "Опыт работы",
+  "create_vacancy_education": "Образование",
+  "create_vacancy_descriptionShort": "Описание",
+  "create_vacancy_skills": "Навыки и инструменты",
+  "create_vacancy_bysiness": "Занятость",
+  "create_vacancy_contactInfo": "Контактная информация",
+  "create_vacancy_publish": "Разместить вакансию",
+  "create_vacancy_refresh": "Обновить вакансию",
+  "create_vacancy_save": "Сохранить вакансию",
 
   "create_vacancy_preview": "Предпросмотр вакансии",
   "create_vacancy_writeBoutVacancy": "Напишите о работе подробнее, хотя бы 2-3 строки",
@@ -378,6 +424,7 @@
   "favorites_settings":"Настройки",
   "favorites_searches":"Автопоиски",
   "favorites_resumes":"Резюме",
+  "favorites_vacancies":"Резюме",
   "favorites_createFolder":"Создать папку",
   "favorites_makeFolderDefault":"Сделать папкой по умолчанию",
   "favorites_createFolderTitle":"Новая папка избранного",
@@ -388,6 +435,12 @@
   "favorites_addToDefaultFolder":"Добавлять сразу в папку",
   "favorites_askFolderEveryTime":"Спрашивать папку каждый раз",
   "favorites_chooseFolderToSave":"Выберите папку для сохранения",
+  "favorites_vcItem_expeience":"Опыт",
+  "favorites_vcItem_published":"Опубликовано",
+  "favorites_vcItem_hirerIsOnline":"Работодатель сейчас онлайн",
+  "favorites_vcItem_wasOnline":"Был в сети",
+  "favorites_vcItem_youInvited":"Вас пригласили",
+  "favorites_vcItem_youRejected":"Вам отказали",
   
 
   "filters_searchOnlyIn": "Искать только",
@@ -546,6 +599,28 @@
   "landing_help_writeUs": "Написать в поддержку в Telegram",
 
 
+  "media_article_addToFavorite": "Добавить в избранное",
+  "media_article_removeFromFavorite": "Убрать из избранного",
+  "media_article_success": "Успешно",
+  "media_article_copyLink": "Скопировать ссылку",
+  "media_article_linkCopied": "Ссылка скопирована",
+  "media_article_share": "Поделиться",
+  "media_article_hide": "Скрыть",
+  "media_read": "Читать",
+  "media_page_join": "Присоединяйся к комьюнити",
+  "media_page_advertise": "Зарегистрируйся и получи доступ к подпискам на сообщества, сохраняйте статьи, подписывайтесь на новости",
+  "media_page_register": "Зарегистрироваться",
+  "media_page_categories": "Категории",
+  "media_page_categoriesAll": "Все категории",
+  "media_page_popular": "Популярное",
+  "media_page_communities": "Cообщества",
+  "media_page_compilations": "Подборки",
+  "media_page_personalCompilations": "Подборки для вас",
+  "media_page_allArticles": "Подборки для вас",
+  "media_page_mySubscriptions": "Мои подписки",
+  "media_page_media": "Медиа",
+
+
   "mainPage_hir_feedbacks":"Отклики",
   "mainPage_hir_watches":"Просмотры",
   "mainPage_hir_cvs":"Резюме",
@@ -561,6 +636,22 @@
   "mainPage_em_bestVCs": "Подборки лучших вакансий",
   "mainPage_em_articles": "Статьи",
   "mainPage_em_freeeCourses": "Бесплатные курсы",
+
+
+  "managers_vcCount": "Количество вакансий",
+  "managers_feedbacks": "Отклики",
+  "managers_watched": "Просмотрено",
+  "managers_answered": "Отвечено",
+  "managers_setAdmin": "Сделать администратором",
+  "managers_setManager": "Сделать менеджером",
+  "managers_editProfile": "Редактировать профиль",  
+  "managers_removeProfile": "Удалить профиль",  
+  "managers_position": "Должность",  
+  "managers_editData": "Редактирование данных менеджера",  
+  "managers_addManager": "Добавить менеджера",  
+  "managers_personalData": "Личные данные",  
+  "managers_permissions": "Права",  
+  "managers_status": "Статус",  
 
 
   "nav_myCvs": "Мои резюме",
@@ -675,25 +766,6 @@
   "knowledgeBase_search":"Поиск по базе знаний",
   "knowledgeBase_shareLink":"Поделиться ссылкой",
   "knowledgeBase_linkCopied":"Ссылка скопирована",
-
-
-
-
-
-  "managers_vcCount": "Количество вакансий",
-  "managers_feedbacks": "Отклики",
-  "managers_watched": "Просмотрено",
-  "managers_answered": "Отвечено",
-  "managers_setAdmin": "Сделать администратором",
-  "managers_setManager": "Сделать менеджером",
-  "managers_editProfile": "Редактировать профиль",  
-  "managers_removeProfile": "Удалить профиль",  
-  "managers_position": "Должность",  
-  "managers_editData": "Редактирование данных менеджера",  
-  "managers_addManager": "Добавить менеджера",  
-  "managers_personalData": "Личные данные",  
-  "managers_permissions": "Права",  
-  "managers_status": "Статус",  
 
 
   "proposalModal_chooseVc":"Выберите вакансию",

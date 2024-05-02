@@ -14,6 +14,7 @@ import PlusSvg from 'components/svg/PlusSvg'
 import { colors } from 'styles/variables'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   community: ICommunity
@@ -21,6 +22,7 @@ interface Props {
 
 export default function CommunityItem({community}: Props) {
   const communityContext = useCommunityContext()
+  const {t} = useTranslation()
   const router = useRouter()
   const [load, setLoad] = useState<boolean>(false)
   const {isTabletWidth} = useResize()
@@ -49,7 +51,7 @@ export default function CommunityItem({community}: Props) {
       className={styles.button}
       >
         {
-          isSubscribed?'Отписаться':'Подписаться'
+          isSubscribed?t('community_unsubscribe'):t('community_subscribe')
         }
       </Button>
       ||

@@ -15,6 +15,7 @@
   min-width: 310px;
   opacity: 0;
   @include transitionDefault;
+  z-index: 6;
 }
 
 .active {

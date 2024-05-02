@@ -13,11 +13,23 @@
   @include mq($TabletWidth, max) {
     padding: unset;
     padding-inline: 16px;
-    margin-top: 16px;
+    padding-top: 8px;
     min-height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
     padding-bottom: 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 0;
+    border-radius: unset;
+    background-color: $backgroundBlack;
+    z-index: 4;
+    height: 100vh;
+    height: 100dvh;
+    overflow: auto;
+
+
   }
 }
 

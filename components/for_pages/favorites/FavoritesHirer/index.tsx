@@ -31,18 +31,22 @@ const pageItems = (t: Translate) =>{
 export default function FavoritesPageHirer(props: Props) {
   const [page, setPage] = useState<FavoritesPage>(FavoritesPage.RESUMES)
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const userContext = useUserContext()
   const foldersContext = useFavoritesFolderContext()
   const {t} = useTranslation()
 
   const openAddFolderModal = () => {
-    appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, {
+    const _modalArgs:AddFavoritesFolderArgs = {
       onSave: (data) => foldersContext.createNewFolder(data),
-    })
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, _modalArgs, 340)
+    :appContext.showModal<AddFavoritesFolderArgs>(ModalType.AddFavoritesFolder, _modalArgs)
   }
 
   const openSettingsModal = () => {
-    appContext.showModal<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, {
+    const _modalArgs:FavoritesSettingModalArgs = {
       initialFolders: foldersContext.allFolders,
       initialData: {
         addSavedToDefaultFolder: userContext.currentProfile.addSavedToDefaultFolder,
@@ -51,7 +55,11 @@ export default function FavoritesPageHirer(props: Props) {
       onSave: (data) => {
         foldersContext.setSettings(data)
       }
-    })
+    }
+
+    isTabletWidth
+    ?appContext.showBottomSheet<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, _modalArgs, 424)
+    :appContext.showModal<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, _modalArgs)
   }
 
   useEffect(()=>{

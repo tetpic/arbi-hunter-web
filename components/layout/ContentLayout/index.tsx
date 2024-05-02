@@ -53,7 +53,7 @@ export default function ContentLayout(props: Props) {
         <meta name='description' content={props.description||props.title}/>
       </Head>
     }
-    <div className={classnames(styles.wrapper, props.withMobileMenu && isTabletWidth && styles.withMobileMenu)}>
+    <div className={classnames(styles.wrapper, props.withMobileMenu && isTabletWidth && styles.withMobileMenu, !props.withFooter && styles.withoutFooter)}>
       <div className={classnames(props.disabledNavBar && styles.disabledNavBar,  'contentWrapper')}> 
         {props.children}
       </div>

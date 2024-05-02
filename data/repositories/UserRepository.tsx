@@ -62,6 +62,28 @@ export default class UserRepository {
     return res
   }
 
+  static async addProfileToBlackList(profileId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/profile${profileId}/blackList`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async removeProfileFromBlackList(profileId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/profile/${profileId}/removeFromBlackList`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getStats(): Promise<IStats|null> {
     const res = await request({
       method: 'get',

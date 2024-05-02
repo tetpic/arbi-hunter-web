@@ -186,7 +186,7 @@ export default function Skills(props: Props) {
   return ( <div className={styles.root}>
     {cvContext.recommendedSkills.size>0 &&
       <>
-      <P styleType={['w600', 'large']}>Рекомендованные навыки</P>
+      <P styleType={['w600', 'large']}>{t('create_recommendedSkills')}</P>
       <Spacer basis={16}/>
       <TagList tags={[...cvContext.recommendedSkills.values()].filter(el => !cvContext.helpObjects.skills?.get(el.id)).map(s => ({name: s.title, isActive: false, onClick: ()=>{
         cvContext.setHelpObjects({...cvContext.helpObjects, skills: new Map([...cvContext.helpObjects.skills, [s.id, s]])})

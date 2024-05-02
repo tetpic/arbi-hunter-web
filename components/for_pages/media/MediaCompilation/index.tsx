@@ -12,6 +12,7 @@ import bigS from 'images/bigS.png'
 import { useResize } from 'components/hooks/useResize'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Link from 'next/link'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 function MediaCompilationItem(props: {el: ICategory, index: number}) {
+  const {t} = useTranslation()
   const el = props.el
   const index = props.index
   const {isTabletWidth} = useResize()
@@ -26,7 +28,7 @@ function MediaCompilationItem(props: {el: ICategory, index: number}) {
   return (
     <Link key={el.id} href={'/media/page?page=categories&category=' + props.el.id} className={classNames(styles.item, index === 2 && !isTabletWidth && styles.item_large)} style={{ background: `linear-gradient(45deg, #${index === 0 && '38BFAE' || index === 1 && 'AC37C8' || index === 2 && '653ABC'}  30%, #${index === 0 && '7D5CFF' || index === 1 && '7D5CFF' || index === 2 && 'C2396D'} 100%)` }} >
     <p className={styles.name}>{el.name}</p>
-    <Button className={styles.button} ><span style={{color: `#${el.color}`}}>Читать {el.articlesCount} {Formatter.pluralize(+el.articlesCount, 'статью', 'статьи', 'статей')}</span></Button>
+    <Button className={styles.button} ><span style={{color: `#${el.color}`}}>{t('media_read')} {el.articlesCount} {Formatter.pluralize(+el.articlesCount, t('article1'), t('article2'), t('article3'))}</span></Button>
     <div className={styles.imageWrapper}>
       {el.image && !isTabletWidth &&
         <Image 
@@ -54,6 +56,7 @@ function MediaCompilationItem(props: {el: ICategory, index: number}) {
 
 
 export default function MediaCompilation(props: Props) {
+  const {t} = useTranslation()
   const sortedByArticlesCount = props.newsCompilations.sort((a, b) => +a.articlesCount < +b.articlesCount?1:-1)
   const {isTabletWidth} = useResize()
 
@@ -81,7 +84,7 @@ export default function MediaCompilation(props: Props) {
       
     </div>
     {!isTabletWidth &&
-      <LinkBlack href={'/media/page?page=categories'} >Смотреть все</LinkBlack>
+      <LinkBlack href={'/media/page?page=categories'} >{t('watchAll')}</LinkBlack>
     }
   </div>)
 }

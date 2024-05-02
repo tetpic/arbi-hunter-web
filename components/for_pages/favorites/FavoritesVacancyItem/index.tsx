@@ -37,25 +37,25 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
       </div>
     </div>
     <P styleType={['medium', 'w500']}>{vacancy.name||vacancy.categories[0]?.description}</P>
-    <P styleType={['medium', 'w500']}>Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
+    <P styleType={['medium', 'w500']}>{t('favorites_vcItem_expeience')} {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
     <SalaryItem vacancy={vacancy}/>
-    <P styleType={['small', 'greyLight']}>Опубликовано {Formatter.formatDate(vacancy.updatedAt)}</P>
+    <P styleType={['small', 'greyLight']}>{t('favorites_vcItem_published')} {Formatter.formatDate(vacancy.updatedAt)}</P>
     {isOnline &&
       <P styleType={['medium', 'w500', 'green']}>
-        Работодатель сейчас онлайн
+        {t('favorites_vcItem_hirerIsOnline')}
       </P>
     }
     {!isOnline && vacancy.profile.lastActivityAt &&
       <P styleType={['small', 'w500', 'greyLight']} className={styles.offline}>
-        <DotSvg color={colors.red}/> Был в сети {Formatter.formatDate(vacancy.profile.lastActivityAt, {timeOptions: {year: 'numeric'}})}
+        <DotSvg color={colors.red}/> {t('favorites_vcItem_wasOnline')} {Formatter.formatDate(vacancy.profile.lastActivityAt, {timeOptions: {year: 'numeric'}})}
       </P>
     }
     {vacancy.applicationsByCurrentUser.length > 0 
     && vacancy.applicationsByCurrentUser.find(el=>el.status === 'applied') &&
-      <div className={styles.tag}>Вас пригласили</div>
+      <div className={styles.tag}>{t('favorites_vcItem_youInvited')}</div>
       ||
       vacancy.applicationsByCurrentUser.length > 0 &&
-      <div className={styles.redTag}>Вам отказали</div>
+      <div className={styles.redTag}>{t('favorites_vcItem_youRejected')}</div>
     }
   </Link>)
 }
