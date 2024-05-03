@@ -130,7 +130,7 @@ export default function VacancyPage(props: Props) {
       image={currentVacancy.profile?.logo&&ImageHelper.urlFromFile(currentVacancy.profile?.logo, Preset.smallIconCrop)} 
       size={67}/>
       <div className={styles.companyInfo}>
-        <P styleType={['w600', 'medium']}>{currentVacancy.profile?.company}</P>
+        <P styleType={['w600', 'medium']} useThemeColor>{currentVacancy.profile?.company}</P>
         {currentVacancy.city?.locName &&
           <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.city.locName}</P>
         }
@@ -159,7 +159,7 @@ export default function VacancyPage(props: Props) {
       }
       {!isMyVacancy &&companyCard}
       <div className={styles.topLine}>
-        <P styleType={['w600', 'huge']}>{currentVacancy.name}</P>
+        <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
         {isMyVacancy &&
           <P 
           styleType={['blue', 'alignCenter', 'medium', 'w500']} 
@@ -172,12 +172,13 @@ export default function VacancyPage(props: Props) {
       </div>
       <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
       {salary &&
-        <P styleType={['w600', 'large']}>{salary} {t('vacancy_page_salaryCounter')}</P>
+        <P styleType={['w600', 'large']} useThemeColor>{salary} {t('vacancy_page_salaryCounter')}</P>
       }
       {isMyVacancy && 
         <div className={styles.topLine}>
           <P 
           styleType={['w600', 'medium']} 
+          useThemeColor
           className={classNames(styles.tariff, styles['tariff_'+currentVacancy.tariff])}
           >
             {TranslateTariffType(currentVacancy.tariff)}
@@ -185,6 +186,7 @@ export default function VacancyPage(props: Props) {
 
           <P 
           styleType={['small', 'green']} 
+          useThemeColor
           className={styles.expires}
           >
             {t('vacancy_page_expires')} {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30})}
@@ -277,35 +279,35 @@ export default function VacancyPage(props: Props) {
       }
       {currentVacancy.skills?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_skills')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_skills')}</P>
           <TagList tags={currentVacancy.skills.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.sources?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_sources')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_sources')}</P>
           <TagList tags={currentVacancy.sources.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.geos?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_geos')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_geos')}</P>
           <TagList tags={currentVacancy.geos.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.verticals?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_verticals')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_verticals')}</P>
           <TagList tags={currentVacancy.verticals.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_languagesKnowledges')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_languagesKnowledges')}</P>
           <TagList 
           tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </div>
@@ -313,9 +315,9 @@ export default function VacancyPage(props: Props) {
 
       {currentVacancy.showContactName && !isMyVacancy &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_contacts')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_contacts')}</P>
           <div className={styles.contacts}>
-            <P styleType={['w500', 'medium']}>{currentVacancy.contactName}</P>
+            <P styleType={['w500', 'medium']} useThemeColor>{currentVacancy.contactName}</P>
             <Button 
             styleType={['black', 'wide', 'borderBlue']} 
             altStyleType={['gradient']}
@@ -343,7 +345,7 @@ export default function VacancyPage(props: Props) {
       
       {!isMyVacancy && otherCompanyVacncies.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['w600', 'large']}>{t('vacancy_page_sameVacancies')}</P>
+          <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_sameVacancies')}</P>
           <div className={styles.vacancies}>
             {otherCompanyVacncies.filter(el=> el.id !== currentVacancy.id).map(el => <VacancyItem key={el.id} vacancy={el} />)}
           </div>

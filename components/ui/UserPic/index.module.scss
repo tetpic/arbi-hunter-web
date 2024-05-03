@@ -3,9 +3,9 @@
 .imageWrapper {
   border-radius: 50%;
   overflow: hidden;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   display: inline-block;
-  border: 2px transparent solid;
+  border: 2px var(--borderPerimeter) solid;
   // aspect-ratio: 1;
 
 

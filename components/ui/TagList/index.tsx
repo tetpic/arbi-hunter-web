@@ -23,7 +23,7 @@ export default function TagList(props: Props) {
     <div className={classNames(styles.tagList, props.tagListClassName)}>
       {props.tags.map((el, index)=>{
         return (
-          <Tag className={props.tagClassName} isActive={el.isActive} text={el.name} onClick={el.onClick} key={index}/>
+          <Tag className={props.tagClassName} isActive={el.isActive} text={el.name} onClick={el.onClick} key={index+el.name}/>
         )
       })}
     </div>

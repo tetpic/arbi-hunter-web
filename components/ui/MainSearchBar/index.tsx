@@ -100,13 +100,29 @@ export default function MainSearchBar(props: Props) {
         </Button>
         }
 
-        <Button 
-        styleType={!isTabletWidth?['gradient']:['icon', 'backTransparent']}
-        title='search button' 
-        onClick={()=> submit()} 
-        className={!isTabletWidth&&styles.button}>
-          {isTabletWidth&&<LoupeSvg color={isLightTheme&&colors.black}/>||t('searchAlt')}
-        </Button>
+        {isTabletWidth &&
+          <Button 
+          key={'iconButton'}
+          styleType={['backTransparent','icon']}
+          altStyleType={['backTransparent', 'icon', 'invertSvg']}
+          title='search button' 
+          onClick={()=> submit()} 
+          // className={styles.button}
+          >
+            <LoupeSvg />
+          </Button>
+          ||
+          <Button 
+          key={'textButton'}
+          styleType={['gradient']}
+          title='search button' 
+          onClick={()=> submit()} 
+          // className={styles.button}
+          >
+            {t('searchAlt')}
+          </Button>
+          
+        }
       </div>
     </div>
   )

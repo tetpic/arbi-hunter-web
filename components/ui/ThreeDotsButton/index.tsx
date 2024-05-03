@@ -14,9 +14,10 @@ export default function ThreeDotsButton(props: Props) {
   return (
     <Button 
     className={classNames(styles.threeDots, props.className)} 
+    altStyleType={['icon', 'white', 'invertSvg']}
     onClick={(e)=> props.onClick?.(e)} 
     onMouseEnter={(e)=> {props.onMouseEnter?.(e)}}>
       <ThreeDotsSvg/>
-      </Button> 
+    </Button> 
   )
 }

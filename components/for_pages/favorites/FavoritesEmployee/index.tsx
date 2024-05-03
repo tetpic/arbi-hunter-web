@@ -75,8 +75,8 @@ export default function FavoritesPageEmployee(props: Props) {
     <div className={styles.root}>
       <Title title={t('favorites_title')}/>
       <div className={styles.top}>
-        <P styleType={['medium', 'w500']}>{t('favorites_vacancies')}</P>
-        <P styleType={['medium', 'w500']}>{total} {Formatter.pluralize(total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
+        <P styleType={['medium', 'w500']} useThemeColor>{t('favorites_vacancies')}</P>
+        <P styleType={['medium', 'w500']} useThemeColor>{total} {Formatter.pluralize(total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
       </div>
 
       <InfiniteScroll 

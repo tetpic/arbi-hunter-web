@@ -31,6 +31,6 @@ export default function Tag(props: Props) {
   }
 
   return (
-    <P styleType={['medium', 'w500']}  title={props.text} data-cy={'tag_'+props.text} className={classNames(styles.tag, styles[theme], props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</P>
+    <P styleType={['medium', 'w500']}  useThemeColor title={props.text} data-cy={'tag_'+props.text} className={classNames(styles.tag, styles[theme], props.className, props.isActive&&styles.isActive)} onClick={props.onClick}>{props.text}</P>
   )
 }

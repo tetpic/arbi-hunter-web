@@ -5,7 +5,7 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { useEffect,  useState } from 'react'
 import Body from '../Body'
 import classNames from 'classnames'
-import { LanguageKnowLevel, Languages } from 'types/enums'
+import { AppTheme, LanguageKnowLevel, Languages } from 'types/enums'
 import Radio from 'components/fields/RadioListField/Radio'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { TranslateLanguage, TranslateLanguageKnowLevel } from 'utils/enumsTranslations'
@@ -13,6 +13,7 @@ import { useAppContext } from 'context/state'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 interface Props {
   onClose: () => void
@@ -26,6 +27,7 @@ export interface ILangaugesModalArgs {
   
 export default function LangaugesModal(props: Props) {
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {t} = useTranslation()
   const args: ILangaugesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
 
@@ -59,7 +61,7 @@ export default function LangaugesModal(props: Props) {
           activeDropDown==='langs'?setActiveDropDown(undefined):setActiveDropDown('langs')
         }}
         >
-          {t('language')} <ArrowDownSvg className={activeDropDown==='langs'&&styles.arrow_active}/>
+          {t('language')} <ArrowDownSvg color={isLightTheme&&colors.black} className={activeDropDown==='langs'&&styles.arrow_active}/>
         </p>
         <div className={classNames(styles.list, activeDropDown==='langs'&&styles.list_active)}>
           {langs&&langs.map((el, index) => {
@@ -83,7 +85,7 @@ export default function LangaugesModal(props: Props) {
         }} 
         >
           {t('language_knowLevel')}
-          <ArrowDownSvg className={activeDropDown==='levels'&&styles.arrow_active}/>
+          <ArrowDownSvg color={isLightTheme&&colors.black} className={activeDropDown==='levels'&&styles.arrow_active}/>
         </p>
         <div className={classNames(styles.list, activeDropDown==='levels'&&styles.list_active)}>
           {Object.values(LanguageKnowLevel).map((el, index)=> {

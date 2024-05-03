@@ -5,7 +5,7 @@
   min-width: 25%;
   max-width: 50%;
   flex-shrink: 0;
-  border-right: 2px $grey solid;
+  border-right: 2px var(--borderColor) solid;
   overflow: auto;
   position: relative;
   @include mq($TabletWidth, max) {

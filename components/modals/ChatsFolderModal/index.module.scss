@@ -18,10 +18,7 @@
     color: $blue;
   }
 
-  .title {
-    font-weight: $semibold;
-    font-size: $largeText;
-  }
+
 }
 
 .body {
@@ -39,18 +36,15 @@
     cursor: pointer;
     @include transitionDefault;
     @include exeptLast {
-      border-bottom: 2px $grey solid;
+      border-bottom: 2px var(--greyToPurpleGrey) solid;
     }
     @include hover {
-      background-color: $greyAlt;
+      background-color:var(--greyAltToPuspleSmell);
     }
   }
 
   .name {
     grid-area: n;
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $white;
   }
 
   .userPic {

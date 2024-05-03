@@ -32,6 +32,7 @@ export default function NavBar(props: Props) {
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {t} = useTranslation()
   const profileType = userContext.currentProfile?.profileType
 
@@ -119,8 +120,8 @@ export default function NavBar(props: Props) {
   return ( <div className={styles.root} onMouseEnter={()=>appContext.setNavBarActive(true)} onMouseLeave={()=>appContext.setNavBarActive(false)}>
     <div className={styles.wrapper}>
         <Link href={'/'} className={styles.logo}>
-          <Image  src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
-          <ArbiLogoTextSvg className={styles.linkText}/>
+          <Image  src={'/favicon.svg'} alt={'logo'} width={40} height={40}  />
+          <ArbiLogoTextSvg className={styles.linkText} color={isLightTheme&&colors.black}/>
         </Link>
 
         <Link aria-label='to shop'  className={classNames(styles.coloredLink, styles.link)} href={'/shop'}>

@@ -420,7 +420,8 @@ export default function Cv(props: Props) {
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
               <Button 
-              className={styles.buttonBorderGradient} 
+              styleType={['borderGradient']}
+              altStyleType={['whitePurple']}
               type='button' 
               title={'prev'} 
               onClick={()=>setProgress(progress-1)}

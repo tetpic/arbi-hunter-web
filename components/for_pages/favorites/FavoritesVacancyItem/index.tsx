@@ -30,14 +30,14 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
     <div className={styles.top}>
       <UserPic className={styles.userPic} size={42} image={image}/>
       <div className={styles.topContent}>
-        <P styleType={['medium', 'w500']}>{vacancy.company||vacancy.contactName}</P>
+        <P useThemeColor styleType={['medium', 'w500']}>{vacancy.company||vacancy.contactName}</P>
         {vacancy.city &&
-          <P styleType={['medium', 'w500', 'greyLight']}>{vacancy.city?.locName}</P>
+          <P  styleType={['medium', 'w500', 'greyLight']}>{vacancy.city?.locName}</P>
         }
       </div>
     </div>
-    <P styleType={['medium', 'w500']}>{vacancy.name||vacancy.categories[0]?.description}</P>
-    <P styleType={['medium', 'w500']}>{t('favorites_vcItem_expeience')} {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
+    <P styleType={['medium', 'w500']} useThemeColor>{vacancy.name||vacancy.categories[0]?.description}</P>
+    <P styleType={['medium', 'w500']} useThemeColor>{t('favorites_vcItem_expeience')} {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
     <SalaryItem vacancy={vacancy}/>
     <P styleType={['small', 'greyLight']}>{t('favorites_vcItem_published')} {Formatter.formatDate(vacancy.updatedAt)}</P>
     {isOnline &&

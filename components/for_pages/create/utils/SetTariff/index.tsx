@@ -94,7 +94,7 @@ export default function SetTariff(props: Props) {
 
 
   return (<div className={styles.root}> 
-  <P styleType={['huge', 'w600', 'textCenter']}>{t('shop_chooseTariff')}</P>
+  <P styleType={['huge', 'w600', 'textCenter']} useThemeColor>{t('shop_chooseTariff')}</P>
   <div className={styles.tariffItems}>
     {tariffs.size > 0 &&[...tariffs.values()].filter(el => {
       if(creationContext.currentCv?.subscriptions||creationContext.currentVc?.subscriptions) {
@@ -140,7 +140,7 @@ export default function SetTariff(props: Props) {
     })}
   </div>
   <div className={styles.buttonsWrapper}>
-    <Button styleType={['black']} onClick={props.onBack}>{t('back')}</Button>
+    <Button styleType={['black']} altStyleType={['whitePurple']} onClick={props.onBack}>{t('back')}</Button>
     <Button 
     styleType={['gradient']} 
     title={'preview'} 

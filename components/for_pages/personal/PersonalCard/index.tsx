@@ -149,8 +149,8 @@ export default function PersonalCard(props: Props) {
     }
     </div>
     <div className={styles.nameWrapper}>
-      <P useThemeColor styleType={['w600', 'huge']}>{userContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
-      <P useThemeColor styleType={['w500', 'medium','greyLight']}>{userContext.currentProfile?.city?.locName}</P>
+      <P useThemeColor styleType={['w600', 'huge']}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
+      <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile?.city?.locName}</P>
     </div>
 
     {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&

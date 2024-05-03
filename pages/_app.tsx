@@ -8,7 +8,7 @@ import 'swiper/css/bundle'
 import Head from 'next/head'
 import 'swiper/css'
 import {CookiesProvider} from 'react-cookie'
-import { CookiesType } from 'types/enums'
+import { AppTheme, CookiesType } from 'types/enums'
 import Layout from 'components/layout'
 import { AppWrapper } from 'context/state'
 import Snackbar from 'components/layout/Snackbar'
@@ -25,7 +25,7 @@ import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Router from 'next/router'
-import Spinner from 'components/ui/Spinner'
+// import Spinner from 'components/ui/Spinner'
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean
@@ -34,6 +34,7 @@ export interface AppProps extends NextAppProps {
     user?: IUser
     profileType?: ProfileType
     webViewOnly?: boolean
+    theme?: AppTheme
   }
 }
 
@@ -61,7 +62,7 @@ function MyApp({Component, pageProps}: AppProps) {
 
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
-      <AppWrapper isMobile={pageProps.isMobile}>
+      <AppWrapper isMobile={pageProps.isMobile} theme={pageProps.theme}>
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
           <ManagerWrapper>
           {/* <VacancyWrapper> */}
@@ -75,9 +76,9 @@ function MyApp({Component, pageProps}: AppProps) {
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
-              {loading &&
+              {/* {loading &&
                 <Spinner className='mainSpinner' size={32}/>        
-              }
+              } */}
             <Layout webView={pageProps.webViewOnly}> 
               <Component {...pageProps} />
             </Layout>
@@ -115,6 +116,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   }
 
   props.pageProps.webViewOnly = appContext.ctx.query.webViewOnly
+  props.pageProps.theme = (appContext.ctx as any).req.cookies[CookiesType.theme]
   props.pageProps.region = appContext.ctx.query.region
   
   if (appContext.ctx.req) {

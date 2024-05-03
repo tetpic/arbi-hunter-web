@@ -15,6 +15,7 @@ import Spacer from '@/components/ui/Spacer'
 import Validator from 'utils/Validator'
 import CrossSvg from '@/components/svg/CrossSvg'
 import Title from '@/components/ui/TitleForSection'
+import P from '@/components/ui/P'
 
 
 interface Props {
@@ -87,7 +88,7 @@ export default function DetailsModal(props: Props) {
       }
     </div>
     <div className={styles.toPresent} >
-      <p>По настоящее время</p> 
+      <P styleType={['medium', 'w500']} useThemeColor>По настоящее время</P> 
       <SwitchField name={'experienceInfo[0].toPresent'}/> 
     </div>
 
@@ -152,7 +153,7 @@ export default function DetailsModal(props: Props) {
       }
     </div>
     <div className={styles.toPresent} >
-      <p>По настоящее время</p> 
+      <P styleType={['medium', 'w500']} useThemeColor>По настоящее время</P> 
       <SwitchField name={'educationInfo[0].toPresent'}/> 
     </div>
 
@@ -237,7 +238,7 @@ export default function DetailsModal(props: Props) {
               {args.type === 'coursesInfo' && coursesInfoForm}
             </div>
             <div className={styles.buttonWrapper}>
-              <Button className={styles.grayButton} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
+              <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
               <Button className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?'Сохранить':'Добавить'}</Button>
             </div>
           </Form>

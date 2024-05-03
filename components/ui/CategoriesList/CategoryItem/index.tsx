@@ -3,9 +3,10 @@ import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
-import { Preset } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
 import P from '../../P'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
 
 
 
@@ -19,10 +20,12 @@ interface Props<T> {
 export default function CategoryItem<T extends {[key: string]: any}>(props: Props<T>) {
   const {t} = useTranslation()
   const category = props.category
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   return (<div 
     onClick={()=>props.onClick(category)}
-    className={classNames(styles.categoryItem, props.itemClassName)}
+    className={classNames(styles.categoryItem, props.itemClassName, isLightTheme&&styles.categoryItem_light)}
     >
       <div className={styles.imageWrapper}>
         <Image 

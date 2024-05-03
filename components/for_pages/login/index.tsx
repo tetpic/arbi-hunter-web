@@ -1,6 +1,4 @@
 import styles from './index.module.scss'
-
-import { runtimeConfig} from 'config/runtimeConfig'
 import InputField from 'components/fields/InputField'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import OpenEyeSvg from 'components/svg/OpenEyeSvg'
@@ -13,22 +11,22 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { LoginType, ModalType, SnackbarType } from 'types/enums'
+import { AppTheme, LoginType, ModalType, SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
 import Button from 'components/ui/Button'
 import UserRegImage from 'components/ui/UserRegImage'
 import useTranslation from 'next-translate/useTranslation'
 import { AlertModalArgs } from '@/components/modals/AlertModal'
 import P from '@/components/ui/P'
+import { colors } from 'styles/variables'
 
 
 
 export default function Login() {
-  const { HOST } = runtimeConfig
-
   const router = useRouter()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = appContext.size
   const {t} = useTranslation()
 
@@ -146,7 +144,7 @@ export default function Login() {
             name={'password'} 
             type={passwordIsOpen?'text':'password'}
             suffix={'icon'}
-            suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
+            suffixIcon={passwordIsOpen?<OpenEyeSvg color={isLightTheme&&colors.black}/>: <CloseEyeSvg color={isLightTheme&&colors.black}/>}
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />

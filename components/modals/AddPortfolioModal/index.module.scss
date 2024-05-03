@@ -6,7 +6,7 @@
 
 .modalLayout {
   max-width: 430px;
-  background-color: $backgroundBlack;
+  background-color: var(--backGroundColor);
 }
 
 .buttonsWrapper {
@@ -17,13 +17,7 @@
   margin-top: 40px;
 }
 
-.cancelButton {
-  @include buttonGray;
-}
 
-.saveButton {
-  @include buttonGradient;
-}
 
 .title {
   font-size: $largeText !important;
@@ -33,11 +27,8 @@
   justify-content: center;
 }
 
-.disclaimer {
+.description {
   text-align: center;
-  font-size: $mediumText;
-  font-weight: $medium;
-  color: $white;
   margin-top: 16px;
 }
 
@@ -53,4 +44,5 @@
   border: 2px $blue dotted; 
   height: 54px;
   height: 54px !important;
+  background-color: var(--secondaryColor) !important;
 }

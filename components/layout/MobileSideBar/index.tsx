@@ -67,7 +67,7 @@ export default function MobileSideBar(props: Props) {
         </>
         }
       </div>
-      <Button styleType={['icon', 'backTransparent']} onClick={closeHandler}><CrossSvg/></Button>
+      <Button styleType={['icon', 'backTransparent']} altStyleType={['icon','whitePurple', 'invertSvg']} onClick={closeHandler}><CrossSvg/></Button>
     </div>
 
     {!userContext.currentProfile &&
@@ -89,6 +89,7 @@ export default function MobileSideBar(props: Props) {
         props.onClose()
       }}
       styleType={['wide', 'black']}
+      altStyleType={['wide', 'whitePurple']}
       >
         Войти
       </Button>

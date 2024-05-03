@@ -56,6 +56,7 @@
   "post": "Разместить", 
   "close": "Закрыть",
   "edit": "Изменить",
+  "download": "Загрузить файл",
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -302,6 +303,10 @@
   "create_cv_businessTrips":"Командировки",
   "create_cv_businessTripsYes":"Командировки возможны",
   "create_cv_businessTripsNo":"Командировки не возможны",
+  "create_cv_portfolioText1":"Прикрепите ссылку на портфолио",
+  "create_cv_portfolioText2":"или загрузите фото или PDF - файл",
+  "create_cv_addPortfolioLink":"Добавить ссылку на портфолио",
+
 
 
   "create_vacancy_specialization": "Специализация",

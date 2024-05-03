@@ -89,7 +89,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     <div className={styles.top}>
       <div className={ styles.card}>
         {smallCard &&
-        <UserPic className={styles.userPic} size={42}/>
+        <UserPic className={styles.userPic} image={ImageHelper.urlFromFile(vacancy.profile.logo, Preset.iconCrop)} size={42}/>
         }
         <P 
         styleType={['large', 'w600']} 
@@ -134,7 +134,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       <div className={styles.buttonsWrapper}>
         {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
           <Button 
-          styleType={['gradient']}
+          styleType={['gradient', 'phoneWide']}
           onClick={openChat}
           >Перейти в чат</Button>
         }
@@ -148,8 +148,8 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
         {vacancy.showContactName && 
           <Button 
-          styleType={['black', 'borderBlue']}
-          altStyleType={['whitePurple', 'borderBlue']}
+          styleType={['black', 'borderBlue', 'phoneWide']}
+          altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
           >
             Контакты
           </Button>

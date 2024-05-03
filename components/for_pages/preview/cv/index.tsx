@@ -45,7 +45,7 @@ export default function CvPreview(props: Props) {
   const personalHead = (
     <div className={styles.head}>
       <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} size={80}/>
-      <P styleType={['w600', 'large']}>{getUserName(userContext.currentProfile)}</P>
+      <P styleType={['w600', 'large']} useThemeColor>{getUserName(userContext.currentProfile)}</P>
     </div>
   )
 
@@ -81,7 +81,7 @@ export default function CvPreview(props: Props) {
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>
-        <P styleType={['w600', 'large']}>{creationContext.activeSubCategory[0].name}</P>
+        <P styleType={['w600', 'large']} useThemeColor>{creationContext.activeSubCategory[0].name}</P>
         <SalaryItem cv={currentCv}/>
 
       </PreviewItem>
@@ -90,44 +90,44 @@ export default function CvPreview(props: Props) {
 
       <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => props.onBack(2)}>
         {(currentCv.profile?.email||currentCv.email) &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailAltSvg/></Button>
           {currentCv.email||currentCv.profile?.email}
         </P>
         }
         {(currentCv.phone||currentCv.profile?.phone) &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><PhoneSvg/></Button>
           {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
         </P>
         }
         {(currentCv?.telegramNickname||currentCv.profile?.telegramNickname) &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><TelegramSvg/></Button>
           {currentCv.telegramNickname||currentCv.profile?.telegramNickname}
         </P>
         }
         {currentCv.whatsapp &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><WhatsAppSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><WhatsAppSvg/></Button>
           {currentCv.whatsapp}
         </P>
         }
         {currentCv.skype &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><SkypeSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><SkypeSvg/></Button>
           {currentCv.skype}
         </P>
         }
         {currentCv.linkedin &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><LinkedInSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><LinkedInSvg/></Button>
           {currentCv.linkedin}
         </P>
         }
         {currentCv.viber &&
-        <P styleType={['w500', 'medium', 'alignCenter']}>
-          <Button styleType={['icon', 'black']}><ViberLogoSvg/></Button>
+        <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><ViberLogoSvg/></Button>
           {currentCv.viber}
         </P>
         }
@@ -139,28 +139,28 @@ export default function CvPreview(props: Props) {
       onClick={() => props.onBack(6)}
       >
         {currentCv.employment &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> {TranslateEmploymentType(currentCv.employment, t, true)} 
           </P>
         }
         {currentCv.relocation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> 
             {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
           </P>
         }
         {currentCv.schedule &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> {TranslateScheduleType(currentCv.schedule, t)}
           </P>
         }
         {currentCv.compensation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}> 
+          <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor> 
             <GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}
           </P>
         }
         {currentCv.businessTrips &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> 
             {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
           </P>
@@ -183,16 +183,16 @@ export default function CvPreview(props: Props) {
           {currentCv.experienceInfo.length > 0 && 
             currentCv.experienceInfo.map(el=> {
               return <div className={styles.experience}>
-                <P styleType={['w500', 'medium']}>{el.position}</P>
-                <P styleType={['w500', 'medium']}>{el.company}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.position}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.company}</P>
                 {el.description &&
-                  <P styleType={['w500', 'medium']}>{el.description}</P>
+                  <P styleType={['w500', 'medium']} useThemeColor>{el.description}</P>
                 }
-                <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })
             ||
-            <P styleType={['w500', 'medium']}>Без опыта</P>
+            <P styleType={['w500', 'medium']} useThemeColor>Без опыта</P>
           }
         </PreviewItem>
 
@@ -200,18 +200,18 @@ export default function CvPreview(props: Props) {
         title={'Образование'}
         onClick={() => props.onBack(4)}
         > 
-          <P styleType={['w500', 'medium']} className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
+          <P styleType={['w500', 'medium']} useThemeColor className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
           { currentCv.educationInfo.length > 0 && 
             currentCv.educationInfo.map(el=> {
               return <div className={styles.experience}>
-                <P styleType={['w500', 'medium']}>{el.institution}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.institution}</P>
                 {el.speciality &&
-                <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.speciality}</P>
                 }
                 {el.faculty &&
-                <P styleType={['w500', 'medium']}>{el.faculty}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.faculty}</P>
                 }
-                <P styleType={['w500', 'medium']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
             })
           }
@@ -260,7 +260,7 @@ export default function CvPreview(props: Props) {
         onClick={() => props.onBack(5)}
         >
           {currentCv.portfolio &&
-            <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+            <P styleType={['w500', 'medium']} useThemeColor>{currentCv.portfolio}</P>
           }
           {currentCv.assets?.length > 0 &&
             <FilesList previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
@@ -272,7 +272,7 @@ export default function CvPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>Опубликовать</Button>
       }
     </div>
   </div>)

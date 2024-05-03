@@ -4,7 +4,7 @@ import Button from 'components/ui/Button'
 import SalaryItem from 'components/ui/SalaryItem'
 import UserPic from 'components/ui/UserPic'
 import { IVacancy } from 'data/interfaces/IVacancy'
-import { TranslateProposalRequestType, TranslateProposalType } from 'utils/enumsTranslations'
+import {  TranslateProposalType } from 'utils/enumsTranslations'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
@@ -22,17 +22,18 @@ import OptionsDropDown from 'components/ui/OptionsDropDown'
 import { getUserImageSource } from 'utils/helpers'
 import ChatRepository from 'data/repositories/ChatRepository'
 import P from '@/components/ui/P'
+import { IApplication } from 'data/interfaces/IApplication'
 
 interface Props {
   vc: IVacancy
-  proposal?: IProposal
+  item?: IProposal|IApplication
   refreshCallback?: Function
   onRemove?: (id: number) => void
 }
 
 //TODO: доделать всплывашку OptionsModal
 
-export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: Props) {
+export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = useResize()
@@ -41,17 +42,17 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   const [chatId, setChatId] = useState<number>()
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
-    if(!proposal.id) {
+    if(!item.id) {
       appContext.showSnackbar('Отклик некорректен. Действия невозможны', SnackbarType.error)
       openDropDown(false)
       return
     }
     try{
-      proposal.type&&
-      await ProposalRepository.changeProposalStatusByEmployee(proposal?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+      item.type&&
+      await ProposalRepository.changeProposalStatusByEmployee(item?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
       ||
-      await ApplicationRepository.patchApplicationRespond(proposal.id, {status: ApplicationStatus.Rejected, deletedByEmployee: deletedByEmployee})
-      onRemove(proposal.id)
+      await ApplicationRepository.patchApplicationRespond(item.id, {status: ApplicationStatus.Rejected, deletedByEmployee: deletedByEmployee})
+      onRemove(item.id)
     }
     catch(err) {
       appContext.showSnackbar('Приглашение не найдено', SnackbarType.error)
@@ -59,18 +60,20 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
     openDropDown(false)
   }
 
+
+
   const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
     <div className={styles.topOptions}>
       {isTabletWidth &&
-        <P styleType={['greyLight', 'medium']}>{vc.name}</P>
+        <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
       }
       <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
-      {(proposal?.status === ApplicationStatus.Accepted||proposal.type === ProposalRequestType.Interview) && 
-        <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</p>
+      {(item?.status === ApplicationStatus.Accepted||item?.type === ProposalRequestType.Interview) && 
+        <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</P>
       }
     </div>
     {isTabletWidth &&
-      <p className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</p>
+      <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</P>
     }
   </div>)
 
@@ -85,7 +88,7 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
   }
 
   useEffect(()=>{
-    ChatRepository.getChatByContactId(proposal.profile.id, proposal?.applicationId&&{applicationId: proposal?.applicationId}||{proposalId: proposal?.id})
+    ChatRepository.getChatByContactId(item.profile.id, item?.applicationId&&{applicationId: item?.applicationId}||{proposalId: item?.id})
     .then(res => {
       setChatId(res?.id)
     })
@@ -94,9 +97,11 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
 
   return (<div className={styles.root} onClick={()=>router.push(`/vacancy/${vc.id}`)}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc.profile, Preset.smallIconCrop)}/>
-      <p className={styles.company}>{vc.company||vc.contactName}</p>
-      <p className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</p>
+      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc?.profile, Preset.smallIconCrop)}/>
+      <P styleType={['w600','large']} useThemeColor className={styles.company}>{vc.company||vc.contactName}</P>
+      {(vc.isRemote || vc.city) &&
+        <P className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</P>
+      }
       <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.heartButton}/>
       {!isTabletWidth &&
         <OptionsDropDown 
@@ -106,24 +111,23 @@ export default function VacancyItem({vc, proposal, refreshCallback, onRemove}: P
         onClose={()=>openDropDown(false)}/>       
       }
     </div>
-    <p className={styles.vcName}>{vc.name}</p>
+    <P styleType={['large', 'w600']} useThemeColor>{vc.name}</P>
   
     <SalaryItem vacancy={vc}/>
   
-    {proposal &&
-      <p className={classNames(styles.status, styles[
-        proposal.notification&&proposal.status!==ApplicationStatus.Rejected?proposal.type:proposal.status])}
+    {item.status  &&
+      <p className={classNames(styles.status, styles[item.status])}
       >
-        {proposal.notification&&proposal.status!==ApplicationStatus.Rejected?TranslateProposalRequestType(proposal.type):TranslateProposalType(proposal.status)}
+        {TranslateProposalType(item?.status)}
       </p>
     }
     <div className={styles.bottom}>
-      <p className={styles.time}>{Formatter.formatToShortYear(vc.updatedAt)}</p>
-      {((proposal && proposal.chat[0])|| chatId) &&
+      <p className={styles.time}>{Formatter.formatToShortYear(item.createdAt)}</p>
+      {((item && item.chat[0])|| chatId) &&
       <Button className={styles.button} 
       onClick={(e)=> {
         e.stopPropagation();
-        (proposal.chat[0]||chatId)&&router.push(`/messenger?chat=${proposal.chat[0]?.id||chatId}`)
+        (item.chat[0]||chatId)&&router.push(`/messenger?chat=${item.chat[0]?.id||chatId}`)
       }}>Перейти в чат</Button>
       // ||
       // <Button className={styles.button} >Откликнуться</Button>

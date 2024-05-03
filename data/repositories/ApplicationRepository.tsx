@@ -4,7 +4,7 @@ import { ApplicationStatus, ProposalRequestType } from 'types/enums'
 import request from 'utils/request'
 
 export default class ApplicationRepository {
-  static async getAllApplications(data?: {cvId?: number, vacancyId?: number}): Promise<IProposal[]|null> {
+  static async getAllApplications(data?: {cvId?: number, vacancyId?: number}): Promise<IApplication[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/application',

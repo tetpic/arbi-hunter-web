@@ -1,6 +1,7 @@
 $white: #ffffff;
 $whitePurple: #E8E2F1;
 $purpleGrey: #E3D9EA;
+$purpleGreyLight: #24242C;
 
 $backgroundBlack: #16161B;
 $backgroundWhite: #F5F2F7;
@@ -24,6 +25,7 @@ $yellowLight: #f3ce7b70;
 $red: #E76056;
 $redLight: #E7605650;
 $blueDark: #586DE4;
+$blueBlack: #17233F;
 $blueLight: #6BABFF;
 
 $orange: #E49A58;
@@ -43,6 +45,10 @@ $purpleSmell: #985AFC20;
   --greyToPurpleGrey: #{$grey};
   --greyLightToBlack: #{$greyLight};
   --greyLightToPurple: #{$greyLight};
+  --blueBlackToWhitePurple: #{$blueBlack};
+  --greyAltToPuspleSmell: #{$greyAlt};
+  --greyLightToPurpleGrey: #{$greyLight};
+  
 }
 
 #body[data-theme="light"] {
@@ -57,6 +63,12 @@ $purpleSmell: #985AFC20;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$black};
   --greyLightToPurple: #{$purpleSmell};
+  --blueBlackToWhitePurple: #{$whitePurple};
+  --greyAltToPuspleSmell: #{$purpleSmell};
+  --greyLightToPurpleGrey: #{$purpleGrey};
+
+
+
 
 }
 
@@ -86,6 +98,7 @@ $purpleSmell: #985AFC20;
   --greyLightToBlack: #{$white};
 }
 
+$purpleBoxShadow: 0px 0px 10px 0px rgba(152, 90, 252, 0.1254901961);
 $blueGradient: linear-gradient(241deg, #7A5EFE 7.14%, #54ADFF 100%);
 $gradient: linear-gradient(152deg, #AC6CDB 0%, #586DE4 50%, #AC6CDB 100%);
 $gradientAlt: linear-gradient(93deg, #AC6CDB 6.53%, #586DE4 73.62%);

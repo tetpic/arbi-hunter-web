@@ -1,4 +1,4 @@
-import { ApplicationStatus, PatternTypes } from 'types/enums'
+import { ApplicationStatus,  ProposalRequestType } from 'types/enums'
 import { TimeStamp } from './Common'
 import { ICV } from './ICV'
 import { INotification } from './INotification'
@@ -23,8 +23,9 @@ export interface IApplication extends TimeStamp{
   status: ApplicationStatus, //"applied"
   coverLetter: string,
   notification: INotification
-  type?: PatternTypes
+  type?: ProposalRequestType
   vacancyDeletedOrHidden?: boolean
+  applicationId?:number
 }
 
 

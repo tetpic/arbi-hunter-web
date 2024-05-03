@@ -11,6 +11,7 @@ import { useState } from 'react'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose: () => void
@@ -38,7 +39,7 @@ export default function ChatsFolderModal(props: Props) {
   const top = (
     <div className={styles.top}>
       <Button className={styles.button} onClick={props.onClose}>{t('cancel')}</Button>
-      <p className={styles.title}>{t('chatsfolder_chatInFolder')}</p>
+      <P styleType={['large', 'w600']} useThemeColor>{t('chatsfolder_chatInFolder')}</P>
       <Button className={styles.buttonBlue} onClick={onSaveHandler}>{t('ready')}</Button>
     </div>
   )
@@ -50,6 +51,9 @@ export default function ChatsFolderModal(props: Props) {
     })
   }
 
+
+
+
   const body = (
     <div className={styles.body}>
       {[...chats.entries()].map(([chat, isActive])=> {
@@ -57,7 +61,7 @@ export default function ChatsFolderModal(props: Props) {
         return (
           <div className={styles.item} key={chat.id} onClick={(e)=>{e.stopPropagation(); checkHandler(chat, isActive)}}>
             <UserPic className={styles.userPic}/>
-            <p className={styles.name}>{collocutor?.firstName} {collocutor?.lastName}</p>
+            <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.firstName} {collocutor?.lastName}</P>
             <Checkbox className={styles.checkBox} value={chat.id} isActive={isActive} onChange={()=>checkHandler(chat, isActive)}/>
           </div>
         )

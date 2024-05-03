@@ -32,11 +32,11 @@
     background-color: var(--hoverBackColor);
   }
 
-  @include mq($TabletWidth, max) {
-    background-color: $black;
-    border: 1px $black solid;
+  // @include mq($TabletWidth, max) {
+  //   background-color: $black;
+  //   border: 1px $black solid;
 
-  }
+  // }
 }
 
 .isActive {

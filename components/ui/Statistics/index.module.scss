@@ -6,16 +6,12 @@
   flex-direction: column;
   
   padding: 16px;
-  background-color: $grey;
+  background-color: var(--greyLightToPurple);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 16px;
   width: 100%;
   max-width: 370px;
 
-  &_title {
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $white;
-  }
 
   &_desc {
     font-size: $mediumText;
@@ -49,9 +45,6 @@
   }
 
   &_count {
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
     text-align: center;
 
     span {

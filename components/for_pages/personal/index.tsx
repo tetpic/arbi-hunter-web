@@ -204,7 +204,7 @@ export default function PersonalPage(props: Props) {
         </Form>
       </FormikProvider>
     }
-    {currentProfile?.profileType === ProfileType.Hirer && hirerEditor}
+    {hirerEditor}
 
   
     {isEditing &&

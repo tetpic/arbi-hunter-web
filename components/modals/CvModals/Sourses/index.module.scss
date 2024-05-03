@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .rootLayout {
-  background-color: $black;
+  background-color: var(--backGroundColor);
   max-width: 520px;
 }
 
@@ -38,9 +38,6 @@
 }
 
 .title {
-  color: $white;
-  font-size: $largeText;
-  font-weight: $semibold;
   margin-bottom: 16px;
   @include mq($PhoneWidth, max) {
     display: flex;

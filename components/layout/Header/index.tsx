@@ -12,7 +12,7 @@ import Modes from 'components/ui/Modes'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
-import { ModalType, Preset } from 'types/enums'
+import { AppTheme, ModalType, Preset } from 'types/enums'
 import { getUserImageSource } from 'utils/helpers'
 import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
@@ -21,6 +21,7 @@ import StarSvg from '@/components/svg/StarSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { AlertModalArgs } from '@/components/modals/AlertModal'
 import ImageHelper from 'utils/ImageHelper'
+import { colors } from 'styles/variables'
 
 interface Props {
   distanceFromTop: number
@@ -32,6 +33,7 @@ export default function Header(props: Props) {
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme===AppTheme.Light
   const {profileType, setProfileType} = userContext
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
@@ -186,7 +188,7 @@ export default function Header(props: Props) {
             </>}
           </div>
           ||
-          <Button styleType={['icon', 'black']} onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg/></Button>
+          <Button styleType={['icon', 'black']} altStyleType={['icon','white']} onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg color={isLightTheme&&colors.greyLight}/></Button>
         }
       </div>
     </div>

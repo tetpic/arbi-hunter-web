@@ -21,7 +21,7 @@ interface IState {
   setCurrentVacancy: (v?: IVacancy|null)=> void
   setResponsesByStat: (v: ProposalRequestType) => Promise<IApplication[]|null>
   currentCV: ICV
-  CVFeedbacks: Map<number, IProposal>
+  CVFeedbacks: Map<number, IProposal|IApplication>
   createProposal: (p: IProposal)=> Promise<boolean|IProposal>
   stats: IStat[]
   setStats: (vcId: number)=>Promise<boolean>
@@ -58,7 +58,7 @@ export function FeedbacksWrapper(props: Props) {
   const [VCFeedbacks, setVCResponsesState] = useState<Map<number, IApplication>>(new Map())
   const [filteredVcResponses, setFilteredVcResponsesState] = useState<IApplication[]>([])
   const [currentCV, setCurrenCVState] = useState<ICV>(null)
-  const [CVFeedbacks, setAllCVResponsesState] = useState<Map<number, IProposal>>(new Map())
+  const [CVFeedbacks, setAllCVResponsesState] = useState<Map<number, IProposal|IApplication>>(new Map())
   const [sorted, setSorted] = useState<IApplication[]|null>(null)
   const [filters, setFilters] = useState<Map<FilterItems, FilterItem>>(new Map())
   const [filterOptions, setFilterOptionsState] = useState<Map<FilterItem, FilterItem>>(new Map())
@@ -83,13 +83,15 @@ export function FeedbacksWrapper(props: Props) {
 
   const setCVResponses = async(cvId?: number): Promise<boolean> => {
     try{
+      
       setAllCVResponsesState(new Map)
-      const allProposals = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
-      allProposals.forEach(async(proposal) => {
+      const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
+      const filteredProposals = _proposals.filter(el=> !Boolean(_applications.find(a => a.proposals?.[0]?.id === el?.id)))
+      console.log([..._applications.filter(e=> !e.cvDeletedOrHidden&&!e.vacancyDeletedOrHidden), ..._proposals.filter(e=> !e.cvDeletedOrHidden&&!e.vacancyDeletedOrHidden)]);
+      
+      [..._applications, ...filteredProposals, ].forEach(async(proposal) => {
         setAllCVResponsesState(state => {
-          proposal.forEach((p, index) => {
-            state.set(p.id, p)
-          })
+            state.set(proposal.id, proposal)
           return new Map(state)
         })
       })

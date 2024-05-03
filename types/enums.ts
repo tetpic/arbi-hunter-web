@@ -73,7 +73,8 @@ export enum CookiesType {
   uuid = 'uuid',
   address = 'address',
   profileType = 'profile-type',
-  language = 'language'
+  language = 'language',
+  theme='theme'
 }
 
 export enum PaymentType {
@@ -294,6 +295,7 @@ export enum ProposalRequestType {
   Rejection = 'rejection',
   Interview = 'interview',
   InfoRequest = 'infoRequest',
+  Consider = 'consider',
 }
 
 

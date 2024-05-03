@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .root {
-  border-top: 2px $grey solid;
+  border-top: 2px var(--borderColor) solid;
   display: grid;
   grid-template-rows: 1fr auto;
   grid-template-columns: auto 1fr;
@@ -31,17 +31,14 @@
 
   .name {
     grid-area: n;
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
   }
 
   .userPic {
     grid-area: i;
     @include transitionDefault;
-    &_active {
-      background-color: $black;
-    }
+    // &_active {
+    //   background-color: $black;
+    // }
   }
 
   .time {
@@ -71,5 +68,5 @@
 }
 
 .active {
-  background-color: $grey;
+  background-color: var(--greyToPurpleGrey);
 }

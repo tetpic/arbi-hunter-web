@@ -3,12 +3,13 @@
 .root {
   padding: 16px;
   border-radius: 16px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   align-items: flex-start;
+  border: 2px var(--borderPerimeter) solid;
 }
 
 .modalWrapper {
@@ -59,9 +60,6 @@
 
   .position {
     grid-area: p;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
   }
 
   .refreshed {

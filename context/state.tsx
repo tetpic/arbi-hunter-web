@@ -1,16 +1,19 @@
 import {Dispatch, SetStateAction, createContext, useContext, useState} from 'react'
-import { AppTheme,  ModalType, SnackbarType } from 'types/enums'
+import { AppTheme,  CookiesType,  ModalType, SnackbarType } from 'types/enums'
 import ReactModal from 'react-modal'
 import { SnackbarData } from 'types/types'
 import { IResize, useResize } from 'components/hooks/useResize'
 import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
+
+// import Cookies from 'js-cookie'
 
 interface IState {
   isMobile: boolean
   setIsMobile: (t: boolean) => void
 
   theme: AppTheme
-  setTheme: Dispatch<SetStateAction<AppTheme>>
+  setTheme: (theme: AppTheme) => void
 
   snackbar: SnackbarData | null,
   showSnackbar: (text: string, type: SnackbarType) => void
@@ -47,6 +50,7 @@ interface Props {
   children: React.ReactNode
   token?: string
   isMobile: boolean
+  theme?: AppTheme
 
 }
 
@@ -63,10 +67,14 @@ export function AppWrapper(props: Props) {
   const [hideHeader, setHideHeader] = useState<boolean>(false)
   const [snapPoints, setSnapPoints] = useState<number>(null)
   const [isNavBarActive, setNavBarActive] = useState<boolean>(false)
-  const [theme, setTheme] = useState<AppTheme>(router.query.theme as AppTheme||AppTheme.Dark)
+  const [theme, setThemeState] = useState<AppTheme>(router.query.theme as AppTheme||props.theme||AppTheme.Light)
   const size = useResize()
 
 
+  const setTheme = (theme: AppTheme) => {
+    Cookies.set(CookiesType.theme, theme)
+    setThemeState(theme)
+  }
 
   const showSnackbar = (text: string, type: SnackbarType) => {
     setSnackbar({ text, type })

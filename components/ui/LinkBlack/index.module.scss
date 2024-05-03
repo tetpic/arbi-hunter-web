@@ -2,7 +2,8 @@
 
 .link {
   // @include buttonBorderGradient;
-  @include watchAllButton;
+  // @include watchAllButton;
+  margin-top: 24px;
   margin-inline: auto;
   justify-self: center;
   align-self: center;

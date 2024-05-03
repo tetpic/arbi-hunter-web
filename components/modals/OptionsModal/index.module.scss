@@ -9,7 +9,8 @@
   bottom: 0px;
   right: 0px;
   transform: translateY(100%);
-  background-color: $grey;
+  background-color: var(--secondaryColor);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 16px;
   z-index: 4;
   &_last {

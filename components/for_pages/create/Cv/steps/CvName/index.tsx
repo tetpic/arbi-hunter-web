@@ -11,6 +11,9 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import LoupeSvg from '@/components/svg/LoupeSvg'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import { colors } from 'styles/variables'
 
 interface Props {
   onSuggestionClick: (activeSubCategory: ISpecializationCategory[]) => void
@@ -24,6 +27,7 @@ export default function CvName(props: Props) {
   const inputRef = useRef(null!)
   const [isActive, setIsActive ]= useDetectOutsideClick(inputRef, false)
   const isDisable = useRef<boolean>(true)
+  const isLightTheme = useAppContext().theme === AppTheme.Light
   
 
   const search = useThrottleFn((s: string)=>{
@@ -65,7 +69,7 @@ export default function CvName(props: Props) {
     <div className={styles.root}> 
       <div className={styles.inputWrapper} ref={inputRef}>
         <InputField 
-        prefix={<LoupeSvg/>}
+        prefix={<LoupeSvg color={isLightTheme&&colors.black}/>}
         name={'searchPosition'} 
         styleType={'default'} 
         color={'default'} 

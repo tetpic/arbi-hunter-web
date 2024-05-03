@@ -100,6 +100,8 @@
   @extend .bottomBorder;
   border-bottom: 2px solid $blue;
   padding-bottom: 8px !important;
+  background-color: transparent !important;
+  box-shadow: unset !important;
 }
 
 .suffix {

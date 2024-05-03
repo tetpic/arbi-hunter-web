@@ -30,7 +30,7 @@ export default function CvAbout(props: Props) {
   return (<div className={styles.root}> 
   <SectionSubtitle text={t('create_cv_mainInfo')}/>
   <div className={styles.inputsWrapper}>
-    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.firstName)} color={'default'} name={'firstName'} label={t('firstName')} labelType='top'/>
+    <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.firstName)} color={'default'} name={'firstName'} label={t('name')} labelType='top'/>
     <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.lastName)} color={'default'} name={'lastName'} label={t('lastName')} labelType='top'/>
     <InputField styleType={'default'} disabled={Boolean(userContext.currentProfile?.patronymic)} color={'default'} name={'patronymic'} label={t('patronymic')} labelType='top'/>
   </div>

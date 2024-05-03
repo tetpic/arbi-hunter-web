@@ -3,7 +3,7 @@
 .root {
   width: 100%;
   max-width: 500px;
-  background-color: $grey;
+  background-color: var(--borderColor);
   padding: 16px;
   border-radius: 16px;
   display: flex;

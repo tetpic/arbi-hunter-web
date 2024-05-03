@@ -143,7 +143,7 @@ export const TranslateProposalType = (p: ApplicationStatus) => {
     case ApplicationStatus.Accepted:
       return 'Приглашение'
     case ApplicationStatus.Applied:
-      return 'Не просмотрено'
+      return 'Ожидание'
     case ApplicationStatus.Rejected:
       return 'Отказ'
   }
@@ -159,6 +159,8 @@ export const TranslateProposalRequestType = (p: ProposalRequestType) => {
       return ''
     case ProposalRequestType.Rejection:
       return 'Отказ'
+    case ProposalRequestType.Consider:
+      return 'На рассмотрении'
   }
 }
 

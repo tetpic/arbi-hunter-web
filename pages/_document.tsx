@@ -1,6 +1,8 @@
 import Document, {Html, Head, Main, NextScript, DocumentContext} from 'next/document'
 import { Cookies } from 'react-cookie'
+import * as JSCookies from 'js-cookie'
 import { colors } from 'styles/variables'
+import { CookiesType } from 'types/enums'
 class MyDocument extends Document {
   static async getStaticProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage
@@ -34,7 +36,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content={colors.backgroundBlack}/>
         </Head>
 
-        <body data-theme="dark" id='body'>
+        <body data-theme={JSCookies.default.get(CookiesType.theme)} id='body'>
           <Main />
           <NextScript />
 

@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import classNames from 'classnames'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { ISource } from 'data/interfaces/Common'
@@ -9,6 +8,8 @@ import Body from '../Body'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import { useAppContext } from 'context/state'
+import P from '@/components/ui/P'
+import TagList from '@/components/ui/TagList'
 
 interface Props {
   onClose: ()=> void
@@ -53,6 +54,7 @@ export default function SourcesModal(props: Props) {
     args.type === 'verticals' && 'Вертикали:'
   )
 
+
   const body = (
     <Body 
     withInput={false}
@@ -63,9 +65,16 @@ export default function SourcesModal(props: Props) {
       saveSourcesHandler()
     }}
     >
-      <p className={styles.title}>{title}</p>
+      <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{title}</P>
       <div className={styles.wrapper} data-cy={'sources_wrapper'}>
-        {args.data?.length>0&&
+        <TagList tags={args.data.map(el => (
+          {
+            name: el.title,
+            isActive: choosenElements.has(el.id),
+            onClick: ()=> onElementClickHandler(el)
+          }
+        ))}/>
+        {/* {args.data?.length>0&&
           args.data.map(el=> 
             <p 
             key={el.id}
@@ -75,7 +84,7 @@ export default function SourcesModal(props: Props) {
               {el.title}
             </p>
           )
-        }
+        } */}
       </div>
     </Body>
   )

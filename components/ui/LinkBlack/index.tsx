@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import styles from './index.module.scss'
+import Button from '../Button'
 
 interface Props {
   href: string
@@ -9,5 +9,5 @@ interface Props {
 
 export default function LinkBlack(props: Props) {
 
-  return (<Link className={styles.link} href={props.href}> {props.children}</Link>)
+  return (<Button styleType={['grey']} altStyleType={['whitePurple']}  className={styles.link} href={props.href}> {props.children}</Button>)
 }

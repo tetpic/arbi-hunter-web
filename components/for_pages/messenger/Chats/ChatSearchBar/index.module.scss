@@ -21,7 +21,7 @@
 .inputWrapper {
   display: flex;
   align-items: center;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   border-radius: 10px;
   padding: 4px 8px ;
   column-gap: 8px;
@@ -48,11 +48,6 @@
     }
   }
 
-  .folderText {
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
-  }
 
   .closeSvg {
     margin-left: auto;
@@ -62,7 +57,7 @@
   input {
     font-weight: $medium;
     font-size: $smallText;
-    color: white;
+    color: var(--pTextColor);
     width: 100%;
 
     &:focus {
@@ -75,10 +70,6 @@
 }
 
 .button {
-  @include buttonGray;
-  padding: 8px;
-  width: 40px;
-  flex-shrink: 0;
   @include mq($TabletWidth, max) {
     order: 2;
   }

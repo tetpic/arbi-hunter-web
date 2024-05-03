@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     max-width: 50%;
+    color: var(--pTextColor);
     @include mq($TabletWidth, max) {
       max-width: 80%;
     }
@@ -15,7 +16,7 @@
   .leftMessage {
     @extend .side;
     align-self: flex-start;
-    background-color: $grey;
+    background-color: var(--greyToPurpleGrey);
     margin-left: 26px;
     @include mq($TabletWidth, max) {
       margin-left: 16px;
@@ -25,7 +26,7 @@
   .rightMessage {
     @extend .side;
     align-self: flex-end;
-    background-color: #17233F;
+    background-color: var(--blueBlackToWhitePurple);
     margin-right: 26px;
     @include mq($TabletWidth, max) {
       margin-right: 16px;
@@ -39,10 +40,11 @@
   }
 
   .message {
+    color: var(--pTextColor);
     width: 100%;
     span {
       font-size: $smallText;
-      color: $greyLight;
+      color: var(--greyLightToBlack);
       font-weight: $medium;
     }
   }

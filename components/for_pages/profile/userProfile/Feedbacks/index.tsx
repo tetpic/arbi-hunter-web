@@ -11,6 +11,7 @@ import ItemNavigation from '@/components/ui/ItemNavigation'
 import useTranslation from 'next-translate/useTranslation'
 import { Translate } from 'next-translate'
 import P from '@/components/ui/P'
+import { IApplication } from 'data/interfaces/IApplication'
 
 enum ReviewsNavigation {
   Any = 'any',
@@ -37,15 +38,14 @@ function translate (n: ReviewsNavigation, t:Translate) {
 
 export default function Feedbacks() {
   const {t} = useTranslation()
-
   const feedBackContext = useFeedbacksContext()
   const {CVFeedbacks} = feedBackContext
 
   const [page, setPage] = useState<ReviewsNavigation>(ReviewsNavigation.Any)
   const items = Object.values(ReviewsNavigation).map(el=> {return {name: translate(el, t), type: el}})
-  const [filtered, setFiltered] = useState<Map<number, IProposal>>(CVFeedbacks)
+  const [filtered, setFiltered] = useState<Map<number, IProposal|IApplication>>(CVFeedbacks)
   const [loading, setLoading] = useState<boolean>(true)
-  const [itemsHidden, setItemsHidden] = useState<Map<number, IProposal>>(new Map)
+  const [itemsHidden, setItemsHidden] = useState<Map<number, IProposal|IApplication>>(new Map)
 
   const onRemove = (id:number) => {
     feedBackContext.removeProposal(id)
@@ -61,8 +61,9 @@ export default function Feedbacks() {
 
   //надо отрефакторить, а то я долго соображал как их фильтровать... и пока что это рабочий вариант
   useEffect(()=>{ 
-    const cvEntries:[number, IProposal][] = [...CVFeedbacks.entries()]
+    const cvEntries:[number, IProposal|IApplication][] = [...CVFeedbacks.entries()]
     const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.cvDeletedOrHidden&&!value.vacancyDeletedOrHidden)
+    console.log(itemsActiveFilter)
     const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
 
     switch(page) {
@@ -164,22 +165,22 @@ export default function Feedbacks() {
     <div className={styles.root}>
       <ItemNavigation activeItem={page} items={items} onClick={(n)=>setPage(n)} className={styles.navigation}/>
       <div className={styles.wrapper}>
-        {filtered.size + itemsHidden.size > 0 &&
+        {filtered.size > 0 &&
         <p className={styles.itemsCounter}>
-          {filtered.size + itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), t('feedbackCount1'), t('feedbackCount2'), t('feedbackCount3'))}
+          {filtered.size} {Formatter.pluralize((filtered.size), t('feedbackCount1'), t('feedbackCount2'), t('feedbackCount3'))}
         </p>
         }
-        {itemsHidden.size > 0 &&
+        {/* {itemsHidden.size > 0 &&
           <div className={styles.unavailable}>
             <p className={styles.counter}>
               {itemsHidden.size} {Formatter.pluralize((filtered.size + itemsHidden.size), t('feedbackCount1'), t('feedbackCount2'), t('feedbackCount3'))} {t('unavailable')}
             </p>
             <p className={styles.descriptions}>{t('profile_feedbacks_hideReason_emp')}</p>
           </div>
-        }
+        } */}
         {
-          filtered.size > 0 && !loading && [...filtered.entries()].map(([id, proposal])=> {
-            return (<VacancyItem  onRemove={(id)=>onRemove(id)} vc={proposal.vacancy} proposal={proposal} refreshCallback={feedBackContext.setCVResponses}/>)
+          filtered.size > 0 && !loading && [...filtered.entries()].map(([id, item])=> {
+            return (<VacancyItem  onRemove={(id)=>onRemove(id)} vc={item.vacancy} item={item} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
           loading &&

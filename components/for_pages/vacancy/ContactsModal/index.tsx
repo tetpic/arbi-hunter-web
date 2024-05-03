@@ -52,7 +52,7 @@ export default function ContactsModal(props: Props) {
 
   return (<div className={classNames(styles.root, active&&styles.active)} ref={ref} > 
     <div className={styles.top}>
-      <P styleType={['large', 'w600']}>{t('vacancy_page_contactInfo')}</P>
+      <P styleType={['large', 'w600']} useThemeColor>{t('vacancy_page_contactInfo')}</P>
       <Button 
       styleType={['icon', 'backTransparent']} 
       altStyleType={['icon', 'invertSvg']}
@@ -61,7 +61,7 @@ export default function ContactsModal(props: Props) {
     {contacts.map(el => {
       return (
         <P 
-        styleType={['alignCenter', 'medium', 'w500']}
+        styleType={['alignCenter', 'medium', 'w500']} useThemeColor
         >
         <Button 
         styleType={['icon', 'black']}

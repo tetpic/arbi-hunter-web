@@ -7,6 +7,8 @@ import classNames from 'classnames'
 import React, { ChangeEvent, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import FieldLabel from '@/components/ui/FieldLabel'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 const TextAreaInner = (props: any) => {
 
@@ -33,6 +35,9 @@ interface Props extends IField<string> {
  */
 export default function TextAreaField(props: Props) {
   const [ref, press, hover] = usePressAndHover()
+  const {theme} = useAppContext()
+  const isLightTheme = theme === AppTheme.Light
+  
   const [field, meta, helpers] = useField(props as any)
   const [focused, setFocused] = useState(false)
   const showError = meta.touched && !!meta.error
@@ -65,7 +70,7 @@ export default function TextAreaField(props: Props) {
           [styles.error]: showError,
           [styles.white]: props.color === 'white',
           [styles.purple]: props.color === 'purple',
-        }, props.areaClassname&&props.areaClassname)}
+        }, props.areaClassname&&props.areaClassname, isLightTheme&&styles.light)}
       />
       
       <FieldError showError={showError}>{meta.error}</FieldError>

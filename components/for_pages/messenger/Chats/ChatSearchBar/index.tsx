@@ -12,11 +12,12 @@ import { colors } from 'styles/variables'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import { IChatFilterModalProps } from 'components/modals/ChatFilterModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
 import PlusSvg from '@/components/svg/PlusSvg'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -25,6 +26,7 @@ export default function ChatSearchBar(props: Props) {
   const {t} = useTranslation()
   const [active, setActive] = useState<boolean>(false)
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = useResize()
   const chatContext = useChatContext()
 
@@ -64,8 +66,8 @@ export default function ChatSearchBar(props: Props) {
       <div className={classNames(styles.inputWrapper, (active||chatContext.component.get(ChatComponent.Folder))&&styles.inputWrapper_active)}>
         {chatContext.component.get(ChatComponent.Folder) &&
         <>
-          <FolderClosedSvg/>
-          <p className={styles.folderText}>{t('chat_folders')}</p>
+          <FolderClosedSvg color={isLightTheme&&colors.black}/>
+          <P styleType={['medium', 'w500']} useThemeColor>{t('chat_folders')}</P>
           <CrossSvg color={colors.greyLight} className={styles.closeSvg} onClick={()=>{chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Dialog, active: true}])}}/>
         </>
         ||
@@ -76,7 +78,7 @@ export default function ChatSearchBar(props: Props) {
         }
       </div>
       <Button className={styles.filterButton} onClick={openFiltersModal}><FiltersSvg/></Button>
-      <Button className={styles.button} onClick={()=>{chatContext.setComponent([{component: ChatComponent.Folder, active: true}])}}><PlusSvg/></Button>
+      <Button styleType={['grey', 'icon']} altStyleType={['white', 'invertSvg', 'icon']} className={styles.button} onClick={()=>{chatContext.setComponent([{component: ChatComponent.Folder, active: true}])}}><PlusSvg/></Button>
     </div>
   </div>
   )

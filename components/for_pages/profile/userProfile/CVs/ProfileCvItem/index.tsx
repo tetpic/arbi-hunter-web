@@ -112,13 +112,14 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
 
 
+
   const vacanciesCounter = cv.categories[0].vacanciesCount||0
 
   return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
-      <p className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</p>
-      <p className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</p>
+      <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</P>
+      <P className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</P>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()
@@ -206,6 +207,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 
           <Button 
           styleType={['black']}
+          altStyleType={['whitePurple']}
           onClick={(e)=> {
             e.stopPropagation()
             e.preventDefault()
@@ -217,6 +219,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         {!props.type &&
           <Button 
           styleType={['black']}
+          altStyleType={['whitePurple']}
           onClick={(e)=> {
             e.stopPropagation()
             e.preventDefault()

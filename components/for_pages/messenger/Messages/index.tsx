@@ -28,6 +28,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
 import { useRouter } from 'next/navigation'
+import P from '@/components/ui/P'
 
 
 
@@ -131,6 +132,7 @@ export default function Messages(props: Props) {
       }
     }, [dialog.chat])
 
+
   return (
     <div className={styles.root}> 
       <div className={styles.top} onClick={onTopClick}>
@@ -140,7 +142,7 @@ export default function Messages(props: Props) {
             <BackBtn className={styles.backButton} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
-          <p className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</p>
+          <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</P>
           <p className={styles.time}>{collocutor.online?<span className={styles.online}>В сети</span>:'Был(а) в сети  '+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
           {!isTabletWidth &&
             <ThreeDotsButton className={styles.dots}/>
@@ -153,10 +155,10 @@ export default function Messages(props: Props) {
       {(dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())&&
         <div className={styles.invite}>
           <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
-          <p className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</p>
+          <P styleType={['small', 'w500']} useThemeColor className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</P>
           <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
             <InformationSvg />
-            </Link>
+          </Link>
         </div>
       }
       <div 

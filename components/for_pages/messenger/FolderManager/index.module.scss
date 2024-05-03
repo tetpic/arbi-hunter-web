@@ -36,7 +36,7 @@
 
 .top {
   padding: 16px;
-  border-bottom: 2px $grey solid;
+  border-bottom: 2px var(--greyToPurpleGrey) solid;
   width: 100%;
   @include mq($TabletWidth, max) {
     display: flex;
@@ -131,7 +131,7 @@
 
 .chatsWrapper {
   border-radius: 16px;
-  background-color: $black;
+  background-color: var(--backColor);
   padding-inline: 16px;
   overflow: hidden;
   @include mq($TabletWidth, max) {

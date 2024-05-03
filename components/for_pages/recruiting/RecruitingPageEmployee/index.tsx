@@ -168,7 +168,7 @@ function RecruitingPageEmployeeInner(props: Props) {
           <Spinner size={24} />
           ||
           !loading && vacancyContext.foundVacancies?.size > 0 && [...vacancyContext.foundVacancies.values()].map(vacancy=> {
-            return <VacancyItem vacancy={vacancy} onChangeItem={()=>findVacancies()}/>
+            return <VacancyItem smallCard={isTabletWidth} vacancy={vacancy}  onChangeItem={()=>findVacancies()}/>
           })
           ||
           <P useThemeColor className='empty'>{t('recruiting_em_noFoundVacancies')}</P>

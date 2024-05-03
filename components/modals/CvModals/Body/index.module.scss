@@ -7,6 +7,13 @@
   align-items: center;
   column-gap: 8px;
   padding: 8px 16px;
+
+  &_light {
+    border: 2px $whitePurple solid;
+    background-color: $white;
+    box-shadow: 0px 0px 10px 0px rgba(152, 90, 252, 0.1254901961);
+
+  }
 }
 
 .loupeSvg {
@@ -32,7 +39,7 @@
 }
 
 .input {
-  color: $white;
+  color: var(--pTextColor);
   font-size: $mediumText;
   font-weight: $medium;
 }

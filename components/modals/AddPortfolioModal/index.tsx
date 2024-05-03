@@ -15,6 +15,8 @@ import CloudSvg from '@/components/svg/CloudSvg'
 import { ICVCreate } from 'data/interfaces/ICV'
 import { IFile } from 'data/interfaces/Common'
 import { useState } from 'react'
+import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -35,6 +37,7 @@ export interface IPortfolioModal {
 
 
 export default function AddPortfolioModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args:IPortfolioModal = appContext.modalArguments||appContext.bottomSheetArguments
   const [files, setFiles] = useState<IFile[]>([])
@@ -54,17 +57,17 @@ export default function AddPortfolioModal(props: Props) {
 
   const body = (<>
     <Title title={'Добавить портфолио'} className={styles.title}/>
-    <p className={styles.disclaimer}>
-      Прикрепите ссылку на портфолио <br/>
-      или загрузите фото или PDF - файл
-    </p>
+    <P styleType={['w500', 'medium']} useThemeColor className={styles.description}>
+      {t('create_cv_portfolioText1')} <br/>
+      {t('create_cv_portfolioText2')}
+    </P>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <InputField 
         styleType={'default'} 
         color={'default'} 
         name={'portfolio'} 
-        label='Добавить ссылку на портфолио'
+        label={t('create_cv_addPortfolioLink')}
         labelType='top'
         validate={Validator.url}
         />
@@ -75,13 +78,13 @@ export default function AddPortfolioModal(props: Props) {
         getImages={(setFiles)}  
         className={styles.filesWrapper} 
         buttonClassName={styles.filesInput} 
-        buttonName={<p className={styles.uploadButton}><CloudSvg/> Загрузить файл</p>} 
+        buttonName={<p className={styles.uploadButton}><CloudSvg/> {t('download')}</p>} 
         />
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' title={'back'} onClick={props.onClose} className={styles.cancelButton}>Отменить</Button>
-      <Button type='button' title='save' onClick={formik.submitForm} className={styles.saveButton}>Сохранить</Button>
+      <Button type='button' title={'back'} onClick={props.onClose} styleType={['grey']} altStyleType={['whitePurple']}>{t('cancel')}</Button>
+      <Button type='button' title='save' onClick={formik.submitForm} styleType={['gradient']}>{t('save')}</Button>
     </div>
   </>)
 

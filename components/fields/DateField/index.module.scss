@@ -16,10 +16,10 @@
     }
 
     .react-datepicker__header  {
-      background-color: $black;
-      color: $white !important;
+      background-color: var(--backColor);
+      color: var(--pTextColor) !important;
       * {
-        color: $white !important;
+        color: var(--pTextColor) !important;
       }
 
       .react-datepicker__current-month  {
@@ -241,7 +241,7 @@
 }
 
 .input {
-  background-color: $backgroundBlack;
+  background-color: transparent;
   border-radius: 10px;
 }
 
@@ -250,7 +250,7 @@
 } 
 
 .popperStyle {
-  background-color: $black !important;
+  background-color: var(--backColor) !important;
   border: $blue 2px solid !important;
   border-radius: 16px !important;
   overflow: hidden;
