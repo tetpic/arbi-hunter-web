@@ -7,6 +7,7 @@ import Button from 'components/ui/Button'
 import { ChangeEvent} from 'react'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
@@ -37,14 +38,15 @@ export default function Body(props: Props) {
 
   const {isPhoneWidth} = useResize()
 
+
   return (<>
   {props.title &&
-    <p className={styles.title}>
+    <P useThemeColor styleType={['large', 'w600']} className={styles.title}>
       {isPhoneWidth && 
         <Button className={styles.buttonSmall} onClick={()=>props.onClose()}><ArrowDownSvg className={styles.arrow}/></Button>
       }
       {props.title}
-    </p>
+    </P>
   }
     {props.withInput !== false&&
       <div className={styles.inputWrapper}>
@@ -57,7 +59,7 @@ export default function Body(props: Props) {
       </div>
   <div className={styles.buttonsWrapper}>
     {!isPhoneWidth && 
-      <Button className={styles.buttonDefault} type='button' onClick={(e) => {
+      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
         props.onClose()}} >{t('cancel')}</Button>

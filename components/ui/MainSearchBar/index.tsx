@@ -11,6 +11,7 @@ import {  useState } from 'react'
 import { ISearchFilterModalProps } from 'components/modals/SearchFilterModal'
 import { ICategory } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 export interface ISearchBarReturnParams {
   activeCategories?: number[]
@@ -95,7 +96,7 @@ export default function MainSearchBar(props: Props) {
         title='filter button' 
         onClick={openFilters} 
         className={classNames(styles.filterButton, (activeCategories.size>0||activePeriod)&&styles.filterButton_active)}>
-          <SettingsThreeSlidersSvg/>
+          <SettingsThreeSlidersSvg color={isLightTheme&&colors.black}/>
         </Button>
         }
 
@@ -104,7 +105,7 @@ export default function MainSearchBar(props: Props) {
         title='search button' 
         onClick={()=> submit()} 
         className={!isTabletWidth&&styles.button}>
-          {isTabletWidth&&<LoupeSvg/>||t('searchAlt')}
+          {isTabletWidth&&<LoupeSvg color={isLightTheme&&colors.black}/>||t('searchAlt')}
         </Button>
       </div>
     </div>

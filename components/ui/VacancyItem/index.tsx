@@ -6,7 +6,7 @@ import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
 import Image from 'next/image'
 import { useAppContext } from 'context/state'
-import { ActivityStatus,  ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
+import { ActivityStatus,  AppTheme,  ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
 import { useCvContext } from 'context/cv_state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import VacancyRepository from 'data/repositories/VacancyRepository'
@@ -22,6 +22,7 @@ import ChatRepository from 'data/repositories/ChatRepository'
 import { useRouter } from 'next/router'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 interface Props {
   vacancy?: IVacancy
@@ -36,6 +37,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const {getNewSignal} = useAbortController()
   const router = useRouter()
   const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser.length -1]||null
+  const isLightTheme = appContext.theme === AppTheme.Light
 
 
   const respondHandler = (e: React.MouseEvent) => {
@@ -81,7 +83,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   }
 
 
-  return (<Link className={styles.item} href={'/vacancy/'+vacancy.id}> 
+  return (<Link className={classNames(styles.item, isLightTheme && styles.item_light)} href={'/vacancy/'+vacancy.id}> 
     <FavoritesButton styleType={['icon', 'backTransparent']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>
@@ -89,7 +91,11 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         {smallCard &&
         <UserPic className={styles.userPic} size={42}/>
         }
-        <P styleType={['large', 'w600']} className={styles.name}>
+        <P 
+        styleType={['large', 'w600']} 
+        className={styles.name}
+        useThemeColor
+        >
           {vacancy.company||vacancy.contactName}
         </P>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
@@ -97,17 +103,22 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
       </div>
 
-      <P styleType={['large', 'w600']} className={styles.name}>
+      <P useThemeColor styleType={['large', 'w600']} className={styles.name}>
         {vacancy.name}
       </P>
       {Number(vacancy.totalApplications) === 0 &&
         <P styleType={['purple', 'small']} className={styles.firstApp}>Откликнитесь первым!</P>
       }
 
-      <P styleType={['alignCenter', 'medium', 'w500']}><BriefCaseSvg className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
+      <P 
+      styleType={['alignCenter', 'medium', 'w500']}
+      useThemeColor
+      >
+        <BriefCaseSvg color={isLightTheme&&colors.black} className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()
+      }</P>
 
       <SalaryItem vacancy={vacancy}/>
-      <P styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}})}</P>
+      <P  styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}})}</P>
       {vacancy?.profile?.activityStatus && !smallCard &&
         <p className={styles.activityStatus}>
           <span className={classNames(styles.dot, vacancy.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>
@@ -115,7 +126,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         </p>
       }
       {vacancy.proposalsToCurrentUser.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&
-        <P styleType={['medium', 'w500']} className={styles.greenBadge} > Вас пригласили!</P>
+        <P  styleType={['medium', 'w500']} className={styles.greenBadge} > Вас пригласили!</P>
         ||
         lastProposal?.type === ProposalRequestType.Rejection &&
         <P styleType={['medium', 'w500']} className={styles.redBadge}> Вам отказали</P>

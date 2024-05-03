@@ -41,6 +41,8 @@ $purpleSmell: #985AFC20;
   --backColor: #{$black};
   --backColorAlt: #{$black};
   --greyToPurpleGrey: #{$grey};
+  --greyLightToBlack: #{$greyLight};
+  --greyLightToPurple: #{$greyLight};
 }
 
 #body[data-theme="light"] {
@@ -51,8 +53,37 @@ $purpleSmell: #985AFC20;
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
   --backColor: #E4DEEB;
-  --backColorAlt: #FBF9FD;
+  --backColorAlt: #FEFCFF;
   --greyToPurpleGrey: #{$purpleGrey};
+  --greyLightToBlack: #{$black};
+  --greyLightToPurple: #{$purpleSmell};
+
+}
+
+#body[data-theme="beer"] {
+  --backGroundColor: #f5bc52;
+  --pTextColor: #{$grey};
+  --secondaryColor: #{$white};
+  --borderColor: #{$whitePurple};
+  --borderPerimeter: #{$whitePurple};
+  --buttonDefaultColor:  #{$white};
+  --backColor: #e9aa77d8;
+  --backColorAlt: #dfa145;
+  --greyToPurpleGrey: #{$purpleGrey};
+  --greyLightToBlack: #{$white};
+}
+
+#body[data-theme="dracula"] {
+  --backGroundColor: #7e2019;
+  --pTextColor: #{$white};
+  --secondaryColor: #{$white};
+  --borderColor: #{$whitePurple};
+  --borderPerimeter: #{$whitePurple};
+  --buttonDefaultColor:  #{$white};
+  --backColor: #49170a;
+  --backColorAlt: #3d0f0b;
+  --greyToPurpleGrey: #{$purpleGrey};
+  --greyLightToBlack: #{$white};
 }
 
 $blueGradient: linear-gradient(241deg, #7A5EFE 7.14%, #54ADFF 100%);

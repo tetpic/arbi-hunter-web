@@ -26,7 +26,7 @@ export default function FavoritesButton(props: Props) {
   return (
     <Button 
     styleType={props.styleType||['icon', 'black']}
-    altStyleType={['icon', 'whitePurple', 'borderBlue', 'invertSvg'] }
+    altStyleType={['icon', 'whitePurple'] }
     onClick={(e)=>props.onClick(e)} 
     className={classnames(styles.heartButton,  props.className)} 
     >

@@ -2,6 +2,8 @@ import styles from './index.module.scss'
 
 import classNames from 'classnames'
 import CheckSvg from 'components/svg/CheckSvg'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 interface Props<T> {
   value: T,
@@ -15,12 +17,14 @@ interface Props<T> {
   circleClassName? : string
 }
 export default function Radio<T>(props: Props<T>) {
+  const {theme} = useAppContext()
+  const isLightTheme = theme === AppTheme.Light
   const handleClick = () => {
     props.onChange(props.value)
   }
   return (
-    <div data-cy={'radio_'+props.value} data-active={props.isActive} className={classNames(styles.root, props.isActive&&styles.active, props.className, props.isActive&&props.activeClassName)} onClick={handleClick}>
-      <div className={classNames(styles.circle, props.circleClassName)}>{props.isActive && <CheckSvg color={'white'}/>}</div>
+    <div data-cy={'radio_'+props.value} data-active={props.isActive} className={classNames(styles.root, isLightTheme&&styles.root_light, props.isActive&&styles.active, props.className, props.isActive&&props.activeClassName)} onClick={handleClick}>
+      <div className={classNames(styles.circle, isLightTheme&&styles.circle_light, props.circleClassName)}>{props.isActive && <CheckSvg color={'white'}/>}</div>
       {props.children && props.children.length ? props.children : <div className={classNames(styles.label, props.labelClassName)}>{props.label}</div>}
     </div>
   )

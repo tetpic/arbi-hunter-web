@@ -23,7 +23,7 @@
     left: 0;
     height: 0;
     border-radius: unset;
-    background-color: $backgroundBlack;
+    background-color: var(--backGroundColor);
     z-index: 4;
     height: 100vh;
     height: 100dvh;
@@ -64,7 +64,7 @@
 }
 
 .fieldTitle {
-  color: $white;
+  color: var(--pTextColor);
   font-size: $mediumText;
   font-weight: $medium;
   width: Max(30%, 160px);

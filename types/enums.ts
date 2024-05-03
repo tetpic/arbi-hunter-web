@@ -57,7 +57,9 @@ export enum ModalType {
 
 export enum AppTheme {
   Light= 'light',
-  Dark= 'dark'
+  Dark= 'dark',
+  Beer= 'beer',
+  Dracula= 'dracula',
 }
 
 export enum SnackbarType {
@@ -72,6 +74,11 @@ export enum CookiesType {
   address = 'address',
   profileType = 'profile-type',
   language = 'language'
+}
+
+export enum PaymentType {
+  CARD= 'bankCard',
+  CRYPTO = 'crypto'
 }
 
 export enum LocalStorageKey {

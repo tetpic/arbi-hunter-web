@@ -18,9 +18,6 @@
 }
 
 .title {
-  color: $white;
-  font-size: $largeText;
-  font-weight: $semibold;
   margin-bottom: 24px;
   @include mq($PhoneWidth, max) {
     display: flex;

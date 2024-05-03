@@ -9,7 +9,7 @@
   padding-left: 16px;
   margin-bottom: 24px;
   position: relative;
-  z-index: 3;
+  z-index: 6;
   height: 74px;
   @include mq($TabletWidth, max) {
     background-color: unset;

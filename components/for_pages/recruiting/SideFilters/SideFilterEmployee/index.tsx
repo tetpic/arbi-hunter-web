@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import { Currency,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
+import { AppTheme, Currency,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
@@ -24,6 +24,7 @@ import { periods } from 'utils/commonObjects'
 import RadioListField from '@/components/fields/RadioListField'
 import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import classNames from 'classnames'
 
 
 interface Props {
@@ -40,6 +41,7 @@ export default function SideFilterEmployee(props: Props) {
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
   const [showMore, setShowMore] = useState(false)
   const {t} = useTranslation()
+  const isLightTheme = appContext.theme === AppTheme.Light
 
 
 
@@ -134,10 +136,9 @@ export default function SideFilterEmployee(props: Props) {
 
 
 
-  return (<div className={styles.root}> 
+  return (<div className={classNames(styles.root, isLightTheme&&styles.root_light)}> 
     <FormikProvider value={formik}>
       <Form>
-
         <p className={styles.fieldTitle}>
           <span>Специализации </span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
@@ -149,7 +150,7 @@ export default function SideFilterEmployee(props: Props) {
           [...creationContext.activeSubCategory.filter(Boolean),
             ...[...creationContext.subCategories.entries()].filter(([k, v])=> !formik.values.categories.includes(k)).map(el=> el[1]).slice(0, 3)
           ].map(el=> {
-            return {value: el.id, label: <P className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
+            return {value: el.id, label: <P useThemeColor className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
           })
         }/>
         {isTabletWidth&&<Spacer basis={4}/>}
@@ -188,7 +189,7 @@ export default function SideFilterEmployee(props: Props) {
           labelType={'static'}
           />
         </div>
-        <TagsRadioList className={styles.tags} name={'currency'} options={[
+        <TagsRadioList wrap className={styles.tags} name={'currency'} options={[
           {value: Currency.RUB, label: 'Рубли'},
           {value: Currency.USD, label: 'Доллары'},
           {value: Currency.EUR, label: 'Евро'},
@@ -365,6 +366,7 @@ export default function SideFilterEmployee(props: Props) {
     </FormikProvider>
     <Button 
     styleType={['grey', 'wide']} 
+    altStyleType={['whitePurple', 'wide']}
     onClick={formik.handleReset}
     className={styles.resetButton}
     >

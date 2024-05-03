@@ -2,6 +2,8 @@ import RadioListField from '@/components/fields/RadioListField'
 import styles from './index.module.scss'
 import { IOption } from 'types/types'
 import CheckboxListField from '@/components/fields/CheckboxListField'
+import P from '@/components/ui/P'
+import classNames from 'classnames'
 
 interface Props<T> {
   name: string
@@ -9,13 +11,14 @@ interface Props<T> {
   label?: string
   className?: string
   checkbox?: boolean
+  wrap?: boolean
 }
 
 export default function TagsRadioList<T>(props: Props<T>) {
 
   return (<div className={props.className}>
     {props.label &&
-      <p className={styles.label}>{props.label}</p>
+      <P useThemeColor className={styles.label}>{props.label}</P>
     }
     {props.checkbox &&
       <CheckboxListField 
@@ -23,7 +26,7 @@ export default function TagsRadioList<T>(props: Props<T>) {
       circleClassName={styles.circleCurrency}
       activeClassName={styles.currencyItem_active}
       itemClassName={styles.currencyItem}
-      wrapperClassName={styles.currencyRoot}
+      wrapperClassName={classNames(styles.currencyRoot, props.wrap&&styles.wrap)}
       itemLabelClassName={styles.currencyLabel}
       name={props.name}/>
       ||
@@ -32,7 +35,7 @@ export default function TagsRadioList<T>(props: Props<T>) {
       itemCircleClassname={styles.circleCurrency}
       activeItemClassName={styles.currencyItem_active}
       itemClassName={styles.currencyItem}
-      wrapperClassName={styles.currencyRoot}
+      wrapperClassName={classNames(styles.currencyRoot, props.wrap&&styles.wrap)}
       itemLabelClassName={styles.currencyLabel}
       options={props.options} 
       />

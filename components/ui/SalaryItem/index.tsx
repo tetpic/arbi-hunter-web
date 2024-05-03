@@ -5,6 +5,7 @@ import { TranslateCompensationType, TranslateCurrency} from 'utils/enumsTranslat
 import styles from './index.module.scss'
 import { ICV } from 'data/interfaces/ICV'
 import Formatter from 'utils/formatter'
+import P from '../P'
 
 interface Props {
   vacancy?: IVacancy
@@ -26,7 +27,7 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
     return null
   }
 
-  return (<p className={props.className||styles.salary}>
+  return (<P styleType={['large', 'w600', 'alignCenter']} useThemeColor className={props.className||styles.salary}>
   {
   // compensation === CompensationType.Salary && salary &&
   // <>
@@ -61,5 +62,5 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
   //   <span>{salary && Formatter.formatNumber(Number(salary)) + ' ' + TranslateCurrency(currency) + ' + ' } {commission}%</span>
   // </>
   }
- </p>)
+ </P>)
 }

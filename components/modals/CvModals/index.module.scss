@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .rootLayout {
-  background-color: $black;
+  // background-color: $black;
   max-width: 520px;
   @include mq($PhoneWidth, max) {
     height: 100vh;
@@ -61,10 +61,10 @@
   align-items: center;
   border-radius: 8px;
   justify-content: space-between;
-  color: $white;
+  color: var(--pTextColor);
   font-size: $mediumText;
   padding: 8px 16px;
-  background-color: $grey;
+  background-color: var(--borderColor);
   cursor: pointer;
   @include transitionDefault;
   @include hoverButtonSmooth;
@@ -73,11 +73,14 @@
   }
 
   &_active {
-    background-color: $greyLight;
+    background-color: var(--greyLightToPurple);
   }
 }
 
 .arrow {
+  path {
+    stroke: var(--pTextColor);
+  }
   @include transitionDefault;
   &_active {
     rotate: 180deg;

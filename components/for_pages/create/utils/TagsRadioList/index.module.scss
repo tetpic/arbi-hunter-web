@@ -10,28 +10,36 @@
   column-gap: 8px !important;
   flex-direction: row !important;
   flex-wrap: nowrap;
+  width: 100%;
+  overflow: auto;
+  padding-bottom: 12px;
+}
+
+.wrap {
+  flex-wrap: wrap;
 }
 
 .currencyItem {
   padding: 10px 16px 8px;
-  border: 1px solid $grey;
+  border: 1px solid var(--borderColor);
   border-radius: 50px;
   @include transitionDefault;
   white-space: nowrap;
   margin-bottom: unset !important;
 
   &_active {
-    background-color: $grey;
+    background-color: var(--borderColor);
   }
 }
 
 .currencyLabel {
   margin-left: unset !important;
+  color: var(--pTextColor);
   @include transitionDefault;
 }
 
 .label {
-  color: $greyLight;
+  color: var(--greyLightToBlack);
   font-size: $mediumText;
   font-weight: $medium;
   margin-bottom: 16px;

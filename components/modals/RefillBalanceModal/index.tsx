@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { RefillBalanceData } from 'data/interfaces/Common'
-import { Currency } from 'types/enums'
+import { Currency, PaymentType } from 'types/enums'
 import InputField from '@/components/fields/InputField'
 import TagsRadioList from '@/components/for_pages/create/utils/TagsRadioList'
 import Button from '@/components/ui/Button'
@@ -12,6 +12,7 @@ import Validator from 'utils/Validator'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose?: () => void
@@ -31,7 +32,7 @@ export default function RefillBalanceModal(props: Props) {
     initialValues: {
       amount: undefined,
       currency: Currency.RUB,
-      paymentType: 'bankCard',
+      paymentType: PaymentType.CARD,
     },
     onSubmit: submit  
   })
@@ -54,6 +55,12 @@ export default function RefillBalanceModal(props: Props) {
             {label: 'USD', value: Currency.USD},
             {label: 'EUR', value: Currency.EUR},
             {label: 'UAH', value: Currency.GRN},
+          ]}/>
+          
+          <P styleType={['medium', 'w600']} useThemeColor>Тип оплаты</P>
+          <TagsRadioList name={'paymentType'} options={[
+            {label: 'Бансковской картой', value: PaymentType.CARD},
+            {label: 'Криптовалютой', value: PaymentType.CRYPTO},
           ]}/>
           <Button styleType={['gradient']} type='submit'>Пополнить</Button>
         </Form>

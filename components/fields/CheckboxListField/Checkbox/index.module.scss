@@ -10,6 +10,14 @@
       background: $gradientAlt;
     }
   }
+
+  &_light {
+    &.active {
+      .circle {
+        background: $blue;
+      }
+    }
+  }
 }
 
 .label {
@@ -26,5 +34,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &_light {
+    border: 1px transparent solid;
+    background-color: $whitePurple;
+  }
 
 }

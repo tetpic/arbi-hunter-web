@@ -256,7 +256,7 @@ export default function FilterEmployee(props: Props) {
             name={'keywords'}
             suffix={<CrossSvg onClick={() => formik.setFieldValue('keywords', '')}/>}
             />
-            <P className={styles.subTitle} styleType={['w500', 'medium']}>{t('filters_searchOnlyIn')}</P>
+            <P className={styles.subTitle} useThemeColor styleType={['w500', 'medium']}>{t('filters_searchOnlyIn')}</P>
             {isTabletWidth &&
               <TagsRadioList 
               className={styles.tags} 
@@ -558,6 +558,7 @@ export default function FilterEmployee(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey']} 
+      altStyleType={['whitePurple']}
       onClick={resetAll}
       className={styles.resetButton}
       >
