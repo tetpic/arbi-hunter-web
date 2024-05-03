@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Spinner from 'components/ui/Spinner'
 import { IButton } from 'types/types'
 import usePressAndHover from 'hooks/usePressAndHover'
-import { MouseEventHandler, ReactElement, RefObject, useEffect, useMemo } from 'react'
+import { MouseEventHandler, ReactElement, RefObject,  useMemo } from 'react'
 import useStopPropagation from 'hooks/useStopPropagation'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
@@ -61,9 +61,6 @@ export default function Button(props: Props) {
   const {theme} = useAppContext()
   const isLightTheme = theme === AppTheme.Light
 
-  useEffect(()=>{
-    console.log(theme, isLightTheme)
-  }, [theme])
   const cn = useMemo(() => classNames(
     {
       [styles.root]: true,
