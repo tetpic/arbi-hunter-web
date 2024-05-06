@@ -89,10 +89,10 @@ export default function Education(props: Props) {
           className={styles.educationWrapper} 
           onClick={()=> onAddButtonClick(el, index)}
           >
-            <P styleType={['large', 'w600']} >{el.institution}</P>
-            <P styleType={['medium', 'w500']} >{el.speciality}</P>
-            <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - '+t('toPresentLong')}</P>
-            <Button type={'button'} className={styles.trashButton}><ArrowRightSvg/></Button>
+            <P useThemeColor styleType={['large', 'w600']} >{el.institution}</P>
+            <P useThemeColor styleType={['medium', 'w500']} >{el.speciality}</P>
+            <P useThemeColor styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - '+t('toPresentLong')}</P>
+            <Button type={'button'} altStyleType={['invertSvg']} className={styles.trashButton}><ArrowRightSvg/></Button>
           </div>)
         }) 
       }

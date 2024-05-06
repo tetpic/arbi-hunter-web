@@ -5,7 +5,7 @@
   :global {
 
     .react-datepicker {
-      background-color: $grey;
+      background-color: var(--greyToPurpleGrey);
       border-radius: 16px;
       overflow: hidden;
       padding: 0;
@@ -27,12 +27,12 @@
     }
 
     .react-datepicker__header {
-      background-color: $grey;
+      background-color: var(--greyToPurpleGrey);
       border: unset !important;
     }
 
     .react-datepicker__month {
-      background-color: $grey;
+      background-color: var(--greyToPurpleGrey);
     }
   }
 
@@ -73,7 +73,7 @@
 
 .header {
   padding-inline: 16px;
-  background-color: $grey;
+  background-color: var(--greyToPurpleGrey);
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -104,7 +104,7 @@
   .timeOptions {
     overflow: scroll;
     max-height: 300px;
-    background-color: $black;
+    // background-color: var(--backColor);
     width: 100px;
     margin-top: 8px;
   }

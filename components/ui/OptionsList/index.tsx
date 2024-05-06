@@ -2,6 +2,7 @@ import { useAppContext } from 'context/state'
 import styles from './index.module.scss'
 import { CSSProperties } from 'react'
 import classNames from 'classnames'
+import P from '../P'
 
 export interface IOptionList {
   title: string, 
@@ -19,10 +20,13 @@ interface Props {
 export default function OptionsList(props: Props) {
   const appContext = useAppContext()
 
+
   return (<div className={classNames(styles.options, props.className)} onMouseLeave={()=>props.onMouseLeave&&props.onMouseLeave()} >
   {props.options &&
     props.options.map((el, index) => {
-      return <p 
+      return <P 
+      styleType={['medium', 'w500']}
+      useThemeColor
       className={styles.option} 
       key={index} 
       style={el.style} 
@@ -33,7 +37,7 @@ export default function OptionsList(props: Props) {
       }}
       >
         {el.icon} {el.title}
-      </p>
+      </P>
     })
   }
 </div> )

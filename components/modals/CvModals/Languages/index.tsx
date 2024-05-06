@@ -34,7 +34,7 @@ export default function LangaugesModal(props: Props) {
   const [langs, setLangs] = useState<{ru: string, en: string}[]>([])
   const [activeDropDown, setActiveDropDown] = useState<'langs'|'levels'|undefined>('langs')
   const [langRadioActive, setLangRadioActive] = useState<Languages>(null)
-  const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>()
+  const [levelRadioActive, setLevelRadioActive] = useState<LanguageKnowLevel>(null)
   
   useEffect(()=>{
     const langsObj = Object.entries(Languages).map(([key, value])=> {return {en: value, ru: TranslateLanguage(value, t)}
@@ -47,13 +47,15 @@ export default function LangaugesModal(props: Props) {
     args?.onClose?args.onClose():props.onClose()
   }
 
+
   const body = (
     <Body 
+    key={'languageBody'+langRadioActive+levelRadioActive}
     onClose={props.onClose} 
     onSave={onSaveHandler}  
     title={t('foreignLanguages')} 
     withInput={false}
-    disabledButton={!langRadioActive || !levelRadioActive}
+    disabledButton={(!langRadioActive||!levelRadioActive)}
     >
       <div className={styles.wrapper}>
         <p className={styles.title} 

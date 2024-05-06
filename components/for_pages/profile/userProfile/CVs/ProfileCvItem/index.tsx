@@ -74,7 +74,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const defaultOptions:IOptionList[] = [
-    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: editHandler},
     {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
     {title: t('item_upgrade'), onClick: upgradeTariffHandler},
     {title: t('item_share')},
@@ -82,14 +82,14 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   ]
 
   const draftOptions:IOptionList[] = [
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
   const archiveOptions:IOptionList[] = [
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Опубликовать', onClick: archiveHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    {title: t('item_edit'), onClick: editHandler},
+    {title: t('item_publish'), onClick: archiveHandler},
+    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 
   const options = <OptionsList 
@@ -119,7 +119,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
       <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</P>
-      <P className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</P>
+      <P  className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</P>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()
@@ -201,7 +201,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         }
 
         {props.type === 'drafts' && cv.completedSteps?.length > 5 &&
-          <Button styleType={['black']}>{t('item_edit')}</Button>
+          <Button styleType={['black']} altStyleType={['whitePurple']}>{t('item_edit')}</Button>
         }
 
         {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 

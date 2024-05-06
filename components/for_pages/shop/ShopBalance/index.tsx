@@ -37,7 +37,7 @@ export default function ShopBalance(props: Props) {
 
   <div className={styles.balance}>
     <ArbiCoinGradientSvg/>
-    <P  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user?.balance)||0}</P>
+    <P useThemeColor  styleType={['w600', 'huge']}>{Formatter.formatPrice(userContext.user?.balance)||0}</P>
   </div>
 
   <Button className={styles.button} styleType={['gradient', 'wide']} onClick={openRefillModal}>{t('shop_fill')}</Button>

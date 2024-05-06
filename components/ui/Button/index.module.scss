@@ -20,10 +20,7 @@
   visibility: visible;
 }
 
-.disabled {
-  pointer-events: none;
-  opacity: .5;
-}
+
 
 .text {
   display: flex;
@@ -136,6 +133,11 @@
   @include mq($TabletWidth, max) {
     width: 100%;
   }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: .5;
 }
 
 

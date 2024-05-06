@@ -80,7 +80,7 @@ function Header (props: {picker: ReactDatePickerCustomHeaderProps, onSetTime: (t
   return <div className={styles.header}>
     <div className={styles.header__month}>
       <Button type='button'  disabled={props.picker.prevMonthButtonDisabled} onClick={props.picker.decreaseMonth}><ArrowLeftSvg/></Button>
-      <P styleType={['w600', 'large']}>{Formatter.formatDate(new Date(props.picker.monthDate), {timeOptions: {month: 'long', day: undefined}})}</P>
+      <P useThemeColor styleType={['w600', 'large']}>{Formatter.formatDate(new Date(props.picker.monthDate), {timeOptions: {month: 'long', day: undefined}})}</P>
       <Button type='button' disabled={props.picker.nextMonthButtonDisabled} onClick={props.picker.increaseMonth}><ArrowRightSvg/></Button>
     </div>
     <div className={styles.timePicker}>
@@ -121,7 +121,7 @@ export default function ShopDateTimePicker(props: Props) {
     }}
 
     renderCustomHeader={(p) => <Header picker={p} onSetTime={(s)=>{
-      const formikDate = new Date(field.value)||new Date()
+      const formikDate = field.value?new Date(field.value):new Date()
       const minutes = Number(s.split(':')[1])
       const hours = Number(s.split(':')[0])
       formikDate.setHours(hours, minutes, 0, 0)

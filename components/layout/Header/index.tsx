@@ -139,7 +139,7 @@ export default function Header(props: Props) {
               altStyleType={['icon','white']}
               className={styles.iconButton}
               >
-                <NotificationSvg/>
+                <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>
               <Button  
               styleType={['icon', 'black', 'svg24']} 
@@ -170,7 +170,7 @@ export default function Header(props: Props) {
               styleType={['icon', 'black']} 
               className={styles.iconButton} 
               >
-                <NotificationSvg/>
+                <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>
               <Button 
               styleType={['icon', 'black', 'svg24']} 

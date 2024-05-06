@@ -19,7 +19,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
-import { Preset, PurchaseType } from 'types/enums'
+import { AppTheme, Preset, PurchaseType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
@@ -62,6 +62,7 @@ export default function PurchasePreviewModal(props: Props) {
     const currentTariff = args.tariffs.get(el.subscriptions?.tariff?.id)
     return (currentTariff?.price < args.tariff?.price) && (currentTariff.id !== args.tariff?.id)
   })||[]
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   const buy = (data: PurchaseForm) => {
     args.onBuy(data)
@@ -89,16 +90,16 @@ export default function PurchasePreviewModal(props: Props) {
   const purchase = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>{t('shop_purchase')}</P>
-        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <P useThemeColor styleType={['w600', 'large']}>{t('shop_purchase')}</P>
+        <Button type='button' styleType={['icon', 'backTransparent']} altStyleType={['icon', 'invertSvg']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
-      <P styleType={['w600', 'huge', 'textCenter']}>{t('shop_tariffPurchase')} <br /> {args.tariff.name}</P>
+      <P useThemeColor styleType={['w600', 'huge', 'textCenter']}>{t('shop_tariffPurchase')} <br /> {args.tariff.name}</P>
       <div className={styles.balanceLine}>
-      <P styleType={['alignCenter', 'w600', 'huge' ]} className={styles.crossed}><ArbiCoinSvg/> {balance.current}</P>
-      <ArrowSvg/>
-      <P styleType={['alignCenter', 'w600', 'huge' ]} ><ArbiCoinSvg/> {balance.current - args.tariff.price}</P>
+        <P useThemeColor styleType={['alignCenter', 'w600', 'huge' ]} className={styles.crossed}><ArbiCoinSvg className={isLightTheme?styles.invertSvg:''}/> {balance.current}</P>
+        <ArrowSvg className={isLightTheme?styles.invertSvg:''}/>
+        <P useThemeColor styleType={['alignCenter', 'w600', 'huge' ]} ><ArbiCoinSvg className={isLightTheme?styles.invertSvg:''}/> {balance.current - args.tariff.price}</P>
       </div>
-      <P styleType={['w600', 'fs32', 'alignCenter']} className={styles.balance}><ArbiCoinGradientSvg/>{args.tariff.price}</P>
+      <P useThemeColor styleType={['w600', 'fs32', 'alignCenter']} className={styles.balance}><ArbiCoinGradientSvg/>{args.tariff.price}</P>
       <Button type='button' styleType={['gradient']} onClick={props.onClose}>{t('ready')}</Button>
     </div>
   )
@@ -106,16 +107,16 @@ export default function PurchasePreviewModal(props: Props) {
   const confirmation = (
     <div className={classNames(styles.root, styles.rootConfirm)}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>{t('shop_purchaseConfirmation')}</P>
-        <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+        <P useThemeColor styleType={['w600', 'large']}>{t('shop_purchaseConfirmation')}</P>
+        <Button type='button' styleType={['icon', 'backTransparent']} altStyleType={['icon', 'invertSvg']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       <div className={styles.balanceLine}>
-        <P styleType={['w600', 'huge']}>{t('shop_balance')}</P>
-        <P styleType={['alignCenter', 'w600', 'huge' ]} className={styles.balance}><ArbiCoinGradientSvg/> {balance.current}</P>
+        <P useThemeColor styleType={['w600', 'huge']}>{t('shop_balance')}</P>
+        <P useThemeColor styleType={['alignCenter', 'w600', 'huge' ]} className={styles.balance}><ArbiCoinGradientSvg/> {balance.current}</P>
       </div>
 
       <div className={styles.confirmInfo}>
-        <P styleType={['w600', 'large', 'alignCenter']}>
+        <P useThemeColor styleType={['w600', 'large', 'alignCenter']}>
           {/* @ts-ignore */}
           <div className={styles.imageWrapper} style={{'--gradientColor1': '#'+args.tariff.colors[0], '--gradientColor2': '#'+args.tariff.colors[1]}}>
             {args.tariff.icon &&
@@ -132,7 +133,7 @@ export default function PurchasePreviewModal(props: Props) {
 
         <div className={styles.divider}></div>
 
-        <P styleType={['w500', 'medium', 'alignCenter']}>
+        <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
           <ArbiCoinSvg/>
           {args.tariff.price} {Formatter.pluralize(args.tariff.price, t('arbicoins1'), t('arbicoins2'), t('arbicoins3'))} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, t('day1'), t('day2'), t('day3'))}
         </P>
@@ -142,6 +143,7 @@ export default function PurchasePreviewModal(props: Props) {
         <Button 
         type='button'
         styleType={['grey', 'wide']} 
+        altStyleType={['whitePurple', 'wide']}
         onClick={() => {setType(PurchaseStep.default)}}
         >
           {t('cancel')}
@@ -157,11 +159,11 @@ export default function PurchasePreviewModal(props: Props) {
   const calendar = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>{t('shop_setActivationTime')}</P>
+        <P useThemeColor styleType={['w600', 'large']}>{t('shop_setActivationTime')}</P>
         <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       {formik.values.startAt &&
-        <P>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P useThemeColor>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
       <div className={styles.calendarField}>
         <ShopDateTimePicker 
@@ -173,6 +175,7 @@ export default function PurchasePreviewModal(props: Props) {
         <Button 
         type='button'
         styleType={['grey', 'wide']} 
+        altStyleType={['whitePurple', 'wide']}
         onClick={() => {
           formik.setFieldValue('date', undefined)
           setDate(null)
@@ -189,7 +192,7 @@ export default function PurchasePreviewModal(props: Props) {
   const setItems = (
     <div className={classNames(styles.root, styles.rootConfirm)}>
       <div className={styles.top}>
-        <P styleType={['w600', 'large']}>
+        <P useThemeColor styleType={['w600', 'large']}>
           {args.tariff.purchaseType === PurchaseType.AddContactsOpen && t('shop_chooseTariff')
             ||
             args.tariff.purchaseType === PurchaseType.CvTariff && t('shop_chooseCv')
@@ -259,7 +262,7 @@ export default function PurchasePreviewModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
+      <Button type='button' styleType={['icon', 'backTransparent']} altStyleType={['icon', 'invertSvg']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       {args.tariff.icon &&
         <Image 
         unoptimized
@@ -269,24 +272,25 @@ export default function PurchasePreviewModal(props: Props) {
         width={96} 
         height={96}/>
       }
-      <P styleType={['w600', 'huge']}>{args.tariff.name}</P>
+      <P useThemeColor styleType={['w600', 'huge']}>{args.tariff.name}</P>
       {args.tariff.price > 0 &&
         <P 
         styleType={['alignCenter', 'w500', 'medium']} 
+        useThemeColor
         className={styles.price}>
-          <ArbiCoinSvg/> 
+          <ArbiCoinSvg /> 
           {args.tariff.price} {Formatter.pluralize(args.tariff.price, t('arbicoins1'), t('arbicoins2'), t('arbicoins3'))} / {args.tariff.period} {Formatter.pluralize(args.tariff.period, t('day1'), t('day2'), t('day3'))}
         </P>
       }
       {args.tariff.price === 0 &&
-        <P styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>{t('shop_free')}</P>
+        <P useThemeColor styleType={['alignCenter', 'w500', 'medium']} className={styles.price}>{t('shop_free')}</P>
       } 
-      <P styleType={['medium']}>{args.tariff.description}</P>
+      <P useThemeColor styleType={['medium']}>{args.tariff.description}</P>
       {formik.values.startAt &&
-        <P styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P useThemeColor styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
       }
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey', 'wide']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
+        <Button styleType={['grey', 'wide']} altStyleType={['whitePurple']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
         <Button 
         type='button'
         styleType={['gradient', 'wide']} 

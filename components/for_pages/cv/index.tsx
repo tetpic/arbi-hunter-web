@@ -258,7 +258,7 @@ export default function CvPage(props: Props) {
       {isMyCv &&
       <div className={styles.userTop}>
         <div className={styles.topLine}>
-          <P styleType={['fs20', 'w600']}>
+          <P useThemeColor styleType={['fs20', 'w600']}>
             {currentCv?.categories[0].name}
           </P>
           <P 
@@ -290,7 +290,7 @@ export default function CvPage(props: Props) {
           <Button styleType={['gradient']}>
             {t('cv_page_improve')}
           </Button>
-          <Button styleType={['borderGradient']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
+          <Button styleType={['borderGradient']} altStyleType={['whitePurple']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
             {currentCv?.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
           </Button>
         </div>
@@ -306,59 +306,59 @@ export default function CvPage(props: Props) {
 
       {(currentCv?.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
-          <P styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
+          <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
           {currentCv.profile.email &&
           <Link href={`mailto:${currentCv.email}`}>
-            <P styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><MailAltSvg/></Button>
+            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><MailAltSvg/></Button>
               {currentCv.profile.email}
             </P>
           </Link>
           }
           {currentCv.profile.phone &&
           <Link href={`tel:${currentCv.phone}`}>
-            <P styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><PhoneSvg/></Button>
+            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><PhoneSvg/></Button>
               {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
             </P>
           </Link>
           }
           {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
           <Link href={`tg://resolve?domain=${currentCv.telegramNickname}`}>
-            <P styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><TelegramSvg/></Button>
+            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><TelegramSvg/></Button>
               {currentCv.telegramNickname||currentCv.profile.telegramNickname}
             </P>
           </Link>
           }
           {currentCv.whatsapp &&
           <Link href={`https://wa.me/${currentCv.whatsapp}`} target='_blank'>
-            <P styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><WhatsAppSvg/></Button>
+            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><WhatsAppSvg/></Button>
               {currentCv.whatsapp}
             </P>
           </Link>
           }
           {currentCv.skype &&
           <Link href={`skype:${currentCv.skype}?chat`}>
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><SkypeSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+            <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><SkypeSvg/></Button>
             {currentCv.skype}
           </P>
           </Link>
           }
           {currentCv.linkedin &&
           <Link href={currentCv.linkedin}>
-          <P styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']}><LinkedInSvg/></Button>
+          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+            <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><LinkedInSvg/></Button>
             {currentCv.linkedin}
           </P>
           </Link>
           }
           {currentCv.viber &&
             <Link href={'viber://chat?number=+'+currentCv.viber}>
-              <P styleType={['w500', 'medium', 'alignCenter']}>
-                <Button styleType={['icon', 'black']}><ViberLogoSvg/></Button>
+              <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+                <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><ViberLogoSvg/></Button>
                 {currentCv.viber}
               </P>
             </Link>
@@ -369,6 +369,7 @@ export default function CvPage(props: Props) {
       {!isMyCv &&
       <>
         <P 
+        useThemeColor
         styleType={['fs20', 'w600']} 
         className={styles.speciality}
         >
@@ -387,7 +388,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.sources?.length > 0 &&
       <div className={styles.item}> 
-        <P styleType={['large', 'w600']}>{t('cv_page_sources')}</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_sources')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.sources.map(el=> {
           return {name: el.title}
         })}/>
@@ -396,7 +397,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.verticals?.length > 0 &&
        <div className={styles.item}>
-        <P styleType={['large', 'w600']}>{t('cv_page_verticals')}</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_verticals')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.verticals.map(el=> {
           return {name: el.title}
         })}/>
@@ -405,7 +406,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.geos?.length > 0 && 
        <div className={styles.item}>
-        <P styleType={['large', 'w600']}>{t('cv_page_geos')}</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_geos')}</P>
         <TagList tagClassName={styles.tag} tags={currentCv.geos.map(el=> {
           return {name: el.title}
         })}/>
@@ -413,39 +414,39 @@ export default function CvPage(props: Props) {
       }
 
       <div className={styles.item}>
-        <P styleType={['large', 'w600']}>{t('cv_page_experience')}</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_experience')}</P>
         {currentCv.experienceInfo.length > 0 &&
           <div className={styles.cards}>
             {currentCv.experienceInfo.map(el=> {
               return  <div className={styles.card}>
-                <P styleType={['medium', 'w500']}>{el.position}</P>
-                <P styleType={['large', 'w500']}>{el.company}</P>
+                <P useThemeColor styleType={['medium', 'w500']}>{el.position}</P>
+                <P useThemeColor styleType={['large', 'w500']}>{el.company}</P>
                 {el.description &&
-                  <P styleType={['medium', 'w500']}>{el.description}</P>
+                  <P useThemeColor styleType={['medium', 'w500']}>{el.description}</P>
                 }
-                <P styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P useThemeColor styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
               </div>
               })
             }
           </div>
           ||
-          <P styleType={['w500', 'medium']}>{t('cv_page_noExperience')}</P>
+          <P useThemeColor styleType={['w500', 'medium']}>{t('cv_page_noExperience')}</P>
         }
       </div>
 
       <div className={styles.item}>
-        <P styleType={['large', 'w600']}>{t('cv_page_education')}</P>
-        <P styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education, t)}</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_education')}</P>
+        <P useThemeColor styleType={['w500', 'medium']} >{TranslateEducationType(currentCv.education, t)}</P>
         {currentCv.educationInfo.length > 0 && 
           <div className={styles.cards}>
             { currentCv.educationInfo.map(el=> {
               return <div className={styles.card}>
-                  <P styleType={['w500', 'large']}>{el.institution}</P>
-                  <P styleType={['w500', 'medium']}>{el.speciality}</P>
+                  <P useThemeColor styleType={['w500', 'large']}>{el.institution}</P>
+                  <P useThemeColor styleType={['w500', 'medium']}>{el.speciality}</P>
                   {el.faculty &&
-                    <P styleType={['w500', 'medium']}>{el.faculty}</P>
+                    <P useThemeColor styleType={['w500', 'medium']}>{el.faculty}</P>
                   }
-                  <P styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                  <P  styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
                 </div>
               })
               }
@@ -455,14 +456,14 @@ export default function CvPage(props: Props) {
 
       {currentCv.bio && currentCv.bio.length > 1 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>{t('cv_page_about')}</P>
+          <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_about')}</P>
           <HtmlText text={currentCv.bio} className={styles.bio}/>
         </div>
       }
 
       {currentCv.skills?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>{t('cv_page_skills')}</P>
+          <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_skills')}</P>
           <TagList tagClassName={styles.tag} tags={currentCv.skills.map(el=> {
             return {name: el.title}
           })}/>
@@ -472,7 +473,7 @@ export default function CvPage(props: Props) {
 
       {currentCv.languageKnowledges?.length > 0 &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>{t('cv_page_languageKnowledges')}</P>
+          <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_languageKnowledges')}</P>
           <TagList 
           tagClassName={styles.tag} 
           tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} 
@@ -482,7 +483,7 @@ export default function CvPage(props: Props) {
 
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
         <div className={styles.item}>
-          <P styleType={['large', 'w600']}>{t('cv_page_portfolio')}</P>
+          <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_portfolio')}</P>
           {currentCv.portfolio &&
             <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
           }
@@ -492,12 +493,12 @@ export default function CvPage(props: Props) {
 
       <div className={styles.item}>
         {currentCv.relocation &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
             <GradientDotSvg/> {currentCv.relocation === Answer.No ? t('cv_page_noRelocation') : t('cv_page_relocation')}
           </P>
         }
         {currentCv.businessTrips &&
-          <P styleType={['w500', 'medium', 'alignCenter']}>
+          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
             <GradientDotSvg/> {currentCv.businessTrips === Answer.Yes ? t('cv_page_businesstrips') : t('cv_page_noBusinesstrips')}
           </P>
         }

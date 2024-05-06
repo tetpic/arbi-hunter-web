@@ -74,10 +74,10 @@ export default function Experience(props: Props) {
           onClick={()=>onAddButtonClick(el, index)}
         className={styles.experienceWrapper} 
         >
-          <P styleType={['large', 'w600']} >{el.position}</P>
-          <P styleType={['medium', 'w500']} >{el.company}</P>
-          <P styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - ' + t('toPresent')}</P>
-          <Button type='button' className={styles.trashButton} ><ArrowRightSvg/></Button>
+          <P useThemeColor styleType={['large', 'w600']} >{el.position}</P>
+          <P useThemeColor styleType={['medium', 'w500']} >{el.company}</P>
+          <P useThemeColor styleType={['small', 'greyLight']} >{el.fromDate} {el.toDate?'- '+el.toDate:' - ' + t('toPresent')}</P>
+          <Button className={styles.trashButton} type='button' styleType={['icon', 'backTransparent']} altStyleType={['icon', 'backTransparent', 'invertSvg']}  ><ArrowRightSvg/></Button>
         </div>)
       }) 
       }

@@ -116,11 +116,11 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   }
 
   props.pageProps.webViewOnly = appContext.ctx.query.webViewOnly
-  props.pageProps.theme = (appContext.ctx as any).req.cookies[CookiesType.theme]
   props.pageProps.region = appContext.ctx.query.region
   
   if (appContext.ctx.req) {
     if ((appContext.ctx?.req as any).cookies) {
+      props.pageProps.theme = (appContext.ctx as any).req.cookies[CookiesType.theme]
       props.pageProps.token = (appContext.ctx as any).req.cookies[CookiesType.accessToken]
       props.pageProps.profileType = (appContext.ctx as any).req.cookies[CookiesType.profileType]
       if(props.pageProps.token) {
