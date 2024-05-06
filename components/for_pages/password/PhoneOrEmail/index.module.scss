@@ -16,19 +16,6 @@
   width: 100% !important;  
 }
 
-.submitButton {
-  @include mq($PhoneWidth, min) {
-    @include buttonBorderGradient;    
-  }
-  padding: 10px 24px;
-  // display: inline-block;
-  @include mq($PhoneWidth, max) {
-    @include buttonGradient;
-    width: 100%;
-    margin-top: auto;
-  }
-}
-
 .form {
   width: 100%;
   display: flex;

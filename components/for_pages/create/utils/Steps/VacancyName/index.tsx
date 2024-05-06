@@ -14,9 +14,10 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 
 interface Props {
@@ -31,6 +32,7 @@ export default function VacancyName(props: Props) {
   const [isActive, setIsActive] = useDetectOutsideClick(inputWrapperRef, false)
   const cvContext = useCreateVcCvContext()
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
 
 
   const {values, setFieldValue} = useFormikContext<IVacancyCreate>()
@@ -111,7 +113,7 @@ export default function VacancyName(props: Props) {
         styleType={'default'} 
         color={'default'} 
         name={'name'} 
-        prefix={<LoupeSvg/>}
+        prefix={<LoupeSvg color={isLightTheme&&colors.black}/>}
         placeholder={t('create_vacancy_enterName')} 
         validate={Validator.required}
         />
@@ -134,12 +136,12 @@ export default function VacancyName(props: Props) {
       </div>
       {cvContext.activeSubCategory[0] &&
       <>
-        <P styleType={['w700', 'large']} className={styles.title}>{t('create_specialization')}</P>
+        <P styleType={['w700', 'large']} useThemeColor className={styles.title}>{t('create_specialization')}</P>
         <Tag text={cvContext.activeSubCategory[0].name} onClick={openModalHandler}/>
       </>
       }
 
-      <P styleType={['w700', 'medium']} className={styles.subTitle}>{t('create_recommended')}</P>
+      <P styleType={['w700', 'medium']} useThemeColor className={styles.subTitle}>{t('create_recommended')}</P>
       
       {tags.length > 0 && 
       <div className={styles.tags}>

@@ -68,8 +68,8 @@ export default function FavoritesPageHirer(props: Props) {
 
   const titleButtons = (
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey', 'icon']} onClick={openAddFolderModal}><PlusSvg/> {t('favorites_add')}</Button>
-      <Button styleType={['grey', 'icon']} onClick={openSettingsModal}><SettingSvg/> {t('favorites_settings')}</Button>
+      <Button styleType={['grey', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openAddFolderModal}><PlusSvg/> {!isTabletWidth&&t('favorites_add')}</Button>
+      <Button styleType={['grey', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openSettingsModal}><SettingSvg/> {!isTabletWidth&&t('favorites_settings')}</Button>
     </div>
   )
 

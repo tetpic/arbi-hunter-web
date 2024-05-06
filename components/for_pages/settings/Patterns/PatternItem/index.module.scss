@@ -3,15 +3,12 @@
 .item {
   padding: 10px 16px;
   border-radius: 10px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: $white;
-  font-weight: $medium;
-  font-size: $mediumText;
   @include transitionDefault;
-  @include hoverButtonSmooth;
+  // @include hoverButtonSmooth;
   cursor: pointer;
 }
 
@@ -23,7 +20,7 @@
 }
 
 .itemRoot {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 10px;
 }
 

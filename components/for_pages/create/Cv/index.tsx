@@ -100,7 +100,7 @@ export default function Cv(props: Props) {
       .then(_=>{
         appContext.showSnackbar(t('create_cv_refreshSuccess'), SnackbarType.success)
         if(!noReplace) {
-          router.push('/profile?page=cvs')      
+          router.push('/cvs')      
         }
       })
       .catch(err=>{        
@@ -112,7 +112,7 @@ export default function Cv(props: Props) {
       .then(res => {
         appContext.showSnackbar(t('create_cv_savedSuccess'), SnackbarType.success)
         if(!noReplace) {
-          router.push('/profile?page=cvs')      
+          router.push('/cvs')      
         }
       })
       .catch(err=>{

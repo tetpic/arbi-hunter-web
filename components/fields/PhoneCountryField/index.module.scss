@@ -50,7 +50,7 @@
 
   &.inputFocused {
     input{
-    color: $white;
+    color: var(--pTextColor);
     font-weight: 500;
     }
   }

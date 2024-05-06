@@ -15,7 +15,7 @@
 }
 
 .button {
-  border: 1px $greyLight solid;
+  border: 1px var(--greyLightToPurpleGrey) solid;
   border-radius: 8px;  
   font-size: $smallText;
   min-width: 24px;

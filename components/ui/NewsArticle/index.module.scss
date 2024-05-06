@@ -27,15 +27,12 @@
 
 .name {
   grid-area: n;
-  font-size: $largeText;
-  font-weight: $semibold;
-  color: $white;
 }
 
 .item {
   padding: 16px;
   border-radius: 16px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   margin-bottom: 16px;
   width: 100%;
 
@@ -57,8 +54,6 @@
 
   .content {
     margin-bottom: 16px;
-    font-size: $mediumText;
-    font-weight: $medium;
     overflow-wrap: break-word;
     @include transitionDefault;
     
@@ -73,15 +68,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
-
-  p {
-    display: flex;
-    column-gap: 8px;
-    align-items: center;
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
-  }
 }
 
 .blockImage {

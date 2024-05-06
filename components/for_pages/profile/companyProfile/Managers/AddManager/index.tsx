@@ -71,7 +71,7 @@ export default function AddManager(props: Props) {
   const page1 = (<>
     {!userContext.currentProfile?.hirerRole &&
     <>
-      <P styleType={['large', 'w600']}>{t('managers_status')}</P>     
+      <P styleType={['large', 'w600']} useThemeColor>{t('managers_status')}</P>     
       <RadioListField 
       name={'hirerRole'} 
       itemLabelClassName={styles.radioItem_label}
@@ -81,7 +81,7 @@ export default function AddManager(props: Props) {
     </>
   }
 
-    <P styleType={['large', 'w600']}>{t('managers_permissions')}</P>     
+    <P styleType={['large', 'w600']}useThemeColor>{t('managers_permissions')}</P>     
     <CheckboxListField 
     name={'permissions'}
     options={Object.values(HirerRolePermission).map(el=>{return {value: el, label: TranslateHirerRolePermission(el, t)}})} 
@@ -89,7 +89,7 @@ export default function AddManager(props: Props) {
   </>)
 
   const page2 = (<>
-    <P styleType={['large', 'w600']}>{t('managers_personalData')}</P>  
+    <P styleType={['large', 'w600']} useThemeColor>{t('managers_personalData')}</P>  
     
     <InputField 
     label={t('lastName')}
@@ -159,7 +159,7 @@ export default function AddManager(props: Props) {
 
   return (<div className={styles.root}> 
     <BackTextButton onClick={page===1?props.onClose:()=>setPage(1)}/>
-    <P styleType={['huge','w600']} className={styles.title}>{managerToEdit? t('managers_editData') : t('managers_addManager')}</P>
+    <P styleType={['huge','w600']} useThemeColor className={styles.title}>{managerToEdit? t('managers_editData') : t('managers_addManager')}</P>
     <FormikProvider value={formik} >
       <Form className={styles.form}>
         {page === 1 && page1}

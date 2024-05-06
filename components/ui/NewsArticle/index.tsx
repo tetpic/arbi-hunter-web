@@ -101,7 +101,7 @@ export default function NewsArticle(props: Props) {
         ||
         props.icon && props.icon
       }
-      <p className={styles.name}>{props.titleName}</p>
+      <P className={styles.name} styleType={['large', 'w600']} useThemeColor>{props.titleName}</P>
       {!props.disableLikes && 
       <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
       }
@@ -115,7 +115,9 @@ export default function NewsArticle(props: Props) {
       }
     </div>
     <div className={styles.body}>
-      <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{article.name}</p>
+
+
+      <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.content, props.isOpen&&styles.content_big)}>{article.name}</P>
       {article.image?.source &&
         <Image 
         unoptimized
@@ -133,7 +135,7 @@ export default function NewsArticle(props: Props) {
       {props.isOpen && article.blocks.map(block=> {
         return (
           <div className={styles.block}>
-          <p className={classNames(styles.content, props.isOpen&&styles.content_big)}>{block.title}</p>
+          <P  styleType={['medium', 'w500']} useThemeColor className={classNames(styles.content, props.isOpen&&styles.content_big)}>{block.title}</P>
           <p className={styles.blockContent} dangerouslySetInnerHTML={{__html:block.body}}></p>
           {block?.image?.source && 
           <Image 
@@ -152,14 +154,14 @@ export default function NewsArticle(props: Props) {
     </div>
       <div className={styles.stats}>
         {!props.disableLikes &&
-          <P styleType={['textCenter', 'w500','medium']}>
-          <FavoritesButton styleType={['icon', 'backTransparent']} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}} isActive={isLiked}/>
+          <P styleType={['textCenter', 'w500','medium', 'alignCenter']} useThemeColor>
+          <FavoritesButton styleType={['icon', 'backTransparent']} altStyleType={['icon', 'whitePurple']} onClick={(e)=> {e.stopPropagation(); likeHandler(article)}} isActive={isLiked}/>
           {likesCounter}
           </P>
           ||
           <Spacer/>
         }
-        <p className={styles.views}><OpenEyeSvg/> {article.totalViews}</p>
+        <P className={styles.views}><OpenEyeSvg/> {article.totalViews}</P>
       </div>
   </div>)
 }

@@ -6,7 +6,6 @@ import Button from 'components/ui/Button'
 import { CompensationType, Currency, EmploymentType, ScheduleType,  SnackbarType,  WorkExperience} from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
-import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import { useRouter } from 'next/router'
 import About from '../utils/Steps/About'
 import Skills from '../utils/Steps/Skills'
@@ -25,6 +24,8 @@ import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
 import VacancyPreview from '../../preview/vacancy'
 import useTranslation from 'next-translate/useTranslation'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import P from '@/components/ui/P'
 
 interface Props {
   id?: number
@@ -418,18 +419,18 @@ export default function Vacancy(props: Props) {
       onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} 
       onBack={()=>setProgress(progress-1)} type='vacancy'
       />
-    }
+    }  
 
     {progress < VCItemsCount &&<>
     {!isTabletWidth && progress < VCItemsCount && memoedRive}
     <div className={styles.content}>    
       <FormikProvider value={formik}>
-        <p className={styles.title}>  
+        <P styleType={['large', 'w600']} useThemeColor className={styles.title}>  
           {isPhoneWidth &&
-            <Button className={styles.buttonBorderGradientSmall} type='button' onClick={()=>setProgress(progress-1)}><ArrowDownSvg className={styles.arrow}/></Button>
+            <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} type='button' onClick={()=>setProgress(progress-1)}><ArrowLeftSvg className={styles.arrow}/></Button>
           }
           {title}
-        </p>
+        </P>
         <ProgressBar progress={progress} pointsCount={VCItemsCount} titles={titles} onClick={nextPageValidator}/>
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}
@@ -439,10 +440,10 @@ export default function Vacancy(props: Props) {
 
           <div className={styles.buttonWrapper}>
             {progress > 1 && !isPhoneWidth &&
-              <Button className={styles.buttonBorderGradient} type='button' title='back' onClick={()=>setProgress(progress-1)}>{t('back')}</Button>
+              <Button styleType={['black']} altStyleType={['white']} type='button' title='back' onClick={()=>setProgress(progress-1)}>{t('back')}</Button>
             }
             {progress < VCItemsCount &&
-              <Button className={styles.buttonGradient} type='button' title='next' onClick={()=>nextPageValidator()}>{t('continue')}</Button>
+              <Button styleType={['gradient']} type='button' title='next' onClick={()=>nextPageValidator()}>{t('continue')}</Button>
             }
             { progress === VCItemsCount &&
               <Button 

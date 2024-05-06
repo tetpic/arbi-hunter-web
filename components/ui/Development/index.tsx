@@ -10,7 +10,7 @@ export default function Development(props: Props) {
 
   return (<div className={styles.root}> 
     <SettingCodeSvg/>
-    <P styleType={['huge', 'w600']}>Страница находится в разработке</P>
+    <P styleType={['huge', 'w600']} useThemeColor>Страница находится в разработке</P>
     <Button href={'/'} styleType={['gradient']}>Вернуться на главную страницу</Button>
 
   </div>)

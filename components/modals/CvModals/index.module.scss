@@ -64,10 +64,9 @@
   color: var(--pTextColor);
   font-size: $mediumText;
   padding: 8px 16px;
-  background-color: var(--borderColor);
+  background-color: var(--backColorAlt);
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonSmooth;
   @include exeptLast {
     margin-top: 8px;
   }

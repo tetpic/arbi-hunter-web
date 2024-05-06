@@ -17,7 +17,7 @@
   flex-direction: column;
   border-radius: 16px;
   row-gap: 8px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   overflow: hidden;
   @include mq($TabletWidth, max) {
     margin-top: 24px;

@@ -17,6 +17,7 @@ export type ButtonStyle =
 'blue'|
 'white'|
 'whitePurple'|
+'whiteTransparent'|
 'borderGradient'|
 'borderWhite'|
 'borderBlue'|
@@ -27,11 +28,11 @@ export type ButtonStyle =
 'icon'|
 'svg24'|
 'svg32'|
-'whiteTransparent'|
 'backTransparent'|
 'phoneWide'|
 'wide'|
-'invertSvg'
+'invertSvg'|
+'circle'
 
 
 interface Props extends IButton {

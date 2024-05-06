@@ -87,7 +87,7 @@ export default function EditableBlock(props: Props) {
               style={{objectFit:'cover', display: 'block'}}
               />
             </div>
-          </div>+
+          </div>
           
         </>)
       })

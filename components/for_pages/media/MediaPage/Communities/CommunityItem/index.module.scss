@@ -11,7 +11,7 @@
   color: $white;
   cursor: pointer;
   @include exeptLast {
-    border-bottom: 2px $grey solid;
+    border-bottom: 2px var(--borderColor) solid;
   }
 
   .userPic {
@@ -24,8 +24,6 @@
 
   .name {
     grid-area: n;
-    font-size: $mediumText;
-    font-weight: $medium;
     cursor: pointer;
     @include lineClamp(2);
   }

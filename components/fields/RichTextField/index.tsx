@@ -22,6 +22,8 @@ import Image from '@tiptap/extension-image'
 import { PreviewImage } from 'data/interfaces/Common'
 import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 interface IBubbleShowProps {
   editor: Editor,
@@ -60,6 +62,8 @@ export default function RichTextField(props: Props) {
   const [field, meta, helpers] = useField(props as any)
   const {value} = field
   const [focus, setFocus] = useState(false)
+  const appContext = useAppContext()
+  const isLightTheme = appContext?.theme === AppTheme.Light
 
   const shouldShowBubble = ({ editor, view, state, oldState, from, to }: IBubbleShowProps) => {
     return editor.isActive('link')
@@ -153,7 +157,7 @@ export default function RichTextField(props: Props) {
     <div className={styles.root}> 
       <div className={classNames(styles.field, className) }>
         <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
-        <div className={classNames(styles.editor, props.editorClassName, !focus&&props.label&&styles.focused)}>
+        <div className={classNames(styles.editor, props.editorClassName, !focus&&props.label&&styles.focused, isLightTheme&&styles.editor_light)}>
           {!focus &&
             <p className={classNames(styles.label, props.labelClassName)}>{props.label}</p>
           }

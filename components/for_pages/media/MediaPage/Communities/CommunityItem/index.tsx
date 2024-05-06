@@ -8,13 +8,14 @@ import ICommunity from 'data/interfaces/ICommunity'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Formatter from 'utils/formatter'
-import { useResize } from 'components/hooks/useResize'
 import CheckSvg from 'components/svg/CheckSvg'
 import PlusSvg from 'components/svg/PlusSvg'
 import { colors } from 'styles/variables'
 import ImageHelper from 'utils/ImageHelper'
-import { Preset } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
 
 interface Props {
   community: ICommunity
@@ -25,7 +26,10 @@ export default function CommunityItem({community}: Props) {
   const {t} = useTranslation()
   const router = useRouter()
   const [load, setLoad] = useState<boolean>(false)
-  const {isTabletWidth} = useResize()
+  const appContext = useAppContext()
+
+  const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   const onClickHandler = async () => {
     setLoad(true)
@@ -39,16 +43,17 @@ export default function CommunityItem({community}: Props) {
 
   return ( <div className={styles.item} onClick={()=>router.push(`/media/community/${community.id}`)}>
     <UserPic  className={styles.userPic} image={community.logo&&ImageHelper.urlFromFile(community.logo, Preset.xsCrop)} size={isTabletWidth?42:80} />
-    <p className={styles.counter}>
-      <UserSvg/>
+    <P className={styles.counter} useThemeColor>
+      <UserSvg color={isLightTheme&&colors.black}/>
       {Formatter.formatNumber(Number(community.membersCount))}
-    </p>
+    </P>
     {!isAdmin && !isTabletWidth &&
       <Button
       disabled={load}
       isProcess={load}
       onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
-      className={styles.button}
+      styleType={['black', 'borderGradient']}
+      altStyleType={['white']}
       >
         {
           isSubscribed?t('community_unsubscribe'):t('community_subscribe')
@@ -57,13 +62,15 @@ export default function CommunityItem({community}: Props) {
       ||
       !isAdmin &&
       <Button 
-      className={isSubscribed?styles.buttonGradient:styles.buttonBorderGradient}
+      styleType={isSubscribed?['gradient', 'icon']:['black', 'borderGradient','icon']}
+      altStyleType={isSubscribed?['gradient','icon']:['white','icon', 'invertSvg']}
+      // className={isSubscribed?styles.buttonGradient:styles.buttonBorderGradient}
       onClick={(e)=>{e.stopPropagation(); onClickHandler()}} 
 
       >
-        {isSubscribed?<CheckSvg color={colors.blue}/>:<PlusSvg/>}
+        {isSubscribed?<CheckSvg color={colors.white}/>:<PlusSvg/>}
       </Button>
     }
-    <p className={styles.name}>{community.name}</p>
+    <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{community.name}</P>
   </div>)
 }

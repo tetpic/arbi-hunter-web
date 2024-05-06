@@ -140,7 +140,7 @@ export default function SideFilterHirer(props: Props) {
             [...creationContext.activeSubCategory.filter(Boolean),
               ...[...creationContext.subCategories.entries()].filter(([k, v])=> !formik.values.categories.includes(k)).map(el=> el[1]).slice(0, 3)
             ].map(el=> {
-              return {value: el.id, label: <P className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
+              return {value: el.id, label: <P useThemeColor className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
             })
           }/>
           {isTabletWidth&&<Spacer basis={4}/>}
@@ -386,6 +386,7 @@ export default function SideFilterHirer(props: Props) {
     </FormikProvider>
     <Button 
     styleType={['grey', 'wide']} 
+    altStyleType={['whitePurple', 'wide']}
     onClick={formik.handleReset}
     className={styles.resetButton}
     >

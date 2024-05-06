@@ -48,6 +48,7 @@ $purpleSmell: #985AFC20;
   --blueBlackToWhitePurple: #{$blueBlack};
   --greyAltToPuspleSmell: #{$greyAlt};
   --greyLightToPurpleGrey: #{$greyLight};
+  --greyLightToBackground: #{$greyLight};
   
 }
 
@@ -59,13 +60,15 @@ $purpleSmell: #985AFC20;
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
   --backColor: #E4DEEB;
-  --backColorAlt: #FEFCFF;
+  --backColorAlt: #{$white};
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$black};
   --greyLightToPurple: #{$purpleSmell};
   --blueBlackToWhitePurple: #{$whitePurple};
   --greyAltToPuspleSmell: #{$purpleSmell};
   --greyLightToPurpleGrey: #{$purpleGrey};
+  --greyLightToBackground: #{$backgroundWhite};
+
 
 
 

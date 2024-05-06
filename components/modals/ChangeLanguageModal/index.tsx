@@ -54,7 +54,7 @@ export default function ChangeLanguageModal(props: Props) {
       ]}
       />
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['black', 'phoneWide']}>{t('cancel')}</Button>
+        <Button styleType={['black', 'phoneWide']} altStyleType={['white', 'phoneWide']}>{t('cancel')}</Button>
         <Button styleType={['gradient', 'phoneWide']}>{t('save')}</Button>
       </div>
     </div>

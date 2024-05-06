@@ -2,6 +2,8 @@
 
 .root {
   background-color: var(--backColorAlt);
+  border: 2px var( --borderPerimeter) solid;
+
   border-radius: 16px;
   padding: 16px;
   display: flex;

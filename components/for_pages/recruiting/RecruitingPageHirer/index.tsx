@@ -171,7 +171,7 @@ function RecruitingPageHirerInner(props: Props) {
             {loading && <Spinner size={24}/>
               ||
               !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy} key={cv.id} onChangeItem={()=> findCvs()}/>
+                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy}  key={cv.id} onChangeItem={()=> findCvs()}/>
               })
               ||
               !loading && <P useThemeColor className='empty'>{t('recruiting_noFoundCvs')}</P>

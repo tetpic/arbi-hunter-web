@@ -34,7 +34,6 @@
 
 
 .title {
-  color: $white;
   font-size: Clamp($largeText, 4vw, $hugeText);
   font-weight: $medium;
   display: flex;
@@ -53,7 +52,6 @@
 .subTitle {
   font-size: $largeText;
   font-weight: $medium;
-  color: $white;
   display: flex;
   column-gap: 8px;
   @include mq($PhoneWidth, max) {

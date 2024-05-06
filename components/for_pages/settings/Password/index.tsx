@@ -102,7 +102,7 @@ export default function ChangePassword(props: Props) {
         />
         <div className={styles.buttonsWrapper}>
           <Button styleType={['gradient', 'phoneWide']} className={styles.saveButton} type='submit'>{t('save')}</Button>
-          <Button  styleType={['black', 'phoneWide']} type='button' onClick={userContext.removeCurrentProfile} className={styles.deleteButton}>{t('login_removeAccount')}</Button>
+          <Button  styleType={['black', 'phoneWide']} altStyleType={['white', 'phoneWide']} type='button' onClick={userContext.removeCurrentProfile} className={styles.deleteButton}>{t('login_removeAccount')}</Button>
         </div>
       </Form>
     </FormikProvider>

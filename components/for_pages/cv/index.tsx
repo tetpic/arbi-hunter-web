@@ -12,7 +12,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/navigation'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, Genders, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, AppTheme, Genders, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -60,6 +60,7 @@ export default function CvPage(props: Props) {
   const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
@@ -161,6 +162,7 @@ export default function CvPage(props: Props) {
       <UserPic size={80} image={getUserImageSource(currentCv?.profile, Preset.iconCrop)}/>
       {currentCv?.isContactsOpen &&
         <P 
+        useThemeColor
         styleType={['large', 'w600']} 
         className={styles.userName} 
         >
@@ -172,7 +174,7 @@ export default function CvPage(props: Props) {
       }
     </div>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&
-    <P styleType={['medium', 'w500', 'alignCenter']}>
+    <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor>
       { [
           currentCv?.gender === Genders.Female&&t('gender_female')||currentCv?.gender === Genders.Male&&t('gender_male'),
           currentCv?.age && `${currentCv?.age} ${Formatter.pluralize(currentCv?.age, t('year1'), t('year2'), t('year3'))}`,
@@ -180,7 +182,7 @@ export default function CvPage(props: Props) {
         ].filter(Boolean).map((el, i, arr)=>{
           return(<>
             <span>{el}</span>
-            {i<arr.length-1 && <DotSvg color={colors.white}/>}
+            {i<arr.length-1 && <DotSvg color={isLightTheme?colors.black:colors.white}/>}
           </>
           )
         })
@@ -215,6 +217,7 @@ export default function CvPage(props: Props) {
       {(currentCv?.proposalsByCurrentUser?.length>0 || currentCv?.applicationsToCurrentUser?.length > 0) &&
         <Button 
         styleType={['borderGradient', 'phoneWide']} 
+        altStyleType={['whitePurple', 'phoneWide']}
         className={styles.chatButton}
         onClick={goToChat}
         >
@@ -524,7 +527,7 @@ export default function CvPage(props: Props) {
           </Button>
         }
         {(currentCv.proposalsByCurrentUser?.length>0 || currentCv.applicationsToCurrentUser?.length > 0) &&
-          <Button styleType={['borderGradient']} onClick={goToChat}>{t('cv_page_chat')}</Button>
+          <Button styleType={['borderGradient']} altStyleType={['whitePurple']} onClick={goToChat}>{t('cv_page_chat')}</Button>
         }
       </div>
 

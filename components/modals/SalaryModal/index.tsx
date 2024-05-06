@@ -50,7 +50,7 @@ export default function SalaryModal(props: Props) {
   )
 
   const body = (<>
-    <P styleType={['w600', 'large']}>{args.title}</P>
+    <P styleType={['w600', 'large']} useThemeColor>{args.title}</P>
     {!formik.values.compensation && <>
     <div className={styles.inputsWrapper}>
       <InputField  

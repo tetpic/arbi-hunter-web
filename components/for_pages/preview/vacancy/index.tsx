@@ -71,23 +71,23 @@ export default function VacancyPreview(props: Props) {
       {(currentVacancy.showContactName||currentVacancy.showEmail||currentVacancy.showPhone||currentVacancy.showTelegramNickname)&&
         <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={()=>props.onBack(7)}>
           {currentVacancy.showContactName &&
-            <P styleType={['medium', 'w500', 'alignCenter']} >
-              <Button styleType={['icon', 'black']} ><UserSvg/></Button> {currentVacancy.contactName}
+            <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor >
+              <Button styleType={['icon', 'black']} altStyleType={['white','icon','invertSvg']} ><UserSvg/></Button> {currentVacancy.contactName}
             </P>
           }
           {currentVacancy.showEmail &&
-            <P styleType={['medium', 'w500', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><MailAltSvg/></Button>  {currentVacancy.email}
+            <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor>
+              <Button styleType={['icon', 'black']} altStyleType={['white','icon','invertSvg']}><MailAltSvg/></Button>  {currentVacancy.email}
             </P>
           }
           {currentVacancy.showPhone &&
-            <P styleType={['medium', 'w500', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><PhoneSvg/> </Button> {Formatter.formatPhone(currentVacancy.phone)}
+            <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor>
+              <Button styleType={['icon', 'black']} altStyleType={['white','icon','invertSvg']}><PhoneSvg/> </Button> {Formatter.formatPhone(currentVacancy.phone)}
             </P>
           }
           {currentVacancy.showTelegramNickname &&
-            <P styleType={['medium', 'w500', 'alignCenter']}>
-              <Button styleType={['icon', 'black']}><TelegramSvg/></Button> {currentVacancy.telegramNickname}
+            <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor>
+              <Button styleType={['icon', 'black']} altStyleType={['white','icon','invertSvg']}><TelegramSvg/></Button> {currentVacancy.telegramNickname}
             </P>
           }
         </PreviewItem>
@@ -137,7 +137,7 @@ export default function VacancyPreview(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
       {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
-        <Button styleType={['black']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
       }
     </div>
 

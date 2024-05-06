@@ -129,6 +129,10 @@
   width: 100%;
 }
 
+.circle {
+  border-radius: 50%;
+}
+
 .phoneWide {
   @include mq($TabletWidth, max) {
     width: 100%;

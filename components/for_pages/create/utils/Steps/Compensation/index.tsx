@@ -4,11 +4,11 @@ import InputField from 'components/fields/InputField'
 import { useField, useFormikContext } from 'formik'
 import { CompensationType, Currency } from 'types/enums'
 import Checkbox from '@/components/fields/CheckboxListField/Checkbox'
-import classNames from 'classnames'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import TagsRadioList from '../../TagsRadioList'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -24,12 +24,12 @@ export default function Compensation(props: Props) {
     <div className={styles.root}>
       {compensation.value !== CompensationType.Contract &&
       <>
-        <p className={styles.title}>{t('create_payments')}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('create_payments')}</P>
         <div className={styles.inputsWrapper}>
           <InputField  
           isNumbersOnly
           maxLength={12} 
-          className={styles.input} 
+          // className={styles.input} 
           styleType={'bottomBorder'} 
 
           color={'default'} 
@@ -45,7 +45,7 @@ export default function Compensation(props: Props) {
           isNumbersOnly
           labelType={'underlined'}
           maxLength={12} 
-          className={styles.input} 
+          // className={styles.input} 
           styleType={'bottomBorder'} 
           color={'default'} 
           name={'salaryMax'} 
@@ -69,11 +69,11 @@ export default function Compensation(props: Props) {
         ]}/>
       }
 
-      <p className={styles.title}>{t('create_method')}</p>
+      <P styleType={['large', 'w600']} useThemeColor  className={styles.title}>{t('create_method')}</P>
 
       <Checkbox<CompensationType>
-      circleClassName={styles.radio}
-      className={classNames(styles.radioItem)}
+      // circleClassName={styles.radio}
+      // className={classNames(styles.radioItem)}
       value={values.compensation} 
       label={t('create_compensatoinContract')}
       isActive={values.compensation === CompensationType.Contract} 

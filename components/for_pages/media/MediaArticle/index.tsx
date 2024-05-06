@@ -7,7 +7,7 @@ import { useMediaContext } from 'context/media_state'
 import { IOptionList } from 'components/ui/OptionsList'
 import BookmarkFilledSvg from 'components/svg/BookmarkFilledSvg'
 import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
-import { CategoryType, SnackbarType } from 'types/enums'
+import { AppTheme, CategoryType, SnackbarType } from 'types/enums'
 import LinkSvg from 'components/svg/LinkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
@@ -16,6 +16,7 @@ import { copyToClipboard, shareData } from 'utils/helpers'
 import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 interface Props {
   article: IArticle
@@ -25,6 +26,7 @@ export default function MediaArticle(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const mediaContext = useMediaContext()
   const router = useRouter()
 
@@ -36,20 +38,20 @@ export default function MediaArticle(props: Props) {
     const arr = [
       {
         title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
-        icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
+        icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg color={isLightTheme?colors.black:''}/>: <BookmarkEmptySvg  color={isLightTheme?colors.black:''}/>,
         onClick: ()=>{
           mediaContext.saveOrRemoveArticle(article)
           .then(_=>appContext.showSnackbar(t('media_article_success'), SnackbarType.success))
         }        
       },
-      {title: t('media_article_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
+      {title: t('media_article_copyLink'),icon: <LinkSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
         appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
-      navigator.share&&{title: t('media_article_share'),icon: <ShareSvg/>, onClick: ()=>{
+      navigator.share&&{title: t('media_article_share'),icon: <ShareSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
         shareData({url: process.env.host + '/media/article/' + article.id})
       }},
-      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg/>})
+      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg color={isLightTheme?colors.black:''}/>})
     ]
     return arr.filter(Boolean)
   }

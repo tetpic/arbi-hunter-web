@@ -3,7 +3,7 @@
 .item {
   margin-bottom: 16px;
   border-radius: 16px;
-  background-color: $black;
+  background-color: vaR(--backColorAlt);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,7 @@
   align-items: flex-start;
   min-width: 300px;
   cursor: pointer;
+  border: 2px var(--borderPerimeter) solid;
 
   .top {
     display: flex;
@@ -27,11 +28,6 @@
     color: $greyLight;
   }
 
-  .name {
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
-  }
   
   .price {
     color: $blue;
@@ -125,8 +121,8 @@
 
 .timeSaved {
   @extend .timeRemains;
-  color: $white;
-  background-color: $grey;
+  color: var(--pTextColor);
+  background-color: var(--greyToPurpleGrey);
   font-size: $mediumText;
   font-weight: $medium;
 }

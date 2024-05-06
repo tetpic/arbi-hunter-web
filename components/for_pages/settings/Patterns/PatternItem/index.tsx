@@ -11,6 +11,10 @@ import { TranslatePatternType } from 'utils/enumsTranslations'
 import RichTextField from 'components/fields/RichTextField'
 import RadioListField from 'components/fields/RadioListField'
 import { usePatternContext } from 'context/pattern_state'
+import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import { colors } from 'styles/variables'
 
 interface Props {
   pattern?: IPattern
@@ -21,8 +25,9 @@ interface Props {
 export default function PatternItem(props: Props) {
 
   const [isActive, setActive] = useState<boolean>(false)
-
   const patternContext = usePatternContext()
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   const submit = (data: IPatternBase) => {
     if(props.new) {
@@ -45,13 +50,15 @@ export default function PatternItem(props: Props) {
     isActive={isActive}
     classNames={{content: styles.itemContent, root: styles.itemRoot}}
     body={
-      <div
+      <P
+      useThemeColor
+      styleType={['medium', 'w500']}
       onClick={()=>setActive(!isActive)}
       className={styles.item}
       >
         {props.new?'Создание нового шаблона':TranslatePatternType(props.pattern?.type)}
-        <ArrowDownSvg className={classNames(styles.arrow, isActive&&styles.arrow_active)}/>
-      </div>
+        <ArrowDownSvg className={classNames(styles.arrow, isActive&&styles.arrow_active)} color={isLightTheme&&colors.black} />
+      </P>
     } 
     >
       <>

@@ -10,7 +10,7 @@ import { usePersonalContext } from 'context/personal_state'
 import FileInput from 'components/fields/FileInput'
 import { useUserContext } from 'context/user_state'
 import EditPencilSvg from 'components/svg/EditPencilSvg'
-import { ModalType, Preset, VacancyLookType } from 'types/enums'
+import { AppTheme, ModalType, Preset, VacancyLookType } from 'types/enums'
 import { IUserImageModalProps } from 'components/modals/UserImageModal'
 import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
@@ -36,6 +36,7 @@ export default function PersonalCard(props: Props) {
   const personalContext = usePersonalContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const [logoImage, setLogoImage] = useState<PreviewImage>()
   const userContext = useUserContext()
   const dropRef = useRef(null!)
@@ -135,15 +136,15 @@ export default function PersonalCard(props: Props) {
     }
     {
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
-      <Button onClick={openUserImageModal} styleType={['icon', 'backTransparent']} className={styles.photoButton}>
-       <EditPencilSvg/>
+      <Button onClick={openUserImageModal} styleType={['icon', 'backTransparent']} altStyleType={['icon', 'white']} className={styles.photoButton}>
+       <EditPencilSvg color={isLightTheme&&colors.black}/>
       </Button>
       ||
       props.isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
       <label>
       <FileInput setImages={(data)=> saveLogo(data)}/>
       <div  className={styles.photoButton}>
-        <EditPencilSvg/>
+        <EditPencilSvg color={isLightTheme&&colors.black}/>
       </div>
     </label>
     }

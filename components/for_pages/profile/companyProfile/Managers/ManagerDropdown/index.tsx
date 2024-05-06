@@ -5,6 +5,9 @@ import { useEffect, useRef } from 'react'
 import styles from './index.module.scss'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import { colors } from 'styles/variables'
 
 interface Props {
   onClose: ()=> void
@@ -14,6 +17,8 @@ interface Props {
 
 export default function ManagerDropdownMenu(props: Props) {
   const {t} = useTranslation()
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const dropDownRef = useRef<HTMLDivElement>()
   const [isActive, setIsActive] = useDetectOutsideClick(dropDownRef, true)
 
@@ -28,7 +33,7 @@ export default function ManagerDropdownMenu(props: Props) {
 
   return ( 
   <div className={styles.dropDown} ref={dropDownRef}>
-    <P onClick={onEditHandler} styleType={['alignCenter', 'w500', 'medium']} className={styles.drpButton}><EditPencilSvg/> {t('managers_editProfile')}</P>
-    <P onClick={props.onRemove} styleType={['alignCenter', 'w500', 'medium']} className={styles.drpButton}><TrashBasketSvg/> {t('managers_removeProfile')}</P>
+    <P onClick={onEditHandler} styleType={['alignCenter', 'w500', 'medium']}  useThemeColor className={styles.drpButton}><EditPencilSvg color={isLightTheme&&colors.black}/> {t('managers_editProfile')}</P>
+    <P onClick={props.onRemove} styleType={['alignCenter', 'w500', 'medium']} useThemeColor className={styles.drpButton}><TrashBasketSvg/> {t('managers_removeProfile')}</P>
   </div>)
 }

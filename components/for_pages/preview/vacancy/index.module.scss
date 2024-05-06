@@ -1,7 +1,6 @@
 @import 'styles/index';
 
 .root {
-  padding-top: 40px;
   width: 100%;
   max-width: 552px;
   padding-bottom: 80px;
@@ -20,7 +19,7 @@
 }
 
 .previewList {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
 }
 

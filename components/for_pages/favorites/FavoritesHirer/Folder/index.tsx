@@ -16,9 +16,10 @@ import OptionsDropDown from '@/components/ui/OptionsDropDown'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { useAppContext } from 'context/state'
 import { AddFavoritesFolderArgs } from '@/components/modals/AddFavoritesFolder'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
 
 interface Props {
   folder: IFolder
@@ -31,6 +32,7 @@ export default function FavoritesHirerFolder(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const [isActive, setIsActive] = useState<boolean>(props.initialActive||false) 
+  const isLightTheme = appContext.theme === AppTheme.Light
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
@@ -66,9 +68,9 @@ export default function FavoritesHirerFolder(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}  onClick={() => setIsActive(!isActive)}>
-      <Button styleType={['backTransparent', 'icon']}><ArrowDownSvg className={classnames(styles.arrow, isActive&&styles.arrow_active)}/></Button>
+      <Button styleType={['backTransparent', 'icon']}><ArrowDownSvg className={classnames(styles.arrow, isActive&&styles.arrow_active)} color={isLightTheme&&colors.black}/></Button>
       <div className={styles.folderDesc}>
-        <P styleType={['w600', 'large']}>{props.folder.name}</P>
+        <P styleType={['w600', 'large']} useThemeColor>{props.folder.name}</P>
       </div>
       <ThreeDotsButton 
       className={styles.threeDots} 
@@ -84,7 +86,7 @@ export default function FavoritesHirerFolder(props: Props) {
     <Spacer basis={16}/>
     <Accordeon isActive={isActive}>
       <div className={styles.stats}>
-        <P>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
+        <P useThemeColor>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
       </div>
       <div className={styles.cvsWrapper}>
         {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {

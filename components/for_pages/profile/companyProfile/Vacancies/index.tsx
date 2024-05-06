@@ -77,8 +77,8 @@ export default function Vacancies(props: Props) {
     onBackClick={router.back} 
     rightButton={isTabletWidth &&
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['icon', 'black']} onClick={()=>router.push('/create/vacancy')}><PlusSvg/></Button>
-        <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{vacancyContext.searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button>
+        <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} onClick={()=>router.push('/create/vacancy')}><PlusSvg/></Button>
+        <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} onClick={()=>onSearch()}><LoupeSvg/>{vacancyContext.searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button>
       </div>
     }
     />

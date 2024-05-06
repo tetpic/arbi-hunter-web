@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import { NavigationSet } from 'types/types'
 import classnames from 'classnames'
 import { useEffect, useState } from 'react'
+import P from '../../P'
 
 interface Props<T extends string|number> {
   onClick: (type: T) => void
@@ -31,14 +32,15 @@ export default function NavigationItem<T extends string|number>(props: Props<T>)
     }
   }, [props.currentPage])
 
-
   return (<div className={styles.item}>
-    <p 
+    <P 
     onClick={onClickHandler} 
+    styleType={['medium', 'w500']}
+    useThemeColor
     className={classnames(styles.navItem, el.type === props.currentPage&&styles.navItem_active)}>
       {el.icon&&<span className={styles.icon}>{el.icon}</span>} {el.name}
       {props.size&& <ArrowRightSvg className={styles.arrow}/>}
-    </p>
+    </P>
     <div className={classnames(styles.subSet, isOpenSubset&&styles.subSet_active)}>
       {el.subSet}
     </div>

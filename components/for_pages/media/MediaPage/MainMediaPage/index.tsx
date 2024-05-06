@@ -9,6 +9,7 @@ import { useEffect} from 'react'
 import SearchBar, { ISearchBarReturnParams } from 'components/ui/SearchBar'
 import { periods } from 'utils/commonObjects'
 import Spacer from 'components/ui/Spacer'
+import P from '@/components/ui/P'
 
 interface Props {
   categories: ICategory[]
@@ -18,14 +19,15 @@ export default function MainMediaPage(props: Props) {
   
   const mediaContext = useMediaContext()
 
+
   const body = (<>
    {mediaContext.stories.size > 0 &&
       <>
-        <p className={styles.title}>Истории</p>
+        <P styleType={['large', 'w600']} useThemeColor  className={styles.title}>Истории</P>
         <Stories stories={[...mediaContext.stories.values()]} />
       </>
     } 
-    <p className={styles.title}><span>Рубрики</span> <span>Все</span></p>
+    <P styleType={['large', 'w600']} useThemeColor className={styles.title}><span>Рубрики</span> <span>Все</span></P>
     <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav articlesCounter/>
   </>)
 

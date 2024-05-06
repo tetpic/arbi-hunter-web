@@ -2,13 +2,14 @@ import { useUserContext } from 'context/user_state'
 import styles from './index.module.scss'
 import Title from '@/components/ui/TitleForSection'
 import shopImage from 'images/shop/shopBucket.png'
+import shopImageWhite from 'images/shop/shopBucketWhite.png'
 import Image from 'next/image'
 import P from '@/components/ui/P'
 import Formatter from 'utils/formatter'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import Button from '@/components/ui/Button'
 import { useAppContext } from 'context/state'
-import { ModalType } from 'types/enums'
+import { AppTheme, ModalType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -19,6 +20,7 @@ export default function ShopBalance(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
 
   const openRefillModal = () => {
     isTabletWidth?
@@ -30,7 +32,7 @@ export default function ShopBalance(props: Props) {
   return (<div className={styles.root}> 
   
   <div className={styles.imageWrapper}>
-    <Image src={shopImage} alt={'balance bucket'}  width={200} height={200}/>
+    <Image src={isLightTheme?shopImageWhite:shopImage} alt={'balance bucket'}  width={200} height={200}/>
   </div>
 
   <Title title={t('shop_profileBalance')} className={styles.title}/>

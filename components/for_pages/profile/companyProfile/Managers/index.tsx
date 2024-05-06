@@ -36,7 +36,9 @@ export default function Managers() {
     managerContext.setManagers(1)  
   }, [])
 
-  return (<div className={styles.root}> 
+
+
+  return (<>{!addManagerModal && <div className={styles.root}> 
     <Title title={'Менеджеры'}/>
 
 
@@ -71,6 +73,10 @@ export default function Managers() {
         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>Добавить менеджера</Button>
       }
     </div>
-    {addManagerModal && <AddManager managerToEdit={managerToEdit} onClose={()=>{showManagerModal(false); setManagerToEdit(null)}}/>}
-  </div>)
+
+  </div>
+  ||
+  <AddManager managerToEdit={managerToEdit} onClose={()=>{showManagerModal(false); setManagerToEdit(null)}}/>
+
+  }</>)
 }

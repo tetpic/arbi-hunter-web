@@ -1,12 +1,12 @@
 @import 'styles/index';
 
 .root {
-  width: Clamp(224px, 49%, 566px);
-  height: Clamp(208px, 35vw, 527px);
+  width: Clamp(224px, 35vw, 546px);
+  height: Clamp(208px, 35vw, 546px);
   display: flex;
   align-items: center;
   justify-content: center;
- 
+  background-color: var(--backColor);
   border-radius: 24px;
   overflow: hidden;
   flex-shrink: 0;

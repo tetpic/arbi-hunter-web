@@ -112,12 +112,14 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
           <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
         }
         {props.type === 'drafts' && vacancy.updatedAt &&
-          <p className={styles.timeSaved}>Сохранен {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</p>
+          <P className={styles.timeSaved}>Сохранен {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</P>
         }
         {props.type === 'archive' && vacancy.updatedAt &&
           <p className={styles.timeSaved}>В архиве {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</p>
         }
-        <p className={styles.name}>{vacancy.name}</p>
+
+
+        <P styleType={['large', 'w600']} useThemeColor>{vacancy.name}</P>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }
@@ -181,7 +183,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
             onClick={(e)=>{
               router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [vacancy.categories[0].id]}), vcId: vacancy.id}})
             }} 
-            styleType={['black']}  className={styles.button}>Подходящие резюме</Button>
+            styleType={['black']} altStyleType={['white']}  >Подходящие резюме</Button>
             </>
           }
           {props.type === 'archive' && vacancy.moderationStatus === ModerationStatusType.Approved &&
@@ -192,7 +194,9 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
             onClick={(e)=>{
               router.push(`/responses/${vacancy.id}/`)
             }} 
-            styleType={['black']}>
+            styleType={['black']}
+            altStyleType={['whitePurple']}
+            >
               Смотреть отклики
             </Button>
             </>

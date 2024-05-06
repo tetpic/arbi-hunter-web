@@ -136,7 +136,7 @@ export default function HirerFieldsModal(props: Props) {
       <FormikProvider value={formik}>
         <Form>
           <div className={styles.root}>        
-            <P styleType={['w600', 'large']}>{args.title}</P>
+            <P styleType={['w600', 'large']} useThemeColor>{args.title}</P>
             {item}
             <Button type='submit' styleType={['gradient','wide']}>{t('apply')}</Button>
           </div>

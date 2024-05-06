@@ -25,8 +25,13 @@ export function PatternWrapper(props: Props) {
   const [patternsNotExist, setPatternsNotExistState] = useState<Set<ProposalRequestType>>(new Set())
 
   const setPatterns = () => {
-    setPatternsNotExistState(new Set)
-    Object.values(ProposalRequestType).forEach(el=> {
+    setPatternsNotExistState(new Set);
+    [
+      ProposalRequestType.InfoRequest, 
+      ProposalRequestType.Interview, 
+      ProposalRequestType.Rejection, 
+      ProposalRequestType.Consider
+    ].forEach(el=> {
       PatternRepository.getPatternByType(el)
       .then(res=>{   
         

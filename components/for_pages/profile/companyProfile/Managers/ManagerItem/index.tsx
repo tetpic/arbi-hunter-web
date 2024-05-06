@@ -55,8 +55,8 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
     <div className={styles.item}>
       <div className={styles.top}>
         <UserPic size={42} className={styles.userPic}/>
-        <p className={styles.name}>{manager.firstName} {manager.lastName}</p>
-        <p className={styles.role}>{TranslateHirerRole(manager.hirerRole, t)}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{manager.firstName} {manager.lastName}</P>
+        <P styleType={['medium', 'w500', 'greyLight']} className={styles.role}>{TranslateHirerRole(manager.hirerRole, t)}</P>
         {canIEdit &&
           <ThreeDotsButton onClick={()=>setDropDown(state=> state&&false||!state&&true)} className={styles.edit}/>
         }
@@ -73,7 +73,7 @@ export default function Manager({manager, onEdit, onRemove}: ManagerProps) {
       <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_watched')} <span className={styles.count}>{manager.viewsOfVacanciesCount}</span></P>
       <P styleType={['medium', 'w500', 'greyLight']}>{t('managers_answered')} <span className={styles.count}>{manager.applicationsToVacanciesCount}</span></P>
       {canIEdit &&
-        <Button isProcess={loading}  className={styles.setAdmin} onClick={setAdminHandler}>
+        <Button isProcess={loading} className={styles.setAdmin}  styleType={['borderGradient', 'black']} altStyleType={['whitePurple']}  onClick={setAdminHandler}>
         {
           manager.hirerRole===HirerRole.Manager&&t('managers_setAdmin')
         ||

@@ -10,6 +10,7 @@ import { useSourcesContext } from 'context/sources_state'
 import { useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import { TranslateWorkExperience } from 'utils/enumsTranslations'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -53,7 +54,7 @@ export default function VacancyExperience(props: Props) {
 
   return ( <div className={styles.root}>
 
-    <p className={styles.title}>{t('create_workExperience')}</p>
+    <P className={styles.title} styleType={['medium','w500']} useThemeColor>{t('create_workExperience')}</P>
     <RadioListField 
     name={'experience'}
     wrapperClassName={styles.radioWrapper}

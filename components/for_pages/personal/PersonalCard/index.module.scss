@@ -85,9 +85,9 @@
     position: absolute;
     bottom: 0px;
     right: 0px;
-    background-color: $grey;
+    background-color: var(--secondaryColor);
     border-radius: 50%;
-    border: 4px $black solid;
+    border: 4px var(--borderColor) solid;
     padding: 6px;
     cursor: pointer;
     svg {

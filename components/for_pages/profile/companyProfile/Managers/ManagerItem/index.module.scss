@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .item {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -21,9 +21,6 @@
 
   .name {
     grid-area: n;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
   }
 
   .userPic {
@@ -32,10 +29,6 @@
 
   .role {
     grid-area: r;
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $greyLight;
-
   }
 
   .edit {
@@ -50,10 +43,9 @@
 
   .setAdmin {
     align-self: flex-start;
-    @include buttonBorderGradient;
   }
 }
 
 .count {
-  color: $white;
+  color: var(--pTextColor);
 }

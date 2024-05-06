@@ -71,7 +71,7 @@ export default function PhoneOrEmail() {
         name={'email'} 
         validate={Validator.combine([Validator.required, Validator.email])}
         />
-      <Button className={styles.submitButton} type='button' onClick={()=>formik.submitForm()}><span>{t('next')}</span></Button>
+      <Button  styleType={['black', 'borderGradient']} altStyleType={['gradient']} type='button' onClick={()=>formik.submitForm()}><span>{t('next')}</span></Button>
     </Form>
   </FormikProvider>)
 }

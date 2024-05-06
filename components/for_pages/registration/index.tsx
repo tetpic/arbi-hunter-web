@@ -26,6 +26,7 @@ import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import { AlertModalArgs } from '@/components/modals/AlertModal'
+import P from '@/components/ui/P'
 
 interface Props {
   token?: string
@@ -199,9 +200,9 @@ export default function Registration(props: Props) {
   )
 
   const stage2 = (<>
-    <p className={styles.uneditable}>
+    <P className={styles.uneditable}>
       {`E-mail: ${formik.values.email}`}
-    </p>
+    </P>
     <PhoneCountryField 
     styleType={'horizontal'} 
     disabled={false} 
@@ -336,15 +337,15 @@ export default function Registration(props: Props) {
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
-        <p className={styles.title}>
+        <P useThemeColor className={styles.title}>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
           {t('registration')} 
           {!isTabletWidth&&<Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/>}
-        </p>
-        <p className={styles.subTitle}>
+        </P>
+        <P useThemeColor className={styles.subTitle}>
           {t('registration_haveAccount')}
           <Link className={styles.loginLink} href={'/login'}>{t('login')}</Link>
-        </p>
+        </P>
         {progress > 1 &&
         <ProgressBar fullWidth progress={progress} pointsCount={stepsCount}/>
         }

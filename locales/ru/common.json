@@ -195,7 +195,7 @@
   "create_tags": "Тэги",
   "create_busyness": "Занятость",
   "create_compensatoinContract": "Договорная",
-  "create_infoAboutAgeWarn":"Помните, что нельзя ограничивать кандидатов по<0>полу, возрасту и<0>другим неделовым качествам<0><1> это запрещено законом",
+  "create_infoAboutAgeWarn":"Помните, что нельзя ограничивать кандидатов по полу, возрасту и другим неделовым качествам -  это запрещено законом",
   "create_workPlace":"Место работы",
   "create_payments":"Оплата",
   "create_oneOfFieldsMustBeFilled":"Одно из полей должно быть заполнено",

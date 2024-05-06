@@ -168,12 +168,14 @@ export default function Header(props: Props) {
               <Button 
               href={'/notifications'}
               styleType={['icon', 'black']} 
+              altStyleType={['icon', 'white']}
               className={styles.iconButton} 
               >
                 <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>
               <Button 
               styleType={['icon', 'black', 'svg24']} 
+              altStyleType={['icon', 'white', 'invertSvg']}
               className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} 
               href={'/favorites'}
               >

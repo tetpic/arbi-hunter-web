@@ -47,7 +47,7 @@ export default function AddFavoritesFolder(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <P styleType={['w600', 'huge']}>{t('favorites_createFolderTitle')}</P>
+      <P styleType={['w600', 'huge']} useThemeColor>{t('favorites_createFolderTitle')}</P>
       <FormikProvider value={formik}>
         <Form>
           <InputField 
@@ -60,7 +60,7 @@ export default function AddFavoritesFolder(props: Props) {
           />
           {(!args?.initialData || !args.initialData.default) &&
             <div className={styles.makeDeafult}>
-              <P styleType={['small', 'w500']}>{t('favorites_makeFolderDefault')}</P>
+              <P styleType={['small', 'w500']} useThemeColor>{t('favorites_makeFolderDefault')}</P>
               <SwitchField name={'default'}/>
             </div>
           }
@@ -69,6 +69,7 @@ export default function AddFavoritesFolder(props: Props) {
           <Button 
           type='button' 
           styleType={['grey', 'wide']} 
+          altStyleType={['white', 'wide']}
           onClick={props.onClose}
           >
             {t('close')}

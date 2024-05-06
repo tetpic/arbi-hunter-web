@@ -5,7 +5,8 @@
   display: flex;
   align-items: center;
   padding: 16px;
-  background-color: var(--backColor);
+  background-color: var(--backColorAlt);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 16px;
   margin-top: 24px;
   cursor: pointer;

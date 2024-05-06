@@ -7,4 +7,8 @@
   @include buttonGray;
   height: 40px;
   align-self: flex-start;
+
+  &_light {
+    @include buttonGradient;
+  }
 }

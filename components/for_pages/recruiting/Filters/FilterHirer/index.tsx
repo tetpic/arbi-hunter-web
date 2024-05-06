@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import {  CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
+import {  AppTheme, CompensationType,  Currency,  EducationTypes,  EmploymentType, ModalType, ScheduleType, VacancyLookType, WorkExperience } from 'types/enums'
 import { useEffect, useState } from 'react'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
@@ -30,6 +30,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerFieldsModal'
 import { SalaryModalArgs } from '@/components/modals/SalaryModal'
+import { colors } from 'styles/variables'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -41,6 +42,7 @@ export default function FilterHirer(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const creationContext = useCreateVcCvContext()
   const sourcesContext = useSourcesContext()
   const locationContext = useLocationContext()
@@ -262,12 +264,12 @@ export default function FilterHirer(props: Props) {
             isTabletWidth&&openSpecializationModal()
           }}
           >
-            <span>{t('filters_specs')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_specs')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
           {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && !isTabletWidth &&
-            <P styleType={['medium', 'w500']}>
+            <P styleType={['medium', 'w500']} useThemeColor>
               {t('filters_any')}
             </P>
           }
@@ -301,7 +303,7 @@ export default function FilterHirer(props: Props) {
           className={styles.fieldTitle} 
           onClick={()=>openCompensationModal(t('filters_salary'))}
           >
-            <span>{t('filters_salary')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_salary')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black} />}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
@@ -373,7 +375,7 @@ export default function FilterHirer(props: Props) {
           className={styles.fieldTitle} 
           onClick={()=> openFieldsModal('forLastNumberOfDays',t('filters_showPeriod'), 306)}
           >
-            <span>{t('filters_showPeriod')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_showPeriod')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <RadioListField 
@@ -402,7 +404,7 @@ export default function FilterHirer(props: Props) {
           className={styles.fieldTitle} 
           onClick={()=> openFieldsModal('vacancyLookType', t('filters_vacancyLookType'), 300)}
           >
-            <span>{t('filters_vacancyLookType')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_vacancyLookType')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <CheckboxListField 
@@ -435,7 +437,7 @@ export default function FilterHirer(props: Props) {
             setActiveAccordeon(activeAccordeon === 5 ? null : 5)
           }}
           >
-            <span>{t('filters_country')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_country')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
@@ -448,7 +450,7 @@ export default function FilterHirer(props: Props) {
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={openCountryModal}
             >
-             <span>{t('filters_addCountry')}</span>  {isTabletWidth &&<ArrowDownSvg/>}
+             <span>{t('filters_addCountry')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
             </P>
           </div>
           ||
@@ -465,7 +467,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>
-            <span>{t('filters_verticals')}</span>  {isTabletWidth &&<ArrowDownSvg/>}
+            <span>{t('filters_verticals')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
@@ -479,7 +481,7 @@ export default function FilterHirer(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
-                <span>{t('filters_addVerticals')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+                <span>{t('filters_addVerticals')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
               </P>
           </div>
           ||
@@ -498,7 +500,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'sources'})}>
-            <span>{t('filters_sources')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_sources')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
@@ -512,7 +514,7 @@ export default function FilterHirer(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'sources'})}
               >
-                <span>{t('filters_addSources')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+                <span>{t('filters_addSources')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
               </P>
           </div>
           ||
@@ -533,7 +535,7 @@ export default function FilterHirer(props: Props) {
           className={styles.fieldTitle} 
           onClick={()=>isTabletWidth&&openSourcesModal({type: 'geos'})}
           >
-            <span>{t('filters_geos')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_geos')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <div className={styles.itemContent}>
@@ -546,7 +548,7 @@ export default function FilterHirer(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'geos'})}            
               >
-                <span>{t('filters_addGeos')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+                <span>{t('filters_addGeos')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
               </P>
             </div>
             ||
@@ -564,7 +566,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> openFieldsModal('employment', t('filters_employmentType'), 300)}>
-            <span>{t('filters_employmentType')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_employmentType')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <CheckboxListField 
@@ -589,7 +591,7 @@ export default function FilterHirer(props: Props) {
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> openFieldsModal('schedule', t('filters_schedule'), 300)
           }>
-            <span>{t('filters_schedule')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_schedule')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <CheckboxListField 
@@ -616,7 +618,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> openFieldsModal('experience', t('filters_experience'), 340)}>
-            <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <CheckboxListField 
@@ -643,7 +645,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> openFieldsModal('education', t('filters_education'), 542)}>
-            <span>{t('filters_education')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_education')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
             <CheckboxListField 
@@ -671,7 +673,7 @@ export default function FilterHirer(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>openLangsModal()}>
-            <span>{t('filters_languageKnowledgedges')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+            <span>{t('filters_languageKnowledgedges')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
@@ -689,7 +691,7 @@ export default function FilterHirer(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openLangsModal()}            
               >
-                <span>{t('filters_addLanguage')}</span>  {isTabletWidth &&<ArrowDownSvg />}
+                <span>{t('filters_addLanguage')}</span>  {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
               </P>
           </div>
           ||
@@ -714,6 +716,7 @@ export default function FilterHirer(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey']} 
+      altStyleType={['white']}
       onClick={resetAll}
       className={styles.resetButton}
       >

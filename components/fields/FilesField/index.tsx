@@ -8,6 +8,8 @@ import { IFile, PreviewImage } from 'data/interfaces/Common'
 import classNames from 'classnames'
 import FilesList from '@/components/ui/FilesList'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 interface Props extends IField<any>{
   buttonName?: string|JSX.Element|JSX.Element[]
@@ -33,6 +35,8 @@ export default function FilesField(props: Props) {
   const {t} = useTranslation()
   const [field, meta, helpers] = useField(props as any)
   const [controller, setController] = useState<AbortController|null>(null)
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const initialImages: PreviewImage[] = props.initialImages?props.initialImages.map(el=> ({
     data: el,
     loaded: true,
@@ -60,7 +64,7 @@ export default function FilesField(props: Props) {
   return ( <div className={classNames(styles.imagesField, props.className)}>
     <label>
       {!props.button &&
-      <div className={classNames(styles.imageButton, props.buttonClassName)}>{props.buttonName||t('fields_addImage')}</div>
+      <div className={classNames(isLightTheme?styles.imageButton_light:styles.imageButton, props.buttonClassName)}>{props.buttonName||t('fields_addImage')}</div>
       ||
       props.button
       }

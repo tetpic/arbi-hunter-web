@@ -74,6 +74,9 @@ export const TranslatePatternType = (p: ProposalRequestType) => {
       return 'Собеседование'
     case ProposalRequestType.Rejection:
       return 'Отказ'
+    case ProposalRequestType.Consider:
+      return 'Рассмотрение'
+
   }
 }
 

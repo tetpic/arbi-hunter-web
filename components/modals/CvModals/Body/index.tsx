@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import Button from 'components/ui/Button'
 import { ChangeEvent} from 'react'
@@ -9,6 +8,7 @@ import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
@@ -44,9 +44,9 @@ export default function Body(props: Props) {
 
   return (<>
   {props.title &&
-    <P useThemeColor styleType={['large', 'w600']} className={styles.title}>
-      {isPhoneWidth && 
-        <Button className={styles.buttonSmall} onClick={()=>props.onClose()}><ArrowDownSvg className={styles.arrow}/></Button>
+    <P useThemeColor styleType={['large', 'w600', 'alignCenter']} className={styles.title}>
+      {!isPhoneWidth && 
+        <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} onClick={()=>props.onClose()}><ArrowLeftSvg className={styles.arrow}/></Button>
       }
       {props.title}
     </P>

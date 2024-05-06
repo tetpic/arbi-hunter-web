@@ -10,6 +10,7 @@ import PhoneOrEmail from './PhoneOrEmail'
 import PasswordConfirm from './PasswordConfirm'
 import { SnackbarType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -46,10 +47,10 @@ export default function Password(props: Props) {
       <UserRegImage type={userContext.profileType} className={styles.regImage}/>
     }
     <div className={styles.content}>
-      <p className={styles.title}>
+      <P useThemeColor className={styles.title}>
       {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
       {t('login_restoringPassword')}
-      </p>
+      </P>
       {step === 1 &&
       <PhoneOrEmail/>
       }

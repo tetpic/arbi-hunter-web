@@ -133,7 +133,9 @@
 
   &_light {
     &:before {
-      display: none;
+      @include mq($TabletWidth, max) {
+        display: none;
+      }
     }
   }
 

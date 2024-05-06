@@ -255,10 +255,10 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutHTML = <div className={styles.layoutHTML}>
-    <P  styleType={['large', 'w500']}>{t('constructor_addHTML')}</P>
+    <P  styleType={['large', 'w500']} useThemeColor>{t('constructor_addHTML')}</P>
     <TextAreaField autoSize name='text' onChange={(e)=>formik.setFieldValue('text', e.target.value)}/>
     {formik.values.text &&<>
-      <P styleType={['large', 'w500']}>{t('constructor_preview')}</P>
+      <P styleType={['large', 'w500']} useThemeColor>{t('constructor_preview')}</P>
       <HtmlText text={formik.values.text}/>
     </>}
   </div>
@@ -297,7 +297,7 @@ export default function AddPersonalBlockModal(props: Props) {
   </>
 
   const layoutColumns = <div className={styles.layoutColumns}>
-    <P styleType={['large', 'w500']}>{t('constructor_chooseColunmsCount')}</P>
+    <P styleType={['large', 'w500']} useThemeColor>{t('constructor_chooseColunmsCount')}</P>
     <div className={styles.buttonsWrapper}>
       {columnsLayoutArray.map((el, index) => {
         const isActive = JSON.stringify(layout) === el
@@ -314,14 +314,14 @@ export default function AddPersonalBlockModal(props: Props) {
       <div className={classNames(styles.gridContainer, styles.gridContainerColumns)} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
         {layout[0].map((el, i) => {
           return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`, backgroundColor: formik.values.color[i]}}>
-            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Цвет колонки</P>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Цвет колонки</P>
             <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange}/>
-            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Заголовок</P>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Заголовок</P>
             <RichTextField
             hideButtons={{helpers: true}}
             name={`titles[${i}]`}
             />
-
+            <div className={styles.columnImageWrapper}>
             {(!images.get(i+1)) &&
               <FilesField 
               name={`assetsList[${i}]`}
@@ -332,9 +332,13 @@ export default function AddPersonalBlockModal(props: Props) {
               })}
               />
               ||
-              <Image src={ImageHelper.urlFromFile(images.get(i+1), )} alt={''} width={600} height={600} className={styles.columnImage}/>
+              <>
+                <Image src={ImageHelper.urlFromFile(images.get(i+1), )} alt={''} width={600} height={600} className={styles.columnImage}/>
+                <Button type='button' styleType={['black', 'icon', 'circle']} altStyleType={['white', 'icon','circle', 'invertSvg']} className={styles.removeButton} onClick={()=>removeAsset(i+1)}><CrossSvg/></Button>
+              </>
             }
-            <P styleType={['w500', 'medium']} className={styles.columnTitle}>Текст</P>
+            </div>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Текст</P>
             <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
           </div>
         })}
@@ -343,7 +347,7 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutSocial = <div className={styles.layoutSocial}>
-    <P styleType={['large', 'w500']}>{t('constructor_setSocialLinks')}</P>
+    <P styleType={['large', 'w500']} useThemeColor>{t('constructor_setSocialLinks')}</P>
     {Object.values(SocialSites).map((el, ind) => {
       return <InputField styleType={'default'} color={'default'} name={`texts[${ind}].${el}`} label={el} labelType='top'/>
     })}

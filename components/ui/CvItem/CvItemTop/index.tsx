@@ -16,11 +16,11 @@ export default function CvItemTop(props: Props) {
 
   return ( 
     <div className={styles.top}>
-      {!props.cv.profile?.useOwnLogo &&
+      {(!props.cv.profile?.useOwnLogo||isTabletWidth) &&
         <UserPic className={styles.userPic} image={props.userImage} size={46}/>
       }
       {props.cv.categories.length > 0 &&
-        <P styleType={['large', 'w600']} className={styles.name}>{props.cv.categories[0].name}</P>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{props.cv.categories[0].name}</P>
       }
       {props.cv.profile.activityStatus === ActivityStatus.Online &&
         <P styleType={['medium', 'w500', 'green']} className={styles.sub}>Сейчас онлайн</P>

@@ -10,6 +10,8 @@ import { useEffect } from 'react'
 import LoupeSvg from '@/components/svg/LoupeSvg'
 import Button from '@/components/ui/Button'
 import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
+import { colors } from 'styles/variables'
 
 export interface ICountryModalProps {
   onSubmit: (country: IGeoName[]) => void
@@ -30,6 +32,7 @@ export default  function CountryModal (props: Props) {
 
 function CountryModalInner(props: Props) {
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const args: ICountryModalProps = appContext.modalArguments
   const locationContext = useLocationContext()
   
@@ -52,14 +55,14 @@ function CountryModalInner(props: Props) {
   }, [formik.values.search])
 
   const body = (<div className={styles.root}>
-    <InputField styleType={'default'} color={'white'} name={'search'} prefix={<LoupeSvg/>} placeholder='Поиск'/>
+    <InputField styleType={'default'} color={'white'} name={'search'} prefix={<LoupeSvg color={isLightTheme?colors.black:''}/>} placeholder='Поиск'/>
     {locationContext.countries.size > 0 &&
       <CheckboxListField  name={'country'} options={
         [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el.locName, value: el}))
       }/>
     }
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey']} type='button' onClick={props.onClose}>Отменить</Button>
+      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>Отменить</Button>
       <Button styleType={['gradient']} type='submit'>Выбрать</Button>
     </div>
   </div>)

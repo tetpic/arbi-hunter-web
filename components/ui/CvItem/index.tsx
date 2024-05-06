@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, SnackbarType} from 'types/enums'
+import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, SnackbarType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -50,6 +50,7 @@ export default function CvItem({cv, ...props}: Props) {
   const [isOpenContacts, setIsOpenContacts] = useState<boolean>(cv.isContactsOpen)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
 
 
   const respondHandler = (e: React.MouseEvent) => {
@@ -144,21 +145,21 @@ export default function CvItem({cv, ...props}: Props) {
     }
   }
 
-  return (<Link className={styles.item} href={'cv/'+cv.id}> 
+  return (<Link className={classNames(styles.item, isLightTheme && styles.item_light)} href={'cv/'+cv.id}> 
     <FavoritesButton className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
-    {userImage &&
+    {userImage && !isTabletWidth &&
       <Image 
       unoptimized
       className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
       src={userImage} 
       alt={'def image'} width={320} height={320} 
       />
-      ||
-      <Image 
-      className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
-      src={defaultImage} 
-      alt={'def image'} width={320} height={320} 
-      />
+      // ||
+      // <Image 
+      // className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
+      // src={defaultImage} 
+      // alt={'def image'} width={320} height={320} 
+      // />
     }
 
     <div className={styles.content}>
@@ -171,16 +172,16 @@ export default function CvItem({cv, ...props}: Props) {
       }
 
       {isOpenContacts &&
-        <P styleType={['w500', 'medium']}>{getUserName(cv.profile)}</P>
+        <P styleType={['w500', 'medium']} useThemeColor>{getUserName(cv.profile)}</P>
       }
 
       {cv.isRemote &&
-        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>
+        <P styleType={['medium', 'w500', 'greyLight']} useThemeColor className={styles.sub}>
           {t('cv_item_remote')}
         </P>
       }
 
-      <P styleType={['alignCenter', 'w500', 'medium']} className={styles.info}>
+      <P styleType={['alignCenter', 'w500', 'medium']} useThemeColor className={styles.info}>
         {[getSalary({cv}), getAge(cv.age), cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
           return (
             <>{el} {index < arr.length - 1 && <DotSvg/>}</>
@@ -193,7 +194,7 @@ export default function CvItem({cv, ...props}: Props) {
           <P styleType={['small', 'greyLight']}>
             {t('cv_item_experience')} 
           </P>
-          <P styleType={['medium', 'w500']}>
+          <P styleType={['medium', 'w500']} useThemeColor>
             {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
           </P>
         </div>
@@ -222,10 +223,10 @@ export default function CvItem({cv, ...props}: Props) {
         <Button styleType={['gradient', 'phoneWide']}  onClick={openChat}>{t('cv_item_chat')}</Button>
       }
       {isOpenContacts && 
-        <Button styleType={['borderBlue', 'black', 'wide']}>{t('cv_item_contacts')}</Button>
+        <Button styleType={['borderBlue', 'black', 'wide']} altStyleType={['borderBlue', 'white' ,'wide']} ><P altStyleType={['blue']}>{t('cv_item_contacts')}</P></Button>
       }
       {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
-        <Button styleType={['icon', 'black']}><FolderPlusSvg/></Button>
+        <Button styleType={['icon', 'black']} altStyleType={['borderBlue', 'white', 'icon' ]}><FolderPlusSvg/></Button>
       }
     </div>
   </Link>)
