@@ -29,6 +29,7 @@
     @include mq($TabletWidth, max) {
       background-color: unset;
       padding: 0px;
+      padding-inline: 16px;
       &_edit {
         padding: 16px;
         background-color: $black;        

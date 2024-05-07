@@ -32,17 +32,16 @@
 }
 
 .choosePattern {
-  color: $white;
-  background-color: $grey;
+  color: var(--pTextColor);
+  background-color: var(--secondaryColor);
   border-radius: 20px;
   padding: 8px 10px 6px;
-  font-size: $smallText;
+  font-size: $mediumText;
   font-weight: $medium;
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonSmooth;
 
   &_active {
-    background-color: $blue;
+    background-color: var(--greyLightToPurpleGrey);
   }
 }

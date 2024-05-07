@@ -51,7 +51,7 @@
 }
 
 .invite {
-  background-color: vaR( --blueBlackToWhitePurple);
+  background-color: var( --blueBlackToWhitePurple);
   display: grid;
   grid-template-areas: 't i' 'v i';
   grid-template-columns: 1fr auto;
@@ -85,16 +85,26 @@
   font-size: $smallText;
   font-weight: $regular;
   position: relative;
+
+  --vacancyheight: 0px;
+  --cvheight: 0px;
+
+  &_withCv {
+    // height: calc(100vh - 230px);
+    // height: calc(100dvh - 230px);
+    --cvheight: 33px;
+  }
+
+  &_withVacancy {
+    --vacancyheight: 48px;
+  }
   @include mq($TabletWidth, max) {
-    height: calc(100vh - 195px);
-    height: calc(100dvh - 195px);
+    height: calc(100vh - calc(149px + var(--vacancyheight) + var(--cvheight)));
+    height: calc(100dvh - calc(149px + var(--vacancyheight) + var(--cvheight)));
     padding: unset;
   }
 
-  &_withCv {
-    height: calc(100vh - 228px);
-    height: calc(100dvh - 228px);
-  }
+
 
   >div {
     height: 100%;

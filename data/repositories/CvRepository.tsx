@@ -26,6 +26,20 @@ export default class CvRepository {
     }
     return res
   }
+  
+  static async getBlackListedByCurrentProfile(): Promise<IPagination<ICV>|null> {
+    const res = await request({
+      method: 'get',
+      url: '/api/cv',
+      data: {
+        blackListedByCurrentProfile: true
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 
   static async getById(data: number, profile?: ProfileType, token?: string): Promise<ICV|null> {
     const res = await request({
@@ -137,6 +151,28 @@ export default class CvRepository {
     const res = await request({
       method: 'get',
       url: `/api/cv/${id}/openContacts`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async addToBlackList(cvId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${cvId}/blackList`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async removeFromBlackList(cvId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${cvId}/removeFromBlackList`,
     })
     if(res.err) {
       return null

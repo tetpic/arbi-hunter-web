@@ -7,9 +7,11 @@ import Button from '@/components/ui/Button'
 import { IUserProfile } from 'data/interfaces/IUser'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import { ICV } from 'data/interfaces/ICV'
 
 interface Props {
   vacancy?: IVacancy
+  cv?: ICV
   profile?: IUserProfile
   onRestore?: () => void
 }
@@ -22,13 +24,13 @@ export default function BlackListedItem(props: Props) {
       <UserPic size={42} image={props.profile?.logo?.source&&ImageHelper.urlFromFile(props.profile.logo, Preset.smallIconCrop)}/>
       <div className={styles.topInfo}>
         <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.company||getUserName(props.profile)}</P>
-        <P useThemeColor styleType={['medium', 'w500', 'greyLight']}>{props.vacancy?.city?.locName||props.profile?.city?.locName}</P>
+        <P useThemeColor styleType={['medium', 'w500', 'greyLight']}>{props.vacancy?.city?.locName||props.cv.city.locName||props.profile?.city?.locName}</P>
       </div>
    </div>
-   {props.vacancy &&
+   {(props.vacancy || props.cv) &&
    <>
-    <P useThemeColor styleType={['large', 'w600']}>{props.vacancy.name}</P>
-    <P useThemeColor>{getSalary({vacancy: props.vacancy})}</P>
+    <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.name||props.cv.categories[0]?.name}</P>
+    <P useThemeColor>{getSalary({vacancy: props.vacancy, cv: props.cv})}</P>
    </>
    }
    <Button className={styles.button} onClick={()=>props.onRestore?.()} styleType={['gradient']}>Восстановить</Button>

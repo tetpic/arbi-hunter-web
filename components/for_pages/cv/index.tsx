@@ -135,6 +135,15 @@ export default function CvPage(props: Props) {
     router.push(`/personal/${currentCv?.profileId}`)
   }
 
+  const addCvToBlackList = () => {
+    CvRepository.addToBlackList(currentCv.id)
+    .then(_ => {
+      appContext.showSnackbar('Резюме добавлено в черный список', SnackbarType.success)
+      cvContext.getCv(Number(props.cvId))
+      router.back()
+    })
+  }
+
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     .then(res=> {
@@ -199,7 +208,6 @@ export default function CvPage(props: Props) {
         <Button 
         className={styles.topButton}
         styleType={['gradient','wide']} 
-        
         title={'openProfileTop'} 
         onClick={openContacts}
         >
@@ -235,7 +243,7 @@ export default function CvPage(props: Props) {
           onClick={saveCvToFavorites} 
           isActive={currentCv?.isSavedByCurrentProfile}
           />
-          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}>
+          <Button styleType={['icon', 'black']} onClick={addCvToBlackList} altStyleType={['icon', 'whitePurple', 'invertSvg']}>
             <CloseEyeSvg/>
           </Button>
         </>
@@ -254,7 +262,12 @@ export default function CvPage(props: Props) {
       {isTabletWidth &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
-          <FavoritesButton showStar  className={styles.favoritesButton}  onClick={saveCvToFavorites} isActive={currentCv?.isSavedByCurrentProfile}/>
+          <FavoritesButton 
+          altStyleType={['icon', 'white']}
+          showStar 
+          // className={styles.favoritesButton}  
+          onClick={saveCvToFavorites} 
+          isActive={currentCv?.isSavedByCurrentProfile}/>
         </div>
       }
 
@@ -489,7 +502,7 @@ export default function CvPage(props: Props) {
         <div className={styles.item}>
           <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_portfolio')}</P>
           {currentCv.portfolio &&
-            <P styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+            <P useThemeColor styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
           }
           <FilesList disabledRemoving previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
         </div>
@@ -528,7 +541,13 @@ export default function CvPage(props: Props) {
           </Button>
         }
         {(currentCv.proposalsByCurrentUser?.length>0 || currentCv.applicationsToCurrentUser?.length > 0) &&
-          <Button styleType={['borderGradient']} altStyleType={['whitePurple']} onClick={goToChat}>{t('cv_page_chat')}</Button>
+          <Button 
+          styleType={['borderGradient']} 
+          altStyleType={['white']} 
+          onClick={goToChat}
+          >
+            {t('cv_page_chat')}
+          </Button>
         }
       </div>
 

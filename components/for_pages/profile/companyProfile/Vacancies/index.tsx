@@ -1,6 +1,7 @@
+import styles from './index.module.scss'
+
 import { useEffect, useState } from 'react'
 import VacanciesActive from './Active'
-import styles from './index.module.scss'
 import VacanciesInactive from './Inactive'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useVacancyContext } from 'context/vacancy_state'

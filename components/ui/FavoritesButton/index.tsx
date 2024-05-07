@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 import Button, { ButtonStyle } from '../Button'
 import StarSvg from '@/components/svg/StarSvg'
 import classNames from 'classnames'
+import { colors } from 'styles/variables'
 
 interface Props {
   className?: string
@@ -32,9 +33,9 @@ export default function FavoritesButton(props: Props) {
     className={classnames(styles.heartButton,  props.className)} 
     >
       {props.showStar && 
-      <StarSvg size={props.size||24} className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
+      <StarSvg size={props.size||24} color={props.altStyleType&&colors.black}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
       ||
-      <HeartSvg size={props.size||24} className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
+      <HeartSvg size={props.size||24} color={props.altStyleType&&colors.black}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
       }
     </Button>
   )

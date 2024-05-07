@@ -22,6 +22,8 @@ interface IState {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
   total: number,
+  setBlackListedCVs: () => void
+  removeFromBlackList: (id?: number) => void
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -132,6 +134,20 @@ export function CvWrapper(props: Props) {
     })
   }
 
+  const setBlackListedCVs = () => {
+    CvRepository.getBlackListedByCurrentProfile()
+    .then(res => {
+      setSavedCvsState(res.data)
+    })
+  }
+
+  const removeFromBlackList = (id?: number)  => {
+    CvRepository.removeFromBlackList(id)
+    .then(res => {
+      setSavedCvsState(state => state.filter(el=> el.id !== id))
+    })
+  }
+
   const value: IState = {
     savedCvs,
     foundCvs,
@@ -146,7 +162,9 @@ export function CvWrapper(props: Props) {
     currentCv,
     page,
     setPage,
-    total
+    total,
+    setBlackListedCVs,
+    removeFromBlackList
   }
 
   return (

@@ -15,6 +15,7 @@ import Patterns from './Patterns'
 import { VacancyWrapper } from 'context/vacancy_state'
 import useTranslation from 'next-translate/useTranslation'
 import { Translate } from 'next-translate'
+import { CvWrapper } from 'context/cv_state'
 
 interface Props {
 }
@@ -22,7 +23,8 @@ interface Props {
 enum SettingsNavigation {
   Personal = 'personal',
   Notifications = 'notifications',
-  BlackList = 'blackList',
+  BlackListHirer = 'blackListHirer',
+  BlackListEmployee = 'blackListEmployee',
   Access = 'access',
   SiteSettings = 'siteSettings',
   Patterns = 'patterns'
@@ -34,7 +36,8 @@ function translatePersonalNavigation(p: SettingsNavigation, t: Translate) {
       return t('settings_personal')
     case SettingsNavigation.Notifications: 
       return t('settings_notification')
-    case SettingsNavigation.BlackList:
+    case SettingsNavigation.BlackListEmployee:
+    case SettingsNavigation.BlackListHirer:
       return t('settings_blackList')
     case SettingsNavigation.Access:
       return t('settings_access')
@@ -57,12 +60,13 @@ export default function SettingsPage(props: Props) {
     SettingsNavigation.Access,
     SettingsNavigation.SiteSettings,
     SettingsNavigation.Notifications,
-    SettingsNavigation.BlackList,
+    SettingsNavigation.BlackListEmployee,
   ]
 
   const hirerItems = [
     SettingsNavigation.Personal, 
     SettingsNavigation.Notifications,
+    SettingsNavigation.BlackListHirer,
     SettingsNavigation.Patterns,
     SettingsNavigation.Access,
     SettingsNavigation.SiteSettings,
@@ -76,10 +80,14 @@ export default function SettingsPage(props: Props) {
         return <PersonalInformation/>
       case SettingsNavigation.Notifications:
         return <Notifications/>
-      case SettingsNavigation.BlackList:
+      case SettingsNavigation.BlackListEmployee:
         return <VacancyWrapper>
         <BlackList/>
         </VacancyWrapper>
+      case SettingsNavigation.BlackListHirer:
+        return <CvWrapper>
+          <BlackList/>
+        </CvWrapper>
       case SettingsNavigation.Access:
         return <ChangePassword/>
       case SettingsNavigation.SiteSettings:

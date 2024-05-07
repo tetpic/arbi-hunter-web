@@ -9,7 +9,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
 import { RefObject, useEffect, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { MessageType, Preset } from 'types/enums'
+import { AppTheme, MessageType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
@@ -17,7 +17,6 @@ import {v4 as uuidv4} from 'uuid'
 import CloseTransparentSvg from 'components/svg/CloseTransparentSvg'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import RecordSvg from 'components/svg/RecordSvg'
-import { useResize } from 'components/hooks/useResize'
 import BackBtn from 'components/ui/BackBtn'
 import { IUserProfile } from 'data/interfaces/IUser'
 import classNames from 'classnames'
@@ -29,6 +28,7 @@ import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
 import { useRouter } from 'next/navigation'
 import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
 
 
 
@@ -40,7 +40,9 @@ export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
   const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
-  const {isTabletWidth} = useResize()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const [collocutor, setCollocutor] = useState<IUserProfile|any>(false)
   const [cv, setCv] = useState<ICV>(null)
   const router = useRouter()
@@ -139,7 +141,7 @@ export default function Messages(props: Props) {
         {dialog.chat &&
         <>
           {isTabletWidth &&
-            <BackBtn className={styles.backButton} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
+            <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
           <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</P>
@@ -157,12 +159,12 @@ export default function Messages(props: Props) {
           <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
           <P styleType={['small', 'w500']} useThemeColor className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</P>
           <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
-            <InformationSvg />
+            <InformationSvg color={isLightTheme&&colors.black}  />
           </Link>
         </div>
       }
       <div 
-      className={classNames(styles.messagesWrapper, cv && cv.categories[0] && styles.messagesWrapper_withCv)} 
+      className={classNames(styles.messagesWrapper, cv && cv.categories[0] && styles.messagesWrapper_withCv, (dialog.chat?.application?.vacancy?.id||dialog.chat?.proposal?.vacancy?.id) && styles.messagesWrapper_withVacancy)} 
       id={'chat-messages'}
       ref={dialog.scrollableTarget as RefObject<HTMLDivElement>}
       >

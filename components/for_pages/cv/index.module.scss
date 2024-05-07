@@ -99,6 +99,9 @@
     @include mq($TabletWidth, max) {
       row-gap: 8px;
     }
+    @include mq($PhoneWidth, max) {
+      flex-wrap: wrap;
+    }
 
 
 

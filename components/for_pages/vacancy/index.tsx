@@ -154,7 +154,7 @@ export default function VacancyPage(props: Props) {
       {isTabletWidth &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
-          <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+          <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
         </div>
       }
       {!isMyVacancy &&companyCard}
@@ -178,7 +178,6 @@ export default function VacancyPage(props: Props) {
         <div className={styles.topLine}>
           <P 
           styleType={['w600', 'medium']} 
-          useThemeColor
           className={classNames(styles.tariff, styles['tariff_'+currentVacancy.tariff])}
           >
             {TranslateTariffType(currentVacancy.tariff)}

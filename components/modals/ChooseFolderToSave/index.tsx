@@ -56,7 +56,7 @@ export default function ChooseFolderToSave(props: Props) {
         <Form className={styles.form}>
           <RadioListField name={'folderId'} options={args.initialFolders.map(el=> ({label: el.name, value: el.id}))}/>
           <div className={styles.buttonsWrapper}>
-            <Button styleType={['grey', 'wide']} onClick={props.onClose}>{t('cancel')}</Button>
+            <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']} onClick={props.onClose}>{t('cancel')}</Button>
             <Button styleType={['gradient', 'wide']} onClick={formik.submitForm}>{t('save')}</Button>
           </div>
         </Form>

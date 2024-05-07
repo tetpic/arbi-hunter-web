@@ -10,16 +10,16 @@
 }
 
   
-.button {
-  @include buttonGray;
-  font-size: $smallText;
-  color: $blue;
-  @include hover {
-    span{
-      color: $white;
-    }
-  }
-}
+// .button {
+//   @include buttonGray;
+//   font-size: $smallText;
+//   color: $blue;
+//   @include hover {
+//     span{
+//       color: $white;
+//     }
+//   }
+// }
 
 .cover {
   display: flex;

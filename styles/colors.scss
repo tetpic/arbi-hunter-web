@@ -45,7 +45,8 @@ $purpleSmell: #985AFC20;
   --greyToPurpleGrey: #{$grey};
   --greyLightToBlack: #{$greyLight};
   --greyLightToPurple: #{$greyLight};
-  --blueBlackToWhitePurple: #{$blueBlack};
+ 
+  --blueBlackToWhite: #{$blueBlack};
   --greyAltToPuspleSmell: #{$greyAlt};
   --greyLightToPurpleGrey: #{$greyLight};
   --greyLightToBackground: #{$greyLight};
@@ -65,6 +66,7 @@ $purpleSmell: #985AFC20;
   --greyLightToBlack: #{$black};
   --greyLightToPurple: #{$purpleSmell};
   --blueBlackToWhitePurple: #{$whitePurple};
+  --blueBlackToWhite: #{$white};
   --greyAltToPuspleSmell: #{$purpleSmell};
   --greyLightToPurpleGrey: #{$purpleGrey};
   --greyLightToBackground: #{$backgroundWhite};

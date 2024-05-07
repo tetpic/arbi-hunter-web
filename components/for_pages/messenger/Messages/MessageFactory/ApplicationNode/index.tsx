@@ -24,6 +24,8 @@ export  function ApplicationHirerNode (props: Props) {
 
   return (<>
     <Button 
+    styleType={['grey']}
+    altStyleType={['white']}
     onClick={()=>{
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, 
         {type: ApplicationBSSelectType.ThisVacancy, 
@@ -32,16 +34,17 @@ export  function ApplicationHirerNode (props: Props) {
           vcId: props.application?.vacancyId,
         })
     }} 
-    className={styles.button}
+   
     >
       Пригласить
      </Button>
       
     <Button 
+    styleType={['grey']}
+    altStyleType={['white']}
     onClick={()=>{
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.Reject, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
     }} 
-    className={styles.button}
     >
       Отказать
     </Button>
