@@ -33,7 +33,7 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
     <SwiperList 
     hideNav={props.hideNav} 
     className={props.className} 
-    swiperProps={{freeMode: false}} 
+    swiperProps={{freeMode: false, spaceBetween: 16}} 
     watchMoreHref={props.watchMoreHref}
     wrapperClassName={styles.wrapper}
     >

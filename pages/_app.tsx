@@ -2,7 +2,7 @@ import 'normalize.css'
 import 'styles/globals.scss'
 import type {AppProps as NextAppProps} from 'next/app'
 import App, {AppContext} from 'next/app'
-import {useEffect, useState} from 'react'
+import { useEffect, useState} from 'react'
 import {getSelectorsByUserAgent} from 'react-device-detect'
 import 'swiper/css/bundle'
 import Head from 'next/head'
@@ -25,7 +25,7 @@ import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Router from 'next/router'
-// import Spinner from 'components/ui/Spinner'
+
 export interface AppProps extends NextAppProps {
   pageProps: {
     isMobile: boolean

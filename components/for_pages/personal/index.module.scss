@@ -74,3 +74,13 @@
   margin-left: auto;
   min-width: 209px;
 }
+
+.contact {
+  padding-block: 8px;
+  display: block;
+  border-top: 1px var(--borderColor) solid;
+  border-bottom: 1px var(--borderColor) solid;
+  @include exeptLast {
+    border-bottom: unset;
+  }
+}

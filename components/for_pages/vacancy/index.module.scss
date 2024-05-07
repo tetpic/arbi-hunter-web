@@ -9,7 +9,7 @@
   padding-bottom: 120px;
   min-height: 70vh;
   @include mq($TabletWidth, max) {
-    margin-top: 22px;
+    margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
     padding-bottom: 100px !important;
   }
@@ -46,10 +46,10 @@
     }
   }
   @include hover {
-    color: $white;
+    color: var(--pTextColor);
     svg {
       path {
-        fill: $white;
+        fill: var(--pTextColor);
       }
     }
   }
@@ -129,4 +129,8 @@
   width: 100% !important;
   max-width: unset !important;
   padding-right: 60px !important;
+  background-color: var(--secondaryColor) !important; 
+  border: 2px var(--borderPerimeter) solid !important;
+
+  
 }

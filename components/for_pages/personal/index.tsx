@@ -31,6 +31,13 @@ import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
 import LocationRepository from 'data/repositories/LocationRepository'
 import { ISearchCityResult } from 'data/interfaces/ILocation'
 import { IUserProfile } from 'data/interfaces/IUser'
+import RichTextField from '@/components/fields/RichTextField'
+import HtmlText from '@/components/ui/HtmlText'
+import MailConvertSvg from '@/components/svg/MailConvertSvg'
+import PhoneSvg from '@/components/svg/PhoneSvg'
+import TelegramSvg from '@/components/svg/TelegramSvg'
+import Formatter from 'utils/formatter'
+import Link from 'next/link'
 
 interface Props {
   id?: number
@@ -47,15 +54,26 @@ export default function PersonalPage(props: Props) {
   const currentProfile = userContext.currentProfile
   const router = useRouter()
 
-  const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'>>({
+  const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'>>({
     initialValues: {
       company: currentProfile?.company || '',
       cityId: currentProfile?.cityId || null,
+      bio: currentProfile?.bio || '',
     },
     onSubmit: () => {}
   })
 
   const saveBranding = () => {
+    if(personalContext.currentProfile.profileType === ProfileType.Employee ) {
+      userContext.editCurrentProfile({bio: formik.values.bio})
+      .then(res => {
+        if(res) {
+          personalContext.setPersonalPage({profile: res})
+          setIsEditing(!isEditing)
+        }
+      }) 
+      return
+    }
     personalContext.updatePersonalPage()
     .then(res => {
       const personalTariff = [...tariffContext?.packets.values()][0]
@@ -164,7 +182,47 @@ export default function PersonalPage(props: Props) {
   </>)
 
   const employeeEditor = (<>
-
+    {isEditing &&
+    <FormikProvider value={formik}>
+      <Form>
+        <P styleType={['medium', 'w500', 'greyLight']}>О себе:</P>
+        <Spacer basis={16}/>
+        <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}}/>
+        <Spacer basis={16}/>
+      </Form>
+    </FormikProvider>
+    ||
+    <ContentItem  className={styles.bodyItem}>
+      <P styleType={['large', 'w600']} useThemeColor>Контактная информация</P>
+      <Spacer basis={16}/>
+      <div className={styles.contacts}>
+        <Link className={styles.contact} href={`mailto:${personalContext.currentProfile.email}`}>
+          <P styleType={['medium', 'alignCenter']} useThemeColor >
+            <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailConvertSvg/></Button>
+            {personalContext.currentProfile.email}
+          </P>
+        </Link>
+        <Link className={styles.contact} href={`tel:${personalContext.currentProfile.phone}`}> 
+        <P styleType={['medium', 'alignCenter']} useThemeColor >
+          <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><PhoneSvg/></Button>
+          {Formatter.formatPhone(personalContext.currentProfile.phone)}
+        </P>
+        </Link>
+        {personalContext.currentProfile.telegramNickname &&
+        <Link className={styles.contact} href={`tg://resolve?domain=${personalContext.currentProfile.telegramNickname}`}>
+          <P styleType={['medium', 'alignCenter']} useThemeColor >
+            <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><TelegramSvg/></Button>
+            {personalContext.currentProfile.telegramNickname}
+          </P>
+        </Link>
+        }
+      </div>
+      <Spacer basis={36}/>
+      <P styleType={['large', 'w600']} useThemeColor>О себе</P>
+      <Spacer basis={16}/>
+      <HtmlText text={personalContext.currentProfile.bio}/>
+    </ContentItem>
+    }
   </>)
 
   return (<div className={styles.root}> 
@@ -204,7 +262,8 @@ export default function PersonalPage(props: Props) {
         </Form>
       </FormikProvider>
     }
-    {hirerEditor}
+    {personalContext.currentProfile.profileType === ProfileType.Hirer && hirerEditor}
+    {personalContext.currentProfile.profileType === ProfileType.Employee && employeeEditor}
 
   
     {isEditing &&

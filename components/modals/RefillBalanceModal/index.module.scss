@@ -1,11 +1,18 @@
 @import 'styles/index';
 
 .modalLayout {
-  background-color: $backgroundBlack;
+  // background-color: var(--backGroundColor);
   max-width: 550px;
   @include mq($TabletWidth, max) {
     border-radius: 10px 10px 0px 0px;
   }
+}
+
+.top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .root {

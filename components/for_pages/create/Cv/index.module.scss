@@ -6,10 +6,10 @@
   position: relative;
   @include container;
   @include mq($TabletWidth, max) {
-    min-height: calc(100vh - 90px);
-    min-height: calc(100dvh - 90px);
+    min-height: calc(100vh - 16px);
+    min-height: calc(100dvh - 16px);
     margin-top: unset;
-    padding-top: 8px;
+    padding-top: $mobileTopSectionPadding;
   }
 }
 

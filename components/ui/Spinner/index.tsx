@@ -2,6 +2,8 @@ import styles from './index.module.scss'
 import { SpinnerCircular } from 'spinners-react'
 import { colors } from 'styles/variables'
 import classNames from 'classnames'
+import { AppTheme } from 'types/enums'
+import { useAppContext } from 'context/state'
 
 interface Props {
   size: number
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export default function Spinner(props: Props) {
+  const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   return (
     <div className={classNames({
       [styles.root]: true,
@@ -20,7 +24,7 @@ export default function Spinner(props: Props) {
       <SpinnerCircular
         size={props.size}
         color={props.color ?? colors.blue}
-        secondaryColor={props.secondaryColor ?? colors.black}
+        secondaryColor={props.secondaryColor ?? isLightTheme?colors.white:colors.black}
         thickness={150}
       />
     </div>

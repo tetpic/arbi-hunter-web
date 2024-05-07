@@ -5,8 +5,13 @@
   align-items: center;
   column-gap: 8px;
   margin-top: 32px;
+  width: 100%;
 }
 
 .title {
   margin-bottom: 24px;
+}
+
+.modalLayout {
+  max-width: 400px;
 }

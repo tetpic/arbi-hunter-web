@@ -216,7 +216,10 @@ export default function VacancyPage(props: Props) {
           >
             {t('vacancy_page_viewApplicetions')}
           </Button>
-          <Button styleType={['black', 'borderBlue']}>{t('vacancy_page_invite')}</Button>
+          <Button 
+          styleType={['black', 'borderBlue']}
+          altStyleType={['white']}
+          >{t('vacancy_page_invite')}</Button>
         </div>
       }
 

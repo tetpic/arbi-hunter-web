@@ -45,7 +45,7 @@ export default function Title(props: Props) {
         <Button styleType={['icon', 'black']} altStyleType={['icon', 'white',  'invertSvg']} className={props.itemClassName} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
       }
 
-      <P styleType={['huge','w600']} useThemeColor>{props.title}</P> {props.emoji}
+      <P styleType={['huge','w600']} style={{marginLeft: '-1px'}} useThemeColor>{props.title}</P> {props.emoji}
       {((isTabletWidth&&props.onBackClick)||props.showButton)&&!props.rightButton&&
         <div className={styles.filler}></div>
       }

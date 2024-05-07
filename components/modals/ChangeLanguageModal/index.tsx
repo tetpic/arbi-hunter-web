@@ -54,8 +54,8 @@ export default function ChangeLanguageModal(props: Props) {
       ]}
       />
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['black', 'phoneWide']} altStyleType={['white', 'phoneWide']}>{t('cancel')}</Button>
-        <Button styleType={['gradient', 'phoneWide']}>{t('save')}</Button>
+        <Button styleType={['black', 'wide']} altStyleType={['white', 'phoneWide']}>{t('cancel')}</Button>
+        <Button styleType={['gradient', 'wide']}>{t('save')}</Button>
       </div>
     </div>
   )
@@ -74,7 +74,7 @@ export default function ChangeLanguageModal(props: Props) {
     )
   }
 
-  return (<ModalLayout>
+  return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>
       <FormikProvider value={formik}>
         <Form>

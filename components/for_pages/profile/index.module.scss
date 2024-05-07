@@ -8,7 +8,7 @@
   @include container;
   padding-bottom: 40px;
   @include mq($TabletWidth, max) {
-    padding-top: 8px;
+    padding-top: $mobileTopSectionPadding;
     flex-direction: column;
     padding-bottom: unset;
   }

@@ -7,8 +7,9 @@
 }
 
 .swiper {
-  overflow-y: unset;
-  padding-inline: 8px;
+  // overflow-y: unset;
+  // padding-inline: 8px;
+  overflow: unset;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
   }

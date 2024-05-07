@@ -13,7 +13,7 @@
   @include mq($TabletWidth, max) {
     padding: unset;
     padding-inline: 16px;
-    padding-top: 8px;
+    padding-top: $mobileTopSectionPadding;
     min-height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
@@ -28,8 +28,6 @@
     height: 100vh;
     height: 100dvh;
     overflow: auto;
-
-
   }
 }
 
@@ -39,7 +37,7 @@
   flex-wrap: wrap;
   row-gap: 16px;
   width: 100%;
-  margin-bottom: CLamp(40px, 6vw, 48px);
+  margin-bottom: clamp(32px, 4vw, 48px);
   @include mq($PhoneWidth, max) {
     flex-direction: column;
   }
@@ -118,7 +116,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
     overflow: auto;
-    padding-bottom: 10px;
+    
   }
 
 }
@@ -137,7 +135,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: clamp(24px, 4vw, 48px);
 }
 
 .subTitle {

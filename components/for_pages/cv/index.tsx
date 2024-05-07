@@ -199,6 +199,7 @@ export default function CvPage(props: Props) {
         <Button 
         className={styles.topButton}
         styleType={['gradient','wide']} 
+        
         title={'openProfileTop'} 
         onClick={openContacts}
         >
@@ -230,11 +231,11 @@ export default function CvPage(props: Props) {
         <>
           <FavoritesButton 
           showStar
-          className={styles.favoritesButton} 
+          altStyleType={['icon', 'whitePurple']}
           onClick={saveCvToFavorites} 
-          isActive={currentCv?.isSavedByCurrentProfile}/>
-          <Button styleType={['icon', 'black']}
-          >
+          isActive={currentCv?.isSavedByCurrentProfile}
+          />
+          <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}>
             <CloseEyeSvg/>
           </Button>
         </>

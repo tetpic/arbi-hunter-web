@@ -20,13 +20,14 @@ import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
-import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useAppContext } from 'context/state'
 import { runtimeConfig } from 'config/runtimeConfig'
 import { useRouter } from 'next/router'
+import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
+import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 
 
 
@@ -114,7 +115,7 @@ export default function MainPageHirer() {
           <div className={styles.cards}>
             <Link className={styles.card} href={'/responses'}>
               <p className={styles.desc}>{t('mainPage_hir_feedbacks')}</p>
-              <MessageDownSvg className={styles.icon}/>
+              <SwapItemsSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -127,9 +128,9 @@ export default function MainPageHirer() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={'/'}>
+            <Link className={styles.card} href={'/recruiting'}>
               <p className={styles.desc}>{t('mainPage_hir_cvs')}</p>
-              <MessageDownSvg className={styles.icon}/>
+              <DocumentSheetSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -142,7 +143,7 @@ export default function MainPageHirer() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={'/recruiting'}>
+            <Link className={styles.card} href={'/'}>
               <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>

@@ -9,6 +9,7 @@
   margin-bottom: 24px;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
+    margin-top: $mobileTopSectionPadding;
   }
 
 }

@@ -31,7 +31,7 @@ export default function ArticlesList(props: Props) {
     hideNav
     slideClassName={styles.slide}
     swiperClassname={styles.swiper}
-    swiperProps={{loop: false}}
+    swiperProps={{loop: false, spaceBetween: 16}}
     >
       {props.news && props.news.map(el=>{
         return (

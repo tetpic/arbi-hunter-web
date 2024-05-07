@@ -211,7 +211,7 @@ export default function Vacancy(props: Props) {
 
         setProgress(pageNumber||progress+1)
         return false
-      case 3: 
+      case 2: 
         const salaryMinNumber: number = Number(formik.values.salaryMin?.toString().replaceAll(' ', ''))
         const salaryMaxNumber: number = Number(formik.values.salaryMax?.toString().replaceAll(' ', ''))
         if(!salaryMinNumber && !salaryMaxNumber && formik.values.compensation !== CompensationType.Contract) {

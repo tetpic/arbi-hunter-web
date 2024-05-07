@@ -16,7 +16,8 @@
   column-gap: 16px;
   margin-bottom: 24px;
   padding: 8px 0px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 10px;
   justify-content: flex-start;
   @include mq($TabletWidth, max) {
@@ -29,28 +30,20 @@
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  color: $white;
-  font-weight: $medium;
-  font-size: $mediumText;
   column-gap: 16px;
   position: relative;
   border-radius: 10px;
   position: relative;
   @include transitionDefault;
-  @include hoverButtonSmooth;
   cursor: pointer;
   svg {
     @include transitionDefault;
   }
 
   &_active {
-    background-color: $blue;
-    color: $black;
+    background-color: var(--greyLightToPurpleGrey);
     svg {
       rotate: 180deg;
-      path {
-        stroke: $black;
-      }
     }
   }
 
@@ -100,21 +93,23 @@
   flex-direction: column;
   align-items: center;
   transform: translateY(100%);
-  background-color: $grey;
+  background-color: var(--backGroundColor);
+  border: 2px var(--borderPerimeter) solid;
   z-index: 20;
   border-radius: 10px;
   overflow: hidden;
 }
 
 .accItem {
-  color: $white;
   padding: 16px;
-  font-size: $smallText;
   width: 100%;
   text-align: center;
   cursor: pointer;
   @include transitionDefault;
-  @include hoverButtonSmooth;
+  // @include hoverButtonSmooth;
+  @include hover {
+    background-color: var(--greyLightToPurpleGrey);
+  }
   
   &_active {
     background-color: $blue;

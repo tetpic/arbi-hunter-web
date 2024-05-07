@@ -22,13 +22,14 @@ import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
-import MessageDownSvg from '@/components/svg/MessageDownSvg'
 import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { runtimeConfig } from 'config/runtimeConfig'
 import { useRouter } from 'next/router'
+import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
+import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -153,7 +154,7 @@ export default function MainPageEmployee() {
           <div className={styles.cards}>
             <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
               <p className={styles.desc}>{t('mainPage_em_feedBacks')}</p>
-              <MessageDownSvg className={styles.icon}/>
+              <SwapItemsSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
@@ -168,7 +169,7 @@ export default function MainPageEmployee() {
             </Link>
             <Link className={styles.card} href={{pathname: 'recruiting'}}>
               <p className={styles.desc}>{t('mainPage_em_vacancies')}</p>
-              <MessageDownSvg className={styles.icon}/>
+              <DocumentSheetSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>

@@ -67,7 +67,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       {isTabletWidth &&
         <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
       }
-      <p className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</p>
+      <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</P>
       {(item?.status === ApplicationStatus.Accepted||item?.type === ProposalRequestType.Interview) && 
         <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</P>
       }

@@ -3,12 +3,13 @@
 .root {
   position: absolute;
   bottom: -16px;
-  right: 0;
+  left: 0;
   transform: translateY(100%);
   padding: 16px;
   border-radius: 16px;
   background-color: var(--backColorAlt);
-  box-shadow: 0px 0px 4px 6px rgba(0, 0, 0, 0.342);
+  border: 2px var(--borderPerimeter) solid;
+  box-shadow: 0px 0px 10px 0px var(--backGroundColor);
   display: flex;
   flex-direction: column;
   row-gap: 16px;

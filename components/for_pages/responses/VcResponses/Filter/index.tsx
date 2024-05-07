@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import classnames from 'classnames'
 import Radio from 'components/fields/RadioListField/Radio'
-import { useResize } from 'components/hooks/useResize'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Accordeon from 'components/ui/Accordeon'
 import RemovableItem from 'components/ui/RemovableItem'
@@ -11,8 +10,10 @@ import { useFeedbacksContext } from 'context/feedbacks_state'
 import { FilterItem, FilterItems } from 'data/interfaces/IFilter'
 import { useEffect, useRef, useState } from 'react'
 import { colors } from 'styles/variables'
-import { ProposalRequestType} from 'types/enums'
+import { AppTheme, ProposalRequestType} from 'types/enums'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
+import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
 
 
 interface Props {
@@ -22,7 +23,9 @@ interface Props {
 export default function ResponsesFilter(props: Props) {
 
   const feedbacksContext = useFeedbacksContext()
-  const {isTabletWidth} = useResize()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
+  const isLightTheme = appContext.theme === AppTheme.Light
   const {filterOptions, setFilterOptions, filters} = feedbacksContext
   const [activeFilter, setActiveFilter] = useState<FilterItem>()
   const [switcher, setSwitcher] = useState<boolean>(false)
@@ -72,7 +75,7 @@ export default function ResponsesFilter(props: Props) {
         if(key === FilterItems.New) {
           return (
             <div key={index} className={styles.item} onClick={()=>onlyNewHandler(value)} >
-              Только новые
+              <P styleType={['medium', 'w500']} className={styles.item} useThemeColor>Только новые</P>
               <div className={classnames(styles.switcher, switcher&&styles.switcher_active)}>
                 <div className={styles.roller}>
                   {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.blue}/>}
@@ -85,7 +88,7 @@ export default function ResponsesFilter(props: Props) {
           return (
             isTabletWidth
           ? <div className={styles.radioWrapper}>
-              <p className={styles.item}>{value.translation}</p>
+              <P styleType={['medium', 'w500']} className={styles.item} useThemeColor>{value.translation}</P>
               {value.translatedItems.map((el, index)=>{
                 return (
                   <Radio 
@@ -102,19 +105,31 @@ export default function ResponsesFilter(props: Props) {
             key={index}
             classNames={{root: styles.accRoot, content: styles.accContent, wrapper: styles.accWrapper }}
             body={
-              <p onClick={(e)=>{e.stopPropagation();accordeonHandler(value)}} className={classnames(styles.item, value===activeFilter&&styles.item_active)}>{value.translation} <ArrowDownSvg/></p>
+              <P 
+              styleType={['medium', 'w500']} 
+              useThemeColor 
+              onClick={(e)=>{
+                e.stopPropagation()
+                accordeonHandler(value)}
+              } 
+              className={classnames(styles.item, value===activeFilter&&styles.item_active)}
+              >
+                {value.translation} <ArrowDownSvg color={isLightTheme&&colors.black}/>
+              </P>
             } 
             getRef={(r) => dropdownRef.current = r}
             isActive={value===activeFilter && isDropDownOpen}>
               <>
                 {value.translatedItems && value.translatedItems.map((el, index)=>{
                   return (
-                    <p 
+                    <P
+                    styleType={['small']}
+                    useThemeColor
                     key={index}
                     className={classnames(styles.accItem, filterOptions.get(value)?.translatedActiveItem===el&&styles.accItem_active)} 
                     onClick={()=>setFilterOptions(value, index)}>
                       {el}
-                    </p>
+                    </P>
                   )
                 })}
               </>

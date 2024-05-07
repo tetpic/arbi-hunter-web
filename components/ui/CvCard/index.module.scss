@@ -3,7 +3,8 @@
 .itemWrapper {
   padding: 16px;
   border-radius: 10px;
-  background-color: $black;
+  background-color: var( --backColorAlt );
+  border: 2px var(--borderPerimeter) solid;
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
@@ -26,10 +27,6 @@
   flex-wrap: wrap;
   align-items: center;
   column-gap: 8px;
-  color: $greyLight;
-  font-size: $mediumText;
-  font-weight: $medium;
-
 }
 
 .userPic {
@@ -39,9 +36,6 @@
 
 .position {
   grid-area: p;
-  font-size: $largeText;
-  font-weight: $semibold;
-  color: $white;
 }
 
 .middle {
@@ -50,17 +44,7 @@
   row-gap: 12px;
   margin-top: 16px;
 
-
-  .title {
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $greyLight;
-  }
-
   .data {
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $white;
     @include mq($TabletWidth, max) {
       font-weight: $regular;
     }
@@ -75,11 +59,11 @@
   display: flex;
   justify-content: space-between;
   column-gap: 8px;
+  margin-top: 16px;
 }
 
 
 .button {
-  margin-top: 16px;
   align-self: flex-end;
   @include buttonGradient;
   @include mq($TabletWidth, max) {

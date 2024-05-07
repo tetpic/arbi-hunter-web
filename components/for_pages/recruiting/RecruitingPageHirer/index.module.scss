@@ -2,7 +2,7 @@
 
 .root {
   @include mq($TabletWidth, max) {
-    margin-top: 8px;
+    margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
   }
 }

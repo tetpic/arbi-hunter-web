@@ -156,7 +156,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         height={60} 
         className={styles.icon}/>
       }
-      <P styleType={['w600', 'large']} className={styles.title}>{tariff.name}</P>
+      <P styleType={['w500', 'medium']} className={styles.title}>{tariff.name}</P>
       {tariff.price > 0 &&
         <P 
         styleType={['alignCenter', 'w500', 'medium']} 

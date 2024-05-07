@@ -3,7 +3,7 @@
   padding: $space-modal;
   @media screen and (max-width: $xs-max){
     padding: $space-modal-mobile;
-    padding-top: 9px;
+    padding-top: $mobileTopSectionPadding;
   }
   &.fixed{
     flex: 1;

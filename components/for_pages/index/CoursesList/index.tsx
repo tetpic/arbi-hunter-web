@@ -53,7 +53,7 @@ export default function CoursesList(props: Props) {
   return (
     <SwiperList 
     hideNav 
-    swiperProps={{loop: false, spaceBetween: isTabletWidth?8:16}} 
+    swiperProps={{loop: false, spaceBetween: 16}} 
     slideClassName={styles.slide} 
     swiperClassname={styles.swiper}
     >
@@ -71,8 +71,8 @@ export default function CoursesList(props: Props) {
                   unoptimized 
                   src={ImageHelper.urlFromFile(course.image, Preset.xsCrop)} 
                   alt={'course image'} 
-                  width={185} 
-                  height={185} 
+                  width={180} 
+                  height={180} 
                   className={styles.image}/>
                   <div className={styles.content}>
                     <P 

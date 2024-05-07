@@ -45,9 +45,9 @@ export default function Body(props: Props) {
   return (<>
   {props.title &&
     <P useThemeColor styleType={['large', 'w600', 'alignCenter']} className={styles.title}>
-      {!isPhoneWidth && 
+      {/* {!isPhoneWidth &&  */}
         <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} onClick={()=>props.onClose()}><ArrowLeftSvg className={styles.arrow}/></Button>
-      }
+      {/* } */}
       {props.title}
     </P>
   }

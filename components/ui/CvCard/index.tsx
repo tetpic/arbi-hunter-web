@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import { useResize } from 'components/hooks/useResize'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import DotSvg from 'components/svg/DotSvg'
@@ -11,7 +13,6 @@ import { ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
-import styles from './index.module.scss'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
 import FavoritesButton from '../FavoritesButton'
@@ -20,6 +21,7 @@ import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
+import P from '../P'
 
 interface ItemProps {
   cv: ICV
@@ -139,31 +141,31 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     <div className={styles.itemWrapper}>
     <div className={styles.top} onClick={()=>router.push('cv/'+cv.id)}>
       <UserPic size={46} className={styles.userPic}/>
-      <p className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</p>
-      <p className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</p>
+      <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</P>
+      <P styleType={['medium', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</P>
       {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}
       <FavoritesButton showStar className={styles.heartButton} isActive={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
     </div>
     <div className={styles.middle}>
-      <p className={styles.title}>Опыт работы</p>
-      <p className={styles.data}>{experience}</p>
+      <P styleType={['medium', 'w500', 'greyLight']} >Опыт работы</P>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.data}>{experience}</P>
     </div>
     {cv?.lastExperienceInfo &&
     <div className={styles.middle}>
-      <p className={styles.title}>Последнее место работы</p>
-      <p className={styles.data}>{currentCV?.lastExperienceInfo?.description&&currentCV?.lastExperienceInfo?.description} {currentCV?.lastExperienceInfo?.company&&('"' + currentCV?.lastExperienceInfo?.company + '"')}</p>
+      <P styleType={['medium', 'w500', 'greyLight']} >Последнее место работы</P>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.data}>{currentCV?.lastExperienceInfo?.description&&currentCV?.lastExperienceInfo?.description} {currentCV?.lastExperienceInfo?.company&&('"' + currentCV?.lastExperienceInfo?.company + '"')}</P>
     </div>
     }
     {
       currentCV?.proposalByCurrentUser&&
       <div className={styles.middle}>
-        <p className={styles.title}>Приглашение выслано</p>
+        <P styleType={['medium', 'w500', 'greyLight']} >Приглашение выслано</P>
       </div>
     }
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser||application.proposals.length > 0?'Пригласить повторно':'Пригласить'}</Button>
       {chat&& 
-        <Button className={styles.buttonBorderGradient} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
+        <Button styleType={['black', 'borderGradient']} altStyleType={['white']} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }
     </div>
   </div>

@@ -39,7 +39,11 @@ export default function RefillBalanceModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Button styleType={['icon', 'backTransparent']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+      <div className={styles.top}>
+        <P styleType={['large', 'w600']} useThemeColor>Пополнение баланса</P>
+
+      <Button altStyleType={['invertSvg']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+      </div>
       <FormikProvider value={formik}>
         <Form className={styles.form}>
           <InputField 

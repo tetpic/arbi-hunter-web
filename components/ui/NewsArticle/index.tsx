@@ -161,7 +161,7 @@ export default function NewsArticle(props: Props) {
           ||
           <Spacer/>
         }
-        <P className={styles.views}><OpenEyeSvg/> {article.totalViews}</P>
+        <P styleType={['alignCenter','w500','medium']} className={styles.views}><OpenEyeSvg/> {article.totalViews}</P>
       </div>
   </div>)
 }

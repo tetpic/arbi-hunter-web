@@ -1,8 +1,7 @@
 import Document, {Html, Head, Main, NextScript, DocumentContext} from 'next/document'
 import { Cookies } from 'react-cookie'
-import * as JSCookies from 'js-cookie'
 import { colors } from 'styles/variables'
-import { CookiesType } from 'types/enums'
+import { AppTheme } from 'types/enums'
 class MyDocument extends Document {
   static async getStaticProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage
@@ -21,9 +20,11 @@ class MyDocument extends Document {
   }
   
   render() {
+    //@ts-ignore
+    const theme: AppTheme = this.props.__NEXT_DATA__.props.pageProps.theme
     return (
-      <Html>
-        <Head>
+      <Html style={{height: '100vh', width: '100vw', backgroundColor: theme === AppTheme.Light?'#F5F2F7':'#16161B'}}>
+        <Head >
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg"/>
           {/* <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/> */}
@@ -36,10 +37,10 @@ class MyDocument extends Document {
           <meta name="theme-color" content={colors.backgroundBlack}/>
         </Head>
 
-        <body data-theme={JSCookies.default.get(CookiesType.theme)} id='body'>
+
+        <body data-theme={theme} id='body' >
           <Main />
           <NextScript />
-
         </body>
       </Html>
     )

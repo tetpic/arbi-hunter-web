@@ -384,7 +384,7 @@ export default function FilterEmployee(props: Props) {
           </p>
           <div className={styles.itemContent}>
           {creationContext.activeSubCategory?.length === 0 && 
-            <P styleType={['medium', 'w500']}>
+            <P styleType={['medium', 'w500']} useThemeColor>
               Любая
             </P>
           }

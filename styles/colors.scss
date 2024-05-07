@@ -49,7 +49,7 @@ $purpleSmell: #985AFC20;
   --greyAltToPuspleSmell: #{$greyAlt};
   --greyLightToPurpleGrey: #{$greyLight};
   --greyLightToBackground: #{$greyLight};
-  
+  --greyToBackground: #{$grey};
 }
 
 #body[data-theme="light"] {
@@ -68,11 +68,7 @@ $purpleSmell: #985AFC20;
   --greyAltToPuspleSmell: #{$purpleSmell};
   --greyLightToPurpleGrey: #{$purpleGrey};
   --greyLightToBackground: #{$backgroundWhite};
-
-
-
-
-
+  --greyToBackground: #{$backgroundWhite};
 }
 
 #body[data-theme="beer"] {

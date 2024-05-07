@@ -32,7 +32,7 @@ export default function Layout(props: Props) {
       </Sticky>
       }
       <div className={styles.content}>
-      {userContext.isLogged && !isTabletWidth && !props.webView &&
+      {userContext.isLogged && !isTabletWidth && !props.webView && 
         <NavBar/>
       }
       {props.children}

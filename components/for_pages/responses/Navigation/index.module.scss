@@ -5,7 +5,8 @@
   width: 29%;
   display: flex;
   flex-direction: column;
-  background-color: $black;
+  background-color: var(--backColorAlt);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 10px;
   overflow: hidden;
   @include mq($TabletWidth, max) {
@@ -16,11 +17,8 @@
 
 .item {
   padding: 16px;
-  color: $white;
   display: flex;
   justify-content: space-between;
-  font-size: $mediumText;
-  font-weight: $medium;
   padding-block: 18px;
   cursor: pointer;
   @include transitionDefault;
@@ -28,13 +26,13 @@
   @include hover {
     color: $blue;
     .stat {
-      background-color: $greyAlt;
+      background-color: var(--greyAltToPuspleSmell);
     }
   }
 
 
   &_active {
-    background-color: $grey;
+    background-color: var(--greyToPurpleGrey);
     pointer-events: none;
   }
 }
@@ -46,7 +44,7 @@
   min-width: 20px;
   height: 20px;
   border-radius: 10px;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   font-size: $smallText;
   padding-inline: 4px 3px;
   @include transitionDefault;

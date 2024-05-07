@@ -11,7 +11,7 @@ import { useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import SwitchField from 'components/fields/SwitchField'
 import { colors } from 'styles/variables'
-import { ApplicationStatus } from 'types/enums'
+import { AppTheme, ApplicationStatus } from 'types/enums'
 import RadioListField from 'components/fields/RadioListField'
 import { useAppContext } from 'context/state'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -19,6 +19,7 @@ import CheckboxListField from 'components/fields/CheckboxListField'
 import { IChatsFilter } from 'data/interfaces/IChat'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   isBottomSheet?: boolean
@@ -58,6 +59,7 @@ export default function ChatFilterModal(props: Props) {
   const {t} = useTranslation()
   const [currentPage, setCurrentPage] = useState<Pages>(Pages.Main)
   const appContext = useAppContext()
+  const isLightTheme = appContext.theme === AppTheme.Light
   const args: IChatFilterModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const vacs = args.vacancies.filter(Boolean)
 
@@ -89,18 +91,18 @@ export default function ChatFilterModal(props: Props) {
 
   const main = (<>
     <div className={styles.filters}>
-      <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Vacancies)}>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.filter} onClick={()=>setCurrentPage(Pages.Vacancies)}>
         {t('chatFilterModal_title_vacancies')}
-        <ArrowRightSvg/>
-      </p>
-      <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Status)}>
+        <ArrowRightSvg color={isLightTheme&&colors.black}/>
+      </P>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.filter} onClick={()=>setCurrentPage(Pages.Status)}>
         {t('chatFilterModal_title_status')}
-        <ArrowRightSvg/>
-      </p>
-      <p className={styles.filter} onClick={()=>setCurrentPage(Pages.Activity)} >
+        <ArrowRightSvg color={isLightTheme&&colors.black}/>
+      </P>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.filter} onClick={()=>setCurrentPage(Pages.Activity)} >
         {t('chatFilterModal_title_activity')}
-        <ArrowRightSvg/>
-      </p>
+        <ArrowRightSvg color={isLightTheme&&colors.black}/>
+      </P>
     </div>
   </>) 
 
@@ -121,7 +123,7 @@ export default function ChatFilterModal(props: Props) {
   </>)
 
   const activity = (<>
-    <p className={styles.activity}>
+    <P styleType={['large', 'w500']} useThemeColor  className={styles.activity}>
       {t('chatFilterModal_showUnread')} 
       <SwitchField 
       onColor={colors.green}
@@ -129,8 +131,8 @@ export default function ChatFilterModal(props: Props) {
       offHandleColor={colors.white}
       onHandleColor={colors.white}
       name={'unreaded'}/>
-    </p>
-    <p className={styles.activity}>
+    </P>
+    <P styleType={['large', 'w500']} useThemeColor className={styles.activity}>
       {t('chatFilterModal_showUnactive')} 
       <SwitchField 
       name={'inactive'}
@@ -139,7 +141,7 @@ export default function ChatFilterModal(props: Props) {
       offHandleColor={colors.white}
       onHandleColor={colors.white}
       />
-    </p>
+    </P>
   </>)
 
   const currentElement = (): JSX.Element => {
@@ -163,17 +165,17 @@ export default function ChatFilterModal(props: Props) {
   
 
   const body = (<div className={styles.body}>
-    <p className={styles.title}>
+    <P styleType={['large', 'w600']} className={styles.title} useThemeColor>
       {pagesTitleTranslations(currentPage, t)}
-      <Button className={styles.closeButton} onClick={onCloseHandler}><CrossSvg/></Button>
-    </p> 
+      <Button altStyleType={['invertSvg']} onClick={onCloseHandler}><CrossSvg/></Button>
+    </P> 
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         {currentElement()}
         {currentPage === Pages.Main &&
           <div className={styles.buttons}>
-            <Button type='button' onClick={onClear} className={styles.greyButton}>{t('clear')}</Button>
-            <Button type='submit' className={styles.yellowButton}>{t('apply')}</Button>
+            <Button type='button' onClick={onClear} styleType={['black']} altStyleType={['white']}>{t('clear')}</Button>
+            <Button type='submit' styleType={['gradient']}>{t('apply')}</Button>
           </div>
         }
       </Form>

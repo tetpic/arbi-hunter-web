@@ -9,7 +9,7 @@
     width: 100%;
     padding: unset;
     padding-inline: 16px;
-    padding-top: 16px;
+    padding-top: $mobileTopSectionPadding;
     margin-top: unset;
     min-height: calc(100% - 32px);
     display: flex;

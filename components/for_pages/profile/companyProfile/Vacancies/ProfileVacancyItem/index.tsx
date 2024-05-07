@@ -211,7 +211,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
               router.push({pathname: '/create/vacancy/', query: {id: vacancy.id, progress: vacancy.completedSteps.length}})
             }}
             >
-            Продолжить редактирование</Button>
+            Продолжить заполнение</Button>
             ||
             props.type === 'drafts' && vacancy.completedSteps?.length >=8 &&
             <>

@@ -8,7 +8,7 @@
   @include mq($PhoneWidth, max) {
     margin-top: unset;
     overflow: auto;
-    padding-top: 8px;
+    padding-top: $mobileTopSectionPadding;
     padding-bottom: 140px;
   }
 }

@@ -141,7 +141,7 @@ export default function VacancyName(props: Props) {
       </>
       }
 
-      <P styleType={['w700', 'medium']} useThemeColor className={styles.subTitle}>{t('create_recommended')}</P>
+      <P styleType={['w700', 'large']} useThemeColor className={styles.subTitle}>{t('create_recommended')}</P>
       
       {tags.length > 0 && 
       <div className={styles.tags}>

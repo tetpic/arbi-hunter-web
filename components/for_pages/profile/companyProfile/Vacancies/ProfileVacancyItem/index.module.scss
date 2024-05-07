@@ -46,9 +46,6 @@
   }
 }
 
-
-
-
 .buttonsWrapper {
   width: 100%;
   display: flex;
@@ -110,8 +107,8 @@
 
 .timeRemains {
   font-size: $smallText;
-  color: $green;
-  background-color: $greenLight;
+  color: $red;
+  background-color: $redLight;
   padding: 4px 8px;
   border-radius: 4px;
   display: block;

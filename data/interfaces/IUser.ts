@@ -31,6 +31,7 @@ export interface IUserProfile extends TimeStamp {
   addSavedToDefaultFolder: boolean
   id: number,
   userId: number,
+  bio: string
   profileType: ProfileType,
   hirerRole: HirerRole,
   firstName: string,
