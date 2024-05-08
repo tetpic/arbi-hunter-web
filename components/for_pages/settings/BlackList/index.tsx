@@ -9,6 +9,7 @@ import { useCvContext } from 'context/cv_state'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -22,6 +23,7 @@ enum BlackListModes {
 
 
 export default function BlackList(props: Props) {
+  const {t} = useTranslation()
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const userContext = useUserContext()
@@ -51,18 +53,6 @@ export default function BlackList(props: Props) {
   }, [])
 
   return (<div className={styles.root}> 
-    {/* <div className={styles.top}>
-      <Modes buttons={[
-        {name: 'Вакансии', type: BlackListModes.Vacancies},
-        {name: 'Компании', type: BlackListModes.Companies}
-      ]} activeButton={type} 
-      onSet={setType}
-      className={styles.modes}
-      buttonClassName={styles.modesButton}
-      />
-      
-    </div> */}
-
     <div className={styles.items}>
       {type === BlackListModes.Vacancies && vacancyContext.savedVCs?.map(el=> {
         return <BlackListedItem key={el.id} vacancy={el} profile={el.profile} onRestore={()=>vacancyContext.removeFromBlackList(el.id)} />
@@ -79,7 +69,7 @@ export default function BlackList(props: Props) {
       ||(type === BlackListModes.CVs && cvContext.savedCvs?.length === 0)
       ||(type === BlackListModes.Vacancies && vacancyContext.savedVCs?.length === 0))
       &&
-      <P useThemeColor styleType={['large', 'w600']}>Нет данных</P>
+      <P useThemeColor styleType={['large', 'w600']}>{t('noData')}</P>
 
 
       }

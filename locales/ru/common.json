@@ -63,10 +63,19 @@
   "remote": "Удаленно",
   "ago":"назад",
   "publish": "Опубликовать",
+  "reject": "Отказаться",
+  "cancelAlt":"Отмена",
+  "goToChat":"Перейти в чат",
+  "allTheTime":"Все время",
+  "age":"Возраст",
+  "noData":"Нет данных",
+  "restore":"Восстановить",
 
   
   "gender_male": "Мужчина",
+  "gender_maleShort": "Муж",
   "gender_female": "Женщина",
+  "gender_femaleShort": "Жен",
 
   "app_language": "Язык приложения",
   "ru": "Русский",
@@ -134,6 +143,7 @@
   "participant1":"участник",
   "participant2":"участника",
   "participant3":"участников",
+
 
 
   "sortBy": "Сортировать по ",
@@ -496,7 +506,8 @@
   "favorites_vcItem_youInvited":"Вас пригласили",
   "favorites_vcItem_youRejected":"Вам отказали",
   
-
+  "filter":"Фильтр",
+  "filters":"Фильтры",
   "filters_searchOnlyIn": "Искать только",
   "filters_findCompany": "Поиск по компании:",
   "filters_country": "Страна",
@@ -504,6 +515,7 @@
   "filters_region": "Регион",
   "filters_addRegion": "Добавить регион",
   "filters_sources": "Источники трафика",
+  "filters_sourcesAlt": "Источники",
   "filters_addSources": "Добавить источники трафика",
   "filters_specs": "Специализация",
   "filters_addSpecs": "Указать специализации",
@@ -521,6 +533,18 @@
   "filters_languageKnowledgedges": "Знания языков",
   "filters_addLanguage": "Добавить язык",
   "filters_clearAll": "Сбросить всё",
+  "filters_keywords":"Ключевые слова:",
+  "filters_eliminateWords":"Исключить слова:",
+  "filters_incomeLevel":"Уровень дохода:",
+  "filters_publishedAt":"Время публикации",
+  "filters_specializations":"Специализации",
+  "filters_chooseMore":"Выбрать еще",
+  "filters_vertical":"Вертикаль",
+  "filters_showMoreFilters":"Показать еще фильтры",
+  "filters_workExperience":"Требуемый опыт работы",
+  "filters_relocationYes":"Живут или готовы переехать в регион",
+  "filters_relocationNo":"Не готовы к переезду",
+  "filters_whatEver":"Не имеет значения",
 
   "filters_geos": "Гео",
   "filters_addGeos": "Добавить гео",
@@ -749,6 +773,8 @@
   "nav_managers": "Менеджеры",
 
   "personal_about":"О себе",
+  "personal_personalInfo": "Личная информация",
+  "personal_changePassword": "Изменить пароль",
   "personal_contacts":"Контактная информация",
   "personal_editProfile":"Редактировать профиль",
   "personal_chooseVacancyLookType":"Выберите статус",
@@ -766,6 +792,7 @@
   "profile_title_editProfile": "Редактировать персонаж",
   "profile_title_feedbacks": "Мои отклики",
   "profile_title_myCVs": "Мои резюме",
+  "profile_searchInMyCvs":"Поиск в моих резюме",
   "profile_title_managers": "Менеджеры вакансий",
   "profile_title_saved": "Сохранённое",
   "profile_title_patterns": "Шаблоны писем",
@@ -782,6 +809,11 @@
   "profile_editor_choosenItems": "Выбранные товары",
   "profile_editor_buyFor": "Купить за",
   "profile_editor_buyCharacter": "Купить персонажа",
+  "profile_noSavedVacancies":"Нет сохранённых вакансий",
+  "profile_wrongApplication":"Отклик некорректен. Действия невозможны",
+  "profile_applicationNotFound":"Приглашение не найдено",
+  "profile_emailNotifications":"Почтовые рассылки",
+  "profile_pushNotifications":"Пуш-уведомления",
 
 
 
@@ -887,7 +919,9 @@
   "personal_links": "Ссылки",
   "personal_textVideo": "Текст и видео",
   "personal_html": "HTML",
-  "personal_noInfo":"Нет информации"
+  "personal_noInfo":"Нет информации",
+
+  "responses_onlyNew":"Только новые"
 
 
 

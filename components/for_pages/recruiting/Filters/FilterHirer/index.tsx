@@ -252,7 +252,7 @@ export default function FilterHirer(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Title onBackClick={()=>props?.onCancel?.()} title={'Поиск резюме'}/>
+      <Title onBackClick={()=>props?.onCancel?.()} title={t('search_cv')}/>
       <MainSearchBar fullWidth initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>
@@ -317,7 +317,7 @@ export default function FilterHirer(props: Props) {
                 styleType={'default'} 
                 color={'default'} 
                 name={'salaryMin'} 
-                label={'oт'} 
+                label={t('from')} 
                 labelType={'static'}
                 labelClassName={styles.label}
                 priceFormatting
@@ -334,7 +334,7 @@ export default function FilterHirer(props: Props) {
                 styleType={'default'} 
                 color={'default'} 
                 name={'salaryMax'} 
-                label={'до'} 
+                label={t('to')} 
                 priceFormatting
                 error={t('filters_oneFieldShouldBeFilled')}
                 suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
@@ -382,7 +382,7 @@ export default function FilterHirer(props: Props) {
             name={'forLastNumberOfDays'}
             rootClass={styles.radioField}
             options={[
-              {value: null, label: 'Все время'},
+              {value: null, label: t('allTheTime')},
               ...periods.map(el=>{
                 return {value: el.value, label: el.name}
               })         

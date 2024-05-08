@@ -97,7 +97,7 @@ export default function CVs(props: Props) {
         setFilteredData(s)
         setSearchString(s)
       },
-      placeholder: 'Поиск по названию',
+      placeholder: t('search_byName'),
       suggestions: [...new Set(cvContext.savedCvs.map(el=> el.categories[0].name)).values()],
       initialValue: searchString
     })
@@ -113,7 +113,7 @@ export default function CVs(props: Props) {
   return (
     <div className={styles.root}> 
       <Title 
-      title={'Мои резюме'} 
+      title={t('profile_title_myCVs')} 
       onBackClick={router.back} 
       rightButton={isTabletWidth &&
         <div className={styles.buttonsWrapper}>
@@ -125,7 +125,7 @@ export default function CVs(props: Props) {
         <SearchBar 
         key={'cvsSearchbar'}
         className={styles.search} 
-        placeholder='Поиск в моих резюме' 
+        placeholder={t('profile_searchInMyCvs')}
         onSubmit={(data)=>onSearch(data.search)}
         />
       }

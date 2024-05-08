@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import SwitchField from '@/components/fields/SwitchField'
 import Button from '@/components/ui/Button'
 import { colors } from 'styles/variables'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -14,6 +15,7 @@ interface INotifications {
 }
 
 export default function Notifications(props: Props) {
+  const {t} = useTranslation()
 
   const formik = useFormik<INotifications>({
     initialValues: {
@@ -36,10 +38,10 @@ export default function Notifications(props: Props) {
   <FormikProvider value={formik}>
     <Form className={styles.form}>
       <div className={styles.wrapper}>
-        <SwitchField {...switchSet} name={'email'} label='Почтовые рассылки' fluid className={styles.switch} labelClassName={styles.label}/>
-        <SwitchField {...switchSet} name={'push'} label='Пуш-уведомления' fluid className={styles.switch} labelClassName={styles.label}/>
+        <SwitchField {...switchSet} name={'email'} label={t('profile_emailNotifications')} fluid className={styles.switch} labelClassName={styles.label}/>
+        <SwitchField {...switchSet} name={'push'} label={t('profile_pushNotifications')} fluid className={styles.switch} labelClassName={styles.label}/>
       </div>
-      <Button styleType={['gradient', 'phoneWide']}  className={styles.saveButton}>Сохранить</Button>
+      <Button styleType={['gradient', 'phoneWide']}  className={styles.saveButton}>{t('save')}</Button>
     </Form>
   </FormikProvider>
 

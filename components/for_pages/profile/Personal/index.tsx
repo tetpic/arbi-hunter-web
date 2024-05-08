@@ -2,11 +2,9 @@ import styles from './index.module.scss'
 import { useState } from 'react'
 import ChangePassword from '../../settings/Password'
 import PersonalInformation from '../../settings/PersonalInformation'
-// import Rooms from './Rooms'
-// import Buildings from './Buildings'
-import { useUserContext } from 'context/user_state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
-// import { ProfileType } from 'data/interfaces/IRegistration'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -15,20 +13,20 @@ enum PersonalNavigation {
   Password = 'password'
 }
 
-function translatePersonalNavigation(p: PersonalNavigation) {
+function translatePersonalNavigation(p: PersonalNavigation, t: Translate) {
   switch(p) {
     case PersonalNavigation.Personal:
-      return 'Личная информация'
+      return t('personal_personalInfo')
     case PersonalNavigation.Password: 
-      return 'Изменить пароль'
+      return t('personal_changePassword')
   }
 }
 
 export default function Personal() {
-  const userContext = useUserContext()
+  const {t} = useTranslation()
 
   const [activeItem, setActiveItem] = useState<PersonalNavigation>(PersonalNavigation.Personal)
-  const items = Object.values(PersonalNavigation).map(el=> {return {name: translatePersonalNavigation(el), type: el}})
+  const items = Object.values(PersonalNavigation).map(el=> {return {name: translatePersonalNavigation(el, t), type: el}})
 
   return (
     <div className={styles.root}> 

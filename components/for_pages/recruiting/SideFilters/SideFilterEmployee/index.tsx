@@ -140,7 +140,7 @@ export default function SideFilterEmployee(props: Props) {
     <FormikProvider value={formik}>
       <Form>
         <p className={styles.fieldTitle}>
-          <span>Специализации </span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_specializations')} </span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <CheckboxListField 
         rootClass={styles.radioField}
@@ -157,27 +157,27 @@ export default function SideFilterEmployee(props: Props) {
         <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
         onClick={openSpecModal}
         >
-          Выбрать еще
+          {t('filters_chooseMore')}
         </P>
         <div className={styles.divider}></div>
 
 
         <p className={styles.fieldTitle}>
-          <span>Исключить слова</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_excludeWords')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
-        <InputField styleType={'default'} color={'white'} name={'exclude'} placeholder='Исключить слова'/>
+        <InputField styleType={'default'} color={'white'} name={'exclude'} placeholder={t('filters_excludeWords')}/>
         <div className={styles.divider}></div>
 
 
         <p className={styles.fieldTitle}>
-          <span>Уровень дохода</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_incomeLevel')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <div className={styles.inputsWrapper}>
           <InputField 
           styleType={'hidden'} 
           color={'white'} 
           name={'salaryMax'}
-          label='от'
+          label={t('from')}
           labelType={'static'}
           />
           <span>-</span>
@@ -185,7 +185,7 @@ export default function SideFilterEmployee(props: Props) {
           styleType={'hidden'} 
           color={'white'} 
           name={'salaryMin'}
-          label='до'
+          label={t('to')}
           labelType={'static'}
           />
         </div>
@@ -199,7 +199,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
         <p className={styles.fieldTitle}>
-          <span>Вертикаль</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+          <span>{t('filters_vertical')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
         </p>
         <CheckboxListField 
         name={'verticals'} 
@@ -223,7 +223,7 @@ export default function SideFilterEmployee(props: Props) {
           <P styleType={['medium', 'w500', 'blue']} className={styles.addFilters}
           onClick={()=> setShowMore(true)}
           >
-            Показать еще фильтры <ChevronDownSvg/>
+            {t('filters_showMoreFilters')} <ChevronDownSvg/>
           </P>
         </>
         }
@@ -232,7 +232,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-            <span>Страна</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+            <span>{t('country')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
           </p>
           <CheckboxListField 
           rootClass={styles.radioField}
@@ -244,13 +244,13 @@ export default function SideFilterEmployee(props: Props) {
           <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
           onClick={openCountryModal}
           >
-            Выбрать еще
+            {t('filters_chooseMore')}
           </P>
           <div className={styles.divider}></div>
         
           {formik.values.countries && formik.values.countries.length > 0 && <>
             <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-              <span>Город</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+              <span>{t('city')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
             </p>
             <CheckboxListField 
             rootClass={styles.radioField}
@@ -262,13 +262,13 @@ export default function SideFilterEmployee(props: Props) {
             <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
             onClick={openCityModal}
             >
-              Выбрать еще
+              {t('filters_chooseMore')}
             </P>
             <div className={styles.divider}></div>
           </>}
 
           <p className={styles.fieldTitle} >
-            <span>Источники</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+            <span>{t('filters_sourcesAlt')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
           </p>
           <CheckboxListField 
           name={'sources'} 
@@ -286,7 +286,7 @@ export default function SideFilterEmployee(props: Props) {
           <div className={styles.divider}></div>
 
           <p className={styles.fieldTitle} >
-            <span>Гео</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+            <span>{t('filters_geos')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
           </p>
           <CheckboxListField 
           name={'geos'} 
@@ -304,7 +304,7 @@ export default function SideFilterEmployee(props: Props) {
           <div className={styles.divider}></div>
 
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            <span>Требуемый опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+            <span>{t('filters_workExperience')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
           </p>
           <CheckboxListField 
           name={'experience'} 
@@ -316,7 +316,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            <span>Тип занятости</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+            <span>{t('filters_employmentType')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
           </p>
           <CheckboxListField 
           rootClass={styles.radioField}
@@ -331,7 +331,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            <span>График работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+            <span>{t('filters_schedule')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
           </p>
           <CheckboxListField 
           rootClass={styles.radioField}
@@ -346,13 +346,13 @@ export default function SideFilterEmployee(props: Props) {
           <div className={styles.divider}></div>
 
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            <span>Время публикации</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+            <span>{t('filters_publishedAt')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
           </p>
           <RadioListField 
             name={'forLastNumberOfDays'}
             rootClass={styles.radioField}
             options={[
-              {value: null, label: 'Все время'},
+              {value: null, label: t('allTheTime')},
               ...periods.map(el=>{
                 return {value: el.value, label: el.name}
               })         
@@ -370,7 +370,7 @@ export default function SideFilterEmployee(props: Props) {
     onClick={formik.handleReset}
     className={styles.resetButton}
     >
-      Сбросить всё
+      {t('filters_clearAll')}
     </Button>
 
   </div>)

@@ -6,12 +6,13 @@ import VacancyItem from 'components/ui/VacancyItem'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import Spinner from 'components/ui/Spinner'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function SavedVacancies(props: Props) {
-
+  const {t} = useTranslation()
   const vacancyContext = useVacancyContext()
   const [load, setLoading] = useState<boolean>(true)
   
@@ -36,7 +37,7 @@ export default function SavedVacancies(props: Props) {
         ||
         load && <Spinner size={24}/>
         ||
-        <P useThemeColor className='empty'>Нет сохранённых вакансий</P>
+        <P useThemeColor className='empty'>{t('profile_noSavedVacancies')}</P>
       }
     </div>
   </div>)

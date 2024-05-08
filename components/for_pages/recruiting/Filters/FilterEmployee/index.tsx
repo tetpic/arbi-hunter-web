@@ -182,7 +182,7 @@ export default function FilterEmployee(props: Props) {
       return  {value: el as ScheduleType, label: TranslateScheduleType(el as ScheduleType, t)}
     }),
     forLastNumbersOfDays: [
-      {value: null, label: 'Все время'},
+      {value: null, label: t('allTheTime')},
       ...periods.map(el=>{
         return {value: el.value, label: el.name}
       })         
@@ -246,7 +246,7 @@ export default function FilterEmployee(props: Props) {
       <Form className={styles.form}>
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Ключевые слова:
+            {t('filters_keywords')}
           </p>
           <div className={styles.itemContent}>
             <InputField               
@@ -289,7 +289,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
-            Исключить слова:
+            {t('filters_eliminateWords')}
           </p>
           <div className={styles.itemContent}>
             <InputField               
@@ -297,7 +297,7 @@ export default function FilterEmployee(props: Props) {
             styleType={'default'} 
             color={'default'} 
             name={'exclude'}
-            placeholder='Исключить слова'
+            placeholder={t('filters_eliminateWords')}
             suffix={<CrossSvg onClick={() => formik.setFieldValue('exclude', '')}/>}
             />
           </div>
@@ -305,7 +305,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle}>
-            Уровень дохода:
+            {t('filters_incomeLevel')}
           </p>
           <div className={styles.itemContent}>
             <div className={styles.inputsWrapper}>
@@ -316,11 +316,11 @@ export default function FilterEmployee(props: Props) {
               styleType={'default'} 
               color={'default'} 
               name={'salaryMin'} 
-              label={'oт'} 
+              label={t('from')} 
               labelType={'static'}
               labelClassName={styles.label}
               priceFormatting
-              error='Одно из полей должно быть заполнено'
+              error={t('create_oneOfFieldsMustBeFilled')}
               suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
               />
               <span> – </span>
@@ -333,9 +333,9 @@ export default function FilterEmployee(props: Props) {
               styleType={'default'} 
               color={'default'} 
               name={'salaryMax'} 
-              label={'до'} 
+              label={t('to')} 
               priceFormatting
-              error='Одно из полей должно быть заполнено'
+              error={t('create_oneOfFieldsMustBeFilled')}
               suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
               />
             </div>
@@ -358,7 +358,7 @@ export default function FilterEmployee(props: Props) {
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>Вертикали</p>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSourcesModal({type: 'verticals'})}>{t('filters_verticals')}</p>
           <div className={styles.itemContent}>
             {creationContext.helpObjects?.activeVerticals?.size > 0 && creationContext.helpObjects && 
               [...creationContext.helpObjects?.activeVerticals?.entries()]
@@ -371,7 +371,7 @@ export default function FilterEmployee(props: Props) {
               styleType={['medium', 'w500', 'underlined', 'blue']}
               onClick={()=>openSourcesModal({type: 'verticals'})}              
               >
-                Добавить вертикали
+                {t('filters_addVerticals')}
               </P>             
             }
           </div>
@@ -385,7 +385,7 @@ export default function FilterEmployee(props: Props) {
           <div className={styles.itemContent}>
           {creationContext.activeSubCategory?.length === 0 && 
             <P styleType={['medium', 'w500']} useThemeColor>
-              Любая
+              {t('filters_any')}
             </P>
           }
           {creationContext.activeSubCategory?.length > 0 &&
@@ -479,7 +479,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-            <span>Опыт работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
+            <span>{t('filters_experience')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>*/}
           </p>
           {isTabletWidth && 
             <TagsRadioList 
@@ -498,7 +498,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-            Тип занятости
+            {t('filters_employmentType')}
           </p>
           {isTabletWidth &&
             <TagsRadioList 
@@ -517,7 +517,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 4 ? null : 4)}>
-            <span>График работы</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
+            <span>{t('filters_schedule')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 4&&styles.active}/>*/}
           </p>
           {isTabletWidth &&
             <TagsRadioList 
@@ -537,7 +537,7 @@ export default function FilterEmployee(props: Props) {
 
         <div className={styles.item}>
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 1 ? null : 1)}>
-            <span>Время публикации</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
+            <span>{t('filters_publishedAt')}</span> {/*isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 1&&styles.active}/>*/}
           </p>
           {isTabletWidth &&
             <TagsRadioList 
@@ -562,14 +562,14 @@ export default function FilterEmployee(props: Props) {
       onClick={resetAll}
       className={styles.resetButton}
       >
-        Сбросить всё
+        {t('filters_clearAll')}
       </Button>
 
       <Button
       styleType={['gradient']}
       onClick={()=>props.onFilterChange(formik.values)}
       >
-        Найти
+        {t('searchAlt')}
       </Button>
     </div>
   </div>)

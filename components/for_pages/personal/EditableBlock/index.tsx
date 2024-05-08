@@ -103,7 +103,6 @@ export default function EditableBlock(props: Props) {
         <div className={styles.bannerOverlay}  style={{gridArea: props.block.layout?.[0][0]}}>
           <HtmlText text={props.block.text}/>
         </div>
-
       </div>
     }
     {props.block.type === PersonalBlockType.Columns &&
@@ -228,14 +227,18 @@ export default function EditableBlock(props: Props) {
       </SwiperList>
     </>}
 
-    {props.assets.length > 0 && props.block.type === PersonalBlockType.Video &&
+    {props.block.type === PersonalBlockType.Separator && 
+      <div className={styles.separator}></div>
+    }
+
+    {props.block.type === PersonalBlockType.Video&&props.assets?.length > 0 &&
       props.assets.map(el=>
         <div className={classNames(styles.video, styles.withMobilePadding)}>
           <ReactPlayer width={'100%'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
       ||
-      props.assets.length === 0 && props.block.type === PersonalBlockType.Video &&
+      props.block.type === PersonalBlockType.Video && props.assets.length === 0 && 
       <div className={classNames(styles.video, styles.withMobilePadding)}>
         <ReactPlayer width={'100%'} height={'100%'}   muted loop  url={props.block.title}  controls />
       </div>

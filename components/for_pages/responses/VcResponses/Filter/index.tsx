@@ -14,6 +14,7 @@ import { AppTheme, ProposalRequestType} from 'types/enums'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -32,6 +33,7 @@ export default function ResponsesFilter(props: Props) {
   const [switcherLoading, setSwitcherLoading] = useState<boolean>(false)
   const dropdownRef = useRef(null!)
   const [isDropDownOpen, setDropDownOpen] = useDetectOutsideClick(dropdownRef, false)
+  const {t} = useTranslation()
 
 
   const onlyNewHandler = (value?: FilterItem) => {
@@ -75,7 +77,7 @@ export default function ResponsesFilter(props: Props) {
         if(key === FilterItems.New) {
           return (
             <div key={index} className={styles.item} onClick={()=>onlyNewHandler(value)} >
-              <P styleType={['medium', 'w500']} className={styles.item} useThemeColor>Только новые</P>
+              <P styleType={['medium', 'w500']} className={styles.item} useThemeColor>{t('responses_onlyNew')}</P>
               <div className={classnames(styles.switcher, switcher&&styles.switcher_active)}>
                 <div className={styles.roller}>
                   {switcherLoading&&<Spinner size={20} color={colors.red} secondaryColor={colors.blue}/>}

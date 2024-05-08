@@ -16,6 +16,8 @@ import { useVacancyContext } from 'context/vacancy_state'
 import P from '@/components/ui/P'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { ICV } from 'data/interfaces/ICV'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   id?: number
@@ -34,21 +36,21 @@ export interface NavSet {
   count?: string
 }
 
-const TranslateVCNavigation = (v: VCNaviagation) =>{
+const TranslateVCNavigation = (v: VCNaviagation, t: Translate) =>{
   switch(v) {
     case VCNaviagation.All: 
-    return 'Все отклики'
+    return t('profile_feedbacks_all')
     case VCNaviagation.Interview: 
-    return 'Приглашение'
+    return t('profile_feedbacks_invite')
     case VCNaviagation.Applied:
-    return 'Неразобранные'
+    return t('chatFilterModal_unsorted')
     case VCNaviagation.Rejection:
-    return 'Отказ'
+    return t('profile_feedbacks_reject')
   }
 }
 
 export default function VCFeedbacks(props: Props) {  
-  
+  const {t} = useTranslation()
   const responsesContext = useFeedbacksContext()
   const appContext = useAppContext()
   const vacancyContext = useVacancyContext()
@@ -64,7 +66,7 @@ export default function VCFeedbacks(props: Props) {
   const navigationSet = (stats: IStat[]) => {
     let res = Object.values(VCNaviagation).map((el)=> {
       const count = stats.find(s=> s.status === (el===VCNaviagation.Rejection?ApplicationStatus.Rejected:el===VCNaviagation.Applied?ApplicationStatus.Applied:ApplicationStatus.Accepted))
-      return {name: TranslateVCNavigation(el), type: el, count: (el !== VCNaviagation.All ? count?.count||'0' : responsesContext?.VCFeedbacks?.size).toString()}
+      return {name: TranslateVCNavigation(el, t), type: el, count: (el !== VCNaviagation.All ? count?.count||'0' : responsesContext?.VCFeedbacks?.size).toString()}
     })
     setNavSet(res)
     setLoading(false)
@@ -141,15 +143,15 @@ export default function VCFeedbacks(props: Props) {
   return (<div className={styles.root}> 
   <div className={styles.main}>
     {
-      ((isTabletWidth&&showNav)||!isTabletWidth)&&<Title onBackClick={()=>router.back()} title='Отклики' className={styles.title}/>
+      ((isTabletWidth&&showNav)||!isTabletWidth)&&<Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>
       ||
-      isTabletWidth&&!showNav&&<Title className={styles.title} title={TranslateVCNavigation(currentPage)} onBackClick={responsesContext.filteredVcResponses.length > 0?()=>setShowNav(true):()=>{router.back()}}/>
+      isTabletWidth&&!showNav&&<Title className={styles.title} title={TranslateVCNavigation(currentPage, t)} onBackClick={responsesContext.filteredVcResponses.length > 0?()=>setShowNav(true):()=>{router.back()}}/>
     }
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
       {isTabletWidth
-      ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?'Фильтры':'Фильтр'} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
+      ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?t('filters'):t('filter')} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
       :<ResponsesFilter />
       }
       {
@@ -160,7 +162,7 @@ export default function VCFeedbacks(props: Props) {
         ||
         loading && <Spinner size={24} />
         ||
-        <P useThemeColor className={'empty'}>Нет откликов</P>
+        <P useThemeColor className={'empty'}>{t('profile_feedbacks_noFeed')}</P>
       }
       </>
     }

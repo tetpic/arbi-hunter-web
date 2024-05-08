@@ -20,8 +20,9 @@ import ChevronDownSvg from '@/components/svg/ChevronDownSvg'
 import { useLocationContext } from 'context/location_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { ICityModalArgs } from '@/components/modals/CityModal'
-import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   onFilterChange: (data: IVacancyCvSearchParams) => void
@@ -129,7 +130,7 @@ export default function SideFilterHirer(props: Props) {
     <FormikProvider value={formik}>
       <Form>
         <p className={styles.fieldTitle}>
-          <span>Специализации </span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_specializations')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
@@ -148,31 +149,30 @@ export default function SideFilterHirer(props: Props) {
         <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
         onClick={openSpecModal}
         >
-          Выбрать еще
+          {t('filters_chooseMore')}
         </P>
 
         <div className={styles.divider}></div>
 
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Статус поиска</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_vacancyLookType')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'vacancyLookType'} 
-          options={[
-            {value: VacancyLookType.ActivelyLooking, label: 'В активном поиске'},
-            {value: VacancyLookType.PassivelyLooking, label: 'Рассматривает предложения'},
-            {value: VacancyLookType.NotLooking, label: 'Не рассматривает предложения'},
-          ]}/>
+          options={Object.values(VacancyLookType).map(el => {
+              return {value: el, label: TranslateVacancyLookType(el, ProfileType.Hirer, t)}
+            })
+          }/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
 
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Страна</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('country')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
@@ -186,13 +186,13 @@ export default function SideFilterHirer(props: Props) {
         <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
         onClick={openCountryModal}
         >
-          Выбрать еще
+          {t('filters_chooseMore')}
         </P>
 
         <div className={styles.divider}></div>
         
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-            <span>Город</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+            <span>{t('city')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
           </p>
           <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
             <CheckboxListField 
@@ -207,21 +207,21 @@ export default function SideFilterHirer(props: Props) {
           <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
           onClick={openCityModal}
           >
-            Выбрать еще
+            {t('filters_chooseMore')}
           </P>
           <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Переезд</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('relocation')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'relocation'} 
           options={[
-            {value: Answer.Yes, label: 'Живут или готовы переехать в регион'},
-            {value: Answer.No, label: 'Не готовы к переезду'},
-            {value: null, label: 'Не имеет значения'},
+            {value: Answer.Yes, label: t('filters_relocationYes')},
+            {value: Answer.No, label: t('filters_relocationNo')},
+            {value: null, label: t('filters_whatEver')},
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -234,23 +234,23 @@ export default function SideFilterHirer(props: Props) {
           <P styleType={['medium', 'w500', 'blue']} className={styles.addFilters}
           onClick={()=> setShowMore(true)}
           >
-            Показать еще фильтры <ChevronDownSvg/>
+            {t('filters_showMoreFilters')} <ChevronDownSvg/>
           </P>
         </>
         }
 
         {showMore && <>
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Пол</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('gender')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'gender'} 
           options={[
-            {value: Genders.Female, label: 'Жен'},
-            {value: Genders.Male, label: 'Муж'},
-            {value: null, label: 'Не имеет значения'},
+            {value: Genders.Female, label: t('gender_femaleShort')},
+            {value: Genders.Male, label: t('gender_maleShort')},
+            {value: null, label: t('filters_whatEver')},
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -258,7 +258,7 @@ export default function SideFilterHirer(props: Props) {
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>Возраст</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('age')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <div className={styles.inputsWrapper}>
           <InputField  
@@ -268,11 +268,11 @@ export default function SideFilterHirer(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'ageMin'} 
-          label={'от'} 
+          label={t('from')} 
           labelType={'static'}
           labelClassName={styles.label}
           priceFormatting
-          error='Одно из полей должно быть заполнено'
+          error={t('create_oneOfFieldsMustBeFilled')}
           />
           <span> – </span>
           <InputField  
@@ -284,43 +284,39 @@ export default function SideFilterHirer(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'ageMax'} 
-          label={'до'} 
+          label={t('to')} 
           priceFormatting
-          error='Одно из полей должно быть заполнено'
+          error={t('create_oneOfFieldsMustBeFilled')}
           />
         </div>
 
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-          <span>Тип занятости</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+          <span>{t('filters_employmentType')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'employment'} 
-          options={[
-            {value: EmploymentType.FullTime, label: TranslateEmploymentType(EmploymentType.FullTime, t, true)},
-            {value: EmploymentType.PartTime, label: TranslateEmploymentType(EmploymentType.PartTime, t, true)},
-            {value: EmploymentType.Project, label: TranslateEmploymentType(EmploymentType.Project, t, true)}
-          ]}/>
+          options={
+            Object.values(EmploymentType).map((el) => {return {label: TranslateEmploymentType(el, t, true), value: el}})
+          }/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
 
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 3 ? null : 3)}>
-          <span>График работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+          <span>{t('filters_schedule')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'schedule'} 
-          options={[
-            {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
-            {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
-            {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
-          ]} 
+          options={
+            Object.values(ScheduleType).map((el) => {return {label: TranslateScheduleType(el, t), value: el}})
+          } 
           />
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -328,7 +324,7 @@ export default function SideFilterHirer(props: Props) {
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 5 ? null : 5)}>
-          <span>Опыт работы</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
+          <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 5&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 5} disabled={!isTabletWidth}>
           <CheckboxListField 
@@ -342,7 +338,7 @@ export default function SideFilterHirer(props: Props) {
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} >
-          <span>Источники</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+          <span>{t('filters_sourcesAlt')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 5} disabled={!isTabletWidth}>
           <CheckboxListField 
@@ -363,7 +359,7 @@ export default function SideFilterHirer(props: Props) {
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle}>
-          <span>Вертикали</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
+          <span>{t('filters_verticals')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 3&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 5} disabled={!isTabletWidth}>
           <CheckboxListField 
@@ -390,7 +386,7 @@ export default function SideFilterHirer(props: Props) {
     onClick={formik.handleReset}
     className={styles.resetButton}
     >
-      Сбросить всё
+      {t('filters_clearAll')}
     </Button>
 
   </div>)

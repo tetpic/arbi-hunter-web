@@ -10,7 +10,6 @@ import classNames from 'classnames'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useEffect, useRef, useState } from 'react'
-import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import { ApplicationStatus, ModalType, Preset, ProposalRequestType, SnackbarType } from 'types/enums'
@@ -23,6 +22,7 @@ import { getUserImageSource } from 'utils/helpers'
 import ChatRepository from 'data/repositories/ChatRepository'
 import P from '@/components/ui/P'
 import { IApplication } from 'data/interfaces/IApplication'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vc: IVacancy
@@ -36,14 +36,16 @@ interface Props {
 export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {
   const appContext = useAppContext()
   const router = useRouter()
-  const {isTabletWidth} = useResize()
+  const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const [chatId, setChatId] = useState<number>()
 
+
   const rejectHandler = async(deletedByEmployee?: boolean) => {
     if(!item.id) {
-      appContext.showSnackbar('Отклик некорректен. Действия невозможны', SnackbarType.error)
+      appContext.showSnackbar(t('profile_wrongApplication'), SnackbarType.error)
       openDropDown(false)
       return
     }
@@ -55,7 +57,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       onRemove(item.id)
     }
     catch(err) {
-      appContext.showSnackbar('Приглашение не найдено', SnackbarType.error)
+      appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
     }
     openDropDown(false)
   }
@@ -66,12 +68,12 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       {isTabletWidth &&
         <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
       }
-      <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>Удалить</P>
+      <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
       {(item?.status === ApplicationStatus.Accepted||item?.type === ProposalRequestType.Interview) && 
-        <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</P>
+        <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
       }
       {isTabletWidth &&
-        <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</P>
+        <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>
       }
 
   </div>)
@@ -99,7 +101,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc?.profile, Preset.smallIconCrop)}/>
       <P styleType={['w600','large']} useThemeColor className={styles.company}>{vc.company||vc.contactName}</P>
       {(vc.isRemote || vc.city) &&
-        <P className={styles.city}>{vc.isRemote?'Удаленно': vc.city&&`г. ${vc.city?.locName}`}</P>
+        <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`г. ${vc.city?.locName}`}</P>
       }
       <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.heartButton}/>
       {!isTabletWidth &&
@@ -127,7 +129,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       onClick={(e)=> {
         e.stopPropagation();
         (item.chat[0]||chatId)&&router.push(`/messenger?chat=${item.chat[0]?.id||chatId}`)
-      }}>Перейти в чат</Button>
+      }}>{t('goToChat')}</Button>
       // ||
       // <Button className={styles.button} >Откликнуться</Button>
       }
