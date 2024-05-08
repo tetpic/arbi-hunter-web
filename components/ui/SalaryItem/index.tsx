@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 import { ICV } from 'data/interfaces/ICV'
 import Formatter from 'utils/formatter'
 import P from '../P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy?: IVacancy
@@ -14,7 +15,8 @@ interface Props {
 }
 
 export default function SalaryItem({vacancy, cv, ...props}: Props) {
-  const salary = cv&&(Formatter.formatNumber(Number(cv?.salary)) + ' ' + TranslateCurrency(cv?.currency))||vacancy&&[vacancy?.salaryMin&&('от '+ Formatter.formatNumber(vacancy?.salaryMin) + TranslateCurrency(vacancy?.currency)), vacancy?.salaryMax&&('до '+Formatter.formatNumber(vacancy?.salaryMax) + TranslateCurrency(vacancy?.currency))].filter(Boolean).join(' ')
+  const {t} = useTranslation()
+  const salary = cv&&(Formatter.formatNumber(Number(cv?.salary)) + ' ' + TranslateCurrency(cv?.currency))||vacancy&&[vacancy?.salaryMin&&(t('from')+ ' '+ Formatter.formatNumber(vacancy?.salaryMin) + TranslateCurrency(vacancy?.currency)), vacancy?.salaryMax&&(t('to')+ ' '+ Formatter.formatNumber(vacancy?.salaryMax) + TranslateCurrency(vacancy?.currency))].filter(Boolean).join(' ')
   const compensation = vacancy?.compensation||cv?.compensation
   const currency = vacancy?.currency||cv?.currency
   const commission = vacancy?.commission||cv?.commission
@@ -48,7 +50,7 @@ export default function SalaryItem({vacancy, cv, ...props}: Props) {
   // </>
   // ||
   compensation === CompensationType.Contract &&  
-  <span> {TranslateCompensationType(compensation)}</span>
+  <span> {TranslateCompensationType(compensation, t)}</span>
   ||
   <>
   {/* {image} */}

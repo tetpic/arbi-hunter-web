@@ -9,6 +9,7 @@ import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   chats: IChat[]
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function Chats(props: Props) {
+  const {t} = useTranslation()
   const chatsRef = useRef<HTMLDivElement>(null!)
   const [page, pager] = useState<string>('__all__')
   const chatContext = useChatContext()
@@ -26,7 +28,7 @@ export default function Chats(props: Props) {
 
   const itemsNav = [
     //__all__ если кому-то взбредет назвать папку all
-    {name: 'Все чаты', type: '__all__'},
+    {name: t('chat_allChats'), type: '__all__'},
     ...folders?.map(el=> {return {name: el.name, type: el.name}})
   ]
 
@@ -60,7 +62,7 @@ export default function Chats(props: Props) {
           })
           ||
           chatContext.totalChats === 0 && props.chats.length === 0 && !chatContext.loading &&
-          <P styleType={['medium', 'w500']} className={styles.empty}>Чатов не найдено</P>
+          <P styleType={['medium', 'w500']} className={styles.empty}>{t('chat_notFound')}</P>
           ||
           <Spinner size={32} color={colors.blue}/>
         }

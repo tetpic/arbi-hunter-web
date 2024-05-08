@@ -25,6 +25,7 @@ import classNames from 'classnames'
 import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { IChatsFolderModalProps } from 'components/modals/ChatsFolderModal'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onBack?: () => void
@@ -139,7 +140,7 @@ function FolderEditor(props: Props) {
                 <div className={styles.item}>
                   <UserPic size={32}/>
                   <p className={styles.name}>{collocutor.firstName} {collocutor.lastName}</p>
-                  <Button type='button' className={styles.removeButton} onClick={()=>removeChatFromlist(chat)}>{isTabletWidth?'Удалить':<TrashBasketSvg/>}</Button>
+                  <Button type='button' className={styles.removeButton} onClick={()=>removeChatFromlist(chat)}>{isTabletWidth?t('delete'):<TrashBasketSvg/>}</Button>
                 </div>
               </div>
             )
@@ -156,6 +157,7 @@ function FolderEditor(props: Props) {
 }
 
 export default function FolderManager() {
+  const {t} = useTranslation()
   const chatContext = useChatContext()
   const {isTabletWidth} = useResize()
   const [creationMode, setCreationMode] = useState<boolean>(false)
@@ -178,11 +180,20 @@ export default function FolderManager() {
             onClick={creationMode
               ?()=>{setCreationMode(false)}
               :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} bgColor={'transparent'}/>
-            <Title title={'Папки с чатами'}/>
-            <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?'Готово': 'Изм.'}</p>
+            <Title title={t('chat_folders')}/>
+            <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?t('chat_ready'): t('chat_folders_edit')}</p>
           </>
             ||
-            <BackTextButton className={styles.backButton} onClick={creationMode?()=>setCreationMode(false):()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} />
+            <BackTextButton 
+            className={styles.backButton} 
+            onClick={creationMode
+              ?()=>setCreationMode(false)
+              :()=>chatContext.setComponent([
+                {component: ChatComponent.Folder, active: false}, 
+                {component: ChatComponent.Chat, active: true}, 
+                {component: ChatComponent.Dialog, active: true}]
+              )
+            } />
           }
         </div>
       }
@@ -190,11 +201,11 @@ export default function FolderManager() {
           <div className={styles.imageWrapper}>
             <Image src={folderImage} alt={'folder image'} width={186} height={150} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
           </div>
-          <p className={styles.tip}>Вы можете создать папки с нужными чатами и переключаться между ними.</p>
+          <p className={styles.tip}>{t('chat_folder_creationInfo')}</p>
         </>}
         {chatContext.folders&& chatContext.folders.size>0 && !creationMode &&
           <div className={styles.folderWrapper}>
-            <p className={styles.folderTitle}>ВСЕ ПАПКИ</p>
+            <p className={styles.folderTitle}>{t('chat_folder_allFolders')}</p>
             {[...chatContext.folders.values()].map(folder => {
               return (
                 <div 
@@ -204,7 +215,7 @@ export default function FolderManager() {
                   setFolderToEdit(folder)
                 }}
                 >
-                  <p>{folder.name}</p>
+                  <P styleType={['medium','w500']} useThemeColor >{folder.name}</P>
                   <Button 
                   type='button' 
                   stopPropagation 
@@ -226,7 +237,7 @@ export default function FolderManager() {
         }
         {!creationMode && 
           <Button className={styles.createBtn} onClick={()=>setCreationMode(true)}> 
-            <p><PlusSvg/><span>Создать новую папку</span></p>
+            <p><PlusSvg/><span>{t('chat_folderCreate')}</span></p>
           </Button>
         }
   </div>)

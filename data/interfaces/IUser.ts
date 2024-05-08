@@ -1,4 +1,4 @@
-import { ActivityStatus, HirerRole, HirerRolePermission, Languages, VacancyLookType } from 'types/enums'
+import { ActivityStatus, HirerRole, HirerRolePermission, InterfaceLanguage, Languages, VacancyLookType } from 'types/enums'
 import { IFile, TimeStamp } from './Common'
 import { IGeoName } from './ILocation'
 import { ProfileType } from './IRegistration'
@@ -70,7 +70,7 @@ export interface IUser extends TimeStamp {
   name: string
   id: number,
   phone: string,
-  language: Languages,
+  language: InterfaceLanguage,
   email: string|null,
   regType: string,//'site' - add enums
   socialId: null,

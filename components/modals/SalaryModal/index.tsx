@@ -95,7 +95,7 @@ export default function SalaryModal(props: Props) {
     <CheckboxField 
     itemClassName={styles.radioField} 
     name={'compensation'} 
-    label={TranslateCompensationType(CompensationType.Contract)} 
+    label={TranslateCompensationType(CompensationType.Contract, t)} 
     value={CompensationType.Contract} 
     />
 

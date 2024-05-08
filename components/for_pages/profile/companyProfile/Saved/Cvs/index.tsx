@@ -6,12 +6,13 @@ import { ICV } from 'data/interfaces/ICV'
 import Spinner from 'components/ui/Spinner'
 import Spacer from 'components/ui/Spacer'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 export default function SavedCVs() {
-
+  const {t} = useTranslation()
   const cvContext = useCvContext()
   const [load, setLoading ] = useState<boolean>(true)
 
@@ -35,7 +36,7 @@ export default function SavedCVs() {
         ||
         load && <Spinner size={24}/>
         ||
-        <P useThemeColor className='empty'>Нет сохраненных резюме</P>
+        <P useThemeColor className='empty'>{t('profile_noSavedCvs')}</P>
         }
       </div>
       <Spacer basis={24}/>

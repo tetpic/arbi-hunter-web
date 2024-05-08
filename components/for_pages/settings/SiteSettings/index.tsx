@@ -14,6 +14,7 @@ import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import Cookies from 'js-cookie'
 import setLanguage from 'next-translate/setLanguage'
 import useTranslation from 'next-translate/useTranslation'
+import UserRepository from 'data/repositories/UserRepository'
 
 interface Props {
 }
@@ -37,6 +38,10 @@ export default function SiteSettings(props: Props) {
     Cookies.set('NEXT_LOCALE', data.language, {path: '/'})
     setLanguage(data.language, false)
     userContext.editCurrentProfile({countryId: data.countryId, cityId: data.cityId})
+    UserRepository.editCurrentUser({language: data.language})
+    .then(user => {
+      userContext.updateUser(user)
+    })
   }
 
   const formik = useFormik<SiteSettings>({
@@ -75,14 +80,14 @@ export default function SiteSettings(props: Props) {
           onSetOption={countryHandler} 
           name={'countryName'} 
           value = {userContext?.currentProfile?.country?.locName}
-          labelName={'Страна:'}
+          labelName={t('country')}
           requestFn={LocationRepository.searchCountry} 
           />
           <LocationDropDownInput
           onSetOption={cityHandler} 
           name={'cityName'} 
           value = {userContext?.currentProfile?.city?.locName}
-          labelName={'Город:'}
+          labelName={t('city')}
           requestFn={() => LocationRepository.searchCity({country: currentCountryCode})} 
           />
           

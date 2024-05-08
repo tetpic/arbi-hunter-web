@@ -9,7 +9,6 @@ import MessageReadSvg from 'components/svg/MessageReadSvg'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import AudioNode from './AudioNode'
-import { useResize } from 'components/hooks/useResize'
 import { useAppContext } from 'context/state'
 import { IApplication } from 'data/interfaces/IApplication'
 import Spacer from 'components/ui/Spacer'
@@ -18,6 +17,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
 import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   profileId: number
@@ -27,8 +27,9 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
-  const {isPhoneWidth} = useResize()
+  const {t} = useTranslation()
   const appContext = useAppContext()
+  const {isPhoneWidth} = appContext.size
   const userContext = useUserContext()
   const profileType = userContext?.currentProfile?.profileType
 
@@ -106,7 +107,7 @@ export default function MessageFactory(props: Props) {
   const proposalMessage = (<>
     {msg?.proposal?.coverLetter &&
       <div className={side} key={props.message.id}>
-        <p className={styles.message}>Отклик на резюме</p>
+        <p className={styles.message}>{t('chat_cvApplication')}</p>
         <Spacer basis={8} />
         <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
         {stats}

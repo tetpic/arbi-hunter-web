@@ -63,7 +63,6 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
 
 
   const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
-    <div className={styles.topOptions}>
       {isTabletWidth &&
         <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
       }
@@ -71,10 +70,10 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       {(item?.status === ApplicationStatus.Accepted||item?.type === ProposalRequestType.Interview) && 
         <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>Отказаться</P>
       }
-    </div>
-    {isTabletWidth &&
-      <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</P>
-    }
+      {isTabletWidth &&
+        <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>Отмена</P>
+      }
+
   </div>)
 
   const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {

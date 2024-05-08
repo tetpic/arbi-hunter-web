@@ -6,6 +6,7 @@ import { useMediaContext } from 'context/media_state'
 import { periods } from 'utils/commonObjects'
 import { useEffect } from 'react'
 import Spacer from 'components/ui/Spacer'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   category: ICategory
@@ -13,6 +14,7 @@ interface Props {
 
 export default function NewsByCategories(props: Props) {
   const mediaContext = useMediaContext()
+  const {t} = useTranslation()
 
   useEffect(()=>{
     mediaContext.setSearchParams({activeCategories: [props.category.id]})
@@ -25,7 +27,7 @@ export default function NewsByCategories(props: Props) {
   return (<>
     <SearchBar 
     className={styles.searchBar} 
-    placeholder='Найти статьи в выбранной категории' 
+    placeholder={t('media_article_findArticles')} 
     periods={periods}
     onSubmit={search}
     />

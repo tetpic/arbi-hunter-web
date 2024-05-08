@@ -1,4 +1,4 @@
-import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, PurchaseType, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
+import { Answer, CategoryType, CompensationType, Currency, EducationTypes, EmploymentType, Genders, InterfaceLanguage, Languages, PurchaseType, ScheduleType, SearchIn, VacancyLookType, WorkExperience } from 'types/enums'
 import { ILanguageKnowledge } from './IJob'
 import { IUser } from './IUser'
 
@@ -57,7 +57,7 @@ export interface CoursesInfo extends TimeLine {
 
 export interface ITranslation extends TimeStamp {
   id: number,
-  languageCode: Languages,
+  languageCode: InterfaceLanguage,
   name: string,
   description: string|null,
   baseId: number

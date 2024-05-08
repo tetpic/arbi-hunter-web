@@ -8,7 +8,7 @@ import 'swiper/css/bundle'
 import Head from 'next/head'
 import 'swiper/css'
 import {CookiesProvider} from 'react-cookie'
-import { AppTheme, CookiesType } from 'types/enums'
+import { AppTheme, CookiesType, InterfaceLanguage } from 'types/enums'
 import Layout from 'components/layout'
 import { AppWrapper } from 'context/state'
 import Snackbar from 'components/layout/Snackbar'
@@ -34,7 +34,8 @@ export interface AppProps extends NextAppProps {
     user?: IUser
     profileType?: ProfileType
     webViewOnly?: boolean
-    theme?: AppTheme
+    theme?: AppTheme,
+    NEXT_LOCALE: InterfaceLanguage
   }
 }
 

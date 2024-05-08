@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, Languages, ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, InterfaceLanguage,  ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -150,7 +150,7 @@ export default function Cv(props: Props) {
     education: props.cv?.education||EducationTypes.Secondary,
     relocation: props.cv?.relocation||Answer.No,
     position: props.cv?.position||'',
-    nativeLanguage: props.cv?.nativeLanguage||userContext.user?.language||Languages.ru,
+    nativeLanguage: props.cv?.nativeLanguage||userContext.user?.language||InterfaceLanguage.Russian,
     categoriesIds: props.cv?.categoriesIds||null,
     sourcesIds: props.cv?.sourcesIds||null,
     geosIds: props.cv?.geosIds||null,

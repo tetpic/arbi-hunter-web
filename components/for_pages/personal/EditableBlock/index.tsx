@@ -231,13 +231,13 @@ export default function EditableBlock(props: Props) {
     {props.assets.length > 0 && props.block.type === PersonalBlockType.Video &&
       props.assets.map(el=>
         <div className={classNames(styles.video, styles.withMobilePadding)}>
-          <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
+          <ReactPlayer width={'100%'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
       ||
       props.assets.length === 0 && props.block.type === PersonalBlockType.Video &&
       <div className={classNames(styles.video, styles.withMobilePadding)}>
-        <ReactPlayer width={'fit-content'} height={'100%'} playing  muted loop  url={props.block.title}  controls/>
+        <ReactPlayer width={'100%'} height={'100%'}   muted loop  url={props.block.title}  controls />
       </div>
     }
     {props.block.type === PersonalBlockType.VideoText &&

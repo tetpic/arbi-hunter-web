@@ -353,7 +353,7 @@ export default function FilterHirer(props: Props) {
             <CheckboxField 
             itemClassName={styles.radioField} 
             name={'compensation'} 
-            label={TranslateCompensationType(CompensationType.Contract)} 
+            label={TranslateCompensationType(CompensationType.Contract, t)} 
             value={CompensationType.Contract} 
             />
           </div>
@@ -362,7 +362,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
             <RemovableItem text={
               formik.values.compensation
-              ?TranslateCompensationType(formik.values.compensation)
+              ?TranslateCompensationType(formik.values.compensation, t)
               :[formik.values.salaryMin && t('fromCapitalized') + ' ' + formik.values.salaryMin, formik.values.salaryMax && t('to') + ' ' + formik.values.salaryMax].filter(Boolean).join(' - ') + ' ' + TranslateCurrency(formik.values.currency)
             }/>
           </div>

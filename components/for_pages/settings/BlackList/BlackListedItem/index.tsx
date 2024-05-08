@@ -8,6 +8,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
 import { ICV } from 'data/interfaces/ICV'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   vacancy?: IVacancy
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function BlackListedItem(props: Props) {
+  const {t} = useTranslation()
 
 
   return (<div className={styles.root}> 
@@ -30,7 +32,7 @@ export default function BlackListedItem(props: Props) {
    {(props.vacancy || props.cv) &&
    <>
     <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.name||props.cv.categories[0]?.name}</P>
-    <P useThemeColor>{getSalary({vacancy: props.vacancy, cv: props.cv})}</P>
+    <P useThemeColor>{getSalary({vacancy: props.vacancy, cv: props.cv}, t)}</P>
    </>
    }
    <Button className={styles.button} onClick={()=>props.onRestore?.()} styleType={['gradient']}>Восстановить</Button>

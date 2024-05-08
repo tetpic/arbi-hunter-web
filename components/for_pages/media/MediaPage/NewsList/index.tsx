@@ -20,6 +20,7 @@ import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { SnackbarType } from 'types/enums'
 import { useAppContext } from 'context/state'
 import { copyToClipboard } from 'utils/helpers'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   className?: string
@@ -34,23 +35,24 @@ export default function NewsList(props: Props) {
   const appContext = useAppContext()
   const mediaContext = useMediaContext() 
   const categories = props.categories
+  const {t} = useTranslation()
 
   const getOptions = (article: IArticle):IOptionList[] => {
     return [
       {
-        title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
+        title: article.isSavedByCurrentProfile?t('media_news_removeFromFavorites'):t('media_news_addToFavorites'), 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
           mediaContext.saveOrRemoveArticle(article)
-          .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
+          .then(_=>appContext.showSnackbar(t('media_news_success'), SnackbarType.success))
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+      {title: t('media_news_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('media_news_linkCopied'), SnackbarType.success)
       }},
-      {title: 'Поделиться',icon: <ShareSvg/>},
-      {title: 'Скрыть',icon: <CloseEyeSvg/>}
+      {title: t('media_news_share'),icon: <ShareSvg/>},
+      {title: t('media_news_hide'),icon: <CloseEyeSvg/>}
     ]
   }
 
@@ -77,8 +79,8 @@ export default function NewsList(props: Props) {
     {!props.hideNav && !mediaContext.loading &&
     <>
       <div className={styles.sort}>
-        <p className={styles.found}>Найдено {mediaContext.total||0} {Formatter.pluralize(mediaContext.total, 'статья', 'статьи', 'статей')}</p>
-        <p className={styles.sortBy}>Сортировать по <SortArrowsSvg/></p>
+        <p className={styles.found}>{t('found2')} {mediaContext.total||0} {Formatter.pluralize(mediaContext.total, t('articlesCounter1'), t('articlesCounter2'), t('articlesCounter3'))}</p>
+        <p className={styles.sortBy}>{t('sortBy')} <SortArrowsSvg/></p>
       </div>
     </>
     }

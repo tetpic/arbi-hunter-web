@@ -23,7 +23,7 @@ export default class VacancyRepository {
       method: 'get',
       url: '/api/vacancy/currentUser',
       data: {
-        sort:'updatedAt,DESC'
+        sort:'updatedAt,DESC',
       }
     })
     if(res.err) {

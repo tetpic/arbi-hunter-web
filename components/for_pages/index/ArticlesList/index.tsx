@@ -6,7 +6,7 @@ import P from '@/components/ui/P'
 import TextNode from '@/components/ui/TextNode'
 import Formatter from 'utils/formatter'
 import { useAppContext } from 'context/state'
-import { AppTheme, Preset } from 'types/enums'
+import { AppTheme, InterfaceLanguage, Preset } from 'types/enums'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
 import { useRouter } from 'next/router'
@@ -21,7 +21,7 @@ interface Props {
 
 export default function ArticlesList(props: Props) {
   const appContext = useAppContext()
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const isLightTheme = appContext.theme === AppTheme.Light
   const router = useRouter()
 
@@ -51,7 +51,7 @@ export default function ArticlesList(props: Props) {
                 }
                 <div className={styles.bottom}>
                   <div className={styles.tag}>{el.articleCategory.translations.find(el => el.languageCode === 'ru').name.split(' ')[0]}</div>
-                  <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt)} назад</P>
+                  <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt, {locale: lang as InterfaceLanguage})} {t('ago')}</P>
                 </div>
             </div>
           </div>

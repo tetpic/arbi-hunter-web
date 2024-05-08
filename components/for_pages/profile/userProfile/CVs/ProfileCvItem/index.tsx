@@ -159,7 +159,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       />
       ||
       cv.completedSteps && cv.completedSteps.length < 6 &&
-      <Progress stepsCount={7} className={styles.stats} progress={cv.completedSteps}/>
+      <Progress stepsCount={7} className={styles.stats} progress={cv.completedSteps} type='cv'/>
     }
 
     {!props.cardMode &&    

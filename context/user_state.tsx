@@ -170,7 +170,8 @@ export function UserWrapper(props: Props) {
   useEffect(()=>{
     if(currentProfile) {
       Cookies.set(CookiesType.profileType, currentProfile.profileType)
-      Cookies.set(CookiesType.language, currentProfile.countryCode)
+      Cookies.set(CookiesType.language, user.language)
+      Cookies.set(CookiesType.NEXT_LOCALE, user.language)
     }
   }, [currentProfile])
 

@@ -43,6 +43,8 @@ export const colors = {
   blueDark: '#586DE4',
   blueLight: '#6BABFF',
 
+  purpleGrey: '#E3D9EA'
+
 }
 
 export const fontSizes = {

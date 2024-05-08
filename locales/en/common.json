@@ -36,5 +36,14 @@
   "app_language": "App language",
   "ru": "Русский",
   "en": "English",
-  "ua": "Українська"
+  "ua": "Українська",
+
+
+  "item_saved": "Saved",
+  "item_archived": "Archived",
+  "item_expires": "Expires"
+
+
+
+
 }

@@ -9,7 +9,7 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useRouter } from 'next/router'
-import { ModalType, ModerationStatusType} from 'types/enums'
+import { InterfaceLanguage, ModalType, ModerationStatusType} from 'types/enums'
 import Formatter from 'utils/formatter'
 
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -35,7 +35,7 @@ interface Props {
 }
 
 export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const router = useRouter()
   const vacancyContext = useVacancyContext() 
   const appContext = useAppContext()
@@ -71,23 +71,32 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     router.push({pathname:'/shop', query: {page: 'packets'}})
   }
 
+  const allOptions = {
+    edit:  {title: t('item_edit'), onClick: editHandler},
+    archive: {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
+    upgrade: {title: t('item_upgrade'), onClick: upgradeTariffHandler},
+    share: {title: t('item_share')},
+    remove: {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    publish: {title: t('item_publish'), onClick: archiveHandler},
+  }
+
   const defaultOptions:IOptionList[] = [
-    {title: t('item_edit'), onClick: editHandler},
-    {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
-    {title: t('item_upgrade'), onClick: upgradeTariffHandler},
-    {title: t('item_share')},
-    {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    allOptions.edit,
+    allOptions.archive,
+    allOptions.upgrade,
+    allOptions.share,
+    allOptions.remove
   ]
 
   const draftOptions:IOptionList[] = [
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    allOptions.edit,
+    allOptions.remove
   ]
 
   const archiveOptions:IOptionList[] = [
-    {title: 'Редактировать', onClick: editHandler},
-    {title: 'Опубликовать', onClick: archiveHandler},
-    {title: 'Удалить', onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
+    allOptions.edit,
+    allOptions.publish,
+    allOptions.remove
   ]
 
   const options = <OptionsList options={props.type === 'drafts'&&draftOptions||props.type === 'archive'&&archiveOptions||defaultOptions}
@@ -109,22 +118,22 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     <div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}>
         {vacancy.publishedAt && vacancy.published &&
-          <p className={styles.timeRemains}>Истекает {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30})}</p>
+          <p className={styles.timeRemains}>{t('item_expires')} {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30, lang: lang as InterfaceLanguage})}</p>
         }
         {props.type === 'drafts' && vacancy.updatedAt &&
-          <P className={styles.timeSaved}>Сохранен {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</P>
+          <P className={styles.timeSaved}>{t('item_saved')} {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric' }, lang: lang as InterfaceLanguage })}</P>
         }
         {props.type === 'archive' && vacancy.updatedAt &&
-          <p className={styles.timeSaved}>В архиве {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}})}</p>
+          <p className={styles.timeSaved}>{t('item_archived')} {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric'}, lang: lang as InterfaceLanguage})}</p>
         }
 
 
-        <P styleType={['large', 'w600']} useThemeColor>{vacancy.name}</P>
+        <P styleType={['large', 'w600']} useThemeColor>{vacancy.categories[0].translations.find(t => t.languageCode === lang)?.name||vacancy.name}</P>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }
         {vacancy.isRemote &&
-          <p className={styles.city}>Удаленно</p>
+          <p className={styles.city}>{t('remote')}</p>
         }
         <SalaryItem vacancy={vacancy}/>
 
@@ -151,22 +160,22 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
       {props.type !== 'drafts' &&
         <Statistics 
-        title='Статистика за все время'
+        title={t('vacancy_page_statsTitle')}
         items={[
-          {name: 'Показы', count: vacancy.totalProposals},
-          {name: 'Просмотры', count: vacancy.totalViews},
-          {name: 'Отклики', count: vacancy.totalApplications},
+          {name: t('vacancy_page_shows'), count: vacancy.totalProposals},
+          {name: t('vacancy_page_views'), count: vacancy.totalViews},
+          {name: t('vacancy_page_applications'), count: vacancy.totalApplications},
         ]}
         />
         ||
         vacancy.completedSteps &&
-        <Progress progress={vacancy.completedSteps}/>
+        <Progress progress={vacancy.completedSteps} type={'vacancy'}/>
       }
       
       {!props.cardMode &&
         <div className={styles.buttonsWrapper}>
           {vacancy.moderationStatus !== ModerationStatusType.Approved && props.type === 'archive' &&
-            <P styleType={['medium', 'w500', 'greyLight']}>На модерации</P>
+            <P styleType={['medium', 'w500', 'greyLight']}>{t('item_statusModeration')}</P>
           }
           {!props.type &&
             <>
@@ -176,19 +185,22 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
               router.push(`/responses/${vacancy.id}/`)
             }} 
             styleType={['gradient']}>
-              Смотреть отклики
+              {t('item_watchReviews')}
             </Button>
             <Button 
             stopPropagation
             onClick={(e)=>{
               router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [vacancy.categories[0].id]}), vcId: vacancy.id}})
             }} 
-            styleType={['black']} altStyleType={['white']}  >Подходящие резюме</Button>
+            styleType={['black']} altStyleType={['white']}  
+            >
+              {t('item_relevantCvs')}
+            </Button>
             </>
           }
           {props.type === 'archive' && vacancy.moderationStatus === ModerationStatusType.Approved &&
             <>
-            <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}>Разместить повторно</Button>
+            <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}>{t('item_publishAgain')}</Button>
             <Button 
             stopPropagation
             onClick={(e)=>{
@@ -197,7 +209,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
             styleType={['black']}
             altStyleType={['whitePurple']}
             >
-              Смотреть отклики
+              {t('item_watchReviews')}
             </Button>
             </>
           }
@@ -211,12 +223,19 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
               router.push({pathname: '/create/vacancy/', query: {id: vacancy.id, progress: vacancy.completedSteps.length}})
             }}
             >
-            Продолжить заполнение</Button>
+              {t('item_continueEditing')}
+            </Button>
             ||
             props.type === 'drafts' && vacancy.completedSteps?.length >=8 &&
             <>
-             <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}>Опубликовать</Button>
-             <Button styleType={['black']} onClick={editHandler}>Редактировать</Button>
+             <Button styleType={['gradient']} stopPropagation onClick={archiveHandler}
+             >
+              {t('item_publish')}
+            </Button>
+             <Button styleType={['black']} altStyleType={['white']} onClick={editHandler}
+             >
+              {t('item_edit')}
+            </Button>
             </>
           }
         </div>

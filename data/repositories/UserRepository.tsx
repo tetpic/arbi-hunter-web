@@ -16,7 +16,7 @@ export default class UserRepository {
     return res
   }
 
-  static async editCurrentUser(data: Pick<IUser, 'email'|'phone'>): Promise<any|null> {
+  static async editCurrentUser(data: Partial<Pick<IUser, 'email'|'phone'|'language'>>): Promise<any|null> {
     const res = await request({
       method: 'post',
       url: '/api/auth/currentUser',

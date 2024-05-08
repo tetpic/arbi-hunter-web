@@ -161,7 +161,7 @@ export default function PersonalCard(props: Props) {
         styleType={['grey', 'wide']} 
         onClick={()=>openDropDown(true)} 
         className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}>
-          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)||'Выберите статус'} <ArrowDownSvg/>
+          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)||t('personal_chooseVacancyLookType')} <ArrowDownSvg/>
         </Button>
         <div className={styles.optionsWrapper}>
           <OptionsDropDown 
@@ -180,7 +180,7 @@ export default function PersonalCard(props: Props) {
       <p className={styles.ratingCount}>23 отзыва</p>
     </div> */}
     {props.isEditable && !props.isEditing && !isTabletWidth &&
-      <Button styleType={['gradient']} onClick={()=> saveHandler()}>{'Редактировать профиль'}</Button>
+      <Button styleType={['gradient']} onClick={()=> saveHandler()}>{t('personal_editProfile')}</Button>
     }
   </div>)
 }

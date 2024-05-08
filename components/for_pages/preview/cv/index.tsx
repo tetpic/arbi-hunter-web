@@ -11,7 +11,7 @@ import { Answer, Preset, VacancyLookType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Button from '@/components/ui/Button'
-import { TranslateCompensationType, TranslateEducationType, TranslateEmploymentType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEducationType, TranslateEmploymentType, TranslateLanguage, TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import GradientDotSvg from '@/components/svg/GradientDotSvg'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
@@ -27,6 +27,7 @@ import { ICV } from 'data/interfaces/ICV'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 
 interface Props {
@@ -49,18 +50,11 @@ export default function CvPreview(props: Props) {
     </div>
   )
 
-  // const onPublish = () => {
-  //   cvContext.updateCv(currentCv.id, {published: true}, ()=>{
-  //     appContext.showSnackbar('Резюме опубликовано', SnackbarType.success)
-  //     router.push('/profile?page=cvs')
-  //   })
-  // }
-
   if(!currentCv) return null
 
   return (<div className={styles.root}> 
     <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
-    <Title title={'Предпросмотр резюме'}/>
+    <Title title={t('create_cv_preview')}/>
     <div className={styles.itemsWrapper}>
       <PreviewItem 
       titleElement={personalHead} 
@@ -71,12 +65,12 @@ export default function CvPreview(props: Props) {
         styleType={['small', currentCv.vacancyLookType === VacancyLookType.NotLooking?'red':'green']} 
         className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.status_red: styles.status_green)}
         >
-          {currentCv.vacancyLookType === VacancyLookType.NotLooking?'Не ищет работу': 'В активном поиске'}
+          {TranslateVacancyLookType(currentCv.vacancyLookType, ProfileType.Hirer, t)}
         </P>
         <P 
         styleType={['greyLight', 'w500', 'medium']}>
           {[
-            currentCv.gender === 'male'&&'Мужчина'||currentCv.gender === 'female' &&'Женщина'||null, 
+            currentCv.gender === 'male'&&t('gender_male')||currentCv.gender === 'female' &&t('gender_female')||null, 
             currentCv.birthday&&getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
@@ -88,7 +82,7 @@ export default function CvPreview(props: Props) {
 
 
 
-      <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={() => props.onBack(2)}>
+      <PreviewItem title={t('cv_page_contacts')} wrapperClassName={styles.item} onClick={() => props.onBack(2)}>
         {(currentCv.profile?.email||currentCv.email) &&
         <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
           <Button styleType={['icon', 'black']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailAltSvg/></Button>
@@ -134,7 +128,7 @@ export default function CvPreview(props: Props) {
       </PreviewItem>
 
       <PreviewItem 
-      title={'Занятость'} 
+      title={t('employmentBoard_employment')} 
       wrapperClassName={styles.item}
       onClick={() => props.onBack(6)}
       >
@@ -146,7 +140,7 @@ export default function CvPreview(props: Props) {
         {currentCv.relocation &&
           <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> 
-            {currentCv.relocation === Answer.No ? 'Переезд невозможен' : 'Переезд возможен'}
+            {currentCv.relocation === Answer.No ? t('cv_page_noRelocation') : t('cv_page_relocation')}
           </P>
         }
         {currentCv.schedule &&
@@ -156,20 +150,20 @@ export default function CvPreview(props: Props) {
         }
         {currentCv.compensation &&
           <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor> 
-            <GradientDotSvg/> {TranslateCompensationType(currentCv.compensation)}
+            <GradientDotSvg/> {TranslateCompensationType(currentCv.compensation, t)}
           </P>
         }
         {currentCv.businessTrips &&
           <P styleType={['w500', 'medium', 'alignCenter']} useThemeColor>
             <GradientDotSvg/> 
-            {currentCv.businessTrips === Answer.Yes ? 'Командировки возможны' : 'Командировки невозможны'}
+            {currentCv.businessTrips === Answer.Yes ? t('cv_page_businesstrips') : t('cv_page_noBusinesstrips')}
           </P>
         }
       </PreviewItem>
 
       {currentCv.bio &&
         <PreviewItem 
-        title={'О себе'} 
+        title={t('create_cv_about')} 
         onClick={() => props.onBack(2)}
         >
           <HtmlText text={currentCv.bio} className={styles.bio}/>
@@ -177,7 +171,7 @@ export default function CvPreview(props: Props) {
       }
 
         <PreviewItem 
-        title={`Опыт работы ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
+        title={`${t('create_workExperience')} ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
         onClick={() => props.onBack(3)}
         >
           {currentCv.experienceInfo.length > 0 && 
@@ -188,16 +182,16 @@ export default function CvPreview(props: Props) {
                 {el.description &&
                   <P styleType={['w500', 'medium']} useThemeColor>{el.description}</P>
                 }
-                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||t('toPresent')}</P>
               </div>
             })
             ||
-            <P styleType={['w500', 'medium']} useThemeColor>Без опыта</P>
+            <P styleType={['w500', 'medium']} useThemeColor>{t('workExperience_no')}</P>
           }
         </PreviewItem>
 
         <PreviewItem 
-        title={'Образование'}
+        title={t('create_education')}
         onClick={() => props.onBack(4)}
         > 
           <P styleType={['w500', 'medium']} useThemeColor className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
@@ -211,7 +205,7 @@ export default function CvPreview(props: Props) {
                 {el.faculty &&
                 <P styleType={['w500', 'medium']} useThemeColor>{el.faculty}</P>
                 }
-                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P styleType={['w500', 'medium']} useThemeColor>{el.fromDate} - {el.toDate||t('toPresent')}</P>
               </div>
             })
           }
@@ -219,7 +213,7 @@ export default function CvPreview(props: Props) {
 
       {creationContext.helpObjects.skills && creationContext.helpObjects.skills.size > 0 &&
         <PreviewItem 
-        title='Навыки'
+        title={t('create_cv_skills')}
         onClick={() => props.onBack(5)}
         >
           <TagList tags={[...creationContext.helpObjects.skills.values()].map(el => ({name: el.title}))} />
@@ -227,19 +221,19 @@ export default function CvPreview(props: Props) {
       }
 
       {creationContext.helpObjects.activeSources && creationContext.helpObjects.activeSources.size > 0 &&
-        <PreviewItem title='Источники' onClick={()=>props.onBack(5)}>
+        <PreviewItem title={t('cv_page_sources')} onClick={()=>props.onBack(5)}>
           <TagList tags={[...creationContext.helpObjects.activeSources.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }      
 
       {creationContext.helpObjects.activeGeos && creationContext.helpObjects.activeGeos.size > 0 &&
-        <PreviewItem title='Гео' onClick={()=>props.onBack(5)}>
+        <PreviewItem title={t('cv_page_geos')} onClick={()=>props.onBack(5)}>
           <TagList tags={[...creationContext.helpObjects.activeGeos.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
       {creationContext.helpObjects.activeVerticals && creationContext.helpObjects.activeVerticals.size > 0 &&
-        <PreviewItem title='Вертикали'onClick={()=>props.onBack(5)}>
+        <PreviewItem title={t('cv_page_verticals')} onClick={()=>props.onBack(5)}>
           <TagList tags={[...creationContext.helpObjects.activeVerticals.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
@@ -247,7 +241,7 @@ export default function CvPreview(props: Props) {
 
       {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && 
         <PreviewItem 
-        title='Владение языками'
+        title={t('create_languageKnowledges')}
         onClick={() => props.onBack(5)}
         >
           <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
@@ -256,7 +250,7 @@ export default function CvPreview(props: Props) {
 
       {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
         <PreviewItem 
-        title='Портфолио'
+        title={t('cv_page_portfolio')}
         onClick={() => props.onBack(5)}
         >
           {currentCv.portfolio &&
@@ -270,9 +264,9 @@ export default function CvPreview(props: Props) {
     </div>
 
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>Назад</Button>
+      <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>{t('back')}</Button>
       {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>{t('publish')}</Button>
       }
     </div>
   </div>)

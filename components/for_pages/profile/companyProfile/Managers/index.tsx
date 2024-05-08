@@ -1,6 +1,5 @@
 import styles from './index.module.scss'
 
-import { useResize } from 'components/hooks/useResize'
 import Button from 'components/ui/Button'
 import Spinner from 'components/ui/Spinner'
 import { useManagerContext } from 'context/manager_state'
@@ -14,15 +13,19 @@ import Title from '@/components/ui/TitleForSection'
 import { useUserContext } from 'context/user_state'
 import { HirerRole } from 'types/enums'
 import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 
 export default function Managers() {
-
+  const {t} = useTranslation()
   const managerContext = useManagerContext()
   const userContext = useUserContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const [addManagerModal, showManagerModal] = useState<boolean>(false)
   const [managerToEdit, setManagerToEdit] = useState<IManager>()
-  const {isTabletWidth} = useResize()
+  
 
   const removeManagerHandler = (el: IManager) => {
     
@@ -39,7 +42,7 @@ export default function Managers() {
 
 
   return (<>{!addManagerModal && <div className={styles.root}> 
-    <Title title={'Менеджеры'}/>
+    <Title title={t('nav_managers')}/>
 
 
     <div className={styles.managers}>
@@ -61,16 +64,16 @@ export default function Managers() {
            })
            ||
            managerContext.managers.size === 0 && managerContext.managersTotal === 0 &&
-           <P useThemeColor className={'empty'}>Нет добавленных менеджеров</P>
+           <P useThemeColor className={'empty'}>{t('managers_noAdded')}</P>
          }
       </InfiniteScroll>
       {isTabletWidth && 
-         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>Добавить менеджера</Button>
+         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>{t('managers_addNew')}</Button>
       }
     </div>
     <div className={styles.head}>
       {!isTabletWidth && (userContext.currentProfile?.hirerRole === HirerRole.Admin || !userContext.currentProfile?.hirerRole) &&
-        <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>Добавить менеджера</Button>
+        <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>{t('managers_addNew')}</Button>
       }
     </div>
 

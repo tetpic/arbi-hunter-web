@@ -8,6 +8,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import { useCvContext } from 'context/cv_state'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -66,13 +67,22 @@ export default function BlackList(props: Props) {
       {type === BlackListModes.Vacancies && vacancyContext.savedVCs?.map(el=> {
         return <BlackListedItem key={el.id} vacancy={el} profile={el.profile} onRestore={()=>vacancyContext.removeFromBlackList(el.id)} />
       })}
-      {type === BlackListModes.CVs && cvContext.savedCvs?.map(el=> {
+      {type === BlackListModes.CVs && cvContext.savedCvs?.length > 0 && cvContext.savedCvs?.map(el=> {
         return <BlackListedItem key={el.id} cv={el} profile={el.profile} onRestore={()=>cvContext.removeFromBlackList(el.id)} />
       })}
 
       {type === BlackListModes.Companies && profiles.map(el=> {
         return <BlackListedItem key={el.id} profile={el} />
       })}
+
+      {((profiles.length === 0 &&type === BlackListModes.Companies)
+      ||(type === BlackListModes.CVs && cvContext.savedCvs?.length === 0)
+      ||(type === BlackListModes.Vacancies && vacancyContext.savedVCs?.length === 0))
+      &&
+      <P useThemeColor styleType={['large', 'w600']}>Нет данных</P>
+
+
+      }
     </div>
   </div>)
 }

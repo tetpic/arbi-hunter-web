@@ -4,6 +4,7 @@ import Spinner from 'components/ui/Spinner'
 import { useVacancyContext } from 'context/vacancy_state'
 import ProfileVacancyItem from '../ProfileVacancyItem'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   type: 'drafts' | 'archive'
@@ -12,6 +13,7 @@ interface Props {
 
 export default function VacanciesInactive(props: Props) {
   const vacancyContext = useVacancyContext()
+  const {t} = useTranslation()
   const vacancies = props.type === 'archive' ? [...vacancyContext.archiveVacancies.values()] : [...vacancyContext.draftVacancies.values()]
 
   return (<div className={styles.root}> 
@@ -26,8 +28,11 @@ export default function VacanciesInactive(props: Props) {
       />
     })
     ||
-    !vacancyContext.isLoading&&vacancyContext.archiveVacancies.size === 0 &&
-    <P useThemeColor className={'empty'}>Нет архивных вакансий</P>  
+    !vacancyContext.isLoading&&vacancyContext.archiveVacancies.size === 0 && props.type === 'archive' &&
+    <P useThemeColor className={'empty'}>{t('vacancies_noArchive')}</P>  
+    ||
+    !vacancyContext.isLoading&&vacancyContext.draftVacancies.size === 0 && props.type === 'drafts' &&
+    <P useThemeColor className={'empty'}>{t('vacancies_noDraft')}</P>  
     ||
     vacancyContext.isLoading &&
     <Spinner size={24}/>

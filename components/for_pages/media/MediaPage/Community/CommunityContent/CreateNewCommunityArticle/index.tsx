@@ -12,12 +12,12 @@ import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { CategoryType, Preset } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
-import { useResize } from 'components/hooks/useResize'
 import classNames from 'classnames'
 import PlusSvg from 'components/svg/PlusSvg'
 import Image from 'next/image'
 import CrossSvg from 'components/svg/CrossSvg'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   article?: IArticle
@@ -29,7 +29,9 @@ export default function CreateNewCommunityArticle(props: Props) {
   const appContext = useAppContext()
   const [previewImage, setPreviewImage] = useState<PreviewImage>()
   const [images, setImages] = useState<PreviewImage[]>([])
-  const {isTabletWidth} = useResize()
+  const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
+
 
   const submit = (data: IArticleBlock, helpers: FormikHelpers<IArticleBlock>) => {    
     const submitData:ICreateNews = {
@@ -83,7 +85,7 @@ export default function CreateNewCommunityArticle(props: Props) {
   }, [])
 
   return (<div className={styles.root}> 
-    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||'Опубликуйте запись'}/>
+    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={props.title||t('community_publishNews')}/>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <div className={styles.addCover}>
@@ -100,7 +102,7 @@ export default function CreateNewCommunityArticle(props: Props) {
           />
           }
           {(!props.article?.image?.source && !previewImage?.image) &&
-          <p className={styles.subTitle}>Добавить обложку <br/> (не обязательно)</p>
+          <p className={styles.subTitle}>{t('community_addCover')} <br/> {t('community_notImportant')}</p>
           }
           <label className={styles.label}>
             <FileInput setImages={setPreviewImage}/>
@@ -109,7 +111,7 @@ export default function CreateNewCommunityArticle(props: Props) {
         </div>
 
         <InputField 
-        placeholder='Название' 
+        placeholder={t('community_name')} 
         name={'title'} 
         styleType={'default'} 
         color={'default'} 
@@ -118,7 +120,7 @@ export default function CreateNewCommunityArticle(props: Props) {
         <RichTextField 
         value={formik.values.body?.toString()}  
         returnValueType={'html'}  
-        placeholder='Введите текст' 
+        placeholder={t('community_enterText')} 
         name={'body'} 
         onAddImage={setImages} 
         hideButtons={{helpers: true}}
@@ -136,7 +138,7 @@ export default function CreateNewCommunityArticle(props: Props) {
         }
 
         <div className={styles.buttonsWrapper}>
-          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body?.toString().length < 8||!formik.values.title)&&styles.disabled)}>Опубликовать</Button>
+          <Button type="submit" className={classNames(styles.yellowButton, (formik.values.body?.toString().length < 8||!formik.values.title)&&styles.disabled)}>{t('publish')}</Button>
         </div>
 
       </Form>

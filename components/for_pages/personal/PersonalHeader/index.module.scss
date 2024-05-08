@@ -79,6 +79,7 @@
     position: absolute;
     transform: translate(-50%, -50%);
     background-color: white;
+    object-fit: cover;
     @include mq($TabletWidth, max) {
       width: clamp(40px, 10.5vw, 55px);
       height: clamp(40px, 10.5vw, 55px);

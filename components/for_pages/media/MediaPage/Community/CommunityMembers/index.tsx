@@ -7,6 +7,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import { colors } from 'styles/variables'
 import { getUserImageSource } from 'utils/helpers'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   members: IUserProfile[]
@@ -14,10 +15,11 @@ interface Props {
 }
 
 export default function CommunityMembers(props: Props) {
+  const {t} = useTranslation()
 
   return (<div className={styles.root}> 
 
-  <p className={styles.title}>Участники</p>
+  <p className={styles.title}>{t('community_participants')}</p>
   <div className={styles.wrapper}>
     {props.members.length > 0 && !props.loading &&
     props.members.slice(0, 8).map(user=> {
@@ -31,7 +33,7 @@ export default function CommunityMembers(props: Props) {
     ||
     props.loading && <Spinner size={24} color={colors.blue}/>
     ||
-    <P useThemeColor className={'empty'}>Нет участников</P>
+    <P useThemeColor className={'empty'}>{t('community_noParticipants')}</P>
   }
   </div>
 

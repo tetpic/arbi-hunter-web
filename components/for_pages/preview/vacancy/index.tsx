@@ -49,7 +49,7 @@ export default function VacancyPreview(props: Props) {
   return (
   <div className={styles.root}> 
     <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
-    <Title title={'Предпросмотр вакансии'}/>
+    <Title title={t('create_vacancy_preview')}/>
 
     <div className={styles.itemsWrapper}>
 
@@ -59,7 +59,7 @@ export default function VacancyPreview(props: Props) {
         <PreviewItem 
         onClick={()=>props.onBack(5)}
         titleElement={
-          <P styleType={['medium', 'greyLight', 'w500']}>Опыт работы  {TranslateWorkExperience(currentVacancy.experience, t)}</P>
+          <P styleType={['medium', 'greyLight', 'w500']}>{t('create_workExperience')}  {TranslateWorkExperience(currentVacancy.experience, t)}</P>
         }/>
         <PreviewItem 
         onClick={()=>props.onBack(2)}
@@ -69,7 +69,7 @@ export default function VacancyPreview(props: Props) {
       </div>
 
       {(currentVacancy.showContactName||currentVacancy.showEmail||currentVacancy.showPhone||currentVacancy.showTelegramNickname)&&
-        <PreviewItem title='Контактная информация' wrapperClassName={styles.item} onClick={()=>props.onBack(7)}>
+        <PreviewItem title={t('create_vacancy_contactInfo')} wrapperClassName={styles.item} onClick={()=>props.onBack(7)}>
           {currentVacancy.showContactName &&
             <P styleType={['medium', 'w500', 'alignCenter']} useThemeColor >
               <Button styleType={['icon', 'black']} altStyleType={['white','icon','invertSvg']} ><UserSvg/></Button> {currentVacancy.contactName}
@@ -93,51 +93,51 @@ export default function VacancyPreview(props: Props) {
         </PreviewItem>
       }
 
-      <PreviewItem title='Занятость' onClick={()=>props.onBack(3)}>
+      <PreviewItem title={t('employmentBoard_employment')} onClick={()=>props.onBack(3)}>
         <EmploymentBoard vacancy={currentVacancy}/>
       </PreviewItem>
 
       {currentVacancy.description && currentVacancy.description !== '<p></p>' &&
-      <PreviewItem title='Описание' onClick={()=>props.onBack(6)}>
+      <PreviewItem title={t('create_description')} onClick={()=>props.onBack(6)}>
         <HtmlText text={currentVacancy.description}/>
       </PreviewItem>
       }
 
       {creationContext.helpObjects.skills && creationContext.helpObjects.skills.size > 0 &&
-        <PreviewItem title='Навыки' onClick={()=>props.onBack(5)}>
+        <PreviewItem title={t('create_vacancy_skillsOnly')} onClick={()=>props.onBack(5)}>
           <TagList tags={[...creationContext.helpObjects.skills.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
       {creationContext.helpObjects.activeSources && creationContext.helpObjects.activeSources.size > 0 &&
-        <PreviewItem title='Источники' onClick={()=>props.onBack(4)}>
+        <PreviewItem title={t('vacancy_page_sources')} onClick={()=>props.onBack(4)}>
           <TagList tags={[...creationContext.helpObjects.activeSources.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }      
 
       {creationContext.helpObjects.activeGeos && creationContext.helpObjects.activeGeos.size > 0 &&
-        <PreviewItem title='Гео' onClick={()=>props.onBack(4)}>
+        <PreviewItem title={t('vacancy_page_geos')} onClick={()=>props.onBack(4)}>
           <TagList tags={[...creationContext.helpObjects.activeGeos.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
       {creationContext.helpObjects.activeVerticals && creationContext.helpObjects.activeVerticals.size > 0 &&
-        <PreviewItem title='Вертикали'onClick={()=>props.onBack(4)}>
+        <PreviewItem title={t('vacancy_page_verticals')}onClick={()=>props.onBack(4)}>
           <TagList tags={[...creationContext.helpObjects.activeVerticals.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
       {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
-        <PreviewItem title='Владение языками' onClick={()=>props.onBack(5)}>
+        <PreviewItem title={t('vacancy_page_languagesKnowledges')} onClick={()=>props.onBack(5)}>
           <TagList tagClassName={styles.langTag} tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </PreviewItem>
       }
     </div>
 
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>Назад</Button>
+      <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>{t('back')}</Button>
       {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
-        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={props.onPublish}  className={styles.button}>Опубликовать</Button>
+        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={props.onPublish}  className={styles.button}>{t('publish')}</Button>
       }
     </div>
 

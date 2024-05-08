@@ -74,7 +74,9 @@ export enum CookiesType {
   address = 'address',
   profileType = 'profile-type',
   language = 'language',
-  theme='theme'
+  NEXT_LOCALE = 'NEXT_LOCALE',
+  theme='theme',
+  
 }
 
 export enum PaymentType {

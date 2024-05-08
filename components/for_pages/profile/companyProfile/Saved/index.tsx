@@ -7,6 +7,8 @@ import { MediaWrapper } from 'context/media_state'
 import { CharacterWrapper } from 'context/character_state'
 import { CoursesWrapper } from 'context/courses_state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
+import { Translate } from 'next-translate'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -17,22 +19,23 @@ enum SavedNavigation {
   Media = 'media'
 }
 
-function translate (n: SavedNavigation) {
+function translate (n: SavedNavigation, t: Translate) {
   switch(n) {
     case SavedNavigation.CVS:
-      return 'Резюме'
+      return t('cv')
     case SavedNavigation.Courses:
-      return 'Курсы'
+      return t('courses')
     case SavedNavigation.Media:
-      return 'Медиа'
+      return t('media')
   }
 }
 
 
 export default function Saved(props: Props) {
+  const {t} = useTranslation()
 
   const [activeItem, setActiveItem] = useState<SavedNavigation>(SavedNavigation.CVS)
-  const items = Object.values(SavedNavigation).map(el=> {return {name: translate(el), type: el}})
+  const items = Object.values(SavedNavigation).map(el=> {return {name: translate(el, t), type: el}})
 
   return (<div className={styles.root}> 
     <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}/>

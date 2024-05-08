@@ -17,6 +17,7 @@ import useAbortController from 'components/hooks/useAbortController'
 import { useAppContext } from 'context/state'
 import { SnackbarType } from 'types/enums'
 import { copyToClipboard } from 'utils/helpers'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -26,6 +27,7 @@ export default function Subscriptions(props: Props) {
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>()
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const {getNewSignal} = useAbortController()
 
 
@@ -46,7 +48,7 @@ export default function Subscriptions(props: Props) {
   const getOptions = (article: IArticle):IOptionList[] => {
     return [
       {
-        title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
+        title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
           const [signal] = getNewSignal()
@@ -61,7 +63,6 @@ export default function Subscriptions(props: Props) {
               })    
             })
             .catch(_=> {
-              appContext.showSnackbar('Вы быстрее интернета', SnackbarType.error)
             })
           }
           else {
@@ -75,17 +76,16 @@ export default function Subscriptions(props: Props) {
               })    
             })
             .catch(_=> {
-              appContext.showSnackbar('Вы быстрее интернета', SnackbarType.error)
             })
           }
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+      {title: t('media_article_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
-      {title: 'Поделиться',icon: <ShareSvg/>},
-      {title: 'Скрыть',icon: <CloseEyeSvg/>}
+      {title: t('media_article_share'),icon: <ShareSvg/>},
+      {title: t('media_article_hide'),icon: <CloseEyeSvg/>}
     ]
   }
 

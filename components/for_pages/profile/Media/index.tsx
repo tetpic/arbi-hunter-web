@@ -15,11 +15,12 @@ import ShareSvg from '@/components/svg/ShareSvg'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
 import { copyToClipboard } from 'utils/helpers'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
 export default function SavedMedia() {
-
+  const {t}= useTranslation()
   const mediaContext = useMediaContext()
   const appContext = useAppContext()
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -38,19 +39,19 @@ export default function SavedMedia() {
   const getOptions = (article: IArticle):IOptionList[] => {
     return [
       {
-        title: article.isSavedByCurrentProfile?'Убрать из избранного':'Добавить в избранное', 
+        title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
         icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg/>: <BookmarkEmptySvg/>,
         onClick: ()=>{
           mediaContext.saveOrRemoveArticle(article, 'saved')
-          .then(_=>appContext.showSnackbar('Успешно', SnackbarType.success))
+          .then(_=>appContext.showSnackbar(t('media_news_success'), SnackbarType.success))
         }        
       },
-      {title: 'Скопировать ссылку',icon: <LinkSvg/>, onClick: ()=>{
+      {title: t('media_article_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
-      {title: 'Поделиться',icon: <ShareSvg/>},
-      {title: 'Скрыть',icon: <CloseEyeSvg/>}
+      {title: t('media_article_share'),icon: <ShareSvg/>},
+      {title: t('media_article_hide'),icon: <CloseEyeSvg/>}
     ]
   }
 
@@ -69,7 +70,7 @@ export default function SavedMedia() {
         })
         ||
         loaded&&mediaContext.savedArticles.size === 0&&
-        <P useThemeColor className={'empty'}>Нет добавленных медиа</P>
+        <P useThemeColor className={'empty'}>{t('media_noAddedItems')}</P>
      }
     </InfiniteScroll>
   </div>)

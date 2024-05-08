@@ -21,7 +21,8 @@
   flex-direction: column;
   row-gap: 8px;
   padding: 16px;
-  background-color: var(--greyToPurpleGrey);
+  background-color: var(--secondaryColor);
+  border: 2px var(--borderPerimeter) solid;
   border-radius: 10px;
   z-index: 10;
 

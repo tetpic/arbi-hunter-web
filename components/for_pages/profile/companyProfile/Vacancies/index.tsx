@@ -63,7 +63,7 @@ export default function Vacancies(props: Props) {
       onSearch: (s) => {
         vacancyContext.setSearchString(s)
       },
-      placeholder: 'Поиск по названию',
+      placeholder: t('search_byName'),
       suggestions: [...new Set(vacancyContext.savedVCs.map(el=> el.categories[0].name)).values()],
       initialValue: vacancyContext.searchString
     })
@@ -74,7 +74,7 @@ export default function Vacancies(props: Props) {
 
   return (<div className={styles.root}> 
     <Title 
-    title={'Мои вакансии'} 
+    title={t('vacancies_myVacancies')} 
     onBackClick={router.back} 
     rightButton={isTabletWidth &&
       <div className={styles.buttonsWrapper}>
@@ -88,7 +88,7 @@ export default function Vacancies(props: Props) {
       <SearchBar 
       key={'vacancySearchbar'}
       className={styles.search} 
-      placeholder='Поиск в моих вакансиях' 
+      placeholder={t('vacancies_searchInMy')} 
       onSubmit={(data)=>onSearch(data.search)}
       />
     }

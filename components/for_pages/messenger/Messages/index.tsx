@@ -29,6 +29,7 @@ import { getUserImageSource } from 'utils/helpers'
 import { useRouter } from 'next/navigation'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export default function Messages(props: Props) {
+  const {t} = useTranslation()
   const dialog = useChatDialogContext()
   const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
@@ -145,7 +147,7 @@ export default function Messages(props: Props) {
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
           <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</P>
-          <p className={styles.time}>{collocutor.online?<span className={styles.online}>В сети</span>:'Был(а) в сети  '+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
+          <p className={styles.time}>{collocutor.online?<span className={styles.online}>{t('chat_online')}</span>:t('chat_wasOnline')+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
           {!isTabletWidth &&
             <ThreeDotsButton className={styles.dots}/>
           }
@@ -156,7 +158,7 @@ export default function Messages(props: Props) {
       </div>
       {(dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())&&
         <div className={styles.invite}>
-          <p className={styles.invite__title}>{isHirer?'Отклик на вакансию':'Вас пригласили на вакансию'}</p>
+          <p className={styles.invite__title}>{isHirer?t('chat_vacancyApplication'):t('chat_vacancyInvite')}</p>
           <P styleType={['small', 'w500']} useThemeColor className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</P>
           <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
             <InformationSvg color={isLightTheme&&colors.black}  />
@@ -185,7 +187,7 @@ export default function Messages(props: Props) {
           ||
           loading && messages.size===0 && <Spinner size={24} color={colors.blue}/>
           ||
-          <p className={classNames(styles.empty, 'empty')}>Нет сообщений</p>
+          <p className={classNames(styles.empty, 'empty')}>{t('chat_noMessages')}</p>
         }
       </InfiniteScroll>
       </div>
@@ -220,7 +222,7 @@ export default function Messages(props: Props) {
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
           <input type='file' accept='image/png, image/jpg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
-        <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder='Введите сообщение...' />
+        <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder={t('chat_enterMessage')} />
         <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
           {
           dialog.recorder?.current?.state === 'recording' &&

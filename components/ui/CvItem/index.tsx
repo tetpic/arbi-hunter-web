@@ -182,7 +182,7 @@ export default function CvItem({cv, ...props}: Props) {
       }
 
       <P styleType={['alignCenter', 'w500', 'medium']} useThemeColor className={styles.info}>
-        {[getSalary({cv}), getAge(cv.age), cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
+        {[getSalary({cv}, t), getAge(cv.age), cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
           return (
             <>{el} {index < arr.length - 1 && <DotSvg/>}</>
           )

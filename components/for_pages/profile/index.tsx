@@ -15,6 +15,7 @@ import { AppTheme, ModalType } from 'types/enums'
 import { CharacterCartModalArgs } from '@/components/modals/CharacterCartModal'
 import NotificationSvg from '@/components/svg/NotificationSvg'
 import { colors } from 'styles/variables'
+import useTranslation from 'next-translate/useTranslation'
 
 
 export default function Profile() {
@@ -24,6 +25,7 @@ export default function Profile() {
   const characterContext = useCharacterContext()
   const {showNav, profileType, pager, page, setShowNav, navSet} = profilePageContext
   const router = useRouter()
+  const {t} = useTranslation()
 
   const onSaveHandler = () => {
     if(!isTabletWidth) {
@@ -58,7 +60,7 @@ export default function Profile() {
   return ( 
     <div className={classNames(styles.root)} id={'scrollable'}>
       {showNav && isTabletWidth &&
-        <TitleForSection title={'Настройки профиля'} onBackClick={()=>router.back()}/>
+        <TitleForSection title={t('profile_settings')} onBackClick={()=>router.back()}/>
       }
       {
         profileType === ProfileType.Employee && !showNav &&

@@ -30,7 +30,7 @@ export default function PhoneOrEmail() {
       }
     })
     if(!isRegistered) {
-      appContext.showSnackbar('Аккаунта не существует', SnackbarType.error)
+      appContext.showSnackbar(t('login_accountNotExist'), SnackbarType.error)
       return 
     }
     else {

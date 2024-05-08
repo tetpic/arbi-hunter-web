@@ -11,7 +11,7 @@ import { useChatDialogContext } from 'context/chat_dialog_state'
 import { IProposal } from 'data/interfaces/IProposal'
 import { IResponseModalProps } from 'components/modals/ResponseModal'
 import PlusSvg from 'components/svg/PlusSvg'
-import { useResize } from 'components/hooks/useResize'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   application?: IApplication
@@ -21,6 +21,7 @@ interface Props {
 
 export  function ApplicationHirerNode (props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
 
   return (<>
     <Button 
@@ -36,7 +37,7 @@ export  function ApplicationHirerNode (props: Props) {
     }} 
    
     >
-      Пригласить
+      {t('cv_item_invite')}
      </Button>
       
     <Button 
@@ -46,7 +47,7 @@ export  function ApplicationHirerNode (props: Props) {
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.Reject, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
     }} 
     >
-      Отказать
+      {t('cv_item_reject')}
     </Button>
   </>)
 }
@@ -54,11 +55,13 @@ export  function ApplicationHirerNode (props: Props) {
 export function ApplicationEmployeeNode (props: Props) {
   const appContext = useAppContext()
   const dialogContext = useChatDialogContext()
-  const {isTabletWidth} = useResize()
+  const {isTabletWidth} = appContext.size
+  const {t} = useTranslation()
+
 
   const makeCoverLetter = () => {
     if(props.application.cvDeletedOrHidden) {
-      appContext.showSnackbar('Резюме было скрыто или удалено', SnackbarType.error)
+      appContext.showSnackbar(t('cv_item_removerOrHidden'), SnackbarType.error)
       return
     }
     const onSubmit = (msg: IProposal) => {
@@ -73,18 +76,18 @@ export function ApplicationEmployeeNode (props: Props) {
 
 
   return (<>
-  <p className={styles.message}>Отклик на вакансию</p>
+  <p className={styles.message}>{t('chat_vacancyApplication')}</p>
   <Spacer basis={8} />
   <p className={styles.message}>
     {props.message?.application?.coverLetter}
     {!props.message?.application?.coverLetter&&props.profileType === ProfileType.Hirer&&
-      <span>Без сопроводительного письма</span>
+      <span>{t('chat_withoutCoverLetter')}</span>
     }
   </p>
   {!props.message?.application?.coverLetter && props.profileType === ProfileType.Employee &&
     <p className={styles.cover} onClick={makeCoverLetter}>
       <PlusSvg/>
-      Сопроводительное письмо
+      {t('chat_coverLetter')}
     </p>
   }
   </>)

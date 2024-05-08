@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { colors } from 'styles/variables'
 import CommunityItem from './CommunityItem'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 const CommunityTopButtons = dynamic(()=> import('./CommunityTopButtons'))
 
@@ -19,6 +20,7 @@ export default function Communities() {
   const [page, setPage] = useState<number>(1)
   const [loaded, setIsLoaded] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
+  const {t} = useTranslation()
 
   useEffect(()=>{
     if(communityContext.communities.size<total||communityContext.communities.size === 0) {
@@ -77,7 +79,7 @@ export default function Communities() {
               <Spinner size={34} color={colors.blue}/>
               ||
               loaded &&
-              <P useThemeColor className={'empty'}>Нет загруженных сообществ</P>
+              <P useThemeColor className={'empty'}>{t('media_noCommunitiesLoaded')}</P>
             }
           </div>
         </InfiniteScroll>

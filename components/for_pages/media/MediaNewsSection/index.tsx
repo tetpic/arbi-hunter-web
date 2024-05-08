@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 // import { useRouter } from 'next/router'
 import { IArticle } from 'data/interfaces/IArticle'
 import Image from 'next/image'
-import { Languages, Preset } from 'types/enums'
+import { InterfaceLanguage,  Preset } from 'types/enums'
 import LinkBlack from 'components/ui/LinkBlack'
 import TextNode from 'components/ui/TextNode'
 import { useResize } from 'components/hooks/useResize'
@@ -30,7 +30,7 @@ export default function MediaNewsSection(props: Props) {
           className={styles.tag}
           style={{backgroundColor: `#${firstItem.articleCategory.color}`}}
           >
-            {firstItem.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
+            {firstItem.articleCategory.translations.find(e=>e.languageCode === InterfaceLanguage.Russian).name}
           </p>
         </div>
         <div className={styles.textWrapper}>
@@ -63,7 +63,7 @@ export default function MediaNewsSection(props: Props) {
               className={styles.tag} 
               style={{backgroundColor: `#${item.articleCategory.color}`}}
               >
-                {item.articleCategory.translations.find(e=>e.languageCode === Languages.ru).name}
+                {item.articleCategory.translations.find(e=>e.languageCode === InterfaceLanguage.Russian).name}
               </p>
             </div>
             <div className={styles.textWrapper}>

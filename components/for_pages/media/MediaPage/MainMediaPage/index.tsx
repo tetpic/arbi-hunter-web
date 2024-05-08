@@ -10,6 +10,7 @@ import SearchBar, { ISearchBarReturnParams } from 'components/ui/SearchBar'
 import { periods } from 'utils/commonObjects'
 import Spacer from 'components/ui/Spacer'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   categories: ICategory[]
@@ -18,16 +19,17 @@ interface Props {
 export default function MainMediaPage(props: Props) {
   
   const mediaContext = useMediaContext()
+  const {t} = useTranslation()
 
 
   const body = (<>
    {mediaContext.stories.size > 0 &&
       <>
-        <P styleType={['large', 'w600']} useThemeColor  className={styles.title}>Истории</P>
+        <P styleType={['large', 'w600']} useThemeColor  className={styles.title}>{t('media_page_stories')}</P>
         <Stories stories={[...mediaContext.stories.values()]} />
       </>
     } 
-    <P styleType={['large', 'w600']} useThemeColor className={styles.title}><span>Рубрики</span> <span>Все</span></P>
+    <P styleType={['large', 'w600']} useThemeColor className={styles.title}><span>{t('media_page_headings')}</span> <span>{t('media_page_allHeadings')}</span></P>
     <MediaCategories className={styles.mediaCategories} categories={props.categories} hideNav articlesCounter/>
   </>)
 
@@ -49,7 +51,7 @@ export default function MainMediaPage(props: Props) {
   return (<>
     <SearchBar 
     className={styles.searchBar} 
-    placeholder='Найти статьи'
+    placeholder={t('media_page_findArticles')}
     categories={props.categories}
     periods={periods}
     onSubmit={search}

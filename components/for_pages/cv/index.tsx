@@ -138,7 +138,7 @@ export default function CvPage(props: Props) {
   const addCvToBlackList = () => {
     CvRepository.addToBlackList(currentCv.id)
     .then(_ => {
-      appContext.showSnackbar('Резюме добавлено в черный список', SnackbarType.success)
+      appContext.showSnackbar(t('cv_addedToBlackList'), SnackbarType.success)
       cvContext.getCv(Number(props.cvId))
       router.back()
     })
@@ -148,7 +148,7 @@ export default function CvPage(props: Props) {
     cvContext.getCv(Number(props.cvId))
     .then(res=> {
       if(res === false ) {
-        appContext.showSnackbar('CV удалено или скрыто', SnackbarType.error)
+        appContext.showSnackbar(t('cv_deletedOrHidden'), SnackbarType.error)
         router.back()
       }
     })

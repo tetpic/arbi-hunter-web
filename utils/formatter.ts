@@ -1,5 +1,6 @@
 import {formatRelative, subDays, formatDistanceStrict, formatDistance} from 'date-fns'
-import {ru} from 'date-fns/locale'
+import {ru, enUS} from 'date-fns/locale'
+import { InterfaceLanguage } from 'types/enums'
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
@@ -22,11 +23,11 @@ export default class Formatter {
     return phone
   }
 
-  static formatDate(date: string|Date, options?:{plusDays?: number, timeOptions?: Intl.DateTimeFormatOptions}){
+  static formatDate(date: string|Date, options?:{plusDays?: number, timeOptions?: Intl.DateTimeFormatOptions, lang?: InterfaceLanguage}){
     const recievedDate = new Date(date)
     recievedDate.setDate(recievedDate.getDate()+(options?.plusDays||0))
 
-    return new Intl.DateTimeFormat('ru', {
+    return new Intl.DateTimeFormat(options.lang||'ru', {
       day: 'numeric',
       month: 'long',
       ...options?.timeOptions
@@ -53,11 +54,11 @@ export default class Formatter {
     return formatRelative(subDays(new Date(date), 0) , new Date(), {locale})
   }
 
-  static formatDistanceToNow(date: string | Date, options?:{plusDistance?: number, strict?: boolean}) {
+  static formatDistanceToNow(date: string | Date, options?:{plusDistance?: number, strict?: boolean, locale?: InterfaceLanguage}) {
     const recievedDate = new Date(date)
     recievedDate.setDate(recievedDate.getDate()+(options?.plusDistance||0))
     const dt = options?.strict
-    ?formatDistanceStrict(new Date(), new Date(recievedDate),  { locale: ru, roundingMethod: 'round' })
+    ?formatDistanceStrict(new Date(), new Date(recievedDate),  { locale: options.locale === 'en' ? enUS:ru , roundingMethod: 'round' })
     :formatDistance(subDays(new Date(), 0), new Date(recievedDate), { locale: ru })
     return dt
   }

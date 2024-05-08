@@ -6,6 +6,7 @@ import { ICV } from 'data/interfaces/ICV'
 import { TranslateCompensationType, TranslateCurrency } from './enumsTranslations'
 import { CompensationType, Preset } from 'types/enums'
 import ImageHelper from './ImageHelper'
+import { Translate } from 'next-translate'
 
 export const getUserImageSource = (userProfile: IUserProfile, preset?: Preset): string|null => {
   switch(userProfile?.profileType) {
@@ -72,7 +73,7 @@ export const getAge = (age: number): string => {
   return age + ' ' + Formatter.pluralize(age, 'год', 'года', 'лет')
 }
 
-export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}):string|null => {
+export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t: Translate):string|null => {
   const salary = data.cv&&(Formatter.formatNumber(Number(data.cv?.salary)) + ' ' + TranslateCurrency(data.cv?.currency))
   ||data.vacancy&&
     [
@@ -88,7 +89,7 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}):string|null => {
 
   switch(compensation) {
     case CompensationType.Contract:
-      return TranslateCompensationType(compensation)
+      return TranslateCompensationType(compensation, t)
     case CompensationType.Salary:
       return salary
     default: 

@@ -17,6 +17,7 @@ import Formatter from 'utils/formatter'
 import SettingSvg from 'components/svg/SettingSvg'
 import { ICommunityMembersModalProps } from 'components/modals/MembersModal'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -27,6 +28,7 @@ export default function CommunityHeader() {
   const {isTabletWidth} = useResize()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>()
+  const {t} = useTranslation()
 
   const buttonHandler = async () => { 
     setIsLoading(true)
@@ -79,15 +81,15 @@ export default function CommunityHeader() {
         userContext.currentProfile &&
         <p className={styles.members} onClick={()=>openMembersModal()}>
           <UsersSvg/>
-          {Formatter.formatNumber(Number(communityContext.currentCommunity.membersCount))} {Formatter.pluralize(+communityContext.currentCommunity.membersCount, 'участник', 'участника', 'участников')}
+          {Formatter.formatNumber(Number(communityContext.currentCommunity.membersCount))} {Formatter.pluralize(+communityContext.currentCommunity.membersCount, t('participant1'), t('participant2'), t('participant3'))}
         </p>
       }
       {
         isAdmin && !isTabletWidth && 
-        <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, communityContext.currentCommunity)}>Настройки сообщества</Button>
+        <Button className={styles.editCommunity} onClick={()=>appContext.showModal(ModalType.EditCommunityModal, communityContext.currentCommunity)}>{t('community_settings')}</Button>
         ||
         isAdmin && isTabletWidth &&
-        <Button className={styles.createButton} onClick={()=>appContext.showModal(ModalType.CreateCommunityArticleModal)}><span>Создать запись</span></Button>
+        <Button className={styles.createButton} onClick={()=>appContext.showModal(ModalType.CreateCommunityArticleModal)}><span>{t('community_createItem')}</span></Button>
         ||
         userContext.currentProfile &&
         <Button 
@@ -96,7 +98,7 @@ export default function CommunityHeader() {
         className={styles.button}
         onClick={buttonHandler} 
         >
-          {communityContext.currentCommunity.isSubscribedByCurrentProfile?'Отписаться':'Подписаться'}
+          {communityContext.currentCommunity.isSubscribedByCurrentProfile?t('community_unsubscribe'):t('community_subscribe')}
         </Button>
       }
     </div>

@@ -3,10 +3,13 @@
   "searchAlt": "Найти",
   "search_cv": "Поиск резюме",
   "search_vacancy": "Поиск вакансий",
+  "search_byName":"Поиск по названию",
   "employee": "Соискатель",
   "hirer": "Компания",
   "company": "Компания",
   "cv": "Резюме",
+  "courses": "Курсы",
+  "media": "Медиа", 
   "vacancy": "Вакансия",
   "create_vacancy": "Создать вакансию",
   "create_cv": "Создать резюме",
@@ -57,6 +60,10 @@
   "close": "Закрыть",
   "edit": "Изменить",
   "download": "Загрузить файл",
+  "remote": "Удаленно",
+  "ago":"назад",
+  "publish": "Опубликовать",
+
   
   "gender_male": "Мужчина",
   "gender_female": "Женщина",
@@ -83,6 +90,7 @@
   "language_zh":"Китайский",
   "language_lv":"Литовский",
   "language_uk":"Украинский",
+  
 
   "articlesCounter1": "статья",
   "articlesCounter2": "статьи",
@@ -123,7 +131,12 @@
   "feedback2":"отзыва",
   "feedback3":"отзывов",
   "cv1":"резюме",
+  "participant1":"участник",
+  "participant2":"участника",
+  "participant3":"участников",
 
+
+  "sortBy": "Сортировать по ",
   "sortBy_date": "По дате",
 
   "isRemote_true": "Удаленная",
@@ -178,6 +191,9 @@
 
   "hirerRole_admin":"Администратор" ,
   "hirerRole_manager": "Менеджер",
+
+  "compensation_contract": "Договорная",
+  "compensation_salary": "Оклад",
 
 
   "create_description": "Описание",
@@ -245,6 +261,7 @@
   "courses_course":"Курс",
   "courses_finish":"Завершить курс",
   "courses_answer":"Ответить",
+  "courses_noSaved":"Нет сохраненных курсов",
 
 
   "community_create": "Создать сообщество",
@@ -256,6 +273,16 @@
   "community_share": "Поделиться",
   "community_hide": "Скрыть",
   "community_noNews": "Нет новостей",
+  "community_publishNews": "Опубликуйте запись",
+  "community_settings": "Настройки сообщества",
+  "community_createItem":"Создать запись",
+  "community_addCover": "Добавить обложку",
+  "community_notImportant": "(не обязательно)",
+  "community_name": "Название",
+  "community_enterText": "Введите текст",
+  "community_participants": "Участники",
+  "community_noParticipants": "Нет участников",
+
 
 
   "chat_searchPlaceholder":"Поиск по чатам",
@@ -263,17 +290,34 @@
   "chat_main":"Чаты",
   "chat_settings":"Настройки чата",
   "chat_ready":"Готово",
+  "chat_folders_edit": "Изм.",
   "chat_folders_description":"Вы можете создать папки с нужными чатами и переключаться между ними.",
   "chat_folderName":"НАЗВАНИЕ ПАПКИ",
   "chat_shooseChats":"ВЫБРАТЬ ЧАТЫ",
   "chat_folder_create":"Создать папку",
   "chat_folder_add":"Добавить чаты",
+  "chat_folder_allFolders": "ВСЕ ПАПКИ",
+  "chat_folder_creationInfo": "Вы можете создать папки с нужными чатами и переключаться между ними.",
+  "chat_folderCreate": "Создать новую папку", 
+  "chat_allChats": "Все чаты",
+  "chat_notFound": "Чатов не найдено",
+  "chat_online": "В сети",
+  "chat_wasOnline": "Был(а) в сети ", 
+  "chat_vacancyApplication": "Отклик на вакансию", 
+  "chat_cvApplication": "Отклик на резюме", 
+  "chat_vacancyInvite":"Вас пригласили на вакансию",
+  "chat_noMessages":"Нет сообщений",
+  "chat_enterMessage":"Введите сообщение...",
+  "chat_withoutCoverLetter":"Без сопроводительного письма",
+  "chat_coverLetter":"Сопроводительное письмо",
+
 
 
   "create_addPortfolio":"Добавить порфтолио",
   "create_recommendedSkills":"Рекомендованные навыки",
   "create_workplaceCountry": "Страна где находится офис",
   "create_workplaceCity": "Город где находится офис",
+  "create_languageKnowledges":"Владение языками",
 
   "create_cv_preview": "Предпросмотр резюме",
   "create_cv_refreshSuccess": "Резюме успешно обновлено",
@@ -322,6 +366,8 @@
   "create_vacancy_caterory": "Категория и специализация",
   "create_vacancy_name": "Название вакансии",
   "create_vacancy_nameShort": "Название",
+  "create_vacancy_skillsOnly":"Навыки",
+
   "create_vacancy_salary": "Уровень дохода",
   "create_vacancy_workPlace": "Место работы",
   "create_vacancy_experience": "Опыт работы",
@@ -345,10 +391,12 @@
   "cv_item_experience": "Опыт работы",
   "cv_item_lastWorkPlace": "Последнее место работы",
   "cv_item_invite": "Пригласить",
+  "cv_item_reject": "Отказать",
   "cv_item_chat": "Чат",
   "cv_item_contacts": "Контакты",
   "cv_item_openProfile": "Открыть профиль",
   "cv_item_removeConfirm":"Вы действительно хотите удалить резюме?",
+  "cv_item_removerOrHidden":"Резюме было скрыто или удалено",
 
 
   "cv_page_noOpensAvailable": "Нет доступных открытий контактов",
@@ -378,7 +426,8 @@
   "cv_page_relocation": "Переезд возможен", 
   "cv_page_businesstrips":"Командировки возможны",
   "cv_page_noBusinesstrips":"Командировки невозможны",
-
+  "cv_addedToBlackList":"Резюме добавлено в черный список",
+  "cv_deletedOrHidden": "CV удалено или скрыто", 
 
   "constructor_chooseImageLayout": "Выберите расположение изображений",
   "constructor_addHTML":"Вставьте свой HTML код", 
@@ -497,6 +546,17 @@
   "item_onModeration": "На модерации",
   "item_upriseInSearch": "Поднять в поиске",
   "item_continueEditing": "Продолжить заполнение",
+  "item_saved": "Сохранен",
+  "item_archived": "В архиве",
+  "item_expires": "Истекает",
+  "item_statusModeration": "На модерации",
+  "item_watchReviews": "Смотреть отклики",
+  "item_relevantCvs": "Подходящие резюме",
+  "item_publishAgain":"Разместить повторно",
+  "item_vacancyFilled": "Вакансия заполнена на",
+  "item_cvFilled": "Резюме заполнено на",
+  "item_draftAlmostReady": "Черновик почти готов к публикации",
+  "item_draftReady": "Черновик готов к публикации",
 
 
   "login": "Войти",
@@ -611,6 +671,7 @@
   "media_article_linkCopied": "Ссылка скопирована",
   "media_article_share": "Поделиться",
   "media_article_hide": "Скрыть",
+  "media_article_findArticles": "Найти статьи в выбранной категории",
   "media_read": "Читать",
   "media_page_join": "Присоединяйся к комьюнити",
   "media_page_advertise": "Зарегистрируйся и получи доступ к подпискам на сообщества, сохраняйте статьи, подписывайтесь на новости",
@@ -624,6 +685,21 @@
   "media_page_allArticles": "Подборки для вас",
   "media_page_mySubscriptions": "Мои подписки",
   "media_page_media": "Медиа",
+  "media_page_stories": "Истории",
+  "media_page_headings": "Рубрики",
+  "media_page_allHeadings":"Все",
+  "media_page_findArticles":"Найти статьи",
+  "media_news_addToFavorites":"Добавить в избранное",
+  "media_news_removeFromFavorites":"Убрать из избранного",
+  "media_news_success":"Успешно",
+  "media_news_linkCopied":"Ссылка скопирована",
+  "media_news_copyLink":"Скопировать ссылку",
+  "media_news_share":"Поделиться",
+  "media_news_hide":"Скрыть",
+  "media_noAddedItems":"Нет добавленных медиа",
+  
+
+  "media_noCommunitiesLoaded": "Нет загруженных сообществ",
 
 
   "mainPage_hir_feedbacks":"Отклики",
@@ -657,6 +733,9 @@
   "managers_personalData": "Личные данные",  
   "managers_permissions": "Права",  
   "managers_status": "Статус",  
+  "managers_noAdded":"Нет добавленных менеджеров",
+  "managers_addNew":"Добавить менеджера",
+  "managers_comment":"Комментарий",
 
 
   "nav_myCvs": "Мои резюме",
@@ -669,8 +748,16 @@
   "nav_settings": "Настройки",
   "nav_managers": "Менеджеры",
 
+  "personal_about":"О себе",
+  "personal_contacts":"Контактная информация",
+  "personal_editProfile":"Редактировать профиль",
+  "personal_chooseVacancyLookType":"Выберите статус",
+
+
 
   "profile_active": "Активные",
+  "profile_noSavedCvs":"Нет сохраненных резюме",
+  "profile_settings": "Настройки профиля",
   "profile_drafts": "Черновики",
   "profile_archive": "Архив",
   "profile_cvs_empty": "Нет созданных резюме",
@@ -747,6 +834,12 @@
   "vacancy_page_contacts": "Контакты",
   "vacancy_page_contactInfo": "Контактная информация",
   "vacancy_page_writeInChat": "Написать в чат",
+
+  "vacancies_searchInMy": "Поиск в моих вакансиях",
+  "vacancies_myVacancies": "Мои вакансии",
+  "vacancies_noActive": "Нет активных вакансий",
+  "vacancies_noArchive": "Нет архивных вакансий",
+  "vacancies_noDraft": "Нет черновиков",
 
 
   "vacancy_item_areYouShureToDelete": "Вы действительно хотите удалить вакансию?",

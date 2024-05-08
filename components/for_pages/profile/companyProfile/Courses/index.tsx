@@ -6,6 +6,7 @@ import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -15,6 +16,7 @@ interface Props {
 export default function SavedCourses(props: Props) {
   const [page, setPage] = useState<number>(1)
   const courseCountext = useCoursesContext()
+  const {t} = useTranslation()
 
   useEffect(()=>{
     courseCountext.setCourses({savedByCurrentProfile: true, page})
@@ -23,7 +25,7 @@ export default function SavedCourses(props: Props) {
   return (<div className={styles.root}> 
     {courseCountext.courseLoading && <Spinner size={24}/>}
     {!courseCountext.courseLoading && courseCountext.courses.size === 0 &&
-    <P useThemeColor className='empty'>Нет сохраненных курсов</P>
+    <P useThemeColor className='empty'>{t('courses_noSaved')}</P>
     }
     <InfiniteScroll
     next={()=>setPage(p => p+1)}

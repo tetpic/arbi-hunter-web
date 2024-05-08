@@ -54,7 +54,7 @@ export default function VacancyPage(props: Props) {
   const {currentVacancy, foundVacancies} = vacancyContext
   const router = useRouter()
   const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
-  const salary = getSalary({vacancy:currentVacancy})
+  const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
   const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
 

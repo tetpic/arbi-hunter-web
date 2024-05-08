@@ -102,12 +102,9 @@
     width: 100%;
     justify-content: space-between;
     padding: 8px 16px;
-    background-color: $grey;
+    background-color: var(--secondaryColor);
+    border: 2px var(--borderPerimeter) solid;
     border-radius: 12px;
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
-   
   }
 }
 

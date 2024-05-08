@@ -185,7 +185,7 @@ export default function PersonalPage(props: Props) {
     {isEditing &&
     <FormikProvider value={formik}>
       <Form>
-        <P styleType={['medium', 'w500', 'greyLight']}>О себе:</P>
+        <P styleType={['medium', 'w500', 'greyLight']}>{t('personal_about')}</P>
         <Spacer basis={16}/>
         <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}}/>
         <Spacer basis={16}/>
@@ -193,7 +193,7 @@ export default function PersonalPage(props: Props) {
     </FormikProvider>
     ||
     <ContentItem  className={styles.bodyItem}>
-      <P styleType={['large', 'w600']} useThemeColor>Контактная информация</P>
+      <P styleType={['large', 'w600']} useThemeColor>{t('personal_contacts')}</P>
       <Spacer basis={16}/>
       <div className={styles.contacts}>
         <Link className={styles.contact} href={`mailto:${personalContext.currentProfile.email}`}>
@@ -218,7 +218,7 @@ export default function PersonalPage(props: Props) {
         }
       </div>
       <Spacer basis={36}/>
-      <P styleType={['large', 'w600']} useThemeColor>О себе</P>
+      <P styleType={['large', 'w600']} useThemeColor>{t('personal_about')}</P>
       <Spacer basis={16}/>
       <HtmlText text={personalContext.currentProfile.bio}/>
     </ContentItem>

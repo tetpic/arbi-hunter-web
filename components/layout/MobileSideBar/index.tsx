@@ -67,7 +67,7 @@ export default function MobileSideBar(props: Props) {
         </>
         }
       </div>
-      <Button styleType={['icon', 'backTransparent']} altStyleType={['icon','whitePurple', 'invertSvg']} onClick={closeHandler}><CrossSvg/></Button>
+      <Button  altStyleType={['invertSvg']} onClick={closeHandler}><CrossSvg/></Button>
     </div>
 
     {!userContext.currentProfile &&
@@ -227,7 +227,7 @@ export default function MobileSideBar(props: Props) {
           <Switch
           onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
           checked={appContext.theme ===AppTheme.Dark}
-          offColor={colors.white}
+          offColor={colors.purpleGrey}
           onColor={colors.blue}
           offHandleColor={colors.blue}
           onHandleColor={colors.white}

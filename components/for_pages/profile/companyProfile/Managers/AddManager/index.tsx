@@ -153,7 +153,7 @@ export default function AddManager(props: Props) {
     validate={Validator.combine([Validator.required, Validator.email])}
     />
 
-    <TextAreaField name={'comment'} autoSize label='Комментарий'/>
+    <TextAreaField name={'comment'} autoSize label={t('managers_comment')}/>
 
   </>)
 
