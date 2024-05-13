@@ -8,13 +8,14 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { SnackbarType } from 'types/enums'
 import Validator from 'utils/Validator'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
 
 
 export default function PersonalInformation(props: Props) {
-
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
 
@@ -22,7 +23,7 @@ export default function PersonalInformation(props: Props) {
     userContext.editCurrentProfile(data)
     .then(res=> {
       if(res) {
-        appContext.showSnackbar('Данные сохранены', SnackbarType.success)
+        appContext.showSnackbar(t('data_saved'), SnackbarType.success)
       }
     })
   }
@@ -47,7 +48,7 @@ export default function PersonalInformation(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'firstName'}
-          label={'Имя: '}
+          label={`${t('name')}: `}
           labelType={'top'}
           />
 
@@ -55,7 +56,7 @@ export default function PersonalInformation(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'lastName'}
-          label={'Фамилия: '}
+          label={`${t('lastName')}: `}
           labelType={'top'}
           />
 
@@ -63,12 +64,12 @@ export default function PersonalInformation(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'patronymic'}
-          label={'Отчество: '}
+          label={`${t('patronymic')}: `}
           labelType={'top'}
           />
 
           <InputField   
-          label={'Электронная почта:'}
+          label={`${t('email')}:`}
           className={styles.input} 
           labelType='top' 
           styleType={'default'} 
@@ -83,11 +84,11 @@ export default function PersonalInformation(props: Props) {
           placeholder={'000 000 00 00'} 
           name={'phone'}  
           className={styles.input} 
-          defaultCountry={'RU'}
-          label={'Телефон:'}
+          defaultCountry={userContext.currentProfile.countryCode}
+          label={`${t('phone')}:`}
           />
         </div>
-        <Button className={styles.button}>Сохранить</Button>
+        <Button className={styles.button}>{t('save')}</Button>
       </Form>
     </FormikProvider>
   )

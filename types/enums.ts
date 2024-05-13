@@ -53,6 +53,7 @@ export enum ModalType {
   ChooseFolderToSave = 'ChooseFolderToSave',
   HirerFieldsModal = 'hirerFieldsModal',
   SalaryModal = 'salaryModal',
+  ForwardMessageModal = 'forwardMessageModal',
 }
 
 export enum AppTheme {

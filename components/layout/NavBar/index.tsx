@@ -156,7 +156,7 @@ export default function NavBar(props: Props) {
         </div>
 
         <div className={classNames(styles.linkText, styles.themeSwitcher)}>
-          <P useThemeColor >Ночной режим</P>
+          <P useThemeColor >{t('nav_nightMode')}</P>
           <Switch
           onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
           checked={appContext.theme ===AppTheme.Dark}

@@ -20,6 +20,7 @@ interface Props extends IOptionsModalProps{
   onClose: ()=>void
   isBottomSheet?: boolean
   isLast?: boolean
+  setRef?: (r: HTMLDivElement) => void
 }
 
 
@@ -45,7 +46,7 @@ export default function OptionsModal(props: Props) {
   }
 
   const body = (
-    <div className={classNames(styles.itemWrapper, args?.itemWrapperClassName)} onClick={hideModal}>
+    <div ref={r=>props.setRef?.(r)} className={classNames(styles.itemWrapper, args?.itemWrapperClassName)} onClick={hideModal}>
       {children}
     </div>
   )

@@ -64,7 +64,6 @@ export default function Footer(props: Props) {
 
       <div className={styles.right}>
         <div className={styles.column}>
-          {/* <p className={styles.title}>О компании</p> */}
           <Link  href={'/about'}>
             <P  styleType={['medium', 'w500']} useThemeColor>{t('footer_about')}</P>
           </Link>
@@ -82,7 +81,6 @@ export default function Footer(props: Props) {
           </Link>
         </div>
         <div className={styles.column}>
-          {/* <p className={styles.title}>Работодателям</p> */}
           {userContext.profileType === ProfileType.Employee && 
           <>
             <Link href={userContext.currentProfile?'/create/cv/':'/login'}>
@@ -115,7 +113,6 @@ export default function Footer(props: Props) {
           </Link>
         </div>
         <div className={styles.column}>
-          {/* <p className={styles.title}>О сервисе</p> */}
           <Link href={'/base'} >
             <P styleType={['medium', 'w500']} useThemeColor>{t('footer_knowledgeBase')}</P>
           </Link>

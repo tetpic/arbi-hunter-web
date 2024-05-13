@@ -18,6 +18,7 @@ import Checkbox from 'components/fields/CheckboxListField/Checkbox'
 import Spinner from 'components/ui/Spinner'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -38,6 +39,7 @@ function SpecializationModalInner(props: Props) {
   const cvContext = useCreateVcCvContext()
   const {activeCategory, setActiveCategory} = cvContext
   const [chooseAll, setChooseAll] = useState<boolean>(false)
+  const {t} = useTranslation()
 
   // useEffect(()=>{
   //   setActiveCategory(args.activeSubCategories)  
@@ -47,7 +49,7 @@ function SpecializationModalInner(props: Props) {
 
   const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
     if(!data.specialization) {
-      appContext.showSnackbar('Выберите специализацию', SnackbarType.error)
+      appContext.showSnackbar(t('create_setSpecializationAlt'), SnackbarType.error)
       return
     }
     cvContext.setActiveSubcategory(Array.isArray(data.specialization)?data.specialization: [data.specialization])
@@ -90,7 +92,7 @@ function SpecializationModalInner(props: Props) {
     <Body 
     onClose={props.onClose} 
     onSave={formik.submitForm} 
-    title={'Специализации'}
+    title={t('filters_specializations')}
     withInput={false}
     >
       <FormikProvider value={formik}>
@@ -115,7 +117,7 @@ function SpecializationModalInner(props: Props) {
                 {subCategories && args?.manyItems &&
                   <>
                     {subCategories.length > 1 &&
-                      <Checkbox className={styles.chooseAll} value={undefined} isActive={chooseAll} onChange={()=>chooseAllHandler(subCategories)} label='Выбрать все'/>
+                      <Checkbox className={styles.chooseAll} value={undefined} isActive={chooseAll} onChange={()=>chooseAllHandler(subCategories)} label={t('setAll')}/>
                     }
                     <div onClick={()=>setChooseAll(false)}>
                       {subCategories.length > 0 &&

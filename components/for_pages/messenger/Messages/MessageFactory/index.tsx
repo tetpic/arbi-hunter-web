@@ -18,11 +18,17 @@ import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
 import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
+import OptionsDropDown from '@/components/ui/OptionsDropDown'
+import OptionsList from '@/components/ui/OptionsList'
+import { useRef } from 'react'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal'
+import { useChatContext } from 'context/chat_state'
 
 interface Props {
-  profileId: number
+  profileId?: number
   message: IMessage
-  application: IApplication
+  application?: IApplication
 }
 
 
@@ -32,29 +38,92 @@ export default function MessageFactory(props: Props) {
   const {isPhoneWidth} = appContext.size
   const userContext = useUserContext()
   const profileType = userContext?.currentProfile?.profileType
+  const dropRef = useRef(null!)
+  const itemRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const chatContext = useChatContext()
+  const chats = chatContext.chats
 
-  const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message.profileId?styles.rightMessage:styles.leftMessage
+  
+  
+
+  
+  
+
+  const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
   const msg = props.message
+
+  const openForwardModal = () => {
+    appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
+      chats: [...chats.values()],
+      forwardedId: Number(props.message.id),
+      forwardedMessage: props.message
+    })
+    openDropDown(false)
+
+  }
+
+  const openDeleteMessageModal = () => {
+    alert('open delete')
+    openDropDown(false)
+
+  }
+
+  const setPinned = () => {
+    alert('set pinned')
+    openDropDown(false)
+  }
+
+
+
+
+
+  const options = <OptionsList options={[
+    {title: 'Удалить', onClick: openDeleteMessageModal},
+    {title: 'Закрепить', onClick: setPinned},
+    {title: 'Переслать', onClick: openForwardModal}
+  ]} 
+  onMouseLeave={()=>{}}/>
+
+  const optionsDropDown = (
+    <OptionsDropDown 
+    key={'dropdown'+props.message.id}
+    options={options} 
+    active={dropDown} 
+    getRef={(r)=>{dropRef.current = r}} 
+    usePopper
+    rootRef={itemRef}
+    onClose={()=>{}}/>
+  )
+
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault()
+    openDropDown(true)
+  }
 
 
   const stats = (
-    <div className={styles.stats} key={props.message.id}>
+    <div className={styles.stats} ref={itemRef} onContextMenu={onRightClick} key={props.message.id}>
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
       <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
+      {optionsDropDown}
     </div>
   )
 
   const textMessage = (
-    <div className={side} key={props.message.id}>
+    <div className={side} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
+      {}
       <p className={styles.message}>
         {msg.message}
       </p>
       {stats}
+      {optionsDropDown}
+
     </div>
   )
 
   const assetMessage = (
-    <div key={props.message.id} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
+    <div key={props.message.id} ref={itemRef} onContextMenu={onRightClick} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
       <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{
@@ -81,6 +150,7 @@ export default function MessageFactory(props: Props) {
         {msg.message}
       </p>
       {stats}
+      {optionsDropDown}
     </div>
   )
 
@@ -97,30 +167,31 @@ export default function MessageFactory(props: Props) {
         <ApplicationHirerNode application={props.application} message={msg}/>
       </div>
     }
-    <div className={side}>
+    <div className={side} ref={itemRef } onContextMenu={onRightClick}>
         <ApplicationEmployeeNode application={props.application} message={msg} profileType={profileType}/>
         {stats}
+        {optionsDropDown}
     </div>
   </>
   )
 
   const proposalMessage = (<>
-    {msg?.proposal?.coverLetter &&
-      <div className={side} key={props.message.id}>
-        <p className={styles.message}>{t('chat_cvApplication')}</p>
-        <Spacer basis={8} />
-        <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
-        {stats}
-      </div>
-    }
+    <div className={side} onContextMenu={onRightClick} ref={itemRef }  key={props.message.id}>
+      <p className={styles.message}>{t('chat_cvApplication')}</p>
+      <Spacer basis={8} />
+      <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
+      {stats}
+      {optionsDropDown}
+    </div>
   </>)
 
   const voiceMessage = (
-    <div className={side} key={props.message.id}>
+    <div className={side} onContextMenu={onRightClick} ref={itemRef } key={props.message.id}>
       {msg?.assets?.length > 0 &&
         <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
       }
       {stats}
+      {optionsDropDown}
     </div>
   )
 
@@ -133,7 +204,7 @@ export default function MessageFactory(props: Props) {
       case MessageType.Asset:
         return assetMessage
       case MessageType.Proposal:
-        return proposalMessage
+        return msg?.proposal?.coverLetter?proposalMessage:null
       case MessageType.Voice:
         return voiceMessage
       default :

@@ -15,6 +15,7 @@ import PhotoCameraSvg from '@/components/svg/PhotoCameraSvg'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -26,6 +27,7 @@ export interface IBackgroundSwitchModalArgs {
 }
 
 export default function BackgroundSwitchModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
   const args: IBackgroundSwitchModalArgs = appContext.modalArguments
@@ -54,7 +56,7 @@ export default function BackgroundSwitchModal(props: Props) {
         size={88}
         image={'/images/cities/cityPreview.png'}
         />
-        <p>Индивидуальный фон</p>
+        <p>{t('personal_customBackground')}</p>
       </div>
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
         <FileInput setImages={setImage} accept={['image/png', 'image/jpeg']}/>
@@ -78,15 +80,15 @@ export default function BackgroundSwitchModal(props: Props) {
             <PhotoCameraSvg color='#7C7C8C'/>
           </div>
         }
-        <p>Загрузить фото</p>
+        <p>{t('personal_uploadPhoto')}</p>
       </label>
     </div>
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={props.onClose}>
-        Отмена
+        {t('cancelAlt')}
       </Button>
       <Button className={styles.buttonGradient} onClick={()=>onSave()}>
-        Применить
+        {t('apply')}
       </Button>
     </div>
   </div>    

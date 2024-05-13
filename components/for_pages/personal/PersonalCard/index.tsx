@@ -174,11 +174,6 @@ export default function PersonalCard(props: Props) {
         </div>
       </div>
     </>}
-    {/* <div className={styles.rating}>
-      <p className={styles.ratingValue}>4.0</p>
-      <RatingLine rating={4}/>
-      <p className={styles.ratingCount}>23 отзыва</p>
-    </div> */}
     {props.isEditable && !props.isEditing && !isTabletWidth &&
       <Button styleType={['gradient']} onClick={()=> saveHandler()}>{t('personal_editProfile')}</Button>
     }

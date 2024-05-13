@@ -13,6 +13,7 @@ import { Languages, Preset } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -21,6 +22,7 @@ interface Props {
 export type CommunityNewsViewModalProps = [IArticle, ICommunity, boolean]
 
 export default function CommunityNewsViewModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const [item, community, isAdmin] = appContext.modalArguments as CommunityNewsViewModalProps
   const [article, setArticle] = useState<IArticle>()
@@ -49,7 +51,7 @@ export default function CommunityNewsViewModal(props: Props) {
       <p className={styles.commName}>{item.community.name}</p>
       <p className={styles.published}>{Formatter.formatDateRelative(item.createdAt)}</p>
       {!isAdmin &&
-        <Button className={styles.yellowButton}>Подписаться</Button>
+        <Button className={styles.yellowButton}>{t('community_subscribe')}</Button>
       }
     </div>
     <div className={styles.content}>

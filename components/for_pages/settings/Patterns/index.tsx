@@ -3,11 +3,13 @@ import Button from 'components/ui/Button'
 import { usePatternContext } from 'context/pattern_state'
 import { useEffect, useState } from 'react'
 import PatternItem from './PatternItem'
+import useTranslation from 'next-translate/useTranslation'
 
 
 export default function Patterns() {
   const [creation, setCreation] = useState<boolean>(false)
   const patternContext = usePatternContext()
+  const {t} = useTranslation()
 
   const createPatternHandler = () => {
     setCreation(true)
@@ -19,7 +21,6 @@ export default function Patterns() {
 
 
   return (<div className={styles.root}> 
-    {/* <Scrollbars universal autoHide> */}
   <div className={styles.wrapper}>
       {patternContext.patterns && patternContext.patterns.size > 0 && 
       [...patternContext.patterns.values()].map(el=> 
@@ -29,9 +30,8 @@ export default function Patterns() {
       <PatternItem new/>
     }
   </div>
-    {/* </Scrollbars> */}
     {patternContext.patternsNotExist?.size > 0 && !creation &&
-    <Button styleType={['gradient']} className={styles.createNew} onClick={createPatternHandler}>Создать</Button>
+    <Button styleType={['gradient']} className={styles.createNew} onClick={createPatternHandler}>{t('create')}</Button>
     }
   </div>)
 }

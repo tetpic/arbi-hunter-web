@@ -78,6 +78,7 @@
   margin-top: auto;
   max-height: 80%;
   display: flex;
+  height: 100%;
   flex-direction: column;
   overflow: auto;
   color: $white;
@@ -132,7 +133,7 @@
   .input {
     font-size: $mediumText;
     font-weight: $medium;
-    color: $white;
+    color: var(--pTextColor);
     width: calc(100% - 76px);
     &:focus {
       &::placeholder {

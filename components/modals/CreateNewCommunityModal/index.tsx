@@ -11,6 +11,7 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import { useState } from 'react'
 import Validator from 'utils/Validator'
 import classNames from 'classnames'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -22,6 +23,7 @@ export interface ICreateNewCommunityModal {
 
 
 export default function CreateNewCommunityModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args = appContext.modalArguments as ICreateNewCommunityModal
 
@@ -54,11 +56,11 @@ export default function CreateNewCommunityModal(props: Props) {
   const body = (
   <FormikProvider value={formik}>
     <Form className={styles.form}>
-      <p className={styles.title}>{page === 1 ?'Введите название сообщества': 'Выберите категорию'}</p>
+      <p className={styles.title}>{page === 1 ?t('community_setName'): t('community_setCategory')}</p>
       {page === 1 ?
       <InputField 
       styleType={'default'} 
-      placeholder={'Введите текст'} 
+      placeholder={t('fields_insertText')} 
       color={'default'} 
       validate={Validator.required}
       name={'name'}/>
@@ -73,12 +75,12 @@ export default function CreateNewCommunityModal(props: Props) {
       })}/>
       }
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.blackButton} onClick={page===1?props.onClose:()=>{pager(1)}} type='button'>Отменить</Button>
+        <Button className={styles.blackButton} onClick={page===1?props.onClose:()=>{pager(1)}} type='button'>{t('cancel')}</Button>
         {page === 1 &&
-        <Button className={classNames(styles.yellowButton, formik.values.name.length === 0&& styles.disabled)} type='button' onClick={()=>pageValidator(2)}>Продолжить</Button>
+        <Button className={classNames(styles.yellowButton, formik.values.name.length === 0&& styles.disabled)} type='button' onClick={()=>pageValidator(2)}>{t('continue')}</Button>
         ||
         page === 2 &&
-        <Button className={classNames(styles.yellowButton, !formik.values.categoryId&&styles.disabled)} onClick={()=>pageValidator()} type='button'>Создать</Button>
+        <Button className={classNames(styles.yellowButton, !formik.values.categoryId&&styles.disabled)} onClick={()=>pageValidator()} type='button'>{t('create')}</Button>
         }
       </div>
     </Form>

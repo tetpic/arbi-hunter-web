@@ -1,0 +1,31 @@
+@import 'styles/index';
+
+.root {
+  max-height: 90vh;
+  padding-bottom: 16px;
+}
+
+.chat {
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.chats {
+  max-height: 100%;
+  overflow: auto;
+  margin-top: 24px;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.subTitle {
+  margin-block: 16px 8px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 8px;
+}

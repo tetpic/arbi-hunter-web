@@ -182,7 +182,7 @@ export default function Messages(props: Props) {
       scrollThreshold={0.6}>
         {
           messages.size>0&&[...messages.values()].map(el=> {
-            return <MessageFactory profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
+            return <MessageFactory key={el.id} profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
           })
           ||
           loading && messages.size===0 && <Spinner size={24} color={colors.blue}/>

@@ -25,18 +25,12 @@ export default function Search(props: Props) {
       spaceBetween={8}
       className={styles.swiper}
       >
-        
-
       {props.tags.map(el => {
         return <SwiperSlide className={styles.slide}>
         <P styleType={['medium', 'w500', ]} useThemeColor  className={classNames(styles.tag, isLightTheme&&styles.tag_light)}>{el}</P>
         </SwiperSlide>
       })}
       </Swiper>
-      {/* <p className={styles.tag}>Разработка</p>
-      <p className={styles.tag}>Affiliate Manger</p>
-      <p className={styles.tag}>Frontented-Разработчик</p>
-      <p className={styles.tag}>SMM-менеджер</p> */}
     </div>
     <MainSearchBar placeholder={props.title} className={styles.searchBar}/>
   </div>

@@ -229,7 +229,7 @@ export default function VacancyPage(props: Props) {
             styleType={['gradient']}
             onClick={openChat}
             >
-              Перейти в чат
+              {t('goToChat')}
             </Button>
           }
           {!lastProposal &&

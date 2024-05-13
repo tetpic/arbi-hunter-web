@@ -56,7 +56,7 @@ export default function AddPortfolioModal(props: Props) {
   })
 
   const body = (<>
-    <Title title={'Добавить портфолио'} className={styles.title}/>
+    <Title title={t('create_cv_addPortfolio')} className={styles.title}/>
     <P styleType={['w500', 'medium']} useThemeColor className={styles.description}>
       {t('create_cv_portfolioText1')} <br/>
       {t('create_cv_portfolioText2')}

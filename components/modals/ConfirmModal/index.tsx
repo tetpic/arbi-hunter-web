@@ -3,6 +3,7 @@ import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -16,6 +17,7 @@ export interface IConfirmModalProps {
 
 export default function ConfirmModal(props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const modalArguments = appContext.modalArguments as IConfirmModalProps 
 
   const onTrueClickHandler = () => {
@@ -27,8 +29,8 @@ export default function ConfirmModal(props: Props) {
     <div className={styles.modalBody} style={{maxWidth: modalArguments.maxWidth}}>
       <p className={styles.text}>{modalArguments.text}</p>
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.button} onClick={onTrueClickHandler}>Да</Button>
-        <Button className={styles.grayButton} onClick={props.onClose}>Нет</Button>
+        <Button className={styles.button} onClick={onTrueClickHandler}>{t('yes')}</Button>
+        <Button className={styles.grayButton} onClick={props.onClose}>{t('no')}</Button>
       </div>
     </div>
   )

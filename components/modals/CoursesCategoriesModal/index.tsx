@@ -13,6 +13,7 @@ import Title from 'components/ui/TitleForSection'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -29,6 +30,7 @@ export default function CoursesCategoriesModal(props: Props) {
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
+  const {t} = useTranslation()
 
   const onCategoryClick = (categoryId: number) => {
     args.onCategoryClick(categoryId)
@@ -52,7 +54,7 @@ export default function CoursesCategoriesModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Title title={'Категории'} onBackClick={props.onClose}/>
+      <Title title={t('courses_categories')} onBackClick={props.onClose}/>
       <InfiniteScroll 
       next={()=>setPage(p => p+1)} 
       hasMore={categories.size < total} 
@@ -67,7 +69,7 @@ export default function CoursesCategoriesModal(props: Props) {
                   <p className={styles.counter}>
                     <span>
                     {category.coursesCount}&nbsp;
-                    {Formatter.pluralize(Number(category.coursesCount), 'курс', 'курса', 'курсов')}
+                    {Formatter.pluralize(Number(category.coursesCount), t('course1'), t('course2'), t('course3'))}
                     </span>
                   </p>
                   {category.image &&

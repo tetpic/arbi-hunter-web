@@ -13,6 +13,7 @@ import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { SnackbarType } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -23,6 +24,7 @@ export interface ICourseFeedbackModalProps {
 }
 
 export default function CourseFeedbackModal(props: Props) {
+  const {t} = useTranslation()
   const {isPhoneWidth} = useResize()
   const [rate, setRate] = useState<number>(0)
   const [colorsArray, setColors] = useState<string[]>([])
@@ -32,7 +34,7 @@ export default function CourseFeedbackModal(props: Props) {
  
   const submit = async(data: {content: string}) => {
     if(rate === 0) {
-      appContext.showSnackbar('Укажите, насколько вам понравился курс', SnackbarType.error)
+      appContext.showSnackbar(t('courses_rateCourse'), SnackbarType.error)
       return
     }
     const dataToSend = {
@@ -41,14 +43,13 @@ export default function CourseFeedbackModal(props: Props) {
       courseId: args.courseId
     }
     await CoursesRepository.sendCourseFeedback(dataToSend)
-    appContext.showSnackbar('Спасибо за отзыв', SnackbarType.success)
+    appContext.showSnackbar(t('courses_thanksForFeedback'), SnackbarType.success)
     appContext.hideModal()
   }
 
   const goldColor = colors.blue
   const greyColor = colors.greyLight
 
-  /** возвращает массив цветов для StarSVG */
   const starsHandler = (choosen?: number): string[] => {
     let items: string[] = []
     for(let i = 0; i < 5; i++) {
@@ -86,7 +87,7 @@ export default function CourseFeedbackModal(props: Props) {
   const body = (
     <div className={styles.root}>
       <Button onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
-      <p className={styles.title}>Оцените курс</p>
+      <p className={styles.title}>{t('courses_rateAlt')}</p>
       <div className={styles.starWrapper} onMouseLeave={()=>{mouseEnterHandler(0)}}>
           {colorsArray.map((color, index) => 
             <div className={styles.svgStarWrapper}  
@@ -101,13 +102,13 @@ export default function CourseFeedbackModal(props: Props) {
         <Form>
           <TextAreaField 
           onChange={(e)=>formik.setValues({content: e.target.value})} 
-          placeholder='Введите текст' 
+          placeholder={t('fields_insertText')} 
           areaClassname={styles.textarea} 
           autoSize={true}
           name={'content'}/>
         </Form>
       </FormikProvider>
-      <Button onClick={formik.submitForm} className={styles.sendButton}>Отправить</Button>
+      <Button onClick={formik.submitForm} className={styles.sendButton}>{t('send')}</Button>
     </div>
   )
 

@@ -130,8 +130,6 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
         e.stopPropagation();
         (item.chat[0]||chatId)&&router.push(`/messenger?chat=${item.chat[0]?.id||chatId}`)
       }}>{t('goToChat')}</Button>
-      // ||
-      // <Button className={styles.button} >Откликнуться</Button>
       }
     </div>
   </div>)

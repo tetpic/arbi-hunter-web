@@ -8,6 +8,7 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { useEffect, useState } from 'react'
 import { Languages } from 'types/enums'
 import styles from './index.module.scss'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -18,6 +19,7 @@ export default function CreateCommunityArticleModal(props: Props) {
   const args = appContext.modalArguments as {article: IArticle}
   const [fullArticle, setFullArticle] = useState<IArticle>()
   const [loading, setLoading] = useState<boolean>(true)
+  const {t} = useTranslation()
 
   useEffect(()=>{
     if(args) {
@@ -36,7 +38,7 @@ export default function CreateCommunityArticleModal(props: Props) {
   <ModalLayout mobileFullScreen className={styles.modalLayout}>
     <ModalBody>
       {!loading &&
-        <CreateNewCommunityArticle article={fullArticle} title={fullArticle?'Изменить запись': 'Создать запись'} />
+        <CreateNewCommunityArticle article={fullArticle} title={fullArticle?t('community_changePost'): t('community_createPost')} />
         ||
         loading && <Spinner size={24}/>
       }

@@ -8,6 +8,7 @@
     flex-direction: column;
     max-width: 50%;
     color: var(--pTextColor);
+    position: relative;
     @include mq($TabletWidth, max) {
       max-width: 80%;
     }

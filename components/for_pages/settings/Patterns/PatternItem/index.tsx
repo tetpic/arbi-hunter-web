@@ -15,6 +15,7 @@ import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import { colors } from 'styles/variables'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   pattern?: IPattern
@@ -23,7 +24,7 @@ interface Props {
 
 
 export default function PatternItem(props: Props) {
-
+  const {t} = useTranslation()
   const [isActive, setActive] = useState<boolean>(false)
   const patternContext = usePatternContext()
   const appContext = useAppContext()
@@ -56,7 +57,7 @@ export default function PatternItem(props: Props) {
       onClick={()=>setActive(!isActive)}
       className={styles.item}
       >
-        {props.new?'Создание нового шаблона':TranslatePatternType(props.pattern?.type)}
+        {props.new?t('profile_createPattern'):TranslatePatternType(props.pattern?.type)}
         <ArrowDownSvg className={classNames(styles.arrow, isActive&&styles.arrow_active)} color={isLightTheme&&colors.black} />
       </P>
     } 
@@ -78,7 +79,7 @@ export default function PatternItem(props: Props) {
           />
         }
           <RichTextField value={formik.values.template} name={'template'}/>
-          <Button className={styles.button}>Сохранить</Button>
+          <Button className={styles.button}>{t('save')}</Button>
         </Form>
       </FormikProvider>
       </>

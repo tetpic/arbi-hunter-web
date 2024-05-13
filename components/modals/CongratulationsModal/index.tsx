@@ -13,6 +13,7 @@ import { ModalType } from 'types/enums'
 import { ICourseFeedbackModalProps } from '../CourseFeedbackModal'
 import ImageHelper from 'utils/ImageHelper'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -23,7 +24,7 @@ export interface ICongratulationsModalProps {
 }
 
 export default function CongratulationsModal(props: Props) {
-
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args = appContext.modalArguments as ICongratulationsModalProps
 
@@ -36,9 +37,9 @@ export default function CongratulationsModal(props: Props) {
     <div className={styles.root}>
       <Button className={styles.closeModal} onClick={props.onClose}><CrossSvg/></Button>
       <Image src={prise} alt={'prise'} width={222} height={222}/>
-      <P styleType={['w600', 'huge', 'textCenter']} useThemeColor className={styles.title}>Поздравляем вас, <br/> вы прошли курс!</P>
+      <P styleType={['w600', 'huge', 'textCenter']} useThemeColor className={styles.title}>{t('courses_congratulations1')} <br/> {t('courses_congratulations2')}</P>
       {args.course.certificate &&
-        <P styleType={['small']} useThemeColor >Скачайте сертификат о прохождении курса</P>
+        <P styleType={['small']} useThemeColor >{t('courses_downloadCertificateInfo')}</P>
       }
       
       <div className={styles.buttonsWrapper}>
@@ -49,10 +50,10 @@ export default function CongratulationsModal(props: Props) {
           rel="noopener noreferrer" 
           href={ImageHelper.urlFromSource(args.course.certificate?.source)} 
           className={styles.buttonGradient}>
-            Скачать сертификат
+            {t('courses_downloadCertificate')}
           </Link>
         }
-        <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >Оставить отзыв</Button>
+        <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >{t('courses_leaveFeedback')}</Button>
       </div>
     </div>
   )

@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import { colors } from 'styles/variables'
+import useTranslation from 'next-translate/useTranslation'
 
 export interface ICountryModalProps {
   onSubmit: (country: IGeoName[]) => void
@@ -31,6 +32,7 @@ export default  function CountryModal (props: Props) {
 }
 
 function CountryModalInner(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
   const args: ICountryModalProps = appContext.modalArguments
@@ -55,15 +57,21 @@ function CountryModalInner(props: Props) {
   }, [formik.values.search])
 
   const body = (<div className={styles.root}>
-    <InputField styleType={'default'} color={'white'} name={'search'} prefix={<LoupeSvg color={isLightTheme?colors.black:''}/>} placeholder='Поиск'/>
+    <InputField 
+    styleType={'default'} 
+    color={'white'} 
+    name={'search'} 
+    prefix={<LoupeSvg color={isLightTheme?colors.black:''}/>} 
+    placeholder={t('search')}
+    />
     {locationContext.countries.size > 0 &&
       <CheckboxListField  name={'country'} options={
         [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el.locName, value: el}))
       }/>
     }
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>Отменить</Button>
-      <Button styleType={['gradient']} type='submit'>Выбрать</Button>
+      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
+      <Button styleType={['gradient']} type='submit'>{t('set')}</Button>
     </div>
   </div>)
 

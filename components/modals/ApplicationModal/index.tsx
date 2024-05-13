@@ -19,6 +19,7 @@ import { IApplicationSuccessModalProps } from '../ApplicationSuccessModal'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -31,13 +32,14 @@ export interface IApplicationModalProps {
 }
 
 export default function ApplicationModal(props: Props) {
+  const {t} = useTranslation()
   const appContex = useAppContext()
   const modalArguments:IApplicationModalProps = props.isBottomSheet?appContex.bottomSheetArguments:appContex.modalArguments
   const [showTextField, setShowTextField] = useState<boolean>(false)
 
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
     if(!data.cvId) {
-      appContex.showSnackbar('Укажите резюме для отклика', SnackbarType.error)
+      appContex.showSnackbar(t('application_setCv'), SnackbarType.error)
       return
     }
     ApplicationRepository.sendApplication(data as IApplication)
@@ -70,11 +72,11 @@ export default function ApplicationModal(props: Props) {
             <TextAreaField areaClassname={styles.textArea} onChange={(e)=> formik.setFieldValue('coverLetter', e.target.value)} autoSize name={'coverLetter'}/>
           }
           {!showTextField && 
-            <p className={styles.addCover} onClick={()=>setShowTextField(true)}><PlusSvg color={colors.blue} />Сопроводительное письмо</p>
+            <p className={styles.addCover} onClick={()=>setShowTextField(true)}><PlusSvg color={colors.blue} />{t('application_coverLetter')}</p>
           } 
         </Form>
       </FormikProvider>
-      <Button disabled={!formik.values.cvId} className={styles.nextButton} onClick={formik.submitForm}>Продолжить</Button>
+      <Button disabled={!formik.values.cvId} className={styles.nextButton} onClick={formik.submitForm}>{t('continue')}</Button>
     </div>
   )
 

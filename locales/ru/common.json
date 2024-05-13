@@ -5,7 +5,9 @@
   "search_vacancy": "Поиск вакансий",
   "search_byName":"Поиск по названию",
   "employee": "Соискатель",
+  
   "hirer": "Компания",
+  "hirer_alt": "Работодатель",
   "company": "Компания",
   "cv": "Резюме",
   "courses": "Курсы",
@@ -13,6 +15,7 @@
   "vacancy": "Вакансия",
   "create_vacancy": "Создать вакансию",
   "create_cv": "Создать резюме",
+  "create": "Создать",
   "country": "Страна",
   "city": "Город",
   "name":"Имя",
@@ -45,6 +48,7 @@
   "free": "Бесплатно",
   "saveAndContinue": "Сохранить и продолжить",
   "set": "Выбрать",
+  "setAll":"Выбрать все",
   "stories": "Истории",
   "categories": "Категории",
   "collections": "Подборки",
@@ -70,6 +74,11 @@
   "age":"Возраст",
   "noData":"Нет данных",
   "restore":"Восстановить",
+  "data_saved":"Данные сохранены",
+  "yes": "Да",
+  "no": "Нет",
+  "send":"Отправить",
+  "add":"Добавить",
 
   
   "gender_male": "Мужчина",
@@ -206,6 +215,17 @@
   "compensation_salary": "Оклад",
 
 
+  "application_setCv":"Укажите резюме для отклика",
+  "application_coverLetter":"Сопроводительное письмо",
+  "application_cvSend":"Ваше резюме успешно отправлено",
+  "application_send":"Приглашение отправлено",
+  "application_sendInfo":"Вы можете отслеживать статус вашей заявки в личном кабинете",
+  "application_watchRelevantCvs":"Смотреть похожие вакансии",
+  "application_watchRelevantVacancies":"Смотреть похожие резюме",
+  "application_goToFeedbacks":"Перейти в раздел откликов",
+
+
+
   "create_description": "Описание",
   "create_setSpecialization": "Укажите специализацию",
   "create_setSpecializationAlt": "Выберите специализацию",
@@ -272,6 +292,16 @@
   "courses_finish":"Завершить курс",
   "courses_answer":"Ответить",
   "courses_noSaved":"Нет сохраненных курсов",
+  "courses_congratulations1":"Поздравляем вас,",
+  "courses_congratulations2":"вы прошли курс!",
+  "courses_downloadCertificateInfo":"Скачайте сертификат о прохождении курса",
+  "courses_downloadCertificate":"Скачать сертификат",
+  "courses_leaveFeedback":"Оставить отзыв",
+  "courses_rateCourse":"Укажите, насколько вам понравился курс",
+  "courses_rateAlt":"Оцените курс",
+  "courses_thanksForFeedback":"Спасибо за отзыв",
+
+  
 
 
   "community_create": "Создать сообщество",
@@ -292,6 +322,13 @@
   "community_enterText": "Введите текст",
   "community_participants": "Участники",
   "community_noParticipants": "Нет участников",
+  "community_changePost":"Изменить запись",
+  "community_createPost":"Создать запись",
+  "community_setName":"Введите название сообщества",
+  "community_setCategory":"Выберите категорию",
+
+  
+  
 
 
 
@@ -328,6 +365,9 @@
   "create_workplaceCountry": "Страна где находится офис",
   "create_workplaceCity": "Город где находится офис",
   "create_languageKnowledges":"Владение языками",
+  "create_setSkills":"Выберите навык из списка",
+  "create_findSkills":"Поиск по навыкам",
+  "create_choosenSkills":"Выбранные навыки",
 
   "create_cv_preview": "Предпросмотр резюме",
   "create_cv_refreshSuccess": "Резюме успешно обновлено",
@@ -360,6 +400,29 @@
   "create_cv_portfolioText1":"Прикрепите ссылку на портфолио",
   "create_cv_portfolioText2":"или загрузите фото или PDF - файл",
   "create_cv_addPortfolioLink":"Добавить ссылку на портфолио",
+  "create_cv_addPortfolio":"Добавить портфолио",
+  "create_cv_workPeriod":"Период работы",
+  "create_cv_setWorkPlace":"Укажите место работы",
+  "create_cv_workStart":"Начало работы",
+  "create_cv_workEnd":"Окончание работы",
+  "create_cv_tillPresent":"По настоящее время",
+  "create_cv_company":"Организация",
+  "create_cv_companyName":"Название компании",
+  "create_cv_position":"Должность",
+  "create_cv_achivements":"Обязанности и достижения",
+  "create_cv_educationYears":"Годы обучения",
+  "create_cv_setDatesForStartAndEnd":"Укажите дату начала и конца обучения",
+  "create_cv_educationStart":"Начало обучения",
+  "create_cv_educationEnd":"Окончание обучения",
+  "create_cv_universityName":"Название учебного заведения",
+  "create_cv_faculity":"Факультет",
+  "create_cv_specialty":"Специальность",
+  "create_cv_courses":"Повышение квалификации и курсы",
+  "create_cv_setStartOfEducation":"Укажите дату начала и конца обучения",
+  "create_cv_endYear":"Год окончания",
+  "create_cv_coursesCompanyName":"Название учреждения",
+  "create_cv_coursesName":"Название курсов",
+  
 
 
 
@@ -473,6 +536,7 @@
   "footer_findJobs": "Поиск работы",
   "footer_vcCatalog": "Каталог вакансий",
   "footer_createVc": "Разместить вакансию",
+  "footer_createCv":"Создать резюме",
   "footer_findCandidates": "Поиск сотрудников",
   "footer_candidatesCategories": "Категории специалистов",
   "footer_services": "Услуги",
@@ -771,13 +835,11 @@
   "nav_shop": "Магазин",
   "nav_settings": "Настройки",
   "nav_managers": "Менеджеры",
+  "nav_modelSettings":"Настройки персонажа",
+  "nav_nightMode": "Ночной режим",
+  "nav_infofmation":"ИНФОРМАЦИЯ",
 
-  "personal_about":"О себе",
-  "personal_personalInfo": "Личная информация",
-  "personal_changePassword": "Изменить пароль",
-  "personal_contacts":"Контактная информация",
-  "personal_editProfile":"Редактировать профиль",
-  "personal_chooseVacancyLookType":"Выберите статус",
+
 
 
 
@@ -796,6 +858,7 @@
   "profile_title_managers": "Менеджеры вакансий",
   "profile_title_saved": "Сохранённое",
   "profile_title_patterns": "Шаблоны писем",
+  "profile_createPattern": "Создание нового шаблона",
   "profile_title_personalInfo": "Личная информация",
   "profile_feedbacks_all": "Все отклики",
   "profile_feedbacks_invite": "Приглашение",
@@ -843,6 +906,9 @@
   "shop_noAvailableTariffs": "Нет активных тарифов для улучшения",
   "shop_insufficientBalance": "Недостаточно арбикоинов, хотите пополнить баланс?",
   "shop_brandingSubcriptionNotFound": "Подписка на брендирование не оформлена.",
+  "shop_purchased":"Купленные услуги",
+  "shop_delayedPurchases":"Отложенные заказы",
+  "shop_paymentsArchive":"Архив пополнений",
 
 
 
@@ -920,6 +986,17 @@
   "personal_textVideo": "Текст и видео",
   "personal_html": "HTML",
   "personal_noInfo":"Нет информации",
+  "personal_about":"О себе",
+  "personal_personalInfo": "Личная информация",
+  "personal_changePassword": "Изменить пароль",
+  "personal_contacts":"Контактная информация",
+  "personal_editProfile":"Редактировать профиль",
+  "personal_chooseVacancyLookType":"Выберите статус",
+  "personal_addLink":"Добавьте ссылку",
+  "personal_columnColor":"Цвет колонки",
+  "personal_title":"Заголовок",
+  "personal_customBackground":"Индивидуальный фон",
+  "personal_uploadPhoto":"Загрузить фото",
 
   "responses_onlyNew":"Только новые"
 

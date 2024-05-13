@@ -195,7 +195,7 @@ export default function AddPersonalBlockModal(props: Props) {
 
 
   const titleInput = <InputField placeholder={t('personal_header')} styleType={'default'} color={'default'} name={'title'}/>
-  const videoLink = <InputField placeholder={'Добавьте ссылку'} styleType={'default'} color={'default'} name={'title'}/>
+  const videoLink = <InputField placeholder={t('personal_addLink')} styleType={'default'} color={'default'} name={'title'}/>
 
   const richText = <RichTextField hideButtons={{helpers: true, alignment: true, color: true}} name='text'/>
 
@@ -314,9 +314,9 @@ export default function AddPersonalBlockModal(props: Props) {
       <div className={classNames(styles.gridContainer, styles.gridContainerColumns)} style={{gridTemplateAreas: `"${(layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" "')}"`, gridTemplateColumns: `repeat(${(layout as number[][])[0].length}, 1fr)`}}>
         {layout[0].map((el, i) => {
           return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`, backgroundColor: formik.values.color[i]}}>
-            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Цвет колонки</P>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>{t('personal_columnColor')}</P>
             <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange}/>
-            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Заголовок</P>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>{t('personal_title')}</P>
             <RichTextField
             hideButtons={{helpers: true}}
             name={`titles[${i}]`}
@@ -338,7 +338,7 @@ export default function AddPersonalBlockModal(props: Props) {
               </>
             }
             </div>
-            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>Текст</P>
+            <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>{t('personal_text')}</P>
             <RichTextField hideButtons={{helpers: true}} name={`texts[${i}]`}/>
           </div>
         })}

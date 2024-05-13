@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -31,7 +32,7 @@ export interface IBackgroundPickModalArguments {
 
  
 export default function BackgroundPickModal(props: Props) {
-  
+  const {t} = useTranslation()
   const appContext = useAppContext()  
   const userContext = useUserContext()
   const profileType = userContext.currentProfile.profileType
@@ -189,11 +190,11 @@ export default function BackgroundPickModal(props: Props) {
 
   const buttons = (
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.backButton} onClick={() => page === 'build'?setPage('back'):props.onClose()}>{page === 'build'? 'Назад': 'Отмена'}</Button>
+      <Button className={styles.backButton} onClick={() => page === 'build'?setPage('back'):props.onClose()}>{page === 'build'? t('back'): t('cancel')}</Button>
       {args.withBuildPicker && page === 'back' &&
-        <Button onClick={() => setPage('build')} className={styles.nextButton}>Далее</Button>
+        <Button onClick={() => setPage('build')} className={styles.nextButton}>{t('next')}</Button>
         ||
-        <Button className={styles.nextButton} onClick={onSave}>Сохранить</Button>
+        <Button className={styles.nextButton} onClick={onSave}>{t('save')}</Button>
       }
     </div>
   )

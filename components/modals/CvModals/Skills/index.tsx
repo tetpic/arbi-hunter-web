@@ -13,6 +13,7 @@ import Body from '../Body'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'components/ui/Spinner'
 import SectionSubtitle from '@/components/for_pages/create/utils/SectionSubtitle'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -25,6 +26,7 @@ export interface ISkillModalProps {
 }
 
 export default function SkillsModal(props: Props) {
+  const {t} = useTranslation() 
   
   const appContext = useAppContext()
   const args: ISkillModalProps = appContext.modalArguments
@@ -46,7 +48,7 @@ export default function SkillsModal(props: Props) {
 
   const setSkillHandler = () => {
     if(!choosenSkills&&choosenSkills.size === 0) {
-      appContext.showSnackbar('Выберите навык из списка', SnackbarType.error)
+      appContext.showSnackbar(t('create_setSkills'), SnackbarType.error)
       return
     }
     args.onSubmit(choosenSkills)
@@ -95,8 +97,8 @@ export default function SkillsModal(props: Props) {
     onChange={withTrottle.callback} 
     onClose={props.onClose} 
     onSave={setSkillHandler} 
-    title={'Навыки'}
-    placeholder={'Поиск по навыкам'}
+    title={t('create_cv_skills')}
+    placeholder={t('create_findSkills')}
     >
       <div className={styles.categoriesWrapper}>
 
@@ -109,7 +111,7 @@ export default function SkillsModal(props: Props) {
         >
           <div className={styles.categories}>
             {choosenSkills&&choosenSkills.size > 0 &&<>
-            <SectionSubtitle text={'Выбранные навыки'} className={styles.title}/>
+            <SectionSubtitle text={t('create_choosenSkills')} className={styles.title}/>
 
             {[...choosenSkills.values()].map((el, index)=>{
               return (<p key={index} className={classnames(styles.position, choosenSkills.has(el.id)&&styles.position_active)} onClick={()=>onClickHandler(el)}>{el.title}</p>)

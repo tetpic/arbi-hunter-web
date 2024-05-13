@@ -16,6 +16,7 @@ import Validator from 'utils/Validator'
 import CrossSvg from '@/components/svg/CrossSvg'
 import Title from '@/components/ui/TitleForSection'
 import P from '@/components/ui/P'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -34,6 +35,7 @@ export default function DetailsModal(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const args: IDetailsModalProps = appContext.modalArguments
+  const {t}= useTranslation()
 
   const formik = useFormik<Partial<ICVCreate>>({
     initialValues: {
@@ -54,15 +56,15 @@ export default function DetailsModal(props: Props) {
 
   const experienceInfoForm = (<>
     {isTabletWidth && 
-    <Title title={'Период работы'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    <Title title={t('create_cv_workPeriod')} onBackClick={props.onClose} className={styles.mobileTitle}/>
     ||
-    <SectionSubtitle text={'Период работы'} title='Укажите место работы' className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_workPeriod')} title={t('create_cv_setWorkPlace')} className={styles.title}/>
     }
     <div className={styles.period}>
       <DateField 
       name={'experienceInfo[0].fromDate'} 
       styleType={'default'} 
-      label='Начало работы' 
+      label={t('create_cv_workStart')} 
       dateFormat='MM/yyyy'
       showMonthYearPicker
       formatOptions={{
@@ -75,7 +77,7 @@ export default function DetailsModal(props: Props) {
         <DateField 
         name={'experienceInfo[0].toDate'} 
         styleType={'default'} 
-        label='Окончание работы' 
+        label={t('create_cv_workEnd')} 
         showMonthYearPicker
         minDate={formik.values?.experienceInfo&&([formik.values.experienceInfo[0].fromDate.split('.')[0], '01', formik.values.experienceInfo[0].fromDate.split('.')[1]].join('.'))}
         formatOptions={{
@@ -88,17 +90,17 @@ export default function DetailsModal(props: Props) {
       }
     </div>
     <div className={styles.toPresent} >
-      <P styleType={['medium', 'w500']} useThemeColor>По настоящее время</P> 
+      <P styleType={['medium', 'w500']} useThemeColor>{t('create_cv_tillPresent')}</P> 
       <SwitchField name={'experienceInfo[0].toPresent'}/> 
     </div>
 
-    <SectionSubtitle text={'Организация'} className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_company')} className={styles.title}/>
     <div className={styles.inputsWrapper}>
       <InputField 
       name={'experienceInfo[0].company'} 
       styleType={'default'} 
       color={'default'} 
-      label='Название компании' 
+      label={t('create_cv_companyName')} 
       labelType='top'
       validate={Validator.required}
 
@@ -107,26 +109,26 @@ export default function DetailsModal(props: Props) {
       name={'experienceInfo[0].position'} 
       styleType={'default'} 
       color={'default'} 
-      label='Должность' 
+      label={t('create_cv_position')} 
       labelType='top'
       validate={Validator.required}
       />
     </div>
-    <SectionSubtitle text={'Обязанности и достижения'} className={styles.title} />
+    <SectionSubtitle text={t('create_cv_achivements')} className={styles.title} />
     <TextAreaField autoSize name={'experienceInfo[0].description'} value={formik.values.experienceInfo?.[0].description} onChange={(val)=>{formik.setFieldValue('experienceInfo[0].description', val.currentTarget.value)}}/>
   </>)
 
   const educationInfoForm = (<>
     {isTabletWidth && 
-    <Title title={'Годы обучения'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    <Title title={t('create_cv_educationYears')} onBackClick={props.onClose} className={styles.mobileTitle}/>
     ||
-    <SectionSubtitle text={'Годы обучения'} title='Укажите дату начала и конца обучения' className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_educationYears')} title={t('create_cv_setDatesForStartAndEnd')} className={styles.title}/>
     }
     <div className={styles.period}>
       <DateField 
       name={'educationInfo[0].fromDate'} 
       styleType={'default'} 
-      label='Начало обучения' 
+      label={t('create_cv_educationStart')} 
       dateFormat='yyyy'      
       showYearPicker
       formatOptions={{
@@ -139,7 +141,7 @@ export default function DetailsModal(props: Props) {
         <DateField 
         name={'educationInfo[0].toDate'} 
         styleType={'default'} 
-        label='Окончание обучения' 
+        label={t('create_cv_educationEnd')} 
         dateFormat='yyyy'        
         showYearPicker
         minDate={formik.values?.educationInfo?.[0]?.fromDate}
@@ -153,7 +155,7 @@ export default function DetailsModal(props: Props) {
       }
     </div>
     <div className={styles.toPresent} >
-      <P styleType={['medium', 'w500']} useThemeColor>По настоящее время</P> 
+      <P styleType={['medium', 'w500']} useThemeColor>{t('create_cv_tillPresent')}</P> 
       <SwitchField name={'educationInfo[0].toPresent'}/> 
     </div>
 
@@ -162,7 +164,7 @@ export default function DetailsModal(props: Props) {
       name={'educationInfo[0].institution'} 
       styleType={'default'} 
       color={'default'} 
-      label='Название учебного заведения' 
+      label={t('create_cv_universityName')} 
       labelType='top'
       validate={Validator.required}
       />
@@ -170,14 +172,14 @@ export default function DetailsModal(props: Props) {
       name={'educationInfo[0].faculty'} 
       styleType={'default'} 
       color={'default'} 
-      label='Факультет' 
+      label={t('create_cv_faculity')} 
       labelType='top'
       />
       <InputField 
       name={'educationInfo[0].speciality'} 
       styleType={'default'} 
       color={'default'} 
-      label='Специальность' 
+      label={t('create_cv_specialty')}
       labelType='top'
       validate={Validator.required}
       />
@@ -186,9 +188,9 @@ export default function DetailsModal(props: Props) {
 
   const coursesInfoForm = (<>
     {isTabletWidth && 
-    <Title title={'Повышение квалификации и курсы'} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    <Title title={t('create_cv_courses')} onBackClick={props.onClose} className={styles.mobileTitle}/>
     ||
-    <SectionSubtitle text={'Повышение квалификации и курсы'} title='Укажите дату начала и конца обучения' className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_courses')} title={t('create_cv_setStartOfEducation')} className={styles.title}/>
     }
     <Spacer basis={24}/>
     <div className={styles.period}>
@@ -199,7 +201,7 @@ export default function DetailsModal(props: Props) {
       name={'coursesInfo[0].date'} 
       showMonthYearPicker
       styleType={'default'} 
-      label='Год окончания:' 
+      label={t('create_cv_endYear')} 
       className={styles.dateField}
 
       />
@@ -209,7 +211,7 @@ export default function DetailsModal(props: Props) {
       name={'coursesInfo[0].name'} 
       styleType={'default'} 
       color={'default'} 
-      label='Название учреждения:' 
+      label={t('create_cv_coursesCompanyName')} 
       labelType='top'
       validate={Validator.required}
       />
@@ -217,7 +219,7 @@ export default function DetailsModal(props: Props) {
       name={'coursesInfo[0].location'} 
       styleType={'default'} 
       color={'default'} 
-      label='Название курсов:' 
+      label={t('create_cv_coursesName')} 
       labelType='top'
       validate={Validator.required}
       />
@@ -238,8 +240,8 @@ export default function DetailsModal(props: Props) {
               {args.type === 'coursesInfo' && coursesInfoForm}
             </div>
             <div className={styles.buttonWrapper}>
-              <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?'Удалить':'Отмена'}</Button>
-              <Button className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?'Сохранить':'Добавить'}</Button>
+              <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?t('delete'):t('cancelAlt')}</Button>
+              <Button className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?t('save'):t('add')}</Button>
             </div>
           </Form>
         </FormikProvider>

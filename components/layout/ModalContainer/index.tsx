@@ -52,6 +52,7 @@ import SearchModal from '@/components/modals/SearchModal'
 import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
 import FavoritesSettingModal from '@/components/modals/FavoritesSettingModal'
 import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
+import ForwardMessageModal from '@/components/modals/ForwardMessageModal'
 
 
 interface Props { }
@@ -257,6 +258,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.ChooseFolderToSave:
         return <Modal isOpen {...commonSettings} >
         <ChooseFolderToSave onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.ForwardMessageModal:
+        return <Modal isOpen {...commonSettings} >
+        <ForwardMessageModal onClose={commonSettings.onRequestClose}/>
       </Modal>
     }
   })()

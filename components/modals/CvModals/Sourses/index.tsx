@@ -10,6 +10,7 @@ import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import { useAppContext } from 'context/state'
 import P from '@/components/ui/P'
 import TagList from '@/components/ui/TagList'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -25,6 +26,7 @@ export interface ISoursesModalArgs{
 
 
 export default function SourcesModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args: ISoursesModalArgs = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [choosenElements, setChoosenElement] = useState<Map<number, ISource>>(args.choosenElements||new Map())
@@ -47,11 +49,11 @@ export default function SourcesModal(props: Props) {
 
 
   const title = (
-    args.type === 'sources' && 'Источники трафика:'
+    args.type === 'sources' && `${t('filters_sources')}:`
     ||
-    args.type === 'geos' && 'Гео:'
+    args.type === 'geos' && `${t('filters_geos')}:`
     ||
-    args.type === 'verticals' && 'Вертикали:'
+    args.type === 'verticals' && `${t('filters_verticals')}:`
   )
 
 
