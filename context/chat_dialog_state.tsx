@@ -172,7 +172,6 @@ export function ChatDialogWrapper(props: Props) {
         await ChatRepository.setReadIds(markReadList)
         markReadList.length = 0
       } catch (e) {
-        console.error('ErrorMarkRead', e)
       }
   }, 500)
 
