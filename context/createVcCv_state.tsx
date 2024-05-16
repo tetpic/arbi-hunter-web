@@ -286,7 +286,6 @@ export function CreateVcCvWrapper(props: Props) {
     .then(res => {
       if(res) {
         setRecommendedSkillsState(new Map(res.data.map(el=> [el.id, el])))
-        console.log(res)
       }
     })
   }

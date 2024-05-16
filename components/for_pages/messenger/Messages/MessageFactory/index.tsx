@@ -46,7 +46,6 @@ export default function MessageFactory(props: Props) {
   
 
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
-  console.log(side)
   const msg = props.message
 
   const openForwardModal = () => {
