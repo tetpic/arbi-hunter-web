@@ -32,6 +32,7 @@
     .logo{
       position: absolute;
       transform: translate(-50%, -50%);
+      object-fit: cover;
       @include mq($TabletWidth, max) {
         width: clamp(40px, 10.5vw, 55px);
         height: clamp(40px, 10.5vw, 55px);
@@ -87,7 +88,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  height: Max(101%, 360px);
+  height: Max(103%, 360px);
   width: Max(130%, 1400px);
   z-index: 3;
 }

@@ -4,7 +4,7 @@ import { useAppContext } from 'context/state'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import BackTextButton from 'components/ui/BackTextButton'
-import { PersonalBlockType, Preset } from 'types/enums'
+import { AppTheme, PersonalBlockType, Preset } from 'types/enums'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
 import { Form, FormikProvider, useFormik } from 'formik'
 import InputField from 'components/fields/InputField'
@@ -82,6 +82,7 @@ export default function AddPersonalBlockModal(props: Props) {
 
  
   const submit = (data: Partial<IPersonalPageBlock>) => {
+    debugger
     const submitData = {
       ...data
     }
@@ -124,6 +125,9 @@ export default function AddPersonalBlockModal(props: Props) {
     if(args.type === PersonalBlockType.Columns && args.initialData?.block) {
       return JSON.parse(args.initialData?.block?.layout).color
     }
+    else {
+      return appContext.theme === AppTheme.Light? [colors.white, colors.white, colors.white]: [colors.black, colors.black, colors.black]
+    }
   }
 
   const getInitialAssetsList = () => {
@@ -138,6 +142,9 @@ export default function AddPersonalBlockModal(props: Props) {
         }
       })
       return initialAssetsList
+    }
+    else if(args.initialData?.block?.layout && args.initialData.assets && args.type === PersonalBlockType.Columns) {
+      return args.initialData.assets.map(el => ([el.id]))
     }
   }
 
@@ -201,7 +208,7 @@ export default function AddPersonalBlockModal(props: Props) {
 
   const layoutCollage = <div className={styles.layoutGrid}>
     {!args.initialData?.block?.layout && <>
-    <P styleType={['large', 'w500']}>{t('constructor_chooseImageLayout')}</P>
+    <P styleType={['large', 'w500']} useThemeColor>{t('constructor_chooseImageLayout')}</P>
     <div className={styles.buttonsWrapper}>
       {imagesLayoutArray.map((el, i) => {
         const isActive = JSON.stringify(layout) === el
@@ -210,6 +217,7 @@ export default function AddPersonalBlockModal(props: Props) {
           type='button' 
           styleType={['icon', isActive?'gradient':'black']} 
           className={isActive?styles.layoutButtonActive:''}
+          altStyleType={isActive?['icon', 'gradient']:['icon', 'white', 'invertSvg']} 
           onClick={()=>setLayout(JSON.parse(el))}>
             <CollageLayoutSvg type={i+1} />
           </Button>
@@ -266,15 +274,17 @@ export default function AddPersonalBlockModal(props: Props) {
   const layoutBanner = <>
     <RichTextField hideButtons={{helpers: true}} name='text'/>
     <div className={styles.layoutPlace}>
-      <P styleType={['large', 'w500']}>{t('constructor_chooseTextLayout')}</P>
+      <P styleType={['large', 'w500']} useThemeColor>{t('constructor_chooseTextLayout')}</P>
       <div className={styles.buttonsWrapper}>
         {textPositionsArray.map((el, i) => {
           return (
             <Button 
             type='button' 
             styleType={['black', 'icon']} 
+            altStyleType={['white', 'icon']}
+            className={styles.bannerLayoutButton}
             onClick={()=>setLayout([[el]])}>
-              <DotSvg color={layout?.[0]?.[0]===el&&colors.blue}/>
+              <DotSvg className={styles.buttonDot} color={layout?.[0]?.[0]===el&&colors.blue}/>
             </Button>
           )
         })}
@@ -305,6 +315,7 @@ export default function AddPersonalBlockModal(props: Props) {
         type='button' 
         className={isActive?styles.layoutButtonActive: ''} 
         styleType={['icon',isActive?'gradient':'black']} 
+        altStyleType={isActive?['icon', 'gradient']:['icon', 'white', 'invertSvg']} 
         onClick={()=>setLayout(JSON.parse(el))}>
           <ColumnLayoutSvg type={index+2}/>
         </Button>
@@ -315,7 +326,9 @@ export default function AddPersonalBlockModal(props: Props) {
         {layout[0].map((el, i) => {
           return <div className={classNames(styles.columnWrapper) } style={{gridArea: `o${el}`, backgroundColor: formik.values.color[i]}}>
             <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>{t('personal_columnColor')}</P>
-            <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange}/>
+            <div className={styles.colorInput}>
+              <input type="color" name={`color.${i}`} value={formik.values.color[i]} onChange={formik.handleChange} className={styles.colorInput}/>
+            </div>
             <P styleType={['w500', 'medium']} useThemeColor className={styles.columnTitle}>{t('personal_title')}</P>
             <RichTextField
             hideButtons={{helpers: true}}
@@ -354,10 +367,25 @@ export default function AddPersonalBlockModal(props: Props) {
   </div>
 
   const layoutVideoText = <div className={styles.videoText}>
-    <P styleType={['large', 'w500']}>{t('constructor_chooseTextVideoLayout')}</P>
+    <P styleType={['large', 'w500']} useThemeColor>{t('constructor_chooseTextVideoLayout')}</P>
     <div className={styles.buttonsWrapper}>
-      <Button type='button' styleType={['black']} onClick={()=>setLayout([['video', 'text']])}>{t('constructor_video')} | {t('constructor_text')}</Button>
-      <Button type='button' styleType={['black']} onClick={()=>setLayout([['text','video' ]])}> {t('constructor_text')} | {t('constructor_video')}</Button>
+      <Button 
+      type='button' 
+      styleType={['black']} 
+      altStyleType={['white']}
+      onClick={()=>setLayout([['video', 'text']])}
+      >
+        {t('constructor_video')} | {t('constructor_text')}
+      </Button>
+
+      <Button 
+      type='button' 
+      styleType={['black']} 
+      altStyleType={['white']}
+      onClick={()=>setLayout([['text','video']])}
+      > 
+        {t('constructor_text')} | {t('constructor_video')}
+      </Button>
     </div>
     {layout &&
       <div className={styles.videoTextWrapper} style={{gridTemplateAreas: `"${layout?.[0].join(' ')}"`}}>

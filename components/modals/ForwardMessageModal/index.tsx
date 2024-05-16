@@ -26,6 +26,7 @@ export interface ForwardMessageModalArgs  {
   forwardedId: number,
   chats: IChat[],
   forwardedMessage: IMessage
+  onSend?: (chatId: number) => void
 }
 
 export default function ForwardMessageModal(props: Props) {
@@ -40,8 +41,8 @@ export default function ForwardMessageModal(props: Props) {
   const submit = (data: {chatId: number|null, message: string}) => {
     ChatRepository.createMessage({message: data.message, chatId: data.chatId, forwardedId: args.forwardedId})
     .then(_ => {
-      router.push(`/messenger?chat=${data.chatId}`)
-      appContext.hideModal()
+      args.onSend(data.chatId)
+      // appContext.hideModal()
     })
   }
 

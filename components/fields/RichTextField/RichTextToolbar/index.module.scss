@@ -31,5 +31,39 @@
   }
 }
 
+.colorInput {
+    border: 1px var(--greyLightToPurpleGrey) solid;
+}
+.colorInput {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  border-radius: 50%;
+  input {
+    -webkit-appearance: none;
+    border: none;
+    background-color: #fff;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    position: relative;
+    top: -5px;
+    left: -5px;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: var(--borderColor);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    border-radius: 50%;
+
+  }
+}
+
 @include animationJello;
 

@@ -79,6 +79,10 @@
   row-gap: 8px;
   column-gap: 8px;
   max-height: 700px;
+  @include mq($TabletWidth, max) {
+    max-height: unset;
+    width: fit-content;
+  }
 
   .collageImageWrapper {
     border-radius: 16px;
@@ -104,6 +108,10 @@
     padding: 16px;
     border-radius: 16px;
     background-color: $backgroundBlack;
+    @include mq($TabletWidth, max) {
+      min-width: unset;
+      width: calc(100vw - 32px);
+    }
   }
 }
 
@@ -175,16 +183,29 @@
 .columnsSlide {
   width: 100%;
   min-width: 800px;
+  @include mq($TabletWidth, max) {
+    width: fit-content;
+    min-width: unset;
+
+  }
+
 }
 
 .columnsSlider {
   @include mq($TabletWidth, max) {
-    padding-inline: 16px;
+    // padding-inline: 16px;
+ 
   }
 }
 
 .columnsWrapper {
   overflow: unset !important;
+
+  .gridContainer {
+    max-height: unset;
+  }
+
+
 }
 
 .withMobilePadding {

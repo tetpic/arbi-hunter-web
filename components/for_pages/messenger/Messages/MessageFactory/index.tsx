@@ -19,7 +19,7 @@ import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
-import OptionsList from '@/components/ui/OptionsList'
+import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal'
@@ -43,30 +43,28 @@ export default function MessageFactory(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const chatContext = useChatContext()
   const chats = chatContext.chats
-
-  
-  
-
-  
   
 
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
+  console.log(side)
   const msg = props.message
 
   const openForwardModal = () => {
     appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
       chats: [...chats.values()],
       forwardedId: Number(props.message.id),
-      forwardedMessage: props.message
+      forwardedMessage: props.message,
+      onSend: (chatId: number) => {
+        chatContext.setCurrentChatId(chatId)
+        appContext.hideModal()
+      }
     })
     openDropDown(false)
-
   }
 
   const openDeleteMessageModal = () => {
     alert('open delete')
     openDropDown(false)
-
   }
 
   const setPinned = () => {
@@ -74,15 +72,16 @@ export default function MessageFactory(props: Props) {
     openDropDown(false)
   }
 
+  const allOptions: {[key: string]: IOptionList} = {
+    remove: {title: 'Удалить', onClick: openDeleteMessageModal},
+    forward: {title: 'Переслать', onClick: openForwardModal},
+    setPinned: {title: 'Закрепить', onClick: setPinned}
+  }
 
+  const rightOptions: IOptionList[] = [allOptions.remove, allOptions.forward, allOptions.setPinned]
+  const leftOptions : IOptionList[] = [allOptions.forward, allOptions.setPinned]
 
-
-
-  const options = <OptionsList options={[
-    {title: 'Удалить', onClick: openDeleteMessageModal},
-    {title: 'Закрепить', onClick: setPinned},
-    {title: 'Переслать', onClick: openForwardModal}
-  ]} 
+  const options = <OptionsList options={side === styles.rightMessage?rightOptions:leftOptions} 
   onMouseLeave={()=>{}}/>
 
   const optionsDropDown = (
@@ -91,7 +90,6 @@ export default function MessageFactory(props: Props) {
     options={options} 
     active={dropDown} 
     getRef={(r)=>{dropRef.current = r}} 
-    usePopper
     rootRef={itemRef}
     onClose={()=>{}}/>
   )

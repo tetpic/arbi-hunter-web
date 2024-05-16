@@ -25,7 +25,7 @@ export interface IDialogState {
   totalMessages: number
   fetchMore: () => void
   loading: boolean
-  sendMessage: (data: IMessage, files?: {pastedImages?:File[], voiceMessage?: File}) => void
+  sendMessage: (data: IMessage, files?: {pastedImages?:File[], voiceMessage?: File}) => Promise<boolean>
   markRead: (messageId: number) => void
   markReadMulti: (messageIds: number[]) => void,
   scrollableTarget: RefObject<HTMLElement> | null
@@ -197,7 +197,7 @@ export function ChatDialogWrapper(props: Props) {
   }
 
   /** отправка текста, изображений и аудио */
-  const sendMessage = async (data: IMessage, files: {pastedImages?:File[], voiceMessage?: File}) => {
+  const sendMessage = async (data: IMessage, files: {pastedImages?:File[], voiceMessage?: File}): Promise<boolean> => {
     const sid = uuidv4()
     setTotalMessages(i => i + 1)
     createDumbMessage(data, files, sid)
@@ -223,10 +223,12 @@ export function ChatDialogWrapper(props: Props) {
     }
  
     const createdMessage = await ChatRepository.createMessage({...data, chatId: chat.id, sid, profileId: userContext?.currentProfile?.id})
+
     setMessages(state=> {
       state.delete(sid)
       return new Map([[createdMessage.id, createdMessage], ...state.entries()])
     })
+    return true
   }
 
   /** помечаем сообщения как прочитанные */
@@ -310,6 +312,7 @@ export function ChatDialogWrapper(props: Props) {
     })
 
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((updated) => {
+      debugger
       if (chat && chat.id === updated.id) {
         setChat((i) => ({...i,...updated}))
       }

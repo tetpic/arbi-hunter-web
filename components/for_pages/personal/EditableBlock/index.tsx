@@ -64,9 +64,9 @@ export default function EditableBlock(props: Props) {
       ||props.block.type === PersonalBlockType.Collage
     ) &&
       <>
-      <P styleType={['fs32', 'w700']} useThemeColor  className={styles.withMobilePadding} >{props.block.title}</P>
+      <P styleType={['fs32', 'w700']} useThemeColor   >{props.block.title}</P>
       {props.block.text &&
-      <div className={classNames(styles.text, styles.withMobilePadding)} ><HtmlText text={props.block.text}/></div>
+      <div className={classNames(styles.text)} ><HtmlText text={props.block.text}/></div>
       }
       </>
     }
@@ -74,9 +74,9 @@ export default function EditableBlock(props: Props) {
       props.assets.map(el=>{
         return (<>
           {props.block.title &&
-            <P styleType={['fs32', 'w700']} useThemeColor className={styles.withMobilePadding} >{props.block.title}</P>
+            <P styleType={['fs32', 'w700']} useThemeColor >{props.block.title}</P>
           }
-          <div className={styles.withMobilePadding} key={el.id}>
+          <div  key={el.id}>
             <div className={styles.imageWrapper}>
               <Image 
               unoptimized
@@ -93,7 +93,7 @@ export default function EditableBlock(props: Props) {
       })
     }
     {props.block.type === PersonalBlockType.Banner &&
-      <div className={classNames(styles.banner, styles.withMobilePadding)}>
+      <div className={classNames(styles.banner)}>
         <Image 
         unoptimized 
         src={ImageHelper.urlFromFile(props.assets[0], Preset.mdCrop)} 
@@ -121,7 +121,6 @@ export default function EditableBlock(props: Props) {
       hideNav
       hideWatchMore
       >
-
       <div 
       className={classNames(styles.gridContainer, styles.columnsContainer)} 
       style={{
@@ -154,7 +153,7 @@ export default function EditableBlock(props: Props) {
         </SwiperList>
     }
     {props.block.type === PersonalBlockType.Social &&
-      <div className={classNames(styles.socialWrapper, styles.withMobilePadding)}>
+      <div className={classNames(styles.socialWrapper)}>
         <P styleType={['fs32', 'w700']} useThemeColor>{props.block.title}</P>
         <div className={styles.socials}>
           {(texts as {[key: string]: string}[]).map(el => Object.entries(el).map(([key, value]) => {{
@@ -166,16 +165,16 @@ export default function EditableBlock(props: Props) {
     }
 
     {props.block.type === PersonalBlockType.Html &&
-      <HtmlText text={props.block.text} className={styles.withMobilePadding}/>
+      <HtmlText text={props.block.text}/>
     }
 
     {props.assets && props.block.type === PersonalBlockType.Collage &&
     <>
       {props.block.title && 
-        <P styleType={['fs32', 'w700']} useThemeColor className={styles.withMobilePadding} >{props.block.title}</P>
+        <P styleType={['fs32', 'w700']} useThemeColor  >{props.block.title}</P>
       }
       <div 
-      className={classNames(styles.gridContainer, styles.collageContainer, styles.withMobilePadding)} 
+      className={classNames(styles.gridContainer, styles.collageContainer)} 
       style={{
         gridTemplate: `"${(props.block.layout as number[][]).map(el => el.map(el=> 'o' + el).join(' ')).join('" 1fr "')}" 1fr / ${'1fr '.repeat((props.block.layout as number[][])[0].length)}`, 
       }}>
@@ -197,7 +196,7 @@ export default function EditableBlock(props: Props) {
 
     {props.assets && props.block.type === PersonalBlockType.Gallery && <>
       {props.block.title &&
-        <P styleType={['fs32', 'w700']} className={styles.withMobilePadding} useThemeColor >{props.block.title}</P>
+        <P styleType={['fs32', 'w700']}  useThemeColor >{props.block.title}</P>
       }
       <SwiperList
       swiperClassname={styles.columnsSlider}
@@ -233,13 +232,13 @@ export default function EditableBlock(props: Props) {
 
     {props.block.type === PersonalBlockType.Video&&props.assets?.length > 0 &&
       props.assets.map(el=>
-        <div className={classNames(styles.video, styles.withMobilePadding)}>
+        <div className={classNames(styles.video, )}>
           <ReactPlayer width={'100%'} height={'100%'} playing  muted loop url={ImageHelper.urlFromSource(el.source)} controls/>
         </div>
       )
       ||
       props.block.type === PersonalBlockType.Video && props.assets.length === 0 && 
-      <div className={classNames(styles.video, styles.withMobilePadding)}>
+      <div className={classNames(styles.video)}>
         <ReactPlayer width={'100%'} height={'100%'}   muted loop  url={props.block.title}  controls />
       </div>
     }

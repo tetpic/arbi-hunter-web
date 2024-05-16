@@ -43,15 +43,15 @@ const TextAlignButton = ({editor, alignment, path, children}: {editor: Editor, a
 
 )
 
-const ToolbarButton = ({onClick, children, isActive, disabled}: {onClick?: () => void, children: ReactElement, isActive?: boolean, disabled?: boolean}) => {
+const ToolbarButton = ({onClick, children, isActive, disabled, noClass}: {onClick?: () => void, children: ReactElement, isActive?: boolean, disabled?: boolean, noClass?: boolean}) => {
  return ( 
   <Button
   type='button'
-  styleType={['icon', 'black']}
-  altStyleType={['gradient']}
+  styleType={!noClass?['icon', 'black']:[]}
+  altStyleType={!noClass?['gradient']:[]}
   
   onClick={!disabled ? onClick : undefined}
-  className={classNames(styles.button, {[styles.active]: isActive, [styles.disabled]: disabled})}
+  className={!noClass&&classNames(styles.button, {[styles.active]: isActive, [styles.disabled]: disabled})}
   >
     {children}
   </Button>)
@@ -177,8 +177,10 @@ export default function RichTextToolbar(props: Props) {
   </>}
   
   {!hideButtons?.color &&
-    <ToolbarButton>
-      <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
+    <ToolbarButton noClass>
+      <div className={styles.colorInput}>
+        <input type="color" className={styles.colorInput} onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}/>
+      </div>
     </ToolbarButton>
   }
 

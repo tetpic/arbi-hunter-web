@@ -9,7 +9,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
 import { RefObject, useEffect, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { AppTheme, MessageType, Preset } from 'types/enums'
+import { ActivityStatus, AppTheme, MessageType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
@@ -45,7 +45,7 @@ export default function Messages(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
-  const [collocutor, setCollocutor] = useState<IUserProfile|any>(false)
+  const [collocutor, setCollocutor] = useState<IUserProfile>()
   const [cv, setCv] = useState<ICV>(null)
   const router = useRouter()
 
@@ -58,9 +58,17 @@ export default function Messages(props: Props) {
     }
     if(pastedImages.size === 0) {
       dialog.sendMessage({message:value, type: MessageType.Text})
+      .then(_=> {
+        const container = document.querySelector('.infinite-scroll-component > div')
+        container.scrollIntoView({behavior: 'smooth', block: 'end'})
+      })
     }
     else {
       dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: [...pastedImages.values()]})
+      .then(_=> {
+        const container = document.querySelector('.infinite-scroll-component > div')
+        container.scrollIntoView({behavior: 'smooth', block: 'end'})
+      })
     }
     setValue('')
     setPastedImages(state=> {
@@ -106,7 +114,7 @@ export default function Messages(props: Props) {
   }
 
   const onTopClick = () => {
-    router.push('/personal/' + collocutor.id)
+    router.push('/personal/' + collocutor?.id)
   }
 
   const onBackClick = (e:React.MouseEvent<Element, MouseEvent>) => {
@@ -147,7 +155,7 @@ export default function Messages(props: Props) {
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
           <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</P>
-          <p className={styles.time}>{collocutor.online?<span className={styles.online}>{t('chat_online')}</span>:t('chat_wasOnline')+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
+          <p className={styles.time}>{collocutor?.activityStatus===ActivityStatus.Online?<span className={styles.online}>{t('chat_online')}</span>:t('chat_wasOnline')+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
           {!isTabletWidth &&
             <ThreeDotsButton className={styles.dots}/>
           }
