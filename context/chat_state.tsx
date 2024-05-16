@@ -193,7 +193,7 @@ export function ChatWrapper(props: Props) {
       return true
     }
     catch(err) {
-      console.error(err)
+      
     }
   }
 
