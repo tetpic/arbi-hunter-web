@@ -7,7 +7,7 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
-import { ModalType} from 'types/enums'
+import { InterfaceLanguage, ModalType} from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
@@ -34,7 +34,7 @@ interface Props {
 }
 
 export default function ProfileCvItem({cv, isLast, ...props}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const cvContext = useCvContext()
   const {isTabletWidth} = useResize()
@@ -49,7 +49,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     e.preventDefault()
     e.stopPropagation()
     if(!cv?.subscriptions && !cv.published) {
-      router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7}})
+      router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7, fromOtherPage: true}})
       return
     }
     cvContext.updateCv(cv.id, {published: !cv?.published})
@@ -57,6 +57,12 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const editHandler =() => {
     cvContext.editCv(cv)
+  }
+
+  const moveToTopHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    cvContext.moveToTop(cv.id)
   }
 
   const removeHandler =()=> {
@@ -110,6 +116,12 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories: [cv.categories[0]?.baseId]})}})
   }
 
+  const cvTopTimePlusTime = () => {
+    const time = new Date(cv.topAt)
+    time.setHours(time.getHours() + 4 )
+    return time
+  }
+
 
 
 
@@ -147,7 +159,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     }
 
 
-    {(props.type !== 'drafts' || !cv.completedSteps|| cv.completedSteps.length > 5) &&
+    {(props.type !== 'drafts' || !cv.completedSteps) &&
       <Statistics 
       className={styles.stats}
       title={t('item_statistics')}     
@@ -158,8 +170,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       ]}
       />
       ||
-      cv.completedSteps && cv.completedSteps.length < 6 &&
-      <Progress stepsCount={7} className={styles.stats} progress={cv.completedSteps} type='cv'/>
+      cv.completedSteps  &&
+      <Progress stepsCount={6} className={styles.stats} progress={cv.completedSteps} type='cv'/>
     }
 
     {!props.cardMode &&    
@@ -168,18 +180,23 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           <p className={styles.refreshed}>{t('item_onModeration')}</p>
         }
 
-        {cv.published && cv.moderationStatus === 'approved' &&
+        {cv.published && cv.moderationStatus === 'approved' && cv.subscriptions?.tariff?.price === 0 &&
           <Button
           styleType={['gradient']}
+          onClick={moveToTopHandler}
+          disabled={Number(cvTopTimePlusTime()) > Number(new Date())}
           >
-            {t('item_upriseInSearch')}
+            {cv.topAt && Number(cvTopTimePlusTime()) > Number(new Date())&&  'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})
+              ||
+              t('item_upriseInSearch')
+            }
           </Button>
         }
 
         {(
           ((!cv.published || !cv.publishedAt) &&  cv.moderationStatus === 'approved' && props.type==='archive') 
           || 
-          (props.type === 'drafts' && cv.completedSteps?.length > 5) 
+          (props.type === 'drafts' && cv.completedSteps?.length > 6) 
         )&&
           <Button
           styleType={['gradient']}
@@ -189,7 +206,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           </Button>
         }
 
-        {cv.completedSteps?.length <=5 && props.type === 'drafts' &&
+        {cv.completedSteps?.length <=6 && props.type === 'drafts' &&
           <Button styleType={['gradient']} 
           onClick={(e)=>{
             e.preventDefault()
@@ -200,7 +217,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           </Button>
         }
 
-        {props.type === 'drafts' && cv.completedSteps?.length > 5 &&
+        {props.type === 'drafts' && cv.completedSteps?.length > 6 &&
           <Button styleType={['black']} altStyleType={['whitePurple']}
           onClick={(e)=>{
             e.preventDefault()

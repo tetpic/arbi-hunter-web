@@ -19,7 +19,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import RadioListField from '@/components/fields/RadioListField'
 import ShopDateTimePicker from '@/components/for_pages/shop/DateTimePicker'
-import { AppTheme, Preset, PurchaseType } from 'types/enums'
+import { AppTheme, InterfaceLanguage, Preset, PurchaseType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
@@ -51,7 +51,7 @@ export interface PurchasePreviewModalArgs  {
 }
 
 export default function PurchasePreviewModal(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
   const balance = useRef(userContext.user?.balance)
@@ -163,7 +163,7 @@ export default function PurchasePreviewModal(props: Props) {
         <Button type='button' styleType={['icon', 'backTransparent']} onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
       </div>
       {formik.values.startAt &&
-        <P useThemeColor>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P useThemeColor>{Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}, lang:lang as InterfaceLanguage})}</P>
       }
       <div className={styles.calendarField}>
         <ShopDateTimePicker 
@@ -230,7 +230,7 @@ export default function PurchasePreviewModal(props: Props) {
               {args.tariffs.get(el.subscription.tariffId).name}
             </P>
             <P styleType={['w500', 'medium', 'greyLight']}>
-              (истекает {Formatter.formatDate(el.subscription.endAt)}, осталось {el.subscription.contactsCanOpenCount} {Formatter.pluralize(el.subscription.contactsCanOpenCount, 'открытие', 'открытия', 'открытий')})
+              (истекает {Formatter.formatDate(el.subscription.endAt, {lang: lang as InterfaceLanguage})}, осталось {el.subscription.contactsCanOpenCount} {Formatter.pluralize(el.subscription.contactsCanOpenCount, 'открытие', 'открытия', 'открытий')})
             </P>
             </>,
             value: el.subscriptionId
@@ -287,7 +287,7 @@ export default function PurchasePreviewModal(props: Props) {
       } 
       <P useThemeColor styleType={['medium']}>{args.tariff.description}</P>
       {formik.values.startAt &&
-        <P useThemeColor styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}})}</P>
+        <P useThemeColor styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>
       }
       <div className={styles.buttonsWrapper}>
         <Button styleType={['grey', 'wide']} altStyleType={['whitePurple']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>

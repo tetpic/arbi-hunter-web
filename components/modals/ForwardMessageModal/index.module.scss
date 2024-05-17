@@ -3,6 +3,18 @@
 .root {
   max-height: 90vh;
   padding-bottom: 16px;
+  @include mq($PhoneWidth, max) {
+    height: calc(100vh - 32px);
+    max-height: unset;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.modalBody {
+  @include mq($PhoneWidth, max) {
+    height: 100%;
+  }
 }
 
 .chat {
@@ -29,4 +41,24 @@
 .buttonsWrapper {
   display: flex;
   column-gap: 8px;
+  @include mq($PhoneWidth, max) {
+    margin-top: auto;
+  }
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  @include mq($PhoneWidth, max) {
+    display: flex;
+    flex-direction: column;
+
+  }
 }

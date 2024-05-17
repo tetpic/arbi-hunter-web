@@ -66,17 +66,9 @@ export default function Education(props: Props) {
   return (<>
   <RadioListField 
   wrapperClassName={styles.radiosWrapper}
-  options={[
-    {label: TranslateEducationType(undefined, t), value: undefined},
-    {label: TranslateEducationType(EducationTypes.Secondary, t), value: EducationTypes.Secondary},
-    {label: TranslateEducationType(EducationTypes.SecondarySpecial, t), value: EducationTypes.SecondarySpecial},
-    {label: TranslateEducationType(EducationTypes.IncompleteHigher, t), value: EducationTypes.IncompleteHigher},
-    {label: TranslateEducationType(EducationTypes.Higher, t), value: EducationTypes.Higher},
-    {label: TranslateEducationType(EducationTypes.Bachelor, t), value: EducationTypes.Bachelor},
-    {label: TranslateEducationType(EducationTypes.Master, t), value:EducationTypes.Master},
-    {label: TranslateEducationType(EducationTypes.PhD, t), value:EducationTypes.PhD},
-    {label: TranslateEducationType(EducationTypes.Doctor, t), value: EducationTypes.Doctor},
-  ]} 
+  options={
+    [...Object.values(EducationTypes).map(el => ({label: TranslateEducationType(el, t), value: el}))]
+} 
   name={'education'} 
   />
 

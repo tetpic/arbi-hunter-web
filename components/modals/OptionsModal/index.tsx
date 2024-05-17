@@ -4,8 +4,11 @@ import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import ClosingTitle from 'components/ui/ClosingTitle'
 import { useAppContext } from 'context/state'
-import { MutableRefObject } from 'react'
+import {  MutableRefObject,  useState } from 'react'
 import classNames from 'classnames'
+import { Placement, } from '@popperjs/core'
+import { usePopper } from 'react-popper'
+
 
 
 export interface IOptionsModalProps {
@@ -21,6 +24,8 @@ interface Props extends IOptionsModalProps{
   isBottomSheet?: boolean
   isLast?: boolean
   setRef?: (r: HTMLDivElement) => void
+  usePopperRoot?: HTMLElement
+  popperPlacement?: Placement
 }
 
 
@@ -33,11 +38,18 @@ interface Props extends IOptionsModalProps{
  * @isLast boolean
  */
 export default function OptionsModal(props: Props) {
-  
   const appContext = useAppContext()
   const args: IOptionsModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments 
   const title = props.title||args?.title  
   const children = props.children||args?.children
+  const [popperElement, setPopperElement] = useState(null)
+  const popper = usePopper(props.usePopperRoot, popperElement, {placement: props.popperPlacement||'bottom', modifiers: [
+    {name: 'offset', options: {offset: [10, 10]}},
+    {name: 'flip',enabled: true},
+
+  ]})
+
+
 
   const head = (<ClosingTitle title={title} onClose={props.onClose}/>)
 
@@ -63,7 +75,11 @@ export default function OptionsModal(props: Props) {
   }
 
   return (
-    <div className={classNames(styles.outer, props.isLast&&styles.outer_last)} ref={props.ref}>
+    <div 
+    className={classNames(props.usePopperRoot?styles.outerWithPopper:styles.outer, props.isLast&&styles.outer_last)} 
+    ref={(r)=>{setPopperElement?.(r)}} 
+    style={props.usePopperRoot&&popper.styles.popper}  {...popper.attributes.popper} 
+    >
       {/* {head} */}
       {body}
     </div>

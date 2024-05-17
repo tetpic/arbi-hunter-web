@@ -308,7 +308,7 @@ export default function Vacancy(props: Props) {
       case VacancyNavigation.Education:
         return t('create_vacancy_education')
       case VacancyNavigation.About:
-        return t('create_vacancy_descriptionShort')
+        return t('create_vacancy_description')
       case VacancyNavigation.Skills:
         return t('create_vacancy_skills')
       case VacancyNavigation.Busyness:

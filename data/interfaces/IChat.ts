@@ -22,6 +22,7 @@ export interface IMessage extends TimeStamp {
   profileId?: number,
   profile?: IUserProfile,
   chatId?: number, 
+  replyTo?:  Omit<IMessage, 'forwarded'|'forwardedId'|'replyTo'|'replyToId'>|null
   replyToId?: number,
   message?: string,
   sid?: string,
@@ -30,7 +31,7 @@ export interface IMessage extends TimeStamp {
   type?: MessageType
   pinned?: boolean
   proposal?: IProposal
-  forwarded?: boolean|null
+  forwarded?: Omit<IMessage, 'forwarded'|'forwardedId'|'replyTo'|'replyToId'>|null
   forwardedId?: number|null
   userId?: number|null
   assets?: IFile[]

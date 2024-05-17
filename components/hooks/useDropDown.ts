@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { MutableRefObject, useRef, useState } from 'react'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 import {usePopper} from 'react-popper'
 import {PositioningStrategy, Placement, } from '@popperjs/core'
@@ -10,7 +10,7 @@ export const useDropDown = (options?: {offset?: [number, number], position?: Pos
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
   const [referenceElement, setReferenceElement] = useState(null)
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
-  const {styles: popperStyles, attributes} = usePopper(referenceElement, popperElement, {
+  const {styles: popperStyles, attributes, update} = usePopper(referenceElement, popperElement, {
     strategy: options?.position || 'absolute',
     placement: options?.placement || 'bottom-end',
     modifiers: [
@@ -34,7 +34,7 @@ export const useDropDown = (options?: {offset?: [number, number], position?: Pos
     ]
   })
 
-  const setRootRef = (ref: any) => {
+  const setRootRef = (ref: MutableRefObject<HTMLElement>) => {
     dropdownRef.current = ref
     setReferenceElement(ref)
   }

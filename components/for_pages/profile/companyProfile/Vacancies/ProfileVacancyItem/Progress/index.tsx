@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function Progress(props: Props) {
+  console.log(props)
   const {t} = useTranslation()
   const progress = props.progress?.length === 0?0:props.progress?.length-1
 
@@ -21,6 +22,6 @@ export default function Progress(props: Props) {
         return <div className={classNames(styles.progressItem, i+1>=props.progress?.length && styles.active)}></div>
       })}
     </div>
-    <P styleType={['small']} useThemeColor>{props.progress.length !== props.stepsCount? t('item_draftAlmostReady'):t('item_draftReady')}</P>
+    <P styleType={['small']} useThemeColor>{props.progress.length > props.stepsCount? t('item_draftReady'):t('item_draftAlmostReady')}</P>
   </div>)
 }

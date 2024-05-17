@@ -22,7 +22,8 @@ interface Props {
 export enum ShopPages  {
   Balance = 'balance',
   Packets = 'packets',
-  Orders =  'orders'
+  Branding = 'branding',
+  Orders =  'orders',
 }
 
 export default function Shop(props: Props) {
@@ -64,8 +65,10 @@ export default function Shop(props: Props) {
   }, [router])
 
   const navSet = (()=>{
-    const obj = Object.values(ShopPages)
-    let result = obj.map(page => {
+    const employeeObj = [ShopPages.Balance, ShopPages.Packets, ShopPages.Orders, ]
+    const hirerObj = [ShopPages.Balance, ShopPages.Packets, ShopPages.Branding, ShopPages.Orders,  ]
+
+    let result = (userContext.currentProfile.profileType===ProfileType.Employee?employeeObj:hirerObj).map(page => {
       switch(page) {
         case ShopPages.Balance:
           return {name: t('shop_balance'), type: page}
@@ -73,6 +76,8 @@ export default function Shop(props: Props) {
           return {name: t('shop_packets'), type: page}
         case ShopPages.Orders:
           return {name: t('shop_orders'), type: page}
+        case ShopPages.Branding:
+          return {name: t('shop_branding'), type: page}
       }
     })
     return result

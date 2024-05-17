@@ -4,7 +4,7 @@ import UserPic from '@/components/ui/UserPic'
 import P from '@/components/ui/P'
 import SalaryItem from '@/components/ui/SalaryItem'
 import Formatter from 'utils/formatter'
-import { ActivityStatus, Preset } from 'types/enums'
+import { ActivityStatus, InterfaceLanguage, Preset } from 'types/enums'
 import DotSvg from '@/components/svg/DotSvg'
 import { colors } from 'styles/variables'
 import { TranslateWorkExperience } from 'utils/enumsTranslations'
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const isOnline = vacancy.profile.activityStatus === ActivityStatus.Online
   const image = getUserImageSource(vacancy.profile, Preset.smallIconCrop)
   
@@ -39,7 +39,7 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
     <P styleType={['medium', 'w500']} useThemeColor>{vacancy.name||vacancy.categories[0]?.description}</P>
     <P styleType={['medium', 'w500']} useThemeColor>{t('favorites_vcItem_expeience')} {TranslateWorkExperience(vacancy.experience, t).toLowerCase()}</P>
     <SalaryItem vacancy={vacancy}/>
-    <P styleType={['small', 'greyLight']}>{t('favorites_vcItem_published')} {Formatter.formatDate(vacancy.updatedAt)}</P>
+    <P styleType={['small', 'greyLight']}>{t('favorites_vcItem_published')} {Formatter.formatDate(vacancy.updatedAt, {lang: lang as InterfaceLanguage})}</P>
     {isOnline &&
       <P styleType={['medium', 'w500', 'green']}>
         {t('favorites_vcItem_hirerIsOnline')}
@@ -47,7 +47,7 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
     }
     {!isOnline && vacancy.profile.lastActivityAt &&
       <P styleType={['small', 'w500', 'greyLight']} className={styles.offline}>
-        <DotSvg color={colors.red}/> {t('favorites_vcItem_wasOnline')} {Formatter.formatDate(vacancy.profile.lastActivityAt, {timeOptions: {year: 'numeric'}})}
+        <DotSvg color={colors.red}/> {t('favorites_vcItem_wasOnline')} {Formatter.formatDate(vacancy.profile.lastActivityAt, {timeOptions: {year: 'numeric'}, lang: lang as InterfaceLanguage})}
       </P>
     }
     {vacancy.applicationsByCurrentUser.length > 0 

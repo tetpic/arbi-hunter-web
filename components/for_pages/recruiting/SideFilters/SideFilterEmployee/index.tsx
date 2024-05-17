@@ -163,9 +163,9 @@ export default function SideFilterEmployee(props: Props) {
 
 
         <p className={styles.fieldTitle}>
-          <span>{t('filters_excludeWords')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_eliminateWords')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
-        <InputField styleType={'default'} color={'white'} name={'exclude'} placeholder={t('filters_excludeWords')}/>
+        <InputField styleType={'default'} color={'white'} name={'exclude'} placeholder={t('filters_eliminateWords')}/>
         <div className={styles.divider}></div>
 
 

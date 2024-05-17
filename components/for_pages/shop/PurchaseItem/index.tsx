@@ -7,7 +7,7 @@ import Button from '@/components/ui/Button'
 import Image from 'next/image'
 import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
 import { useAppContext } from 'context/state'
-import { ModalType, Preset, PurchaseType, SnackbarType } from 'types/enums'
+import { InterfaceLanguage, ModalType, Preset, PurchaseType, SnackbarType } from 'types/enums'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ICV } from 'data/interfaces/ICV'
 import { useTariffContext } from 'context/tariff_state'
@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const tariffContext = useTariffContext()
@@ -177,7 +177,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         className={styles.button}  
         styleType={['medium', 'w500']}
         >
-          {t('shop_bought')} {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}})}
+          {t('shop_bought')} {Formatter.formatDate(props.purchase?.createdAt, {timeOptions: {year: 'numeric', hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}
         </P>
       }
     </div>

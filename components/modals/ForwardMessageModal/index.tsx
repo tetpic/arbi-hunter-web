@@ -16,6 +16,7 @@ import Button from '@/components/ui/Button'
 import MessageFactory from '@/components/for_pages/messenger/Messages/MessageFactory'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { useRouter } from 'next/router'
+import CrossSvg from '@/components/svg/CrossSvg'
 
 interface Props {
   onClose?: () => void
@@ -59,7 +60,16 @@ export default function ForwardMessageModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <P useThemeColor styleType={['large', 'w600']}>Отправить...</P>
+      <div className={styles.top}>
+        <P useThemeColor styleType={['large', 'w600']}>Отправить...</P>
+        <Button 
+        styleType={['icon', 'circle','backTransparent']} 
+        altStyleType={['icon','circle', 'backTransparent', 'invertSvg']}
+        onClick={props.onClose}
+        >
+          <CrossSvg/>
+        </Button>
+      </div>
       <div className={styles.chats}>
         {args.chats.map((el, index)=>{
           const _collocutor = el.profiles[0]?.role === 'admin'?el.participant:el.profile
@@ -80,37 +90,49 @@ export default function ForwardMessageModal(props: Props) {
 
   const message = (
     <div className={styles.root}>
-      <P useThemeColor styleType={['large', 'w600']}>Сообщение</P>
-      <div className={styles.chat}>
-        <UserPic image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
-        <div className={styles.chatInfo}>
-          <P styleType={['medium', 'w500']} useThemeColor>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</P>
-          {collocutor?.lastActivityAt &&
-            <P styleType={['small', 'w500', 'greyLight']} useThemeColor>{Formatter.formatDate(collocutor?.lastActivityAt, {lang: lang as InterfaceLanguage})}</P>
-          }
+       <div className={styles.top}>
+       <P useThemeColor styleType={['large', 'w600']}>Сообщение</P>
+        <Button 
+        styleType={['icon', 'circle','backTransparent']} 
+        altStyleType={['icon','circle', 'backTransparent', 'invertSvg']}
+        onClick={props.onClose}
+        >
+          <CrossSvg/>
+        </Button>
+      </div>
+
+      <div className={styles.content}>
+        <div className={styles.chat}>
+          <UserPic image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
+          <div className={styles.chatInfo}>
+            <P styleType={['medium', 'w500']} useThemeColor>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</P>
+            {collocutor?.lastActivityAt &&
+              <P styleType={['small', 'w500', 'greyLight']} useThemeColor>{Formatter.formatDate(collocutor?.lastActivityAt, {lang: lang as InterfaceLanguage})}</P>
+            }
+          </div>
         </div>
-      </div>
-      <div className={styles.message}>
-        <MessageFactory profileId={0} message={args.forwardedMessage} application={undefined}/>
-      </div>
-      <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>Комментарий</P>
-      <FormikProvider value={formik} >
-        <Form className={styles.form}>
-          <TextAreaField name={'message'}
-          autoSize
-          onChange={formik.handleChange}
-          />
-        </Form>
-      </FormikProvider>
-      <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey']} onClick={()=>{setCurrentPage('chats')}} altStyleType={['white']}>{t('back')}</Button>
-        <Button styleType={['gradient']} onClick={formik.submitForm}>{t('send')}</Button>
+        <div className={styles.message}>
+          <MessageFactory profileId={0} message={args.forwardedMessage} application={undefined}/>
+        </div>
+        <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>Комментарий</P>
+        <FormikProvider value={formik} >
+          <Form className={styles.form}>
+            <TextAreaField name={'message'}
+            autoSize
+            onChange={formik.handleChange}
+            />
+          </Form>
+        </FormikProvider>
+        <div className={styles.buttonsWrapper}>
+          <Button styleType={['grey', 'phoneWide']} onClick={()=>{setCurrentPage('chats')}} altStyleType={['white']}>{t('back')}</Button>
+          <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm}>{t('send')}</Button>
+        </div>
       </div>
     </div>
   )
 
-  return (<ModalLayout>
-    <ModalBody>
+  return (<ModalLayout mobileFullScreen>
+    <ModalBody className={styles.modalBody}>
       {currentPage === 'chats' 
       ?body
       :message

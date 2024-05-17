@@ -141,7 +141,20 @@ export default function SetTariff(props: Props) {
     })}
   </div>
   <div className={styles.buttonsWrapper}>
-    <Button styleType={['black']} altStyleType={['whitePurple']} onClick={props.onBack}>{t('back')}</Button>
+    <Button 
+    styleType={['black']} 
+    altStyleType={['whitePurple']} 
+    onClick={()=>{
+      if(router.query.fromOtherPage) {
+        router.back()
+      }
+      else {
+        props.onBack()
+      }
+    }}
+    >
+      {t('back')}
+    </Button>
     <Button 
     styleType={['gradient']} 
     title={'preview'} 

@@ -2,7 +2,6 @@ import { useFormikContext } from 'formik'
 import styles from './index.module.scss'
 import { IVacancyCreate } from 'data/interfaces/IVacancy'
 import RichTextField from '@/components/fields/RichTextField'
-import Trans from 'next-translate/Trans'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 
@@ -21,9 +20,9 @@ export default function About(props: Props) {
   return (
   <div className={styles.root}>    
     <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{values.name}</P>
-    <p className={styles.disclaimer}>
+    {/* <p className={styles.disclaimer}>
       <Trans i18nKey='common:create_infoAboutAgeWarn'components={[<>&nbsp;</>, <>&mdash;</>]} />
-    </p>
+    </p> */}
     <RichTextField name={props.fieldName||'bio'} 
     className={styles.textField}
     hideButtons={{helpers: true, headings: [2,3]}}

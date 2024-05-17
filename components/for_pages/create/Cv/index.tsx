@@ -291,7 +291,7 @@ export default function Cv(props: Props) {
   const getTitle = (navigation: CvNavigation): string => {
     switch(navigation) {
       case CvNavigation.Specialization: 
-        return t('create_specialization')
+        return t('create_cv_specialization')
       case CvNavigation.Salary:
         return t('create_incomeLevel')
       case CvNavigation.Experience:
@@ -299,9 +299,9 @@ export default function Cv(props: Props) {
       case CvNavigation.Education:
         return t('create_education')
       case CvNavigation.About:
-        return t('create_description')
+        return t('create_cv_about')
       case CvNavigation.Skills:
-        return t('create_skills')
+        return t('create_cv_skills')
       case CvNavigation.Busyness:
         return t('create_busyness')
     }
@@ -369,7 +369,7 @@ export default function Cv(props: Props) {
 
     maxProgress.current < progress && (maxProgress.current = progress)
 
-    if(progress > 1 &&creationContext.activeSubCategory.length > 0) {
+    if(progress >= 1 &&creationContext.activeSubCategory.length > 0) {
       const formikCleared = {
         ...formik.values, 
         categoriesIds: [creationContext.activeSubCategory[0]?.id],

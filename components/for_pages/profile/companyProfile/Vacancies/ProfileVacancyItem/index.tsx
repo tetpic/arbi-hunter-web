@@ -44,10 +44,11 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const tariff = tariffContext.packets?.get(vacancy.subscriptions?.tariff?.id)
+  const popperRoot = useRef(null!)
 
   const archiveHandler =()=> {
     if(!vacancy.subscriptions && !vacancy.published) {
-      router.push({pathname: '/create/vacancy', query: {id: vacancy.id, progress: 8}})
+      router.push({pathname: '/create/vacancy', query: {id: vacancy.id, progress: 8, fromOtherPage: true}})
       return
     }
     vacancyContext.editVacancy({...vacancy, published: !vacancy.published, salaryMin: Number(vacancy.salaryMin), salaryMax: Number(vacancy.salaryMax)}, vacancy.id, vacancy.published?'active':'archive')
@@ -116,7 +117,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
   return (
     <div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
-      <div className={styles.top}>
+      <div className={styles.top}  >
         {vacancy.publishedAt && vacancy.published &&
           <p className={styles.timeRemains}>{t('item_expires')} {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30, lang: lang as InterfaceLanguage})}</p>
         }
@@ -154,6 +155,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
           getRef={(r) => {dropRef.current = r}} 
           active={dropDown} 
           isLast={isLast}
+          key={vacancy.id}
           onClose={()=>openDropDown(false)}/>        
         }
       </div>

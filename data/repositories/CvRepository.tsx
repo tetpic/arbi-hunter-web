@@ -179,6 +179,17 @@ export default class CvRepository {
     }
     return res
   }
+
+  static async moveToTop(cvId: number): Promise<any|null> {
+    const res = await request({
+      method: 'get',
+      url: `/api/cv/${cvId}/toTop`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }
 
 

@@ -24,11 +24,17 @@ import { useRef } from 'react'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal'
 import { useChatContext } from 'context/chat_state'
+import { RemoveMessageConfirmModalArgs } from '@/components/modals/RemoveMessageConfirmModal'
+import { useChatDialogContext } from 'context/chat_dialog_state'
+import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
+import P from '@/components/ui/P'
+import { getUserName } from 'utils/helpers'
 
 interface Props {
   profileId?: number
   message: IMessage
   application?: IApplication
+  onReply?: (msg: IMessage) => void
 }
 
 
@@ -42,11 +48,14 @@ export default function MessageFactory(props: Props) {
   const itemRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const chatContext = useChatContext()
+  const dialog = useChatDialogContext()
   const chats = chatContext.chats
+  const msg = props.message.forwarded?props.message.forwarded:props.message
+  const timeout = useRef<ReturnType<typeof setInterval>>()
   
-
+  const collocutor = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?'me':'other'
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
-  const msg = props.message
+  props.message.forwarded&&console.log('mFactory', msg)
 
   const openForwardModal = () => {
     appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
@@ -62,25 +71,42 @@ export default function MessageFactory(props: Props) {
   }
 
   const openDeleteMessageModal = () => {
-    alert('open delete')
+    const args:RemoveMessageConfirmModalArgs = {
+      canRemoveForAll: collocutor === 'me',
+      onSend: (type) => {
+        dialog.removeMessage(type, Number(props.message.id))
+        appContext.hideModal()
+      }
+    }
+    isPhoneWidth
+    ?appContext.showBottomSheet<RemoveMessageConfirmModalArgs>(ModalType.RemoveMessageConfirmModal, args, 250)
+    :appContext.showModal<RemoveMessageConfirmModalArgs>(ModalType.RemoveMessageConfirmModal, args)
+    openDropDown(false)
+  }
+
+  const replyHandler = () => {
+    props.onReply(msg)
     openDropDown(false)
   }
 
   const setPinned = () => {
-    alert('set pinned')
+    // alert('set pinned')
     openDropDown(false)
   }
 
   const allOptions: {[key: string]: IOptionList} = {
-    remove: {title: 'Удалить', onClick: openDeleteMessageModal},
+    reply: {title: 'Ответить', onClick: replyHandler},
+    copy: {title: 'Скопировать', onClick: ()=>{}},
+    setPinned: {title: 'Закрепить', onClick: setPinned},
     forward: {title: 'Переслать', onClick: openForwardModal},
-    setPinned: {title: 'Закрепить', onClick: setPinned}
+    choose: {title: 'Выбрать', onClick: ()=>{}},
+    remove: {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
   }
 
   const rightOptions: IOptionList[] = [allOptions.remove, allOptions.forward, allOptions.setPinned]
   const leftOptions : IOptionList[] = [allOptions.forward, allOptions.setPinned]
 
-  const options = <OptionsList options={side === styles.rightMessage?rightOptions:leftOptions} 
+  const options = <OptionsList options={Object.values(allOptions)} 
   onMouseLeave={()=>{}}/>
 
   const optionsDropDown = (
@@ -89,27 +115,42 @@ export default function MessageFactory(props: Props) {
     options={options} 
     active={dropDown} 
     getRef={(r)=>{dropRef.current = r}} 
-    rootRef={itemRef}
+    usePopper
+    popperPlacement={isPhoneWidth?'auto':'left-end'}
     onClose={()=>{}}/>
   )
 
-  const onRightClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     openDropDown(true)
   }
 
+  const replyedMessage = (
+    <>
+    {props.message.replyTo &&
+      <div className={styles.replyedMessage}>
+        <P styleType={['small', 'blue']}>{getUserName(props.message.replyTo.profile)}</P>
+        <P styleType={['small']}>{props.message.replyTo.message}</P>
+      </div>
+    }
+    </>
+  )
+
 
   const stats = (
-    <div className={styles.stats} ref={itemRef} onContextMenu={onRightClick} key={props.message.id}>
+    <>
+    <div className={styles.stats} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
+    {props.message.forwarded&&<P styleType={['small', 'greyLight']}>Переслано от {getUserName(msg.profile)}</P>}
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
       <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
       {optionsDropDown}
     </div>
+    </>
   )
 
   const textMessage = (
-    <div className={side} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
-      {}
+    <div className={side} ref={itemRef} onContextMenu={onRightClick} key={props.message.id}>
+      {replyedMessage}
       <p className={styles.message}>
         {msg.message}
       </p>
@@ -120,7 +161,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const assetMessage = (
-    <div key={props.message.id} ref={itemRef} onContextMenu={onRightClick} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
+    <div key={props.message.id} ref={itemRef} onContextMenu={!isPhoneWidth&&onRightClick} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
       <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{
@@ -161,11 +202,12 @@ export default function MessageFactory(props: Props) {
     && props.application?.cv?.published 
     &&
       <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
-        <ApplicationHirerNode application={props.application} message={msg}/>
+        <ApplicationHirerNode application={props.application} message={msg as IMessage}/>
       </div>
     }
-    <div className={side} ref={itemRef } onContextMenu={onRightClick}>
-        <ApplicationEmployeeNode application={props.application} message={msg} profileType={profileType}/>
+    <div className={side} ref={itemRef } onContextMenu={onRightClick} >
+      {replyedMessage}
+        <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
         {stats}
         {optionsDropDown}
     </div>
@@ -174,6 +216,7 @@ export default function MessageFactory(props: Props) {
 
   const proposalMessage = (<>
     <div className={side} onContextMenu={onRightClick} ref={itemRef }  key={props.message.id}>
+      {replyedMessage}
       <p className={styles.message}>{t('chat_cvApplication')}</p>
       <Spacer basis={8} />
       <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
@@ -184,6 +227,7 @@ export default function MessageFactory(props: Props) {
 
   const voiceMessage = (
     <div className={side} onContextMenu={onRightClick} ref={itemRef } key={props.message.id}>
+      {replyedMessage}
       {msg?.assets?.length > 0 &&
         <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
       }
@@ -193,7 +237,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const body:JSX.Element = (()=> {
-    switch(props.message.type) {
+    switch(msg.type) {
       case MessageType.Text:
         return textMessage
       case MessageType.Application:

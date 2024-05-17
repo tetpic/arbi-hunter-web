@@ -19,6 +19,18 @@
   }
 }
 
+.outerWithPopper {
+  background-color: var(--secondaryColor);
+  border: 2px var(--borderPerimeter) solid;
+  border-radius: 16px;
+  z-index: 4;
+  &_last {
+    bottom: 180px;
+    right: 50px;
+  }
+
+}
+
 .itemWrapper {
   svg {
     width: 24px;

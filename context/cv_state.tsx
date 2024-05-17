@@ -24,6 +24,7 @@ interface IState {
   total: number,
   setBlackListedCVs: () => void
   removeFromBlackList: (id?: number) => void
+  moveToTop: (cvId: number) => void
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -119,8 +120,6 @@ export function CvWrapper(props: Props) {
     router.push(`/create/cv?id=${cv.id}`)
   }
 
-
-
   const getCv = (id: number): Promise<boolean> => {
     return CvRepository.getById(id)
     .then(res=> {
@@ -131,6 +130,13 @@ export function CvWrapper(props: Props) {
       setCurrentCvState(undefined)
       return false
 
+    })
+  }
+
+  const moveToTop= (cvId: number) => {
+    CvRepository.moveToTop(cvId)
+    .then(_=>{
+      setSavedCvs()
     })
   }
 
@@ -164,7 +170,8 @@ export function CvWrapper(props: Props) {
     setPage,
     total,
     setBlackListedCVs,
-    removeFromBlackList
+    removeFromBlackList,
+    moveToTop
   }
 
   return (

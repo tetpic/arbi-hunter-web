@@ -82,7 +82,7 @@ export default function AddPersonalBlockModal(props: Props) {
 
  
   const submit = (data: Partial<IPersonalPageBlock>) => {
-    debugger
+    
     const submitData = {
       ...data
     }

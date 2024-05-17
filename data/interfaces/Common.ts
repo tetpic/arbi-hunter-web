@@ -7,6 +7,8 @@ export interface TimeStamp {
   updatedAt?: string,
   deletedAt?: string|null
   publishedAt?: string|null
+  archivedAt?: string|null
+  topAt?: string|null
 }
 
 export interface TimeLine {

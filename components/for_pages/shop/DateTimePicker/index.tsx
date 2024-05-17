@@ -14,6 +14,8 @@ import OptionsList from '@/components/ui/OptionsList'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { IField } from 'types/types'
+import useTranslation from 'next-translate/useTranslation'
+import { InterfaceLanguage } from 'types/enums'
 
 
 interface Props extends IField<string> {
@@ -41,6 +43,7 @@ function Header (props: {picker: ReactDatePickerCustomHeaderProps, onSetTime: (t
   const currentHour = now.getHours()
   const currentMinutes = now.getMinutes()
   const isToday = new Date(props.picker.monthDate).getDay() === new Date().getDay()
+  const {lang} = useTranslation()
   
 
   const getTimes = ():string[] => {
@@ -80,7 +83,7 @@ function Header (props: {picker: ReactDatePickerCustomHeaderProps, onSetTime: (t
   return <div className={styles.header}>
     <div className={styles.header__month}>
       <Button type='button'  disabled={props.picker.prevMonthButtonDisabled} onClick={props.picker.decreaseMonth}><ArrowLeftSvg/></Button>
-      <P useThemeColor styleType={['w600', 'large']}>{Formatter.formatDate(new Date(props.picker.monthDate), {timeOptions: {month: 'long', day: undefined}})}</P>
+      <P useThemeColor styleType={['w600', 'large']}>{Formatter.formatDate(new Date(props.picker.monthDate), {timeOptions: {month: 'long', day: undefined}, lang: lang as InterfaceLanguage})}</P>
       <Button type='button' disabled={props.picker.nextMonthButtonDisabled} onClick={props.picker.increaseMonth}><ArrowRightSvg/></Button>
     </div>
     <div className={styles.timePicker}>

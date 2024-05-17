@@ -21,6 +21,17 @@ export default class ChatRepository {
     return res
   }
 
+  static async removeMessage(data: {type: 'forMe'|'forAll', messageId: number}): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/chat/messages/${data.messageId}?deleteType=${data.type}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async getContactList(): Promise<any|null> {
     const res = await request({
       method: 'get',

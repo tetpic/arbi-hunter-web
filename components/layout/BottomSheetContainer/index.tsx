@@ -26,6 +26,7 @@ import SalaryModal from '@/components/modals/SalaryModal'
 import FavoritesSettingModal from '@/components/modals/FavoritesSettingModal'
 import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
 import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
+import RemoveMessageConfirmModal from '@/components/modals/RemoveMessageConfirmModal'
 
 
 interface Props { }
@@ -228,6 +229,15 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <ChooseFolderToSave isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.RemoveMessageConfirmModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <RemoveMessageConfirmModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

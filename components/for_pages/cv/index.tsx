@@ -9,7 +9,7 @@ import DotSvg from 'components/svg/DotSvg'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
 import { Answer, AppTheme, Genders, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
@@ -295,6 +295,7 @@ export default function CvPage(props: Props) {
           {name: t('cv_page_applications'), count: currentCv?.totalApplications},
         ]} 
         title={t('cv_page_statsTitle')}/>
+        {currentCv.published&&!currentCv.moderationRejectReason && !currentCv.archivedAt &&
         <div className={styles.topLine}>
           <P styleType={['w500', 'medium', 'greyLight']}>
             Поднять вручную можно сегодня в 20:30
@@ -303,10 +304,25 @@ export default function CvPage(props: Props) {
             {t('cv_page_upCvAutomatically')}
           </P>
         </div>
-        <div className={styles.topLine}>
-          <Button styleType={['gradient']}>
-            {t('cv_page_improve')}
-          </Button>
+        }
+        <div className={styles.topLine}>  
+          {currentCv.published&&!currentCv.moderationRejectReason && !currentCv.archivedAt &&
+            <Button styleType={['gradient']}>
+              {t('cv_page_improve')}
+            </Button>          
+            ||
+            <Button  
+            styleType={['gradient']}
+            onClick={() => {
+              if(!currentCv?.subscriptions && !currentCv.published) {
+                router.push({pathname:'/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true}})
+                return
+              }
+            }}
+            >
+              {t('publish')}
+            </Button>
+          }  
           <Button styleType={['borderGradient']} altStyleType={['whitePurple']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
             {currentCv?.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
           </Button>
@@ -521,35 +537,37 @@ export default function CvPage(props: Props) {
         }
       </div>
 
-      <div className={styles.buttonsWrapper}>
-        {!currentCv.isContactsOpen &&
-          <Button 
-          styleType={['gradient']} 
-          title={'openProfileBottom'}         
-          onClick={openContacts}
-          >
-            {t('cv_page_openProfile')}
-          </Button>
-        }
-        {currentCv.isContactsOpen &&
-          <Button 
-          styleType={['gradient']} 
-          onClick={makeResponse} 
-          title={'invite'}
-          >
-            {t('cv_page_invite')}
-          </Button>
-        }
-        {(currentCv.proposalsByCurrentUser?.length>0 || currentCv.applicationsToCurrentUser?.length > 0) &&
-          <Button 
-          styleType={['borderGradient']} 
-          altStyleType={['white']} 
-          onClick={goToChat}
-          >
-            {t('cv_page_chat')}
-          </Button>
-        }
-      </div>
+      {!isMyCv &&
+        <div className={styles.buttonsWrapper}>
+          {!currentCv.isContactsOpen &&
+            <Button 
+            styleType={['gradient']} 
+            title={'openProfileBottom'}         
+            onClick={openContacts}
+            >
+              {t('cv_page_openProfile')}
+            </Button>
+          }
+          {currentCv.isContactsOpen &&
+            <Button 
+            styleType={['gradient']} 
+            onClick={makeResponse} 
+            title={'invite'}
+            >
+              {t('cv_page_invite')}
+            </Button>
+          }
+          {(currentCv.proposalsByCurrentUser?.length>0 || currentCv.applicationsToCurrentUser?.length > 0) &&
+            <Button 
+            styleType={['borderGradient']} 
+            altStyleType={['white']} 
+            onClick={goToChat}
+            >
+              {t('cv_page_chat')}
+            </Button>
+          }
+        </div>
+      }
 
     </div>
   )

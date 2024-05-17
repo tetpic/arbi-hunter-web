@@ -37,6 +37,7 @@ export interface IDialogState {
   recordVoice: () => void
   recordTime: number
   refreshMessage: (id: number, message: IMessage) => void
+  removeMessage: (type: 'forMe'|'forAll', messageId: number) => Promise<boolean>
 }
 
 const defaultValue: Partial<IDialogState> = {}
@@ -257,6 +258,17 @@ export function ChatDialogWrapper(props: Props) {
     starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
   }
 
+  const removeMessage = async(type: 'forMe'|'forAll', messageId: number):Promise<boolean> => {
+    return await ChatRepository.removeMessage({type, messageId})
+    .then(_ => {
+      setMessages(state => {
+        state.delete(messageId)
+        return new Map(state)
+      })
+      return true
+    })
+  } 
+
   //если появляется аудио дорожка - отправляем сообщение
   useEffect(()=>{
     if(chunks) {
@@ -311,7 +323,7 @@ export function ChatDialogWrapper(props: Props) {
     })
 
     const subscriptionChatUpdate = chatSocket.chatUpdateState$.subscribe((updated) => {
-      debugger
+      
       if (chat && chat.id === updated.id) {
         setChat((i) => ({...i,...updated}))
       }
@@ -353,7 +365,8 @@ export function ChatDialogWrapper(props: Props) {
     scrollableTarget,
     recordVoice,
     recorder,
-    recordTime
+    recordTime,
+    removeMessage
   }
 
   return (

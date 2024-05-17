@@ -88,7 +88,7 @@ export default function CvName(props: Props) {
       <P useThemeColor styleType={['large', 'w700']}>{cvCreateContext.activeSubCategory[0]?.name}</P>
       { taglist.length>0 && 
         <TagList 
-        title={t('create_tags')} 
+        title={t('create_cv_recommended')} 
         tags={taglist.slice(0, 15).map(el => {
           return {
             name: el.name, 

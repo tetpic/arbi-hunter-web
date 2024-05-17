@@ -6,7 +6,7 @@ import Button from 'components/ui/Button'
 import Formatter from 'utils/formatter'
 import Image from 'next/image'
 import { useAppContext } from 'context/state'
-import { ActivityStatus,  AppTheme,  ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
+import { ActivityStatus,  AppTheme,  ApplicationStatus, InterfaceLanguage, ModalType, Preset, ProposalRequestType } from 'types/enums'
 import { useCvContext } from 'context/cv_state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
 import VacancyRepository from 'data/repositories/VacancyRepository'
@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const cvContext = useCvContext()
   const {getNewSignal} = useAbortController()
@@ -118,7 +118,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       }</P>
 
       <SalaryItem vacancy={vacancy}/>
-      <P  styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}})}</P>
+      <P  styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>
       {vacancy?.profile?.activityStatus && !smallCard &&
         <p className={styles.activityStatus}>
           <span className={classNames(styles.dot, vacancy.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>

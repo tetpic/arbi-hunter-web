@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import {  AppTheme, ApplicationStatus, ModalType, Preset, ProposalRequestType } from 'types/enums'
+import {  AppTheme, ApplicationStatus, InterfaceLanguage, ModalType, Preset, ProposalRequestType } from 'types/enums'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
@@ -43,7 +43,7 @@ interface Props {
 }
 
 export default function VacancyPage(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
@@ -188,7 +188,7 @@ export default function VacancyPage(props: Props) {
           useThemeColor
           className={styles.expires}
           >
-            {t('vacancy_page_expires')} {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30})}
+            {t('vacancy_page_expires')} {Formatter.formatDate(currentVacancy.updatedAt, {plusDays: 30, lang: lang as InterfaceLanguage})}
           </P>
         </div>
       }

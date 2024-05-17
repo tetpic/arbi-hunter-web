@@ -25,11 +25,13 @@ import CvRepository from 'data/repositories/CvRepository'
 import folderImage from 'images/folder.png'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getUserImageSource } from 'utils/helpers'
+import { clearObject, getUserImageSource, getUserName } from 'utils/helpers'
 import { useRouter } from 'next/navigation'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import { IMessage } from 'data/interfaces/IChat'
+import CrossSvg from '@/components/svg/CrossSvg'
 
 
 
@@ -51,13 +53,15 @@ export default function Messages(props: Props) {
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
+  const [replyTo, setReplyTo] = useState<IMessage>(null)
 
   const sendMessage = () => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedImages.size === 0) {
       return
     }
     if(pastedImages.size === 0) {
-      dialog.sendMessage({message:value, type: MessageType.Text})
+      const clearedMessage = clearObject({message:value, type: MessageType.Text, replyToId: Number(replyTo.id)})
+      dialog.sendMessage(clearedMessage)
       .then(_=> {
         const container = document.querySelector('.infinite-scroll-component > div')
         container.scrollIntoView({behavior: 'smooth', block: 'end'})
@@ -190,7 +194,7 @@ export default function Messages(props: Props) {
       scrollThreshold={0.6}>
         {
           messages.size>0&&[...messages.values()].map(el=> {
-            return <MessageFactory key={el.id} profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
+            return <MessageFactory onReply={(m)=>setReplyTo(m)} key={el.id.toString()+el.chatId.toString()} profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
           })
           ||
           loading && messages.size===0 && <Spinner size={24} color={colors.blue}/>
@@ -205,7 +209,15 @@ export default function Messages(props: Props) {
       </Link>
       }
       <div className={styles.newMessage} onPaste={onPasteHandler}>
-        
+        {replyTo &&
+          <div className={styles.replyMessage}>
+            <div className={styles.replyMessageContent}>
+              <P styleType={['greyLight', 'small']}>Reply from {getUserName(replyTo.profile)}</P>
+              <P styleType={['medium']}>{replyTo.message}</P>
+            </div>
+            <Button styleType={['icon', 'backTransparent', 'circle']} onClick={() => setReplyTo(null)}><CrossSvg/></Button>
+          </div>
+        }
         {(pastedImages.size>0) && 
         <div className={styles.imagesWrapper}>
           {[...pastedImages.entries()].map(([key, el]) => {
