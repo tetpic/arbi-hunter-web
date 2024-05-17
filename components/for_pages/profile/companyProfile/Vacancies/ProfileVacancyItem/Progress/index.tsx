@@ -11,7 +11,6 @@ interface Props {
 }
 
 export default function Progress(props: Props) {
-  console.log(props)
   const {t} = useTranslation()
   const progress = props.progress?.length === 0?0:props.progress?.length-1
 

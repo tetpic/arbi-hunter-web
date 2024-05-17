@@ -55,7 +55,7 @@ export default function MessageFactory(props: Props) {
   
   const collocutor = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?'me':'other'
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
-  props.message.forwarded&&console.log('mFactory', msg)
+
 
   const openForwardModal = () => {
     appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
