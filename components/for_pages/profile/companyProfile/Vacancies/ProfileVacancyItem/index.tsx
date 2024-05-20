@@ -63,7 +63,8 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
       {text: t('vacancy_item_areYouShureToDelete'),
       callback: ()=>{
         vacancyContext.removeVacancy(vacancy.id, props.type)
-        props.onRemove(vacancy.id)
+        props.onRemove?.(vacancy.id)
+        appContext.hideModal()
       }
     })
   }

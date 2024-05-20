@@ -13,22 +13,12 @@
 }
 
 .text {
-  color: $white;
-  font-weight: $medium;
-  font-size: $mediumText;
+
 }
 
 .buttonsWrapper {
   display: flex;
   justify-content: space-between;
+  column-gap: 8px;
 }
 
-.button {
-  width: 48%;
-  @include buttonGradient;
-}
-
-.grayButton {
-  width: 48%;
-  @include buttonGray;
-}

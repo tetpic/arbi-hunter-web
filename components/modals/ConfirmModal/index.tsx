@@ -1,4 +1,5 @@
 import styles from './index.module.scss'
+import P from '@/components/ui/P'
 import ModalBody from 'components/layout/Modal/ModalBody'
 import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
@@ -27,10 +28,10 @@ export default function ConfirmModal(props: Props) {
 
   const body = (
     <div className={styles.modalBody} style={{maxWidth: modalArguments.maxWidth}}>
-      <p className={styles.text}>{modalArguments.text}</p>
+      <P styleType={['medium', 'w500']} useThemeColor>{modalArguments.text}</P>
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.button} onClick={onTrueClickHandler}>{t('yes')}</Button>
-        <Button className={styles.grayButton} onClick={props.onClose}>{t('no')}</Button>
+        <Button styleType={['gradient', 'wide']} onClick={onTrueClickHandler}>{t('yes')}</Button>
+        <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']}  onClick={props.onClose}>{t('no')}</Button>
       </div>
     </div>
   )
