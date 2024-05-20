@@ -137,7 +137,7 @@ export default class ChatRepository {
   static async updateChatProfile(data: Partial<IChatProfile>, chatId: number): Promise<any|null> {
     const res = await request({
       method: 'put',
-      url: `patch/api/chat/${chatId}`,
+      url: `/api/chat/${chatId}`,
       data
     })
     if(res.err) {

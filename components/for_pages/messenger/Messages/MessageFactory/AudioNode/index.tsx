@@ -28,7 +28,7 @@ export default function AudioNode(props: Props) {
       setIsPlay(true)
       timer.current = setInterval(() => {
         setTimeState(audio.current.currentTime)
-      }, 1000)
+      }, 50)
 
     }
     else {

@@ -15,6 +15,8 @@ import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
 import { useRef } from 'react'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import ChatRepository from 'data/repositories/ChatRepository'
+import { useChatContext } from 'context/chat_state'
 
 interface Props {
   chat: IChat
@@ -24,6 +26,7 @@ interface Props {
 
 export default function ChatItem(props: Props) {
   const chat = props.chat
+  const chatContext = useChatContext()
   const dropRef = useRef(null!)
   const itemRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
@@ -40,9 +43,16 @@ export default function ChatItem(props: Props) {
     openDropDown(true)
   }
 
+  const pinChat = async() => {
+    ChatRepository.updateChatProfile({pinned: true}, chat.id)
+    .then(res => {
+      openDropDown(false)
+    })
+  }
+
   const optionsList: IOptionList[] = [
     {title: 'Сменить папку',  icon: <FolderSvg/>,onClick: ()=>{}},
-    {title: 'Закрепить', icon: <PinMessageSvg/> , onClick: ()=>{}},
+    {title: 'Закрепить', icon: <PinMessageSvg/> , onClick: pinChat},
     {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: ()=>{}}
   ]
 
@@ -58,6 +68,9 @@ export default function ChatItem(props: Props) {
       className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
       image={getUserImageSource(collocutor, Preset.smallIconCrop)}
       />
+      {props.chat.profiles[0].pinned &&
+        <PinMessageSvg className={styles.pinIcon}/>
+      }
       <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</P>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
