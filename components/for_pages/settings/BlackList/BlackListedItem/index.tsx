@@ -26,7 +26,7 @@ export default function BlackListedItem(props: Props) {
       <UserPic size={42} image={props.profile?.logo?.source&&ImageHelper.urlFromFile(props.profile.logo, Preset.smallIconCrop)}/>
       <div className={styles.topInfo}>
         <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.company||getUserName(props.profile)}</P>
-        <P useThemeColor styleType={['medium', 'w500', 'greyLight']}>{props.vacancy?.city?.locName||props.cv.city.locName||props.profile?.city?.locName}</P>
+        <P useThemeColor styleType={['medium', 'w500', 'greyLight']}>{props.vacancy?.city?.locName||props.cv?.city?.locName||props.profile?.city?.locName}</P>
       </div>
    </div>
    {(props.vacancy || props.cv) &&

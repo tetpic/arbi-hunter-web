@@ -1,3 +1,4 @@
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import Messenger from 'components/for_pages/messenger'
 import { ChatSocketWrapper } from 'context/chat_socket_state'
 import { ChatWrapper } from 'context/chat_state'
@@ -23,9 +24,13 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 
 export default function MessengerPage(props: Query) {
   
-  return <ChatSocketWrapper>
-    <ChatWrapper initialChat={Number(props.chat)}>
-      <Messenger chat={Number(props.chat)}/>
-    </ChatWrapper>
-  </ChatSocketWrapper>
+  return (
+    <ErrorBoundary href={'/messenger'}>
+    <ChatSocketWrapper>
+      <ChatWrapper initialChat={Number(props.chat)}>
+        <Messenger chat={Number(props.chat)}/>
+      </ChatWrapper>
+    </ChatSocketWrapper>
+    </ErrorBoundary>
+  )
 }

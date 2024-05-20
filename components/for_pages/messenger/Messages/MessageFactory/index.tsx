@@ -120,8 +120,9 @@ export default function MessageFactory(props: Props) {
     onClose={()=>{}}/>
   )
 
-  const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {    
     e.preventDefault()
+    e.stopPropagation()
     openDropDown(true)
   }
 
@@ -139,11 +140,10 @@ export default function MessageFactory(props: Props) {
 
   const stats = (
     <>
-    <div className={styles.stats} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
+    <div className={styles.stats} ref={itemRef} key={props.message.id}>
     {props.message.forwarded&&<P styleType={['small', 'greyLight']}>Переслано от {getUserName(msg.profile)}</P>}
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
-      <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>
-      {optionsDropDown}
+      <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>     
     </div>
     </>
   )

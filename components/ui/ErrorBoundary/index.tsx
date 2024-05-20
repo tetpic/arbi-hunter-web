@@ -3,8 +3,8 @@ import { Component, ErrorInfo } from 'react'
 import P from '../P'
 import styles from './index.module.scss'
 
-class ErrorBoundary extends Component {
-  constructor(props: any) {
+class ErrorBoundary extends Component<{ href?: string, children?: any }, { hasError: boolean }> {
+  constructor(props: { href?: string }) {
     super(props)
     this.state = { hasError: false }
   }
@@ -18,7 +18,8 @@ class ErrorBoundary extends Component {
     // eslint-disable-next-line no-console
     console.log({ error, errorInfo })
     setTimeout(() => {
-      window.location.href = '/'
+      //@ts-ignore
+      window.location.href = this.props?.href || '/'
     }, 2000)
     // window.location.reload()
   }
