@@ -15,6 +15,7 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error: any, errorInfo: ErrorInfo) {
     debugger
+    // eslint-disable-next-line no-console
     console.log({ error, errorInfo })
     setTimeout(() => {
       window.location.href = '/'
