@@ -26,7 +26,8 @@ interface Props {
 export interface ForwardMessageModalArgs  {
   forwardedId: number,
   chats: IChat[],
-  forwardedMessage: IMessage
+  forwardedMessage?: IMessage
+  forwardedMessagesList?: number[]
   onSend?: (chatId: number) => void
 }
 
@@ -40,11 +41,16 @@ export default function ForwardMessageModal(props: Props) {
   const router = useRouter()
 
   const submit = (data: {chatId: number|null, message: string}) => {
-    ChatRepository.createMessage({message: data.message, chatId: data.chatId, forwardedId: args.forwardedId})
-    .then(_ => {
+    if(args.forwardedMessagesList) {
       args.onSend(data.chatId)
-      // appContext.hideModal()
-    })
+    }
+    else {
+      ChatRepository.createMessage({message: data.message, chatId: data.chatId, forwardedId: args.forwardedId})
+      .then(_ => {
+        args.onSend(data.chatId)
+        // appContext.hideModal()
+      })
+    }
   }
 
   const formik = useFormik<{chatId: number|null, message: string}>({
@@ -111,18 +117,23 @@ export default function ForwardMessageModal(props: Props) {
             }
           </div>
         </div>
-        <div className={styles.message}>
-          <MessageFactory profileId={0} message={args.forwardedMessage} application={undefined}/>
-        </div>
-        <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>Комментарий</P>
-        <FormikProvider value={formik} >
-          <Form className={styles.form}>
-            <TextAreaField name={'message'}
-            autoSize
-            onChange={formik.handleChange}
-            />
-          </Form>
-        </FormikProvider>
+        {args.forwardedMessagesList.length > 0 &&
+          <P style={{paddingBlock: '10px'}} styleType={['medium', 'w500']} useThemeColor>Переслать {args.forwardedMessagesList.length} сообщений</P>
+        } 
+        {args.forwardedMessage && <>
+          <div className={styles.message}>
+            <MessageFactory profileId={0} message={args.forwardedMessage} application={undefined}/>
+          </div>
+          <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>Комментарий</P>
+          <FormikProvider value={formik} >
+            <Form className={styles.form}>
+              <TextAreaField name={'message'}
+              autoSize
+              onChange={formik.handleChange}
+              />
+            </Form>
+          </FormikProvider>
+        </>}
         <div className={styles.buttonsWrapper}>
           <Button styleType={['grey', 'phoneWide']} onClick={()=>{setCurrentPage('chats')}} altStyleType={['white']}>{t('back')}</Button>
           <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm}>{t('send')}</Button>

@@ -9,7 +9,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
 import { RefObject, useEffect, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { ActivityStatus, AppTheme, MessageType, Preset } from 'types/enums'
+import { ActivityStatus, AppTheme, MessageType, ModalType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
@@ -32,8 +32,14 @@ import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import { IMessage } from 'data/interfaces/IChat'
 import CrossSvg from '@/components/svg/CrossSvg'
-
-
+import { LiveAudioVisualizer } from '../../../../node_modules/react-audio-visualize'
+import CheckSvg from '@/components/svg/CheckSvg'
+import ShareMessageSvg from '@/components/svg/ShareMessageSvg'
+import TrashBasketAltSvg from '@/components/svg/TrashBasketAltSvg'
+import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal'
+import { useChatContext } from 'context/chat_state'
+import ChatRepository from 'data/repositories/ChatRepository'
+import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 
 interface Props {
   onBackClick: () => void
@@ -42,6 +48,7 @@ interface Props {
 export default function Messages(props: Props) {
   const {t} = useTranslation()
   const dialog = useChatDialogContext()
+  const chatContext = useChatContext()
   const {messages, loading, chat} = dialog
   const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
   const appContext = useAppContext()
@@ -50,6 +57,7 @@ export default function Messages(props: Props) {
   const [collocutor, setCollocutor] = useState<IUserProfile>()
   const [cv, setCv] = useState<ICV>(null)
   const router = useRouter()
+  const [choosenIds, setChoosenIds] = useState<Set<number>>(new Set)
 
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
@@ -126,6 +134,49 @@ export default function Messages(props: Props) {
     e.preventDefault()
     props.onBackClick()
   }
+
+
+  const forwardHandler = () => {
+    const sendMultiMessages = async(chatId: number) => {
+      const res = await Promise.all([...choosenIds].map(id=> {
+        ChatRepository.createMessage({message: '', type: MessageType.Text, chatId: chatId, forwardedId: id})
+      }))
+      setChoosenIds(new Set)
+    }
+
+    appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
+      chats: [...chatContext.chats.values()],
+      forwardedMessagesList: [...choosenIds.values()],
+      forwardedId: Number(dialog.chat.id),
+      onSend: (chatId: number) => {
+        debugger
+        appContext.hideModal()
+        sendMultiMessages(chatId)
+      }
+    })
+  }
+
+  const deleteHandler = () => {
+    const _removeMessages = async() =>  {
+      const res = await Promise.all([...choosenIds].map(id=> {
+        dialog.removeMessage('forMe', id)
+      }))
+      setChoosenIds(new Set)
+    }
+    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+      text: `Вы действительно хотите удалить ${choosenIds.size} cообщений?`,
+      callback: () => {
+        _removeMessages()
+        appContext.hideModal()
+      }
+    })
+
+  }
+
+  const removeChat = () => {
+
+  }
+
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
 
@@ -151,6 +202,7 @@ export default function Messages(props: Props) {
 
   return (
     <div className={styles.root}> 
+      {choosenIds.size === 0 &&
       <div className={styles.top} onClick={onTopClick}>
         {dialog.chat &&
         <>
@@ -168,6 +220,22 @@ export default function Messages(props: Props) {
         <Spinner size={48} color={colors.blue}/>
         }
       </div>
+      }
+      {choosenIds.size > 0 && 
+        <div className={styles.topChooseMode}>
+          <Button onClick={removeChat}>
+            <P styleType={['blue', 'w500', 'medium']}>
+              Удалить чат
+            </P>
+          </Button>
+          <P styleType={['large', 'w600']} useThemeColor >Выбрано {choosenIds.size}</P>
+          <Button onClick={()=>setChoosenIds(new Set)}> 
+            <P styleType={['blue', 'w500', 'medium']}>
+              Отменить
+            </P>
+          </Button>
+        </div>
+      }
       {(dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())&&
         <div className={styles.invite}>
           <p className={styles.invite__title}>{isHirer?t('chat_vacancyApplication'):t('chat_vacancyInvite')}</p>
@@ -194,7 +262,42 @@ export default function Messages(props: Props) {
       scrollThreshold={0.6}>
         {
           messages.size>0&&[...messages.values()].map(el=> {
-            return <MessageFactory onReply={(m)=>setReplyTo(m)} key={el.id.toString()+el.chatId?.toString()} profileId={userContext?.currentProfile?.id} message={el} application={chat?.application} />
+            return <div 
+            className={classNames(
+              styles.messageLine, 
+              choosenIds.size > 0 && styles.chooseMode, 
+              choosenIds.has(Number(el.id)) && styles.choosenLine
+            )} 
+            onClick={() => {
+              choosenIds.size > 0 && 
+              setChoosenIds(state => {
+                if(state.has(Number(el.id))) {
+                  state.delete(Number(el.id))
+                  return new Set(state)
+                }
+                else {
+                  return new Set(choosenIds.add(Number(el.id)))
+                }
+              })
+            }} 
+            >
+              {choosenIds.size > 0 && 
+                <div className={styles.choosenCheck}>
+                  {choosenIds.has(Number(el.id)) &&
+                    <CheckSvg/>
+                  }
+                </div>
+              }
+              <MessageFactory 
+              multiCheckMode={choosenIds.size>0} 
+              onReply={(m)=>setReplyTo(m)}
+               onSet={(m) => setChoosenIds(new Set(choosenIds.add(Number(m.id))))} 
+               key={el.id.toString()+el.chatId?.toString()} 
+               profileId={userContext?.currentProfile?.id} 
+               message={el} 
+               application={chat?.application} 
+               />
+            </div>
           })
           ||
           loading && messages.size===0 && <Spinner size={24} color={colors.blue}/>
@@ -238,16 +341,31 @@ export default function Messages(props: Props) {
           })}
         </div>
         }
+        {choosenIds.size > 0 &&
+          <div className={styles.choosenActions}>
+            {!isTabletWidth &&
+              <P styleType={['greyLight', 'w600', 'medium']} useThemeColor>Выбрано сообщений: {choosenIds.size}</P>
+            }
+            <Button styleType={['icon','backTransparent', 'svg24']} onClick={deleteHandler}><TrashBasketAltSvg color={colors.blue}/></Button>
+            <Button styleType={['icon','backTransparent', 'svg24']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
+          </div>
+        }
+        {dialog.recorder?.current?.state !== 'recording' && choosenIds.size === 0 &&
+        <>
         <label>
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
-          <input type='file' accept='image/png, image/jpg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
+          <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
         <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder={t('chat_enterMessage')} />
-        <div className={styles.microphoneWrapper} onClick={dialog.recordVoice}>
+        </>
+        }
+        { choosenIds.size === 0 &&     
+        <div className={classNames(styles.microphoneWrapper, dialog.recorder?.current?.state === 'recording'&&styles.recording)} onClick={dialog.recordVoice}>
           {
           dialog.recorder?.current?.state === 'recording' &&
             <>
-              <span>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
+              <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={800} height={40}  fftSize={1024}/>
+              <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
             </>
             ||
@@ -257,6 +375,7 @@ export default function Messages(props: Props) {
             <img src={'/icons/microphone.svg'} alt='microphone icon'/>
           }
         </div>
+        }
       </div>
     </div>
   )

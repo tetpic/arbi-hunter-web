@@ -50,6 +50,17 @@ export interface IChatFolder extends TimeStamp {
   totalUnread: string
 }
 
+export interface IChatProfile extends TimeStamp {
+  chatFolderId: number,
+  chatId: number,
+  deleted: boolean,
+  id: number,
+  notifications: boolean,
+  pinned: boolean,
+  profileId: number,
+  role: string
+}
+
 
 export default interface IChat extends TimeStamp {
   id: number
@@ -62,7 +73,7 @@ export default interface IChat extends TimeStamp {
   participantId: number
   lastMessageAt: string
   profile: IUserProfile
-  profiles: IUserProfile[]
+  profiles: IChatProfile[]
   participant: IUserProfile 
   application: IApplication
   lastMessage: string

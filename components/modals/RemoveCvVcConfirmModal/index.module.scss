@@ -1,0 +1,21 @@
+@import 'styles/index';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.modalLayout {
+  max-width: 340px;
+}
+
+.closingTitle {
+  padding: unset !important;
+}

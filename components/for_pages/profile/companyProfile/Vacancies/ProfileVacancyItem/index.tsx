@@ -15,7 +15,6 @@ import Formatter from 'utils/formatter'
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
 import {  useRef } from 'react'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
-import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import { colors } from 'styles/variables'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
@@ -23,6 +22,7 @@ import Progress from './Progress'
 import P from '@/components/ui/P'
 import { useTariffContext } from 'context/tariff_state'
 import useTranslation from 'next-translate/useTranslation'
+import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
 
 interface Props {
   vacancy: IVacancy
@@ -59,14 +59,24 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
   }
 
   const removeHandler =()=> {
-    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: t('vacancy_item_areYouShureToDelete'),
-      callback: ()=>{
+    const _args:RemoveCvVcConfirmModalArgs = {
+      title: 'Удалить вакансию?',
+      text: !props.type?'Отменить удаление будет невозможно. Вместо удаления можно перевести вакансию в архив.':'Отменить удаление будет невозможно.',
+      onRemove: () => {
         vacancyContext.removeVacancy(vacancy.id, props.type)
         props.onRemove?.(vacancy.id)
-        appContext.hideModal()
-      }
-    })
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
+      },
+      onArchive: !props.type?() => {
+        archiveHandler()
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
+      }:undefined,
+      removeText: 'Удалить вакансию?',
+      archiveText: 'Скрыть вакансию'
+    }
+    isTabletWidth
+    ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 300), 200)
+    :appContext.showModal<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args)
   }
 
   const upgradeTariffHandler = () => {

@@ -3,6 +3,8 @@
 .root {
   padding-bottom: 90px;
   margin-top: 82px;
+  display: flex;
+  flex-direction: column;
   @include mq($TabletWidth, max) {
     margin-top: 8px;
     overflow: hidden;
@@ -40,7 +42,7 @@
   grid-area: title;
   font-size: $text40;
   font-weight: 700;
-  color: $white;
+  color: var(--pTextColor);
   align-self: end;
   @include mq($TabletWidth, max) {
     text-align: center;
@@ -132,7 +134,8 @@
     padding-inline: 16px;
   }
   .tag {
-    @include tag;
+    // @include tag;
+    color: var(--pTextColor);
     padding: 16px 24px;
     border-radius: 30px;
     font-size: $mediumText;

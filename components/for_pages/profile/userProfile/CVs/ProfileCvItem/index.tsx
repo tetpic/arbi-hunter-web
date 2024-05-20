@@ -14,7 +14,6 @@ import { useRef } from 'react'
 import classNames from 'classnames'
 import { useCvContext } from 'context/cv_state'
 import { colors } from 'styles/variables'
-import { IConfirmModalProps } from 'components/modals/ConfirmModal'
 import { IOptionsModalProps } from 'components/modals/OptionsModal'
 import OptionsList, { IOptionList } from 'components/ui/OptionsList'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
@@ -23,6 +22,7 @@ import { useRouter } from 'next/router'
 import { useTariffContext } from 'context/tariff_state'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
 
 interface Props {
   cv: ICV
@@ -45,9 +45,11 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   const tariff = tariffContext.packets?.get(cv.subscriptions?.tariff?.id)||tariffContext.packets.get(1)
 
 
-  const archiveHandler =(e: React.MouseEvent<HTMLElement>)=> {
-    e.preventDefault()
-    e.stopPropagation()
+  const archiveHandler =(e?: React.MouseEvent<HTMLElement>)=> {
+    if(e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     if(!cv?.subscriptions && !cv.published) {
       router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7, fromOtherPage: true}})
       return
@@ -65,14 +67,35 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     cvContext.moveToTop(cv.id)
   }
 
+  // const removeHandler =()=> {
+    // appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
+    //   {text: t('cv_item_removeConfirm'),
+    //   callback: ()=>{
+    //     cvContext.deleteCv(cv.id)
+    //   }
+    //   }
+    // )
+    
+  // }
+
   const removeHandler =()=> {
-    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-      {text: t('cv_item_removeConfirm'),
-      callback: ()=>{
+    const _args:RemoveCvVcConfirmModalArgs = {
+      title: 'Удалить резюме?',
+      text: !props.type?'Отменить удаление будет невозможно. Вместо удаления можно перевести резюме в архив.':'Отменить удаление будет невозможно.',
+      onRemove: () => {
         cvContext.deleteCv(cv.id)
-      }
-      }
-    )
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
+      },
+      onArchive: !props.type?() => {
+        archiveHandler()
+        isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
+      }:undefined,
+      removeText: 'Удалить резюме?',
+      archiveText: 'Скрыть резюме'
+    }
+    isTabletWidth
+    ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 300), 200)
+    :appContext.showModal<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args)
   }
 
   const upgradeTariffHandler = () => {
@@ -80,7 +103,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const defaultOptions:IOptionList[] = [
-    {title: t('item_remove'), onClick: editHandler},
+    // {title: t('item_remove'), onClick: editHandler},
     {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
     {title: t('item_upgrade'), onClick: upgradeTariffHandler},
     {title: t('item_share')},

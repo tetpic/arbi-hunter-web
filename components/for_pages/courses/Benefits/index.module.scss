@@ -29,7 +29,7 @@
   text-align: center;
   grid-column: 1/span 3;
   align-self: center;
-  color: $white;
+  color: var(--pTextColor);
   font-weight: $semibold;
   font-size: $text32;
   line-height: 130%;
@@ -51,7 +51,7 @@
   align-items: center;
   text-align: center;
   row-gap: 16px;
-  color: $white;
+  color: var(--pTextColor);
   font-size: $text20;
   font-weight: $medium;
   font-size: $largeText;

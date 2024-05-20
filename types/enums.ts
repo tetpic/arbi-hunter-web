@@ -55,6 +55,7 @@ export enum ModalType {
   SalaryModal = 'salaryModal',
   ForwardMessageModal = 'forwardMessageModal',
   RemoveMessageConfirmModal = 'removeMessageConfirmModal',
+  RemoveCvVcConfirmModal = 'removeCvVcConfirmModal',
 }
 
 export enum AppTheme {

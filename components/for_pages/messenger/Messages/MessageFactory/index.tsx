@@ -29,12 +29,19 @@ import { useChatDialogContext } from 'context/chat_dialog_state'
 import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
 import P from '@/components/ui/P'
 import { getUserName } from 'utils/helpers'
+import AnswerMessageSvg from '@/components/svg/AnswerMessageSvg'
+import DoubleSvg from '@/components/svg/DoubleSvg'
+import SetMessageSvg from '@/components/svg/SetMessageSvg'
+import ShareMessageSvg from '@/components/svg/ShareMessageSvg'
+import PinMessageSvg from '@/components/svg/PinMessageSvg'
 
 interface Props {
   profileId?: number
   message: IMessage
   application?: IApplication
   onReply?: (msg: IMessage) => void
+  onSet?: (msg: IMessage) => void
+  multiCheckMode?: boolean
 }
 
 
@@ -75,7 +82,7 @@ export default function MessageFactory(props: Props) {
       canRemoveForAll: collocutor === 'me',
       onSend: (type) => {
         dialog.removeMessage(type, Number(props.message.id))
-        appContext.hideModal()
+        isPhoneWidth?appContext.hideBottomSheet():appContext.hideModal()
       }
     }
     isPhoneWidth
@@ -94,12 +101,17 @@ export default function MessageFactory(props: Props) {
     openDropDown(false)
   }
 
+  const onSet = () => {
+    props.onSet(props.message)
+    openDropDown(false)
+  }
+
   const allOptions: {[key: string]: IOptionList} = {
-    reply: {title: 'Ответить', onClick: replyHandler},
-    copy: {title: 'Скопировать', onClick: ()=>{}},
-    setPinned: {title: 'Закрепить', onClick: setPinned},
-    forward: {title: 'Переслать', onClick: openForwardModal},
-    choose: {title: 'Выбрать', onClick: ()=>{}},
+    reply: {title: 'Ответить', icon: <AnswerMessageSvg/>, onClick: replyHandler},
+    copy: {title: 'Скопировать', icon: <DoubleSvg/> ,onClick: ()=>{}},
+    setPinned: {title: 'Закрепить', icon: <PinMessageSvg/>, onClick: setPinned},
+    forward: {title: 'Переслать', icon: <ShareMessageSvg/>, onClick: openForwardModal},
+    choose: {title: 'Выбрать', icon: <SetMessageSvg/>, onClick: onSet},
     remove: {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
   }
 
@@ -117,7 +129,7 @@ export default function MessageFactory(props: Props) {
     getRef={(r)=>{dropRef.current = r}} 
     usePopper
     popperPlacement={isPhoneWidth?'auto':'left-end'}
-    onClose={()=>{}}/>
+    onClose={()=>{openDropDown(false)}}/>
   )
 
   const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {    
@@ -131,7 +143,7 @@ export default function MessageFactory(props: Props) {
     {props.message.replyTo &&
       <div className={styles.replyedMessage}>
         <P styleType={['small', 'blue']}>{getUserName(props.message.replyTo.profile)}</P>
-        <P styleType={['small']}>{props.message.replyTo.message}</P>
+        <P styleType={['small']} useThemeColor>{props.message.replyTo.message}</P>
       </div>
     }
     </>
@@ -149,7 +161,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const textMessage = (
-    <div className={side} ref={itemRef} onContextMenu={onRightClick} key={props.message.id}>
+    <div className={side} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
       {replyedMessage}
       <p className={styles.message}>
         {msg.message}
@@ -205,7 +217,7 @@ export default function MessageFactory(props: Props) {
         <ApplicationHirerNode application={props.application} message={msg as IMessage}/>
       </div>
     }
-    <div className={side} ref={itemRef } onContextMenu={onRightClick} >
+    <div className={side} ref={itemRef } onContextMenu={onRightClick}  >
       {replyedMessage}
         <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
         {stats}
@@ -215,7 +227,7 @@ export default function MessageFactory(props: Props) {
   )
 
   const proposalMessage = (<>
-    <div className={side} onContextMenu={onRightClick} ref={itemRef }  key={props.message.id}>
+    <div className={side} onContextMenu={onRightClick}  ref={itemRef }  key={props.message.id}>
       {replyedMessage}
       <p className={styles.message}>{t('chat_cvApplication')}</p>
       <Spacer basis={8} />
@@ -226,10 +238,10 @@ export default function MessageFactory(props: Props) {
   </>)
 
   const voiceMessage = (
-    <div className={side} onContextMenu={onRightClick} ref={itemRef } key={props.message.id}>
+    <div className={side} onContextMenu={onRightClick}  ref={itemRef } key={props.message.id}>
       {replyedMessage}
       {msg?.assets?.length > 0 &&
-        <AudioNode isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
+        <AudioNode key={props.message.id} isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
       }
       {stats}
       {optionsDropDown}

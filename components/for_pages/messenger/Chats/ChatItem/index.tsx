@@ -8,6 +8,13 @@ import IChat from 'data/interfaces/IChat'
 import { getUserImageSource } from 'utils/helpers'
 import { Preset } from 'types/enums'
 import P from '@/components/ui/P'
+import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
+import PinMessageSvg from '@/components/svg/PinMessageSvg'
+import FolderSvg from '@/components/svg/FolderSvg'
+import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
+import OptionsDropDown from '@/components/ui/OptionsDropDown'
+import { useRef } from 'react'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 
 interface Props {
   chat: IChat
@@ -17,6 +24,9 @@ interface Props {
 
 export default function ChatItem(props: Props) {
   const chat = props.chat
+  const dropRef = useRef(null!)
+  const itemRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
 
   const collocutor = chat.profiles[0]?.role === 'admin'?chat.participant:chat.profile
 
@@ -24,10 +34,25 @@ export default function ChatItem(props: Props) {
     props.onClick(chat)
   }
 
+  const onRightClick = (e:  React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
+    openDropDown(true)
+  }
+
+  const optionsList: IOptionList[] = [
+    {title: 'Сменить папку',  icon: <FolderSvg/>,onClick: ()=>{}},
+    {title: 'Закрепить', icon: <PinMessageSvg/> , onClick: ()=>{}},
+    {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: ()=>{}}
+  ]
+
+
+  const options = <OptionsList options={optionsList} onMouseLeave={()=>{}}/>
+
 
 
   return (
-    <div className={classNames(styles.root, props.isActive&&styles.active)} onClick={onClickHandler}> 
+    <div className={classNames(styles.root, props.isActive&&styles.active)} onContextMenu={onRightClick} onClick={onClickHandler}> 
       <UserPic 
       size={56} 
       className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
@@ -39,6 +64,13 @@ export default function ChatItem(props: Props) {
       {props.chat.totalUnread > 0&&
         <p className={styles.counter}>{props.chat.totalUnread}</p>
       }
+      <OptionsDropDown 
+      usePopper
+      options={options} 
+      active={dropDown} 
+      getRef={(r)=>{dropRef.current = r}}
+      onClose={()=>{openDropDown(false)}}/>
+
     </div>
   )
 }

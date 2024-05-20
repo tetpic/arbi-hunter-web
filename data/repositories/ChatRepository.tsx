@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import IChat, { IChatFolder, IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
+import IChat, { IChatFolder, IChatProfile, IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
@@ -129,6 +129,18 @@ export default class ChatRepository {
     })
     if(res.err) {
       
+      return null
+    }
+    return res
+  }
+
+  static async updateChatProfile(data: Partial<IChatProfile>, chatId: number): Promise<any|null> {
+    const res = await request({
+      method: 'put',
+      url: `patch/api/chat/${chatId}`,
+      data
+    })
+    if(res.err) {
       return null
     }
     return res

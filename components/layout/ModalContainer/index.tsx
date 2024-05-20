@@ -54,6 +54,7 @@ import FavoritesSettingModal from '@/components/modals/FavoritesSettingModal'
 import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
 import ForwardMessageModal from '@/components/modals/ForwardMessageModal'
 import RemoveMessageConfirmModal from '@/components/modals/RemoveMessageConfirmModal'
+import RemoveCvVcConfirmModal from '@/components/modals/RemoveCvVcConfirmModal'
 
 
 interface Props { }
@@ -268,6 +269,11 @@ export default function ModalContainer(props: Props) {
         return <Modal isOpen {...commonSettings} >
         <RemoveMessageConfirmModal onClose={commonSettings.onRequestClose}/>
       </Modal>
+      case ModalType.RemoveCvVcConfirmModal:
+        return <Modal isOpen {...commonSettings} >
+        <RemoveCvVcConfirmModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+
     }
   })()
 
