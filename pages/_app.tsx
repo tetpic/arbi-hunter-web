@@ -18,13 +18,13 @@ import { AuthWrapper } from 'context/auth_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
 import { ManagerWrapper } from 'context/manager_state'
-// import { VacancyWrapper } from 'context/vacancy_state'
 import { PatternWrapper } from 'context/pattern_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import Router from 'next/router'
+
 
 export interface AppProps extends NextAppProps {
   pageProps: {
@@ -80,9 +80,12 @@ function MyApp({Component, pageProps}: AppProps) {
               {/* {loading &&
                 <Spinner className='mainSpinner' size={32}/>        
               } */}
+          
+
             <Layout webView={pageProps.webViewOnly}> 
               <Component {...pageProps} />
             </Layout>
+          
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <ModalContainer/>}
             {clientVisible && <Snackbar/>}

@@ -7,6 +7,7 @@ import { useVacancyContext } from 'context/vacancy_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
+  purchaseTypes?: string[]
 }
 
 export default function ShopPackets(props: Props) {
@@ -29,7 +30,7 @@ export default function ShopPackets(props: Props) {
   }
 
   return (<div className={styles.root}> 
-    {[...tariffContext.packets.entries()].filter(([key, value]) => value.price > 0).map(([key, value])=> {
+    {[...tariffContext.packets.entries()].filter(([key, value]) => value.price > 0&&(props.purchaseTypes?props.purchaseTypes.includes(value.purchaseType): true) ).map(([key, value])=> {
       return <PurchaseItem 
       type='buy'
       tariff={value} 

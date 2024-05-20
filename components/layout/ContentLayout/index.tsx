@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { useUserContext } from 'context/user_state'
 import classnames from 'classnames'
 import MobileBottomMenu from '@/components/ui/MobileBottomMenu'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 
 interface Props {
   title?: string,
@@ -55,7 +56,9 @@ export default function ContentLayout(props: Props) {
     }
     <div className={classnames(styles.wrapper, props.withMobileMenu && isTabletWidth && styles.withMobileMenu, !props.withFooter && styles.withoutFooter)}>
       <div className={classnames(props.disabledNavBar && styles.disabledNavBar,  'contentWrapper')}> 
+      <ErrorBoundary>
         {props.children}
+      </ErrorBoundary>
       </div>
       {props.withFooter &&
         <Footer/>
