@@ -43,10 +43,12 @@ export default function OptionsModal(props: Props) {
   const title = props.title||args?.title  
   const children = props.children||args?.children
   const [popperElement, setPopperElement] = useState(null)
-  const popper = usePopper(props.usePopperRoot, popperElement, {placement: props.popperPlacement||'bottom', modifiers: [
-    {name: 'offset', options: {offset: [10, 10]}},
+  const popper = usePopper(props.usePopperRoot, popperElement, {
+    placement: props.popperPlacement||'bottom', 
+    strategy: 'absolute',
+    modifiers: [
+    {name: 'offset', options: {offset: [0, 10]}},
     {name: 'flip',enabled: true},
-
   ]})
 
 

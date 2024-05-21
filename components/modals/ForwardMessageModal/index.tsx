@@ -117,8 +117,8 @@ export default function ForwardMessageModal(props: Props) {
             }
           </div>
         </div>
-        {args.forwardedMessagesList.length > 0 &&
-          <P style={{paddingBlock: '10px'}} styleType={['medium', 'w500']} useThemeColor>Переслать {args.forwardedMessagesList.length} сообщений</P>
+        {args.forwardedMessagesList?.length > 0 &&
+          <P style={{paddingBlock: '10px'}} styleType={['medium', 'w500']} useThemeColor>Переслать {args.forwardedMessagesList?.length} сообщений</P>
         } 
         {args.forwardedMessage && <>
           <div className={styles.message}>

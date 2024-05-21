@@ -38,6 +38,8 @@ export interface IDialogState {
   recordTime: number
   refreshMessage: (id: number, message: IMessage) => void
   removeMessage: (type: 'forMe'|'forAll', messageId: number) => Promise<boolean>
+  pinned: Map<number, IMessage>
+  setPinned: (message: IMessage) => void
 }
 
 const defaultValue: Partial<IDialogState> = {}
@@ -64,6 +66,7 @@ export function ChatDialogWrapper(props: Props) {
   const [loading, setLoading] = useState(true)
   const [chunks, setChunks] = useState<BlobPart[]>()
   const [recordTime, setRecordTime] = useState<number>(0)
+  const [pinned, setPinnedState] = useState<Map<number, IMessage>>(new Map)
   
   const scrollableTarget = useRef<HTMLElement | null>(null)
   const chatIdRef = useRef<number | null>(null)
@@ -112,7 +115,20 @@ export function ChatDialogWrapper(props: Props) {
   const loadMessages = async (lastCreatedAt?: string) => {
     setLoading(true)
     if(props.chatId) {
-      const data = await ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
+      const [data, pinned] = await  Promise.all([
+        ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
+        .catch(err=> err),
+        ChatRepository.getPinnedChatMessages(props.chatId)
+        .then(res=> res.data)
+        .catch(err=> err)
+      ]) 
+      debugger
+      setPinnedState(state => {
+        (pinned as IMessage[]).forEach(el => {
+          state.set(Number(el.id), el)
+        })
+        return new Map(state)
+      })   
       processLoadedMessages(data.data, data.total)
     }
     setLoading(false)
@@ -128,6 +144,13 @@ export function ChatDialogWrapper(props: Props) {
     }
     await loadMessages([...messages.values()][messages.size - 1]?.createdAt)
     setPage(page + 1)
+  }
+
+  const setPinned = (message: IMessage) => {
+    setPinnedState(state => {
+      state.set(Number(message.id), message)
+      return new Map(state)
+    })
   }
 
 
@@ -366,7 +389,9 @@ export function ChatDialogWrapper(props: Props) {
     recordVoice,
     recorder,
     recordTime,
-    removeMessage
+    removeMessage,
+    pinned,
+    setPinned
   }
 
   return (

@@ -1,5 +1,13 @@
 @import 'styles/index';
 
+.root {
+  @include mq($TabletWidth, max) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
 .title {
   padding: unset !important;
   margin-bottom: 24px;
@@ -9,6 +17,9 @@
   display: flex;
   column-gap: 8px;
   margin-top: 24px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+  }
 }
 
 .modaLayout {

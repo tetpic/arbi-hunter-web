@@ -33,6 +33,7 @@ import ShareMessageSvg from '@/components/svg/ShareMessageSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
 import ImageNode from './ImageNode'
 import FileNode from './FileNode'
+import ChatRepository from 'data/repositories/ChatRepository'
 
 interface Props {
   profileId?: number
@@ -96,6 +97,10 @@ export default function MessageFactory(props: Props) {
   }
 
   const setPinned = () => {
+    ChatRepository.setMessagePinned(Number(props.message.id), !props.message.pinned)
+    .then(res => {
+      debugger
+    })
     // alert('set pinned')
     openDropDown(false)
   }
@@ -127,7 +132,7 @@ export default function MessageFactory(props: Props) {
     active={dropDown} 
     getRef={(r)=>{dropRef.current = r}} 
     usePopper
-    popperPlacement={isPhoneWidth?'auto':'left-end'}
+    popperPlacement={isPhoneWidth?'auto':'left-start'}
     onClose={()=>{openDropDown(false)}}/>
   )
 
@@ -161,12 +166,13 @@ export default function MessageFactory(props: Props) {
 
   const textMessage = (
     <div className={side} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
+      {optionsDropDown}
       {replyedMessage}
       <p className={styles.message}>
         {msg.message}
       </p>
       {stats}
-      {optionsDropDown}
+      
 
     </div>
   )
@@ -175,7 +181,7 @@ export default function MessageFactory(props: Props) {
     <div 
     key={props.message.id} 
     ref={itemRef} 
-    onContextMenu={!isPhoneWidth&&onRightClick} 
+    onContextMenu={onRightClick} 
     className={classNames(
       side, 
       styles.asset, 
@@ -183,6 +189,7 @@ export default function MessageFactory(props: Props) {
       &&(msg?.assets?.[0].mimeType.includes('image')||msg?.pastedImages?.[0].type.includes('image')))
       &&!msg.message&&styles.single
     )}>
+      {optionsDropDown}
       {((msg.pastedImages && msg.pastedImages.length>0 && msg.pastedImages[0].type.includes('image'))||
       (msg.assets && msg.assets.length>0 && msg.assets[0].mimeType.includes('image')))&&
         <ImageNode message={msg}/>
@@ -230,7 +237,7 @@ export default function MessageFactory(props: Props) {
         {msg.message}
       </p>
       {stats}
-      {optionsDropDown}
+      
     </div>
   )
 
@@ -248,33 +255,34 @@ export default function MessageFactory(props: Props) {
       </div>
     }
     <div className={side} ref={itemRef } onContextMenu={onRightClick}  >
+    { optionsDropDown}
       {replyedMessage}
         <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
         {stats}
-        {optionsDropDown}
+        
     </div>
   </>
   )
 
   const proposalMessage = (<>
     <div className={side} onContextMenu={onRightClick}  ref={itemRef }  key={props.message.id}>
+      {optionsDropDown}
       {replyedMessage}
       <p className={styles.message}>{t('chat_cvApplication')}</p>
       <Spacer basis={8} />
       <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
       {stats}
-      {optionsDropDown}
     </div>
   </>)
 
   const voiceMessage = (
     <div className={side} onContextMenu={onRightClick}  ref={itemRef } key={props.message.id}>
+      {optionsDropDown}
       {replyedMessage}
       {msg?.assets?.length > 0 &&
         <AudioNode key={props.message.id} isLoading={!!msg.voiceMessage} audioSrc={!msg?.voiceMessage?(ImageHelper.urlFromSource(msg?.assets[0]?.source)):(URL.createObjectURL(msg?.voiceMessage))}/>
       }
       {stats}
-      {optionsDropDown}
     </div>
   )
 

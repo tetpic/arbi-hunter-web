@@ -34,6 +34,7 @@ interface IState {
     active: boolean;
   }[]) => void
   editChat: (data: IChat) => void
+  removeChat: (chatId: number) => void
   
 }
 
@@ -84,6 +85,13 @@ export function ChatWrapper(props: Props) {
   const editChat = (data: IChat) => {
     setChats(state=> {
       state.set(data.id, data)
+      return new Map(state)
+    })
+  }
+
+  const removeChat = (chatId: number) => {
+    setChats(state=> {
+      state.delete(chatId)
       return new Map(state)
     })
   }
@@ -321,7 +329,8 @@ export function ChatWrapper(props: Props) {
     chatsRef,
     component,
     setComponent,
-    editChat
+    editChat,
+    removeChat
   }
 
   return (

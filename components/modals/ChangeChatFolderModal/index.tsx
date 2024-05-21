@@ -8,6 +8,8 @@ import RadioListField from '@/components/fields/RadioListField'
 import ClosingTitle from '@/components/ui/ClosingTitle'
 import Button from '@/components/ui/Button'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
@@ -36,6 +38,7 @@ export default function ChangeChatFolderModal(props: Props) {
     },
     onSubmit: submit
   })
+  
 
   const body = (
     <div className={styles.root}>
@@ -66,6 +69,14 @@ export default function ChangeChatFolderModal(props: Props) {
       </div>
     </div>  
   )
+
+  if(props.isBottomSheet) {
+    return <BottomSheetLayout>
+      <BottomSheetBody>
+        {body}
+      </BottomSheetBody>
+    </BottomSheetLayout>
+  }
 
   return ( 
     <ModalLayout className={styles.modaLayout}>

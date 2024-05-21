@@ -1,3 +1,4 @@
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import styles from './index.module.scss'
 import P from '@/components/ui/P'
 import ModalBody from 'components/layout/Modal/ModalBody'
@@ -5,9 +6,11 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: ()=>void
+  isBottomSheet?: boolean
 }
 
 export interface IConfirmModalProps {
@@ -19,7 +22,7 @@ export interface IConfirmModalProps {
 export default function ConfirmModal(props: Props) {
   const appContext = useAppContext()
   const {t} = useTranslation()
-  const modalArguments = appContext.modalArguments as IConfirmModalProps 
+  const modalArguments:IConfirmModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments   
 
   const onTrueClickHandler = () => {
     modalArguments.callback()
@@ -35,6 +38,14 @@ export default function ConfirmModal(props: Props) {
       </div>
     </div>
   )
+
+  if(props.isBottomSheet) {
+    return <BottomSheetLayout>
+      <BottomSheetBody>
+        {body}
+      </BottomSheetBody>
+    </BottomSheetLayout>
+  }
 
   return (
     <ModalLayout className={styles.modalLayout} >

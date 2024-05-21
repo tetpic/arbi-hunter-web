@@ -21,6 +21,42 @@ export default class ChatRepository {
     return res
   }
 
+  static async removeOneChat(chatId: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/chat/${chatId}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async getPinnedChatMessages(chatId: number): Promise<IPagination<IMessage>|null>{
+    const res = await request({
+      method: 'get',
+      url: `/api/chat/${chatId}/messages?pinned=true`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
+  static async setMessagePinned(messageId: number, pinned: boolean): Promise<any|null> {
+    const res = await request({
+      method: 'patch',
+      url: `/api/chat/messages/${messageId}/setPinned`,
+      data: {
+        pinned
+      }
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async removeMessage(data: {type: 'forMe'|'forAll', messageId: number}): Promise<any|null> {
     const res = await request({
       method: 'delete',

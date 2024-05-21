@@ -28,6 +28,8 @@ import AddFavoritesFolder from '@/components/modals/AddFavoritesFolder'
 import ChooseFolderToSave from '@/components/modals/ChooseFolderToSave'
 import RemoveMessageConfirmModal from '@/components/modals/RemoveMessageConfirmModal'
 import RemoveCvVcConfirmModal from '@/components/modals/RemoveCvVcConfirmModal'
+import ChangeChatFolderModal from '@/components/modals/ChangeChatFolderModal'
+import ConfirmModal from '@/components/modals/ConfirmModal'
 
 
 interface Props { }
@@ -248,6 +250,24 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <RemoveCvVcConfirmModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ChangeChatFolderModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <ChangeChatFolderModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ConfirmModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <ConfirmModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

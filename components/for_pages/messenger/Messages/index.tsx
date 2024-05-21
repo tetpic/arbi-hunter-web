@@ -41,6 +41,7 @@ import { useChatContext } from 'context/chat_state'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
+import PinMessageSvg from '@/components/svg/PinMessageSvg'
 
 interface Props {
   onBackClick: () => void
@@ -69,7 +70,7 @@ export default function Messages(props: Props) {
       return
     }
     if(pastedFiles.size === 0) {
-      const clearedMessage = clearObject({message:value, type: MessageType.Text, replyToId: Number(replyTo.id)})
+      const clearedMessage = clearObject({message:value, type: MessageType.Text, replyToId: Number(replyTo?.id)})
       dialog.sendMessage(clearedMessage)
       .then(_=> {
         const container = document.querySelector('.infinite-scroll-component > div')
@@ -188,7 +189,19 @@ export default function Messages(props: Props) {
   }
 
   const removeChat = () => {
-
+    const _args:IConfirmModalProps  = {
+      text: `Вы действительно хотите удалить чат с ${getUserName(collocutor)}`,
+      callback: () => {
+        ChatRepository.removeOneChat(Number(dialog.chat.id))
+        .then(res => {
+          chatContext.removeChat(Number(dialog.chat.id))
+          isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
+        })
+      }
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
+    :appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
   }
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
@@ -257,6 +270,29 @@ export default function Messages(props: Props) {
           <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
             <InformationSvg color={isLightTheme&&colors.black}  />
           </Link>
+        </div>
+      }
+      {dialog.pinned.size>0 &&
+        <div className={styles.pinnedMessages}>
+          <div className={styles.pinnedImage}>
+            <PinMessageSvg/>
+          </div>
+          <div className={styles.pinnedMessagesWrapper}>
+
+          {[...dialog.pinned.values()].map(el => {
+            return <div className={styles.pinnedMessage}>
+              <P styleType={['greyLight', 'w500','small']}>{
+                el.type === MessageType.Text&&el.message
+                ||
+                el.type === MessageType.Application&&'Приглашение'
+                ||
+                el.type === MessageType.Asset&&'Файлы'
+                ||
+                el.type === MessageType.Voice &&'Голосовое сообщение'
+              }</P>
+            </div>
+          })}
+          </div>
         </div>
       }
       <div 
