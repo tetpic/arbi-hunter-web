@@ -9,11 +9,13 @@
 .picker {
   width: calc(100% - 60px);
   margin-top: -24px;
+  display: flex;
+  justify-content: center;
 }
 
-.buildPicker {
-  max-width: 500px;
-}
+// .buildPicker {
+//   max-width: 500px;
+// }
 
 .place {
   overflow: hidden;
