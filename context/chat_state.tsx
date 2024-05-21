@@ -33,6 +33,7 @@ interface IState {
     component: ChatComponent;
     active: boolean;
   }[]) => void
+  editChat: (data: IChat) => void
   
 }
 
@@ -79,6 +80,13 @@ export function ChatWrapper(props: Props) {
   const [filter, setFilterState] = useState<IChatsFilter>(null)
   const chatsRef = useRef<Map<number, IChat>>(new Map)
   const windowFocusInit = useRef(false)
+  
+  const editChat = (data: IChat) => {
+    setChats(state=> {
+      state.set(data.id, data)
+      return new Map(state)
+    })
+  }
 
   const loadChats = async (page: number, filters?: MessageFilterOptions) => {
     if (abortControllerRef.current) {
@@ -312,7 +320,8 @@ export function ChatWrapper(props: Props) {
     setChatsFromFolder,
     chatsRef,
     component,
-    setComponent
+    setComponent,
+    editChat
   }
 
   return (

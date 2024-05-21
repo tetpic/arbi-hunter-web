@@ -12,6 +12,7 @@ export const useDetectOutsideClick: (el: MutableRefObject<any>, initialState: bo
       else if (el?.current !== null && !el?.current?.contains?.(e.target)) {
         setIsActive(!isActive) 
         document.removeEventListener('click', pageClickEvent)
+        document.removeEventListener('contextmenu', pageClickEvent)
       }
 
     }
@@ -20,6 +21,7 @@ export const useDetectOutsideClick: (el: MutableRefObject<any>, initialState: bo
     if (isActive) {
       setTimeout(() => {
         document.addEventListener('click', pageClickEvent)
+        document.addEventListener('contextmenu', pageClickEvent)
       }, 300)
 
     }

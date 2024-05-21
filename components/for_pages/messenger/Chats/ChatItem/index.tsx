@@ -6,7 +6,7 @@ import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
 import IChat from 'data/interfaces/IChat'
 import { getUserImageSource } from 'utils/helpers'
-import { Preset } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import P from '@/components/ui/P'
 import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
@@ -17,6 +17,8 @@ import { useRef } from 'react'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { useChatContext } from 'context/chat_state'
+import { useAppContext } from 'context/state'
+import { ChangeChatFolderModalArgs } from '@/components/modals/ChangeChatFolderModal'
 
 interface Props {
   chat: IChat
@@ -27,6 +29,8 @@ interface Props {
 export default function ChatItem(props: Props) {
   const chat = props.chat
   const chatContext = useChatContext()
+  const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const dropRef = useRef(null!)
   const itemRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
@@ -44,20 +48,46 @@ export default function ChatItem(props: Props) {
   }
 
   const pinChat = async() => {
-    ChatRepository.updateChatProfile({pinned: true}, chat.id)
+    ChatRepository.updateChatProfile({pinned: !chat.profiles[0].pinned}, chat.id)
     .then(res => {
+      const newChat = {...chat, profiles: [res]}
+      chatContext.editChat(newChat)
       openDropDown(false)
     })
   }
 
+   const changeFolder = () => {
+    const _args:ChangeChatFolderModalArgs = {
+      folders: [...chatContext.folders.values()],
+      currentChat: chat,
+      onSave: (id) => {
+        openDropDown(false)
+        isTabletWidth?appContext.hideBottomSheet:appContext.hideModal()
+        ChatRepository.updateChatProfile({chatFolderId: id}, chat.id)
+        .then(res => {
+          const newChat = {...chat, profiles: [res]}
+          chatContext.editChat(newChat)
+        })
+      }
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args)
+    :appContext.showModal<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args)
+   }
+   
+   const removeChat = () => {
+
+   }
+  
+ 
   const optionsList: IOptionList[] = [
-    {title: 'Сменить папку',  icon: <FolderSvg/>,onClick: ()=>{}},
-    {title: 'Закрепить', icon: <PinMessageSvg/> , onClick: pinChat},
-    {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: ()=>{}}
-  ]
+    chatContext.folders.size>0&&(chatContext.folders.size ===1? !chat.profiles[0].pinned:true)&&{title: 'Сменить папку',  icon: <FolderSvg/>,onClick: changeFolder},
+    {title: chat.profiles[0].pinned?'Открепить':'Закрепить', icon: <PinMessageSvg/> , onClick: pinChat},
+    {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: removeChat}
+  ].filter(Boolean)
 
 
-  const options = <OptionsList options={optionsList} onMouseLeave={()=>{}}/>
+  const options = <OptionsList options={optionsList} onMouseLeave={()=>openDropDown(false)}/>
 
 
 
@@ -81,6 +111,7 @@ export default function ChatItem(props: Props) {
       usePopper
       options={options} 
       active={dropDown} 
+      key={chat.id}
       getRef={(r)=>{dropRef.current = r}}
       onClose={()=>{openDropDown(false)}}/>
 

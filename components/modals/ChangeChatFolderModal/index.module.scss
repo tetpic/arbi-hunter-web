@@ -1,0 +1,16 @@
+@import 'styles/index';
+
+.title {
+  padding: unset !important;
+  margin-bottom: 24px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  column-gap: 8px;
+  margin-top: 24px;
+}
+
+.modaLayout {
+  max-width: 400px;
+}

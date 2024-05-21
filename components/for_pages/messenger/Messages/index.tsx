@@ -40,6 +40,7 @@ import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal
 import { useChatContext } from 'context/chat_state'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 
 interface Props {
   onBackClick: () => void
@@ -50,7 +51,7 @@ export default function Messages(props: Props) {
   const dialog = useChatDialogContext()
   const chatContext = useChatContext()
   const {messages, loading, chat} = dialog
-  const [pastedImages, setPastedImages] = useState<Map<string, File>>(new Map)
+  const [pastedFiles, setPastedFiles] = useState<Map<string, File>>(new Map)
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
@@ -64,10 +65,10 @@ export default function Messages(props: Props) {
   const [replyTo, setReplyTo] = useState<IMessage>(null)
 
   const sendMessage = () => {
-    if (!value.replace(/\s+/g, ' ').trim() && pastedImages.size === 0) {
+    if (!value.replace(/\s+/g, ' ').trim() && pastedFiles.size === 0) {
       return
     }
-    if(pastedImages.size === 0) {
+    if(pastedFiles.size === 0) {
       const clearedMessage = clearObject({message:value, type: MessageType.Text, replyToId: Number(replyTo.id)})
       dialog.sendMessage(clearedMessage)
       .then(_=> {
@@ -76,14 +77,27 @@ export default function Messages(props: Props) {
       })
     }
     else {
-      dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: [...pastedImages.values()]})
-      .then(_=> {
-        const container = document.querySelector('.infinite-scroll-component > div')
-        container.scrollIntoView({behavior: 'smooth', block: 'end'})
-      })
+      const images = [...pastedFiles.values()].filter(file=> file.type.includes('image'))
+      const files = [...pastedFiles.values()].filter(file=> !file.type.includes('image'))
+
+      if(images.length > 0) {
+        dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: images})
+        .then(_=> {
+          const container = document.querySelector('.infinite-scroll-component > div')
+          container.scrollIntoView({behavior: 'smooth', block: 'end'})
+        })
+      }
+      if(files.length > 0) {
+        dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: files})
+        .then(_=> {
+          const container = document.querySelector('.infinite-scroll-component > div')
+          container.scrollIntoView({behavior: 'smooth', block: 'end'})
+        })
+      }
+
     }
     setValue('')
-    setPastedImages(state=> {
+    setPastedFiles(state=> {
       state.clear()
       return new Map(state)
     })
@@ -104,7 +118,7 @@ export default function Messages(props: Props) {
       if (item.kind === 'file') {
         const blob = item.getAsFile()
         if(blob.type === 'image/png' || blob.type === 'image/jpeg' || blob.type === 'image/jpg') {
-          setPastedImages(state => new Map([...state.entries(), [fakeId, blob]]))
+          setPastedFiles(state => new Map([...state.entries(), [fakeId, blob]]))
         }
       }
     }
@@ -114,12 +128,12 @@ export default function Messages(props: Props) {
     const items = e.target.files
     for (let i = 0; i < items.length; i++) {
       const fakeId = uuidv4()
-      setPastedImages(state => new Map([...state.entries(), [fakeId, items[i]]]))
+      setPastedFiles(state => new Map([...state.entries(), [fakeId, items[i]]]))
     }
   }
 
   const removeHandler = (key: string) => {
-    setPastedImages(state=> {
+    setPastedFiles(state=> {
       state.delete(key)
       return new Map(state)
     })
@@ -291,12 +305,12 @@ export default function Messages(props: Props) {
               <MessageFactory 
               multiCheckMode={choosenIds.size>0} 
               onReply={(m)=>setReplyTo(m)}
-               onSet={(m) => setChoosenIds(new Set(choosenIds.add(Number(m.id))))} 
-               key={el.id.toString()+el.chatId?.toString()} 
-               profileId={userContext?.currentProfile?.id} 
-               message={el} 
-               application={chat?.application} 
-               />
+              onSet={(m) => setChoosenIds(new Set(choosenIds.add(Number(m.id))))} 
+              key={el.id.toString()+el.chatId?.toString()} 
+              profileId={userContext?.currentProfile?.id} 
+              message={el} 
+              application={chat?.application} 
+              />
             </div>
           })
           ||
@@ -321,9 +335,9 @@ export default function Messages(props: Props) {
             <Button styleType={['icon', 'backTransparent', 'circle']} onClick={() => setReplyTo(null)}><CrossSvg/></Button>
           </div>
         }
-        {(pastedImages.size>0) && 
+        {(pastedFiles.size>0) && 
         <div className={styles.imagesWrapper}>
-          {[...pastedImages.entries()].map(([key, el]) => {
+          {[...pastedFiles.entries()].filter(([key, el])=> el.type.includes('image')).map(([key, el]) => {
             return <div className={styles.image}>
               {el.type.includes('image') &&
                 <img src={URL.createObjectURL(el)}/>
@@ -339,6 +353,19 @@ export default function Messages(props: Props) {
               </Button> 
             </div>
           })}
+          {[...pastedFiles.entries()].filter(([key, el])=> !el.type.includes('image')).map(([key, el]) => {
+            return <div className={styles.file}>
+              <div className={styles.fileContent}>
+                <div className={styles.fileImageWrapper}>
+                  <DocumentSheetSvg/>
+                </div>
+                <P styleType={['small', 'w500']} useThemeColor >{el.name}</P>
+              <Button onClick={()=>removeHandler(key)} className={styles.removeImage}>
+                <CloseTransparentSvg/>
+              </Button> 
+              </div>
+            </div>
+          })}
         </div>
         }
         {choosenIds.size > 0 &&
@@ -346,8 +373,8 @@ export default function Messages(props: Props) {
             {!isTabletWidth &&
               <P styleType={['greyLight', 'w600', 'medium']} useThemeColor>Выбрано сообщений: {choosenIds.size}</P>
             }
-            <Button styleType={['icon','backTransparent', 'svg24']} onClick={deleteHandler}><TrashBasketAltSvg color={colors.blue}/></Button>
-            <Button styleType={['icon','backTransparent', 'svg24']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
+            <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={deleteHandler}><TrashBasketAltSvg color={colors.blue}/></Button>
+            <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
           </div>
         }
         {dialog.recorder?.current?.state !== 'recording' && choosenIds.size === 0 &&
@@ -369,7 +396,7 @@ export default function Messages(props: Props) {
               <RecordSvg/>
             </>
             ||
-            (value.length > 0 || pastedImages.size > 0) &&
+            (value.length > 0 || pastedFiles.size > 0) &&
             <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
             ||
             <img src={'/icons/microphone.svg'} alt='microphone icon'/>

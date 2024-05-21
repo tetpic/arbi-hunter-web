@@ -55,7 +55,7 @@ export default function Chats(props: Props) {
       </div>
       <div className={styles.chats}>
         {
-          !chatContext.loading && props.chats.length > 0&& props.chats.map((chat)=> {
+          !chatContext.loading && props.chats.length > 0&& [...props.chats.filter(el => el.profiles[0].pinned), ... props.chats.filter(el => !el.profiles[0].pinned)].map((chat)=> {
             return (
               <ChatItem chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
             )

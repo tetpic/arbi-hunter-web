@@ -1,0 +1,30 @@
+@import 'styles/index';
+
+.root {
+  padding-right:8px;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.fileImageWrapper {
+  padding: 8px;
+  border-radius: 12px;
+  background-color: $blue;
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  p {
+    max-width: 280px;
+    word-break: break-all;
+    @include lineClamp(4);
+  }
+}

@@ -1,0 +1,35 @@
+@import 'styles/index';
+
+.imagesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 8px;
+ 
+  img {
+    border-radius: 16px;
+  }
+}
+
+.image {
+  width: 100%;
+  position: relative;
+  max-height: 50vh;
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &_half {
+    width: 48%;
+  }
+
+  img {
+    width: 100%;
+    // height: 100%;
+    object-fit: contain;
+  }
+}

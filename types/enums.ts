@@ -56,6 +56,7 @@ export enum ModalType {
   ForwardMessageModal = 'forwardMessageModal',
   RemoveMessageConfirmModal = 'removeMessageConfirmModal',
   RemoveCvVcConfirmModal = 'removeCvVcConfirmModal',
+  ChangeChatFolderModal = 'changeChatFolderModal',
 }
 
 export enum AppTheme {

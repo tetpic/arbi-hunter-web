@@ -4,9 +4,7 @@ import { IMessage } from 'data/interfaces/IChat'
 import { ApplicationStatus, MessageType, ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
-import Image from 'next/image'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
-import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import AudioNode from './AudioNode'
 import { useAppContext } from 'context/state'
@@ -14,13 +12,12 @@ import { IApplication } from 'data/interfaces/IApplication'
 import Spacer from 'components/ui/Spacer'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { ImageViewerModalProps } from 'components/modals/ImageViewerModal'
 import { ApplicationEmployeeNode, ApplicationHirerNode } from './ApplicationNode'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
 import OptionsDropDown from '@/components/ui/OptionsDropDown'
 import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
-import { useRef } from 'react'
+import {  useRef } from 'react'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import { ForwardMessageModalArgs } from '@/components/modals/ForwardMessageModal'
 import { useChatContext } from 'context/chat_state'
@@ -34,6 +31,8 @@ import DoubleSvg from '@/components/svg/DoubleSvg'
 import SetMessageSvg from '@/components/svg/SetMessageSvg'
 import ShareMessageSvg from '@/components/svg/ShareMessageSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
+import ImageNode from './ImageNode'
+import FileNode from './FileNode'
 
 interface Props {
   profileId?: number
@@ -60,9 +59,9 @@ export default function MessageFactory(props: Props) {
   const msg = props.message.forwarded?props.message.forwarded:props.message
   const timeout = useRef<ReturnType<typeof setInterval>>()
   
+  
   const collocutor = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?'me':'other'
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
-
 
   const openForwardModal = () => {
     appContext.showModal<ForwardMessageModalArgs>(ModalType.ForwardMessageModal, {
@@ -119,7 +118,7 @@ export default function MessageFactory(props: Props) {
   const leftOptions : IOptionList[] = [allOptions.forward, allOptions.setPinned]
 
   const options = <OptionsList options={Object.values(allOptions)} 
-  onMouseLeave={()=>{}}/>
+  onMouseLeave={()=>openDropDown(false)}/>
 
   const optionsDropDown = (
     <OptionsDropDown 
@@ -134,7 +133,7 @@ export default function MessageFactory(props: Props) {
 
   const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {    
     e.preventDefault()
-    e.stopPropagation()
+    
     openDropDown(true)
   }
 
@@ -173,29 +172,60 @@ export default function MessageFactory(props: Props) {
   )
 
   const assetMessage = (
-    <div key={props.message.id} ref={itemRef} onContextMenu={!isPhoneWidth&&onRightClick} className={classNames(side, styles.asset, msg?.assets?.length === 1&&!msg.message&&styles.single)}>
-      <div className={styles.imagesWrapper}>
+    <div 
+    key={props.message.id} 
+    ref={itemRef} 
+    onContextMenu={!isPhoneWidth&&onRightClick} 
+    className={classNames(
+      side, 
+      styles.asset, 
+      ((msg?.assets?.length === 1 || msg?.pastedImages?.length === 1)
+      &&(msg?.assets?.[0].mimeType.includes('image')||msg?.pastedImages?.[0].type.includes('image')))
+      &&!msg.message&&styles.single
+    )}>
+      {((msg.pastedImages && msg.pastedImages.length>0 && msg.pastedImages[0].type.includes('image'))||
+      (msg.assets && msg.assets.length>0 && msg.assets[0].mimeType.includes('image')))&&
+        <ImageNode message={msg}/>
+        ||
+        <FileNode message={msg}/>
+      }
+  
+      {/* <div className={styles.imagesWrapper}>
         {msg.pastedImages && msg.pastedImages.length>0&&
           msg.pastedImages.map(el=>{
             return <div className={classNames(styles.image, msg.pastedImages.length>1&&styles.image_half)}>
+              {el.type === 'BINARY' &&
+              <>
+                 <Image alt='image' src={folderImage} width={50} height={50}  />
+                 <p>{el.name}</p>
+              </>
+              ||
               <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} />
+              }
               <Spinner className={styles.spinner} size={44} color={colors.blue}/>
             </div>
           })
         }
       {msg.assets&&msg.assets.length>0&&msg.assets.map(image=> {
         return <div className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
-          <Image 
-          unoptimized
-          onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromSource(image.source)})} 
-          src={ImageHelper.urlFromSource(image.source)} 
-          alt={'asset'} 
-          width={msg.assets.length>1?200:400} 
-          height={msg.assets.length>1?200:400} 
-          style={{width: '100%', objectFit: 'cover'}} />
+          {image.type === 'BINARY' &&
+            <>
+              <Image alt='image' src={folderImage} width={50} height={50}  />
+              <p className={styles.fileName}>{image.name}</p>
+            </>
+            ||
+            <Image 
+            unoptimized
+            onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromSource(image.source)})} 
+            src={ImageHelper.urlFromSource(image.source)} 
+            alt={'asset'} 
+            width={msg.assets.length>1?200:400} 
+            height={msg.assets.length>1?200:400} 
+            style={{width: '100%', objectFit: 'cover'}} />
+          }
         </div>
       })}
-      </div>
+      </div> */}
       <p className={styles.message}>
         {msg.message}
       </p>
