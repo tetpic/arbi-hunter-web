@@ -36,8 +36,7 @@ export default function ApplicationModal(props: Props) {
   const {t} = useTranslation()
   const appContex = useAppContext()
   const modalArguments:IApplicationModalProps = props.isBottomSheet?appContex.bottomSheetArguments:appContex.modalArguments
-  console.log(modalArguments)
-  
+
   const [showTextField, setShowTextField] = useState<boolean>(false)
 
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
