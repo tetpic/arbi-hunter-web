@@ -71,6 +71,7 @@ export default interface IChat extends TimeStamp {
   pinned: boolean
   profileId: number
   participantId: number
+  employeeCanWrite?: boolean
   lastMessageAt: string
   profile: IUserProfile
   profiles: IChatProfile[]

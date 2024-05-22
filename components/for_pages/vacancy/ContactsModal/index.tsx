@@ -11,6 +11,9 @@ import MailConvertSvg from '@/components/svg/MailConvertSvg'
 import PhoneSvg from '@/components/svg/PhoneSvg'
 import TelegramSvg from '@/components/svg/TelegramSvg'
 import useTranslation from 'next-translate/useTranslation'
+import { ApplicationStatus, ProposalRequestType } from 'types/enums'
+import ChatRepository from 'data/repositories/ChatRepository'
+import { useRouter } from 'next/router'
 
 interface Props {
   vacancy: IVacancy
@@ -22,6 +25,7 @@ export default function ContactsModal(props: Props) {
   const {t} = useTranslation()
   const ref = useRef()
   const [active, setActive] = useDetectOutsideClick(ref, props.isActive)
+  const router = useRouter()
 
   const contacts = [
     {
@@ -41,6 +45,22 @@ export default function ContactsModal(props: Props) {
       icon: <TelegramSvg/>
     }
   ].filter(el => Boolean(el.text))
+
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    debugger
+    const activeChat = props.vacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
+    if(activeChat[0]){
+      ChatRepository.getChatByContactId(props.vacancy.profile.id, {proposalId: props.vacancy.proposalsToCurrentUser[0].id})
+      .then(res=>{
+        debugger
+        if(res) {
+          router.push('/messenger?chat=' + res.id)
+        }
+      })
+    }
+  }
 
   
   useEffect(()=>{
@@ -71,6 +91,9 @@ export default function ContactsModal(props: Props) {
         </P>
       )
     })}    
-    <Button styleType={['gradient', 'wide']}>{t('vacancy_page_writeInChat')}</Button>
+    {
+      props.vacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied).length>0&&
+       <Button onClick={openChat} styleType={['gradient', 'wide']}>{t('vacancy_page_writeInChat')}</Button>
+    }
   </div>)
 }

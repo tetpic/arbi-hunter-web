@@ -99,7 +99,7 @@ export default function MessageFactory(props: Props) {
   const setPinned = () => {
     ChatRepository.setMessagePinned(Number(props.message.id), !props.message.pinned)
     .then(res => {
-      debugger
+      
     })
     // alert('set pinned')
     openDropDown(false)

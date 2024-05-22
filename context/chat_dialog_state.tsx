@@ -82,7 +82,7 @@ export function ChatDialogWrapper(props: Props) {
   const processLoadedMessages = (data: IMessage[], total: number | null) => {
     setTotalMessages(state=> state>0?state:total)
     setMessages(state => {
-      data.forEach(el=> {
+      data?.forEach(el=> {
         state.set(el.id, el)
       })
       return new Map(state)
@@ -104,7 +104,6 @@ export function ChatDialogWrapper(props: Props) {
 
   const refreshMessage = (id: number, message: IMessage) => {
     setMessages(state=> {
-      
       const msg = state.get(id)
       state.set(id, message)
       return new Map(state)
@@ -122,13 +121,17 @@ export function ChatDialogWrapper(props: Props) {
         .then(res=> res.data)
         .catch(err=> err)
       ]) 
-      debugger
-      setPinnedState(state => {
-        (pinned as IMessage[]).forEach(el => {
-          state.set(Number(el.id), el)
-        })
-        return new Map(state)
-      })   
+      
+        setPinnedState(state => {
+          state.clear()
+          if(pinned&&pinned.length > 0) {
+            (pinned as IMessage[]).forEach(el => {            
+              state.set(Number(el.id), el)
+            })
+          }
+          return new Map(state)
+        })   
+    
       processLoadedMessages(data.data, data.total)
     }
     setLoading(false)

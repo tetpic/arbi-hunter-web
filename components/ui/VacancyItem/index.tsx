@@ -26,7 +26,7 @@ import { colors } from 'styles/variables'
 
 interface Props {
   vacancy?: IVacancy
-  onChangeItem?: () => void
+  onChangeItem?: (v?: IVacancy) => void
   smallCard?: boolean
 }
 
@@ -43,7 +43,13 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {cvs: cvContext.savedCvs.filter(el => el.published), vacancy: vacancy})
+    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {
+      cvs: cvContext.savedCvs.filter(el => el.published), 
+      vacancy: vacancy,
+      onSet: () => {
+        onChangeItem(vacancy)
+      }
+    })
   }
 
   const openChat = (e: React.MouseEvent) => {
@@ -69,14 +75,14 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     if(!vacancy.isSavedByCurrentProfile) {
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {
-        onChangeItem&&onChangeItem()
+        onChangeItem&&onChangeItem(vacancy)
       })
       .catch(_=>{})
     }
     else {
       VacancyRepository.removeVcFromSaved(vacancy.id, {signal})
       .then(_=> {
-        onChangeItem&&onChangeItem()
+        onChangeItem&&onChangeItem(vacancy)
       })
       .catch(_=>{})
     }

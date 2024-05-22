@@ -39,6 +39,7 @@ interface IState {
   isLoading: boolean
   searchString: string
   setSearchString: Dispatch<SetStateAction<string>>
+  refreshVacancyInFound: (v: IVacancy) => void
 }
 
 
@@ -217,6 +218,17 @@ export function VacancyWrapper(props: Props) {
     return true
   }
 
+  const refreshVacancyInFound = (v: IVacancy) => {
+    VacancyRepository.getVacancyById(v.id)
+    .then(res => {
+      setFoundVacancies(state => {
+        state.set(res.id, res)
+        return new Map(state)
+      })
+    })
+
+  }
+
   const setCurrentVacancy = (data: {id?: number, vacancy?: IVacancy}) => {
     if(data.id) {
       VacancyRepository.getVacancyById(data.id)
@@ -234,6 +246,7 @@ export function VacancyWrapper(props: Props) {
     archiveVacancies,
     draftVacancies,
     foundVacancies,
+    refreshVacancyInFound,
     findVacancies,
     setVacancies,
     addToBlackList,

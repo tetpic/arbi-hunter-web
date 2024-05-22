@@ -164,7 +164,7 @@ export default function Messages(props: Props) {
       forwardedMessagesList: [...choosenIds.values()],
       forwardedId: Number(dialog.chat.id),
       onSend: (chatId: number) => {
-        debugger
+        
         appContext.hideModal()
         sendMultiMessages(chatId)
       }
@@ -279,7 +279,7 @@ export default function Messages(props: Props) {
           </div>
           <div className={styles.pinnedMessagesWrapper}>
 
-          {[...dialog.pinned.values()].map(el => {
+          {dialog.pinned &&[...dialog.pinned?.values()].map(el => {
             return <div className={styles.pinnedMessage}>
               <P styleType={['greyLight', 'w500','small']}>{
                 el.type === MessageType.Text&&el.message
@@ -361,7 +361,8 @@ export default function Messages(props: Props) {
         <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
       </Link>
       }
-      <div className={styles.newMessage} onPaste={onPasteHandler}>
+      <div className={classNames(styles.newMessage, userContext.currentProfile.profileType === ProfileType.Employee
+            && dialog.chat?.employeeCanWrite === false && styles.newMessage_disabled)} onPaste={onPasteHandler}>
         {replyTo &&
           <div className={styles.replyMessage}>
             <div className={styles.replyMessageContent}>
@@ -413,13 +414,22 @@ export default function Messages(props: Props) {
             <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
           </div>
         }
-        {dialog.recorder?.current?.state !== 'recording' && choosenIds.size === 0 &&
+        {dialog.recorder?.current?.state !== 'recording' && choosenIds.size === 0 && 
         <>
         <label>
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
-        <input value={value} onChange={(e)=>{setValue(e.currentTarget.value)}} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder={t('chat_enterMessage')} />
+        <input value={value} onChange={(e)=>{
+          if(userContext.currentProfile.profileType === ProfileType.Employee
+            && dialog.chat?.employeeCanWrite === false
+          ) {
+            return
+          }
+          else {
+            setValue(e.currentTarget.value)
+          }
+          }} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder={t('chat_enterMessage')} />
         </>
         }
         { choosenIds.size === 0 &&     

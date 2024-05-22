@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useVacancyContext } from 'context/vacancy_state'
 import { useEffect, useState } from 'react'
 import Spinner from 'components/ui/Spinner'
-import {  AppTheme, ApplicationStatus, InterfaceLanguage, ModalType, Preset, ProposalRequestType } from 'types/enums'
+import {  AppTheme, ApplicationStatus, InterfaceLanguage, ModalType, ModerationStatusType, Preset, ProposalRequestType } from 'types/enums'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { IApplicationModalProps } from 'components/modals/ApplicationModal'
@@ -47,9 +47,9 @@ export default function VacancyPage(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const personalContext = usePersonalContext()
   const {isTabletWidth} = appContext.size
-  const userContext = useUserContext()
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
   const router = useRouter()
@@ -57,11 +57,24 @@ export default function VacancyPage(props: Props) {
   const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
   const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
+  // const freeToApplyCvs = currentVacancy?.applicationsByCurrentUser?.filter(el => !cvContext.savedCvs?.map(c => c.id).includes(el.cvId))
+  const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
+
+  // useEffect(()=>{
+  //   console.log('free cvs ', freeToApplyCvs)
+    
+  // }, [freeToApplyCvs])
 
 
 
   const makeResponse = () => {
-    const args:  IApplicationModalProps={vacancy: currentVacancy, cvs: cvContext.savedCvs}
+    const args:  IApplicationModalProps={
+      vacancy: currentVacancy, 
+      cvs: cvContext.savedCvs,
+      onSet: () => {
+        vacancyContext.setCurrentVacancy({id: props.id})  
+      }
+    }
     isTabletWidth
       ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args)
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
@@ -81,11 +94,12 @@ export default function VacancyPage(props: Props) {
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-
+    debugger
     const activeChat = currentVacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
     if(activeChat[0]){
       ChatRepository.getChatByContactId(currentVacancy.profile.id, {proposalId: lastProposal.id})
       .then(res=>{
+        debugger
         if(res) {
           router.push('/messenger?chat=' + res.id)
         }
@@ -104,7 +118,6 @@ export default function VacancyPage(props: Props) {
       .then(res=> {
         if(res?.data.length >  1) {
           const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 3).filter(el => el.id !== currentVacancy.id)
-          
           setOtherCompanyVacancies(randomItems)
         }
       })
@@ -224,15 +237,25 @@ export default function VacancyPage(props: Props) {
 
       {!isMyVacancy &&
         <div className={styles.buttonsWrapper}>
-          {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
+          {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection && 
+          <>
             <Button 
             styleType={['gradient']}
             onClick={openChat}
             >
               {t('goToChat')}
             </Button>
+          </>
           }
-          {!lastProposal &&
+           {freeToApplyCvs.length > 0 &&
+              <Button
+              styleType={['gradient']}
+              onClick={makeResponse}
+              >
+              Откликнуться с другого резюме
+            </Button>
+            }
+          {(!lastProposal) && currentVacancy.applicationsByCurrentUser.length===0 && freeToApplyCvs.length > 0 &&
             <Button 
             styleType={['gradient', 'phoneWide']}
             onClick={makeResponse}
@@ -242,14 +265,16 @@ export default function VacancyPage(props: Props) {
           }
           
           {/* <Button styleType={['gradient' ]} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button> */}
-          {currentVacancy.showContactName &&
+          {currentVacancy.showContactName && !lastProposal &&
           <div className={styles.contactsButton}>
+        
             <Button 
             styleType={['black', 'borderBlue']} 
             altStyleType={['whitePurple', 'borderBlue']}
             onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
               {t('vacancy_page_showContacts')}
             </Button>
+          
             {currentVacancy.showContactName && isShowContacts[0] &&
               <ContactsModal 
               key={'contacts1'}

@@ -29,12 +29,15 @@ interface Props {
 export interface IApplicationModalProps {
   vacancy: IVacancy,
   cvs: ICV[]
+  onSet?: () => void
 }
 
 export default function ApplicationModal(props: Props) {
   const {t} = useTranslation()
   const appContex = useAppContext()
   const modalArguments:IApplicationModalProps = props.isBottomSheet?appContex.bottomSheetArguments:appContex.modalArguments
+  console.log(modalArguments)
+  
   const [showTextField, setShowTextField] = useState<boolean>(false)
 
   const submit = (data: {vacancyId: number, cvId: number, coverLetter: string}) => {
@@ -44,6 +47,7 @@ export default function ApplicationModal(props: Props) {
     }
     ApplicationRepository.sendApplication(data as IApplication)
     .then(_=> {
+      modalArguments.onSet()
       appContex.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'cv', vacancy: modalArguments.vacancy})
     })
   }
@@ -65,7 +69,7 @@ export default function ApplicationModal(props: Props) {
         <Form>
           {modalArguments?.cvs?.length > 0 &&
             <RadioListField 
-            options={modalArguments.cvs.filter(f=> f.moderationStatus === 'approved'&&f.published===true).map(cv => {return {value: cv.id, label: cv.categories[0].name }})} 
+            options={modalArguments.cvs.filter(f=> f.moderationStatus === 'approved'&&f.published===true&&!modalArguments.vacancy.applicationsByCurrentUser.find(ap => ap.cvId === f.id)).map(cv => {return {value: cv.id, label: cv.categories[0].name }})} 
             name={'cvId'}/>
           }
           {showTextField && 
