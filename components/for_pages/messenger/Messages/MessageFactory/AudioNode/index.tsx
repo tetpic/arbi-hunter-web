@@ -77,19 +77,15 @@ useEffect(()=>{
 function getDuration(event: any) {
   event.target.currentTime = 0
   event.target.removeEventListener('timeupdate', getDuration)
-  console.log(event.target.duration)
   setDuration(event.target.duration)
 }
 
- useEffect(()=>{
-  console.log(audio.current.duration)
+ useEffect(()=>{ 
   audio.current.onloadedmetadata = () => {
     if(!Number.isInteger(audio.current.duration)) {
       audio.current.currentTime = 1e101
       audio.current.addEventListener('timeupdate', getDuration)
-    }
-    console.log('meta', audio.current.duration)
-    
+    }    
   }
   
  }, [audio.current.duration])
