@@ -3,7 +3,6 @@ import styles from './index.module.scss'
 import UserPic from 'components/ui/UserPic'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
-import InformationSvg from 'components/svg/InformationSvg'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
@@ -60,7 +59,6 @@ export default function Messages(props: Props) {
   const [cv, setCv] = useState<ICV>(null)
   const router = useRouter()
   const [choosenIds, setChoosenIds] = useState<Set<number>>(new Set)
-
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
   const [replyTo, setReplyTo] = useState<IMessage>(null)
@@ -264,13 +262,13 @@ export default function Messages(props: Props) {
         </div>
       }
       {(dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())&&
-        <div className={styles.invite}>
-          <p className={styles.invite__title}>{isHirer?t('chat_vacancyApplication'):t('chat_vacancyInvite')}</p>
+        <Link  
+        href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())} 
+        className={styles.invite}
+        >
+          <p className={styles.invite__title}>{t('chat_chatByVacancy')}</p>
           <P styleType={['small', 'w500']} useThemeColor className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</P>
-          <Link href={'/vacancy/' + (dialog.chat?.proposal?.vacancy?.id.toString()||dialog.chat?.application?.vacancy?.id.toString())}  className={styles.invite__info}>
-            <InformationSvg color={isLightTheme&&colors.black}  />
-          </Link>
-        </div>
+        </Link>
       }
       {dialog.pinned.size>0 &&
         <div className={styles.pinnedMessages}>

@@ -25,7 +25,7 @@ import { RemoveMessageConfirmModalArgs } from '@/components/modals/RemoveMessage
 import { useChatDialogContext } from 'context/chat_dialog_state'
 import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
 import P from '@/components/ui/P'
-import { getUserName } from 'utils/helpers'
+import { copyToClipboard, getUserName } from 'utils/helpers'
 import AnswerMessageSvg from '@/components/svg/AnswerMessageSvg'
 import DoubleSvg from '@/components/svg/DoubleSvg'
 import SetMessageSvg from '@/components/svg/SetMessageSvg'
@@ -110,10 +110,10 @@ export default function MessageFactory(props: Props) {
     openDropDown(false)
   }
 
-  const allOptions: {[key: string]: IOptionList} = {
+  const allOptions: {[key: string]: IOptionList|null} = {
     reply: {title: 'Ответить', icon: <AnswerMessageSvg/>, onClick: replyHandler},
-    copy: {title: 'Скопировать', icon: <DoubleSvg/> ,onClick: ()=>{}},
-    setPinned: {title: 'Закрепить', icon: <PinMessageSvg/>, onClick: setPinned},
+    copy: {title: 'Скопировать', icon: <DoubleSvg/> ,onClick: ()=>copyToClipboard(props.message.message)},
+    setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: 'Закрепить', icon: <PinMessageSvg/>, onClick: setPinned},
     forward: {title: 'Переслать', icon: <ShareMessageSvg/>, onClick: openForwardModal},
     choose: {title: 'Выбрать', icon: <SetMessageSvg/>, onClick: onSet},
     remove: {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
@@ -122,7 +122,7 @@ export default function MessageFactory(props: Props) {
   const rightOptions: IOptionList[] = [allOptions.remove, allOptions.forward, allOptions.setPinned]
   const leftOptions : IOptionList[] = [allOptions.forward, allOptions.setPinned]
 
-  const options = <OptionsList options={Object.values(allOptions)} 
+  const options = <OptionsList options={Object.values(allOptions).filter(Boolean)} 
   onMouseLeave={()=>openDropDown(false)}/>
 
   const optionsDropDown = (
@@ -138,7 +138,6 @@ export default function MessageFactory(props: Props) {
 
   const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {    
     e.preventDefault()
-    
     openDropDown(true)
   }
 

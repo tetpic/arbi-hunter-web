@@ -49,7 +49,7 @@ export default function Chats(props: Props) {
 
   return (
     <div className={styles.root} ref={chatsRef}> 
-      <ChatSearchBar/>
+      <ChatSearchBar onSearch={(s) => chatContext.setSearch(s)}/>
       <div className={styles.navWrapper}>
         <ItemNavigation bottomStringClass={styles.navBottom} pClassName={styles.navP} className={styles.nav}  activeItem={page} items={itemsNav} onClick={pager}/>
       </div>

@@ -69,13 +69,13 @@ export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
 export const TranslatePatternType = (p: ProposalRequestType) => {
   switch (p) {
     case ProposalRequestType.InfoRequest:
-      return 'Запрос информации'
+      return 'Приглашение'
     case ProposalRequestType.Interview:
-      return 'Собеседование'
+      return 'Пройти тест'
     case ProposalRequestType.Rejection:
       return 'Отказ'
     case ProposalRequestType.Consider:
-      return 'Рассмотрение'
+      return 'Подумать'
 
   }
 }

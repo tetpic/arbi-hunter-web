@@ -35,6 +35,7 @@ interface IState {
   }[]) => void
   editChat: (data: IChat) => void
   removeChat: (chatId: number) => void
+  setSearch: (search: string) => void
   
 }
 
@@ -71,6 +72,7 @@ export function ChatWrapper(props: Props) {
   const [loading, setLoading] = useState(true)
   const [foldersActive, setFoldersActiveState] = useState<boolean>(false)
   const [folders, setFolders] = useState<Map<number, any>>(new Map)
+  const search = useRef<string>('')
   const [component, setComponentState] = useState<Map<ChatComponent, boolean>>(new Map([
     [ChatComponent.Chat, true], 
     [ChatComponent.Dialog, true], 
@@ -173,6 +175,17 @@ export function ChatWrapper(props: Props) {
       return new Map(state)
     })
     return true
+  }
+
+  const setSearch = (search?: string) => {
+    ChatRepository.getChatList({search, inactive: false})
+    .then(res=>setChats(state => {
+      state.clear()
+      res.data.forEach(el=> {
+        state.set(el.id, el)
+      })
+      return new Map(state)
+    }))
   }
 
   const setChatsFromFolder = async (chatName: string) => {
@@ -330,7 +343,8 @@ export function ChatWrapper(props: Props) {
     component,
     setComponent,
     editChat,
-    removeChat
+    removeChat,
+    setSearch
   }
 
   return (

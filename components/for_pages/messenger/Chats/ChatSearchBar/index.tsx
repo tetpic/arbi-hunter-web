@@ -20,6 +20,7 @@ import PlusSvg from '@/components/svg/PlusSvg'
 import P from '@/components/ui/P'
 
 interface Props {
+  onSearch: (value: string) => void
 }
 
 export default function ChatSearchBar(props: Props) {
@@ -29,6 +30,7 @@ export default function ChatSearchBar(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   const {isTabletWidth} = useResize()
   const chatContext = useChatContext()
+  const [inputValue, setInputValueState] = useState<string>()
 
 
   const openFiltersModal = () => {
@@ -72,8 +74,10 @@ export default function ChatSearchBar(props: Props) {
         </>
         ||
         <>
+        <Button styleType={['svg24']} onClick={()=>props.onSearch(inputValue!)}>
           <LoupeSvg className={styles.loupe}/>
-          <input type="text" onFocus={()=>setActive(true)}  onBlur={()=>setActive(false)} placeholder={t('chat_searchPlaceholder')} />
+        </Button>
+          <input type="text" onFocus={()=>setActive(true)} value={inputValue} onChange={(e)=>setInputValueState(e.target.value)} onBlur={()=>setActive(false)} placeholder={t('chat_searchPlaceholder')} />
         </>
         }
       </div>

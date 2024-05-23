@@ -47,7 +47,7 @@ export default function ApplicationSuccessModal(props: Props) {
       onClick={props.onClose} 
       className={styles.blueLink} 
       href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [args.type === 'vc'?args.cv?.categories?.[0]?.baseId:args.vacancy?.categories?.[0]?.baseId]})}}}>
-        {args.type==='cv'?t('application_watchRelevantVacancies'):t('application_watchRelevantCvs')}
+        {args.type==='cv'?t('application_watchRelevantCvs'):t('application_watchRelevantVacancies')}
       </Link>
     </div>
   )

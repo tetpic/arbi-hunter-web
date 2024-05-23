@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 import IChat, { IChatFolder, IChatProfile, IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
+import { IUserProfile } from 'data/interfaces/IUser'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
@@ -68,10 +69,13 @@ export default class ChatRepository {
     return res
   }
 
-  static async getContactList(): Promise<any|null> {
+  static async getContactList(search?: string): Promise<IPagination<IUserProfile>|null> {
     const res = await request({
       method: 'get',
       url: '/api/chat/contacts',
+      data: {
+        search
+      }
     })
     if(res.err) {
       

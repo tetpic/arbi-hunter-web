@@ -30,7 +30,7 @@ enum SettingsNavigation {
   Patterns = 'patterns'
 }
 
-function translatePersonalNavigation(p: SettingsNavigation, t: Translate) {
+function translatePersonalNavigation(p: SettingsNavigation, t: Translate, profileType: ProfileType) {
   switch(p) {
     case SettingsNavigation.Personal:
       return t('settings_personal')
@@ -38,7 +38,7 @@ function translatePersonalNavigation(p: SettingsNavigation, t: Translate) {
       return t('settings_notification')
     case SettingsNavigation.BlackListEmployee:
     case SettingsNavigation.BlackListHirer:
-      return t('settings_blackList')
+      return profileType === ProfileType.Hirer?t('settings_blackListHirer'):t('settings_blackListEmployee')
     case SettingsNavigation.Access:
       return t('settings_access')
     case SettingsNavigation.SiteSettings:
@@ -72,7 +72,7 @@ export default function SettingsPage(props: Props) {
     SettingsNavigation.SiteSettings,
   ]
 
-  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems).map(el=> {return {name: translatePersonalNavigation(el, t), type: el}})
+  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems).map(el=> {return {name: translatePersonalNavigation(el, t, userContext.currentProfile.profileType), type: el}})
 
   const getComponent = () => {
     switch(activeItem) {

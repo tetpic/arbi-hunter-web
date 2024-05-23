@@ -18,7 +18,7 @@ import { IPattern } from 'data/interfaces/IPattern'
 import { IProposal } from 'data/interfaces/IProposal'
 import { Form,  FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ApplicationBSSelectType, ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
+import { ApplicationBSSelectType, ApplicationStatus, ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 
 interface Props {
@@ -46,8 +46,7 @@ export default function ProposalTextModal(props: Props) {
     
     const dataToSend:IProposal = {
       ...data,
-      coverLetter: pattern.template,
-      type: pattern.type
+      coverLetter: data.coverLetter,    
     }
     proposalRepository.createProposal(dataToSend)
     .then(res=>{
@@ -68,9 +67,10 @@ export default function ProposalTextModal(props: Props) {
 
   const initialValues = {
     type: modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview,
+    status:  modalArguments.type === ApplicationBSSelectType.Reject?ApplicationStatus.Rejected:ApplicationStatus.Accepted,
     cvId: cv?.id||application?.cvId,
     vacancyId: vcId||application?.vacancyId,
-    coverLetter: pattern?pattern.template:'',
+    coverLetter: '',
     applicationId: application?.id||null
   }
 
@@ -80,15 +80,15 @@ export default function ProposalTextModal(props: Props) {
   })
 
 
-  useEffect(()=>{
-    if(patternContext.patterns) {
-      const initialPattern = [...patternContext.patterns.values()].find(el=> {
-        return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview)
-      })
-      setPattern(initialPattern)
-      formik.setFieldValue('coverLetter', initialPattern?.template||'')
-    }
-  }, [patternContext.patterns])
+  // useEffect(()=>{
+  //   if(patternContext.patterns) {
+  //     const initialPattern = [...patternContext.patterns.values()].find(el=> {
+  //       return el.type === (modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview)
+  //     })
+  //     setPattern(initialPattern)
+  //     formik.setFieldValue('coverLetter', initialPattern?.template||'')
+  //   }
+  // }, [patternContext.patterns])
 
   useEffect(()=>{
     patternContext.setPatterns()

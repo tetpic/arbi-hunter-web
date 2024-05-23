@@ -21,6 +21,7 @@ interface Props {
 
 export  function ApplicationHirerNode (props: Props) {
   const appContext = useAppContext()
+  const dialog = useChatDialogContext()
   const {t} = useTranslation()
 
   return (<>
@@ -44,7 +45,15 @@ export  function ApplicationHirerNode (props: Props) {
     styleType={['grey']}
     altStyleType={['white']}
     onClick={()=>{
-      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {type: ApplicationBSSelectType.Reject, application: props.application, cv: props.application.cv, vcId: props.application.vacancyId})
+      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {
+        type: ApplicationBSSelectType.Reject, 
+        application: props.application, 
+        cv: props.application.cv, 
+        vcId: props.application.vacancyId,
+        onSubmit: () => {
+          dialog.refreshMessage(Number(props.message.id), {...props.message, application: undefined})
+        }
+      })
     }} 
     >
       {t('cv_item_reject')}
