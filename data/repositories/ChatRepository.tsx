@@ -10,8 +10,7 @@ export default class ChatRepository {
       url: '/api/chat/dialog',
       data: {
         ...option,
-        sort: 'lastMessageAt,DESC',
-        limit: 9000
+        sort: 'lastMessageAt,DESC',       
       },
       config
     })

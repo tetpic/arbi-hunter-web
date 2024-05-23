@@ -152,6 +152,17 @@
       row-gap: 16px;
     }
   }
+
+  .videotWrapper {
+    @include mq($TabletWidth, max) {
+      
+      max-height: 600px;
+      div {
+        width: 100% !important;
+        height: 100%;
+      }
+    }
+  }
 }
 
 .banner {

@@ -249,7 +249,7 @@ export default function EditableBlock(props: Props) {
       style={{
         gridTemplateAreas: `"${(props.block.layout as number[][]).map(el => el.map(el=> el).join(' ')).join('" "')}"`, 
       }}>
-        <div style={{gridArea: 'video'}}>
+        <div style={{gridArea: 'video'}} className={styles.videotWrapper}>
           <ReactPlayer width={'fit-content'} height={'100%'} url={ImageHelper.urlFromSource(props.assets[0].source)} controls/>
         </div>
         <HtmlText text={props.block.text} style={{gridArea: 'text'}}/>

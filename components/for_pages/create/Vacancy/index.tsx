@@ -250,18 +250,56 @@ export default function Vacancy(props: Props) {
         //   return false
         // }
       break
-      case 7: 
-        if(formik.values.description.trim().length < 1) {
-          setErr('description', t('create_vacancy_writeDetails'))
-          return false
-        } 
+      case 7: {
+        debugger
+        const vals = [
+          formik.values.showContactName && formik.values.contactName.trim().length === 0,
+          formik.values.showEmail && formik.values.email.trim().length === 0,
+          formik.values.showTelegramNickname && formik.values.telegramNickname.trim().length === 0,
+          formik.values.showPhone && formik.values.phone.trim().length === 0
+        ]
+        if(vals.filter(Boolean).length > 0) {
+          vals[0]&&setErr('contactName', 'Заполните поле')
+          vals[1]&&setErr('email', 'Заполните поле')
+          vals[2]&&setErr('telegramNickname', 'Заполните поле')
+          vals[3]&&setErr('phone', 'Заполните поле')     
+        }
         else {
           setProgress(pageNumber||progress+1)
-          return false
+          return true
         }
+        // if(formik.values.showContactName && formik.values.contactName.trim().length === 0) {
+        //   setErr('contactName')
+        // }
+        // if (formik.values.showEmail && formik.values.email.trim().length === 0) {
+        //   setErr('email')
+        // }
+        // if (formik.values.showTelegramNickname && formik.values.telegramNickname.trim().length === 0){
+        //   setErr('telegramNickname')
+        // }
+        // if (formik.values.showPhone && formik.values.phone.trim().length === 0) {
+        //   setErr('phone')
+        // }
+        // else {
+        //   setProgress(pageNumber||progress+1)
+        //   return true
+        // }
+
+
+
+        // if(formik.values.description.trim().length < 1) {
+        //   setErr('description', t('create_vacancy_writeDetails'))
+        //   return false
+        // } 
+        // else {
+        //   setProgress(pageNumber||progress+1)
+        //   return false
+        // }
+      }
+      break
       case 8:
-        setProgress(pageNumber||progress+1)
-        return true
+          setProgress(pageNumber||progress+1)
+          return true
       // case 7:
       //   return true
       default :
@@ -408,7 +446,14 @@ export default function Vacancy(props: Props) {
         }
         setShowPreview(false)
       }} 
-      onPublish={formik.submitForm}
+      onPublish={()=> {
+        if(!props.vacancy||!props.vacancy?.subscriptions) {
+          setShowPreview(false)
+        }
+        else {
+          formik.submitForm()
+        }
+      }}
       vacancy={getDataToSend({...creationContext.draftItem.current, ...props.vacancy, ...formik.values}) as IVacancy}/>
     }
 

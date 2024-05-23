@@ -27,7 +27,8 @@ export default function Contacts(props: Props) {
       styleType={'default'} 
       label={t('create_contactPerson')}
       labelType='top'
-      color={'default'} name={'contactName'}
+      color={'default'} 
+      name={'contactName'}
       />
 
       <InputField 

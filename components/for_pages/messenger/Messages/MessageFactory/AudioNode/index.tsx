@@ -4,6 +4,8 @@ import PlayButtonWhiteSvg from 'components/svg/PlayButtonWhiteSvg'
 import Button from 'components/ui/Button'
 import PauseButtonSvg from 'components/svg/PauseButtonSvg'
 import { AudioVisualizer } from '../../../../../../node_modules/react-audio-visualize'
+import P from '@/components/ui/P'
+import Formatter from 'utils/formatter'
 
 // import { buffer } from 'stream/consumers'
 
@@ -19,6 +21,7 @@ export default function AudioNode(props: Props) {
   const [blob, setBlob] = useState<Blob>()
   const timer = useRef<ReturnType<typeof setInterval>>()
   const [time, setTimeState] = useState<number>()
+  const [duration, setDuration] = useState<number>(audio.current.duration)
   const visualizerRef = useRef<HTMLCanvasElement>(null)
   audio.current.crossOrigin = 'anonymous'
 
@@ -28,7 +31,7 @@ export default function AudioNode(props: Props) {
       setIsPlay(true)
       timer.current = setInterval(() => {
         setTimeState(audio.current.currentTime)
-      }, 50)
+      }, 200)
 
     }
     else {
@@ -71,6 +74,26 @@ useEffect(()=>{
 
 }, [])
 
+function getDuration(event: any) {
+  event.target.currentTime = 0
+  event.target.removeEventListener('timeupdate', getDuration)
+  console.log(event.target.duration)
+  setDuration(event.target.duration)
+}
+
+ useEffect(()=>{
+  console.log(audio.current.duration)
+  audio.current.onloadedmetadata = () => {
+    if(!Number.isInteger(audio.current.duration)) {
+      audio.current.currentTime = 1e101
+      audio.current.addEventListener('timeupdate', getDuration)
+    }
+    console.log('meta', audio.current.duration)
+    
+  }
+  
+ }, [audio.current.duration])
+
   return (<div className={styles.root}> 
     <Button onClick={playPauseHandler}>
       {play &&
@@ -79,6 +102,8 @@ useEffect(()=>{
         <PlayButtonWhiteSvg/>
       }
     </Button>
+    <div className={styles.audioNode}>
+      
     {/* <DumbAudioWaveSvg/> */}
     <AudioVisualizer 
     key={'audio-visualizer'}
@@ -90,6 +115,9 @@ useEffect(()=>{
     currentTime={time}
     barPlayedColor={'#2F80ED'}
     />
+    <P styleType={['greyLight']} useThemeColor>{time > 0 && Formatter.formatSecondsToTime(time) + ' / '}{Formatter.formatSecondsToTime(duration)}</P>
+
+    </div>
     {/* <audio src={props.audioSrc} ref={audio}/> */}
 
 
