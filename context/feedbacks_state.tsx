@@ -86,15 +86,37 @@ export function FeedbacksWrapper(props: Props) {
       
       setAllCVResponsesState(new Map)
       const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
-   
-      console.log(_applications, _proposals)
       
-      const allActiveApplicationProposals = [..._applications.map(a => a.proposals[0]).filter(Boolean)].filter(el => el.cvId&&el.vacancyId&&!el.deletedByEmployee)
-      const _filteredProposals = _proposals.filter(el => !allActiveApplicationProposals.find(p => p?.id === el?.id));
-    
+
+
+      const allProposalsInApplications = _applications.map(a=> a.proposals).flat(1)
+      const allProposalsIdsInApplications = allProposalsInApplications.map(a => a.id)
+
+      const _filteredProposals = _proposals.filter(el => {
+     
+        const res = allProposalsIdsInApplications.includes(el.id)
+        console.log(res)
+        return res
+      })
+
+      const filteredProposals = _filteredProposals.filter(el => {
+        return !Boolean(_filteredProposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && new Date(el.createdAt) > new Date(e.createdAt)))
+      });
+      
+  
+      
+
+      // console.log(_applications, _proposals)
+      
+      // const allActiveApplicationProposals = [..._applications.map(a => a.proposals[0]).filter(Boolean)].filter(el => el.cvId&&el.vacancyId&&!el.deletedByEmployee)
+      // const _filteredProposals = _proposals.filter(el => !allActiveApplicationProposals.find(p => p?.id === el?.id)).filter(el => {
+      //   return Boolean(_proposals.find(f => el.vacancyId === f.vacancyId && el.cvId === f.cvId && new Date(el.createdAt)  new Date(f.createdAt)))
+      // });
+      
+      
 
   
-      [..._applications, ..._filteredProposals].forEach(async(proposal) => {
+      [..._applications, ..._proposals].forEach(async(proposal) => {
         setAllCVResponsesState(state => {
             state.set(proposal.id, proposal)
           return new Map(state)

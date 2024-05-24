@@ -79,7 +79,7 @@ export default function Feedbacks() {
       case ReviewsNavigation.Invite: 
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Accepted)
+          itemsActiveFilter.filter(([_, value])=> value.status==='accepted')
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -96,9 +96,10 @@ export default function Feedbacks() {
         break
 
       case ReviewsNavigation.Wait:
+        console.log(itemsActiveFilter)
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Applied && value.type === ProposalRequestType.InfoRequest):value.status === ApplicationStatus.Applied)
+          itemsActiveFilter.filter(([_, value])=> value.status==='applied')
           .map(([app, vc])=>{
             state.set(app, vc)
           })
