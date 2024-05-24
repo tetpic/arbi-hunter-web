@@ -68,10 +68,10 @@ export default function SearchBar(props: Props) {
 
 
   const openFilters = ()=>{
-    // if(props.onFilterClick) {
-    //   props.onFilterClick()
-    //   return
-    // }
+    if(props.onFilterClick) {
+      props.onFilterClick()
+      return
+    }
     // const options: ISearchFilterModalProps = {
     //   categories: props.categories,
     //   periods: props.periods,

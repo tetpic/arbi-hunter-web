@@ -49,12 +49,12 @@ export default function ContactsModal(props: Props) {
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    debugger
+    
     const activeChat = props.vacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
     if(activeChat[0]){
       ChatRepository.getChatByContactId(props.vacancy.profile.id, {proposalId: props.vacancy.proposalsToCurrentUser[0].id})
       .then(res=>{
-        debugger
+        
         if(res) {
           router.push('/messenger?chat=' + res.id)
         }

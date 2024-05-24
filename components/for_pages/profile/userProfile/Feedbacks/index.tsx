@@ -62,7 +62,7 @@ export default function Feedbacks() {
   //надо отрефакторить, а то я долго соображал как их фильтровать... и пока что это рабочий вариант
   useEffect(()=>{ 
     const cvEntries:[number, IProposal|IApplication][] = [...CVFeedbacks.entries()]
-    debugger
+    
     const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.cvDeletedOrHidden&&!value.vacancyDeletedOrHidden&&!value.deletedByEmployee)
     const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
 

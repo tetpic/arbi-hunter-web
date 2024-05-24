@@ -15,7 +15,7 @@ import SettingSvg from '@/components/svg/SettingSvg'
 import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ManSvg from '@/components/svg/ManSvg'
-import Switch from '@/components/ui/Switch'
+// import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
@@ -155,7 +155,7 @@ export default function NavBar(props: Props) {
           <P useThemeColor className={styles.linkText}>{t('logout')}</P>
         </div>
 
-        <div className={classNames(styles.linkText, styles.themeSwitcher)}>
+        {/* <div className={classNames(styles.linkText, styles.themeSwitcher)}>
           <P useThemeColor >{t('nav_nightMode')}</P>
           <Switch
           onChange={(val) => {appContext.setTheme(val ? AppTheme.Dark : AppTheme.Light)}}
@@ -166,7 +166,7 @@ export default function NavBar(props: Props) {
           onHandleColor={colors.white}
           width={50}
           />
-        </div>
+        </div> */}
     </div>
   </div>
   )

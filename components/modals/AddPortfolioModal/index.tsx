@@ -10,12 +10,11 @@ import Button from 'components/ui/Button'
 import Validator from 'utils/Validator'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
-import FilesField from '@/components/fields/FilesField'
-import CloudSvg from '@/components/svg/CloudSvg'
+
 import { ICVCreate } from 'data/interfaces/ICV'
 import { IFile } from 'data/interfaces/Common'
 import { useState } from 'react'
-import P from '@/components/ui/P'
+
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -57,10 +56,10 @@ export default function AddPortfolioModal(props: Props) {
 
   const body = (<>
     <Title title={t('create_cv_addPortfolio')} className={styles.title}/>
-    <P styleType={['w500', 'medium']} useThemeColor className={styles.description}>
+    {/* <P styleType={['w500', 'medium']} useThemeColor className={styles.description}>
       {t('create_cv_portfolioText1')} <br/>
-      {t('create_cv_portfolioText2')}
-    </P>
+      
+    </P> */}
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         <InputField 
@@ -71,7 +70,7 @@ export default function AddPortfolioModal(props: Props) {
         labelType='top'
         validate={Validator.url}
         />
-        <FilesField 
+        {/* <FilesField 
         name={'assetsIds'} 
         initialImages={args.initialFiles} 
         accept={['image/*', '.doc', '.docx','application/msword', 'application/pdf']}
@@ -79,7 +78,7 @@ export default function AddPortfolioModal(props: Props) {
         className={styles.filesWrapper} 
         buttonClassName={styles.filesInput} 
         buttonName={<p className={styles.uploadButton}><CloudSvg/> {t('download')}</p>} 
-        />
+        /> */}
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>

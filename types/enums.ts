@@ -168,7 +168,6 @@ export enum Currency {
 }
 
 export enum EducationTypes {
-  No= 'no',
   Secondary= 'secondary',
   SecondarySpecial= 'secondarySpecial',
   IncompleteHigher= 'incompleteHigher',

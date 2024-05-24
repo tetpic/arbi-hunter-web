@@ -250,8 +250,7 @@ export default function Vacancy(props: Props) {
         //   return false
         // }
       break
-      case 7: {
-        debugger
+      case 7: {      
         const vals = [
           formik.values.showContactName && formik.values.contactName.trim().length === 0,
           formik.values.showEmail && formik.values.email.trim().length === 0,

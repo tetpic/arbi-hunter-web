@@ -89,12 +89,12 @@ export default function VacancyPage(props: Props) {
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    debugger
+    
     const activeChat = currentVacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied)
     if(activeChat[0]){
       ChatRepository.getChatByContactId(currentVacancy.profile.id, {proposalId: lastProposal.id})
       .then(res=>{
-        debugger
+        
         if(res) {
           router.push('/messenger?chat=' + res.id)
         }

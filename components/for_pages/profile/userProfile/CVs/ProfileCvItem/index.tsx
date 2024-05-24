@@ -90,7 +90,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         archiveHandler()
         isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       }:undefined,
-      removeText: 'Удалить резюме?',
+      removeText: 'Удалить резюме',
       archiveText: 'Скрыть резюме'
     }
     isTabletWidth

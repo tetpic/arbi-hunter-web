@@ -38,7 +38,7 @@ class MyDocument extends Document {
         </Head>
 
 
-        <body data-theme={theme} id='body' >
+        <body data-theme='dark' id='body' >
           <Main />
           <NextScript />
         </body>

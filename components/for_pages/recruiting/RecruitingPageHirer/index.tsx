@@ -29,7 +29,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 interface Props {
   vcId?: number  
   category?: number
-  filters: Partial<IVacancyCvSearchParams>
+  filters?: Partial<IVacancyCvSearchParams>
 }
 
 export default function RecruitingPageHirer(props: Props) {
@@ -106,7 +106,9 @@ function RecruitingPageHirerInner(props: Props) {
   }, [])
 
   useEffect(()=>{
-    debugger
+    if(!router.query.filters) {
+      return
+    }
     const _filters = JSON.parse(router.query.filters as string)
     if(currentFilters.search !== _filters.search){
       onFilterChange({...currentFilters, search: _filters.search})

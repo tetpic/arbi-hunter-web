@@ -67,7 +67,7 @@ export function AppWrapper(props: Props) {
   const [hideHeader, setHideHeader] = useState<boolean>(false)
   const [snapPoints, setSnapPoints] = useState<number>(null)
   const [isNavBarActive, setNavBarActive] = useState<boolean>(false)
-  const [theme, setThemeState] = useState<AppTheme>(router.query.theme as AppTheme||props.theme||AppTheme.Light)
+  const [theme, setThemeState] = useState<AppTheme>(/*router.query.theme as AppTheme||props.theme||AppTheme.Light*/AppTheme.Dark)
   const size = useResize()
 
 

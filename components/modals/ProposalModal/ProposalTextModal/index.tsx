@@ -105,6 +105,14 @@ export default function ProposalTextModal(props: Props) {
     setTypeState(getRequestTypes()[0])
   }, [])
 
+  useEffect(()=>{
+    if(patternContext.patterns.size>0 && [...patternContext.patterns.values()].map(e=>e.type).includes(type)) {
+      console.log([...patternContext.patterns.values()].find(el=>el.type === type))
+      // formik.setFieldValue('coverLetter', [...patternContext.patterns.values()].find(el=>el.type === type).template)
+      setPattern([...patternContext.patterns.values()].find(el=>el.type === type))
+    }
+  }, [patternContext.patterns, type])
+
 
 
   const body = (
@@ -122,7 +130,7 @@ export default function ProposalTextModal(props: Props) {
       </div>
       <FormikProvider value={formik} >
         <Form className={styles.form}>
-            <RichTextField name={'coverLetter'} key={pattern?.template} value={pattern?.template} className={styles.coverLetter}/>
+            <RichTextField name={'coverLetter'} key={type+pattern?.template} value={pattern?.template} className={styles.coverLetter}/>
           <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>Отправить</Button>
         </Form>
       </FormikProvider>

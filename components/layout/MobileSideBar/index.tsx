@@ -22,13 +22,13 @@ import QuestionSvg from '@/components/svg/QuestionSvg'
 import { useRouter } from 'next/router'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
 import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
-import { AppTheme, Preset } from 'types/enums'
+import { Preset } from 'types/enums'
 import StarSvg from '@/components/svg/StarSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
-import Switch from '@/components/ui/Switch'
+// import Switch from '@/components/ui/Switch'
 import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
-import DayNightSvg from '@/components/svg/DayNightSvg'
+// import DayNightSvg from '@/components/svg/DayNightSvg'
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -224,7 +224,7 @@ export default function MobileSideBar(props: Props) {
       </Link>
     </div>
 
-    <div className={styles.links}>
+    {/* <div className={styles.links}>
       <div className={styles.link}>
         <div className={styles.icon}><DayNightSvg/></div>
         <P useThemeColor  styleType={['w500', 'medium']} >{t('nav_nightMode')}</P>
@@ -241,7 +241,7 @@ export default function MobileSideBar(props: Props) {
           />
         </div>
       </div>
-    </div>
+    </div> */}
     </>}
 
     {userContext.currentProfile &&

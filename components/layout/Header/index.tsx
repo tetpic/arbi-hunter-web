@@ -98,7 +98,7 @@ export default function Header(props: Props) {
           <div className={styles.linksWrapper}>
             <SearchBar 
             onSubmit={(data)=> onSearchbarSubmit(data)}
-            onFilterClick={()=>{}}
+            onFilterClick={()=>router.push('/recruiting')}
             />
           </div>
         }
