@@ -23,6 +23,8 @@ import P from '@/components/ui/P'
 import { useTariffContext } from 'context/tariff_state'
 import useTranslation from 'next-translate/useTranslation'
 import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
+import { daysBetween } from 'utils/helpers'
+import classNames from 'classnames'
 
 interface Props {
   vacancy: IVacancy
@@ -126,11 +128,28 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     }
   }
 
+  const publishedAt = new Date(vacancy.publishedAt)
+  publishedAt.setDate(publishedAt.getDate()+30)
+
+  const _daysBetween = daysBetween(publishedAt, new Date)
+
+  const getRemainsColor = (_daysBetween: number):string => {
+    if(_daysBetween > 0 && _daysBetween <= 7) {
+      return 'timeRemains_red'      
+    }
+    if(_daysBetween > 7 && _daysBetween <= 14) {
+      return 'timeRemains_orange'
+    }
+    if(_daysBetween > 14 && _daysBetween <= 30) {
+      return 'timeRemains_green'
+    }
+  }
+
   return (
     <div className={styles.item} onClick={()=>router.push(`/vacancy/${vacancy.id}`)}> 
       <div className={styles.top}  >
         {vacancy.publishedAt && vacancy.published &&
-          <p className={styles.timeRemains}>{t('item_expires')} {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30, lang: lang as InterfaceLanguage})}</p>
+          <p className={classNames(styles.timeRemains, styles[getRemainsColor(_daysBetween)])}>{t('item_expires')} {Formatter.formatDate(vacancy.publishedAt, {plusDays: 30, lang: lang as InterfaceLanguage})}</p>
         }
         {props.type === 'drafts' && vacancy.updatedAt &&
           <P className={styles.timeSaved}>{t('item_saved')} {Formatter.formatDate(vacancy.updatedAt, {timeOptions: {year: 'numeric' }, lang: lang as InterfaceLanguage })}</P>

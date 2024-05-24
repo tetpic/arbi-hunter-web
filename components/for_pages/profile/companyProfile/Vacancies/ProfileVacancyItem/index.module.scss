@@ -114,6 +114,21 @@
   display: block;
   justify-self: flex-start;
   grid-area: r;
+
+  &_green {
+    color: $green;
+    background-color: $greenLight;
+  }
+
+  &_orange {
+    color: $orange;
+    background-color: $orangeLight;
+  }
+
+  &_red {
+    color: $red;
+    background-color: $redLight;
+  }
 }
 
 .timeSaved {

@@ -106,6 +106,15 @@ function RecruitingPageHirerInner(props: Props) {
   }, [])
 
   useEffect(()=>{
+    debugger
+    const _filters = JSON.parse(router.query.filters as string)
+    if(currentFilters.search !== _filters.search){
+      onFilterChange({...currentFilters, search: _filters.search})
+    }
+    
+  }, [router.query.filters])
+
+  useEffect(()=>{
     findCvs()  
   }, [cvContext.page])
 

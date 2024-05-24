@@ -186,7 +186,7 @@ export default function RichTextToolbar(props: Props) {
 
 
 
-  {!hideButtons?.helpers && <>
+  {/* {!hideButtons?.helpers && <>
     <ToolbarButton
     onClick={()=>editor.commands.insertContent('{{cv.profile.firstName}} {{cv.profile.lastName}}')}
     isActive={editor.isActive('CVUserName')}
@@ -205,7 +205,7 @@ export default function RichTextToolbar(props: Props) {
     >
       <>VC Name</>
     </ToolbarButton>
-  </>}
+  </>} */}
 
   {props.onAddImage &&
     <ToolbarButton

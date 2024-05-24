@@ -112,3 +112,15 @@ export function copyToClipboard(text: string):boolean {
   document.body.removeChild(el) 
   return true // Убираем элемент из DOM
 }
+
+export function daysBetween(startDate: Date, endDate: Date) {
+  if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+    throw new Error('Применяйте корректные объекты Date.')
+  }
+  
+  const diffTime = Math.abs(Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) -
+                            Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()))
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
+  
+  return diffDays
+}

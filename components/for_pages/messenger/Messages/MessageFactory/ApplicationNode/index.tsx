@@ -50,7 +50,7 @@ export  function ApplicationHirerNode (props: Props) {
         application: props.application, 
         cv: props.application.cv, 
         vcId: props.application.vacancyId,
-        onSubmit: () => {
+        onSubmit: (type, msg) => {
           dialog.refreshMessage(Number(props.message.id), {...props.message, application: undefined})
         }
       })

@@ -57,13 +57,8 @@ export default function VacancyPage(props: Props) {
   const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
   const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
-  // const freeToApplyCvs = currentVacancy?.applicationsByCurrentUser?.filter(el => !cvContext.savedCvs?.map(c => c.id).includes(el.cvId))
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
 
-  // useEffect(()=>{
-  //   console.log('free cvs ', freeToApplyCvs)
-    
-  // }, [freeToApplyCvs])
 
 
 
@@ -247,7 +242,7 @@ export default function VacancyPage(props: Props) {
             </Button>
           </>
           }
-           {freeToApplyCvs.length > 0 &&
+           {freeToApplyCvs.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
               <Button
               styleType={['gradient']}
               onClick={makeResponse}

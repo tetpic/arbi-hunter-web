@@ -18,7 +18,7 @@ import { IPattern } from 'data/interfaces/IPattern'
 import { IProposal } from 'data/interfaces/IProposal'
 import { Form,  FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ApplicationBSSelectType, ApplicationStatus, ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
+import { ApplicationBSSelectType,  ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 
 interface Props {
@@ -31,7 +31,7 @@ export interface IProposalTextModalProps {
   vcId?: number, 
   application?: IApplication, 
   cv: ICV,
-  onSubmit?: () => void
+  onSubmit?: (type?: ProposalRequestType, text?: string) => void
 }
 
 export default function ProposalTextModal(props: Props) {
@@ -41,18 +41,20 @@ export default function ProposalTextModal(props: Props) {
   const patternContext = usePatternContext()
   const proposalRepository = useFeedbacksContext()
   const [pattern, setPattern] = useState<IPattern>(null)
+  const [type, setTypeState] = useState<ProposalRequestType>(null)
 
   const submit = async(data: IProposal) => {
     
     const dataToSend:IProposal = {
       ...data,
       coverLetter: data.coverLetter,    
+      type: type
     }
     proposalRepository.createProposal(dataToSend)
     .then(res=>{
       res
       if(typeof res === 'object' && modalArguments.onSubmit) {
-        modalArguments.onSubmit()
+        modalArguments.onSubmit(dataToSend.type, data.coverLetter)
       }
       res&&appContext.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'vc', id: vcId, cv: modalArguments.cv})
       if(!res){
@@ -66,8 +68,7 @@ export default function ProposalTextModal(props: Props) {
 
 
   const initialValues = {
-    type: modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview,
-    status:  modalArguments.type === ApplicationBSSelectType.Reject?ApplicationStatus.Rejected:ApplicationStatus.Accepted,
+    type: modalArguments.type === ApplicationBSSelectType.Reject?ProposalRequestType.Rejection:ProposalRequestType.Interview,   
     cvId: cv?.id||application?.cvId,
     vacancyId: vcId||application?.vacancyId,
     coverLetter: '',
@@ -90,20 +91,38 @@ export default function ProposalTextModal(props: Props) {
   //   }
   // }, [patternContext.patterns])
 
+  const getRequestTypes = (): ProposalRequestType[] => {
+    if(modalArguments.type === ApplicationBSSelectType.Reject) {
+      return [ProposalRequestType.Rejection]
+    }
+    else {
+      return [ProposalRequestType.InfoRequest,ProposalRequestType.Interview, ProposalRequestType.Consider]
+    }
+  }
+
   useEffect(()=>{
     patternContext.setPatterns()
+    setTypeState(getRequestTypes()[0])
   }, [])
+
+
 
   const body = (
     <>
       <div className={styles.patterns}>
-      {[...patternContext.patterns.values()].map(el=> {
-        return <p key={el.id} className={classNames(styles.choosePattern, pattern?.id === el.id&&styles.choosePattern_active)} onClick={()=>setPattern(el)}>{TranslatePatternType(el.type)}</p>
+      {getRequestTypes().map(el=> {
+        return <p 
+        key={el} 
+        className={classNames(styles.choosePattern, type === el&&styles.choosePattern_active)} 
+        onClick={()=>{
+          setPattern([...patternContext.patterns.values()].find(pt => pt.type === el))
+          setTypeState(el)
+        }}>{TranslatePatternType(el)}</p>
       })}
       </div>
       <FormikProvider value={formik} >
         <Form className={styles.form}>
-            <RichTextField name={'coverLetter'} key={pattern?.template} value={pattern?.template}/>
+            <RichTextField name={'coverLetter'} key={pattern?.template} value={pattern?.template} className={styles.coverLetter}/>
           <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>Отправить</Button>
         </Form>
       </FormikProvider>

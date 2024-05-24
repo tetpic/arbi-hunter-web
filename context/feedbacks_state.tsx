@@ -86,11 +86,15 @@ export function FeedbacksWrapper(props: Props) {
       
       setAllCVResponsesState(new Map)
       const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
-      const filteredProposals = _proposals.filter(el=> !Boolean(_applications.find(a => a.proposals?.[0]?.id === el?.id)))
-      // eslint-disable-next-line no-console
-      console.log([..._applications.filter(e=> !e.cvDeletedOrHidden&&!e.vacancyDeletedOrHidden), ..._proposals.filter(e=> !e.cvDeletedOrHidden&&!e.vacancyDeletedOrHidden)]);
+   
+      console.log(_applications, _proposals)
       
-      [..._applications, ...filteredProposals, ].forEach(async(proposal) => {
+      const allActiveApplicationProposals = [..._applications.map(a => a.proposals[0]).filter(Boolean)].filter(el => el.cvId&&el.vacancyId&&!el.deletedByEmployee)
+      const _filteredProposals = _proposals.filter(el => !allActiveApplicationProposals.find(p => p?.id === el?.id));
+    
+
+  
+      [..._applications, ..._filteredProposals].forEach(async(proposal) => {
         setAllCVResponsesState(state => {
             state.set(proposal.id, proposal)
           return new Map(state)

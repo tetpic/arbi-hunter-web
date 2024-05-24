@@ -258,7 +258,6 @@ export default function MessageFactory(props: Props) {
       {replyedMessage}
         <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
         {stats}
-        
     </div>
   </>
   )

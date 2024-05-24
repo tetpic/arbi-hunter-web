@@ -41,7 +41,7 @@ import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
-import { getUserImageSource } from 'utils/helpers'
+import { clearObject, getUserImageSource } from 'utils/helpers'
 import useAbortController from '@/components/hooks/useAbortController'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
@@ -81,7 +81,11 @@ export default function CvPage(props: Props) {
   }
 
   const goToChat = () => {
-    ChatRepository.getChatByContactId(currentCv.profileId, {proposalId: currentCv.proposalsByCurrentUser?.[0].id})
+    const clearedData = clearObject({
+      proposalId: currentCv.proposalsByCurrentUser?.[0]?.id,
+      applicationId: currentCv.applicationsToCurrentUser?.[0]?.id
+    })
+    ChatRepository.getChatByContactId(currentCv.profileId, clearedData)
     .then(res=> {      
       router.push(`/messenger?chat=${res?.id}`)
     })
