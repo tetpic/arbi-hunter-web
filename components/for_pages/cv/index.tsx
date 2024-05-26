@@ -12,7 +12,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/router'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, AppTheme, Genders, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, AppTheme, Genders, InterfaceLanguage, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -53,7 +53,7 @@ interface Props {
 }
 
 export default function CvPage(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const cvContext = useCvContext()
   const folderContext = useFavoritesFolderContext()
   const userContext = useUserContext()
@@ -161,7 +161,39 @@ export default function CvPage(props: Props) {
   }, [])
 
 
+  const archiveHandler =(e?: React.MouseEvent<HTMLElement>)=> {
+    if(e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }  
+    if(currentCv?.subscriptions === null && !currentCv.published && currentCv.completedSteps.length > 5) {
+      router.push({pathname:'/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true}})
+      return
+    }
+    else if(currentCv.completedSteps.length < 6) {
+      router.push({pathname:'/create/cv', query: {id: currentCv.id, progress: currentCv.completedSteps.length||1}})
+      return
+    }
+    const _onSave = () => {
+      cvContext.getCv(Number(props.cvId))
+    }
+    cvContext.updateCv(currentCv.id, {published: !currentCv?.published}, _onSave)
+  }
 
+  const cvTopTimePlusTime = () => {
+    const time = new Date(currentCv.topAt)
+    time.setHours(time.getHours() + 4 )
+    return time
+  }
+  
+  const moveToTopHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const _onSet = () => {
+      cvContext.getCv(Number(props.cvId))
+    }
+    cvContext.moveToTop(currentCv.id, _onSet)
+  }
 
   if(!currentCv) {
     return <div className={styles.root}>
@@ -257,6 +289,14 @@ export default function CvPage(props: Props) {
   </>)
 
 
+
+
+
+
+
+
+
+
   return (
     <div className={styles.root}>
       {
@@ -299,32 +339,44 @@ export default function CvPage(props: Props) {
           {name: t('cv_page_applications'), count: currentCv?.totalApplications},
         ]} 
         title={t('cv_page_statsTitle')}/>
-        {currentCv.published&&!currentCv.moderationRejectReason && !currentCv.archivedAt &&
+        {currentCv.published&&!currentCv.moderationRejectReason && 
         <div className={styles.topLine}>
+          {Number(cvTopTimePlusTime()) > Number(new Date())
+          &&  
           <P styleType={['w500', 'medium', 'greyLight']}>
-            Поднять вручную можно сегодня в 20:30
+           {'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})}
           </P>
-          <P styleType={['w500', 'medium', 'blue']}>
+          ||        
+          <P styleType={['w500', 'medium', 'blue']} className={styles.moveToTop}  onClick={moveToTopHandler}>
             {t('cv_page_upCvAutomatically')}
-          </P>
+          </P>       
+          }       
         </div>
         }
         <div className={styles.topLine}>  
-          {currentCv.published&&!currentCv.moderationRejectReason && !currentCv.archivedAt &&
-            <Button styleType={['gradient']} onClick={() => router.push({pathname: '/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true}})}>
+          {currentCv.published&&!currentCv.moderationRejectReason && 
+            <Button styleType={['gradient']} onClick={() => router.push({pathname: '/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true, improve: true}})}>
               {t('cv_page_improve')}
             </Button>          
             ||
+            currentCv.archivedAt && (!currentCv.completedSteps || currentCv.completedSteps.length > 5) &&
             <Button  
             styleType={['gradient']}
-            onClick={() => {
-              if(!currentCv?.subscriptions && !currentCv.published) {
-                router.push({pathname:'/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true}})
-                return
-              }
+            onClick={() => {  
+              archiveHandler()           
             }}
             >
               {t('publish')}
+            </Button>
+            ||
+            currentCv.completedSteps&&currentCv.completedSteps.length < 6 && 
+            <Button
+            styleType={['gradient']}
+            onClick={() => {  
+              archiveHandler()     
+            }}
+            >
+              {t('item_continueEditing')}
             </Button>
           }  
           <Button styleType={['borderGradient']} altStyleType={['whitePurple']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>

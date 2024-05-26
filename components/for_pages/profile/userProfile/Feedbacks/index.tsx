@@ -95,8 +95,7 @@ export default function Feedbacks() {
         })       
         break
 
-      case ReviewsNavigation.Wait:
-        console.log(itemsActiveFilter)
+      case ReviewsNavigation.Wait:      
         setFiltered(state=> {
           state.clear()
           itemsActiveFilter.filter(([_, value])=> value.status==='applied')

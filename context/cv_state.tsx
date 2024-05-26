@@ -24,7 +24,7 @@ interface IState {
   total: number,
   setBlackListedCVs: () => void
   removeFromBlackList: (id?: number) => void
-  moveToTop: (cvId: number) => void
+  moveToTop: (cvId: number, onSet?: ()=>void) => void
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -133,10 +133,10 @@ export function CvWrapper(props: Props) {
     })
   }
 
-  const moveToTop= (cvId: number) => {
+  const moveToTop= (cvId: number, onSet?: ()=>void) => {
     CvRepository.moveToTop(cvId)
     .then(_=>{
-      setSavedCvs()
+      onSet? onSet() : setSavedCvs()
     })
   }
 

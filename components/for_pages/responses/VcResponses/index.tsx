@@ -156,7 +156,7 @@ export default function VCFeedbacks(props: Props) {
       }
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
-        responsesContext.filteredVcResponses.map(el=> {
+        responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
           return <CvCard onChangeItem={changeItem} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
         ||

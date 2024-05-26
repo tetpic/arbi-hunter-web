@@ -67,16 +67,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     cvContext.moveToTop(cv.id)
   }
 
-  // const removeHandler =()=> {
-    // appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, 
-    //   {text: t('cv_item_removeConfirm'),
-    //   callback: ()=>{
-    //     cvContext.deleteCv(cv.id)
-    //   }
-    //   }
-    // )
-    
-  // }
+
 
   const removeHandler =()=> {
     const _args:RemoveCvVcConfirmModalArgs = {
@@ -99,7 +90,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const upgradeTariffHandler = () => {
-    router.push({pathname: '/shop', query: {page: 'packets'}})
+    router.push({pathname: '/create/cv', query: {id: cv.id, progress: 7, fromOtherPage: true, improve: true}})
   }
 
   const defaultOptions:IOptionList[] = [
@@ -209,7 +200,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           onClick={moveToTopHandler}
           disabled={Number(cvTopTimePlusTime()) > Number(new Date())}
           >
-            {cv.topAt && Number(cvTopTimePlusTime()) > Number(new Date())&&  'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})
+            {cv.topAt 
+            && Number(cvTopTimePlusTime()) > Number(new Date())
+            &&  'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})
               ||
               t('item_upriseInSearch')
             }

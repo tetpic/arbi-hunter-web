@@ -34,11 +34,7 @@ interface Props {
 
 //TODO: доделать всплывашку OptionsModal
 
-export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {
-  useEffect(()=>{
-    console.log(item.profile)
-  }, [])
-  
+export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {  
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size

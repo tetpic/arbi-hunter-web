@@ -238,6 +238,14 @@
   }
 }
 
+.moveToTop {
+  @include transitionDefault;
+  cursor: pointer;
+  @include hover {
+    color: var(--pTextColor);   
+  }
+}
+
 
 
 

@@ -22,6 +22,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
 import P from '../P'
+import { getUserImageSource } from 'utils/helpers'
 
 interface ItemProps {
   cv: ICV
@@ -100,22 +101,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   useEffect(()=>{
     setCurrentCV(cv)
   }, [cv])
-  // const saveHandler = useCallback(() => {
-  //   if(currentCV.isSavedByCurrentProfile) {
-  //     cvContext.removeCvfromSaved(currentCV.id)
-  //     .then(res=>{
-  //       res===true &&
-  //       setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: false}})
-  //     })
-  //   }
-  //   else {
-  //     cvContext.saveCv(currentCV.id)
-  //     .then(res=> {
-  //       res===true&&
-  //       setCurrentCV(state=> {return {...state, isSavedByCurrentProfile: true}})
-  //     })
-  //   }
-  // }, [currentCV])
+
 
   const inviteHandler = () => {
     if(isTabletWidth) {
@@ -139,8 +125,8 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
 
   return (
     <div className={styles.itemWrapper}>
-    <div className={styles.top} onClick={()=>router.push('cv/'+cv.id)}>
-      <UserPic size={46} className={styles.userPic}/>
+    <div className={styles.top} onClick={()=>(application?.cvId||cv?.id)&&router.push(application?.cvId?'/cv/'+application?.cvId: '/cv/'+cv?.id)}>
+      <UserPic size={46} image={getUserImageSource(application.profile)} className={styles.userPic}/>
       <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</P>
       <P styleType={['medium', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</P>
       {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}

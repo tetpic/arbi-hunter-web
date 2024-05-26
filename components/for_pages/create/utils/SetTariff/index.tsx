@@ -89,14 +89,15 @@ export default function SetTariff(props: Props) {
     appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args, 600)
     :
     appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, args)
-
   }
-
 
   return (<div className={styles.root}> 
   <P styleType={['huge', 'w600', 'textCenter']} useThemeColor>{t('shop_chooseTariff')}</P>
   <div className={styles.tariffItems}>
     {tariffs.size > 0 &&[...tariffs.values()].filter(el => {
+      if(router.query.improve === 'true'){
+          return el.price > tariffs.get(creationContext.currentCv?.subscriptions?.tariff.id||creationContext.currentVc?.subscriptions?.tariff.id).price
+      }
       if(creationContext.currentCv?.subscriptions||creationContext.currentVc?.subscriptions) {
         return el.price >= tariffs.get(creationContext.currentCv?.subscriptions?.tariff.id||creationContext.currentVc?.subscriptions?.tariff.id).price
       }

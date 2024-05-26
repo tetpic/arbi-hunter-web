@@ -14,6 +14,7 @@
 .tariffItems {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   column-gap: 24px;
   width: 100%;
   margin-top: clamp(24px, 7vw, 82px);
