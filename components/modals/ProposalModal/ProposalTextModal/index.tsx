@@ -108,7 +108,7 @@ export default function ProposalTextModal(props: Props) {
   useEffect(()=>{
     if(patternContext.patterns.size>0 && [...patternContext.patterns.values()].map(e=>e.type).includes(type)) {
       console.log([...patternContext.patterns.values()].find(el=>el.type === type))
-      // formik.setFieldValue('coverLetter', [...patternContext.patterns.values()].find(el=>el.type === type).template)
+      formik.setFieldValue('coverLetter', [...patternContext.patterns.values()].find(el=>el.type === type).template)
       setPattern([...patternContext.patterns.values()].find(el=>el.type === type))
     }
   }, [patternContext.patterns, type])

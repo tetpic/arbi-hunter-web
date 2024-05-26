@@ -268,7 +268,9 @@ export default function MessageFactory(props: Props) {
       {replyedMessage}
       <p className={styles.message}>{t('chat_cvApplication')}</p>
       <Spacer basis={8} />
+      {msg.proposal?.coverLetter &&
       <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>
+      }
       {stats}
     </div>
   </>)
@@ -293,7 +295,7 @@ export default function MessageFactory(props: Props) {
       case MessageType.Asset:
         return assetMessage
       case MessageType.Proposal:
-        return msg?.proposal?.coverLetter?proposalMessage:null
+        return proposalMessage
       case MessageType.Voice:
         return voiceMessage
       default :

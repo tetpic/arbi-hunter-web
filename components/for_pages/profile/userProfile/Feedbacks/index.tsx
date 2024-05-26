@@ -63,7 +63,7 @@ export default function Feedbacks() {
   useEffect(()=>{ 
     const cvEntries:[number, IProposal|IApplication][] = [...CVFeedbacks.entries()]
     
-    const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.cvDeletedOrHidden&&!value.vacancyDeletedOrHidden&&!value.deletedByEmployee)
+    const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.vacancyDeletedOrHidden&&!value.deletedByEmployee)
     const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
 
     switch(page) {

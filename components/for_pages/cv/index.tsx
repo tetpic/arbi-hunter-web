@@ -311,7 +311,7 @@ export default function CvPage(props: Props) {
         }
         <div className={styles.topLine}>  
           {currentCv.published&&!currentCv.moderationRejectReason && !currentCv.archivedAt &&
-            <Button styleType={['gradient']}>
+            <Button styleType={['gradient']} onClick={() => router.push({pathname: '/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true}})}>
               {t('cv_page_improve')}
             </Button>          
             ||

@@ -23,6 +23,7 @@ import ChatRepository from 'data/repositories/ChatRepository'
 import P from '@/components/ui/P'
 import { IApplication } from 'data/interfaces/IApplication'
 import useTranslation from 'next-translate/useTranslation'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   vc: IVacancy
@@ -34,6 +35,10 @@ interface Props {
 //TODO: доделать всплывашку OptionsModal
 
 export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {
+  useEffect(()=>{
+    console.log(item.profile)
+  }, [])
+  
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size
@@ -98,9 +103,9 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
 
   return (<div className={styles.root} onClick={()=>router.push(`/vacancy/${vc.id}`)}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic} size={44} image={getUserImageSource(vc?.profile, Preset.smallIconCrop)}/>
-      <P styleType={['w600','large']} useThemeColor className={styles.company}>{vc.company||vc.contactName}</P>
-      {(vc.isRemote || vc.city) &&
+      <UserPic className={styles.userPic} size={44} image={getUserImageSource(item.profile.profileType === ProfileType.Hirer?item.profile:vc?.profile, Preset.smallIconCrop)}/>
+      <P styleType={['w600','large']} useThemeColor className={styles.company}>{item.profile.profileType === ProfileType.Hirer?item.profile.company: vc?.company||vc?.contactName}</P>
+      {(vc?.isRemote || vc?.city) &&
         <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`г. ${vc.city?.locName}`}</P>
       }
       <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.heartButton}/>
