@@ -70,5 +70,5 @@ services:
         environment:
           API_HOST: http://arbi-hunter-api-nginx
           ADMIN_HOST: http://arbi-hunter-admin
-          VIRTUAL_HOST: arbihunter.com
+          VIRTUAL_HOST: dev.arbihunter.com
           VIRTUAL_PORT: 80
