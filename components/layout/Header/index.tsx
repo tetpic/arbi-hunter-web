@@ -110,7 +110,6 @@ export default function Header(props: Props) {
               styleType={['black', 'borderBlue', 'backTransparent']}
               altStyleType={['white', 'borderGrey']}
                href={regPath}
-              onClick={()=> showInfo()}
               disabled={activePath === regPath}
               >
                 {t('registration')}
