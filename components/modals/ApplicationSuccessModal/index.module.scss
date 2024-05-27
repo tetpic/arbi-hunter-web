@@ -32,6 +32,9 @@
 
 .modalLayout {
   max-width: 420px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
 }
 
 .closeButton {

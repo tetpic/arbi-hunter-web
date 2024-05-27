@@ -88,7 +88,7 @@ export default function FilterEmployee(props: Props) {
         manyItems: true,
         onSubmit: (data)=>{
           creationContext.setActiveSubcategory(data)
-          formik.setFieldValue('categories', data.map(el=> el.id))
+          formik.setFieldValue('categories', data.map(el=> el?.id))
         },
         onClose: ()=>appContext.hideBottomSheet(),
       }, 0.9)
@@ -98,7 +98,7 @@ export default function FilterEmployee(props: Props) {
       manyItems: true,
       onSubmit: (data)=>{
         creationContext.setActiveSubcategory(data)
-        formik.setFieldValue('categories', data.map(el=> el.id))
+        formik.setFieldValue('categories', data.map(el=> el?.id))
       },
     })
   }
@@ -126,7 +126,7 @@ export default function FilterEmployee(props: Props) {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
       initials: formik.values?.countries?.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
-        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
+        formik.setFieldValue('countries', [...r.map(el => el?.geonameid)])
         locationContext.getCountries(null, r)
         creationContext.setHelpObjects({...creationContext.helpObjects, countries: r})
       },
@@ -137,7 +137,7 @@ export default function FilterEmployee(props: Props) {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
       initialCountries: formik.values.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
       onSubmit: (r) => {
-        formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el.id)])
+        formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el?.id)])
         locationContext.getCities(null, null, r)
         creationContext.setHelpObjects({...creationContext.helpObjects, cities: r})
       },
@@ -145,18 +145,18 @@ export default function FilterEmployee(props: Props) {
   }
 
   const onRemoveCategory = (category: ISpecializationCategory) => {
-    creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f.id !== category.id):state)
-    formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category.id))
+    creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f?.id !== category?.id):state)
+    formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category?.id))
   }
 
   const onRemoveCountry = (el: IGeoName) => {
-    formik.setFieldValue('countries', formik.values.countries.filter(f=> f !== el.geonameid))
-    creationContext.setHelpObjects({...creationContext.helpObjects, countries: creationContext.helpObjects.countries.filter(f=> f.geonameid !== el.geonameid)})
+    formik.setFieldValue('countries', formik.values.countries.filter(f=> f !== el?.geonameid))
+    creationContext.setHelpObjects({...creationContext.helpObjects, countries: creationContext.helpObjects.countries.filter(f=> f.geonameid !== el?.geonameid)})
   }
 
   const onRemoveCity = (el: ISearchCityResult) => {
-    formik.setFieldValue('cities', formik.values.cities.filter(f=> f !== el.id))
-    creationContext.setHelpObjects({...creationContext.helpObjects, cities: creationContext.helpObjects.cities.filter(f=> f.id !== el.id)})
+    formik.setFieldValue('cities', formik.values.cities.filter(f=> f !== el?.id))
+    creationContext.setHelpObjects({...creationContext.helpObjects, cities: creationContext.helpObjects.cities.filter(f=> f.id !== el?.id)})
   }
 
   const resetAll = () => {
@@ -184,7 +184,7 @@ export default function FilterEmployee(props: Props) {
     forLastNumbersOfDays: [
       {value: null, label: t('allTheTime')},
       ...periods.map(el=>{
-        return {value: el.value, label: el.name}
+        return {value: el?.value, label: el?.name}
       })         
     ]
   }
@@ -228,10 +228,10 @@ export default function FilterEmployee(props: Props) {
       sources: [...creationContext.helpObjects.activeSources.keys()],
       verticals: [...creationContext.helpObjects.activeVerticals.keys()],
       geos: [...creationContext.helpObjects.activeGeos.keys()],
-      countries: creationContext.helpObjects?.countries?.map(el=> el.geonameid).filter(Boolean),
+      countries: creationContext.helpObjects?.countries?.map(el=> el?.geonameid).filter(Boolean),
     }
     creationContext.activeSubCategory&&
-    Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
+    Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el?.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
@@ -390,7 +390,7 @@ export default function FilterEmployee(props: Props) {
           }
           {creationContext.activeSubCategory?.length > 0 &&
             creationContext.activeSubCategory?.map(el=> {
-              return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
+              return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
             })
           }
           <P 
@@ -409,7 +409,7 @@ export default function FilterEmployee(props: Props) {
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
             creationContext.helpObjects.countries.map(el=> {
-              return (<RemovableItem key={el.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el.locName} />)
+              return (<RemovableItem key={el?.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el?.locName} />)
             })
           }
             <P 
@@ -428,7 +428,7 @@ export default function FilterEmployee(props: Props) {
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.cities?.length > 0 &&
             creationContext.helpObjects.cities.map(el=> {
-              return (<RemovableItem key={el.id} onClick={()=>onRemoveCity(el)} text={el.name} />)
+              return (<RemovableItem key={el?.id} onClick={()=>onRemoveCity(el)} text={el?.name} />)
             })
           }
             <P 

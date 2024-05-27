@@ -81,7 +81,9 @@ function RecruitingPageEmployeeInner(props: Props) {
     setLoading(true)
     vacancyContext.setPage(1)
     setCurrentFilters(clearedObj)
-    findVacanciesThrottle.callback(clearedObj)
+    setTimeout(()=>{
+      findVacanciesThrottle.callback(clearedObj)
+    }, 100)
     router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
@@ -104,8 +106,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
 
-  useEffect(()=>{
-    
+  useEffect(()=>{    
     findVacancies()  
   }, [vacancyContext.page])
 
@@ -120,11 +121,7 @@ function RecruitingPageEmployeeInner(props: Props) {
       <div className={styles.back}>
         <Image src={employee} className={styles.backImage} alt={'back'} />
       </div>
-
-
       <P styleType={['huge', 'w700']} useThemeColor className={styles.title}>{t('recruiting_em_placeCv')}</P>
-
-
       <P styleType={['large']} useThemeColor  className={styles.description}>
         {t('recruiting_em_desc1')} <br/> {t('recruiting_em_desc2')}    
       </P>

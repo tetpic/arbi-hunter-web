@@ -20,7 +20,8 @@ export default class ProposalRepository {
       method: 'get',
       url: '/api/proposal',
       data: {
-        s: JSON.stringify(data.s)
+        s: JSON.stringify(data.s),
+        sort: 'createdAt,DESC'  
       }
     })
     if(res.err) {

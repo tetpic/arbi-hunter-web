@@ -67,6 +67,8 @@ export function FeedbacksWrapper(props: Props) {
 
   const setVCResponses = async (id?:number): Promise<boolean> => {
     try {
+      const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({vacancyId: currentCvResponses.vacancyId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
+      console.log(_applications, _proposals)
       const res = await ApplicationRepository.getVacancyApplication(id = currentVacancy?.id || id)
       setVCResponsesState(state => {
         state.clear()
