@@ -25,7 +25,6 @@ import PhoneCountryField from 'components/fields/PhoneCountryField'
 import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
-import { AlertModalArgs } from '@/components/modals/AlertModal'
 import P from '@/components/ui/P'
 
 interface Props {
@@ -39,7 +38,7 @@ export default function Registration(props: Props) {
   const {isTabletWidth} = appContext.size
 
   const [cityId, setCityId] = useState<number>(undefined)
-  const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined) 
+  const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined)
   const [country, setCountry] = useState<ISearchCountryResult>()
   const [progress, setProgress] = useState<number>(props.token?2:1)
 
@@ -53,8 +52,8 @@ export default function Registration(props: Props) {
     firstName: '',
     lastName: '',
     patronymic: '',
-    password: '',      
-    phone: '', 
+    password: '',
+    phone: '',
     profileType: userContext.profileType??ProfileType.Employee,
     telegramNickname: '',
     email: '',
@@ -66,24 +65,24 @@ export default function Registration(props: Props) {
   }
 
   const submit = async (data: IRegistrationComplete) => {
-    
+
     if((!cityId || !country) && userContext.profileType === ProfileType.Hirer) {
       appContext.showSnackbar(t('registration_chooseCityAndCountry'), SnackbarType.error)
       return
     }
     else {
       setDisableButton(true)
-      data = {...data, 
-        cityId, 
+      data = {...data,
+        cityId,
         countryId : country?.geoname?.geonameid,
         phone: userContext.user?.phone||data.phone,
         profileType: userContext.profileType
       }
       const sendData = clearObject(data)
-      
+
       RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
-        setTimeout(() => {          
+        setTimeout(() => {
           userContext.updateUser()
         }, 300)
       })
@@ -112,13 +111,13 @@ export default function Registration(props: Props) {
 
   const  nextPageValidator = (page?: number) => {
     // appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-    //   text: <>Всем привет! <br /> 
-    //   Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+    //   text: <>Всем привет! <br />
+    //   Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
     //   следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
     //   </>,
     //   onClick: ()=>{appContext.hideModal()}
     // })
-    // return 
+    // return
     const setErr = (val: string, err?: string) => {
       formik.setFieldTouched(val, true).then(_=>{
         formik.setFieldError(val, err||' ')
@@ -140,7 +139,7 @@ export default function Registration(props: Props) {
         const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
-        
+
         if(filteredErrors.length === 0 && (!isLoginExist.exists || !isLoginExist.isRegistrationCompleted || isLoginExist.profilesCount === 0)) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
             email: formik.values.email,
@@ -154,24 +153,24 @@ export default function Registration(props: Props) {
         }
       })()
       break
-      case 2:(async() => {  
+      case 2:(async() => {
         const values = ['phone']
         validateValues(values)
-        .then(res=> {          
+        .then(res=> {
           if(res === false) {
             setErr('email', t('registration_enterCorrectEmail'))
           }
           else {
             RegistrationRepository.checkEmailOrPhoneExists(formik.values.phone)
             .then(r=> {
-              if(!r.exists||!r.isRegistrationCompleted||r.profilesCount === 0) setProgress(page||progress+1) 
+              if(!r.exists||!r.isRegistrationCompleted||r.profilesCount === 0) setProgress(page||progress+1)
               else {setErr('phone', t('registration_phoneExist'))}
             })
           }
         })
       })()
       break
-      case 3:(() => {   
+      case 3:(() => {
         const values = ['firstName', 'lastName']
         validateValues(values).then(res=> {
           if(res) setProgress(page||progress+1)
@@ -186,13 +185,13 @@ export default function Registration(props: Props) {
   }
 
   const stage1 = (<>
-    <InputField   
+    <InputField
     label={'E-mail:'}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'email'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'email'}
     validate={Validator.combine([Validator.required, Validator.email])}
     />
     <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
@@ -203,80 +202,80 @@ export default function Registration(props: Props) {
     <P className={styles.uneditable}>
       {`E-mail: ${formik.values.email}`}
     </P>
-    <PhoneCountryField 
-    styleType={'horizontal'} 
-    disabled={false} 
-    placeholder={'000 000 00 00'} 
-    name={'phone'}  
-    className={styles.input} 
+    <PhoneCountryField
+    styleType={'horizontal'}
+    disabled={false}
+    placeholder={'000 000 00 00'}
+    name={'phone'}
+    className={styles.input}
     defaultCountry={'RU'}
     label={`${t('phone')}:`}
     validate={Validator.phone}
-    />   
+    />
   </>)
 
   const stage3 =(<>
-    <InputField 
+    <InputField
     label={`${t('name')}:`}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'firstName'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'firstName'}
     validate={Validator.combine([Validator.required, Validator.onlyChars])}
     />
 
-    <InputField 
+    <InputField
     label={`${t('lastName')}:`}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'lastName'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'lastName'}
     validate={Validator.combine([Validator.required, Validator.onlyChars])}
     />
 
-    <InputField 
+    <InputField
     label={`${t('patronymic')}:`}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'patronymic'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'patronymic'}
     />
 
-    <InputField 
+    <InputField
     label={'Telegram:'}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'telegramNickname'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'telegramNickname'}
     />
   </>)
 
   const stage4 = (<>
-    <InputField 
+    <InputField
     label={`${t('registration_companyName')}:`}
-    className={styles.input} 
-    labelType='top' 
-    styleType={'default'} 
-    color={'default'} 
-    name={'company'} 
+    className={styles.input}
+    labelType='top'
+    styleType={'default'}
+    color={'default'}
+    name={'company'}
     validate={Validator.required}
     />
 
-    <LocationDropDownInput 
-    onSetOption={countryHandler} 
-    name={'countryId'} 
+    <LocationDropDownInput
+    onSetOption={countryHandler}
+    name={'countryId'}
     labelName={`${t('country')}: `}
     requestFn={LocationRepository.searchCountry}
     className={styles.dropInput}
     />
 
-    <LocationDropDownInput 
-    onSetOption={cityHandler} 
-    name={'cityId'} 
+    <LocationDropDownInput
+    onSetOption={cityHandler}
+    name={'cityId'}
     labelName={`${t('city')}: `}
     requestFn={LocationRepository.searchCity}
     country={country&&country.country_code}
@@ -309,37 +308,37 @@ export default function Registration(props: Props) {
         firstName: userContext.user.firstName,
         phone: userContext.user.phone
       }
-      formik.setValues({...formik.values, ...clearObject(dataToSet)})      
+      formik.setValues({...formik.values, ...clearObject(dataToSet)})
     }
   }, [userContext.user])
 
   useEffect(()=>{
     if(props.token) {
       userContext.setToken(props.token)
-    }  
+    }
   }, [props.token])
 
   useEffect(()=>{
     //эту строчку не удалять. Пока что регистрация запрещена на основном сайте, когда откроют - раскомментировать
     // isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
-    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br /> 
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+    /*appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
+      text: <>Всем привет! <br />
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
       следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
       </>,
       onClick: ()=>{appContext.hideModal()}
-    })
+    })*/
   }, [])
 
-  return ( 
+  return (
     <div className={styles.root}>
-      {!isTabletWidth&& 
+      {!isTabletWidth&&
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
         <P useThemeColor className={styles.title}>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-          {t('registration')} 
+          {t('registration')}
           {!isTabletWidth&&<Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/>}
         </P>
         <P useThemeColor className={styles.subTitle}>

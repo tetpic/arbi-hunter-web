@@ -39,8 +39,8 @@ export default function Login() {
 
   const showInfo = () => {
     appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br /> 
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      text: <>Всем привет! <br />
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
       следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
       </>,
       onClick: ()=>{appContext.hideModal()}
@@ -52,9 +52,9 @@ export default function Login() {
     password: ''
   }
 
-  const submit = (data : ILogin) => {  
+  const submit = (data : ILogin) => {
     UserRepository.loginByEmailOrPhone(data)
-    .then(res=> {   
+    .then(res=> {
       userContext.setToken(res.accessToken)
     })
     .catch(err=> {
@@ -104,9 +104,9 @@ export default function Login() {
     userContext.logout(true)
   }, [])
 
-  return ( 
+  return (
     <div className={styles.root}>
-      {!isTabletWidth&& 
+      {!isTabletWidth&&
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
@@ -116,56 +116,56 @@ export default function Login() {
         </P>
         <P styleType={['w500', 'alignCenter', 'large']} useThemeColor>
           {t('login_stillNoAccount')}
-          <span className={styles.loginLink} onClick={showInfo}>
+          <span className={styles.loginLink} onClick={() => router.push('/registration')}>
             {t('login_getRegister')}
           </span>
         </P>
         <FormikProvider value={formik}>
           <Form onKeyDown={e=>onInputEnterPress(e)} className={styles.form}>
             {loginType=== LoginType.Email &&
-              <InputField   
+              <InputField
               inputMode='email'
               label={'E-mail:'}
-              className={styles.input} 
+              className={styles.input}
               data-testid={'email'}
-              labelType='top' 
-              styleType={'default'} 
-              color={'default'} 
-              name={'login'} 
+              labelType='top'
+              styleType={'default'}
+              color={'default'}
+              name={'login'}
               validate={Validator.combine([Validator.required, Validator.email])}
               />
             }
-            <InputField 
+            <InputField
             label={`${t('password')}:`}
-            className={styles.input} 
-            labelType='top' 
-            styleType={'default'} 
-            color={'default'} 
-            name={'password'} 
+            className={styles.input}
+            labelType='top'
+            styleType={'default'}
+            color={'default'}
+            name={'password'}
             type={passwordIsOpen?'text':'password'}
             suffix={'icon'}
             suffixIcon={passwordIsOpen?<OpenEyeSvg color={isLightTheme&&colors.black}/>: <CloseEyeSvg color={isLightTheme&&colors.black}/>}
             onSuffixClick={passwordHandler}
             validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
             />
-            
+
             <Link className={styles.forgot} href={'/password'}>
               <P styleType={['w500', 'large']} useThemeColor>{t('login_forgot')}</P> {t('login_restorePassword')}
             </Link>
-            
+
             <div className={styles.buttonsWrapper}>
-              <Button 
-              type='button' 
+              <Button
+              type='button'
               styleType={[ 'gradient','phoneWide']}
               onClick={()=>formik.submitForm()}>
                 <span>{t('enter')}</span>
               </Button>
-              
-              {/* <Button 
-              type='button' 
-              onClick={googleLogin} 
+
+              {/* <Button
+              type='button'
+              onClick={googleLogin}
               styleType={['black', 'phoneWide']}
-             
+
               icon={
                 <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
               }>

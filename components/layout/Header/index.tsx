@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { ProfileType } from 'data/interfaces/IRegistration' 
+import { ProfileType } from 'data/interfaces/IRegistration'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import UserPic from 'components/ui/UserPic'
@@ -49,8 +49,8 @@ export default function Header(props: Props) {
 
   const showInfo = () => {
     appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br /> 
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал, 
+      text: <>Всем привет! <br />
+      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
       следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
       </>,
       onClick: ()=>{appContext.hideModal()}
@@ -76,7 +76,7 @@ export default function Header(props: Props) {
 
 
 
-  return ( 
+  return (
     <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar)} ref={dropdownRef}>
       {/* {(!userContext.isLogged || !userContext.currentProfile) && */}
       <Link href={'/'} className={styles.logo}>
@@ -85,38 +85,38 @@ export default function Header(props: Props) {
       {/* } */}
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
-          <Modes 
+          <Modes
           buttons={[
             {name: t('employee'), type: ProfileType.Employee},
             {name: t('hirer'), type: ProfileType.Hirer}
-          ]} 
-          activeButton={profileType} 
-          onSet={(type)=>setProfileType(type)}/>  
+          ]}
+          activeButton={profileType}
+          onSet={(type)=>setProfileType(type)}/>
         }
 
         {!isTabletWidth && userContext.isLogged && userContext.currentProfile?.profileType &&
           <div className={styles.linksWrapper}>
-            <SearchBar 
+            <SearchBar
             onSubmit={(data)=> onSearchbarSubmit(data)}
             onFilterClick={()=>router.push('/recruiting')}
             />
           </div>
         }
-        
-        {!isTabletWidth && 
+
+        {!isTabletWidth &&
           <div className={classnames(styles.userWrapper, !userContext.currentProfile&&styles.userWrapper_unlogged)}>
             {!userContext.currentProfile && <>
-              <Button 
+              <Button
               styleType={['black', 'borderBlue', 'backTransparent']}
               altStyleType={['white', 'borderGrey']}
-              // href={regPath}
+               href={regPath}
               onClick={()=> showInfo()}
               disabled={activePath === regPath}
               >
                 {t('registration')}
               </Button>
 
-              <Button 
+              <Button
               disabled={activePath === loginPath}
               href={loginPath}
               styleType={['grey', 'borderWhite', 'backTransparent']}
@@ -126,65 +126,65 @@ export default function Header(props: Props) {
               </Button>
             </>}
 
-            {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee && 
+            {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Employee &&
             <>
-              <Button 
-              href={'/create/cv'} 
+              <Button
+              href={'/create/cv'}
               styleType={['gradient']}
               >
                 {t('create_cv')}
               </Button>
-              <Button               
-              styleType={['icon', 'black']} 
+              <Button
+              styleType={['icon', 'black']}
               altStyleType={['icon','white']}
               className={styles.iconButton}
               >
                 <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>
-              <Button  
-              styleType={['icon', 'black', 'svg24']} 
+              <Button
+              styleType={['icon', 'black', 'svg24']}
               altStyleType={['icon','white', 'svg24', 'invertSvg']}
               className={styles.iconButton}
               href={'/favorites'}
               >
                 <HeartSvg/>
               </Button>
-              <UserPic 
+              <UserPic
               key={userContext.currentProfile?.logo?.source||userContext.currentProfile?.image?.source}
-              image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} 
-              className={styles.userPic} 
+              image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)}
+              className={styles.userPic}
               onClick={()=>router.push('/personal/my')}
               />
             </>}
 
-            {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer && 
+            {userContext.isLogged && userContext.currentProfile?.profileType === ProfileType.Hirer &&
             <>
-              <Button 
-              href={'/create/vacancy'} 
+              <Button
+              href={'/create/vacancy'}
               styleType={['gradient']}
               >
                  {t('create_vacancy')}
               </Button>
-              <Button 
+              <Button
               href={'/notifications'}
-              styleType={['icon', 'black']} 
+              styleType={['icon', 'black']}
               altStyleType={['icon', 'white']}
-              className={styles.iconButton} 
+              className={styles.iconButton}
               >
                 <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>
-              <Button 
-              styleType={['icon', 'black', 'svg24']} 
+              <Button
+              styleType={['icon', 'black', 'svg24']}
               altStyleType={['icon', 'white', 'invertSvg']}
-              className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)} 
+              className={classnames(styles.iconButton, activePath === '/profile?page=saved'&& styles.iconButton_active)}
               href={'/favorites'}
               >
                 <StarSvg/>
               </Button>
-              <UserPic 
-              key={1} 
-              image={userContext.currentProfile?.logo&&ImageHelper.urlFromFile(userContext.currentProfile?.logo, Preset.smallIconCrop)} 
-              className={styles.userPic} 
+              <UserPic
+              key={1}
+              image={userContext.currentProfile?.logo&&ImageHelper.urlFromFile(userContext.currentProfile?.logo, Preset.smallIconCrop)}
+              className={styles.userPic}
               onClick={()=>router.push('/personal/my')}
               />
             </>}
