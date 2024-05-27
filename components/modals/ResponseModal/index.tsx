@@ -69,7 +69,7 @@ export default function ResponseModal(props: Props) {
         name={'coverLetter'}
         validate={Validator.required}
         />
-        <Button className={styles.button} type='submit'>
+        <Button styleType={['gradient', 'phoneWide']} className={styles.button} type='submit'>
           Отправить
         </Button>
       </div>

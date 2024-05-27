@@ -63,6 +63,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[0.9]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <VcResponsesFilterModal  onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -71,6 +72,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[400]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <MediaItemActionsModal isBottomSheet={true}  onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -79,6 +81,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[0.9]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <ChatsFolderModal isBottomSheet={true}  onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -87,6 +90,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.9]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <ChatFilterModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -95,6 +99,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <ResponseModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -103,6 +108,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <SearchFilterModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -138,6 +144,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <ApplicationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -146,6 +153,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <AddPortfolioModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -154,6 +162,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <CompensationModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -162,6 +171,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <CharacterCartModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -170,6 +180,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={appContext.modalNonSkippable}
+          disableScrollLocking
         >
           <PurchasePreviewModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -178,6 +189,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={false}
+          disableScrollLocking
         >
           <RefillBalanceModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
@@ -186,6 +198,7 @@ export default function BottomSheetContainer(props: Props) {
           onClose={appContext.hideBottomSheet}
           snapPoints={[appContext.snapPoints||0.5]}
           disableDrag={false}
+          disableScrollLocking
         >
           <ChangeLanguageModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>

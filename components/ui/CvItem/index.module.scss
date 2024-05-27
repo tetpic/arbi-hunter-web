@@ -156,3 +156,8 @@
   right: 16px;
   z-index: 3;
 }
+
+.VIP {
+  border: 2px $yellow solid;
+  background: linear-gradient(30deg, var(--gradientColor1), var(--gradientColor2));
+}

@@ -33,6 +33,7 @@ interface Props {
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const {t, lang} = useTranslation()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const cvContext = useCvContext()
   const {getNewSignal} = useAbortController()
   const router = useRouter()
@@ -43,13 +44,16 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, {
+    const _args:IApplicationModalProps = {
       cvs: cvContext.savedCvs.filter(el => el.published), 
       vacancy: vacancy,
       onSet: () => {
         onChangeItem(vacancy)
       }
-    })
+    } 
+    isTabletWidth
+    ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, _args)
+    :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, _args)
   }
 
   const openChat = (e: React.MouseEvent) => {
@@ -90,9 +94,9 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
 
 
   return (<Link 
-  className={classNames(styles.item, isLightTheme && styles.item_light, vacancy.subscriptions.tariff.key.includes('Vip')&&styles.VIP)} 
+  className={classNames(styles.item, isLightTheme && styles.item_light, vacancy.subscriptions?.tariff?.key.includes('Vip')&&styles.VIP)} 
   //@ts-ignore
-  style={{'--gradientColor1': '#'+vacancy.subscriptions.tariff.colors[0]+'50', '--gradientColor2':'#'+vacancy.subscriptions.tariff.colors[1]+'50'}}
+  style={{'--gradientColor1': '#'+vacancy.subscriptions?.tariff?.colors[0]+'50', '--gradientColor2':'#'+vacancy.subscriptions?.tariff?.colors[1]+'50'}}
   href={'/vacancy/'+vacancy.id}> 
     <FavoritesButton styleType={['icon', 'backTransparent']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
@@ -158,7 +162,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
         {vacancy.showContactName && 
           <Button 
-          styleType={['black', 'borderBlue', 'phoneWide']}
+          styleType={['black', 'borderBlue', 'phoneWide', 'backTransparent']}
           altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
           >
             Контакты

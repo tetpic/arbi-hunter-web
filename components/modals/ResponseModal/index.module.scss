@@ -38,7 +38,6 @@
 }
 
 .button {
-  @include buttonGradient;
   margin-top: 24px;
   flex-shrink: 0;
 }

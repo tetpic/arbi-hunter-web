@@ -2,6 +2,8 @@
 
 .root {
   margin-top: 48px;
+  display: flex;
+
   @include mq($TabletWidth, max) {
     margin-top: 8px;
   }
@@ -17,6 +19,17 @@
   flex-direction: column;
   justify-content: stretch;
   row-gap: 24px;
+}
+
+.items {
+  flex-wrap: wrap;
+  width: 100%;
+  display: flex;
+  column-gap: 16px;
+  row-gap: 16px;
+  @include mq($TabletWidth, max) {
+    flex-direction: column;
+  }
 }
 
 .title {

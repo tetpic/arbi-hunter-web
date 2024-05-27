@@ -1,5 +1,15 @@
 @import 'styles/index';
 
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  @include mq($TabletWidth, max) {
+    padding-bottom: 8px;
+    overflow: auto;
+  }
+}
+
 .addCover {
   color: $blue;
   display: flex;
@@ -13,6 +23,11 @@
 .nextButton {
   @include buttonGradient;
   margin-top: 16px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+  }
 }
 
 .textArea {
@@ -25,4 +40,10 @@
   right: 16px;
   z-index: 2;
   cursor: pointer;
+}
+
+.form {
+  @include mq($TabletWidth, max) {  
+    margin-bottom: 16px;
+  }
 }

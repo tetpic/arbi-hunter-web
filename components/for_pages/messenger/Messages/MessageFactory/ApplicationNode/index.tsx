@@ -84,7 +84,7 @@ export function ApplicationEmployeeNode (props: Props) {
     }
     const modalProps = {cv: props.application?.cv, application: props.application, onSubmit}
     isTabletWidth
-    ?appContext.showBottomSheet<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
+    ?appContext.showBottomSheet<IResponseModalProps>(ModalType.ResponseModal, {...modalProps}, 260)
     :appContext.showModal<IResponseModalProps>(ModalType.ResponseModal, {...modalProps})
   }
 

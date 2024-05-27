@@ -194,7 +194,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
         <Statistics 
         title={t('vacancy_page_statsTitle')}
         items={[
-          {name: t('vacancy_page_shows'), count: vacancy.totalProposals},
+          {name: t('vacancy_page_shows'), count: vacancy.totalShows},
           {name: t('vacancy_page_views'), count: vacancy.totalViews},
           {name: t('vacancy_page_applications'), count: vacancy.totalApplications},
         ]}

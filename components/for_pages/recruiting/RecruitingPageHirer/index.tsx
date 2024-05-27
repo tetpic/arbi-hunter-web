@@ -140,7 +140,7 @@ function RecruitingPageHirerInner(props: Props) {
       </div>
     }
 
-    {isTabletWidth && 
+    {/* {isTabletWidth && 
       <TitleForSection title={' '} onBackClick={router.back}/>
     }
     <MainSearchBar
@@ -148,7 +148,18 @@ function RecruitingPageHirerInner(props: Props) {
      onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
      initialSearch={searchString}
      onFilterClick={onFilterClick}
-     />
+     /> */}
+      <div className={styles.searchBarWrapper}>
+        {isTabletWidth && 
+          <TitleForSection title={' '} onBackClick={router.back} className={styles.title}/>
+        }
+        <MainSearchBar
+        placeholder={t('search_cv')} fullWidth className={styles.searchBar} 
+        onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
+        initialSearch={searchString}
+        onFilterClick={onFilterClick}
+        />
+      </div>
 
     <div className={styles.header}>
       {!loading &&

@@ -11,9 +11,13 @@ import MailConvertSvg from '@/components/svg/MailConvertSvg'
 import PhoneSvg from '@/components/svg/PhoneSvg'
 import TelegramSvg from '@/components/svg/TelegramSvg'
 import useTranslation from 'next-translate/useTranslation'
-import { ApplicationStatus, ProposalRequestType } from 'types/enums'
+import { ApplicationStatus, ProposalRequestType, SnackbarType } from 'types/enums'
 import ChatRepository from 'data/repositories/ChatRepository'
 import { useRouter } from 'next/router'
+import DoubleSvg from '@/components/svg/DoubleSvg'
+import { colors } from 'styles/variables'
+import { copyToClipboard } from 'utils/helpers'
+import { useAppContext } from 'context/state'
 
 interface Props {
   vacancy: IVacancy
@@ -26,6 +30,7 @@ export default function ContactsModal(props: Props) {
   const ref = useRef()
   const [active, setActive] = useDetectOutsideClick(ref, props.isActive)
   const router = useRouter()
+  const appContext = useAppContext()
 
   const contacts = [
     {
@@ -88,6 +93,16 @@ export default function ContactsModal(props: Props) {
         altStyleType={['icon', 'gradient']}
         >{el.icon}</Button> 
           {el.text}
+          <Button styleType={['icon']}
+          className={styles.copyButton}
+          onClick={()=> {
+            copyToClipboard(el.text)
+            appContext.showSnackbar('Скопировано', SnackbarType.success)
+          }}
+          >
+            <DoubleSvg color={colors.blue}/>
+          </Button>
+
         </P>
       )
     })}    

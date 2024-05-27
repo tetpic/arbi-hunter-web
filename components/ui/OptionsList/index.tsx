@@ -33,6 +33,7 @@ export default function OptionsList(props: Props) {
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
+        appContext.hideBottomSheet()
         el.onClick&&el.onClick(e)
       }}
       >

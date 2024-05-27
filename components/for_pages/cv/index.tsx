@@ -41,11 +41,12 @@ import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
-import { clearObject, getUserImageSource } from 'utils/helpers'
+import { clearObject, copyToClipboard, getUserImageSource } from 'utils/helpers'
 import useAbortController from '@/components/hooks/useAbortController'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import DoubleSvg from '@/components/svg/DoubleSvg'
 
 
 interface Props {
@@ -392,6 +393,17 @@ export default function CvPage(props: Props) {
             <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
               <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><MailAltSvg/></Button>
               {currentCv.profile.email}
+              <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.profile.email)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
             </P>
           </Link>
           }
@@ -400,7 +412,19 @@ export default function CvPage(props: Props) {
             <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
               <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><PhoneSvg/></Button>
               {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
+              <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.phone||currentCv.profile?.phone)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
             </P>
+  
           </Link>
           }
           {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
@@ -408,6 +432,17 @@ export default function CvPage(props: Props) {
             <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
               <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><TelegramSvg/></Button>
               {currentCv.telegramNickname||currentCv.profile.telegramNickname}
+              <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.telegramNickname||currentCv.profile.telegramNickname)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
             </P>
           </Link>
           }
@@ -416,6 +451,17 @@ export default function CvPage(props: Props) {
             <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
               <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><WhatsAppSvg/></Button>
               {currentCv.whatsapp}
+              <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.whatsapp)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
             </P>
           </Link>
           }
@@ -424,6 +470,17 @@ export default function CvPage(props: Props) {
           <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
             <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><SkypeSvg/></Button>
             {currentCv.skype}
+            <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.skype)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
           </P>
           </Link>
           }
@@ -432,6 +489,17 @@ export default function CvPage(props: Props) {
           <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
             <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><LinkedInSvg/></Button>
             {currentCv.linkedin}
+            <Button 
+              onClick={(e)=>{
+                e.stopPropagation()
+                e.preventDefault()
+                copyToClipboard(currentCv.linkedin)
+                appContext.showSnackbar('Скопировано', SnackbarType.success)
+              }}
+              className={styles.copyButton}
+              >
+                <DoubleSvg color={colors.blue}/>
+              </Button>
           </P>
           </Link>
           }
@@ -440,6 +508,17 @@ export default function CvPage(props: Props) {
               <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
                 <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><ViberLogoSvg/></Button>
                 {currentCv.viber}
+                <Button 
+                onClick={(e)=>{
+                  e.stopPropagation()
+                  e.preventDefault()
+                  copyToClipboard(currentCv.viber)
+                  appContext.showSnackbar('Скопировано', SnackbarType.success)
+                }}
+                className={styles.copyButton}
+                >
+                  <DoubleSvg color={colors.blue}/>
+                </Button>
               </P>
             </Link>
           }
