@@ -77,9 +77,11 @@ export default function Feedbacks() {
         break
 
       case ReviewsNavigation.Invite: 
+      console.log(itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined)))
+      
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.status==='accepted')
+          itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined))
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -95,10 +97,10 @@ export default function Feedbacks() {
         })       
         break
 
-      case ReviewsNavigation.Wait:      
+      case ReviewsNavigation.Wait:         
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.status==='applied')
+          itemsActiveFilter.filter(([_, value])=> value.status==='applied'&& value.type === undefined)
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -117,7 +119,7 @@ export default function Feedbacks() {
       case ReviewsNavigation.Reject:
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.notification?(value.status === ApplicationStatus.Rejected && value.type === ProposalRequestType.Interview):value.status === ApplicationStatus.Rejected)
+          itemsActiveFilter.filter(([_, value])=> value.type === ProposalRequestType.Rejection||value.status === ApplicationStatus.Rejected)
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -180,7 +182,15 @@ export default function Feedbacks() {
         } */}
         {
           filtered.size > 0 && !loading && [...filtered.entries()].map(([id, item])=> {
-            return (<VacancyItem  onRemove={(id)=>onRemove(id)} vc={item.vacancy} item={item} refreshCallback={feedBackContext.setCVResponses}/>)
+            return (<VacancyItem 
+              status={
+                page=== ReviewsNavigation.Wait && ApplicationStatus.Applied
+                ||
+                page === ReviewsNavigation.Invite && ApplicationStatus.Accepted
+                ||
+                page === ReviewsNavigation.Reject && ApplicationStatus.Rejected
+              }  
+              onRemove={(id)=>onRemove(id)} vc={item.vacancy} item={item} refreshCallback={feedBackContext.setCVResponses}/>)
           })
           ||
           loading &&

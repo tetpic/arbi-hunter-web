@@ -32,11 +32,12 @@ interface Props {
   item?: IProposal|IApplication
   refreshCallback?: Function
   onRemove?: (id: number) => void
+  status?: ApplicationStatus
 }
 
 //TODO: доделать всплывашку OptionsModal
 
-export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props) {  
+export default function VacancyItem({vc, item, refreshCallback, onRemove, status}: Props) {  
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size
@@ -120,14 +121,20 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
     <SalaryItem vacancy={vc}/>
   
     {item.status  &&
-      <p className={classNames(styles.status, styles[item.status])}
+      <p className={classNames(styles.status, styles[
+        (item.type === ProposalRequestType.Rejection||item.status === ApplicationStatus.Rejected) && ApplicationStatus.Rejected
+        ||
+        ( item.status==='applied'&& item.type === undefined) && ApplicationStatus.Applied
+        ||
+        (item.status==='accepted'||(item.type !== ProposalRequestType.Rejection && item.type !== undefined)) && ApplicationStatus.Accepted
+      ])}
       >
-        {TranslateProposalType(item?.status)}
+        {TranslateProposalType(status||item?.status)}
       </p>
     }
     <div className={styles.bottom}>
       <p className={styles.time}>{Formatter.formatToShortYear(item.createdAt)}</p>
-      {item?.status !== ApplicationStatus.Applied &&
+      {(item?.status !== ApplicationStatus.Applied || item.type !== undefined) &&
       <P styleType={['green', 'medium', 'w500', 'alignCenter']}><CheckSvg color={colors.green}/> Просмотрено</P>
       ||
       <P styleType={['medium', 'greyLight']}>Не просмотрено</P>

@@ -113,7 +113,7 @@ export function FeedbacksWrapper(props: Props) {
         return !proposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && (new Date(el.createdAt)).getTime() < (new Date(e.createdAt)).getTime())
       })
 
-      console.log([..._applications, ...filteredProposals]);
+      console.log([...filteredProposals,..._applications, ]);
       
       
   
@@ -129,7 +129,7 @@ export function FeedbacksWrapper(props: Props) {
       
 
   
-      [..._applications, ...filteredProposals].forEach(async(proposal) => {
+      [..._applications, ...filteredProposals].sort((a, b) => new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime()?-1:1).forEach(async(proposal) => {
         setAllCVResponsesState(state => {
             state.set(proposal.id, proposal)
           return new Map(state)
