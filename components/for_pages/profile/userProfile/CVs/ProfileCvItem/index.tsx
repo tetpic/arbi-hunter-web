@@ -119,7 +119,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 448)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с резюме'}, props.type === 'archive'&&280||props.type==='drafts'&&220||320)
     }
     else {
       openDropDown(!dropDown)

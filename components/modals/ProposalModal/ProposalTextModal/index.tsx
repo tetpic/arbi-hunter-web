@@ -31,7 +31,7 @@ export interface IProposalTextModalProps {
   vcId?: number, 
   application?: IApplication, 
   cv: ICV,
-  onSubmit?: (type?: ProposalRequestType, text?: string) => void
+  onSubmit?: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => void
 }
 
 export default function ProposalTextModal(props: Props) {
@@ -44,6 +44,7 @@ export default function ProposalTextModal(props: Props) {
   const [type, setTypeState] = useState<ProposalRequestType>(null)
 
   const submit = async(data: IProposal) => {
+    debugger
     
     const dataToSend:IProposal = {
       ...data,
@@ -52,9 +53,9 @@ export default function ProposalTextModal(props: Props) {
     }
     proposalRepository.createProposal(dataToSend)
     .then(res=>{
-      res
+      debugger
       if(typeof res === 'object' && modalArguments.onSubmit) {
-        modalArguments.onSubmit(dataToSend.type, data.coverLetter)
+        modalArguments.onSubmit(dataToSend.type, data.coverLetter, res)
       }
       res&&appContext.showModal<IApplicationSuccessModalProps>(ModalType.ApplicationSuccessModal, {type: 'vc', id: vcId, cv: modalArguments.cv})
       if(!res){

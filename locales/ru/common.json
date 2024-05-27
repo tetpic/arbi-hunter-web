@@ -162,7 +162,7 @@
   "isRemote_false": "В офисе",
 
   "schedule_fullDay": "Полный день",
-  "schedule_flexible": "Гибкий график",
+  "schedule_flexible": "Гибкий",
   "schedule_remote": "Удаленная работа", 
 
   "education_noEducation": "Нет образования",
@@ -177,9 +177,9 @@
 
   "employmentBoard_employment": "Занятость",
   "employmentBoard_schedule": "График работы",
-  "employmentBoard_place": "Место",
+  "employmentBoard_place": "Формат",
   "employmentBoard_remote": "Удаленно",
-  "employmentBoard_office": "Офис",
+  "employmentBoard_office": "В офисе",
 
   "workExperience_no":"Без опыта",
   "workExperience_from1to3":"От 1 до 3",

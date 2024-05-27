@@ -37,8 +37,7 @@
     }
   }
 
-  .title  {
-  }
+
 
   .description {
   }
@@ -58,9 +57,17 @@
   }
 }
 
+.title  {
+  @include mq($TabletWidth, max) {
+    width: 40px;
+    height: 42px;
+  }
+}
+
 .searchBar {
   @include mq($TabletWidth, max) {
-    margin-top: 16px;
+    margin-top: unset;
+    height: 40px;
   }
 }
 
@@ -97,5 +104,11 @@
 .found {
   margin-top: 42px;
   margin-bottom: 16px;
+}
+
+.searchBarWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
 }
 

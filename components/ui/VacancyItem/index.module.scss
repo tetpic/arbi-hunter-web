@@ -214,3 +214,10 @@
     height: auto;
   }
 }
+
+.VIP {
+  border: 2px $yellow solid;
+  background: linear-gradient(30deg, var(--gradientColor1), var(--gradientColor2));
+
+  
+}

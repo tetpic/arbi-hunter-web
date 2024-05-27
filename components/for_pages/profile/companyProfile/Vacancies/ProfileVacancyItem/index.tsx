@@ -121,7 +121,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     e.preventDefault()
     e.stopPropagation()
     if (isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options}, 430)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с вакансией'}, props.type === 'archive'&&280||props.type === 'drafts'&&220||380)
     }
     else {
       openDropDown(!dropDown)

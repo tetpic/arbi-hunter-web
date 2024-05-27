@@ -21,11 +21,11 @@ export default function MobileBottomMenu(props: Props) {
     <Button styleType={['icon', 'backTransparent']} href={'/messenger'}><MenuChatsSvg/></Button>
     <Button styleType={['icon', 'gradient']} href={'/recruiting'}><MenuSearchSvg/></Button>
     <Button styleType={['icon', 'backTransparent']} href={'/favorites'}>
-      {userContext.currentProfile.profileType === ProfileType.Employee
+      {userContext?.currentProfile?.profileType === ProfileType.Employee
       ?<MenuHeartSvg/>
       :<MenuStarSvg/>}
     </Button>
-    <Button styleType={['icon', 'backTransparent']} href={'/personal/my'}><MenuUserSvg/></Button>
+    <Button styleType={['icon', 'backTransparent']} href={'/settings'}><MenuUserSvg/></Button>
   </div>
 
   </div>)

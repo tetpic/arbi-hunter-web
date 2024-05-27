@@ -35,7 +35,7 @@ export default function FavoritesButton(props: Props) {
       {props.showStar && 
       <StarSvg size={props.size||24} color={colors.greyLight}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
       ||
-      <HeartSvg size={props.size||24} color={props.altStyleType&&colors.black}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
+      <HeartSvg size={props.size||24} color={colors.greyLight}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
       }
     </Button>
   )

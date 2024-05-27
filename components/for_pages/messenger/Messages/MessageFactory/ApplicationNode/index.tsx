@@ -1,6 +1,6 @@
 import { IApplication } from 'data/interfaces/IApplication'
 import styles from './index.module.scss'
-import { ApplicationBSSelectType, ModalType, SnackbarType } from 'types/enums'
+import { ApplicationBSSelectType, ApplicationStatus, ModalType, SnackbarType, ProposalRequestType } from 'types/enums'
 import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
 import { useAppContext } from 'context/state'
 import Button from 'components/ui/Button'
@@ -34,6 +34,10 @@ export  function ApplicationHirerNode (props: Props) {
           application: props.application, 
           cv: props.application?.cv, 
           vcId: props.application?.vacancyId,
+          onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {
+            debugger
+            dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
+          }
         })
     }} 
    
@@ -50,8 +54,9 @@ export  function ApplicationHirerNode (props: Props) {
         application: props.application, 
         cv: props.application.cv, 
         vcId: props.application.vacancyId,
-        onSubmit: (type, msg) => {
-          dialog.refreshMessage(Number(props.message.id), {...props.message, application: undefined})
+        onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {
+          debugger
+          dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
         }
       })
     }} 
@@ -73,8 +78,9 @@ export function ApplicationEmployeeNode (props: Props) {
       appContext.showSnackbar(t('cv_item_removerOrHidden'), SnackbarType.error)
       return
     }
-    const onSubmit = (msg: IProposal) => {
-      dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: msg})
+    const onSubmit = (application: IProposal) => {
+      debugger
+      dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: {...application, status: ApplicationStatus.Applied }})
     }
     const modalProps = {cv: props.application?.cv, application: props.application, onSubmit}
     isTabletWidth

@@ -89,7 +89,11 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   }
 
 
-  return (<Link className={classNames(styles.item, isLightTheme && styles.item_light)} href={'/vacancy/'+vacancy.id}> 
+  return (<Link 
+  className={classNames(styles.item, isLightTheme && styles.item_light, vacancy.subscriptions.tariff.key.includes('Vip')&&styles.VIP)} 
+  //@ts-ignore
+  style={{'--gradientColor1': '#'+vacancy.subscriptions.tariff.colors[0]+'50', '--gradientColor2':'#'+vacancy.subscriptions.tariff.colors[1]+'50'}}
+  href={'/vacancy/'+vacancy.id}> 
     <FavoritesButton styleType={['icon', 'backTransparent']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>

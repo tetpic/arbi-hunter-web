@@ -9,7 +9,8 @@ export default class ApplicationRepository {
       method: 'get',
       url: '/api/application',
       data: {
-        s: JSON.stringify(data)
+        s: JSON.stringify(data),
+        sort: 'createdAt,DESC'
       }
     })
     if(res.err) {
@@ -20,12 +21,15 @@ export default class ApplicationRepository {
 
   static async getVacancyApplication(vacancyId: number|string): Promise<IApplication[]|null> {
     const dataToSend = vacancyId&&{
-      s: JSON.stringify({vacancyId: vacancyId})
+      s: JSON.stringify({vacancyId: vacancyId}),
     }
     const res = await request({
       method: 'get',
       url: '/api/application',
-      data: dataToSend
+      data: {
+        ...dataToSend,
+        sort: 'createdAt,DESC'
+      }
     })
     if(res.err) {
       return null

@@ -131,15 +131,17 @@ function RecruitingPageEmployeeInner(props: Props) {
       <Link className={styles.createLink} href={'/create/cv'}>{t('create_cv')}</Link>
     </div>
   }
-  {isTabletWidth && 
-    <TitleForSection title={' '} onBackClick={router.back}/>
-  }
 
+  <div className={styles.searchBarWrapper}>
+  {isTabletWidth && 
+    <TitleForSection title={' '} onBackClick={router.back} className={styles.title}/>
+  }
   <MainSearchBar placeholder={t('recruiting_em_searchVcs')} fullWidth className={styles.searchBar} 
   onChange={(s)=>onFilterChange({...currentFilters,  ...s})}
   onFilterClick={onFilterClick}
   initialSearch= {currentFilters.search}
   />
+  </div>
   {!loading &&
     <P styleType={['huge', 'w600']} useThemeColor className={styles.found}>{t('found')} {vacancyContext.total} {Formatter.pluralize(vacancyContext.total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>
     ||

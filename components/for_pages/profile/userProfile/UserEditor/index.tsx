@@ -51,7 +51,7 @@ export default function UserEditor(props: Props) {
 
 
   const onSaveHandler = () => {
-    if(!isTabletWidth) {
+    if(!isTabletWidth || !characterContext.currentCharacter.current?.id) {
       characterContext.saveCurrentSet()
     }
     else {
@@ -68,17 +68,21 @@ export default function UserEditor(props: Props) {
   const saveCharButton = (<>
     <Button 
     isProcess={characterContext.savingProcess}  
-    disabled={characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
+    disabled={!characterContext.currentCharacter.current?.id?false:characterContext.savingProcess?true:Boolean(!characterContext.dataBaseBlob)} 
     onClick={onSaveHandler}  
     styleType={['gradient']}
     className={styles.saveButton}
     >
-       {cost > 0 &&
-        <>
-        {t('profile_editor_buyFor')} {cost} <ArbiCoinSvg />
-        </>
+       {
+        !characterContext.currentCharacter.current?.id &&
+          'Купить персонажа'
         ||
-        t('save')
+        cost > 0 && 
+          <>
+          {t('profile_editor_buyFor')} {cost} <ArbiCoinSvg />
+          </>
+        ||
+          t('save')
         }
     </Button>
   </>)

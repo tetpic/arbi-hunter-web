@@ -210,6 +210,14 @@
     button, a {
       flex: 1 1;
     }
+
+    @include mq($TabletWidth, max) {
+      flex-wrap: wrap;
+      row-gap: 8px;
+      button {
+        flex: unset;
+      }
+    }
   }
   
   .stats {

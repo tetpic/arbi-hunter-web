@@ -1,0 +1,16 @@
+@import 'styles/index';
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modalLayout {
+  max-width: 420px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}

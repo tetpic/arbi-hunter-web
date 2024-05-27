@@ -289,14 +289,6 @@ export default function CvPage(props: Props) {
   </>)
 
 
-
-
-
-
-
-
-
-
   return (
     <div className={styles.root}>
       {
@@ -309,7 +301,6 @@ export default function CvPage(props: Props) {
           <FavoritesButton 
           altStyleType={['icon', 'white']}
           showStar 
-          // className={styles.favoritesButton}  
           onClick={saveCvToFavorites} 
           isActive={currentCv?.isSavedByCurrentProfile}/>
         </div>
@@ -355,13 +346,13 @@ export default function CvPage(props: Props) {
         }
         <div className={styles.topLine}>  
           {currentCv.published&&!currentCv.moderationRejectReason && 
-            <Button styleType={['gradient']} onClick={() => router.push({pathname: '/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true, improve: true}})}>
+            <Button styleType={['gradient', 'phoneWide']} onClick={() => router.push({pathname: '/create/cv', query: {id: currentCv.id, progress: 7, fromOtherPage: true, improve: true}})}>
               {t('cv_page_improve')}
             </Button>          
             ||
             currentCv.archivedAt && (!currentCv.completedSteps || currentCv.completedSteps.length > 5) &&
             <Button  
-            styleType={['gradient']}
+            styleType={['gradient', 'phoneWide']}
             onClick={() => {  
               archiveHandler()           
             }}
@@ -371,7 +362,7 @@ export default function CvPage(props: Props) {
             ||
             currentCv.completedSteps&&currentCv.completedSteps.length < 6 && 
             <Button
-            styleType={['gradient']}
+            styleType={['gradient', 'phoneWide']}
             onClick={() => {  
               archiveHandler()     
             }}

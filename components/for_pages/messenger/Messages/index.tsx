@@ -235,8 +235,10 @@ export default function Messages(props: Props) {
             <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
           }
           <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
-          <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName: 'DELETED'}</P>
-          <p className={styles.time}>{collocutor?.activityStatus===ActivityStatus.Online?<span className={styles.online}>{t('chat_online')}</span>:t('chat_wasOnline')+ Formatter.formatDateRelative(collocutor?.lastActivityAt)}</p>
+          <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
+          {collocutor?.activityStatus===ActivityStatus.Online&&
+          <p className={styles.time}>{<span className={styles.online}>{t('chat_online')}</span>}</p>
+          }
           {!isTabletWidth &&
             <ThreeDotsButton className={styles.dots}/>
           }
@@ -359,7 +361,7 @@ export default function Messages(props: Props) {
         <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
       </Link>
       }
-      <div className={classNames(styles.newMessage, userContext.currentProfile.profileType === ProfileType.Employee
+      <div className={classNames(styles.newMessage, userContext.currentProfile?.profileType === ProfileType.Employee
             && dialog.chat?.employeeCanWrite === false && styles.newMessage_disabled)} onPaste={onPasteHandler}>
         {replyTo &&
           <div className={styles.replyMessage}>
@@ -419,7 +421,7 @@ export default function Messages(props: Props) {
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
         <input value={value} onChange={(e)=>{
-          if(userContext.currentProfile.profileType === ProfileType.Employee
+          if(userContext.currentProfile?.profileType === ProfileType.Employee
             && dialog.chat?.employeeCanWrite === false
           ) {
             return

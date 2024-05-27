@@ -86,6 +86,7 @@
   @include mq($TabletWidth, max) {
     flex-wrap: wrap;
     row-gap: 8px;
+    width: 100%;
   }
 }
 

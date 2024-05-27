@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, SnackbarType} from 'types/enums'
+import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -102,7 +102,9 @@ export default function CvItem({cv, ...props}: Props) {
       setIsLoading(false)
     })
     .catch(err => {
-      appContext.showSnackbar(t('cv_item_noOpensAvailable'), SnackbarType.error)
+      isTabletWidth
+      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 280)
+      :appContext.showModal(ModalType.BuyOpensModal)
       setIsLoading(false)
     })
   }

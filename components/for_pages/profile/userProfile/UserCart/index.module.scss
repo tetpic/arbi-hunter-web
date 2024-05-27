@@ -59,7 +59,7 @@
   border-radius: 16px;
   background-color: var(--backColorAlt);
   @include mq($TabletWidth, max) {
-    padding: unset;
+    padding: 16px;
     height: 100%;
   }
 

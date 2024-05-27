@@ -20,6 +20,7 @@ import { useChatContext } from 'context/chat_state'
 import { useAppContext } from 'context/state'
 import { ChangeChatFolderModalArgs } from '@/components/modals/ChangeChatFolderModal'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface Props {
   chat: IChat
@@ -115,7 +116,7 @@ export default function ChatItem(props: Props) {
       {props.chat.profiles?.[0]?.pinned &&
         <PinMessageSvg className={styles.pinIcon}/>
       }
-      <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?collocutor?.firstName + ' ' + collocutor?.lastName:'DELETED'}</P>
+      <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
       <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
       <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
       {props.chat.totalUnread > 0&&

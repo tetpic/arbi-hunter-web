@@ -8,6 +8,7 @@ import { useAppContext } from './state'
 import { ModalType, SnackbarType } from 'types/enums'
 import { useRouter } from 'next/router'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
+import { ShopPages } from '@/components/for_pages/shop'
 
 interface IState {
   init: ()=> Promise<boolean>,
@@ -172,11 +173,17 @@ export function CharacterWrapper(props: Props) {
       return    
     }
     setSavingProcess(true)   
+    debugger
     if(!characterId.current) {
-      await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
-      .then(res=> {
-        characterId.current = res.id
+      appContext.showSnackbar('Купите тариф редактирования персонажа', SnackbarType.error)
+      setTimeout(() => {
+        router.push({pathname: '/shop', query: {page: ShopPages.Packets}})
       })
+      return
+      // await CharacterRepository.createCharacter({gender: variant.model === 'man'?'male':'female'})
+      // .then(res=> {
+      //   characterId.current = res.id
+      // })
     } 
 
     const lockedItems = [...choosenItems.values()].filter(el => el.isLocked)

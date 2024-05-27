@@ -216,7 +216,7 @@ export default function VacancyPage(props: Props) {
       {isMyVacancy &&
         <div className={styles.buttonsWrapper}>
           <Button 
-          styleType={['gradient']}  
+          styleType={['gradient', 'phoneWide']}  
           onClick={(e)=>{
             router.push(`/responses/${currentVacancy.id}/`)
           }} 
@@ -224,7 +224,7 @@ export default function VacancyPage(props: Props) {
             {t('vacancy_page_viewApplicetions')}
           </Button>
           <Button 
-          styleType={['black', 'borderBlue']}
+          styleType={['black', 'borderBlue', 'phoneWide']}
           altStyleType={['white']}
           >{t('vacancy_page_invite')}</Button>
         </div>
@@ -235,7 +235,7 @@ export default function VacancyPage(props: Props) {
           {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection && 
           <>
             <Button 
-            styleType={['gradient']}
+            styleType={['gradient', 'phoneWide']}
             onClick={openChat}
             >
               {t('goToChat')}
@@ -244,7 +244,7 @@ export default function VacancyPage(props: Props) {
           }
            {freeToApplyCvs.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
               <Button
-              styleType={['gradient']}
+              styleType={['gradient', 'phoneWide']}
               onClick={makeResponse}
               >
               Откликнуться с другого резюме
@@ -264,8 +264,8 @@ export default function VacancyPage(props: Props) {
           <div className={styles.contactsButton}>
         
             <Button 
-            styleType={['black', 'borderBlue']} 
-            altStyleType={['whitePurple', 'borderBlue']}
+            styleType={['black', 'borderBlue', 'phoneWide']} 
+            altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
             onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
               {t('vacancy_page_showContacts')}
             </Button>
@@ -361,7 +361,7 @@ export default function VacancyPage(props: Props) {
       
       {!isMyVacancy && !lastProposal &&
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['gradient']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
+        <Button styleType={['gradient', 'phoneWide']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
       </div>
       }
       

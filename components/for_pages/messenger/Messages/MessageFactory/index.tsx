@@ -171,8 +171,6 @@ export default function MessageFactory(props: Props) {
         {msg.message}
       </p>
       {stats}
-      
-
     </div>
   )
 
@@ -195,43 +193,7 @@ export default function MessageFactory(props: Props) {
         ||
         <FileNode message={msg}/>
       }
-  
-      {/* <div className={styles.imagesWrapper}>
-        {msg.pastedImages && msg.pastedImages.length>0&&
-          msg.pastedImages.map(el=>{
-            return <div className={classNames(styles.image, msg.pastedImages.length>1&&styles.image_half)}>
-              {el.type === 'BINARY' &&
-              <>
-                 <Image alt='image' src={folderImage} width={50} height={50}  />
-                 <p>{el.name}</p>
-              </>
-              ||
-              <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} />
-              }
-              <Spinner className={styles.spinner} size={44} color={colors.blue}/>
-            </div>
-          })
-        }
-      {msg.assets&&msg.assets.length>0&&msg.assets.map(image=> {
-        return <div className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
-          {image.type === 'BINARY' &&
-            <>
-              <Image alt='image' src={folderImage} width={50} height={50}  />
-              <p className={styles.fileName}>{image.name}</p>
-            </>
-            ||
-            <Image 
-            unoptimized
-            onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromSource(image.source)})} 
-            src={ImageHelper.urlFromSource(image.source)} 
-            alt={'asset'} 
-            width={msg.assets.length>1?200:400} 
-            height={msg.assets.length>1?200:400} 
-            style={{width: '100%', objectFit: 'cover'}} />
-          }
-        </div>
-      })}
-      </div> */}
+
       <p className={styles.message}>
         {msg.message}
       </p>
@@ -243,22 +205,23 @@ export default function MessageFactory(props: Props) {
   
 
   const applicationMessage = (<>
-    {
-    props.application?.status !== ApplicationStatus.Rejected 
-    && profileType === ProfileType.Hirer 
-    && props.application?.status !== ApplicationStatus.Accepted 
-    && props.application?.cv?.published 
-    &&
-      <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
-        <ApplicationHirerNode application={props.application} message={msg as IMessage}/>
-      </div>
-    }
+
     <div className={side} ref={itemRef } onContextMenu={onRightClick}  >
     { optionsDropDown}
       {replyedMessage}
         <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
         {stats}
     </div>
+    {
+    props.message.application?.status !== ApplicationStatus.Rejected 
+    && profileType === ProfileType.Hirer 
+    && props.message.application?.status !== ApplicationStatus.Accepted 
+    && props.message.application?.cv?.published 
+    &&
+      <div key={props.message.id} className={classNames(isPhoneWidth?styles.rightMessage:side, styles.decision)}>
+        <ApplicationHirerNode application={props.application} message={msg as IMessage}/>
+      </div>
+    }
   </>
   )
 

@@ -24,6 +24,8 @@ import P from '@/components/ui/P'
 import { IApplication } from 'data/interfaces/IApplication'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import CheckSvg from '@/components/svg/CheckSvg'
+import { colors } from 'styles/variables'
 
 interface Props {
   vc: IVacancy
@@ -104,7 +106,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
       {(vc?.isRemote || vc?.city) &&
         <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`г. ${vc.city?.locName}`}</P>
       }
-      <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} className={styles.heartButton}/>
+      <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} />
       {!isTabletWidth &&
         <OptionsDropDown 
         options={options} 
@@ -125,13 +127,26 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove}: Props
     }
     <div className={styles.bottom}>
       <p className={styles.time}>{Formatter.formatToShortYear(item.createdAt)}</p>
-      {((item && item.chat[0])|| chatId) &&
-      <Button className={styles.button} 
+      {item?.status !== ApplicationStatus.Applied &&
+      <P styleType={['green', 'medium', 'w500', 'alignCenter']}><CheckSvg color={colors.green}/> Просмотрено</P>
+      ||
+      <P styleType={['medium', 'greyLight']}>Не просмотрено</P>
+      }
+    </div>
+
+    {((item && item.chat[0])|| chatId) &&
+    <div className={styles.buttonsWrapper}>
+
+      <Button 
+      styleType={['gradient', 'phoneWide']}
+
       onClick={(e)=> {
         e.stopPropagation();
         (item.chat[0]||chatId)&&router.push(`/messenger?chat=${item.chat[0]?.id||chatId}`)
-      }}>{t('goToChat')}</Button>
-      }
-    </div>
+      }}>
+        {t('goToChat')}
+      </Button>
+        </div>
+    }
   </div>)
 }

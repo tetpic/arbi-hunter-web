@@ -38,3 +38,13 @@
     flex-shrink: 0;
   }
 }
+
+.title {
+  font-size: $largeText;
+  font-weight: $semibold;
+}
+
+.titleWrapper {
+  margin-bottom: 16px;
+
+}

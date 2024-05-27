@@ -31,6 +31,7 @@
 
 .black {
   @include buttonBlack;
+  background-color: unset !important;
 }
 
 .grey{
@@ -131,6 +132,8 @@
 
 .circle {
   border-radius: 50%;
+  padding: 4px;
+  height: unset;
 }
 
 .phoneWide {

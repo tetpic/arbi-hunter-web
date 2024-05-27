@@ -10,6 +10,7 @@
   flex-direction: column;
   row-gap: 16px;
   margin-top: 24px;
+  max-width: 556px;
   @include mq($TabletWidth, max) {
     // max-height: calc(100vh - 206px);
     // max-height: calc(100dvh - 206px);
@@ -28,6 +29,11 @@
   color: $blue;
   font-size: $mediumText;
   font-weight: $medium;
+}
+
+.navigation {
+  max-width: 766px;
+  min-width: unset;
 }
 
 .unavailable {

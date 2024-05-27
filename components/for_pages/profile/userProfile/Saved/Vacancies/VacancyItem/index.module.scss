@@ -67,7 +67,7 @@
 
 
 .status {
-  border-radius: 40px;
+  border-radius: 8px;
   background-color: var(--secondaryColor);
   color: var(--pTextColor);
   font-size: $mediumText;
@@ -77,28 +77,29 @@
 }
 
 .applied {
-  border: $yellow 1px solid;
+  background-color: $yellowLight;
   color: $yellow;
 }
 
 .accepted {
   color: $green;
-  border: $green 1px solid;
+  background-color: $greenLight;
 }
 
 .rejected {
   color: $red;
-  border: $red 1px solid;
+  background-color: $redLight;
+ 
 }
 
 .interview {
   color: $green;
-  border: $green 2px solid;
+  background-color: $greenLight;
 }
 
 .infoRequest {
   color: $yellow;
-  border: $yellow 2px solid;
+ 
 }
 
 
@@ -205,4 +206,8 @@
     border-radius: 0px 0px 16px 16px;
     padding-bottom: 16px;
   }
+}
+
+.buttonsWrapper {
+  display: flex;
 }

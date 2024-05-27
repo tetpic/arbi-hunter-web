@@ -26,6 +26,7 @@ interface Props extends IOptionsModalProps{
   setRef?: (r: HTMLDivElement) => void
   usePopperRoot?: HTMLElement
   popperPlacement?: Placement
+ 
 }
 
 
@@ -53,7 +54,7 @@ export default function OptionsModal(props: Props) {
 
 
 
-  const head = (<ClosingTitle title={title} onClose={props.onClose}/>)
+  const head = (<ClosingTitle title={title} classNames={{title:styles.title, wrapper:styles.titleWrapper}} onClose={props.onClose}/>)
 
   const hideModal = () => {
     props.isBottomSheet&&appContext.hideBottomSheet()
