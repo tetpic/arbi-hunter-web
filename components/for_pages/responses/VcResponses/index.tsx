@@ -4,13 +4,10 @@ import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
 import { ApplicationStatus, ModalType} from 'types/enums'
-import ResponsesFilter from './Filter'
-import ResponsesNavigation from '../Navigation'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
 import { IStat } from 'data/interfaces/IProposal'
-import FiltersSvg from 'components/svg/FiltersSvg'
 import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import P from '@/components/ui/P'
@@ -18,6 +15,8 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { ICV } from 'data/interfaces/ICV'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
+import ItemNavigation from '@/components/ui/ItemNavigation'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   id?: number
@@ -142,18 +141,17 @@ export default function VCFeedbacks(props: Props) {
 
   return (<div className={styles.root}> 
   <div className={styles.main}>
-    {
-      ((isTabletWidth&&showNav)||!isTabletWidth)&&<Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>
-      ||
-      isTabletWidth&&!showNav&&<Title className={styles.title} title={TranslateVCNavigation(currentPage, t)} onBackClick={responsesContext.filteredVcResponses.length > 0?()=>setShowNav(true):()=>{router.back()}}/>
-    }
+  <Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>
+    
+    <ItemNavigation activeItem={currentPage} items={navSet} onClick={onNavigationClick}/>
+    <Spacer basis={24}/>
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
-      {isTabletWidth
+      {/* {isTabletWidth
       ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?t('filters'):t('filter')} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
       :<ResponsesFilter />
-      }
+      } */}
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
@@ -168,8 +166,8 @@ export default function VCFeedbacks(props: Props) {
     }
 
   </div>
-  {((showNav  && isTabletWidth) || !isTabletWidth) && responsesContext.VCFeedbacks &&
+  {/* {((showNav  && isTabletWidth) || !isTabletWidth) && responsesContext.VCFeedbacks &&
     <ResponsesNavigation items={navSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} />
-  }
+  } */}
   </div>)
 }

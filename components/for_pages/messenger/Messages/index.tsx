@@ -2,7 +2,6 @@ import styles from './index.module.scss'
 
 import UserPic from 'components/ui/UserPic'
 import Formatter from 'utils/formatter'
-import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
@@ -239,9 +238,7 @@ export default function Messages(props: Props) {
           {collocutor?.activityStatus===ActivityStatus.Online&&
           <p className={styles.time}>{<span className={styles.online}>{t('chat_online')}</span>}</p>
           }
-          {!isTabletWidth &&
-            <ThreeDotsButton className={styles.dots}/>
-          }
+         
         </>
         ||
         <Spinner size={48} color={colors.blue}/>

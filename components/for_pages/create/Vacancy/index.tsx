@@ -487,7 +487,7 @@ export default function Vacancy(props: Props) {
               <Button styleType={['black']} altStyleType={['white']} type='button' title='back' onClick={()=>setProgress(progress-1)}>{t('back')}</Button>
             }
             {progress < VCItemsCount &&
-              <Button styleType={['gradient']} type='button' title='next' onClick={()=>nextPageValidator()}>{t('continue')}</Button>
+              <Button styleType={['gradient', 'phoneWide']} type='button' title='next' onClick={()=>nextPageValidator()}>{t('continue')}</Button>
             }
             { progress === VCItemsCount &&
               <Button 
@@ -495,7 +495,8 @@ export default function Vacancy(props: Props) {
               title='create' 
               spinner={formik.isSubmitting} 
               disabled={formik.isSubmitting} 
-              className={styles.buttonGradient}  
+              className={styles.buttonGradient} 
+           
               type='button' 
               onClick={()=> formik.submitForm()}
               >

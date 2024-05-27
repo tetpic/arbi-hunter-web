@@ -239,7 +239,7 @@ export default function FilterEmployee(props: Props) {
 
   return (<div className={styles.root}> 
     <div className={styles.top}>
-      <Title title={t('search_cv')} onBackClick={props.onCancel}/>
+      <Title title={t('search_vacancy')} onBackClick={props.onCancel}/>
       <MainSearchBar fullWidth  initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
     </div>
     <FormikProvider value={formik}>
