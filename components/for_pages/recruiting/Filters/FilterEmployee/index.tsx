@@ -135,11 +135,11 @@ export default function FilterEmployee(props: Props) {
 
   const openCityModal = () => {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
-      initialCountries: formik.values.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+      initialCountries: formik.values.countries?.map(el => locationContext.countries.get(el)).filter(Boolean)||[],
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el?.id)])
         locationContext.getCities(null, null, r)
-        creationContext.setHelpObjects({...creationContext.helpObjects, cities: r})
+        creationContext.setHelpObjects({...creationContext.helpObjects, cities: [...creationContext.helpObjects.cities, ...r]})
       },
     })
   }
@@ -422,7 +422,7 @@ export default function FilterEmployee(props: Props) {
         </div>
 
         <div className={styles.item}>
-          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openSpecializationModal()}>
+          <p className={styles.fieldTitle} onClick={()=>isTabletWidth&&openCityModal()}>
             {t('filters_region')}
           </p>
           <div className={styles.itemContent}>

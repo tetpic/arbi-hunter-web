@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
-import { AppTheme, Currency,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
+import { AppTheme, CompensationType, Currency,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
 import { useEffect, useState } from 'react'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
@@ -22,9 +22,10 @@ import { ICityModalArgs } from '@/components/modals/CityModal'
 import TagsRadioList from '@/components/for_pages/create/utils/TagsRadioList'
 import { periods } from 'utils/commonObjects'
 import RadioListField from '@/components/fields/RadioListField'
-import { TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
+import { TranslateCompensationType, TranslateEmploymentType, TranslateScheduleType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
+import CheckboxField from '@/components/fields/CheckboxField'
 
 
 interface Props {
@@ -195,6 +196,14 @@ export default function SideFilterEmployee(props: Props) {
           {value: Currency.EUR, label: 'Евро'},
           {value: Currency.GRN, label: 'Гривны'},
         ]}/>
+        <Spacer basis={16}/>
+        <CheckboxField 
+        itemClassName={styles.radioField} 
+        name={'compensation'} 
+        label={TranslateCompensationType(CompensationType.Contract, t)} 
+        value={CompensationType.Contract} 
+        />
+
         <div className={styles.divider}></div>
 
 

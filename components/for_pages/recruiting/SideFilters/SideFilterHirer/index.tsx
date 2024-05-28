@@ -20,7 +20,7 @@ import ChevronDownSvg from '@/components/svg/ChevronDownSvg'
 import { useLocationContext } from 'context/location_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
 import { ICityModalArgs } from '@/components/modals/CityModal'
-import { TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
+import {   TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 
@@ -169,6 +169,8 @@ export default function SideFilterHirer(props: Props) {
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
 
+        <div className={styles.divider}></div>       
+
         <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
@@ -212,7 +214,7 @@ export default function SideFilterHirer(props: Props) {
           <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-          <span>{t('relocation')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+          <span>{t('filters_relocation')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
         <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
           <CheckboxListField 

@@ -610,6 +610,7 @@
   "filters_showMoreFilters":"Показать еще фильтры",
   "filters_workExperience":"Требуемый опыт работы",
   "filters_relocationYes":"Живут или готовы переехать в регион",
+  "filters_relocation": "Переезд",
   "filters_relocationNo":"Не готовы к переезду",
   "filters_whatEver":"Не имеет значения",
 

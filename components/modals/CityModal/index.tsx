@@ -51,7 +51,7 @@ function CityModalInner(props: Props) {
   )
 
   useEffect(()=>{
-    locationContext.getCities({search: formik.values.search}, args.initialCountries.map(el=> el.country))  
+    locationContext.getCities({search: formik.values.search, limit: 1000}, args.initialCountries.map(el=> el.country))  
   }, [formik.values.search])
 
   useEffect(()=>{

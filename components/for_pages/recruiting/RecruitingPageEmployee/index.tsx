@@ -104,6 +104,11 @@ function RecruitingPageEmployeeInner(props: Props) {
     }, 200)
   }, [])
 
+  useEffect(()=>{  
+    document.querySelector('#mainLayout').scrollIntoView()
+  }, [currentFilters])
+
+
 
 
   useEffect(()=>{    
