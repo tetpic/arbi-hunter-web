@@ -265,28 +265,32 @@ export function ChatDialogWrapper(props: Props) {
 
 
   const recordVoice = async (stop?: boolean) => {
-    if(stop) {
-      clearInterval(starterInterval.current)
-      recorder.current = null
-      setRecordTime(0)
-    }
-    if(!recorder.current) {
-      const stream = await navigator.mediaDevices.getUserMedia({audio: true})
-      recorder.current = new MediaRecorder(stream)
-      recorder.current.audioBitsPerSecond
-      recorder.current.ondataavailable = (e) => {
-        setChunks([e.data])
-      }
-    }
-    if(recorder.current && recorder.current.state === 'recording') {
+    if(stop ) {
       recorder.current.stop()
+      recorder.current = null
       clearInterval(starterInterval.current)
       setRecordTime(0)
       return
     }
-    recorder.current.start()
-    //@ts-ignore
-    starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+    else {
+      if(!recorder.current) {
+        const stream = await navigator.mediaDevices.getUserMedia({audio: true})
+        recorder.current = new MediaRecorder(stream)
+        recorder.current.audioBitsPerSecond
+        recorder.current.ondataavailable = (e) => {
+          setChunks([e.data])
+        }
+      }
+      if(recorder.current && recorder.current.state === 'recording') {
+        recorder.current.stop()
+        clearInterval(starterInterval.current)
+        setRecordTime(0)
+        return
+      }
+      recorder.current.start()
+      //@ts-ignore
+      starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+    }
   }
 
   const removeMessage = async(type: 'forMe'|'forAll', messageId: number):Promise<boolean> => {
@@ -302,7 +306,7 @@ export function ChatDialogWrapper(props: Props) {
 
   //если появляется аудио дорожка - отправляем сообщение
   useEffect(()=>{
-    if(chunks) {
+    if(chunks && recorder.current) {
       const audioFile = new File(chunks, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
       sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
       setChunks(null)

@@ -72,9 +72,8 @@ export default function VCFeedbacks(props: Props) {
   }
 
   useEffect(()=>{
-    if(responsesContext.VCFeedbacks.size && stats) {      
-      navigationSet(stats)
-    }
+    navigationSet(stats)
+   
   }, [stats, responsesContext.VCFeedbacks])
 
 

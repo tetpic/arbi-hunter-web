@@ -77,7 +77,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev": "next dev -H 127.0.0.1 -p 3088",
+    "dev": "next dev -H 127.0.0.1 -p 3088 --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

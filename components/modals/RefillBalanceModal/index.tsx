@@ -13,6 +13,7 @@ import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import P from '@/components/ui/P'
+import { useEffect } from 'react'
 
 interface Props {
   onClose?: () => void
@@ -37,6 +38,22 @@ export default function RefillBalanceModal(props: Props) {
     onSubmit: submit  
   })
 
+  const cryptoCurrencyOptions = [
+    {label: 'RUB', value: Currency.RUB},
+    {label: 'USD', value: Currency.USD},
+    {label: 'EUR', value: Currency.EUR},
+    {label: 'UAH', value: Currency.GRN},
+  ]
+
+  const cardCurrencyOptions = [
+    {label: 'RUB', value: Currency.RUB},
+    {label: 'UAH', value: Currency.GRN},
+  ]
+
+  useEffect(()=>{
+    formik.setFieldValue('currency', Currency.RUB)
+  }, [formik.values.paymentType])
+
   const body = (
     <div className={styles.root}>
       <div className={styles.top}>
@@ -54,12 +71,7 @@ export default function RefillBalanceModal(props: Props) {
           color={'default'} 
           validate={Validator.required}
           />
-          <TagsRadioList name={'currency'} options={[
-            {label: 'RUB', value: Currency.RUB},
-            // {label: 'USD', value: Currency.USD},
-            // {label: 'EUR', value: Currency.EUR},
-            {label: 'UAH', value: Currency.GRN},
-          ]}/>
+          <TagsRadioList name={'currency'} options={formik.values.paymentType === PaymentType.CARD? cardCurrencyOptions : cryptoCurrencyOptions}/>
           
           <P styleType={['medium', 'w600']} useThemeColor>Тип оплаты</P>
           <TagsRadioList name={'paymentType'} options={[

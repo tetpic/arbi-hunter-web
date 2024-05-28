@@ -40,6 +40,7 @@ import ChatRepository from 'data/repositories/ChatRepository'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   onBackClick: () => void
@@ -434,11 +435,14 @@ export default function Messages(props: Props) {
           {
           dialog.recorder?.current?.state === 'recording' &&
             <>
-              <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={800} height={40}  fftSize={1024}/>
+              <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
+              <Spacer basis={16}/>
               <P styleType={['small', 'w500', 'greyLight']}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
                 dialog.recordVoice(true)
               }}
               >
