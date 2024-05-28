@@ -72,3 +72,4 @@ services:
           ADMIN_HOST: http://arbi-hunter-admin
           VIRTUAL_HOST: dev.arbihunter.com
           VIRTUAL_PORT: 80
+          SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
