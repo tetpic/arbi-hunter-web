@@ -15,6 +15,8 @@ COPY . .
 ARG ENV_FILE=.env
 COPY enviroments/${ENV_FILE} ./.env
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+RUN echo "SENTRY_AUTH_TOKEN"
+RUN echo $SENTRY_AUTH_TOKEN
 # Building app
 RUN npm run build
 EXPOSE 8080/tcp
