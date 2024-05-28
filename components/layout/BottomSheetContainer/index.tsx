@@ -31,6 +31,7 @@ import RemoveCvVcConfirmModal from '@/components/modals/RemoveCvVcConfirmModal'
 import ChangeChatFolderModal from '@/components/modals/ChangeChatFolderModal'
 import ConfirmModal from '@/components/modals/ConfirmModal'
 import BuyOpensModal from '@/components/modals/BuyOpensModal'
+import ProposalTextModal from '@/components/modals/ProposalModal/ProposalTextModal'
 
 
 interface Props { }
@@ -291,6 +292,15 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <BuyOpensModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.ProposalTextModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <ProposalTextModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

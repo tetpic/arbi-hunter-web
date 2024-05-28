@@ -3,9 +3,6 @@
 .root {
   opacity: 0;
   width: clamp(270px, 100vw, 375px);
-  // position: absolute;
-  // top: 0;
-  // right: 0;
   background: var(--backGroundColor);
   transition: .3s ease-in-out;
   overflow: auto;

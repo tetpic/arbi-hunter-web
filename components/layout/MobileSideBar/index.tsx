@@ -25,10 +25,8 @@ import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
 import { Preset } from 'types/enums'
 import StarSvg from '@/components/svg/StarSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
-// import Switch from '@/components/ui/Switch'
 import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
-// import DayNightSvg from '@/components/svg/DayNightSvg'
 import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
@@ -112,7 +110,7 @@ export default function MobileSideBar(props: Props) {
         <P 
         styleType={['w500', 'medium', 'greyLight']}
         >
-          {userContext.currentProfile.profileType === ProfileType.Employee?t('employee'):t('hirer_alt')}
+          {userContext.currentProfile?.profileType === ProfileType.Employee?t('employee'):t('hirer_alt')}
         </P>
       </div>
       <Button styleType={['icon', 'backTransparent']}  className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>

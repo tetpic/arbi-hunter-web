@@ -41,8 +41,7 @@ export default function PersonalInformation(props: Props) {
 
   return (
     <FormikProvider value={dataFormik} >
-      <Form className={styles.root}> 
-      {/* <Scrollbars universal style={{height: '100%'}}> */}
+      <Form className={styles.root}>      
         <div className={styles.wrapper}>
           <InputField 
           styleType={'default'} 

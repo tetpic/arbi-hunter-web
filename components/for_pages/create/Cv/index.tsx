@@ -27,6 +27,7 @@ import SetTariff from '../utils/SetTariff'
 import CvPreview from '../../preview/cv'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import useTranslation from 'next-translate/useTranslation'
+import CrossSvg from '@/components/svg/CrossSvg'
 
 
 interface Props {
@@ -412,7 +413,20 @@ export default function Cv(props: Props) {
     {!isTabletWidth && progress < CVItemsCount&& memoedRive}
     <div className={styles.content}>    
       <FormikProvider value={formik}>
-        <Title title={title} className={styles.title} onBackClick={()=>setProgress(progress-1)}/>
+        <Title 
+        title={title} 
+        className={styles.title} 
+        onBackClick={()=>setProgress(progress-1)}
+        rightButton={
+          <Button 
+          onClick={()=> {
+            router.back()
+          }}
+          styleType={['black', 'icon']}>
+            <CrossSvg/>
+          </Button>
+        }
+        />
         <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}

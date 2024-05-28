@@ -36,7 +36,7 @@ export interface IProposalTextModalProps {
 
 export default function ProposalTextModal(props: Props) {
   const appContext = useAppContext()
-  const modalArguments = appContext.modalArguments as IProposalTextModalProps
+  const modalArguments:IProposalTextModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments 
   const {application, cv, vcId} = modalArguments
   const patternContext = usePatternContext()
   const proposalRepository = useFeedbacksContext()

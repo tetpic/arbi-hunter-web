@@ -22,14 +22,20 @@ interface PersonalPassword {
 }
 
 export default function ChangePassword(props: Props) {
-  const [passwordIsOpen, setPasswordOpen] = useState<boolean>(false)  
+  const [passwordIsOpen, setPasswordOpen] = useState<{oldPassword: boolean, newPassword: boolean, repeatPassword: boolean}>({
+    oldPassword: false,
+    newPassword: false,
+    repeatPassword: false
+  })  
   const {t} = useTranslation()
 
   const userContext = useUserContext()
   const appContext = useAppContext()
 
-  const passwordHandler = () => {
-    setPasswordOpen(!passwordIsOpen)
+  const passwordHandler = (pass: 'newPassword'| 'oldPassword'| 'repeatPassword') => {
+    setPasswordOpen(state => {
+      return {...state, [pass]: !state[pass]}
+    })
   }
 
   const submitPassword = async(data: PersonalPassword, helpers: FormikHelpers<PersonalPassword>) => {
@@ -68,10 +74,10 @@ export default function ChangePassword(props: Props) {
         styleType={'default'} 
         color={'default'} 
         name={'oldPassword'} 
-        type={passwordIsOpen?'text':'password'}
+        type={passwordIsOpen.oldPassword===true?'text':'password'}
         suffix={'icon'}
-        suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
-        onSuffixClick={passwordHandler}
+        suffixIcon={passwordIsOpen.oldPassword===true?<OpenEyeSvg/>: <CloseEyeSvg/>}
+        onSuffixClick={()=>passwordHandler('oldPassword')}
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <InputField 
@@ -81,10 +87,10 @@ export default function ChangePassword(props: Props) {
         styleType={'default'} 
         color={'default'} 
         name={'newPassword'} 
-        type={passwordIsOpen?'text':'password'}
+        type={passwordIsOpen?.newPassword===true?'text':'password'}
         suffix={'icon'}
-        suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
-        onSuffixClick={passwordHandler}
+        suffixIcon={passwordIsOpen.newPassword===true?<OpenEyeSvg/>: <CloseEyeSvg/>}
+        onSuffixClick={()=>passwordHandler('newPassword')}
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <InputField 
@@ -94,10 +100,10 @@ export default function ChangePassword(props: Props) {
         styleType={'default'} 
         color={'default'} 
         name={'repeatPassword'} 
-        type={passwordIsOpen?'text':'password'}
+        type={passwordIsOpen.repeatPassword===true?'text':'password'}
         suffix={'icon'}
-        suffixIcon={passwordIsOpen?<OpenEyeSvg/>: <CloseEyeSvg/>}
-        onSuffixClick={passwordHandler}
+        suffixIcon={passwordIsOpen.repeatPassword===true?<OpenEyeSvg/>: <CloseEyeSvg/>}
+        onSuffixClick={()=>passwordHandler('repeatPassword')}
         validate={Validator.combine([Validator.required, Validator.minPasswordLength])}
         />
         <div className={styles.buttonsWrapper}>

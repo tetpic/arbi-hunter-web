@@ -39,7 +39,7 @@ export default function PersonalHeader(props: Props) {
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
-  const profileType = personalContext.currentProfile.profileType
+  const profileType = personalContext?.currentProfile?.profileType
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -52,14 +52,14 @@ export default function PersonalHeader(props: Props) {
               appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
                 currentBackground: cBack?.image|| null,
                 currentBuild: cBuild?.image || null,
-                hirerLogo: currentProfile.profileType === ProfileType.Hirer && currentProfile.logo,
-                withBuildPicker: currentProfile.profileType === ProfileType.Hirer,
+                hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile.logo,
+                withBuildPicker: currentProfile?.profileType === ProfileType.Hirer,
                 onSave: (background, building) => {                  
-                  BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile.profileType)
+                  BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
                   .then(_ => {
                     personalContext.refreshBackgrounds()
                   })
-                  if(currentProfile.profileType === ProfileType.Hirer) {
+                  if(currentProfile?.profileType === ProfileType.Hirer) {
                     userContext.editCurrentProfile({imageId: building?.image?.id||null, useOwnLogo: false})        
                   }
                 }
@@ -67,12 +67,12 @@ export default function PersonalHeader(props: Props) {
             }, 100)
           }
           else if(data.type === 'custom' && data.image) {
-            BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
+            BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile?.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
             .then(res => {
-              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile.profileType)
+              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
               .then(r=> {               
                 personalContext.refreshBackgrounds()
-                if(userContext.currentProfile.profileType === ProfileType.Hirer) {                  
+                if(userContext.currentProfile?.profileType === ProfileType.Hirer) {                  
                   userContext.editCurrentProfile({useOwnLogo: true})        
                 }
               })
@@ -172,7 +172,7 @@ export default function PersonalHeader(props: Props) {
 
     <div className={props.useModel?styles.personalModel:styles.personalImageWrapper}>
       {
-      personalContext.currentProfile.profileType === ProfileType.Hirer 
+      personalContext.currentProfile?.profileType === ProfileType.Hirer 
       && building
       && !personalContext.currentProfile.useOwnLogo
       && personalContext.currentProfile.logo &&
@@ -194,7 +194,7 @@ export default function PersonalHeader(props: Props) {
         />
       </>
       }
-      {personalContext.currentProfile.profileType === ProfileType.Employee 
+      {personalContext.currentProfile?.profileType === ProfileType.Employee 
       && personalContext.currentProfile.useOwnLogo && !props.useModel && personalContext.currentProfile?.logo &&
         <Image
         unoptimized
@@ -205,7 +205,7 @@ export default function PersonalHeader(props: Props) {
         height={370}
         />
         ||
-        personalContext.currentProfile.profileType === ProfileType.Employee 
+        personalContext.currentProfile?.profileType === ProfileType.Employee 
         && personalContext.currentProfile.useOwnLogo && props.useModel &&
         <div className={styles.modelWrapper} >
           <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>

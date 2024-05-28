@@ -17,7 +17,7 @@ export default function ShopPackets(props: Props) {
   const vacancyContext = useVacancyContext()
 
   const onCvVcUpdate = () => {
-    switch(userContext.currentProfile.profileType) {
+    switch(userContext.currentProfile?.profileType) {
       case ProfileType.Employee: {
         cvContext.setSavedCvs()
         break
@@ -35,8 +35,8 @@ export default function ShopPackets(props: Props) {
       type='buy'
       tariff={value} 
       onCvVcUpdate={onCvVcUpdate}
-      cvs={userContext.currentProfile.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true/*&&!el.subscriptions*/)} 
-      vacancies={userContext.currentProfile.profileType === ProfileType.Hirer&&[...vacancyContext.activeVacancies.values()]/*.filter(el=>!el.subscriptions)*/}/>
+      cvs={userContext.currentProfile?.profileType === ProfileType.Employee&&cvContext.savedCvs.filter(el=> el.published === true/*&&!el.subscriptions*/)} 
+      vacancies={userContext.currentProfile?.profileType === ProfileType.Hirer&&[...vacancyContext.activeVacancies.values()]/*.filter(el=>!el.subscriptions)*/}/>
     })}
   </div>)
 }

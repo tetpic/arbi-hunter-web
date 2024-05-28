@@ -48,9 +48,9 @@ export default function ChangeLanguageModal(props: Props) {
       <Title title={t('app_language')} className={styles.title}/>
       <RadioListField name={'value'} 
       options={[
-        {value: InterfaceLanguage.English, label: TranslateInterfaceLanguage(InterfaceLanguage.English)},
+        // {value: InterfaceLanguage.English, label: TranslateInterfaceLanguage(InterfaceLanguage.English)},
         {value: InterfaceLanguage.Russian, label: TranslateInterfaceLanguage(InterfaceLanguage.Russian)},
-        {value: InterfaceLanguage.Ukranian, label: TranslateInterfaceLanguage(InterfaceLanguage.Ukranian)},
+        // {value: InterfaceLanguage.Ukranian, label: TranslateInterfaceLanguage(InterfaceLanguage.Ukranian)},
       ]}
       />
       <div className={styles.buttonsWrapper}>

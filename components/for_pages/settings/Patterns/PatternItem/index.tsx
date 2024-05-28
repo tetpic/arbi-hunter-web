@@ -31,7 +31,7 @@ export default function PatternItem(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
 
   const submit = (data: IPatternBase) => {
-    if(props.new) {
+    if(props.new||!props.pattern.profileId) {
       patternContext.createPattern(data)
     }
     else {

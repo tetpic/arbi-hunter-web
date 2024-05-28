@@ -25,10 +25,10 @@ export default function RecruitingFiltersModal(props: Props) {
   return (<ModalLayout mobileFullScreen>
     <ModalBody className={styles.modalBody}>
       <TitleForSection title={'Фильтры'} onBackClick={props.onClose}/>
-      {userContext.currentProfile.profileType === ProfileType.Hirer &&
+      {userContext.currentProfile?.profileType === ProfileType.Hirer &&
       <FilterHirer onFilterChange={args.onFilterChange}/>
       ||
-      userContext.currentProfile.profileType === ProfileType.Employee &&
+      userContext.currentProfile?.profileType === ProfileType.Employee &&
       <FilterEmployee onFilterChange={args.onFilterChange}/>
       }
     </ModalBody>

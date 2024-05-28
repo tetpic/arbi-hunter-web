@@ -106,12 +106,14 @@ export function UserWrapper(props: Props) {
     if(data.email||data.phone) {
       const dataToSend = {
         email: data.email,
-        phone: data.phone
+        phone: data.phone, 
+        firstName: data.firstName,
+        lastName: data.lastName,
       }
       UserRepository.editCurrentUser(clearObject(dataToSend))
     }
    
-    return UserRepository.editProfileByType(data, currentProfile.profileType)
+    return UserRepository.editProfileByType(data, currentProfile?.profileType)
     .then(p=> {
       setCurrentProfileState(p)
       return p
@@ -135,7 +137,7 @@ export function UserWrapper(props: Props) {
 
   const removeCurrentProfile = () => {
     if(confirm('Удалить существующий аккаунт?')) {
-      UserRepository.removeCurrentUserByType(currentProfile.profileType)
+      UserRepository.removeCurrentUserByType(currentProfile?.profileType)
       .then(_=>{
         logout()
         router.replace('/registration')
@@ -169,7 +171,7 @@ export function UserWrapper(props: Props) {
 
   useEffect(()=>{
     if(currentProfile) {
-      Cookies.set(CookiesType.profileType, currentProfile.profileType)
+      Cookies.set(CookiesType.profileType, currentProfile?.profileType)
       Cookies.set(CookiesType.language, user.language)
       Cookies.set(CookiesType.NEXT_LOCALE, user.language)
     }

@@ -100,7 +100,10 @@ export default function PersonalCard(props: Props) {
 
   return (<div className={classNames(styles.root, props.noHeader && styles.noHeader)}>
     <div className={styles.imageWrapper}>
-    {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) && !logoImage && personalContext.currentProfile.profileType === ProfileType.Employee &&
+    {(personalContext.currentProfile?.image||personalContext.currentProfile?.logo) 
+    && !logoImage 
+    && personalContext.currentProfile?.profileType === ProfileType.Employee 
+    &&
       <UserPic 
       className={styles.userPic} 
       image={logoImage?.image
@@ -134,13 +137,12 @@ export default function PersonalCard(props: Props) {
       isTabletWidth && 
       <UserPic className={styles.userPic} size={188}/>
     }
-    {
-      props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
-      <Button onClick={openUserImageModal} styleType={['icon', 'backTransparent']} altStyleType={['icon', 'white']} className={styles.photoButton}>
+    {props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Employee &&
+      <Button onClick={openUserImageModal} styleType={['icon', 'black', 'circle']} altStyleType={['icon', 'white']} className={styles.photoButton}>
        <EditPencilSvg color={isLightTheme&&colors.black}/>
       </Button>
       ||
-      props.isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
+      props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Hirer &&
       <label>
       <FileInput setImages={(data)=> saveLogo(data)}/>
       <div  className={styles.photoButton}>
@@ -154,7 +156,7 @@ export default function PersonalCard(props: Props) {
       <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile?.city?.locName}</P>
     </div>
 
-    {props.isEditing && personalContext.currentProfile.profileType === ProfileType.Employee &&
+    {props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Employee &&
     <>
       <div className={styles.vacancyLookType}>
         <Button 

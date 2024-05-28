@@ -2,7 +2,8 @@
 
 .root {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+
   justify-content: space-between;
   column-gap: 24px;
   row-gap: 16px;
@@ -10,10 +11,12 @@
   margin-bottom: 24px;
   position: relative;
   z-index: 6;
-  height: 74px;
+  margin-top: -80px;
+  
   @include mq($TabletWidth, max) {
     background-color: unset;
     padding-right: 16px;
+    margin-top: 24px;
   }
   @include mq($PhoneWidth, max) {
     flex-wrap: wrap;

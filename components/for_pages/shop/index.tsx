@@ -38,13 +38,13 @@ export default function Shop(props: Props) {
   const router = useRouter()
 
   useEffect(()=>{
-    if(userContext.currentProfile.profileType === ProfileType.Employee) {
+    if(userContext.currentProfile?.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
       characterContext.init().then((res)=>{        
         tariffContext.setPackets([PurchaseType.CvTariff, !res&&PurchaseType.Character].filter(Boolean))
       })
     }
-    else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
+    else if(userContext.currentProfile?.profileType === ProfileType.Hirer) {
       vacancyContext.setVacancies()
       tariffContext.setActiveSubscriptions([PurchaseType.ContactsOpen])   
       .then(res => {

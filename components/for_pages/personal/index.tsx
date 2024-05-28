@@ -23,7 +23,7 @@ import { useRouter } from 'next/router'
 import { ShopPages } from '../shop'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
-import { clearObject } from 'utils/helpers'
+import { clearObject, copyToClipboard } from 'utils/helpers'
 import Spacer from '@/components/ui/Spacer'
 import { Form, FormikProvider, useFormik } from 'formik'
 import InputField from '@/components/fields/InputField'
@@ -38,6 +38,9 @@ import PhoneSvg from '@/components/svg/PhoneSvg'
 import TelegramSvg from '@/components/svg/TelegramSvg'
 import Formatter from 'utils/formatter'
 import Link from 'next/link'
+import DoubleSvg from '@/components/svg/DoubleSvg'
+import { colors } from 'styles/variables'
+import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 
 interface Props {
   id?: number
@@ -64,7 +67,7 @@ export default function PersonalPage(props: Props) {
   })
 
   const saveBranding = () => {
-    if(personalContext.currentProfile.profileType === ProfileType.Employee ) {
+    if(personalContext.currentProfile?.profileType === ProfileType.Employee ) {
       userContext.editCurrentProfile({bio: formik.values.bio})
       .then(res => {
         if(res) {
@@ -112,16 +115,14 @@ export default function PersonalPage(props: Props) {
       }
       return true
     }
-  )
-  .then(_ => {
-    if(personalContext.currentProfile.profileType === ProfileType.Hirer 
-      && (formik.values.cityId !== userContext.currentProfile.cityId||formik.values.company !== userContext.currentProfile.company)) {
-      userContext.editCurrentProfile(formik.values)
-    }
-  })
-}
-
-
+    )
+    .then(_ => {
+      if(personalContext.currentProfile?.profileType === ProfileType.Hirer 
+        && (formik.values.cityId !== userContext.currentProfile.cityId||formik.values.company !== userContext.currentProfile.company)) {
+        userContext.editCurrentProfile(formik.values)
+      }
+    })
+  }
 
   const cityHandler = (c: ISearchCityResult) => {
     formik.setFieldValue('cityId', c.id)
@@ -183,8 +184,8 @@ export default function PersonalPage(props: Props) {
 
   const employeeEditor = (<>
     {isEditing &&
-    <FormikProvider value={formik}>
-      <Form>
+    <FormikProvider value={formik} >
+      <Form className={styles.employeeForm}>
         <P styleType={['medium', 'w500', 'greyLight']}>{t('personal_about')}</P>
         <Spacer basis={16}/>
         <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}}/>
@@ -192,6 +193,12 @@ export default function PersonalPage(props: Props) {
       </Form>
     </FormikProvider>
     ||
+    <>
+    <P 
+    className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}
+    >
+      {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)}
+    </P>
     <ContentItem  className={styles.bodyItem}>
       <P styleType={['large', 'w600']} useThemeColor>{t('personal_contacts')}</P>
       <Spacer basis={16}/>
@@ -200,12 +207,18 @@ export default function PersonalPage(props: Props) {
           <P styleType={['medium', 'alignCenter']} useThemeColor >
             <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailConvertSvg/></Button>
             {personalContext.currentProfile.email}
+            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.email)}>
+              <DoubleSvg color={colors.blue}/>
+            </Button>
           </P>
         </Link>
         <Link className={styles.contact} href={`tel:${personalContext.currentProfile.phone}`}> 
         <P styleType={['medium', 'alignCenter']} useThemeColor >
           <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><PhoneSvg/></Button>
           {Formatter.formatPhone(personalContext.currentProfile.phone)}
+          <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.phone)}>
+            <DoubleSvg color={colors.blue}/>
+          </Button>
         </P>
         </Link>
         {personalContext.currentProfile.telegramNickname &&
@@ -213,6 +226,9 @@ export default function PersonalPage(props: Props) {
           <P styleType={['medium', 'alignCenter']} useThemeColor >
             <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><TelegramSvg/></Button>
             {personalContext.currentProfile.telegramNickname}
+            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.telegramNickname)}>
+              <DoubleSvg color={colors.blue}/>
+            </Button>
           </P>
         </Link>
         }
@@ -222,6 +238,7 @@ export default function PersonalPage(props: Props) {
       <Spacer basis={16}/>
       <HtmlText text={personalContext.currentProfile.bio}/>
     </ContentItem>
+    </>
     }
   </>)
 
@@ -242,7 +259,7 @@ export default function PersonalPage(props: Props) {
       />
      }
 
-    {isEditing && personalContext.currentProfile.profileType === ProfileType.Hirer &&
+    {isEditing && personalContext.currentProfile?.profileType === ProfileType.Hirer &&
       <FormikProvider value={formik}>
         <Form className={styles.form}>
           <InputField 
@@ -262,8 +279,8 @@ export default function PersonalPage(props: Props) {
         </Form>
       </FormikProvider>
     }
-    {personalContext.currentProfile.profileType === ProfileType.Hirer && hirerEditor}
-    {personalContext.currentProfile.profileType === ProfileType.Employee && employeeEditor}
+    {personalContext.currentProfile?.profileType === ProfileType.Hirer && hirerEditor}
+    {personalContext.currentProfile?.profileType === ProfileType.Employee && employeeEditor}
 
   
     {isEditing &&

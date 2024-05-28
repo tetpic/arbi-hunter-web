@@ -95,6 +95,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const defaultOptions:IOptionList[] = [
     // {title: t('item_remove'), onClick: editHandler},
+    {title: t('item_edit'), onClick: editHandler},
     {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
     {title: t('item_upgrade'), onClick: upgradeTariffHandler},
     {title: t('item_share')},
@@ -119,7 +120,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с резюме'}, props.type === 'archive'&&280||props.type==='drafts'&&220||320)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с резюме'}, props.type === 'archive'&&280||props.type==='drafts'&&220||380)
     }
     else {
       openDropDown(!dropDown)

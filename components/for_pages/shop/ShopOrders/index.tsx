@@ -26,7 +26,7 @@ export default function ShopOrders(props: Props) {
     {name: t('shop_delayedPurchases'), isActive: type===PurchasedType.Delayed, onClick: ()=>{setType(PurchasedType.Delayed)}},
     {name: t('shop_paymentsArchive'), isActive: type ===PurchasedType.Archive, onClick: ()=>{setType(PurchasedType.Archive)}},
   ]}/>
-    {[...tariffContext.purchased.values()].filter(el=> el.subscription.tariff.price > 0).map(el => {
+    {type === PurchasedType.Bought && [...tariffContext.purchased.values()].filter(el=> el.subscription.tariff.price > 0).map(el => {
       return <PurchaseItem tariff={tariffContext.packets.get(el.subscription.tariffId)} purchase={el} type='info' />
     })}
   

@@ -56,8 +56,8 @@ export default function RefillBalanceModal(props: Props) {
           />
           <TagsRadioList name={'currency'} options={[
             {label: 'RUB', value: Currency.RUB},
-            {label: 'USD', value: Currency.USD},
-            {label: 'EUR', value: Currency.EUR},
+            // {label: 'USD', value: Currency.USD},
+            // {label: 'EUR', value: Currency.EUR},
             {label: 'UAH', value: Currency.GRN},
           ]}/>
           

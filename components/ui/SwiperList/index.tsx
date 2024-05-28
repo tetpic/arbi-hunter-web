@@ -57,7 +57,7 @@ export default function SwiperList(props: Props) {
       </SwiperSlide>
       }
       </Swiper>
-      {!props.hideNav && 
+      {!props.hideNav && !isTabletWidth &&
         <>
           <Button title='prev slide button' className={styles.buttonLeft} onClick={()=>swiper.current?.swiper.slidePrev()}><ArrowLeftSvg/></Button>
           <Button title='next slide button' className={styles.buttonRight} onClick={()=>swiper.current?.swiper.slideNext()}><ArrowRightSvg/></Button>

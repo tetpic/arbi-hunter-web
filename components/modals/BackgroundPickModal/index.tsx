@@ -35,7 +35,7 @@ export default function BackgroundPickModal(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()  
   const userContext = useUserContext()
-  const profileType = userContext.currentProfile.profileType
+  const profileType = userContext.currentProfile?.profileType
   const args: IBackgroundPickModalArguments = appContext.modalArguments
   const [page, setPage] = useState<'back'|'build'>('back')
   const [currentBackground, setCurrentBackground] = useState<IFile>(args.currentBackground)

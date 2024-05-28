@@ -10,6 +10,8 @@ import { colors } from 'styles/variables'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
+import MobileBottomMenu from '@/components/ui/MobileBottomMenu'
 
 interface Props {
   chats: IChat[]
@@ -25,6 +27,8 @@ export default function Chats(props: Props) {
   const folders = [...chatContext.folders.values()]
   const [initialPos,   setInitialPos] = useState(null)
   const [initialSize, setInitialSize] = useState(null)
+  const appContext = useAppContext()
+  const isTabletWidth = appContext.size.isTabletWidth
 
   const itemsNav = [
     //__all__ если кому-то взбредет назвать папку all
@@ -72,6 +76,9 @@ export default function Chats(props: Props) {
         }
       </div>
       <div className={styles.draggable} draggable={true} onDragStart={initial} onDrag={(e)=> resize(e)}></div>
+      {isTabletWidth &&
+        <MobileBottomMenu/>
+      }
     </div>
   )
 }

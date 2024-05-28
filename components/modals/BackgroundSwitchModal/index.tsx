@@ -33,7 +33,7 @@ export default function BackgroundSwitchModal(props: Props) {
   const args: IBackgroundSwitchModalArgs = appContext.modalArguments
   
   const [type, setType] = useState<'place'|'custom'>(userContext.currentProfile?.useOwnLogo? 'custom' :'place')
-  const [image, setImage] = useState<PreviewImage>(userContext.currentProfile.profileType === ProfileType.Hirer&& userContext.currentProfile.useOwnLogo && args.currentBackground &&{data: args.currentBackground?.image, id: args.currentBackground?.imageId, loaded: true})
+  const [image, setImage] = useState<PreviewImage>(userContext.currentProfile?.profileType === ProfileType.Hirer&& userContext.currentProfile.useOwnLogo && args.currentBackground &&{data: args.currentBackground?.image, id: args.currentBackground?.imageId, loaded: true})
 
   const onSave = () => {
     args.onSave({image, type})
@@ -44,7 +44,7 @@ export default function BackgroundSwitchModal(props: Props) {
   <div className={styles.root}>
     <div className={styles.switcher}>
       <div className={classNames(styles.item, type==='place' && styles.active)} onClick={()=>setType('place')}>
-        <Image src={'/images/cities/cityPreview.png'} 
+        <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
         className={styles.customBack}
         alt={'user custom background'}
         width={500}

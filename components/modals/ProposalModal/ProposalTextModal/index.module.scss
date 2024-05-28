@@ -20,6 +20,7 @@
   @include mq($PhoneWidth, max) {
     position: absolute;
     bottom: 16px;
+    width: calc(100% - 32px);
   }
 }
 

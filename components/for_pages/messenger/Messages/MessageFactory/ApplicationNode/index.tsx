@@ -34,8 +34,7 @@ export  function ApplicationHirerNode (props: Props) {
           application: props.application, 
           cv: props.application?.cv, 
           vcId: props.application?.vacancyId,
-          onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {
-            debugger
+          onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {            
             dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
           }
         })
@@ -54,8 +53,7 @@ export  function ApplicationHirerNode (props: Props) {
         application: props.application, 
         cv: props.application.cv, 
         vcId: props.application.vacancyId,
-        onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {
-          debugger
+        onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
           dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
         }
       })
@@ -78,8 +76,7 @@ export function ApplicationEmployeeNode (props: Props) {
       appContext.showSnackbar(t('cv_item_removerOrHidden'), SnackbarType.error)
       return
     }
-    const onSubmit = (application: IProposal) => {
-      debugger
+    const onSubmit = (application: IProposal) => {      
       dialogContext.refreshMessage(Number(props.message.id), {...props.message, application: {...application, status: ApplicationStatus.Applied }})
     }
     const modalProps = {cv: props.application?.cv, application: props.application, onSubmit}

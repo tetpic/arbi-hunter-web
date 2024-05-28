@@ -11,6 +11,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
     max-width: unset;
+    padding-bottom: 80px;
   }
 }
 

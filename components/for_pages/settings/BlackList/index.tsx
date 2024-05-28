@@ -27,11 +27,11 @@ export default function BlackList(props: Props) {
   const vacancyContext = useVacancyContext()
   const cvContext = useCvContext()
   const userContext = useUserContext()
-  const [type, setType] = useState<BlackListModes>(userContext.currentProfile.profileType === ProfileType.Employee?BlackListModes.Vacancies:BlackListModes.CVs)
+  const [type, setType] = useState<BlackListModes>(userContext.currentProfile?.profileType === ProfileType.Employee?BlackListModes.Vacancies:BlackListModes.CVs)
   const [profiles, setProfiles] = useState<IUserProfile[]>([])
 
   useEffect(()=>{
-    if(userContext.currentProfile.profileType === ProfileType.Employee) {
+    if(userContext.currentProfile?.profileType === ProfileType.Employee) {
 
       vacancyContext.setBlackListedVacancies()
       UserRepository.getBlackListedProfiles()
@@ -41,7 +41,7 @@ export default function BlackList(props: Props) {
         }
       })
     }
-    else if(userContext.currentProfile.profileType === ProfileType.Hirer) {
+    else if(userContext.currentProfile?.profileType === ProfileType.Hirer) {
       cvContext.setBlackListedCVs()
       UserRepository.getBlackListedProfiles()
       .then(res=> {

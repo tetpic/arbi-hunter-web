@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset} from 'types/enums'
+import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, ProposalRequestType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -29,6 +29,8 @@ import FavoritesButton from '../FavoritesButton'
 import { useUserContext } from 'context/user_state'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
+import { IProposal } from 'data/interfaces/IProposal'
+import { IApplication } from 'data/interfaces/IApplication'
 
 interface Props {
   cv: ICV
@@ -150,6 +152,23 @@ export default function CvItem({cv, ...props}: Props) {
     }
   }
 
+
+  const rejectionHandler = () => {
+    const _args: IProposalTextModalProps = {
+      type: ApplicationBSSelectType.Reject, 
+      application: cv.applicationsToCurrentUser[0]?({...cv.applicationsToCurrentUser?.[0], proposals: []} as IApplication):({...cv.proposalsByCurrentUser?.[0], proposals: []} as IApplication), 
+      cv: cv, 
+      vcId: cv.applicationsToCurrentUser?.[0]?.vacancyId||cv.proposalsByCurrentUser?.[0]?.vacancyId,
+      onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
+        debugger
+        // dialog.refreshMessage(Number(cv.message.id), {...props.message, proposal: {...props.application, ...proposal}})
+      }
+    }
+    appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, _args)
+    
+  }
+
+
   return (<Link 
   className={classNames(styles.item, isLightTheme && styles.item_light, cv.subscriptions?.tariff?.key.includes('Vip')&&styles.VIP)} 
   //@ts-ignore
@@ -235,7 +254,17 @@ export default function CvItem({cv, ...props}: Props) {
         <Button styleType={['borderBlue', 'black', 'wide','backTransparent']} altStyleType={['borderBlue', 'white' ,'wide']} ><P altStyleType={['blue']}>{t('cv_item_contacts')}</P></Button>
       }
       {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
-        <Button styleType={['icon', 'black']} altStyleType={['borderBlue', 'white', 'icon' ]}><FolderPlusSvg/></Button>
+        <Button 
+        styleType={['icon', 'black']} 
+        altStyleType={['borderBlue', 'white', 'icon' ]}
+        onClick={(e)=> {
+          e.preventDefault()
+          e.stopPropagation()
+          rejectionHandler()
+        }}
+        >
+          <FolderPlusSvg/>
+        </Button>
       }
     </div>
   </Link>)
