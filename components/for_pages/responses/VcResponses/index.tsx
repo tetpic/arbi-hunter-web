@@ -3,7 +3,7 @@ import CvCard from 'components/ui/CvCard'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { ApplicationStatus, ModalType} from 'types/enums'
+import { ApplicationStatus, ModalType, ProposalRequestType} from 'types/enums'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
@@ -87,15 +87,15 @@ export default function VCFeedbacks(props: Props) {
         responsesContext.setSorted(null)
         break
       case VCNaviagation.Interview:
-        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Accepted)
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Accepted||(el.type !== ProposalRequestType.Rejection && el.type !== undefined))
         responsesContext.setSorted(arr)     
         break
       case VCNaviagation.Rejection: 
-        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Rejected)||[]
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Rejected||(el.type === ProposalRequestType.Rejection && el.type !== undefined))||[]
         responsesContext.setSorted(arr)
         break
       case VCNaviagation.Applied:
-        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied)||[]
+        arr = [...responsesContext.VCFeedbacks.values()].filter(el=> el.status === ApplicationStatus.Applied && el.type === undefined)||[]
         responsesContext.setSorted(arr)
         break
     }

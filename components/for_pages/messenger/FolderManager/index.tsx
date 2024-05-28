@@ -6,7 +6,7 @@ import folderImage from 'images/folder.png'
 import Image from 'next/image'
 import Button from 'components/ui/Button'
 import PlusSvg from 'components/svg/PlusSvg'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import InputField from 'components/fields/InputField'
 import IChat, { IChatFolder } from 'data/interfaces/IChat'
@@ -39,6 +39,7 @@ function FolderEditor(props: Props) {
   const appContext= useAppContext()
   const {isTabletWidth} = useResize()
   const [choosenChats, setChoosenChats] = useState<Map<number, IChat>>(new Map)
+  const chatsRef = useRef(null)
 
   const saveHandler = (c: IChat[]) => {
     setChoosenChats(state=> {
@@ -75,6 +76,11 @@ function FolderEditor(props: Props) {
       })
     }
     else {
+      [...chatsRef.current.keys()].forEach(el => {
+        if(!choosenChats.has(el)) {
+          ChatRepository.updateChatProfile({chatFolderId: null}, el)
+        }
+      })
       chatContext.editChatFolder({
         chatFolderId: props.folderToEdit.id, 
         chatsIds: [...choosenChats.values()].map(e=> e.id)
@@ -97,6 +103,7 @@ function FolderEditor(props: Props) {
     ChatRepository.getChatList({chatFolderId: props.folderToEdit.id})
     .then(res=> {
       setChoosenChats(new Map(res.data.map(r=>[r.id, r])))
+      chatsRef.current = new Map(res.data.map(r=>[r.id, r]))
     })
   }, [])
 

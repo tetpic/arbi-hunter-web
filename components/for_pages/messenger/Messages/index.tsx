@@ -430,13 +430,20 @@ export default function Messages(props: Props) {
         </>
         }
         { choosenIds.size === 0 &&     
-        <div className={classNames(styles.microphoneWrapper, dialog.recorder?.current?.state === 'recording'&&styles.recording)} onClick={dialog.recordVoice}>
+        <div className={classNames(styles.microphoneWrapper, dialog.recorder?.current?.state === 'recording'&&styles.recording)} onClick={()=>dialog.recordVoice()}>
           {
           dialog.recorder?.current?.state === 'recording' &&
             <>
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={800} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
+              <P styleType={['small', 'w500', 'greyLight']}
+              onClick={() => {
+                dialog.recordVoice(true)
+              }}
+              >
+                Отмена
+              </P>
             </>
             ||
             (value.length > 0 || pastedFiles.size > 0) &&

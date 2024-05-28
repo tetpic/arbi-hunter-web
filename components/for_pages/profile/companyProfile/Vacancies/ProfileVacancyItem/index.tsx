@@ -196,7 +196,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
         items={[
           {name: t('vacancy_page_shows'), count: vacancy.totalShows},
           {name: t('vacancy_page_views'), count: vacancy.totalViews},
-          {name: t('vacancy_page_applications'), count: vacancy.totalApplications},
+          {name: t('vacancy_page_applications'), count: vacancy.totalApplications+vacancy.totalProposals||0},
         ]}
         />
         ||

@@ -23,6 +23,7 @@ import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
 import P from '../P'
 import { getUserImageSource } from 'utils/helpers'
+import { ProfileType } from 'data/interfaces/IRegistration'
 
 interface ItemProps {
   cv: ICV
@@ -126,8 +127,10 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   return (
     <div className={styles.itemWrapper}>
     <div className={styles.top} onClick={()=>(application?.cvId||cv?.id)&&router.push(application?.cvId?'/cv/'+application?.cvId: '/cv/'+cv?.id)}>
-      <UserPic size={46} image={getUserImageSource(application.profile)} className={styles.userPic}/>
-      <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>{currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}</P>
+      <UserPic size={46} image={getUserImageSource(application.profile.profileType === ProfileType.Employee?application.profile:cv.profile)} className={styles.userPic}/>
+      <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>
+        {currentCV?.position||currentCV?.categories[0].name||'Должность не указана'}
+      </P>
       <P styleType={['medium', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, 'год', 'года', 'лет')}</P>
       {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}
       <FavoritesButton showStar className={styles.heartButton} isActive={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
@@ -149,7 +152,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
       </div>
     }
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={inviteHandler}>{currentCV?.proposalByCurrentUser||application.proposals.length > 0?'Пригласить':'Пригласить'}</Button>
+      <Button className={styles.button} onClick={inviteHandler}>{'Пригласить'}</Button>
       {chat&& 
         <Button styleType={['black', 'borderGradient']} altStyleType={['white']} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
       }

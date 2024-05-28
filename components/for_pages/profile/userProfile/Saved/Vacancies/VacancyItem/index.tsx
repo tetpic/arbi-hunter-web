@@ -69,17 +69,16 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
 
 
   const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
-      {isTabletWidth &&
-        <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
-      }
-      <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
-      {(item?.status === ApplicationStatus.Accepted||item?.type === ProposalRequestType.Interview) && 
-        <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
-      }
-      {isTabletWidth &&
-        <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>
-      }
-
+    {isTabletWidth &&
+      <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
+    }
+    <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
+    {(item?.status === ApplicationStatus.Accepted||item?.status === ApplicationStatus.Applied) && 
+      <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
+     }
+    {isTabletWidth &&
+      <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>
+    }
   </div>)
 
   const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {

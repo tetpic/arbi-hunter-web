@@ -417,7 +417,7 @@ export default function Cv(props: Props) {
         title={title} 
         className={styles.title} 
         onBackClick={()=>setProgress(progress-1)}
-        rightButton={
+        rightButton={isTabletWidth &&
           <Button 
           onClick={()=> {
             router.back()

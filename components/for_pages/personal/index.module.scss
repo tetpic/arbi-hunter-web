@@ -1,5 +1,11 @@
 @import 'styles/index';
 
+.mobileEditButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
 .content {
   margin-top: 32px;
   @include mq($TabletWidth, max) {

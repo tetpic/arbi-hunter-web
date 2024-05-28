@@ -34,7 +34,7 @@ export interface IDialogState {
   disabled: boolean
   // recorder: recorderControls
   recorder: MutableRefObject<MediaRecorder>
-  recordVoice: () => void
+  recordVoice: (stop?: boolean) => void
   recordTime: number
   refreshMessage: (id: number, message: IMessage) => void
   removeMessage: (type: 'forMe'|'forAll', messageId: number) => Promise<boolean>
@@ -264,7 +264,12 @@ export function ChatDialogWrapper(props: Props) {
   }
 
 
-  const recordVoice = async () => {
+  const recordVoice = async (stop?: boolean) => {
+    if(stop) {
+      clearInterval(starterInterval.current)
+      recorder.current = null
+      setRecordTime(0)
+    }
     if(!recorder.current) {
       const stream = await navigator.mediaDevices.getUserMedia({audio: true})
       recorder.current = new MediaRecorder(stream)

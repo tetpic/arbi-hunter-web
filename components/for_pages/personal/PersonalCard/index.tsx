@@ -134,7 +134,6 @@ export default function PersonalCard(props: Props) {
       className={styles.userPic} 
       size={152}/>
       ||
-      isTabletWidth && 
       <UserPic className={styles.userPic} size={188}/>
     }
     {props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Employee &&
@@ -170,6 +169,7 @@ export default function PersonalCard(props: Props) {
           className={styles.options}
           options={optionsList} 
           active={dropDown} 
+          usePopper
           getRef={(r)=> dropRef.current = r} 
           onClose={()=>{}}
           />

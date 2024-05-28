@@ -3,7 +3,6 @@
 .root {
   display: flex;
   align-items: flex-end;
-
   justify-content: space-between;
   column-gap: 24px;
   row-gap: 16px;
@@ -11,12 +10,10 @@
   margin-bottom: 24px;
   position: relative;
   z-index: 6;
-  margin-top: -80px;
-  
+  // height: 74px;
   @include mq($TabletWidth, max) {
     background-color: unset;
     padding-right: 16px;
-    margin-top: 24px;
   }
   @include mq($PhoneWidth, max) {
     flex-wrap: wrap;
@@ -63,15 +60,16 @@
 }
 
 .userPic {
-  @include mq($TabletWidth, max) {    
-    margin-top: Clamp(-150px, -15vw, -70px);
-    width: Clamp(108px, 25vw, 192px);
-    height: Clamp(108px, 25vw, 192px);
+  
+    margin-top: Clamp(-94px, -15vw, -70px);
+    width: Clamp(108px, 25vw, 150px);
+    height: Clamp(108px, 25vw, 150px);
+    flex-shrink: 0;
     img{
       width: 100%;
       height: 100%;
     }
-  }
+
 }
 
 .imageWrapper {
@@ -80,7 +78,9 @@
   flex-direction: column;
   align-items: center;
   align-self: flex-end;
+  justify-content: flex-end;
   flex-shrink: 0;
+  height: 54px;
 }
 
 .photoButton {
@@ -96,6 +96,14 @@
     svg {
       width: 32px;
       height: 32px;
+    }
+    @include mq($TabletWidth, max) {
+      padding: 4px;
+     
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
 }
 

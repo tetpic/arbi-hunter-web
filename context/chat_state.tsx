@@ -178,7 +178,7 @@ export function ChatWrapper(props: Props) {
   }
 
   const setSearch = (search?: string) => {
-    ChatRepository.getChatList({search, inactive: false})
+    ChatRepository.getChatList({search})
     .then(res=>setChats(state => {
       state.clear()
       res.data.forEach(el=> {

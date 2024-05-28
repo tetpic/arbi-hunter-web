@@ -41,6 +41,7 @@ import Link from 'next/link'
 import DoubleSvg from '@/components/svg/DoubleSvg'
 import { colors } from 'styles/variables'
 import { TranslateVacancyLookType } from 'utils/enumsTranslations'
+import PencilSvg from '@/components/svg/PencilSvg'
 
 interface Props {
   id?: number
@@ -54,8 +55,10 @@ export default function PersonalPage(props: Props) {
   const tariffContext = useTariffContext()
   const [isEditing, setIsEditing] = useState(false)
   const userContext = useUserContext()
+  const isTabletWidth = appContext.size.isTabletWidth
   const currentProfile = userContext.currentProfile
   const router = useRouter()
+  const isMy = currentProfile?.id === personalContext?.currentProfile?.id
 
   const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'>>({
     initialValues: {
@@ -243,7 +246,17 @@ export default function PersonalPage(props: Props) {
   </>)
 
   return (<div className={styles.root}> 
-    {!isEditing && isHeaderExist && !props.webView
+    {isMy && userContext.currentProfile.profileType === ProfileType.Employee &&isTabletWidth && !isEditing &&
+      <Button 
+      className={styles.mobileEditButton} 
+      styleType={['icon', 'white', 'svg24']} 
+      onClick={() => setIsEditing(!isEditing)}
+      >
+        <PencilSvg color={colors.blue}/>
+      </Button>
+    }
+
+    {!isEditing && !props.webView
       &&
       <PersonalHeader isEditing={!props.id&&isEditing}/>
       ||

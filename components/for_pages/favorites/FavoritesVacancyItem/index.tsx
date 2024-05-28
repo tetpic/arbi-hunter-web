@@ -26,13 +26,12 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
 
   return (<Link href={'/vacancy/'+vacancy.id} className={styles.root}> 
     <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/>
-    {/* <LikeButton active className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/> */}
     <div className={styles.top}>
       <UserPic className={styles.userPic} size={42} image={image}/>
       <div className={styles.topContent}>
         <P useThemeColor styleType={['medium', 'w500']}>{vacancy.company||vacancy.contactName}</P>
         {vacancy.city &&
-          <P  styleType={['medium', 'w500', 'greyLight']}>{vacancy.city?.locName}</P>
+          <P styleType={['medium', 'w500', 'greyLight']}>{vacancy.city?.locName}</P>
         }
       </div>
     </div>

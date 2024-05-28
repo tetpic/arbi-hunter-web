@@ -67,13 +67,21 @@ export function FeedbacksWrapper(props: Props) {
 
   const setVCResponses = async (id?:number): Promise<boolean> => {
     try {
-      const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({vacancyId: currentCvResponses.vacancyId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
-      console.log(_applications, _proposals)
-      const res = await ApplicationRepository.getVacancyApplication(id = currentVacancy?.id || id)
+      const _proposals = await ProposalRepository.getProposalByProfileType({s: {vacancyId: currentVacancy?.id || id}})
+      const _applications = await ApplicationRepository.getVacancyApplication(id = currentVacancy?.id || id)
+      const proposals = _proposals!.filter(
+        (proposal) =>
+          !_applications.find(
+            (app) => app.proposals.find(i => proposal.applicationId === i.applicationId)
+          ) )
+          const filteredProposals = proposals.filter(el => {
+            return !proposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && (new Date(el.createdAt)).getTime() < (new Date(e.createdAt)).getTime())
+          })
+      console.log(_applications, filteredProposals)
       setVCResponsesState(state => {
-        state.clear()
-        res.forEach(el => {
-          state.set(el.id, el)
+        state.clear();
+        [..._applications, ...filteredProposals].sort((a, b) => new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime()?-1:1).forEach(el => {
+          state.set(el.id, el as IApplication)
         })
         return new Map(state)
       })
@@ -88,22 +96,6 @@ export function FeedbacksWrapper(props: Props) {
       
       setAllCVResponsesState(new Map)
       const [_applications, _proposals] = await Promise.all([ApplicationRepository.getAllApplications({cvId: currentCvResponses.cvId}), ProposalRepository.getProposalByProfileType({s: currentCvResponses})])
-      
-
-
-      const allProposalsInApplications = _applications.map(a=> a.proposals).flat(1)
-      const allProposalsIdsInApplications = allProposalsInApplications.map(a => a.id)
-
-      // const _filteredProposals = _proposals.filter(el => {
-     
-      //   const res = allProposalsIdsInApplications.includes(el.id)
-      //   console.log(res)
-      //   return res
-      // })
-
-      // const filteredProposals = _filteredProposals.filter(el => {
-      //   return !Boolean(_filteredProposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && new Date(el.createdAt) > new Date(e.createdAt)))
-      // });
       const proposals = _proposals!.filter(
         (proposal) =>
           !_applications.find(
@@ -111,24 +103,7 @@ export function FeedbacksWrapper(props: Props) {
           ) )
       const filteredProposals = proposals.filter(el => {
         return !proposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && (new Date(el.createdAt)).getTime() < (new Date(e.createdAt)).getTime())
-      })
-
-      console.log([...filteredProposals,..._applications, ]);
-      
-      
-  
-      
-
-      // console.log(_applications, _proposals)
-      
-      // const allActiveApplicationProposals = [..._applications.map(a => a.proposals[0]).filter(Boolean)].filter(el => el.cvId&&el.vacancyId&&!el.deletedByEmployee)
-      // const _filteredProposals = _proposals.filter(el => !allActiveApplicationProposals.find(p => p?.id === el?.id)).filter(el => {
-      //   return Boolean(_proposals.find(f => el.vacancyId === f.vacancyId && el.cvId === f.cvId && new Date(el.createdAt)  new Date(f.createdAt)))
-      // });
-      
-      
-
-  
+      });
       [..._applications, ...filteredProposals].sort((a, b) => new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime()?-1:1).forEach(async(proposal) => {
         setAllCVResponsesState(state => {
             state.set(proposal.id, proposal)
