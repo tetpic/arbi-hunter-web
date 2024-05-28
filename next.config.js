@@ -3,7 +3,6 @@ const nextTranslate = require('next-translate-plugin')
 const nextConfig = nextTranslate({
   reactStrictMode: true,
   swcMinify: true,
-  silent: true,
   env: {
     host: process.env.HOST
   },
@@ -68,7 +67,7 @@ module.exports = withSentryConfig(
     project: "arbihunter-web",
 
     // Only print logs for uploading source maps in CI
-    silent: !process.env.CI,
+    silent: true,
 
     // For all available options, see:
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
