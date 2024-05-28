@@ -24,7 +24,6 @@ build_dev_image:
   script:
     - export APP_IMAGE=$IMAGE_TAG_DEV_APP
     - export NGINX_IMAGE=$IMAGE_TAG_DEV_NGINX
-    - export SENTRY_AUTH_TOKEN=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
     - cat /etc/hosts
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker-compose -f docker-compose.dev.yml build app
