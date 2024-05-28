@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const { withSentryConfig } = require("@sentry/nextjs");
 const nextTranslate = require('next-translate-plugin')
 const nextConfig = nextTranslate({
   reactStrictMode: true,
@@ -50,22 +51,18 @@ const nextConfig = nextTranslate({
 
 })
 
-module.exports = nextConfig
 
 
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(
-  module.exports,
+  nextConfig,
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
 
     org: "xo-media-group-ltd",
     project: "arbihunter-web",
-
+    debug: true,
     // Only print logs for uploading source maps in CI
     silent: true,
 
