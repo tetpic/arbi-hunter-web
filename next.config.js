@@ -3,6 +3,7 @@ const nextTranslate = require('next-translate-plugin')
 const nextConfig = nextTranslate({
   reactStrictMode: true,
   swcMinify: true,
+  silent: true,
   env: {
     host: process.env.HOST
   },
