@@ -181,7 +181,7 @@ export default function MainPageEmployee() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={{pathname: '/'}}>
+            <Link className={styles.card} href={{pathname: '/views'}}>
               <p className={styles.desc}>{t('mainPage_em_watches')}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>

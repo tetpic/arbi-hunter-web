@@ -45,6 +45,7 @@ export interface IUserProfile extends TimeStamp {
   company?: string|null,
   countryId: number,
   cityId: number,
+  isContactsOpen?: boolean
   vacancyLookType: VacancyLookType|null,
   lastActivityAt: string,//Date
   imageId: string|number|null,

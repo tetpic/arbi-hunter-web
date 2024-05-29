@@ -69,7 +69,7 @@ export default function PersonalHeader(props: Props) {
               }
             }
             isTabletWidth
-            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 280)
+            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 370)
             :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args)
           }, 100)
         }

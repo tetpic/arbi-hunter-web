@@ -38,6 +38,7 @@ export interface IPortfolioModal {
 export default function AddPortfolioModal(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
+  const isTabletWidth = appContext.size.isTabletWidth
   const args:IPortfolioModal = appContext.modalArguments||appContext.bottomSheetArguments
   const [files, setFiles] = useState<IFile[]>([])
 
@@ -82,8 +83,10 @@ export default function AddPortfolioModal(props: Props) {
       </Form>
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
+      {!isTabletWidth &&
       <Button type='button' title={'back'} onClick={props.onClose} styleType={['grey']} altStyleType={['whitePurple']}>{t('cancel')}</Button>
-      <Button type='button' title='save' onClick={formik.submitForm} styleType={['gradient']}>{t('save')}</Button>
+      }
+      <Button type='button' title='save' onClick={formik.submitForm} styleType={['gradient', 'phoneWide']}>{t('save')}</Button>
     </div>
   </>)
 

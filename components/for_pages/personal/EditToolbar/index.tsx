@@ -8,7 +8,7 @@ import PhotoDoubleSvg from 'components/svg/PhotoDoubleSvg'
 import VideoCameraSvg from 'components/svg/VideoCameraSvg'
 import LocationSvg from 'components/svg/LocationSvg'
 import ScaleSvg from 'components/svg/ScaleSvg'
-import { ModalType, PersonalBlockType } from 'types/enums'
+import { ModalType, PersonalBlockType, PurchaseType } from 'types/enums'
 import { IAddPersonalBlockModalProps } from 'components/modals/AddPersonalBlockModal'
 import { usePersonalContext } from 'context/personal_state'
 import { IPersonalPageBlock } from 'data/interfaces/IPersonal'
@@ -31,10 +31,16 @@ export default function EditToolbar(props: Props) {
   const personalContext = usePersonalContext()
   const tariffContext = useTariffContext()
 
-  const showModal = (type: PersonalBlockType) => {
+  const isPurhchased = [...tariffContext.activeSubscriptions.values()].filter(el => el.subscription.tariff.purchaseType === PurchaseType.PersonalPage).length !== 0
+
+  const showModal = (type: PersonalBlockType) => {   
     appContext.showModal<IAddPersonalBlockModalProps>(ModalType.AddPersonalBlockModal, {type, onSubmit: (data, images, layout)=> {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: data as IPersonalPageBlock, assets: images as IFile[], layout: layout}]]))
     }})
+  }
+  
+  const showPurchaseInfo = () => {
+    appContext.showModal(ModalType.PurchaseBrandingInfoModal)
   }
 
   const buttons = [
@@ -60,10 +66,18 @@ export default function EditToolbar(props: Props) {
       {buttons.map((el, i) => {
         return (
           <Button 
-          styleType={[tariffContext.activeSubscriptions.size === 0?'grey':'gradient']} 
+          styleType={[!isPurhchased&&!el.free?'grey':'gradient']} 
           className={styles.button} 
-          disabled={tariffContext.activeSubscriptions.size === 0 && !el.free}
-          altStyleType={['gradient']} key={i} onClick={el.onClick}>
+          altStyleType={['gradient']} key={i} onClick={()=>
+            {
+              if(!el.free && !isPurhchased) {
+                showPurchaseInfo()
+              }
+              else {
+                el.onClick()
+              }
+            }
+          }>
             {el.icon} <p>{el.name}</p>
             {tariffContext.activeSubscriptions.size === 0 && !el.free &&
               <div className={styles.topDot}></div>
