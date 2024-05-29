@@ -122,7 +122,7 @@ export default function PersonalHeader(props: Props) {
     stateMachines={'State Machine 1'}  
     key={personalContext.transport.id} 
     className={styles.transport} 
-    src={ImageHelper.urlFromSource(personalContext.transport.image.source)} 
+    src={ImageHelper.urlFromSource(personalContext.transport.image?.source)} 
     animations={personalContext.transport.riveKeys.map(el=> el.key)}
     />
   }, [personalContext.transport])
@@ -133,7 +133,7 @@ export default function PersonalHeader(props: Props) {
     stateMachines={'State Machine 1'} 
     key={personalContext.weather.id} 
     className={styles.rive} 
-    src={ImageHelper.urlFromSource(personalContext.weather.image.source)} 
+    src={ImageHelper.urlFromSource(personalContext.weather.image?.source)} 
     animations={personalContext.weather.riveKeys.map(el=> el.key)}
     />
   }, [personalContext.weather])
