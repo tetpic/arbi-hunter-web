@@ -62,9 +62,7 @@ module.exports = withSentryConfig(
 
     org: "xo-media-group-ltd",
     project: "arbihunter-web",
-    debug: true,
-    // Only print logs for uploading source maps in CI
-    silent: true,
+    debug:  false,
 
     // For all available options, see:
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
