@@ -35,6 +35,7 @@ export default function FavoritesPageHirer(props: Props) {
   const userContext = useUserContext()
   const foldersContext = useFavoritesFolderContext()
   const {t} = useTranslation()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const openAddFolderModal = () => {
     const _modalArgs:AddFavoritesFolderArgs = {
@@ -64,12 +65,15 @@ export default function FavoritesPageHirer(props: Props) {
 
   useEffect(()=>{
     foldersContext.getAllFolders()
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
   }, [])
 
   const titleButtons = (
     <div className={styles.buttonsWrapper}>
       <Button styleType={['grey', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openAddFolderModal}><PlusSvg/> {!isTabletWidth&&t('favorites_add')}</Button>
-      <Button styleType={['grey', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openSettingsModal}><SettingSvg/> {!isTabletWidth&&t('favorites_settings')}</Button>
+      <Button disabled={isLoading} styleType={['grey', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openSettingsModal}><SettingSvg/> {!isTabletWidth&&t('favorites_settings')}</Button>
     </div>
   )
 

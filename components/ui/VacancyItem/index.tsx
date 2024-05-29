@@ -124,12 +124,14 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         <P styleType={['purple', 'small']} className={styles.firstApp}>Откликнитесь первым!</P>
       }
 
+      
       <P 
       styleType={['alignCenter', 'medium', 'w500']}
       useThemeColor
       >
         <BriefCaseSvg color={isLightTheme&&colors.black} className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()
-      }</P>
+      }
+      </P>
 
       <SalaryItem vacancy={vacancy}/>
       <P  styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>

@@ -1,7 +1,7 @@
 import { IVacancy, IVacancyCreate } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
+import { Dispatch, SetStateAction, createContext, useCallback, useContext, useState } from 'react'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ModerationStatusType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
@@ -31,7 +31,7 @@ interface IState {
   editVcInEditor: (vc: IVacancy)=> void
 
   foundVacancies: Map<number, IVacancy>
-  findVacancies: (data?: IVacancyCvSearchParams) => Promise<boolean>
+  findVacancies: (data?: IVacancyCvSearchParams, _page?: number) => Promise<boolean>
 
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
@@ -205,18 +205,19 @@ export function VacancyWrapper(props: Props) {
     })
   }
 
-  const findVacancies = async (data?: IVacancyCvSearchParams):Promise<boolean> => {
-    const res = await VacancyRepository.searchVacancies(data, page, 40)
+  const findVacancies = useCallback(async (data?: IVacancyCvSearchParams, _page?: number):Promise<boolean> => {
+    console.log(_page, page)
+    const res = await VacancyRepository.searchVacancies(data, _page||page, 40)
     if(typeof res === 'object') {
       setFoundVacancies(state=>{
-        page === 1 && state.clear()
+        (_page||page === 1) && state.clear()
         res.data.forEach(el=> state.set(el.id, el))
         return new Map(state)
       })
       setTotal(res.total)
     }
     return true
-  }
+  }, [page])
 
   const refreshVacancyInFound = (v: IVacancy) => {
     VacancyRepository.getVacancyById(v.id)

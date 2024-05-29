@@ -16,6 +16,9 @@ interface Props {
 export default function Spinner(props: Props) {
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
+
+  return <></>
+  
   return (
     <div className={classNames({
       [styles.root]: true,

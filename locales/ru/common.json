@@ -167,8 +167,8 @@
 
   "education_noEducation": "Нет образования",
   "education_secondary": "Среднее",
-  "education_secondarySpecial": "Средне специальное",
-  "education_incompleteHigher": "Неоконченное высшее",
+  "education_secondarySpecial": "Среднее специальное",
+  "education_incompleteHigher": "Незаконченное высшее",
   "education_higher": "Высшее",
   "education_bachelor": "Бакалавр",
   "education_master": "Магистр",
@@ -205,7 +205,7 @@
   "hirerRolePermission_viewStats":"Просмотр статистики",
   "hirerRolePermission_manageApplications":"Отклики на соискателей",
   "hirerRolePermission_createVacancies":"Создание и продление вакансий",
-  "hirerRolePermission_editCompanyProfile":"Изменения профиля компании",
+  "hirerRolePermission_editCompanyProfile":"Изменение профиля компании",
   "hirerRolePermission_editCompanyBlog":"Изменение блога компании",
 
   "hirerRole_admin":"Администратор" ,
@@ -564,7 +564,7 @@
   "favorites_enterFolderName":"Введите название папки",
   "favorites_confirmDeletion":"Вы уверены, что хотите удалить папку?",
   "favorites_addingFlow":"Как происходит добавление",
-  "favorites_defaultFolder":"Папка добавления по умолчанию",
+  "favorites_defaultFolder":"Папка по умолчанию",
   "favorites_addToDefaultFolder":"Добавлять сразу в папку",
   "favorites_askFolderEveryTime":"Спрашивать папку каждый раз",
   "favorites_chooseFolderToSave":"Выберите папку для сохранения",
@@ -883,7 +883,7 @@
   "profile_wrongApplication":"Отклик некорректен. Действия невозможны",
   "profile_applicationNotFound":"Приглашение не найдено",
   "profile_emailNotifications":"Почтовые рассылки",
-  "profile_pushNotifications":"Пуш-уведомления",
+  "profile_pushNotifications":"Push-уведомления",
 
 
 
@@ -960,8 +960,8 @@
   "recruiting_hit_foundOnVacancy": "на вакансию",
   "recruiting_noFoundCvs": "Нет найденных резюме",
   "recruiting_em_placeCv": "Найти работу в ArbiHunter",
-  "recruiting_em_desc1": "Ежедневно более 1000 людей находят работу в ArbiHunter",
-  "recruiting_em_desc2": "которая позволяет им расти и становиться успешными!",
+  "recruiting_em_desc1": "Каждый день наши гости получают лучшие офферы",
+  "recruiting_em_desc2": "и делают шаг вверх по карьерной лестнице. Стань одним из них!",
   "recruiting_em_searchVcs": "Поиск вакансий",
   "recruiting_em_noFoundVacancies": "Нет найденных вакансий",
 

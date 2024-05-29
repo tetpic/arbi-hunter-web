@@ -68,7 +68,7 @@ export default function PersonalInformation(props: Props) {
           />
 
           <InputField   
-          label={`${t('email')}:`}
+          label={'E-mail:'}
           className={styles.input} 
           labelType='top' 
           styleType={'default'} 
