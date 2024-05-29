@@ -57,6 +57,7 @@ import RemoveMessageConfirmModal from '@/components/modals/RemoveMessageConfirmM
 import RemoveCvVcConfirmModal from '@/components/modals/RemoveCvVcConfirmModal'
 import ChangeChatFolderModal from '@/components/modals/ChangeChatFolderModal'
 import BuyOpensModal from '@/components/modals/BuyOpensModal'
+import PurchaseBrandingInfoModal from '@/components/modals/PurchaseBrandingInfoModal'
 
 
 interface Props { }
@@ -282,6 +283,10 @@ export default function ModalContainer(props: Props) {
       case ModalType.BuyOpensModal:
         return <Modal isOpen {...commonSettings} >
         <BuyOpensModal onClose={commonSettings.onRequestClose}/>
+      </Modal>
+      case ModalType.PurchaseBrandingInfoModal:
+        return <Modal isOpen {...commonSettings} >
+        <PurchaseBrandingInfoModal onClose={commonSettings.onRequestClose}/>
       </Modal>
 
     }

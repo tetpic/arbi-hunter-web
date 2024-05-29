@@ -1,0 +1,44 @@
+@import 'styles/index';
+
+.root {
+  padding: 16px;
+  background-color: var(--backColor);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 16px;
+
+}
+
+.top {
+  display: grid;
+  grid-template-areas: 'u n' 'u d';
+  grid-template-columns:  auto 1fr ;
+  column-gap: 8px;
+  grid-template-rows:  1fr auto;
+  
+}
+
+.userPic {
+  grid-area: u;
+}
+
+.watched {
+  display: flex;
+  column-gap: 8px;
+}
+
+.online {
+  color: $green;
+  background-color: $greenLight;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.offline {
+  color: $red;
+  background-color: $redLight;
+  padding: 4px 12px;
+  border-radius: 6px;
+}

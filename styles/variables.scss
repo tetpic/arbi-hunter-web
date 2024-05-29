@@ -75,5 +75,6 @@ $bold: 700;
 $extrabold: 800;
 
 $mobileTopSectionPadding: 16px;
-
+$desktopTopSectionPadding: 40px;
+$topSectionPadding: clamp($mobileTopSectionPadding, 4vw, $desktopTopSectionPadding);
 

@@ -58,6 +58,7 @@ export enum ModalType {
   RemoveCvVcConfirmModal = 'removeCvVcConfirmModal',
   ChangeChatFolderModal = 'changeChatFolderModal',
   BuyOpensModal= 'buyOpensModal',
+  PurchaseBrandingInfoModal = 'purchaseBrandingInfoModal'
 }
 
 export enum AppTheme {

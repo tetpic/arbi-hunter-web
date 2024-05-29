@@ -142,7 +142,7 @@ export default function MainPageHirer() {
               </p>
               }
             </Link>
-            <Link className={styles.card} href={'/'}>
+            <Link className={styles.card} href={'/views'}>
               <p className={styles.desc}>{t('mainPage_hir_watches')}</p>
               <EyeOpenSmallSvg className={styles.icon}/>
               {!stats && <Spinner className={styles.count} size={22}/>

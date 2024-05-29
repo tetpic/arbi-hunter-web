@@ -107,10 +107,10 @@ export default function BackgroundPickModal(props: Props) {
         <Image 
         unoptimized
         className={styles.build} 
-        src={currentBuild?.source && ImageHelper.urlFromFile(currentBuild, Preset.sResize)} 
+        src={currentBuild?.source && ImageHelper.urlFromFile(currentBuild, Preset.mdResize)} 
         alt={'build'} 
-        width={250} 
-        height={300}/>
+        width={310} 
+        height={350}/>
         {args.hirerLogo && 
           <Image 
           unoptimized
@@ -141,18 +141,18 @@ export default function BackgroundPickModal(props: Props) {
               <Image 
               unoptimized
               className={styles.buildImg} 
-              src={ImageHelper.urlFromFile(b.image, Preset.xsResize)} 
+              src={ImageHelper.urlFromFile(b.image, Preset.mdResize)} 
               alt={b.image.source} 
-              width={155} 
-              height={170}
+              width={310} 
+              height={350}
               />
               {currentBackground &&
                 <Image 
                 unoptimized
                 className={styles.buildBack} 
-                src={ImageHelper.urlFromFile(currentBackground, Preset.xsResize)} 
-                width={155} 
-                height={170} 
+                src={ImageHelper.urlFromFile(currentBackground, Preset.mdResize)} 
+                width={310} 
+                height={350} 
                 alt={'build back'}/>
               }
             </div>
@@ -178,10 +178,10 @@ export default function BackgroundPickModal(props: Props) {
             >
               <Image
               unoptimized
-               src={ImageHelper.urlFromFile( b.image, Preset.xsResize)} 
+               src={ImageHelper.urlFromFile( b.image, Preset.mdResize)} 
                alt={b.image.source} 
-               width={155} 
-               height={115}/>
+               width={310} 
+               height={350}/>
             </div>
           </SwiperSlide>
         )
