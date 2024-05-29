@@ -1,6 +1,10 @@
 @import 'styles/index';
 
 
+.root {
+  margin-bottom: 24px;
+}
+
 .textarea {
   border: 2px $grey solid !important;
 

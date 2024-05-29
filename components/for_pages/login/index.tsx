@@ -160,17 +160,6 @@ export default function Login() {
               onClick={()=>formik.submitForm()}>
                 <span>{t('enter')}</span>
               </Button>
-
-              {/* <Button
-              type='button'
-              onClick={googleLogin}
-              styleType={['black', 'phoneWide']}
-
-              icon={
-                <Image src={'/images/companyLogos/googleLogo.png'} alt={'google'} width={24} height={24} />
-              }>
-                {t('login_viaGoogle')}
-              </Button> */}
             </div>
 
           </Form>

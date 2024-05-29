@@ -90,18 +90,7 @@
   width: 100% !important;
 }
 
-.submitButton {
-  @include mq($PhoneWidth, min) {
-    @include buttonBorderGradient;
-  }
-  padding: 10px 24px;
-  // display: inline-block;
-  @include mq($PhoneWidth, max) {
-    @include buttonGradient;
-    width: 100%;
-    margin-top: auto;
-  }
-}
+
 
 .buttonsWrapper {
   display: flex;
@@ -109,6 +98,10 @@
   column-gap: 16px;
   row-gap: 16px;
   width: 100%;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    padding-top: 16px;
+  }
 }
 
 .button  {

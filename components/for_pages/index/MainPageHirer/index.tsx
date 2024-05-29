@@ -16,7 +16,6 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import Spinner from '@/components/ui/Spinner'
 import Title from '@/components/ui/TitleForSection'
 import CategoriesList from '@/components/ui/CategoriesList'
-import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
@@ -171,9 +170,10 @@ export default function MainPageHirer() {
       categories={[...categories.values()].filter(e=> e.image)}
       />
 
-
+{/* 
       <Title title={t('mainPage_hir_bestCvs')} className={styles.title}/>
-      <CvVcCompilation/>
+      <CvVcCompilation/> */}
+
       <Title title={t('mainPage_hir_articles')} className={styles.title}/>
       {news.size > 0 &&
         <ArticlesList onlyTitles news={[...news.values()]}/>

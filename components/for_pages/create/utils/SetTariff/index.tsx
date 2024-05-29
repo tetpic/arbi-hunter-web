@@ -17,6 +17,9 @@ import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import CrossSvg from '@/components/svg/CrossSvg'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   onSave?: (replace?: boolean) =>void
@@ -24,6 +27,7 @@ interface Props {
   onPreview?: ()=>void
   type?: 'cv'|'vacancy'
   setText?: string
+  progressBar?: JSX.Element
 }
 
 export default function SetTariff(props: Props) {
@@ -92,7 +96,26 @@ export default function SetTariff(props: Props) {
   }
 
   return (<div className={styles.root}> 
-  <P styleType={['huge', 'w600', 'textCenter']} useThemeColor>{t('shop_chooseTariff')}</P>
+  <P styleType={['huge', 'w600', 'textCenter', 'alignCenter']} useThemeColor className={styles.title}>{isTabletWidth && 
+    <Button 
+    onClick={() => {
+      if(router.query.fromOtherPage) {
+        router.back()
+      }
+      else {
+        props.onBack()
+      }
+    }}
+    styleType={['icon', 'black']}
+    ><ArrowLeftSvg/></Button>
+  }{t('shop_chooseTariff')}
+  {isTabletWidth &&
+    <Button onClick={router.back} styleType={['black', 'icon']}><CrossSvg/></Button>
+  }
+  </P>
+  {props.progressBar && <Spacer basis={16}/>}
+  {props.progressBar}
+  {props.progressBar && <Spacer basis={24}/>}
   <div className={styles.tariffItems}>
     {tariffs.size > 0 &&[...tariffs.values()].filter(el => {
       if(router.query.improve === 'true'){
@@ -142,22 +165,24 @@ export default function SetTariff(props: Props) {
     })}
   </div>
   <div className={styles.buttonsWrapper}>
+    {!isTabletWidth &&
+      <Button 
+      styleType={['black']} 
+      altStyleType={['whitePurple']} 
+      onClick={()=>{
+        if(router.query.fromOtherPage) {
+          router.back()
+        }
+        else {
+          props.onBack()
+        }
+      }}
+      >
+        {t('back')}
+      </Button>
+    }
     <Button 
-    styleType={['black']} 
-    altStyleType={['whitePurple']} 
-    onClick={()=>{
-      if(router.query.fromOtherPage) {
-        router.back()
-      }
-      else {
-        props.onBack()
-      }
-    }}
-    >
-      {t('back')}
-    </Button>
-    <Button 
-    styleType={['gradient']} 
+    styleType={['gradient', 'phoneWide']} 
     title={'preview'} 
     onClick={()=> {
       props.onPreview?.()

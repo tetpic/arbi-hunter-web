@@ -9,6 +9,14 @@
   }
 }
 
+.modalBody {
+  @include mq($TabletWidth, max) {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+
 .dateField {
   width: 100%;
 }
@@ -17,7 +25,11 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
-  column-gap: 16px
+  column-gap: 16px;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    padding-block: 16px;
+  }
 }
 
 .grayButton {
@@ -60,4 +72,12 @@
 
 .mobileTitle {
   margin-bottom: 24px;
+}
+
+.form {
+  height: 100%;
+  @include mq($TabletWidth, max) {
+    display: flex;
+    flex-direction: column;
+  }
 }

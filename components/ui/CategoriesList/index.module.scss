@@ -1,3 +1,20 @@
+@import 'styles/index';
 .wrapper {
-  height: clamp(177px, 20vw, 188px);
+  height: 188px;
+}
+
+.root {
+  >div {
+
+    @include mq($TabletWidth, max) {  
+      padding-inline: 16px;
+      overflow: unset;
+    }
+  }
+
+  * {
+    transform-style: preserve-3d;
+    transform: translate3d(0, 0, 0);
+  }
+
 }

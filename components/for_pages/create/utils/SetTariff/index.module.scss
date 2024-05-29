@@ -3,11 +3,17 @@
 .root {
   width: 100%;
   @include mq($TabletWidth, max) {
-    margin-top: 24px;
+    // margin-top: 24px;
     margin-bottom: 32px;
     display: flex;
     flex-direction: column;
 
+  }
+}
+
+.title {
+  @include mq($TabletWidth, max) {
+    justify-content: space-between;
   }
 }
 
@@ -18,7 +24,7 @@
   column-gap: 24px;
   width: 100%;
   margin-top: clamp(24px, 7vw, 82px);
-  margin-bottom: 82px;
+  margin-bottom: clamp(16px,4vw,82px);
   align-items: stretch;
   row-gap: 24px;
 }

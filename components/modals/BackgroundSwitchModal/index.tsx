@@ -16,9 +16,12 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 export interface IBackgroundSwitchModalArgs {
@@ -30,7 +33,7 @@ export default function BackgroundSwitchModal(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
-  const args: IBackgroundSwitchModalArgs = appContext.modalArguments
+  const args: IBackgroundSwitchModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   
   const [type, setType] = useState<'place'|'custom'>(userContext.currentProfile?.useOwnLogo? 'custom' :'place')
   const [image, setImage] = useState<PreviewImage>(userContext.currentProfile?.profileType === ProfileType.Hirer&& userContext.currentProfile.useOwnLogo && args.currentBackground &&{data: args.currentBackground?.image, id: args.currentBackground?.imageId, loaded: true})
@@ -93,6 +96,14 @@ export default function BackgroundSwitchModal(props: Props) {
     </div>
   </div>    
   )
+
+  if(props.isBottomSheet) {
+    return <BottomSheetLayout>
+      <BottomSheetBody>
+        {body}
+      </BottomSheetBody>
+    </BottomSheetLayout>
+  }
 
   return (<ModalLayout  className={styles.modalLayout}>
     <ModalBody>

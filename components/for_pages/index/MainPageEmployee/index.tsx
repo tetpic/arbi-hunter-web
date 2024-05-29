@@ -18,7 +18,6 @@ import {  Languages } from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import { IArticle } from 'data/interfaces/IArticle'
-import CvVcCompilation from '../CvVcCompilation'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
@@ -210,8 +209,8 @@ export default function MainPageEmployee() {
       itemClassName={styles.categoryItem}
       />
 
-      <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
-      <CvVcCompilation/>
+      {/* <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
+      <CvVcCompilation/> */}
 
       <Title title={t('mainPage_em_articles')} className={styles.title}  />
       {news.size > 0 &&

@@ -35,7 +35,7 @@ export default function BlackListedItem(props: Props) {
     <P useThemeColor>{getSalary({vacancy: props.vacancy, cv: props.cv}, t)}</P>
    </>
    }
-   <Button className={styles.button} onClick={()=>props.onRestore?.()} styleType={['gradient']}>{t('restore')}</Button>
+   <Button className={styles.button} onClick={()=>props.onRestore?.()} styleType={['gradient', 'phoneWide']}>{t('restore')}</Button>
 
   </div>)
 }

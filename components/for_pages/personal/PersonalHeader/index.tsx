@@ -20,6 +20,9 @@ import { IBackgroundSwitchModalArgs } from '@/components/modals/BackgroundSwitch
 import { IBackgroundPickModalArguments } from '@/components/modals/BackgroundPickModal'
 import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import Button from '@/components/ui/Button'
+import { useRouter } from 'next/router'
 
 interface Props {
   isEditing?: boolean
@@ -27,6 +30,7 @@ interface Props {
   showNextAnimation?: () => void
   action?: ModelActions 
   allowDefaultBackground?: boolean
+  showMobileBack?: boolean
 }
 
 export default function PersonalHeader(props: Props) {
@@ -35,6 +39,7 @@ export default function PersonalHeader(props: Props) {
   const personalContext = usePersonalContext()
   const userContext = useUserContext()
   const characterContext = useCharacterContext()
+  const router = useRouter()
   const currentProfile = useUserContext().currentProfile
   const {isTabletWidth} = appContext.size
   const [backImage, setBackImage] = useState<IBackground>()
@@ -44,43 +49,48 @@ export default function PersonalHeader(props: Props) {
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
     const cBuild = personalContext.backgrounds.get(BackgroundCategoryType.Buildings)
-
-      appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, {
-        onSave: (data) => {
-          if(data.type === 'place') {
-            setTimeout(()=> {
-              appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, {
-                currentBackground: cBack?.image|| null,
-                currentBuild: cBuild?.image || null,
-                hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile.logo,
-                withBuildPicker: currentProfile?.profileType === ProfileType.Hirer,
-                onSave: (background, building) => {                  
-                  BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
-                  .then(_ => {
-                    personalContext.refreshBackgrounds()
-                  })
-                  if(currentProfile?.profileType === ProfileType.Hirer) {
-                    userContext.editCurrentProfile({imageId: building?.image?.id||null, useOwnLogo: false})        
-                  }
+    const _args: IBackgroundSwitchModalArgs = {
+      onSave: (data) => {
+        if(data.type === 'place') {
+          setTimeout(()=> {
+            const _args:IBackgroundPickModalArguments =  {
+              currentBackground: cBack?.image|| null,
+              currentBuild: cBuild?.image || null,
+              hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile.logo,
+              withBuildPicker: currentProfile?.profileType === ProfileType.Hirer,
+              onSave: (background, building) => {                  
+                BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
+                .then(_ => {
+                  personalContext.refreshBackgrounds()
+                })
+                if(currentProfile?.profileType === ProfileType.Hirer) {
+                  userContext.editCurrentProfile({imageId: building?.image?.id||null, useOwnLogo: false})        
                 }
-              })
-            }, 100)
-          }
-          else if(data.type === 'custom' && data.image) {
-            BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile?.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
-            .then(res => {
-              BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
-              .then(r=> {               
-                personalContext.refreshBackgrounds()
-                if(userContext.currentProfile?.profileType === ProfileType.Hirer) {                  
-                  userContext.editCurrentProfile({useOwnLogo: true})        
-                }
-              })
+              }
+            }
+            isTabletWidth
+            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 280)
+            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args)
+          }, 100)
+        }
+        else if(data.type === 'custom' && data.image) {
+          BackgroundRepository.createBackground({imageId: data.image?.data?.id, profileType: currentProfile?.profileType, backgroundType: 'png', categoryId: BackgroundCategoryType.Places})
+          .then(res => {
+            BackgroundRepository.setBackgrounds({backgroundsIds: [res.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
+            .then(r=> {               
+              personalContext.refreshBackgrounds()
+              if(userContext.currentProfile?.profileType === ProfileType.Hirer) {                  
+                userContext.editCurrentProfile({useOwnLogo: true})        
+              }
             })
-          }          
-        },
-        currentBackground: cBack||null,
-      })
+          })
+        }          
+      },
+      currentBackground: cBack||null,
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal, _args, 370)
+    :appContext.showModal<IBackgroundSwitchModalArgs>(ModalType.BackgroundSwitchModal,_args)
   }
 
   const editingButton = (()=>{
@@ -130,6 +140,16 @@ export default function PersonalHeader(props: Props) {
 
 
   return (<div className={styles.root}> 
+    {isTabletWidth && props.showMobileBack &&
+      <Button 
+      styleType={['black', 'icon']} 
+      altStyleType={['whitePurple', 'icon']} 
+      className={styles.back} 
+      onClick={router.back}
+      >
+        <ArrowLeftSvg/>
+      </Button>
+    }
     {backImage && profileType===ProfileType.Hirer &&
     <Image 
     unoptimized

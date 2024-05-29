@@ -98,6 +98,7 @@ export default function DateField(props: Props) {
           maxDate={props.maxDate?new Date(props.maxDate):new Date()}
           customInput={
             <InputField 
+            readonly={true}
             autocompleteOff={true} 
             validate={props.validate}
             className={classNames(styles.input, props.hideInput&&styles.hideInput, props.inputClassName)}  

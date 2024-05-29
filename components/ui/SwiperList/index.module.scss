@@ -11,6 +11,9 @@
       opacity: 1;
     }
   }
+  @include mq($TabletWidth, max) {
+    overflow: hidden;
+  }
 }
 
 .swiperSlide {

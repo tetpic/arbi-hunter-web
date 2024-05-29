@@ -23,7 +23,7 @@ class MyDocument extends Document {
     //@ts-ignore
     const theme: AppTheme = this.props.__NEXT_DATA__.props.pageProps.theme
     return (
-      <Html style={{height: '100vh', width: '100vw', backgroundColor: theme === AppTheme.Light?'#F5F2F7':'#16161B'}}>
+      <Html style={{width: '100vw', backgroundColor: theme === AppTheme.Light?'#F5F2F7':'#16161B'}}>
         <Head >
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg"/>

@@ -24,6 +24,7 @@ import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import ImageHelper from 'utils/ImageHelper'
+import { useRouter } from 'next/router'
 
 interface Props {
   onClose: () => void
@@ -54,6 +55,7 @@ export default function PurchasePreviewModal(props: Props) {
   const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
+  const router = useRouter()
   const balance = useRef(userContext.user?.balance)
   const args:PurchasePreviewModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [type, setType] = useState<PurchaseStep>(PurchaseStep.default)
@@ -243,6 +245,19 @@ export default function PurchasePreviewModal(props: Props) {
         <P styleType={['w500', 'medium']}>{t('shop_noAvailableTariffs')}</P>
       }
       
+      {items.length === 0 && (args.tariff.purchaseType === PurchaseType.CvTariff || args.tariff.purchaseType === PurchaseType.VacancyTariff) &&
+        <Button
+        type='button'
+        styleType={['gradient', 'phoneWide']} 
+        className={styles.continueButton}
+        onClick={()=>{
+          router.push(args.tariff.purchaseType === PurchaseType.CvTariff&&'/create/cv'|| args.tariff.purchaseType === PurchaseType.VacancyTariff&&'/create/vacancy')
+          props.onClose()
+        }}
+        >
+          Создать
+        </Button>
+        ||
       <Button 
       type='button'
       styleType={['gradient', 'phoneWide']} 
@@ -257,6 +272,7 @@ export default function PurchasePreviewModal(props: Props) {
       >
         {t('continue')}
       </Button>
+      }
     </div>
   )
 

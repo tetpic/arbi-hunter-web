@@ -10,6 +10,7 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 
+
 interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   onClose: () => void
@@ -68,11 +69,11 @@ export default function Body(props: Props) {
         props.onClose()}} >{t('cancel')}</Button>
     }
     <Button 
-    styleType={['gradient']}
+    styleType={['gradient', 'phoneWide']}
     disabled={props.disabledButton}
     onClick={props.onSave} 
     title={'saveSkill'}>
-      {t('set')}
+      {t('save')}
     </Button>
   </div>
   </>)

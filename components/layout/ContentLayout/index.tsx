@@ -31,6 +31,7 @@ interface Props {
 export default function ContentLayout(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
+  const isLogged = userContext.isLogged
   const {isTabletWidth} = useResize()
 
   useEffect(()=>{
@@ -60,7 +61,7 @@ export default function ContentLayout(props: Props) {
         {props.children}
       </ErrorBoundary>
       </div>
-      {props.withFooter &&
+      {(isTabletWidth?!isLogged && props.withFooter:props.withFooter ) &&
         <Footer/>
       }
       {props.withMobileMenu && isTabletWidth &&

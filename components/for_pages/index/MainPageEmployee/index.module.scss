@@ -2,8 +2,8 @@
 
 .root {
   margin-bottom: 32px;
-  min-height: 150vh;
-  min-height: 150dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 
   .categoryItem {
@@ -17,7 +17,7 @@
 .top {
   position: relative;
   @include mq($TabletWidth, max) {
-    margin-bottom: 80px;
+    margin-bottom: 106px;
   }
 }
 
@@ -33,7 +33,7 @@
     width: calc(100% - 32px);
   }
   @include mq($TabletWidth, max) {
-      bottom: -56px
+      bottom: -75px
   }
 
   .cards {
@@ -69,6 +69,7 @@
       grid-template-columns: unset;
       justify-items: center;
       width: calc(33% - 4px);
+      padding-block: 12px;
     }
     
     .desc {

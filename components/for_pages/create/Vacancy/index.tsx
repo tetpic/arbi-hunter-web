@@ -387,6 +387,8 @@ export default function Vacancy(props: Props) {
     }
   }
 
+  const progressBar = <ProgressBar progress={progress} pointsCount={VCItemsCount} titles={titles} onClick={nextPageValidator}/>
+
 
   const memoedRive = useMemo(()=>{
     const image = getImage()
@@ -462,6 +464,7 @@ export default function Vacancy(props: Props) {
       onPreview={()=>setShowPreview(true)} 
       onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} 
       onBack={()=>setProgress(progress-1)} type='vacancy'
+      progressBar={isTabletWidth &&progressBar}
       />
     }  
 
@@ -475,7 +478,7 @@ export default function Vacancy(props: Props) {
           }
           {title}
         </P>
-        <ProgressBar progress={progress} pointsCount={VCItemsCount} titles={titles} onClick={nextPageValidator}/>
+        {progressBar}
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}
           {page} 

@@ -103,7 +103,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     <div className={styles.top}>
       <div className={ styles.card}>
         {smallCard &&
-        <UserPic className={styles.userPic} image={ImageHelper.urlFromFile(vacancy.profile.logo, Preset.iconCrop)} size={42}/>
+        <UserPic straightSizes className={styles.userPic} image={ImageHelper.urlFromFile(vacancy.profile.logo, Preset.iconCrop)} size={42}/>
         }
         <P 
         styleType={['large', 'w600']} 

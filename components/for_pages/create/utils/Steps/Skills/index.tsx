@@ -138,7 +138,7 @@ export default function Skills(props: Props) {
       choosenElements: new Map(cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, (t.type ==='verticals'&&380)||0.4)
       return
     }
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
@@ -176,7 +176,7 @@ export default function Skills(props: Props) {
       initialFiles: cvContext.helpObjects?.assets
     }
     if(isTabletWidth) {
-      appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 400)
+      appContext.showBottomSheet<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps, 280)
     }
     else {
       appContext.showModal<IPortfolioModal>(ModalType.AddPortfolioModal, portfolioProps)

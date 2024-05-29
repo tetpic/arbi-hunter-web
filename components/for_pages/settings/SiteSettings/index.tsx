@@ -68,7 +68,7 @@ export default function SiteSettings(props: Props) {
   const onLangChange =()=> {
     const args:IChangeLanguageModalArgs = {onSave: (data) => formik.setFieldValue('language', data.value)}
     isTabletWidth
-    ?appContext.showBottomSheet<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, args, 300)
+    ?appContext.showBottomSheet<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, args, 220)
     :appContext.showModal<IChangeLanguageModalArgs>(ModalType.ChangeLanguageModal, args)
   }
 

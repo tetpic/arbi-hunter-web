@@ -4,6 +4,7 @@
   margin-top: 32px;
   @include mq($TabletWidth, max) {
     margin-top: unset;
+    margin-bottom: 24px;
   }
 }
 

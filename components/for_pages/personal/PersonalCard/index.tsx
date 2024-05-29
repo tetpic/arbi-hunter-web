@@ -60,12 +60,15 @@ export default function PersonalCard(props: Props) {
   }
 
   const openUserImageModal = () => {
-    appContext.showModal<IUserImageModalProps>(ModalType.UserImageModal, {onSave: (data) => {
+    const _args:IUserImageModalProps =  {onSave: (data) => {
       userContext.editCurrentProfile({imageId: data?.image?.data?.id, useOwnLogo: data.type === 'logo'?true: false})
       .then(res => {
         res&&personalContext.setCurrentProfile(res)
       })
-    }})
+    }}
+    isTabletWidth
+    ?appContext.showBottomSheet<IUserImageModalProps>(ModalType.UserImageModal, _args, 380)
+    :appContext.showModal<IUserImageModalProps>(ModalType.UserImageModal, _args)
   }
 
   const setVacancyLookType = (vacancyLookType: VacancyLookType) => {

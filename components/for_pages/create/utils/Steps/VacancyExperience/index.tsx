@@ -40,7 +40,7 @@ export default function VacancyExperience(props: Props) {
       choosenElements: new Map(cvContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, 0.4)
+      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, (t.type==='verticals'&&460)||350)
       return
     }
     appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)

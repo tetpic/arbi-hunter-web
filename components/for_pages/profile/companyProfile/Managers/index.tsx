@@ -28,7 +28,7 @@ export default function Managers() {
   
 
   const removeManagerHandler = (el: IManager) => {
-    
+    managerContext.removeManager(el.id)
   }
 
   useEffect(()=>{
@@ -43,8 +43,6 @@ export default function Managers() {
 
   return (<>{!addManagerModal && <div className={styles.root}> 
     <Title title={t('nav_managers')}/>
-
-
     <div className={styles.managers}>
       <InfiniteScroll 
       height={'100%'}

@@ -75,7 +75,7 @@ export default function ChangeLanguageModal(props: Props) {
   }
 
   return (<ModalLayout className={styles.modalLayout}>
-    <ModalBody>
+    <ModalBody >
       <FormikProvider value={formik}>
         <Form>
           {body}

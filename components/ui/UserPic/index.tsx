@@ -11,6 +11,7 @@ interface Props {
   size?: number
   icon?: JSX.Element,
   active?: boolean
+  straightSizes?:boolean
 }
 
 /**
@@ -33,7 +34,7 @@ export default function UserPic(props: Props) {
   }
 
   return ( 
-    <div className={classNames(styles.imageWrapper, props.className, props.active&&styles.active)} onClick={onClickHandler}>
+    <div className={classNames(styles.imageWrapper, props.className, props.active&&styles.active)} style={props.straightSizes&&{height: props.size, width: props.size}} onClick={onClickHandler}>
       {
       props.icon !== null && props.icon 
       ||

@@ -30,7 +30,7 @@ export default function Spacer(props: Props) {
   }
 
   return (
-    <div className="spacer" style={{height: typeof props.basis === 'string'?props.basis:props.basis+'px', display: 'block'}}>
+    <div className="spacer" style={{height: typeof props.basis === 'string'?props.basis:props.basis+'px',width: typeof props.basis === 'string'?props.basis:props.basis+'px',  display: 'block'}}>
       {/* <style jsx>{`
         .spacer{
           flex: ${props.flex ?? 1} 0 ${props.basis ? `${props.basis}px` : 'auto'};

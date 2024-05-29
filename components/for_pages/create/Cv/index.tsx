@@ -1,4 +1,4 @@
-import styles from './index.module.scss'
+import styles from './index.modu\le.scss'
 
 import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
@@ -344,6 +344,8 @@ export default function Cv(props: Props) {
     return <Rive src={image.src} animations={image.animations}  key={image.src} artboard={image.artboards&&lang.toUpperCase()} className={styles.rive}/>
   }, [progress])
 
+  const progressBar = <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
+
   useEffect(()=>{
     if(props.id) {
       creationContext.getCurrentCv(props.id, props.cv)
@@ -406,7 +408,7 @@ export default function Cv(props: Props) {
       cv={getSendData({...creationContext.draftItem.current, ...props.cv, ...formik.values, assets: creationContext.helpObjects.assets}) as ICV}/>
     }
     {progress === CVItemsCount && !showPreview &&
-      <SetTariff onPreview={()=>setShowPreview(true)} setText={t('create_cv_place')} onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
+      <SetTariff onPreview={()=>setShowPreview(true)} progressBar={isTabletWidth&&progressBar} setText={t('create_cv_place')} onSave={(noReplace?: boolean)=>submit(formik.values, noReplace)} onBack={()=>setProgress(progress-1)} type='cv'/>
     }
     {progress < CVItemsCount &&
     <>
@@ -427,7 +429,7 @@ export default function Cv(props: Props) {
           </Button>
         }
         />
-        <ProgressBar progress={progress} pointsCount={CVItemsCount} titles={titleTips} onClick={nextPageValidator}/>
+        {progressBar}
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}
           {page} 

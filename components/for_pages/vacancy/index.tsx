@@ -162,7 +162,9 @@ export default function VacancyPage(props: Props) {
       {isTabletWidth &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
-          <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+          {!isMyVacancy &&
+            <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+          }
         </div>
       }
       {!isMyVacancy &&companyCard}

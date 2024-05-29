@@ -249,21 +249,26 @@ export default function PersonalPage(props: Props) {
     {isMy && userContext.currentProfile.profileType === ProfileType.Employee &&isTabletWidth && !isEditing &&
       <Button 
       className={styles.mobileEditButton} 
-      styleType={['icon', 'white', 'svg24']} 
+      styleType={['icon', 'black', 'svg24']} 
       onClick={() => setIsEditing(!isEditing)}
       >
-        <PencilSvg color={colors.blue}/>
+        <PencilSvg color={colors.white}/>
       </Button>
     }
 
     {!isEditing && !props.webView
       &&
-      <PersonalHeader isEditing={!props.id&&isEditing}/>
+      <PersonalHeader 
+      showMobileBack
+      isEditing={!props.id&&isEditing}/>
       ||
-      isEditing && <PersonalHeader isEditing={!props.id&&isEditing}/>
+      isEditing && <PersonalHeader 
+      showMobileBack 
+      isEditing={!props.id&&isEditing}/>
     }
     {!props.webView &&
       <PersonalCard 
+
       save={() => personalContext.updatePersonalPage()} 
       isEditable={!props.id} 
       noHeader={!isHeaderExist}

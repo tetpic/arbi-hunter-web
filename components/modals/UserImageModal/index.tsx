@@ -12,9 +12,12 @@ import Button from 'components/ui/Button'
 import FileInput from 'components/fields/FileInput'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
+  isBottomSheet?: boolean
 }
 
 export interface IUserImageModalProps {
@@ -25,7 +28,7 @@ export interface IUserImageModalProps {
 export default function UserImageModal(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
-  const args: IUserImageModalProps = appContext.modalArguments
+  const args: IUserImageModalProps = props.isBottomSheet? appContext.bottomSheetArguments:appContext.modalArguments
   const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile?.useOwnLogo? 'logo' :'image')
   const [image, setImage] = useState<PreviewImage>()
 
@@ -67,6 +70,16 @@ export default function UserImageModal(props: Props) {
       </div>
     </div>    
   )
+
+  if(props.isBottomSheet) {
+    return (
+      <BottomSheetLayout>
+        <BottomSheetBody>
+          {body}
+        </BottomSheetBody>
+      </BottomSheetLayout>
+    )
+  }
   
 
 

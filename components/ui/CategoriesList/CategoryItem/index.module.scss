@@ -142,15 +142,17 @@
   .name{
     grid-area: t;
     position: relative;
-    min-height: 40px;
+    min-height: 50px;
     text-align: center;
     @include lineClamp(2);
     @include mq($TabletWidth, max) {
-      min-height: unset;
-      font-size: $smallText;
-      font-weight: $regular;
+      align-self: flex-start;
+      justify-self: flex-end;
       text-align: start;
       @include lineClamp(3);
+      display: flex;
+      align-items: flex-end;
+      min-height: 38px;
     }
   }
   

@@ -19,11 +19,11 @@
   transform: translateY(100%);
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: 16px;
   padding: 16px;
   background-color: var(--secondaryColor);
   border: 2px var(--borderPerimeter) solid;
   border-radius: 10px;
   z-index: 10;
-
+  cursor: pointer;
 }

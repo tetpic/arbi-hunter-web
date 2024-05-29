@@ -119,7 +119,7 @@ export default function LangaugesModal(props: Props) {
 
   return ( 
     <ModalLayout mobileFullScreen  className={styles.rootLayout}>
-      <ModalBody>
+      <ModalBody className={styles.modalBody}>
         {body}
       </ModalBody>
     </ModalLayout>

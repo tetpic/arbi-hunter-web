@@ -67,7 +67,7 @@ export default function AppPromo(props: Props) {
           <Image src={appleIcon} alt={'apple icon'} width={20} height={20}/>
           <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>
-        <Button styleType={['grey']} altStyleType={['whitePurple']} className={styles.button}>
+        <Button styleType={['grey']} altStyleType={['whitePurple']} href={'https://play.google.com/store/apps/details?id=com.arbi.hunter'} className={styles.button}>
           <Image src={googleIcon} alt={'google play icon'}/>
           <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>

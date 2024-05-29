@@ -5,6 +5,7 @@
   grid-template-areas: 'u n' 'u s';
   row-gap: 8px;
   grid-template-columns: auto 1fr;
+  align-items: start;
 }
 
 .userPic {
@@ -12,6 +13,7 @@
   margin-right: 8px;
   flex-shrink: 0;
   align-self: flex-start;
+
 }
 
 .name {

@@ -102,7 +102,7 @@ export default function ApplicationModal(props: Props) {
     )
   }
 
-  return (<ModalLayout>
+  return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>
       {body}
 

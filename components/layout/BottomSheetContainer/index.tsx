@@ -32,6 +32,9 @@ import ChangeChatFolderModal from '@/components/modals/ChangeChatFolderModal'
 import ConfirmModal from '@/components/modals/ConfirmModal'
 import BuyOpensModal from '@/components/modals/BuyOpensModal'
 import ProposalTextModal from '@/components/modals/ProposalModal/ProposalTextModal'
+import BackgroundPickModal from '@/components/modals/BackgroundPickModal'
+import BackgroundSwitchModal from '@/components/modals/BackgroundSwitchModal'
+import UserImageModal from '@/components/modals/UserImageModal'
 
 
 interface Props { }
@@ -301,6 +304,33 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <ProposalTextModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.BackgroundPickModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <BackgroundPickModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.BackgroundSwitchModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <BackgroundSwitchModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
+        </Sheet>
+        <Sheet
+          isOpen={appContext.bottomSheet == ModalType.UserImageModal}
+          onClose={appContext.hideBottomSheet}
+          snapPoints={[appContext.snapPoints||0.5]}
+          disableDrag={false}
+          disableScrollLocking
+        >
+          <UserImageModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
         </Sheet>
       </div>
     </RemoveScroll>

@@ -38,4 +38,15 @@ export default class ManagerRepository {
     }
     return res
   }
+
+  static async removeManager(managerId: number): Promise<any|null> {
+    const res = await request({
+      method: 'delete',
+      url: `/api/manager/${managerId}`,
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
 }

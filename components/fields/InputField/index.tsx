@@ -16,6 +16,7 @@ import { useAppContext } from 'context/state'
 type FormatType = 'phone'
 
 interface Props extends IField<string>{
+  readonly?: boolean
   obscure?: boolean
   format?: FormatType
   success?: boolean
@@ -114,6 +115,7 @@ export default function InputField(props: Props) {
         {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         {props.labelType === 'underlined'? <FieldLabel className={classNames(styles.staticLabel, styles.underlinedLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         <input
+          readOnly={props.readonly}
           {...field}
           value = {props.value||field.value}
           ref={props.format === 'phone' ? phoneRef as any : null}
@@ -148,7 +150,7 @@ export default function InputField(props: Props) {
           placeholder={props.placeholder}
           {...(props.format === 'phone'?{value: value}: '') }
           {...(props.onChange&&{onChange: props.onChange}) }
-          inputMode={props.inputMode}
+          inputMode={props.isNumbersOnly&&'numeric'||props.inputMode}
         />
         {props.success && <img src="/images/icons/field_success.svg" alt="" className={styles.successIcon} />}
         {props.suffix && getSuffix()}

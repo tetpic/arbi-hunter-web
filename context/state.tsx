@@ -24,7 +24,7 @@ interface IState {
   hideModal: () => void
   modalNonSkippable: boolean,
   snapPoints: number
-
+  setSnapPoints: Dispatch<SetStateAction<number>>
   bottomSheet: ModalType | null
   bottomSheetArguments: any
   showBottomSheet: <T,>(type: ModalType, args?: T, snapPoints?: number) => void
@@ -152,6 +152,7 @@ export function AppWrapper(props: Props) {
       setIsOverlayShown(false)
     },
     size,
+    setSnapPoints
 
   }
 

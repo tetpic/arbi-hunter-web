@@ -15,6 +15,8 @@ import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 
 interface Props {
   onClose: () => void
@@ -36,7 +38,7 @@ export default function BackgroundPickModal(props: Props) {
   const appContext = useAppContext()  
   const userContext = useUserContext()
   const profileType = userContext.currentProfile?.profileType
-  const args: IBackgroundPickModalArguments = appContext.modalArguments
+  const args: IBackgroundPickModalArguments = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [page, setPage] = useState<'back'|'build'>('back')
   const [currentBackground, setCurrentBackground] = useState<IFile>(args.currentBackground)
   const [currentBuild, setCurrentBuild] = useState<IFile>(args.currentBuild)
@@ -199,11 +201,23 @@ export default function BackgroundPickModal(props: Props) {
     </div>
   )
 
+  if(props.isBottomSheet) {
+    return <BottomSheetLayout>
+      <BottomSheetBody>
+        <div className={styles.modalWrapper}>
+          {/* {back} */}
+          {page === 'build'? buildPicker: backPicker}   
+          {buttons}   
+          </div>
+      </BottomSheetBody>
+    </BottomSheetLayout>
+  }
+
   return (
-  <ModalLayout>
+  <ModalLayout className={styles.modalLayout}>
     <ModalBody>
       <div className={styles.modalWrapper}>
-        {back}
+        {/* {back} */}
         {page === 'build'? buildPicker: backPicker}   
         {buttons}   
       </div>

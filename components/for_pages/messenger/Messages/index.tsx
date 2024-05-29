@@ -5,7 +5,7 @@ import Formatter from 'utils/formatter'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
-import { RefObject, useEffect, useState } from 'react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
 import { ActivityStatus, AppTheme, MessageType, ModalType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
@@ -62,6 +62,7 @@ export default function Messages(props: Props) {
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
   const [replyTo, setReplyTo] = useState<IMessage>(null)
+  const inputRef = useRef<HTMLInputElement>(null!)
 
   const sendMessage = () => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedFiles.size === 0) {
@@ -105,6 +106,7 @@ export default function Messages(props: Props) {
   const enterPressHandler = (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key === 'Enter') {
       sendMessage()
+      inputRef.current.blur()
     }
   }
   
@@ -234,7 +236,12 @@ export default function Messages(props: Props) {
           {isTabletWidth &&
             <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
           }
-          <UserPic size={48} className={styles.userPic} image={getUserImageSource(collocutor, Preset.smallIconCrop)}/>
+          <UserPic 
+          size={48} 
+          className={styles.userPic} 
+          onClick={()=> router.push('/personal/' + collocutor?.id)}
+          image={getUserImageSource(collocutor, Preset.smallIconCrop)}
+          />
           <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
           {collocutor?.activityStatus===ActivityStatus.Online&&
           <p className={styles.time}>{<span className={styles.online}>{t('chat_online')}</span>}</p>
@@ -418,7 +425,7 @@ export default function Messages(props: Props) {
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
-        <input value={value} onChange={(e)=>{
+        <input value={value} ref={inputRef} enterKeyHint='send' onChange={(e)=>{
           if(userContext.currentProfile?.profileType === ProfileType.Employee
             && dialog.chat?.employeeCanWrite === false
           ) {

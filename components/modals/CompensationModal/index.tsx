@@ -16,6 +16,7 @@ import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import { TranslateCurrency } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import { useEffect } from 'react'
 
 interface Props {
   onClose?: () => void
@@ -55,6 +56,15 @@ export default function CompensationModal(props: Props) {
       </Button>
     </div>
   )
+
+  useEffect(()=>{
+    if(formik.values.compensation === CompensationType.Contract) {
+      appContext.setSnapPoints(224)
+    }
+    else {
+      appContext.setSnapPoints(360)
+    }
+  }, [formik.values.compensation])
 
   const body = (
     <div className={styles.body}>

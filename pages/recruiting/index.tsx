@@ -52,7 +52,7 @@ export default function Recruiting(props: Props) {
   }
   
 
-  return (<ContentLayout withFooter hideMobileHeader title='Рекрутинг'>
+  return (<ContentLayout hideMobileHeader title='Рекрутинг'>
     <SourcesWrapper>
     <CreateVcCvWrapper>
     <LocationWrapper initials={{cities: params?.cities, countries: params?.countries}}>

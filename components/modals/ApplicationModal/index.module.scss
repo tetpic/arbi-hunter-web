@@ -10,6 +10,13 @@
   }
 }
 
+.modalLayout {
+  max-width: 460px;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+  }
+}
+
 .addCover {
   color: $blue;
   display: flex;

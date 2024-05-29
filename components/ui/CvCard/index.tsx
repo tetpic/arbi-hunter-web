@@ -154,7 +154,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={inviteHandler}>{'Пригласить'}</Button>
       {chat&& 
-        <Button styleType={['black', 'borderGradient']} altStyleType={['white']} onClick={chatbuttonClickHandler} >Перейти в чат</Button>
+        <Button styleType={['black']} altStyleType={['white']} onClick={chatbuttonClickHandler} >Чат</Button>
       }
     </div>
   </div>

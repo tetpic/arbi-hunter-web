@@ -56,9 +56,12 @@ export default function DetailsModal(props: Props) {
 
   const experienceInfoForm = (<>
     {isTabletWidth && 
-    <Title title={t('create_cv_workPeriod')} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    <Title title={t('create_cv_workplace')} onBackClick={props.onClose} className={styles.mobileTitle}/>
     ||
-    <SectionSubtitle text={t('create_cv_workPeriod')} title={t('create_cv_setWorkPlace')} className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_workplace')} title={t('create_cv_workplace')} className={styles.title}/>
+    }
+    {isTabletWidth &&
+      <SectionSubtitle text={t('create_cv_workPeriod')} className={styles.title}/>
     }
     <div className={styles.period}>
       <DateField 
@@ -120,10 +123,13 @@ export default function DetailsModal(props: Props) {
 
   const educationInfoForm = (<>
     {isTabletWidth && 
-    <Title title={t('create_cv_educationYears')} onBackClick={props.onClose} className={styles.mobileTitle}/>
+    <Title title={t('create_cv_educationPlace')} onBackClick={props.onClose} className={styles.mobileTitle}/>
     ||
-    <SectionSubtitle text={t('create_cv_educationYears')} title={t('create_cv_setDatesForStartAndEnd')} className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_educationPlace')} title={t('create_cv_educationPlace')} className={styles.title}/>
     }
+    
+      <SectionSubtitle text={t('create_cv_educationYears')} className={styles.title}/>
+    
     <div className={styles.period}>
       <DateField 
       name={'educationInfo[0].fromDate'} 
@@ -228,20 +234,22 @@ export default function DetailsModal(props: Props) {
 
   return (
     <ModalLayout mobileFullScreen  className={styles.modalLayout}>
-      <ModalBody>
+      <ModalBody className={styles.modalBody}>
         <FormikProvider value={formik}>
           {!isTabletWidth &&
             <Button styleType={['backTransparent', 'icon']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
           }
-          <Form>
+          <Form className={styles.form}>
             <div className={styles.detailsRoot}>
               {args.type === 'experienceInfo' && formik.values.experienceInfo && experienceInfoForm}
               {args.type === 'educationInfo' && educationInfoForm}
               {args.type === 'coursesInfo' && coursesInfoForm}
             </div>
             <div className={styles.buttonWrapper}>
-              <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?t('delete'):t('cancelAlt')}</Button>
-              <Button className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?t('save'):t('add')}</Button>
+              {!isTabletWidth &&
+                <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?t('delete'):t('cancelAlt')}</Button>
+              }
+              <Button styleType={['phoneWide']} className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?t('save'):t('continue')}</Button>
             </div>
           </Form>
         </FormikProvider>

@@ -37,24 +37,17 @@ export default function ChatSearchBar(props: Props) {
     const chatAllVacancies = [...chatContext.chatsRef.current.values()].map(el=> el.application?.vacancy&&el.application?.vacancy)
     const chatVacancies: Map<number, IVacancy> = new Map()
     chatAllVacancies.forEach(el=> chatVacancies.set(el?.id, el))
+    const _args: IChatFilterModalProps = {
+      vacancies: [...chatVacancies.values()],
+      onSubmit: (data) => chatContext.setFilter(data),
+      onClear: () => chatContext.setFilter(null),
+      filters: chatContext.filter
+    }
     if(isTabletWidth) {
-      appContext.showBottomSheet<IChatFilterModalProps>(ModalType.ChatFilterModal, 
-        {
-          vacancies: [...chatVacancies.values()],
-          onSubmit: (data) => chatContext.setFilter(data),
-          onClear: () => chatContext.setFilter(null),
-          filters: chatContext.filter
-        }, 400)
+      appContext.showBottomSheet<IChatFilterModalProps>(ModalType.ChatFilterModal, _args, 320)
     }
     else {
-      appContext.showModal<IChatFilterModalProps>(ModalType.ChatFilterModal, 
-        {
-          vacancies: [...chatVacancies.values()],
-          onSubmit: (data) => chatContext.setFilter(data),
-          onClear: () => chatContext.setFilter(null),
-          filters: chatContext.filter
-        }
-      )
+      appContext.showModal<IChatFilterModalProps>(ModalType.ChatFilterModal, _args)
     }
   }
 

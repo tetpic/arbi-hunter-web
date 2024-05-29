@@ -40,6 +40,7 @@ export default function MobileSideBar(props: Props) {
   const appContext = useAppContext()
   const [active, setActive] = useState<boolean>(false)
   const router = useRouter()
+  const isLogged = userContext.isLogged
   const profileType = userContext.currentProfile?.profileType||userContext.profileType||ProfileType.Employee
 
 
@@ -242,7 +243,7 @@ export default function MobileSideBar(props: Props) {
     </div> */}
     </>}
 
-    {userContext.currentProfile &&
+    {!isLogged &&
       <P 
       styleType={['w500', 'medium', 'greyLight', 'alignStart']} 
       style={{width: '100%'}}
@@ -251,6 +252,8 @@ export default function MobileSideBar(props: Props) {
       </P>
     }
 
+    {!isLogged &&
+  
     <div className={classnames(styles.links, styles.info)}>
       {profileType === ProfileType.Hirer &&
         <Link  href={userContext.currentProfile?'/create/vacancy/':'/login'} onClick={props.onClose} className={styles.link}>
@@ -322,6 +325,7 @@ export default function MobileSideBar(props: Props) {
       </Link>
 
     </div>
+    } 
 
     {userContext.currentProfile &&
       <Button 

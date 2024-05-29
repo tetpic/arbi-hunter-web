@@ -7,6 +7,7 @@
   align-items: center;
   column-gap: 8px;
   padding: 8px 16px;
+  margin-bottom: 16px;
 
   &_light {
     border: 2px $whitePurple solid;
@@ -26,15 +27,17 @@
 
 .title {
   margin-bottom: 24px;
+  justify-content: space-between;
   @include mq($PhoneWidth, max) {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: unset;
-    &:after {
-      content: '';
-      width: 36px;
-    }
+   
+  }
+  &:after {
+    content: '';
+    width: 36px;
   }
 }
 
@@ -51,7 +54,11 @@
   row-gap: 8px;
   margin-top: 16px;
   @include mq($TabletWidth, max) {
-    margin-bottom: 60px;
+    margin-bottom: unset;
+    margin-top: unset;
+    position: relative;
+    z-index: 1;
+    min-height: calc(100% - 62px);
   }
 }
 
@@ -77,10 +84,13 @@
   justify-content: flex-end;
   margin-top: 24px;
   @include mq($PhoneWidth, max) {
-    margin-top: auto;
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+    // margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    width: calc(100%);
+    z-index: 2;
+    margin-top: unset;
+    padding-block: 16px;
   }
 }
 
@@ -92,4 +102,5 @@
 
 .noTitle {
   margin-top: unset;
+  min-height: calc(100% - 72px);
 }
