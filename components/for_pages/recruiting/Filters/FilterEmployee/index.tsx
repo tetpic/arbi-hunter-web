@@ -70,10 +70,12 @@ export default function FilterEmployee(props: Props) {
   const formik = useFormik<IVacancyCvSearchParams>({
     initialValues: {
       ...initialValues,
-      ...props.initialFields
+      ...props.initialFields,
     },
     onSubmit: props.onFilterChange
   })
+
+  console.log(props.initialFields)
 
 
   const removeSource = (el: number, type: 'activeSources'|'activeGeos'|'activeVerticals') => {

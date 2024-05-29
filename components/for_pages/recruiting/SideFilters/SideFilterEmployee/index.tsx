@@ -4,7 +4,7 @@ import { Form, FormikProvider, useFormik } from 'formik'
 import Button from 'components/ui/Button'
 import CheckboxListField from 'components/fields/CheckboxListField'
 import { AppTheme, CompensationType, Currency,  EmploymentType, ModalType, ScheduleType, WorkExperienceTranslate } from 'types/enums'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
 import {  IVacancyCvSearchParams } from 'data/interfaces/Common'
@@ -29,7 +29,7 @@ import CheckboxField from '@/components/fields/CheckboxField'
 
 
 interface Props {
-  onFilterChange: (data: IVacancyCvSearchParams) => void
+  onFilterChange: (data: IVacancyCvSearchParams, _page?: number) => void
   initialFields: IVacancyCvSearchParams
 }
 
@@ -43,6 +43,7 @@ export default function SideFilterEmployee(props: Props) {
   const [showMore, setShowMore] = useState(false)
   const {t} = useTranslation()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const isInited = useRef<boolean>(false)
 
 
 
@@ -110,6 +111,9 @@ export default function SideFilterEmployee(props: Props) {
     locationContext.getCountries({page: 1, limit: 3})
     locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
     formik.setValues((v) => ({...v, ...props.initialFields}))
+    setTimeout(()=>{
+      isInited.current = true
+    }, 1000)
   }
  
   useEffect(()=>{
@@ -130,9 +134,11 @@ export default function SideFilterEmployee(props: Props) {
     })
   }, [formik.values.categories, creationContext.subCategories])
 
-  useEffect(()=>{
-    props.onFilterChange(formik.values)
-  }, [formik.values])
+  // useEffect(()=>{
+  //   if(!isInited.current) return
+  //   debugger
+  //   props.onFilterChange(formik.values, 1)
+  // }, [formik.values])
 
 
 

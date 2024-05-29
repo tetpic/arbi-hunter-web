@@ -53,7 +53,9 @@ export default function BackgroundPickModal(props: Props) {
         const filtered = res.filter(b => b.profileType === profileType)
         setBuilds(state => {
           filtered.forEach(b => {
-            state.set(b.image.id, b)
+            if(b.image?.id) {
+              state.set(b.image?.id, b)
+            }
           })
           return new Map(state)
         })
@@ -67,7 +69,9 @@ export default function BackgroundPickModal(props: Props) {
       const filtered = res.filter(b => b.profileType === profileType)
       setBackgrounds(state => {
         filtered.forEach(b => {
-          state.set(b.image.id, b)
+          if(b.image?.id)  {
+            state.set(b.image?.id, b)
+          }
         })
         return new Map(state)
       })

@@ -50,20 +50,25 @@ function RecruitingPageEmployeeInner(props: Props) {
   const {isTabletWidth} = appContext.size
   const isInited = useRef<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
+  const isProcess = useRef<boolean>(false)
   const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
   const [page, setPage] = useState<'filters' | 'vacancies'>('vacancies')
 
 
-  const findVacancies = (data?: IVacancyCvSearchParams):void => {
+  const findVacancies = (data?: IVacancyCvSearchParams, _page?: number):void => {
+    isProcess.current = true
     
-    vacancyContext.findVacancies(currentFilters)
-    .then(_=>setLoading(false))
+    vacancyContext.findVacancies(data||currentFilters, _page)
+    .then(_=>{
+      setLoading(false)
+      isProcess.current = false
+    })
   }
 
   const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
   const onFilterChange =(data: IVacancyCvSearchParams) => {
-    
+    setLoading(true)
     const dataToSend = {...data}
     switch (dataToSend.searchIn) {
       case SearchIn.Name:
@@ -78,12 +83,11 @@ function RecruitingPageEmployeeInner(props: Props) {
 
     const clearedObj = clearObject({...dataToSend})
     setPage('vacancies')
-    setLoading(true)
     vacancyContext.setPage(1)
     setCurrentFilters(clearedObj)
     setTimeout(()=>{
-      findVacanciesThrottle.callback(clearedObj)
-    }, 100)
+      findVacanciesThrottle.callback(clearedObj, 1)
+    }, 200)
     router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
   }
 
@@ -112,7 +116,11 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
   useEffect(()=>{    
-    findVacancies()  
+    // if(loading && !isInited.current) return
+
+    findVacanciesThrottle.callback(currentFilters)
+      
+  
   }, [vacancyContext.page])
 
 
@@ -162,7 +170,7 @@ function RecruitingPageEmployeeInner(props: Props) {
     <div className={styles.vacancies}>
       <InfiniteScroll 
       next={()=>{
-        vacancyContext.setPage(p=> p+1)
+        !isProcess.current && vacancyContext.setPage(p=> p+1)
       }} 
       hasMore={vacancyContext.foundVacancies?.size < vacancyContext.total} 
       loader={<Spinner size={24}/>} 

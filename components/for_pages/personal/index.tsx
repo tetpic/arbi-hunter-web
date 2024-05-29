@@ -246,7 +246,7 @@ export default function PersonalPage(props: Props) {
   </>)
 
   return (<div className={styles.root}> 
-    {isMy && userContext.currentProfile.profileType === ProfileType.Employee &&isTabletWidth && !isEditing &&
+    {isMy && userContext.currentProfile?.profileType === ProfileType.Employee &&isTabletWidth && !isEditing &&
       <Button 
       className={styles.mobileEditButton} 
       styleType={['icon', 'black', 'svg24']} 
@@ -292,7 +292,7 @@ export default function PersonalPage(props: Props) {
           name={'cityName'} 
           value = {userContext?.currentProfile?.city?.locName}
           labelName={t('city')}
-          requestFn={() => LocationRepository.searchCity({country: personalContext.currentProfile.country.country})} 
+          requestFn={() => LocationRepository.searchCity({country: personalContext.currentProfile?.country?.country})} 
           />
         </Form>
       </FormikProvider>

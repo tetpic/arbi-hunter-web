@@ -3,10 +3,10 @@ import styles from './index.module.scss'
 import ArbiLogoTextSvg from 'components/svg/ArbiLogoTextSvg'
 import Image from 'next/image'
 import MailConvertSvg from 'components/svg/MailConvertSvg'
-import twitter from 'images/footer/twitter_footer.svg'
+// import twitter from 'images/footer/twitter_footer.svg'
 import insta from 'images/footer/instagram_footer.svg'
-import youtube from 'images/footer/youtube_footer.svg'
-import linkedIn from 'images/footer/linkedIn_footer.svg'
+// import youtube from 'images/footer/youtube_footer.svg'
+// import linkedIn from 'images/footer/linkedIn_footer.svg'
 import telegram from 'images/footer/tg_footer.svg'
 import qrCode from 'images/footer/qrCode.svg'
 import Link from 'next/link'
@@ -52,13 +52,15 @@ export default function Footer(props: Props) {
           <Link href={'mailto:support@arbihunter.com'} type='email'>support@arbihunter.com</Link>
         </P>
         <div className={styles.links}>
-          <Image src={twitter} alt={'twitter'}/>
-          <Image src={insta} alt={'insta'}/>
-          <Image src={youtube} alt={'youtube'}/>
+          {/* <Image src={twitter} alt={'twitter'}/> */}
+          <Link href={'https://www.instagram.com/arbi_hunter?igsh=YjM4c2wwNGpidHZq'}>
+            <Image src={insta} alt={'insta'}/>
+          </Link>
+          {/* <Image src={youtube} alt={'youtube'}/> */}
           <Link href={'https://t.me/arbihunter'}>
             <Image src={telegram} alt={'telegram'}/>
           </Link>
-          <Image src={linkedIn} alt={'linkedIn'}/>
+          {/* <Image src={linkedIn} alt={'linkedIn'}/> */}
         </div>
       </div>
 
