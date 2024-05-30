@@ -30,6 +30,7 @@ import recruitingCatMessageLight from 'images/recruiting/scene2Light.png'
 import { AppTheme } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { useRouter } from 'next/router'
 
 
 
@@ -41,6 +42,7 @@ export default function RecruitingHirer(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const router = useRouter()
 
   return (
     <div className={styles.root}> 
@@ -66,6 +68,7 @@ export default function RecruitingHirer(props: Props) {
       <Button 
       styleType={['grey']} 
       altStyleType={['white', 'borderGrey']} 
+      onClick={()=>router.push('/registration')}
       className={styles.watchAll}>
         {t('watchAll')}
       </Button>

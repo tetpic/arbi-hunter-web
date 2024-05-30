@@ -34,6 +34,7 @@ import FindEmployees from '../RecruitingHirer/FindEmployees'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { runtimeConfig } from 'config/runtimeConfig'
 import classNames from 'classnames'
+import { useRouter } from 'next/router'
 
 
 
@@ -54,6 +55,7 @@ export default function RecruitingEmployee(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
+  const router = useRouter()
   const {t} = useTranslation()
 
 
@@ -115,14 +117,14 @@ export default function RecruitingEmployee(props: Props) {
     title={t('landing_em_findCategories')}
     className={styles.title} 
     itemClassName={styles.titleLink} 
-    onAllWatchClick={()=>{}}/>
+    onAllWatchClick={()=>{router.push('/registration')}}/>
     <Categories 
     count={t('landing_em_vcCounter')}
     imagesExamples={['/images/companyLogos/planetCompany1.png', '/images/companyLogos/planetCompany2.jpg', '/images/companyLogos/planetCompany3.png', '/images/companyLogos/planetCompany4.png', '/images/companyLogos/planetCompany5.jpg']} 
     titles={['CPA-сети', 'Маркетинг', 'Media Buying']} 
     images={isLightTheme?[s3Light, s1Light, s2Light]:[s3, s1, s2]}/>
     {!isTabletWidth &&
-      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
     <Reasons profileType={ProfileType.Employee}/>
@@ -136,25 +138,25 @@ export default function RecruitingEmployee(props: Props) {
     title={t('landing_em_articles')} 
     className={styles.title} 
     itemClassName={styles.titleLink} 
-    onAllWatchClick={()=>{}}/>
+    onAllWatchClick={()=>{router.push('/registration')}}/>
     {news.size > 0 &&
       <ArticlesList news={[...news.values()]} onlyTitles/>
     }
     {!isTabletWidth &&
-      <Button  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
     <Title 
     title={t('landing_em_freeCourses')} 
     className={styles.title} 
     itemClassName={styles.titleLink} 
-    onAllWatchClick={()=>{}}/>
+    onAllWatchClick={()=>{router.push('/registration')}}/>
     {popularCourses.size > 0 &&
       <CoursesList courses={[...popularCourses.values()]} disableLink/>
     }
 
     {!isTabletWidth &&
-      <Button styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}} styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
     
     <AppPromo cards={[slide3, slide4, slide5]}/>
