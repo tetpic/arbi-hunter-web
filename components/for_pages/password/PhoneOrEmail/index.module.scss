@@ -35,3 +35,12 @@
     flex-direction: column;
   }
 }
+
+
+.buttonsWrapper {
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    padding-bottom: 16px;
+    width: 100%;
+  }
+}
