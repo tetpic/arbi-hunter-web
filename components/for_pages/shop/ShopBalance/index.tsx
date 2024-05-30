@@ -24,7 +24,7 @@ export default function ShopBalance(props: Props) {
 
   const openRefillModal = () => {
     isTabletWidth?
-    appContext.showBottomSheet(ModalType.RefillBalanceModal, undefined, 350)
+    appContext.showBottomSheet(ModalType.RefillBalanceModal, undefined, 440)
     :
     appContext.showModal(ModalType.RefillBalanceModal)
   }

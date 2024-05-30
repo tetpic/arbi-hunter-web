@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { RefillBalanceData } from 'data/interfaces/Common'
-import { Currency, PaymentType } from 'types/enums'
+import { Currency, PaymentType, SnackbarType } from 'types/enums'
 import InputField from '@/components/fields/InputField'
 import TagsRadioList from '@/components/for_pages/create/utils/TagsRadioList'
 import Button from '@/components/ui/Button'
@@ -14,6 +14,7 @@ import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import P from '@/components/ui/P'
 import { useEffect } from 'react'
+import { useAppContext } from 'context/state'
 
 interface Props {
   onClose?: () => void
@@ -21,11 +22,15 @@ interface Props {
 }
 
 export default function RefillBalanceModal(props: Props) {
+  const appContext = useAppContext()
 
   const submit = (data: RefillBalanceData) => {
     PurchaseRepository.refillBalance({...data, amount: Number(data.amount)})
     .then(res => {
       location.assign(res.payUrl)
+    })
+    .catch(err => {
+      appContext.showSnackbar(err?.message||'Ошибка платежной системы', SnackbarType.error)
     })
   }
 

@@ -59,10 +59,10 @@ export default function ThreePage(props: Props) {
 
   const [page, setPage] = useState<number>(0)
   const [combinations, setCombinations] = useState<any[]>([])
-  const generatedRef = useRef([...generateVariants(womanNodesVariants, 'woman'), ...generateVariants(nodesVariants, 'man')])
+  const generatedRef = useRef([...generateVariants(nodesVariants, 'man'), ...generateVariants(womanNodesVariants, 'woman'), ])
 
   useEffect(()=>{
-    setCombinations(generatedRef.current.slice(page*10, (page*10)+10))
+    setCombinations(generatedRef.current.slice(page, (page+1)))
   }, [page])
 
   return (<>
