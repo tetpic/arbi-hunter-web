@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { AppTheme } from 'types/enums'
 import classNames from 'classnames'
 import Formatter from 'utils/formatter'
+import { useRouter } from 'next/router'
 
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 export default function Categories(props: Props) {
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const router = useRouter()
 
   return (<div className={styles.categories}>
     <Swiper
@@ -25,7 +27,7 @@ export default function Categories(props: Props) {
     className={styles.swiper}
     >
     <SwiperSlide className={classNames(styles.item, isLightTheme&&styles.item_light)}>
-    <div >
+    <div onClick={()=>{router.push('/registration')}}>
       <p className={styles.item__title}>{props.titles[0]}</p>
       <Image className={styles.item__image} src={props.images[0]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
@@ -37,7 +39,7 @@ export default function Categories(props: Props) {
     </SwiperSlide>
 
     <SwiperSlide className={classNames(styles.item, isLightTheme&&styles.item_light)}>
-    <div >
+    <div onClick={()=>{router.push('/registration')}} >
       <p className={styles.item__title}>{props.titles[1]}</p>
       <Image className={styles.item__image} src={props.images[1]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
@@ -49,7 +51,7 @@ export default function Categories(props: Props) {
     </SwiperSlide>
 
     <SwiperSlide className={classNames(styles.item, isLightTheme&&styles.item_light)}>
-    <div>
+    <div onClick={()=>{router.push('/registration')}}>
       <p className={styles.item__title}>{props.titles[2]}</p>
       <Image className={styles.item__image} src={props.images[2]} alt='' width={120} height={120}/>
       <div className={styles.item__bottom}>
