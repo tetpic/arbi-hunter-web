@@ -7,7 +7,6 @@ import { AppTheme, CompensationType, Currency,  EmploymentType, ModalType, Sched
 import { useEffect, useRef, useState } from 'react'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
-import {  IVacancyCvSearchParams } from 'data/interfaces/Common'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
 import { useSourcesContext } from 'context/sources_state'
@@ -26,11 +25,12 @@ import { TranslateCompensationType, TranslateEmploymentType, TranslateScheduleTy
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
 import CheckboxField from '@/components/fields/CheckboxField'
+import { FilterParams } from 'pages/recruiting'
 
 
 interface Props {
-  onFilterChange: (data: IVacancyCvSearchParams, _page?: number) => void
-  initialFields: IVacancyCvSearchParams
+  onFilterChange: (data:  Partial<FilterParams>, _page?: number) => void
+  initialFields:  Partial<FilterParams>
 }
 
 export default function SideFilterEmployee(props: Props) {
@@ -48,7 +48,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
 
-  const formik = useFormik<IVacancyCvSearchParams>({
+  const formik = useFormik< Partial<FilterParams>>({
     initialValues: {
       employment: [],
       schedule: [],

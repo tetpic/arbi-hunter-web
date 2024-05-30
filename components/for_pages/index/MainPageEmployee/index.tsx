@@ -29,6 +29,7 @@ import { runtimeConfig } from 'config/runtimeConfig'
 import { useRouter } from 'next/router'
 import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
+import MobileBanners from '../MobileBanners'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -199,6 +200,13 @@ export default function MainPageEmployee() {
           </div>
         </div>
       </div>
+
+      {isTabletWidth &&
+      <>
+        <MobileBanners type={ cvContext.savedCvs.length > 0 ? 'vipVacancy' : 'cvCreate'}/>
+        <p>{cvContext.savedCvs.length}</p>
+      </>
+      }
 
       <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{router.push('/recruiting/categories')}}/>
       <CategoriesList 

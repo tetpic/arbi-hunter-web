@@ -85,7 +85,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       archiveText: 'Скрыть резюме'
     }
     isTabletWidth
-    ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 300), 200)
+    ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 180), 200)
     :appContext.showModal<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args)
   }
 

@@ -133,4 +133,26 @@
   }
 }
 
+.fillbutton {
+  background-color: #ffffff45  !important;
+  backdrop-filter: blur(3px);
+  grid-area: btn;
+  padding: 8px 16px !important;
+
+}
+
+.balanceLink {
+  background: $gradientGreen;
+  display: grid;
+  grid-template-areas: 't btn' 'm btn';
+  row-gap: 16px;
+  align-items: center;
+  // column-gap: 50px;
+  grid-template-columns: 1fr auto;
+  padding-block: 16px;
+  border: unset !important;
+
+
+}
+
 

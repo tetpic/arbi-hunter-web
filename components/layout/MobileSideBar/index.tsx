@@ -28,6 +28,7 @@ import HeartSvg from '@/components/svg/HeartSvg'
 import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
 import useTranslation from 'next-translate/useTranslation'
+import Formatter from 'utils/formatter'
 
 interface Props {
   onClose: ()=>void
@@ -116,6 +117,16 @@ export default function MobileSideBar(props: Props) {
       </div>
       <Button styleType={['icon', 'backTransparent']}  className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
     </div>
+
+    <Link 
+    onClick={props.onClose}
+    href={'/shop'}
+    className={classnames(styles.links, styles.balanceLink)}>
+      <P style={{gridArea: 't'}} styleType={['w500', 'medium']} >Баланс профиля</P>
+      <P style={{gridArea: 'm'}} styleType={['w800', 'fs20', 'alignCenter']}><Image src={'/icons/moneyAlt.png'} alt={'money'} width={27} height={22}/> {Formatter.formatPrice(userContext.user.balance)||0}</P>
+      <Button styleType={['grey']}  className={styles.fillbutton}>Пополнить <ArrowRightSvg/></Button>
+
+    </Link>
 
     <div className={styles.links}>
 
@@ -223,7 +234,9 @@ export default function MobileSideBar(props: Props) {
       </Link>
     </div>
 
-    {/* <div className={styles.links}>
+    {/* 
+    //  НЕ УДАЛЯТЬ! Это переключение светлой и темной темы
+    <div className={styles.links}>
       <div className={styles.link}>
         <div className={styles.icon}><DayNightSvg/></div>
         <P useThemeColor  styleType={['w500', 'medium']} >{t('nav_nightMode')}</P>
@@ -253,7 +266,6 @@ export default function MobileSideBar(props: Props) {
     }
 
     {!isLogged &&
-  
     <div className={classnames(styles.links, styles.info)}>
       {profileType === ProfileType.Hirer &&
         <Link  href={userContext.currentProfile?'/create/vacancy/':'/login'} onClick={props.onClose} className={styles.link}>

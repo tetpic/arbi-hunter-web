@@ -243,7 +243,7 @@ export interface IVacancyCvSearchParams {
   verticals?: number[] 
   sources?: number[],
   cities?: number[] 
-  countries?: number[],
+  countries?: string[],
   employment?: EmploymentType[],
   schedule?: ScheduleType[],
   experience?: WorkExperience[],

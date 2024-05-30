@@ -27,6 +27,8 @@ import { runtimeConfig } from 'config/runtimeConfig'
 import { useRouter } from 'next/router'
 import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
+import MobileBanners from '../MobileBanners'
+import { useVacancyContext } from 'context/vacancy_state'
 
 
 
@@ -42,6 +44,7 @@ export default function MainPageHirer() {
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
   const router =  useRouter()
+  const vacancyContext = useVacancyContext()
 
   const init = async() => {
     const [ stats, courses, categories, news, backs] = await Promise.all([
@@ -71,6 +74,7 @@ export default function MainPageHirer() {
       return state
     })
     personalContext.setBackgrounds(backs)
+    vacancyContext.setVacancies()
 
     setTimeout(()=> {
       setLoad(true)
@@ -160,6 +164,11 @@ export default function MainPageHirer() {
           </div>
         </div>
       </div>
+
+
+      {isTabletWidth &&
+        <MobileBanners type={(vacancyContext.activeVacancies.size === 0&&vacancyContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
+      }
 
       <Title title={t('mainPage_hir_categories')} className={styles.title} onAllWatchClick={()=>router.push('/recruiting/categories')}/>
       <CategoriesList 

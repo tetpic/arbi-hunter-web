@@ -193,9 +193,9 @@ export default function CvItem({cv, ...props}: Props) {
     <div className={styles.content}>
       <CvItemTop cv={cv} userImage={userImage}/>
 
-      {cv.vacancyLookType &&
-        <p className={classNames(styles.lookType, styles[cv.vacancyLookType])}>
-          {TranslateVacancyLookType(cv.vacancyLookType, ProfileType.Hirer, t)}
+      {cv.profile.vacancyLookType &&
+        <p className={classNames(styles.lookType, styles[cv.profile.vacancyLookType])}>
+          {TranslateVacancyLookType(cv.profile.vacancyLookType, ProfileType.Hirer, t)}
         </p>
       }
 
