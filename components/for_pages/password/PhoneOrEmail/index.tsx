@@ -25,8 +25,12 @@ export default function PhoneOrEmail() {
   const submit = async (data : ILogin) => {   
     const isRegistered = await RegistrationRepository.checkEmailOrPhoneExists(data.email)
     .then(res => {
-      if(!res.exists || !res.isRegistrationCompleted || res.profilesCount > 0) {
+      debugger
+      if(!res.exists || !res.isRegistrationCompleted || res.profilesCount === 0) {
         return false
+      }
+      else {
+        return true
       }
     })
     if(!isRegistered) {
@@ -71,7 +75,9 @@ export default function PhoneOrEmail() {
         name={'email'} 
         validate={Validator.combine([Validator.required, Validator.email])}
         />
-      <Button  styleType={['black', 'borderGradient']} altStyleType={['gradient']} type='button' onClick={()=>formik.submitForm()}><span>{t('next')}</span></Button>
+        <div className={styles.buttonsWrapper}>
+          <Button className={styles.nextButton}  styleType={['gradient', 'phoneWide']} altStyleType={['gradient']} type='button' onClick={()=>formik.submitForm()}><span>{t('next')}</span></Button>
+        </div>
     </Form>
   </FormikProvider>)
 }
