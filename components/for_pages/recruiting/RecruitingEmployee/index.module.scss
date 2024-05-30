@@ -149,3 +149,9 @@
   }
 }
 
+.mobileCentered {
+  @include mq($TabletWidth, max) {
+    justify-content: center !important;
+  }
+}
+

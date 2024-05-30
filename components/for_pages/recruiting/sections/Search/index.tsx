@@ -7,6 +7,7 @@ import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import classNames from 'classnames'
+import { useRouter } from 'next/router'
 
 interface Props {
   title: string
@@ -16,6 +17,7 @@ interface Props {
 export default function Search(props: Props) {
   const appContext = useAppContext()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const router = useRouter()
 
   return (<div className={styles.search}>
     <Title title={props.title} className={styles.smallTitle}/>
@@ -27,7 +29,7 @@ export default function Search(props: Props) {
       >
       {props.tags.map(el => {
         return <SwiperSlide className={styles.slide}>
-        <P styleType={['medium', 'w500', ]} useThemeColor  className={classNames(styles.tag, isLightTheme&&styles.tag_light)}>{el}</P>
+        <P onClick={()=>router.push('/registration')} styleType={['medium', 'w500', ]} useThemeColor  className={classNames(styles.tag, isLightTheme&&styles.tag_light)}>{el}</P>
         </SwiperSlide>
       })}
       </Swiper>

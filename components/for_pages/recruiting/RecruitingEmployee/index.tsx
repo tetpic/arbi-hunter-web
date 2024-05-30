@@ -33,6 +33,7 @@ import Reasons from '../RecruitingHirer/Reasons'
 import FindEmployees from '../RecruitingHirer/FindEmployees'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { runtimeConfig } from 'config/runtimeConfig'
+import classNames from 'classnames'
 
 
 
@@ -126,7 +127,7 @@ export default function RecruitingEmployee(props: Props) {
 
     <Reasons profileType={ProfileType.Employee}/>
 
-    <Title className={styles.title} title={t('landing_em_startSearching')}/>
+    <Title className={classNames(styles.title, styles.mobileCentered)}  title={t('landing_em_startSearching')}/>
     <FindEmployees profileType={ProfileType.Employee} />
 
     {/* <Possibilities/> */}
