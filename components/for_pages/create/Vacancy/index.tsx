@@ -24,8 +24,8 @@ import SetTariff from '../utils/SetTariff'
 import { clearObject } from 'utils/helpers'
 import VacancyPreview from '../../preview/vacancy'
 import useTranslation from 'next-translate/useTranslation'
-import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
-import P from '@/components/ui/P'
+import Title from '@/components/ui/TitleForSection'
+import CrossSvg from '@/components/svg/CrossSvg'
 
 interface Props {
   id?: number
@@ -160,7 +160,7 @@ export default function Vacancy(props: Props) {
       VacancyRepository.editVacancyById(sendData, props.id)
       .then(res=>{
         appContext.showSnackbar(t('create_vacancy_refreshed'), SnackbarType.success)
-        !noRedirect&&router.push('/profile?page=vacancies')  
+        !noRedirect&&router.push('/vacancies')  
       })
       .catch(err=>{        
         appContext.showSnackbar(err.toString(), SnackbarType.error)
@@ -171,7 +171,7 @@ export default function Vacancy(props: Props) {
       .then(res => {
         appContext.showSnackbar(t('create_vacancy_saved'), SnackbarType.success)
         setTimeout(()=> {
-          !noRedirect&&router.push('/profile?page=vacancies')  
+          !noRedirect&&router.push('/vacancies')  
         }, 1500)
       })
       .catch(err=>{
@@ -472,12 +472,20 @@ export default function Vacancy(props: Props) {
     {!isTabletWidth && progress < VCItemsCount && memoedRive}
     <div className={styles.content}>    
       <FormikProvider value={formik}>
-        <P styleType={['large', 'w600']} useThemeColor className={styles.title}>  
-          {isPhoneWidth &&
-            <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} type='button' onClick={()=>setProgress(progress-1)}><ArrowLeftSvg className={styles.arrow}/></Button>
-          }
-          {title}
-        </P>
+        <Title 
+        title={title} 
+        className={styles.title} 
+        onBackClick={()=>setProgress(progress-1)}
+        rightButton={isTabletWidth &&
+          <Button 
+          onClick={()=> {
+            router.back()
+          }}
+          styleType={['black', 'icon']}>
+            <CrossSvg/>
+          </Button>
+        }
+        />
         {progressBar}
         <Form  className={styles.form}>
           {isTabletWidth && memoedRive}

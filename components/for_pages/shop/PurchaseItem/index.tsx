@@ -39,7 +39,6 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
   const router = useRouter()
 
   const buyHandler = (data: PurchaseForm) => {
-    
     switch (tariff.purchaseType) {
       case PurchaseType.Character : {
         CharacterRepository.createCharacter({gender: 'male'})
@@ -57,6 +56,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           })
         })
       }
+      break
       case PurchaseType.CvTariff: {
         const currentCv = cvs&&cvs?.find(el => el.id === data.cvId)
         if(data.cvId && currentCv && currentCv.subscriptions) {
@@ -69,6 +69,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           return
         }
       }
+      break
       case PurchaseType.VacancyTariff: {
         const currentVc = vacancies&&vacancies?.find(el => el.id === data.vacancyId)
         if(data.vacancyId && currentVc && currentVc.subscriptions) {
@@ -81,6 +82,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
           return
         }
       } 
+      break
       case PurchaseType.AddContactsOpen: {
         PurchaseRepository.addContactsOpenToTariff({
           subscriptionId: data.subscriptionId, 
@@ -96,6 +98,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         })
         return
       }     
+      break
       default: {
         PurchaseRepository.purchaseItem(clearObject({
           startAt: data.startAt,

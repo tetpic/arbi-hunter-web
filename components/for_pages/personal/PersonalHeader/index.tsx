@@ -226,7 +226,7 @@ export default function PersonalHeader(props: Props) {
         />
         ||
         personalContext.currentProfile?.profileType === ProfileType.Employee 
-        && personalContext.currentProfile.useOwnLogo && props.useModel &&
+        && personalContext.currentProfile.useOwnLogo && props.useModel && characterContext.isCharacterExistAndBought &&
         <div className={styles.modelWrapper} >
           <div onClick={()=> props.showNextAnimation()} className={classNames(styles.model, characterContext.modelLoaded&&styles.model_active) }>
           {characterContext.variant &&  characterContext.dataLoaded &&

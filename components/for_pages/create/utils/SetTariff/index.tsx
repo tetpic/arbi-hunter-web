@@ -113,9 +113,9 @@ export default function SetTariff(props: Props) {
     <Button onClick={router.back} styleType={['black', 'icon']}><CrossSvg/></Button>
   }
   </P>
-  {props.progressBar && <Spacer basis={16}/>}
-  {props.progressBar}
   {props.progressBar && <Spacer basis={24}/>}
+  {props.progressBar}
+  {props.progressBar && <Spacer basis={16}/>}
   <div className={styles.tariffItems}>
     {tariffs.size > 0 &&[...tariffs.values()].filter(el => {
       if(router.query.improve === 'true'){

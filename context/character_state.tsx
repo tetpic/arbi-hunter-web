@@ -31,6 +31,7 @@ interface IState {
   durations: {[key: string]: number;}
   setDurations: Dispatch<SetStateAction<{[key: string]: number;}>>
   buyCharacter: ()=>Promise<boolean>
+  isCharacterExistAndBought: boolean
 }
   
 const defaultVariant: {[key: string]: string|number} = {
@@ -63,6 +64,7 @@ export function CharacterWrapper(props: Props) {
   const currentCharacter = useRef<IUserCharacter>(null)
   const [dataBaseBlob, setDataBaseBlob] = useState<Blob>(null)
   const [durations, setDurations ] = useState<{[key: string]: number}>({})
+  const [isCharacterExistAndBought, setIsCharacterExistAndBought] = useState<boolean>(false)
 
   const init = async():Promise<boolean> => {
     if(!userContext.currentProfile) {
@@ -93,8 +95,8 @@ export function CharacterWrapper(props: Props) {
         itemsList.filter(c => c.categoryId === sortedCategories[0].id)
       ])
     }
-
     if(currentChar) {
+      currentChar.purchased?setIsCharacterExistAndBought(true):setIsCharacterExistAndBought(false)
       isCharacterExist.current = true
       characterId.current = currentChar.id
       currentCharacter.current = currentChar
@@ -116,10 +118,10 @@ export function CharacterWrapper(props: Props) {
     }
     setDataLoaded(true)
     if(!currentChar) {
+      setIsCharacterExistAndBought(false)
       setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
       return false
     }
-    
     return currentChar.purchased
   }
 
@@ -259,7 +261,8 @@ export function CharacterWrapper(props: Props) {
     savingProcess,
     durations,
     setDurations,
-    buyCharacter
+    buyCharacter,
+    isCharacterExistAndBought,
   }
 
   return (

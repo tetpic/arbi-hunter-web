@@ -40,11 +40,7 @@
   @include mq($PhoneWidth, max) {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    &::after {
-      content: '';
-      width: 36px;
-    }
+    justify-content: space-between;  
   }
 }
 

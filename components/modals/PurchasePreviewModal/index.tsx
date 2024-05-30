@@ -67,6 +67,7 @@ export default function PurchasePreviewModal(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
 
   const buy = (data: PurchaseForm) => {
+    debugger
     args.onBuy(data)
     setType(PurchaseStep.purchase)
   }
