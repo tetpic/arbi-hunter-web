@@ -77,7 +77,7 @@ export default function NewsArticle(props: Props) {
   const openModal = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.stopPropagation()
     e.preventDefault()
-    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {title: props.optionsTitle||'Действия с медиа', children: optionsList})
+    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {title: props.optionsTitle||'Действия с медиа', children: optionsList}, 230)
   }
 
   useEffect(()=>{
