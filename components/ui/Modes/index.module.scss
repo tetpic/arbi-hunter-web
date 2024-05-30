@@ -14,6 +14,11 @@
   &_active {
     color: var(--pTextColor);
   }
+  @include mq($MPhoneWidth, max) { 
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
 }
 
 .modeWrapper  {

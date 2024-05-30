@@ -5,12 +5,12 @@ import { IArticle } from 'data/interfaces/IArticle'
 import { useAppContext } from 'context/state'
 import { useMediaContext } from 'context/media_state'
 import { IOptionList } from 'components/ui/OptionsList'
-import BookmarkFilledSvg from 'components/svg/BookmarkFilledSvg'
-import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
+// import BookmarkFilledSvg from 'components/svg/BookmarkFilledSvg'
+// import BookmarkEmptySvg from 'components/svg/BookmarkEmptySvg'
 import { AppTheme, CategoryType, SnackbarType } from 'types/enums'
 import LinkSvg from 'components/svg/LinkSvg'
 import ShareSvg from 'components/svg/ShareSvg'
-import CloseEyeSvg from 'components/svg/CloseEyeSvg'
+// import CloseEyeSvg from 'components/svg/CloseEyeSvg'
 import { useEffect } from 'react'
 import { copyToClipboard, shareData } from 'utils/helpers'
 import Title from '@/components/ui/TitleForSection'
@@ -36,22 +36,25 @@ export default function MediaArticle(props: Props) {
 
   const getOptions = (article: IArticle):IOptionList[] => {
     const arr = [
-      {
-        title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
-        icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg color={isLightTheme?colors.black:''}/>: <BookmarkEmptySvg  color={isLightTheme?colors.black:''}/>,
-        onClick: ()=>{
-          mediaContext.saveOrRemoveArticle(article)
-          .then(_=>appContext.showSnackbar(t('media_article_success'), SnackbarType.success))
-        }        
-      },
+      // {
+      //   title: article.isSavedByCurrentProfile?t('media_article_removeFromFavorite'):t('media_article_addToFavorite'), 
+      //   icon: article.isSavedByCurrentProfile?<BookmarkFilledSvg color={isLightTheme?colors.black:''}/>: <BookmarkEmptySvg  color={isLightTheme?colors.black:''}/>,
+      //   onClick: ()=>{
+      //     mediaContext.saveOrRemoveArticle(article)
+      //     .then(_=>appContext.showSnackbar(t('media_article_success'), SnackbarType.success))
+      //   }        
+      // },
       {title: t('media_article_copyLink'),icon: <LinkSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
         copyToClipboard(process.env.host + '/media/article/' + article.id)
         appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
-      navigator.share&&{title: t('media_article_share'),icon: <ShareSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
-        shareData({url: process.env.host + '/media/article/' + article.id})
+      {title: t('media_article_share'),icon: <ShareSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
+        navigator.share&&shareData({url: process.env.host + '/media/article/' + article.id})
+        ||
+        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
       }},
-      (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg color={isLightTheme?colors.black:''}/>})
+      // (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg color={isLightTheme?colors.black:''}/>})
     ]
     return arr.filter(Boolean)
   }

@@ -25,7 +25,8 @@ export default function RefillBalanceModal(props: Props) {
   const appContext = useAppContext()
 
   const submit = (data: RefillBalanceData) => {
-    PurchaseRepository.refillBalance({...data, amount: Number(data.amount)})
+    const amount = data.amount.toString().replaceAll(' ', '')    
+    PurchaseRepository.refillBalance({...data, amount: Number(amount)})
     .then(res => {
       location.assign(res.payUrl)
     })
@@ -74,13 +75,15 @@ export default function RefillBalanceModal(props: Props) {
           label='Сумма' 
           name={'amount'} 
           color={'default'} 
+          isNumbersOnly
+          priceFormatting
           validate={Validator.required}
           />
           <TagsRadioList name={'currency'} options={formik.values.paymentType === PaymentType.CARD? cardCurrencyOptions : cryptoCurrencyOptions}/>
           
           <P styleType={['medium', 'w600']} useThemeColor>Тип оплаты</P>
           <TagsRadioList name={'paymentType'} options={[
-            {label: 'Бансковской картой', value: PaymentType.CARD},
+            {label: 'Банковской картой', value: PaymentType.CARD},
             {label: 'Криптовалютой', value: PaymentType.CRYPTO},
           ]}/>
           <Button styleType={['gradient']} type='submit'>Пополнить</Button>
