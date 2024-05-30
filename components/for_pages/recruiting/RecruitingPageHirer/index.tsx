@@ -24,12 +24,14 @@ import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
 import useTranslation from 'next-translate/useTranslation'
 import { useUserContext } from 'context/user_state'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
+import { useLocationContext } from 'context/location_state'
+import { FilterParams } from 'pages/recruiting'
 
 
 interface Props {
   vcId?: number  
   category?: number
-  filters?: Partial<IVacancyCvSearchParams>
+  filters?: Partial<FilterParams>
 }
 
 export default function RecruitingPageHirer(props: Props) {
@@ -48,7 +50,7 @@ function RecruitingPageHirerInner(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
+  const [currentFilters, setCurrentFilters] = useState<Partial<FilterParams>>(props.filters||{})
   const appContext = useAppContext()
   const userContext = useUserContext()
   const folderContext = useFavoritesFolderContext()
@@ -56,6 +58,7 @@ function RecruitingPageHirerInner(props: Props) {
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
   const isInited = useRef<boolean>(false)
   const [searchString, setSearchString] = useState<string>(props?.filters?.search||'')
+  const locationContext = useLocationContext()
 
   const {isTabletWidth} = appContext.size
 
@@ -63,6 +66,7 @@ function RecruitingPageHirerInner(props: Props) {
     const _filters:IVacancyCvSearchParams = {
       ...currentFilters,
       ...data,
+      countries: data?.countries?.map(el => [...locationContext.countries.values()].find(e => el === e.country)?.country),
       salaryMin: Number(data?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
       salaryMax: Number(data?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null
     }
@@ -78,7 +82,8 @@ function RecruitingPageHirerInner(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
-    const clearedObj = clearObject({...data})
+    debugger
+    const clearedObj = clearObject({...data,  countries: data?.countries?.map((el: string) => [...locationContext.countries.values()].find(e => el === e.country)?.country),})
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
@@ -110,14 +115,14 @@ function RecruitingPageHirerInner(props: Props) {
       return
     }
     const _filters = JSON.parse(router.query.filters as string)
-    if(currentFilters.search !== _filters.search){
+    if(currentFilters.search !== _filters.search) {
       onFilterChange({...currentFilters, search: _filters.search})
     }
     
-  }, [router.query.filters])
+  }, [router.query.filters, locationContext.countries])
 
   useEffect(()=>{
-    findCvs()  
+    findVacanciesThrottle.callback()
   }, [cvContext.page])
 
   if(page === 'filters'){
@@ -193,7 +198,7 @@ function RecruitingPageHirerInner(props: Props) {
             {loading && <Spinner size={24}/>
               ||
               !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy}  key={cv.id} onChangeItem={()=> findCvs()}/>
+                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy}  key={cv.id} onChangeItem={()=> findVacanciesThrottle.callback()}/>
               })
               ||
               !loading && <P useThemeColor className='empty'>{t('recruiting_noFoundCvs')}</P>

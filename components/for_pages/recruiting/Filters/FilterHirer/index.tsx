@@ -11,7 +11,7 @@ import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { ISource, ISpecializationCategory } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import CheckboxField from '@/components/fields/CheckboxField'
 import { TranslateCompensationType,  TranslateCurrency,  TranslateEducationType,  TranslateEmploymentType,  TranslateLanguage,  TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType, TranslateWorkExperience } from 'utils/enumsTranslations'
@@ -31,10 +31,11 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerFieldsModal'
 import { SalaryModalArgs } from '@/components/modals/SalaryModal'
 import { colors } from 'styles/variables'
+import { FilterParams } from 'pages/recruiting'
 
 interface Props {
-  onFilterChange: (data: IVacancyCvSearchParams) => void
-  initialFields?: IVacancyCvSearchParams
+  onFilterChange: (data: Partial<FilterParams>) => void
+  initialFields?: FilterParams
   onCancel?: () => void
 }
 
@@ -48,7 +49,7 @@ export default function FilterHirer(props: Props) {
   const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
 
-  const initialValues:IVacancyCvSearchParams = {
+  const initialValues:Partial<FilterParams> = {
     employment: [],
     schedule: [],
     compensation: undefined,
@@ -66,7 +67,7 @@ export default function FilterHirer(props: Props) {
     search: undefined,
   }
 
-  const formik = useFormik<IVacancyCvSearchParams>({
+  const formik = useFormik<Partial<FilterParams>>({
     initialValues: {
       ...initialValues,
       ...props.initialFields

@@ -7,7 +7,6 @@ import {  Answer,  EmploymentType, Genders,  ModalType,  ScheduleType, VacancyLo
 import { useEffect, useState } from 'react'
 import { useAppContext } from 'context/state'
 import languages from '@cospired/i18n-iso-languages'
-import {  IVacancyCvSearchParams } from 'data/interfaces/Common'
 import Accordeon from 'components/ui/Accordeon'
 import ArrowDownSvg from 'components/svg/ArrowDownSvg'
 import Spacer from 'components/ui/Spacer'
@@ -23,10 +22,11 @@ import { ICityModalArgs } from '@/components/modals/CityModal'
 import {   TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { FilterParams } from 'pages/recruiting'
 
 interface Props {
-  onFilterChange: (data: IVacancyCvSearchParams) => void
-  initialFields: IVacancyCvSearchParams
+  onFilterChange: (data: Partial<FilterParams>) => void
+  initialFields: Partial<FilterParams>
 }
 
 export default function SideFilterHirer(props: Props) {
@@ -40,7 +40,7 @@ export default function SideFilterHirer(props: Props) {
   const {t} = useTranslation()
 
 
-  const formik = useFormik<IVacancyCvSearchParams>({
+  const formik = useFormik<Partial<FilterParams>>({
     initialValues: {
       employment: [],
       schedule: [],
@@ -79,7 +79,7 @@ export default function SideFilterHirer(props: Props) {
       initials: formik.values.countries.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
         
-        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
+        formik.setFieldValue('countries', [...r.map(el => el.country)])
         locationContext.getCountries(null, r)
       },
     })
@@ -111,7 +111,8 @@ export default function SideFilterHirer(props: Props) {
 
   useEffect(()=>{
     if(formik.values.countries.length > 0) {
-      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))      
+      debugger
+      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.geonameid.toString()))  
     }
   }, [formik.values.countries, locationContext.countries])
 
@@ -123,8 +124,10 @@ export default function SideFilterHirer(props: Props) {
   }, [formik.values.categories, creationContext.subCategories])
 
   useEffect(()=>{
+    debugger
     props.onFilterChange(formik.values)
   }, [formik.values])
+
 
   return (<div className={styles.root}> 
     <FormikProvider value={formik}>
@@ -192,7 +195,6 @@ export default function SideFilterHirer(props: Props) {
         </P>
 
         <div className={styles.divider}></div>
-        
           <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
             <span>{t('city')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
           </p>

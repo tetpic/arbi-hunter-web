@@ -27,6 +27,11 @@ interface Props extends Query {
   vacancies?: IVacancy[]
   cvs?: ICV[]
 }
+
+export interface FilterParams extends Omit<IVacancyCvSearchParams, 'countries'> {
+  countries?: number[]
+}
+
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
   const token = context.req.cookies[CookiesType.accessToken]||null
   const profile = context.req.cookies[CookiesType.profileType]||null
@@ -46,7 +51,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 export default function Recruiting(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.profileType
-  const params: IVacancyCvSearchParams = props.filters&&JSON.parse(props.filters)||{}
+  const params: FilterParams  = props.filters&&JSON.parse(props.filters)||{}
   if(props.category) {
     params.categories = [props.category]
   }
@@ -56,8 +61,6 @@ export default function Recruiting(props: Props) {
     <SourcesWrapper>
     <CreateVcCvWrapper>
     <LocationWrapper initials={{cities: params?.cities, countries: params?.countries}}>
-
-      
       {!props.auth&&((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
         <RecruitingEmployee vacancies={props.vacancies} />
         ||

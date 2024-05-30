@@ -1,0 +1,85 @@
+@import 'styles/index';
+
+.vacancyBanner {
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--backColor);
+  display: grid ;
+  grid-template-areas: 't i' 'd i' 'b i';
+  margin-inline: 16px;
+  column-gap: 16px;
+  row-gap: 8px;
+  overflow: hidden;
+}
+
+.create {
+  grid-area: b;
+  justify-self: flex-start;
+}
+
+.imageWrapper {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $blueGradient;
+    opacity: .3;
+    filter: blur(30px);
+    border-radius: 50%;
+  }
+
+  img {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.defaultBanner {
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--backColor);
+  display: grid ;
+  margin-inline: 16px;
+  column-gap: 16px;
+  row-gap: 8px;
+  display: none;
+
+  @include mq($TabletWidth, max) {
+    display: grid;
+  }
+
+}
+
+.vacancyBanner {
+  @extend .defaultBanner;
+  grid-template-areas: 't i' 'd i' 'b i';
+  overflow: hidden;
+}
+.cvBanner {
+  @extend .defaultBanner;
+  grid-template-areas: 't i' 'd i' 'b i';
+  overflow: hidden;
+}
+
+.vipCv {
+  @extend .defaultBanner;
+  grid-template-areas: 't i' 'd d' 'b b';
+  grid-template-columns: 1fr auto;
+  margin-top: 140px;
+
+  .imageWrapper {
+    height: 20px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+}
+
+.vipVacancy {
+  @extend .vipCv;
+}

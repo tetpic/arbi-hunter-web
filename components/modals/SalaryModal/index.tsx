@@ -20,7 +20,7 @@ interface Props {
 
 export interface SalaryModalArgs {
   initialValues?: Pick<IVacancyCvSearchParams, 'salaryMax'|'salaryMin'|'currency'|'compensation'>,
-  onSubmit: (data: IVacancyCvSearchParams) => void
+  onSubmit: (data: Pick<IVacancyCvSearchParams, 'salaryMax'|'salaryMin'|'currency'|'compensation'>) => void
   title?: string
 }
 

@@ -24,8 +24,8 @@ export type HirerFieldType = 'experience'|'education'|'employment'|'vacancyLookT
 
 export interface HirerFieldsModalArgs {
   type: HirerFieldType
-  onSubmit: (data: Partial<IVacancyCvSearchParams>) => void
-  initialFields?: Partial<IVacancyCvSearchParams>
+  onSubmit: (data: Partial<Omit<IVacancyCvSearchParams, 'countries'>>) => void
+  initialFields?: Partial<Omit<IVacancyCvSearchParams, 'countries'>>
   title: string
   
 }

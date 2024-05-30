@@ -11,7 +11,7 @@ import languages from '@cospired/i18n-iso-languages'
 import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { ISource, ISpecializationCategory} from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
@@ -29,10 +29,11 @@ import CrossSvg from '@/components/svg/CrossSvg'
 import { ICityModalArgs } from '@/components/modals/CityModal'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
 import useTranslation from 'next-translate/useTranslation'
+import { FilterParams } from 'pages/recruiting'
 
 interface Props {
-  onFilterChange: (data: IVacancyCvSearchParams) => void
-  initialFields?: IVacancyCvSearchParams
+  onFilterChange: (data:  Partial<FilterParams>) => void
+  initialFields?:  Partial<FilterParams>
   onCancel?: () => void
 }
 
@@ -45,7 +46,7 @@ export default function FilterEmployee(props: Props) {
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
   const {t} = useTranslation()
 
-  const initialValues:IVacancyCvSearchParams = {
+  const initialValues:Partial<FilterParams> = {
     employment: [],
     schedule: [],
     compensation: undefined,
@@ -67,7 +68,7 @@ export default function FilterEmployee(props: Props) {
 
   }
 
-  const formik = useFormik<IVacancyCvSearchParams>({
+  const formik = useFormik<Partial<FilterParams>>({
     initialValues: {
       ...initialValues,
       ...props.initialFields,
@@ -75,7 +76,6 @@ export default function FilterEmployee(props: Props) {
     onSubmit: props.onFilterChange
   })
 
-  console.log(props.initialFields)
 
 
   const removeSource = (el: number, type: 'activeSources'|'activeGeos'|'activeVerticals') => {

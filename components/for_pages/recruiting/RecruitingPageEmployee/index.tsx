@@ -25,9 +25,11 @@ import { clearObject } from 'utils/helpers'
 import { CvWrapper, useCvContext } from 'context/cv_state'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { FilterParams } from 'pages/recruiting'
+import { useLocationContext } from 'context/location_state'
 
 interface Props {
-  filters: Partial<IVacancyCvSearchParams>
+  filters: Partial<FilterParams>
 }
 
 export default function RecruitingPageEmployee(props: Props) {
@@ -51,14 +53,20 @@ function RecruitingPageEmployeeInner(props: Props) {
   const isInited = useRef<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
   const isProcess = useRef<boolean>(false)
-  const [currentFilters, setCurrentFilters] = useState<IVacancyCvSearchParams>(props.filters||{})
+  const locationContext = useLocationContext()
+  const [currentFilters, setCurrentFilters] = useState<Partial<FilterParams>>({...props.filters, countries: []}||{})
   const [page, setPage] = useState<'filters' | 'vacancies'>('vacancies')
 
 
-  const findVacancies = (data?: IVacancyCvSearchParams, _page?: number):void => {
+  const findVacancies = (data?: Partial<FilterParams>, _page?: number):void => {
     isProcess.current = true
-    
-    vacancyContext.findVacancies(data||currentFilters, _page)
+    const dataToSend: IVacancyCvSearchParams = {
+      ...data,
+      ...currentFilters,
+      countries: data?.countries?.map(el => [...locationContext.countries.values()].find(e => el === e.geonameid)?.country),
+    }
+    clearObject(dataToSend)
+    vacancyContext.findVacancies( clearObject(dataToSend), _page)
     .then(_=>{
       setLoading(false)
       isProcess.current = false
@@ -67,7 +75,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
   const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
-  const onFilterChange =(data: IVacancyCvSearchParams) => {
+  const onFilterChange =(data: Partial<FilterParams>) => {
     setLoading(true)
     const dataToSend = {...data}
     switch (dataToSend.searchIn) {
