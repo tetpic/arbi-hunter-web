@@ -113,8 +113,8 @@ export default function PersonalCard(props: Props) {
       image={logoImage?.image
         ?URL.createObjectURL(logoImage?.image)
         :ImageHelper.urlFromFile(
-          !personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.image
-          ||personalContext.currentProfile.useOwnLogo&&personalContext?.currentProfile?.logo
+          !personalContext.currentProfile?.useOwnLogo&&personalContext?.currentProfile?.image
+          ||personalContext.currentProfile?.useOwnLogo&&personalContext?.currentProfile?.logo
           ,Preset.sCrop
         ) 
       }
@@ -168,8 +168,8 @@ export default function PersonalCard(props: Props) {
         <Button 
         styleType={['grey', 'wide']} 
         onClick={()=>openDropDown(true)} 
-        className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}>
-          {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)||t('personal_chooseVacancyLookType')} <ArrowDownSvg/>
+        className={classNames(styles.lookType, styles[personalContext.currentProfile?.vacancyLookType])}>
+          {TranslateVacancyLookType(personalContext.currentProfile?.vacancyLookType, personalContext.currentProfile?.profileType, t)||t('personal_chooseVacancyLookType')} <ArrowDownSvg/>
         </Button>
         <div className={styles.optionsWrapper}>
           <OptionsDropDown 

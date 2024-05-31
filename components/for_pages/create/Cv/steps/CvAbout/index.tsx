@@ -16,6 +16,7 @@ import Image from 'next/image'
 import { useUserContext } from 'context/user_state'
 import Validator from 'utils/Validator'
 import useTranslation from 'next-translate/useTranslation'
+import TelegramLogoSvg from '@/components/svg/TelegramLogoSvg'
 
 interface Props {
 }
@@ -66,7 +67,13 @@ export default function CvAbout(props: Props) {
     label={t('phone')}
     />
     <InputField styleType={'default'} color={'default'} name={'email'} label={t('email')}  labelType='top'/>
-    <InputField styleType={'default'} color={'default'} name={'telegramNickname'} label='Telegram'  labelType='top'/>
+    <InputField 
+    styleType={'default'} 
+    color={'default'} 
+    name={'telegramNickname'} 
+    prefix={<TelegramLogoSvg size={20}/>}
+    label='Telegram'  
+    labelType='top'/>
   </div>
 
   <SectionSubtitle 

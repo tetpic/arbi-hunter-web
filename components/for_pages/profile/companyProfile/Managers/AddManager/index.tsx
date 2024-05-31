@@ -153,7 +153,7 @@ export default function AddManager(props: Props) {
     validate={Validator.combine([Validator.required, Validator.email])}
     />
 
-    <TextAreaField name={'comment'} autoSize label={t('managers_comment')}/>
+    <TextAreaField name={'comment'} onChange={(e)=>formik.setFieldValue('comment', e.target.value)} autoSize label={t('managers_comment')}/>
 
   </>)
 

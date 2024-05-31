@@ -1,12 +1,9 @@
 import styles from './index.module.scss'
 
 import { useResize } from 'components/hooks/useResize'
-import BookMarkSvg from 'components/svg/BookMarkSvg'
-import ShareSvg from 'components/svg/ShareSvg'
 import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import UserSvg from 'components/svg/UserSvg'
 import BackBtn from 'components/ui/BackBtn'
-import Button from 'components/ui/Button'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
@@ -32,6 +29,9 @@ import { Preset, SnackbarType } from 'types/enums'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
+import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
+import Button from '@/components/ui/Button'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   id: number
@@ -151,13 +151,15 @@ export default function CurrentCourse(props: Props) {
           }
           {!isTabletWidth && <>
             <p className={styles.description}>{course.shortDescription}</p>
-            <p className={styles.price}>
-              <Image src={'/icons/money.png'} alt={'money icon'} width={24} height={24}/>
-              {Formatter.formatPrice(course.price)}
-            </p>
+            {course.price > 0 &&
+              <p className={styles.price}>
+                <ArbiCoinGradientSvg/>
+                {Formatter.formatPrice(course.price)}
+              </p>
+            }
             <div className={styles.buttonsWrapper}>
-              <Button className={styles.buttonGradient}>{t('course_purchase')}</Button>
-              <Button className={styles.buttonWhite}>{t('courses_tryForFree')}</Button>
+              {/* <Button className={styles.buttonGradient}>{t('course_purchase')}</Button> */}
+              <Button className={styles.buttonWhite} onClick={() => setPage(CurrentCoursesNav.Modules)}>{t('courses_tryForFree')}</Button>
             </div>
           </>}
 
@@ -176,15 +178,17 @@ export default function CurrentCourse(props: Props) {
         alt={course.name} 
         fill/>
           <div className={styles.iconButtonsWrapper}>
-            <Button className={styles.iconButton} >
+            {/* <Button className={styles.iconButton} >
               <ShareSvg/>
-            </Button>
+            </Button> */}
+            <Spacer basis={32}/>
             {!isTabletWidth &&
-            <Button className={styles.iconButton} onClick={()=>saveCurrentCourse()}>
-              <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
-            </Button>
+            <></>
+            // <Button className={styles.iconButton} onClick={()=>saveCurrentCourse()}>
+            //   <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
+            // </Button>
             ||
-            <BackBtn className={styles.iconButton} onClick={()=>{router.push('/courses/')}} bgColor={'transparent'}/>
+            <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} bgColor={'transparent'}/>
             }
           </div>
       </>
@@ -225,10 +229,10 @@ export default function CurrentCourse(props: Props) {
       </div>
     </div>
 
-    {isTabletWidth &&
+    {isTabletWidth && page === CurrentCoursesNav.Information &&
       <div className={styles.buttonsWrapper}>
-        <Button className={styles.buttonGradient}>{t('course_purchase')}</Button>
-        <Button className={styles.buttonWhite}>{t('courses_tryForFree')}</Button>
+        {/* <Button className={styles.buttonGradient}>{t('course_purchase')}</Button> */}
+        <Button className={styles.buttonWhite} onClick={() => setPage(CurrentCoursesNav.Modules)}>{t('courses_tryForFree')}</Button>
       </div>
     }
   </div>)

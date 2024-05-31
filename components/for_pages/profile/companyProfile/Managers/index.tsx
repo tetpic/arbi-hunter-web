@@ -77,7 +77,12 @@ export default function Managers() {
 
   </div>
   ||
-  <AddManager managerToEdit={managerToEdit} onClose={()=>{showManagerModal(false); setManagerToEdit(null)}}/>
+  <AddManager managerToEdit={managerToEdit} onClose={()=>{
+    showManagerModal(false)
+    setManagerToEdit(null)
+    managerContext.setManagers(1) 
+
+  }}/>
 
   }</>)
 }

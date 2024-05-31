@@ -8,7 +8,7 @@ import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
 import Button from '@/components/ui/Button'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
-import { InterfaceLanguage, ModalType } from 'types/enums'
+import { InterfaceLanguage, ModalType, SnackbarType } from 'types/enums'
 import { IChangeLanguageModalArgs } from '@/components/modals/ChangeLanguageModal'
 import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import Cookies from 'js-cookie'
@@ -41,6 +41,7 @@ export default function SiteSettings(props: Props) {
     UserRepository.editCurrentUser({language: data.language})
     .then(user => {
       userContext.updateUser(user)
+      appContext.showSnackbar('Сохранено', SnackbarType.success)
     })
   }
 

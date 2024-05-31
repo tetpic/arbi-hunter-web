@@ -46,6 +46,7 @@ export default function Profile() {
   <Button 
   styleType={['icon', 'black']}
   altStyleType={['icon', 'white']}
+  href={'/notifications'}
   >
     <NotificationSvg color={appContext.theme === AppTheme.Light && colors.black} />
   </Button>

@@ -41,7 +41,7 @@ export default function Shop(props: Props) {
     if(userContext.currentProfile?.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
       characterContext.init().then((res)=>{        
-        tariffContext.setPackets([PurchaseType.CvTariff, !res&&PurchaseType.Character].filter(Boolean))
+        tariffContext.setPackets([!res&&PurchaseType.Character, PurchaseType.CvTariff, ].filter(Boolean))
       })
     }
     else if(userContext.currentProfile?.profileType === ProfileType.Hirer) {
@@ -89,8 +89,8 @@ export default function Shop(props: Props) {
     PurchaseType.AddContactsOpen
   ]
   const employeePurchaseTypes = [
-    PurchaseType.CvTariff,
     PurchaseType.Character,
+    PurchaseType.CvTariff,
   ]
 
   const getPage = (() => {

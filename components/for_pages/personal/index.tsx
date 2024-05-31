@@ -121,7 +121,7 @@ export default function PersonalPage(props: Props) {
     )
     .then(_ => {
       if(personalContext.currentProfile?.profileType === ProfileType.Hirer 
-        && (formik.values.cityId !== userContext.currentProfile.cityId||formik.values.company !== userContext.currentProfile.company)) {
+        && (formik.values.cityId !== userContext.currentProfile?.cityId||formik.values.company !== userContext.currentProfile?.company)) {
         userContext.editCurrentProfile(formik.values)
       }
     })
@@ -198,38 +198,38 @@ export default function PersonalPage(props: Props) {
     ||
     <>
     <P 
-    className={classNames(styles.lookType, styles[personalContext.currentProfile.vacancyLookType])}
+    className={classNames(styles.lookType, styles[personalContext.currentProfile?.vacancyLookType])}
     >
-      {TranslateVacancyLookType(personalContext.currentProfile.vacancyLookType, personalContext.currentProfile?.profileType, t)}
+      {TranslateVacancyLookType(personalContext.currentProfile?.vacancyLookType, personalContext.currentProfile?.profileType, t)}
     </P>
     <ContentItem  className={styles.bodyItem}>
       <P styleType={['large', 'w600']} useThemeColor>{t('personal_contacts')}</P>
       <Spacer basis={16}/>
       <div className={styles.contacts}>
-        <Link className={styles.contact} href={`mailto:${personalContext.currentProfile.email}`}>
+        <Link className={styles.contact} href={`mailto:${personalContext.currentProfile?.email}`}>
           <P styleType={['medium', 'alignCenter']} useThemeColor >
             <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailConvertSvg/></Button>
-            {personalContext.currentProfile.email}
-            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.email)}>
+            {personalContext.currentProfile?.email}
+            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile?.email)}>
               <DoubleSvg color={colors.blue}/>
             </Button>
           </P>
         </Link>
-        <Link className={styles.contact} href={`tel:${personalContext.currentProfile.phone}`}> 
+        <Link className={styles.contact} href={`tel:${personalContext.currentProfile?.phone}`}> 
         <P styleType={['medium', 'alignCenter']} useThemeColor >
           <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><PhoneSvg/></Button>
-          {Formatter.formatPhone(personalContext.currentProfile.phone)}
-          <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.phone)}>
+          {Formatter.formatPhone(personalContext.currentProfile?.phone)}
+          <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile?.phone)}>
             <DoubleSvg color={colors.blue}/>
           </Button>
         </P>
         </Link>
-        {personalContext.currentProfile.telegramNickname &&
-        <Link className={styles.contact} href={`tg://resolve?domain=${personalContext.currentProfile.telegramNickname}`}>
+        {personalContext.currentProfile?.telegramNickname &&
+        <Link className={styles.contact} href={`tg://resolve?domain=${personalContext.currentProfile?.telegramNickname}`}>
           <P styleType={['medium', 'alignCenter']} useThemeColor >
             <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><TelegramSvg/></Button>
-            {personalContext.currentProfile.telegramNickname}
-            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile.telegramNickname)}>
+            {personalContext.currentProfile?.telegramNickname}
+            <Button className={styles.copy} onClick={() => copyToClipboard(personalContext.currentProfile?.telegramNickname)}>
               <DoubleSvg color={colors.blue}/>
             </Button>
           </P>
@@ -239,7 +239,7 @@ export default function PersonalPage(props: Props) {
       <Spacer basis={36}/>
       <P styleType={['large', 'w600']} useThemeColor>{t('personal_about')}</P>
       <Spacer basis={16}/>
-      <HtmlText text={personalContext.currentProfile.bio}/>
+      <HtmlText text={personalContext.currentProfile?.bio}/>
     </ContentItem>
     </>
     }

@@ -137,6 +137,7 @@ export default function Header(props: Props) {
               styleType={['icon', 'black']}
               altStyleType={['icon','white']}
               className={styles.iconButton}
+              href={'/notifications'}
               >
                 <NotificationSvg color={isLightTheme?colors.black:''}/>
               </Button>

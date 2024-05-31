@@ -48,6 +48,7 @@ export default function CoursesList(props: Props) {
   useEffect(()=>{
     arrayPackager(props.courses, 2)
   }, [])
+  
 
 
   return (
@@ -57,7 +58,7 @@ export default function CoursesList(props: Props) {
     slideClassName={styles.slide} 
     swiperClassname={styles.swiper}
     >
-      {arrayPackager(props.courses, 2).map((el)=>{
+      {arrayPackager(props.courses, (props.courses.length < 3&&!isTabletWidth)?1:2).map((el)=>{
         return (
           <div className={styles.itemPack}>
             {el.map((course)=>{

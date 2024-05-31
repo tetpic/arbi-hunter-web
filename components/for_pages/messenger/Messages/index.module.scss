@@ -200,6 +200,8 @@
     font-weight: $medium;
     color: var(--pTextColor);
     width: calc(100% - 76px);
+    margin-left: 8px;
+    resize: none;
     &:focus {
       &::placeholder {
         color: transparent;
