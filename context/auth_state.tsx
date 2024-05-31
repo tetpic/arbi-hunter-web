@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useUserContext } from './user_state'
 import { ICodeResponse, ILoginFormData, IToken } from 'data/interfaces/IRegistration'
 import RegistrationRepository from 'data/repositories/RegistrationRepository'
+import UserRepository from 'data/repositories/UserRepository'
 
 interface IOtpError {
   show: boolean
@@ -23,7 +24,7 @@ interface IState {
   setLoginFormData: (value: ILoginFormData) => void
   signUp: (values: ILoginFormData) => void
   sendCodeAgain: () => void
-  confirmCode: (data: {phone?: string, code: string, email?: string}) => Promise<boolean>
+  confirmCode: (data: {phone?: string, code: string, email?: string, newPassword?: string}, needRestore?: boolean) => Promise<boolean>
   setSending: (value: boolean) => void
   setSendingAgain: (value: boolean) => void
   clear: () => void
@@ -94,19 +95,26 @@ export function AuthWrapper(props: Props) {
   }
 
   // Sign up step 2
-  const confirmCode = async (data: {phone?: string, code: string, email?: string}): Promise<boolean> => {
+  const confirmCode = async (data: {phone?: string, code: string, email?: string, newPassword?: string}, needRestore?: boolean): Promise<boolean> => {
     
     setConfirmSpinner(true)
     let accessToken: IToken = {accessToken: '', expiresIn: null}
 
     try {
-      accessToken = data.phone
-      ?await RegistrationRepository.phoneConfirmation({phone: data.phone, code: data.code})
-      :await RegistrationRepository.emailConfirmation({email: data.email, code: data.code})
+      if(needRestore) {
+        accessToken = await UserRepository.restoreUserPassword({email: data.email, code: data.code, newPassword: data.newPassword})
+      }
+      else {
+        accessToken = await RegistrationRepository.emailConfirmation({email: data.email, code: data.code})
+      }
     } 
     catch (err) {
       if (err instanceof RequestError) {
         showOtpError(true, err.message)
+      }
+      else {
+        //@ts-ignore
+        showOtpError(true, err.errors)
       }
       setConfirmSpinner(false)
       return false

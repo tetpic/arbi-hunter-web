@@ -29,6 +29,7 @@ import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
 import useTranslation from 'next-translate/useTranslation'
 import Formatter from 'utils/formatter'
+import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 
 interface Props {
   onClose: ()=>void
@@ -123,7 +124,7 @@ export default function MobileSideBar(props: Props) {
     href={'/shop'}
     className={classnames(styles.links, styles.balanceLink)}>
       <P style={{gridArea: 't'}} styleType={['w500', 'medium']} >Баланс профиля</P>
-      <P style={{gridArea: 'm'}} styleType={['w800', 'fs20', 'alignCenter']}><Image src={'/icons/moneyAlt.png'} alt={'money'} width={27} height={22}/> {Formatter.formatPrice(userContext.user.balance)||0}</P>
+      <P style={{gridArea: 'm'}} styleType={['w800', 'fs20', 'alignCenter']}><ArbiCoinSvg/> {Formatter.formatPrice(userContext.user.balance)||0}</P>
       <Button styleType={['grey']}  className={styles.fillbutton}>Пополнить <ArrowRightSvg/></Button>
 
     </Link>
