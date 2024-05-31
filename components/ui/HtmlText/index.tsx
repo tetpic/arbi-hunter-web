@@ -15,11 +15,12 @@ interface Props {
  */
 export default function HtmlText(props: Props) {
   let filtered = props.text ? props.text.replace(/(<? *script)|(base64)|(onload=)/gi, '') : ''
+  let filteredWithWrightImagesSource = filtered.replaceAll('/api/asset/files', runtimeConfig.HOST+'/api/asset/files')
   if(runtimeConfig.DEV){
   //  filtered = Converter.replaceTextImageSource(filtered)
   }
   return (
-    <div style={props.style} className={classNames([styles.root, props.className])} dangerouslySetInnerHTML={{ __html: filtered }}/>
+    <div style={props.style} className={classNames([styles.root, props.className])} dangerouslySetInnerHTML={{ __html: filteredWithWrightImagesSource }}/>
   )
 }
 

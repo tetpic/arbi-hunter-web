@@ -17,6 +17,7 @@ import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import { ICongratulationsModalProps } from 'components/modals/CongratulationsModal'
 import useTranslation from 'next-translate/useTranslation'
+import HtmlText from '@/components/ui/HtmlText'
 
 
 
@@ -132,13 +133,13 @@ export default function ModulesPage() {
       <div className={styles.textContent}>
         <p className={styles.stepTitle}>{courseContext.activeStep?.title}</p>
         {courseContext.activeStep?.stepType === CoursesStepType.Info &&
-          <div className={styles.text} dangerouslySetInnerHTML={{__html: courseContext.activeStep?.body}}></div>
+          <HtmlText text={courseContext.activeStep?.body}/>
         }
       </div>
       {courseContext.activeStep?.stepType === CoursesStepType.Question &&
         <Questions activeStep={courseContext.activeStep}/>
       }
-      <Button className={styles.button} onClick={nextButtonHandler} >{endOfCourse?t('courses_finish'):t('continue')}</Button>
+      <Button className={styles.button} styleType={['gradient', 'phoneWide']} onClick={nextButtonHandler} >{endOfCourse?t('courses_finish'):t('continue')}</Button>
       </>
       ||
       <Spinner size={34} color={colors.blue}/>
