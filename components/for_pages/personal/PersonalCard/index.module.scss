@@ -2,14 +2,15 @@
 
 .root {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
-  column-gap: 24px;
+  column-gap: 8px;
   row-gap: 16px;
   padding-left: 16px;
   margin-bottom: 24px;
   position: relative;
   z-index: 6;
+  padding-top: 8px;
   // height: 74px;
   @include mq($TabletWidth, max) {
     background-color: unset;

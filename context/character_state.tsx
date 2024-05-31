@@ -119,7 +119,7 @@ export function CharacterWrapper(props: Props) {
     setDataLoaded(true)
     if(!currentChar) {
       setIsCharacterExistAndBought(false)
-      setActiveItem(itemsList.find(el=> el.category?.key === 'model'))
+      setActiveItem(itemsList.find(el=> el.category?.key === 'model'&&el.animationKey === 'man'))
       return false
     }
     return currentChar.purchased

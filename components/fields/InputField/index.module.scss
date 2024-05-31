@@ -29,6 +29,12 @@
   -moz-appearance: textfield;
 	-webkit-appearance: textfield;
   width: 100%;
+  &::-webkit-contacts-auto-fill-button {
+    opacity: 0;
+  }
+  &::-webkit-credentials-auto-fill-button {
+    opacity: 0;
+  }
 
   &[type='password'] {
     font-weight: 900;
