@@ -41,6 +41,7 @@ export default function PersonalCard(props: Props) {
   const userContext = useUserContext()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const isMy = personalContext.currentProfile?.id === userContext.currentProfile?.id
 
 
   const saveHandler = () => {
@@ -156,6 +157,9 @@ export default function PersonalCard(props: Props) {
     <div className={styles.nameWrapper}>
       <P useThemeColor styleType={['w600', 'huge']}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
       <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile?.city?.locName}</P>
+      {isMy &&
+        <P useThemeColor styleType={['w500', 'small', 'greyLight']}>ID пользователя: {userContext?.currentProfile?.id} </P>
+      }
     </div>
 
     {props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Employee &&

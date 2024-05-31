@@ -98,6 +98,9 @@ export default function UserEditor(props: Props) {
 
   const sortedVariants = (
     activeSet[1]?.sort((a, b) => {
+      if(a.category.key === 'model' && b.category.key === 'model') {
+        return a.animationKey === 'man' ? -1:1
+      }
       if(a.price === 0 && b.price !== 0) {
         return -1
       }
