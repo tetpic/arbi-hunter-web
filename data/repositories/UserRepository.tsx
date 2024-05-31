@@ -107,6 +107,18 @@ export default class UserRepository {
     return res
   }
 
+  static async restoreUserPassword(data: {newPassword: string, code: string, email: string}): Promise<any|null> {
+    const res = await request({
+      method: 'post',
+      url: '/api/auth/passwordChangeConfirmation',
+      data
+    })
+    if(res.err) {
+      return null
+    }
+    return res
+  }
+
   static async editProfileByType(data: Partial<IUserProfile>, profile?: ProfileType): Promise<IUserProfile|null> {
     const res = await request({
       method: 'post',

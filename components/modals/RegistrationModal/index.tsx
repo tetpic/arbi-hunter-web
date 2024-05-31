@@ -13,6 +13,7 @@ import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
 import { IRegistrationData } from 'data/interfaces/IRegistration'
 import useAbortController from 'components/hooks/useAbortController'
+import ModalBody from '@/components/layout/Modal/ModalBody'
 
 interface Props {
   onClose?: () => void
@@ -24,9 +25,11 @@ enum RegPages {
 }
 
 export interface IRegistrationModalProps {
-  onComplete?: () => void
+  onComplete?: (code?: string, token?: string) => void
   phone?: string,
-  email?: string
+  email?: string,
+  newPassword?: string
+  needRestore?: boolean
 }
 
 export default function RegistrationModal(props: Props) {
@@ -41,13 +44,15 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationData) => {
+    debugger
     
     if(data.code.length < 4) {
       authContext.showOtpError(true, 'Введите код')
       return
     }
     setLoading(true)
-    authContext.confirmCode({phone: args.phone, code: data.code, email: args.email})
+    const needRestore = true
+    authContext.confirmCode({phone: args.phone, code: data.code, email: args.email, newPassword: args.newPassword}, needRestore)
     .then(res=>{
       if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
@@ -59,7 +64,7 @@ export default function RegistrationModal(props: Props) {
       setLoading(false)
     })
     .catch(err=>{
-      authContext.showOtpError(true, 'Введите правильный код')
+      // authContext.showOtpError(true, 'Введите правильный код')
     })
   }
 
@@ -150,8 +155,10 @@ export default function RegistrationModal(props: Props) {
   </div>)
 
   return ( 
-    <ModalLayout fixed className={styles.modalRoot}>
-      {body}
+    <ModalLayout fixed mobileFullScreen className={styles.modalRoot}>
+      <ModalBody >
+        {body}
+      </ModalBody>
     </ModalLayout>
   )
 }

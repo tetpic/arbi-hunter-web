@@ -1,6 +1,6 @@
 import styles from './index.module.scss'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAppContext } from 'context/state'
 import UserRegImage from 'components/ui/UserRegImage'
 import { useUserContext } from 'context/user_state'
@@ -8,11 +8,19 @@ import BackBtn from 'components/ui/BackBtn'
 import { useRouter } from 'next/navigation'
 import PhoneOrEmail from './PhoneOrEmail'
 import PasswordConfirm from './PasswordConfirm'
-import { SnackbarType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { Form, FormikProvider, useFormik } from 'formik'
+import { IRegistrationModalProps } from '@/components/modals/RegistrationModal'
+import { ModalType } from 'types/enums'
 
 interface Props {
+}
+
+export interface RestoreFields {
+  newPassword: string,
+  newPasswordRepeat: string
+  email: string
 }
 
 export default function Password(props: Props) {
@@ -24,21 +32,30 @@ export default function Password(props: Props) {
   const [step, setStep] = useState<number>(1)
 
   const onSubmitHandler = () => {
-    
-    if(userContext.user?.isRegistrationCompleted) {
-      setStep(2)
-    }
-    else {
-      appContext.showSnackbar(t('login_accountNotExist'), SnackbarType.error)
-      router.replace('/registration')
-    }
+    setStep(2)
   }
 
-  useEffect(()=>{
-    if(userContext.user) {
-      onSubmitHandler()  
-    }
-  }, [userContext.user])
+  const submit = (data: RestoreFields) => {
+    appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
+      email: formik.values.email,
+      newPassword: formik.values.newPassword,
+      needRestore: true,
+      onComplete: () => {
+        setTimeout(() => {
+          router.replace('/')
+        }, 1000)
+      }
+    })
+  }
+
+  const formik = useFormik<RestoreFields>({
+    initialValues: {
+      email: '',
+      newPassword: '',
+      newPasswordRepeat: ''
+    },
+    onSubmit: submit
+  })
 
 
   return (
@@ -46,17 +63,19 @@ export default function Password(props: Props) {
     {!isTabletWidth&& 
       <UserRegImage type={userContext.profileType} className={styles.regImage}/>
     }
-    <div className={styles.content}>
-      <P useThemeColor className={styles.title}>
-      {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
-      {t('login_restoringPassword')}
-      </P>
-      {step === 1 &&
-      <PhoneOrEmail/>
-      }
-      {step === 2 &&
-        <PasswordConfirm/> 
-      }
-    </div>
+    <FormikProvider value={formik}>
+      <Form className={styles.content}>
+        <P useThemeColor className={styles.title}>
+        {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
+        {t('login_restoringPassword')}
+        </P>
+        {step === 1 &&
+        <PhoneOrEmail onComplete={onSubmitHandler}/>
+        }
+        {step === 2 &&
+          <PasswordConfirm onComplete={formik.submitForm}/> 
+        }
+      </Form>
+    </FormikProvider>
   </div>)
 }
