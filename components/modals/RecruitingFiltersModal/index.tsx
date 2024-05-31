@@ -7,14 +7,14 @@ import TitleForSection from 'components/ui/TitleForSection'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import FilterEmployee from '@/components/for_pages/recruiting/Filters/FilterEmployee'
-import { FilterParams } from 'pages/recruiting'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 interface Props {
   onClose?: () => void
 }
 
 export interface IRecruitingFiltersModalProps {
-  onFilterChange: (data: Partial<FilterParams>) => void
+  onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
 }
 
 export default function RecruitingFiltersModal(props: Props) {

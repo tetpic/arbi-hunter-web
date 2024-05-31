@@ -175,7 +175,6 @@ export function CharacterWrapper(props: Props) {
       return    
     }
     setSavingProcess(true)   
-    debugger
     if(!characterId.current) {
       appContext.showSnackbar('Купите тариф редактирования персонажа', SnackbarType.error)
       setTimeout(() => {

@@ -62,13 +62,13 @@ function RecruitingPageHirerInner(props: Props) {
 
   const {isTabletWidth} = appContext.size
 
-  const findCvs = (data?: IVacancyCvSearchParams):void => {
+  const findCvs = (data?: Partial<FilterParams>):void => {
     const _filters:IVacancyCvSearchParams = {
       ...currentFilters,
       ...data,
-      countries: data?.countries?.map(el => [...locationContext.countries.values()].find(e => el === e.country)?.country),
-      salaryMin: Number(data?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
-      salaryMax: Number(data?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null
+      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el)?.country),
+      salaryMin: Number((data||currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
+      salaryMax: Number((data||currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null
     }
     const clearedFilters = clearObject({..._filters})
     cvContext.findCvs(clearedFilters)
@@ -82,15 +82,14 @@ function RecruitingPageHirerInner(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
-    debugger
-    const clearedObj = clearObject({...data,  countries: data?.countries?.map((el: string) => [...locationContext.countries.values()].find(e => el === e.country)?.country),})
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
     setSearchString(data.search)
-    setCurrentFilters(clearedObj)
-    findVacanciesThrottle.callback(clearedObj)
-    router.replace({query: {filters: JSON.stringify(clearedObj) }}, undefined, {shallow: true})
+    setCurrentFilters(data)
+    findVacanciesThrottle.callback(data)
+    const clearedForQuery = clearObject(data)
+    router.replace({query: {filters: JSON.stringify(clearedForQuery) }}, undefined, {shallow: true})
   }
 
   const init = async() => {

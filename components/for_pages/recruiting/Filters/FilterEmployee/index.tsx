@@ -11,7 +11,7 @@ import languages from '@cospired/i18n-iso-languages'
 import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { ISource, ISpecializationCategory} from 'data/interfaces/Common'
+import { ISource, ISpecializationCategory, IVacancyCvSearchParams} from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import Spacer from 'components/ui/Spacer'
 import CheckboxField from '@/components/fields/CheckboxField'
@@ -29,11 +29,10 @@ import CrossSvg from '@/components/svg/CrossSvg'
 import { ICityModalArgs } from '@/components/modals/CityModal'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
 import useTranslation from 'next-translate/useTranslation'
-import { FilterParams } from 'pages/recruiting'
 
 interface Props {
-  onFilterChange: (data:  Partial<FilterParams>) => void
-  initialFields?:  Partial<FilterParams>
+  onFilterChange: (data:   Partial<IVacancyCvSearchParams>) => void
+  initialFields?:   Partial<IVacancyCvSearchParams>
   onCancel?: () => void
 }
 
@@ -46,7 +45,7 @@ export default function FilterEmployee(props: Props) {
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
   const {t} = useTranslation()
 
-  const initialValues:Partial<FilterParams> = {
+  const initialValues:Partial<IVacancyCvSearchParams> = {
     employment: [],
     schedule: [],
     compensation: undefined,
@@ -68,7 +67,7 @@ export default function FilterEmployee(props: Props) {
 
   }
 
-  const formik = useFormik<Partial<FilterParams>>({
+  const formik = useFormik<Partial<IVacancyCvSearchParams>>({
     initialValues: {
       ...initialValues,
       ...props.initialFields,
@@ -126,7 +125,7 @@ export default function FilterEmployee(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values?.countries?.map(el => locationContext.countries.get(el)),
+      initials: formik.values?.countries?.map(el => locationContext.countries.get(Number(el))),
       onSubmit: (r) => {
         formik.setFieldValue('countries', [...r.map(el => el?.geonameid)])
         locationContext.getCountries(null, r)
@@ -137,7 +136,7 @@ export default function FilterEmployee(props: Props) {
 
   const openCityModal = () => {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
-      initialCountries: formik.values.countries?.map(el => locationContext.countries.get(el)).filter(Boolean)||[],
+      initialCountries: formik.values.countries?.map(el => locationContext.countries.get(Number(el))).filter(Boolean)||[],
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el?.id)])
         locationContext.getCities(null, null, r)
@@ -216,7 +215,7 @@ export default function FilterEmployee(props: Props) {
           activeSources: _newSources,
           activeGeos: _newGeos,
           activeVerticals: _newVerticals,
-          countries: props.initialFields?.countries?.map(el => locationContext.countries?.get(el)).filter(Boolean),
+          countries: props.initialFields?.countries?.map(el => locationContext.countries?.get(Number(el))).filter(Boolean),
           cities: props.initialFields?.cities?.map(el => locationContext.cities?.get(el)).filter(Boolean),
         }
       )

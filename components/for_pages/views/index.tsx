@@ -33,7 +33,6 @@ export default function Views(props: Props) {
 
   const getCvViews = async() => {
     const res = await Promise.all(activeCvsItem.map(el => ViewsRepository.getCvViews(el.id)))
-    debugger
     res.forEach(el => {
       setViewsState(state => {
         el.data.forEach(elItem => {

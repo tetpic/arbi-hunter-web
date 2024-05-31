@@ -63,13 +63,23 @@ export function LocationWrapper(props: Props) {
     LocationRepository.searchCountry(data).then(res => {
       setCountries(_ => {
         const _newMap = new Map()
+        const commonCountriesIds: number[] = [
+          2017370, 
+          630336,
+          690791,
+          1522867,
+        ]
+
+        const commonCountries = res.filter(el => commonCountriesIds.includes(el.geoname.geonameid)).sort((a, b) => a.geoname.country < b.geoname.country ? 1 : -1)
+        const otherCountries = res.filter(el => !commonCountriesIds.includes(el.geoname.geonameid));
+        
         // if(selectedCountries && selectedCountries.length > 0) {
           
         //   selectedCountries.forEach(el => {
         //     _newMap.set(el.geonameid, el)
         //   })
         // }
-        res.forEach(el=> {
+        [...commonCountries, ...otherCountries].forEach(el=> {
           _newMap.set(el.geoname.geonameid, el.geoname)
         })
         selectedCountries?.forEach(el => {
