@@ -44,15 +44,13 @@ export default function RegistrationModal(props: Props) {
   const [code, setCode] = useState<string>('')
 
   const submit = async(data: IRegistrationData) => {
-    debugger
-    
     if(data.code.length < 4) {
       authContext.showOtpError(true, 'Введите код')
       return
     }
     setLoading(true)
-    const needRestore = true
-    authContext.confirmCode({phone: args.phone, code: data.code, email: args.email, newPassword: args.newPassword}, needRestore)
+   
+    authContext.confirmCode({phone: args.phone, code: data.code, email: args.email, newPassword: args.newPassword}, args.needRestore)
     .then(res=>{
       if(res===false) {
         authContext.showOtpError(true, 'Введите правильный код')
