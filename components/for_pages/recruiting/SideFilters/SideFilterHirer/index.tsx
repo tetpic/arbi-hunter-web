@@ -78,8 +78,7 @@ export default function SideFilterHirer(props: Props) {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
       initials: formik.values.countries.map(el => locationContext.countries.get(el)),
       onSubmit: (r) => {
-        
-        formik.setFieldValue('countries', [...r.map(el => el.country)])
+        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
       },
     })
@@ -98,7 +97,7 @@ export default function SideFilterHirer(props: Props) {
   const init = async() => {
     sourcesContext.init(['sources', 'verticals', 'geos'])
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
-    locationContext.getCountries({page: 1, limit: 3})
+    locationContext.getCountries({page: 1, limit: 195})
     locationContext.getCities({page: 1, limit: 3}, [])
     locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
     formik.setValues((v) => ({...v, ...props.initialFields}))
@@ -111,8 +110,7 @@ export default function SideFilterHirer(props: Props) {
 
   useEffect(()=>{
     if(formik.values.countries.length > 0) {
-      debugger
-      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.geonameid.toString()))  
+      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))  
     }
   }, [formik.values.countries, locationContext.countries])
 
@@ -124,7 +122,6 @@ export default function SideFilterHirer(props: Props) {
   }, [formik.values.categories, creationContext.subCategories])
 
   useEffect(()=>{
-    debugger
     props.onFilterChange(formik.values)
   }, [formik.values])
 
@@ -174,8 +171,6 @@ export default function SideFilterHirer(props: Props) {
 
         <div className={styles.divider}></div>       
 
-        <div className={styles.divider}></div>
-
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
           <span>{t('country')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
@@ -183,8 +178,11 @@ export default function SideFilterHirer(props: Props) {
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'countries'} 
-          options={[...locationContext.countries?.entries()].map(el=>{
-            return {value: el[0], label: el[1].locName}
+          options={[
+            ...formik.values.countries.map(el => locationContext.countries.get(el)), 
+            ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el.geonameid)).slice(0, 3)]
+            .map(el=>{
+            return {value: el.geonameid, label: el.locName}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>

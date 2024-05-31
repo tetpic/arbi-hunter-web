@@ -25,12 +25,12 @@ import { TranslateCompensationType, TranslateEmploymentType, TranslateScheduleTy
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
 import CheckboxField from '@/components/fields/CheckboxField'
-import { FilterParams } from 'pages/recruiting'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 
 
 interface Props {
-  onFilterChange: (data:  Partial<FilterParams>, _page?: number) => void
-  initialFields:  Partial<FilterParams>
+  onFilterChange: (data:  Partial<IVacancyCvSearchParams>, _page?: number) => void
+  initialFields:  Partial<IVacancyCvSearchParams>
 }
 
 export default function SideFilterEmployee(props: Props) {
@@ -48,7 +48,7 @@ export default function SideFilterEmployee(props: Props) {
 
 
 
-  const formik = useFormik< Partial<FilterParams>>({
+  const formik = useFormik< Partial<IVacancyCvSearchParams>>({
     initialValues: {
       employment: [],
       schedule: [],
@@ -86,7 +86,7 @@ export default function SideFilterEmployee(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
+      initials: formik.values.countries.map(el => locationContext.countries.get(Number(el))),
       onSubmit: (r) => {
         
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
@@ -97,7 +97,7 @@ export default function SideFilterEmployee(props: Props) {
 
   const openCityModal = () => {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
-      initialCountries: formik.values.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+      initialCountries: formik.values.countries.map(el => locationContext.countries.get(Number(el))).filter(Boolean),
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el.id)])
         locationContext.getCities(null, null, r)
@@ -108,8 +108,8 @@ export default function SideFilterEmployee(props: Props) {
   const init = async() => {
     sourcesContext.init(['sources', 'verticals', 'geos'])
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
-    locationContext.getCountries({page: 1, limit: 3})
-    locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
+    locationContext.getCountries({page: 1, limit: 195})
+    locationContext.getInitialGeonames({countries: props.initialFields.countries as number[], cities: props.initialFields.cities})
     formik.setValues((v) => ({...v, ...props.initialFields}))
     setTimeout(()=>{
       isInited.current = true
@@ -123,7 +123,7 @@ export default function SideFilterEmployee(props: Props) {
 
   useEffect(()=>{
     if(formik.values.countries.length > 0) {
-      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))      
+      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(Number(el))?.country))      
     }
   }, [formik.values.countries, locationContext.countries])
 
@@ -134,11 +134,10 @@ export default function SideFilterEmployee(props: Props) {
     })
   }, [formik.values.categories, creationContext.subCategories])
 
-  // useEffect(()=>{
-  //   if(!isInited.current) return
-  //   debugger
-  //   props.onFilterChange(formik.values, 1)
-  // }, [formik.values])
+  useEffect(()=>{
+    if(!isInited.current) return
+    props.onFilterChange(formik.values, 1)
+  }, [formik.values])
 
 
 
@@ -252,8 +251,11 @@ export default function SideFilterEmployee(props: Props) {
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'countries'} 
-          options={[...locationContext.countries?.entries()].map(el=>{
-            return {value: el[0], label: el[1].locName}
+          options={[
+            ...formik.values.countries.map(el => locationContext.countries.get(Number(el))), 
+            ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el.geonameid)).slice(0, 3)]
+            .map(el=>{
+            return {value: el.geonameid, label: el.locName}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}
           <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}

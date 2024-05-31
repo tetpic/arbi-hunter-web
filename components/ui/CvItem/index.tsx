@@ -161,6 +161,7 @@ export default function CvItem({cv, ...props}: Props) {
       vcId: cv.applicationsToCurrentUser?.[0]?.vacancyId||cv.proposalsByCurrentUser?.[0]?.vacancyId,
       onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
         debugger
+        props.onChangeItem
         // dialog.refreshMessage(Number(cv.message.id), {...props.message, proposal: {...props.application, ...proposal}})
       }
     }

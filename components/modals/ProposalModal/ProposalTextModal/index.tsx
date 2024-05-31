@@ -44,8 +44,6 @@ export default function ProposalTextModal(props: Props) {
   const [type, setTypeState] = useState<ProposalRequestType>(null)
 
   const submit = async(data: IProposal) => {
-    debugger
-    
     const dataToSend:IProposal = {
       ...data,
       coverLetter: data.coverLetter,    

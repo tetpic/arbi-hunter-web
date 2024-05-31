@@ -25,11 +25,10 @@ import { clearObject } from 'utils/helpers'
 import { CvWrapper, useCvContext } from 'context/cv_state'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
-import { FilterParams } from 'pages/recruiting'
 import { useLocationContext } from 'context/location_state'
 
 interface Props {
-  filters: Partial<FilterParams>
+  filters: Partial<IVacancyCvSearchParams>
 }
 
 export default function RecruitingPageEmployee(props: Props) {
@@ -54,16 +53,15 @@ function RecruitingPageEmployeeInner(props: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const isProcess = useRef<boolean>(false)
   const locationContext = useLocationContext()
-  const [currentFilters, setCurrentFilters] = useState<Partial<FilterParams>>({...props.filters, countries: []}||{})
+  const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
   const [page, setPage] = useState<'filters' | 'vacancies'>('vacancies')
 
 
-  const findVacancies = (data?: Partial<FilterParams>, _page?: number):void => {
+  const findVacancies = (data?: Partial<IVacancyCvSearchParams>, _page?: number):void => {
     isProcess.current = true
     const dataToSend: IVacancyCvSearchParams = {
       ...data,
       ...currentFilters,
-      countries: data?.countries?.map(el => [...locationContext.countries.values()].find(e => el === e.geonameid)?.country),
     }
     clearObject(dataToSend)
     vacancyContext.findVacancies( clearObject(dataToSend), _page)
@@ -75,7 +73,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
   const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
 
-  const onFilterChange =(data: Partial<FilterParams>) => {
+  const onFilterChange =(data: Partial<IVacancyCvSearchParams>) => {
     setLoading(true)
     const dataToSend = {...data}
     switch (dataToSend.searchIn) {
