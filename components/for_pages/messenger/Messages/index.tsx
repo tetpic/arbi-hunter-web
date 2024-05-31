@@ -41,6 +41,8 @@ import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
 import Spacer from '@/components/ui/Spacer'
+import TextareaAutosize from 'react-textarea-autosize'
+
 
 interface Props {
   onBackClick: () => void
@@ -62,7 +64,7 @@ export default function Messages(props: Props) {
   const userContext = useUserContext()
   const [value, setValue] = useState<string>('')
   const [replyTo, setReplyTo] = useState<IMessage>(null)
-  const inputRef = useRef<HTMLInputElement>(null!)
+  const inputRef = useRef<HTMLTextAreaElement>(null!)
 
   const sendMessage = () => {
     if (!value.replace(/\s+/g, ' ').trim() && pastedFiles.size === 0) {
@@ -103,7 +105,7 @@ export default function Messages(props: Props) {
     })
   }
 
-  const enterPressHandler = (e?: React.KeyboardEvent<HTMLInputElement>) => {
+  const enterPressHandler = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if(e.key === 'Enter') {
       sendMessage()
       inputRef.current.blur()
@@ -425,7 +427,25 @@ export default function Messages(props: Props) {
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>
-        <input value={value} ref={inputRef} enterKeyHint='send' onChange={(e)=>{
+        
+        <TextareaAutosize 
+          value={value} 
+          onChange={(e)=>{
+            if(userContext.currentProfile?.profileType === ProfileType.Employee
+              && dialog.chat?.employeeCanWrite === false
+            ) {
+              return
+            }
+            else {
+              setValue(e.currentTarget.value)
+            }
+            }} 
+          // onKeyDown={(e)=>e.key==='Enter'&&&&enterPressHandler(e)} 
+          className={styles.input}
+          // type="text" 
+          placeholder={t('chat_enterMessage')} 
+        />
+        {/* <textarea value={value} ref={inputRef} onChange={(e)=>{
           if(userContext.currentProfile?.profileType === ProfileType.Employee
             && dialog.chat?.employeeCanWrite === false
           ) {
@@ -434,7 +454,12 @@ export default function Messages(props: Props) {
           else {
             setValue(e.currentTarget.value)
           }
-          }} onKeyDown={(e)=>e.key==='Enter'&&enterPressHandler(e)} className={styles.input} type="text" placeholder={t('chat_enterMessage')} />
+          }} 
+          onKeyDown={(e)=>e.key==='Enter'&&!isTabletWidth&&enterPressHandler(e)} 
+          className={styles.input}
+          // type="text" 
+           placeholder={t('chat_enterMessage')} 
+           /> */}
         </>
         }
         { choosenIds.size === 0 &&     

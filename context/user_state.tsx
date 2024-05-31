@@ -62,8 +62,11 @@ export function UserWrapper(props: Props) {
 
   const updateUser = async (newUser?: IUser): Promise<IUser> => {
     if (newUser) {
-      setUser(newUser)
-      return newUser
+      UserRepository.editCurrentUser(newUser)
+      .then(usr=> {
+        setUser(usr)
+        return usr
+      })
     } 
     else {
       const data = await UserRepository.getCurrentUser()

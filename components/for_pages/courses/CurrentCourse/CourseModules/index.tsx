@@ -54,17 +54,19 @@ export default function CourseModules({course}: Props) {
       [...courseModules.entries()].map(([k, v], blockIndex)=> (
         <div className={styles.item} key={k.id}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>
-            {k.image?.source &&
-              <Image 
-              unoptimized
-              className={styles.image} 
-              src={ImageHelper.urlFromFile(k.image, Preset.smallIconResize)}
-               width={65} 
-               height={48} 
-               alt={'course title'}/>
-            }
-            <div className={styles.progressBarWrapper}>
-              <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
+            <div className={styles.imageWrapper}>
+              {k.image?.source &&
+                <Image 
+                unoptimized
+                className={styles.image} 
+                src={ImageHelper.urlFromFile(k.image, Preset.smallIconResize)}
+                width={65} 
+                height={48} 
+                alt={'course title'}/>
+              }
+              <div className={styles.progressBarWrapper}>
+                <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
+              </div>
             </div>
             <p className={styles.title}>{k.title}</p>
             <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</p>

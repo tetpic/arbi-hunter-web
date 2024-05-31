@@ -85,6 +85,10 @@ export interface IUser extends TimeStamp {
   company?: string|null,
   firstName?: string|null,
   lastName?: string|null,
+  emailNotifications?: boolean,
+  pushNotifications?: boolean
+
+
 }
 
 

@@ -31,7 +31,7 @@ export default function PasswordConfirm(props: Props) {
       <PasswordField 
       className={styles.input} 
       name='newPassword' 
-      label={t('password')} 
+      label={t('login_enterNewPassword')} 
       />
 
       <PasswordField 

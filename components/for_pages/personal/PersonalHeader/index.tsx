@@ -56,7 +56,7 @@ export default function PersonalHeader(props: Props) {
             const _args:IBackgroundPickModalArguments =  {
               currentBackground: cBack?.image|| null,
               currentBuild: cBuild?.image || null,
-              hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile.logo,
+              hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
               withBuildPicker: currentProfile?.profileType === ProfileType.Hirer,
               onSave: (background, building) => {                  
                 BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
@@ -181,21 +181,21 @@ export default function PersonalHeader(props: Props) {
     {backImage 
     && personalContext.transport 
     && profileType===ProfileType.Hirer 
-    && !personalContext.currentProfile.useOwnLogo
+    && !personalContext.currentProfile?.useOwnLogo
     && transportRive}
 
     {backImage 
     && personalContext.weather 
     && profileType===ProfileType.Hirer 
-    && !personalContext.currentProfile.useOwnLogo
+    && !personalContext.currentProfile?.useOwnLogo
     && weatherRive}
 
     <div className={props.useModel?styles.personalModel:styles.personalImageWrapper}>
       {
       personalContext.currentProfile?.profileType === ProfileType.Hirer 
       && building
-      && !personalContext.currentProfile.useOwnLogo
-      && personalContext.currentProfile.logo &&
+      && !personalContext.currentProfile?.useOwnLogo
+      && personalContext.currentProfile?.logo &&
       <>
         <Image 
         unoptimized

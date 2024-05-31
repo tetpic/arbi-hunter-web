@@ -14,7 +14,7 @@ import Formatter from 'utils/formatter'
 import { useUserContext } from 'context/user_state'
 import Button from 'components/ui/Button'
 import CloseEyeSvg from 'components/svg/CloseEyeSvg'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { usePersonalContext } from 'context/personal_state'
 import BackTextButton from '@/components/ui/BackTextButton'
 import P from '@/components/ui/P'
@@ -228,7 +228,12 @@ export default function VacancyPage(props: Props) {
           <Button 
           styleType={['black', 'borderBlue', 'phoneWide']}
           altStyleType={['white']}
-          >{t('vacancy_page_invite')}</Button>
+          onClick={() => {
+            router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [currentVacancy.categories[0].id]})}})
+          }}
+          >
+            {t('vacancy_page_invite')}
+          </Button>
         </div>
       }
 

@@ -17,6 +17,10 @@
 .progressBarWrapper {
   width: 40px;
   height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .top {
@@ -47,13 +51,19 @@
   }
 
   .image {
-    grid-area: i;
     border-radius: 10px;
     object-fit: cover;
     filter: brightness(.4);
-    position: absolute;
-    top: 4px;
-    left: 10px;
+    // position: absolute;
+    // top: 4px;
+    // left: 10px;
+  }
+
+  .imageWrapper {
+    grid-area: i;
+    position: relative;
+    min-width: 40px;
+    min-height: 40px;
   }
 
   .arrow {
