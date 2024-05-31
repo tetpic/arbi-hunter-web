@@ -139,7 +139,7 @@ export default function ModulesPage() {
       {courseContext.activeStep?.stepType === CoursesStepType.Question &&
         <Questions activeStep={courseContext.activeStep}/>
       }
-      <Button className={styles.button} styleType={['gradient', 'phoneWide']} onClick={nextButtonHandler} >{!endOfCourse?t('continue'):t('courses_finish')}</Button>
+      <Button className={styles.button} styleType={['gradient', 'phoneWide']} onClick={nextButtonHandler} >{/*!endOfCourse?*/t('continue')/*:t('courses_finish')*/}</Button>
       </>
       ||
       <Spinner size={34} color={colors.blue}/>
