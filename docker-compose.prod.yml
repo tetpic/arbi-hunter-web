@@ -12,6 +12,7 @@ services:
           dockerfile: docker/app/Dockerfile
           args:
             - ENV_FILE=.env.prod
+            - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
         volumes:
           - /srv/arbi-hunter-frontend/cache:/usr/src/app/.next/cache
         image: ${APP_IMAGE}
