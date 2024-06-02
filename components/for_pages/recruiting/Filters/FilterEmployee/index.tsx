@@ -20,7 +20,6 @@ import { ISoursesModalArgs } from '@/components/modals/CvModals/Sourses'
 import P from '@/components/ui/P'
 import InputField from '@/components/fields/InputField'
 import TagsRadioList from '../../../create/utils/TagsRadioList'
-import MainSearchBar from '@/components/ui/MainSearchBar'
 import Title from '@/components/ui/TitleForSection'
 import { useSourcesContext } from 'context/sources_state'
 import { ICountryModalProps } from '@/components/modals/CountryModal'
@@ -241,7 +240,7 @@ export default function FilterEmployee(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <Title title={t('search_vacancy')} onBackClick={props.onCancel}/>
-      <MainSearchBar fullWidth  initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} />
+      {/* <MainSearchBar fullWidth  initialSearch={props.initialFields?.search} onChange={(v)=>formik.setFieldValue('search', v.search).then(_=>formik.submitForm())} /> */}
     </div>
     <FormikProvider value={formik}>
       <Form className={styles.form}>

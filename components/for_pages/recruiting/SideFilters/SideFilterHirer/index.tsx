@@ -22,11 +22,12 @@ import { ICityModalArgs } from '@/components/modals/CityModal'
 import {   TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import { FilterParams } from 'pages/recruiting'
+import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import CheckboxField from '@/components/fields/CheckboxField'
 
 interface Props {
-  onFilterChange: (data: Partial<FilterParams>) => void
-  initialFields: Partial<FilterParams>
+  onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
+  initialFields: Partial<IVacancyCvSearchParams>
 }
 
 export default function SideFilterHirer(props: Props) {
@@ -40,7 +41,7 @@ export default function SideFilterHirer(props: Props) {
   const {t} = useTranslation()
 
 
-  const formik = useFormik<Partial<FilterParams>>({
+  const formik = useFormik<Partial<IVacancyCvSearchParams>>({
     initialValues: {
       employment: [],
       schedule: [],
@@ -58,6 +59,7 @@ export default function SideFilterHirer(props: Props) {
       ageMin: undefined,
       countries: [],
       cities: [],
+      isRemote: false
     },
     onSubmit: null
   })
@@ -76,9 +78,9 @@ export default function SideFilterHirer(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries.map(el => locationContext.countries.get(el)),
+      initials: formik.values.countries.map(el => locationContext.countries.get(el as number)),
       onSubmit: (r) => {
-        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
+        formik.setFieldValue('countries', [...r.map(el => el?.geonameid)])
         locationContext.getCountries(null, r)
       },
     })
@@ -86,7 +88,7 @@ export default function SideFilterHirer(props: Props) {
 
   const openCityModal = () => {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
-      initialCountries: formik.values.countries.map(el => locationContext.countries.get(el)).filter(Boolean),
+      initialCountries: formik.values.countries.map(el => locationContext.countries.get(el as number)).filter(Boolean),
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el.id)])
         locationContext.getCities(null, null, r)
@@ -99,7 +101,7 @@ export default function SideFilterHirer(props: Props) {
     creationContext.setSubCategories({search: undefined, withCVsCount: true})   
     locationContext.getCountries({page: 1, limit: 195})
     locationContext.getCities({page: 1, limit: 3}, [])
-    locationContext.getInitialGeonames({countries: props.initialFields.countries, cities: props.initialFields.cities})
+    locationContext.getInitialGeonames({countries: props.initialFields.countries as number[], cities: props.initialFields.cities as number[]})
     formik.setValues((v) => ({...v, ...props.initialFields}))
   }
  
@@ -110,7 +112,7 @@ export default function SideFilterHirer(props: Props) {
 
   useEffect(()=>{
     if(formik.values.countries.length > 0) {
-      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el)?.country))  
+      locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el as number)?.country))  
     }
   }, [formik.values.countries, locationContext.countries])
 
@@ -179,10 +181,10 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'countries'} 
           options={[
-            ...formik.values.countries.map(el => locationContext.countries.get(el)), 
-            ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el.geonameid)).slice(0, 3)]
+            ...formik.values.countries.map(el => locationContext.countries.get(el as number)), 
+            ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el?.geonameid)).slice(0, 3)]
             .map(el=>{
-            return {value: el.geonameid, label: el.locName}
+            return {value: el?.geonameid, label: el?.locName}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -193,25 +195,26 @@ export default function SideFilterHirer(props: Props) {
         </P>
 
         <div className={styles.divider}></div>
-          <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
-            <span>{t('city')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
-          </p>
-          <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
-            <CheckboxListField 
-            rootClass={styles.radioField}
-            name={'cities'} 
-            options={[...locationContext.cities.entries()].map(el=> {
-              return {value: el[0], label: el[1].name}
-            })}/>
 
-            {isTabletWidth&&<Spacer basis={4}/>}
-          </Accordeon>
-          <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
-          onClick={openCityModal}
-          >
-            {t('filters_chooseMore')}
-          </P>
-          <div className={styles.divider}></div>
+        <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
+          <span>{t('city')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
+        </p>
+        <Accordeon isActive={activeAccordeon === 3} disabled={!isTabletWidth}>
+          <CheckboxListField 
+          rootClass={styles.radioField}
+          name={'cities'} 
+          options={[...locationContext.cities.entries()].map(el=> {
+            return {value: el[0], label: el[1].name}
+          })}/>
+          {isTabletWidth&&<Spacer basis={4}/>}
+        </Accordeon>
+        <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}
+        onClick={openCityModal}
+        >
+          {t('filters_chooseMore')}
+        </P>
+
+        <div className={styles.divider}></div>
 
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
           <span>{t('filters_relocation')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
@@ -223,7 +226,6 @@ export default function SideFilterHirer(props: Props) {
           options={[
             {value: Answer.Yes, label: t('filters_relocationYes')},
             {value: Answer.No, label: t('filters_relocationNo')},
-            {value: null, label: t('filters_whatEver')},
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -241,7 +243,10 @@ export default function SideFilterHirer(props: Props) {
         </>
         }
 
+
         {showMore && <>
+        
+        <div className={styles.divider}></div>
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
           <span>{t('gender')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
@@ -250,9 +255,8 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'gender'} 
           options={[
-            {value: Genders.Female, label: t('gender_femaleShort')},
-            {value: Genders.Male, label: t('gender_maleShort')},
-            {value: null, label: t('filters_whatEver')},
+            {value: Genders.Female, label: t('gender_female')},
+            {value: Genders.Male, label: t('gender_male')},
           ]}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -316,9 +320,16 @@ export default function SideFilterHirer(props: Props) {
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'schedule'} 
-          options={
-            Object.values(ScheduleType).map((el) => {return {label: TranslateScheduleType(el, t), value: el}})
-          } 
+          options={[
+            {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
+            {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
+          ]} 
+          />
+           <CheckboxField 
+          rootClass={styles.radioField}
+          name={'isRemote'} 
+          value={true}
+          label={TranslateScheduleType(ScheduleType.Remote, t)}
           />
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>

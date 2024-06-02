@@ -25,13 +25,13 @@ import useTranslation from 'next-translate/useTranslation'
 import { useUserContext } from 'context/user_state'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useLocationContext } from 'context/location_state'
-import { FilterParams } from 'pages/recruiting'
+import { LanguageKnowLevel } from 'types/enums'
 
 
 interface Props {
   vcId?: number  
   category?: number
-  filters?: Partial<FilterParams>
+  filters?: Partial<IVacancyCvSearchParams>
 }
 
 export default function RecruitingPageHirer(props: Props) {
@@ -50,7 +50,7 @@ function RecruitingPageHirerInner(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const [loading, setLoading] = useState<boolean>(true)
-  const [currentFilters, setCurrentFilters] = useState<Partial<FilterParams>>(props.filters||{})
+  const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
   const appContext = useAppContext()
   const userContext = useUserContext()
   const folderContext = useFavoritesFolderContext()
@@ -62,13 +62,20 @@ function RecruitingPageHirerInner(props: Props) {
 
   const {isTabletWidth} = appContext.size
 
-  const findCvs = (data?: Partial<FilterParams>):void => {
+  const findCvs = (data?: Partial<IVacancyCvSearchParams>):void => {
+    const languageLevels = Object.values(LanguageKnowLevel)
     const _filters:IVacancyCvSearchParams = {
       ...currentFilters,
       ...data,
-      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el)?.country),
+      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.country),
       salaryMin: Number((data||currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
-      salaryMax: Number((data||currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null
+      salaryMax: Number((data||currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null,
+      languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
+        {
+          language: el.language, 
+          levels: languageLevels.slice(languageLevels.indexOf(el.level), languageLevels.length)
+        })
+      ),
     }
     const clearedFilters = clearObject({..._filters})
     cvContext.findCvs(clearedFilters)
@@ -82,6 +89,7 @@ function RecruitingPageHirerInner(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
+    debugger
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
@@ -172,7 +180,7 @@ function RecruitingPageHirerInner(props: Props) {
         className={styles.found}
         useThemeColor
         >
-          {t('found')} {cvContext.total} {t('cv').toLowerCase()} {props.vcId?t('recruiting_hit_foundOnVacancy')+' '+ vacancyContext.currentVacancy.name:''}
+          {t('found')} {cvContext.total} {t('cv').toLowerCase()} {/*props.vcId?t('recruiting_hit_foundOnVacancy')+' '+ vacancyContext.currentVacancy.name:''*/}
         </P>
         ||
         <Spacer basis={88}/>

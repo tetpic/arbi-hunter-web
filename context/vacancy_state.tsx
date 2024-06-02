@@ -206,7 +206,6 @@ export function VacancyWrapper(props: Props) {
   }
 
   const findVacancies = useCallback(async (data?: IVacancyCvSearchParams, _page?: number):Promise<boolean> => {
-    console.log(_page, page)
     const res = await VacancyRepository.searchVacancies(data, _page||page, 40)
     if(typeof res === 'object') {
       setFoundVacancies(state=>{

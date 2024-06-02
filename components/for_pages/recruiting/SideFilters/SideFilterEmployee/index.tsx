@@ -67,7 +67,8 @@ export default function SideFilterEmployee(props: Props) {
       ageMin: undefined,
       countries: [],
       cities: [],
-      exclude: ''
+      exclude: '',
+      isRemote: false
     },
     onSubmit: null
   })
@@ -356,8 +357,19 @@ export default function SideFilterEmployee(props: Props) {
           options={[
             {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
             {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
-            {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
+            // {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
           ]} 
+          />
+          <CheckboxField 
+          rootClass={styles.radioField}
+          name={'isRemote'} 
+          value={true}
+          label={TranslateScheduleType(ScheduleType.Remote, t)}
+          // options={[
+          //   // {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
+          //   // {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
+          //   {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
+          // ]} 
           />
           {isTabletWidth&&<Spacer basis={4}/>}
           <div className={styles.divider}></div>

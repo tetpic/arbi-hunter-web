@@ -50,7 +50,7 @@ export default function FavoritesPageHirer(props: Props) {
     const _modalArgs:FavoritesSettingModalArgs = {
       initialFolders: foldersContext.allFolders,
       initialData: {
-        addSavedToDefaultFolder: userContext.currentProfile.addSavedToDefaultFolder,
+        addSavedToDefaultFolder: userContext.currentProfile?.addSavedToDefaultFolder,
         defaultFolderId: foldersContext.allFolders.find(el=> el.default)?.id
       },
       onSave: (data) => {

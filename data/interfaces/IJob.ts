@@ -3,7 +3,8 @@ import { ISpecializationCategory } from './Common'
 
 export interface ILanguageKnowledge {
   language : Languages, //? 'en'
-  level : LanguageKnowLevel //? 'intermediate'
+  level?: LanguageKnowLevel //? 'intermediate'
+  levels?: LanguageKnowLevel[]
 }
 
 
