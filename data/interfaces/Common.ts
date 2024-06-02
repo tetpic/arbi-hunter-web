@@ -231,8 +231,6 @@ export interface IPaginationRequest {
   limit?: number;
 }
 
-
-
 export interface IVacancyCvSearchParams {
   search?: string,
   keywords?: string,
@@ -274,7 +272,6 @@ export interface IVacancyCvSearchParams {
   ageMin?: number,
   ageMax?: number,
   exclude?: string,
-
 }
 
 export interface ITariff extends TimeStamp {

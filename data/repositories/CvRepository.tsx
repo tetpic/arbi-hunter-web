@@ -135,7 +135,7 @@ export default class CvRepository {
         dataToSend[key] = value.join(',')
       }
     })
-    data?.languageKnowledges&&data.languageKnowledges.length > 0&&(dataToSend.languageKnowledges = JSON.stringify(data.languageKnowledges.map(el=> {return {language: el.language, levels: [el.level]}} )))
+    data?.languageKnowledges&&data.languageKnowledges.length > 0&&(dataToSend.languageKnowledges = JSON.stringify(data.languageKnowledges.map(el=> {return {language: el.language, levels: el.levels}} )))
     const res = await request({
       method: 'get',
       url: '/api/cv',

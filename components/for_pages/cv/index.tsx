@@ -132,7 +132,7 @@ export default function CvPage(props: Props) {
       })
     }
     else {
-      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(new AbortController().signal)
+      userContext.currentProfile?.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(new AbortController().signal)
     }
   }
 
@@ -385,7 +385,7 @@ export default function CvPage(props: Props) {
         </div>
       }
 
-      {(currentCv?.isContactsOpen||userContext.currentProfile.id === currentCv.profile.id)&&
+      {(currentCv?.isContactsOpen||userContext.currentProfile?.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
           <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
           {currentCv.profile.email &&

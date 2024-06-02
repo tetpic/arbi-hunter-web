@@ -10,7 +10,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import React from 'react'
 import StickyBox from 'react-sticky-box'
 import { useAppContext } from 'context/state'
-import { SearchIn } from 'types/enums'
+import { LanguageKnowLevel, SearchIn } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -59,10 +59,19 @@ function RecruitingPageEmployeeInner(props: Props) {
 
   const findVacancies = (data?: Partial<IVacancyCvSearchParams>, _page?: number):void => {
     isProcess.current = true
+    const languageLevels = Object.values(LanguageKnowLevel)
     const dataToSend: IVacancyCvSearchParams = {
       ...data,
       ...currentFilters,
+      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.geonameid),
+      languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
+        {
+          language: el.language, 
+          levels: languageLevels.slice(languageLevels.indexOf(el.level), languageLevels.length)
+        })
+      ),
     }
+    debugger
     clearObject(dataToSend)
     vacancyContext.findVacancies( clearObject(dataToSend), _page)
     .then(_=>{
@@ -90,7 +99,7 @@ function RecruitingPageEmployeeInner(props: Props) {
     const clearedObj = clearObject({...dataToSend})
     setPage('vacancies')
     vacancyContext.setPage(1)
-    setCurrentFilters(clearedObj)
+    setCurrentFilters(clearObject(data))
     setTimeout(()=>{
       findVacanciesThrottle.callback(clearedObj, 1)
     }, 200)
@@ -122,11 +131,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
 
   useEffect(()=>{    
-    // if(loading && !isInited.current) return
-
     findVacanciesThrottle.callback(currentFilters)
-      
-  
   }, [vacancyContext.page])
 
 

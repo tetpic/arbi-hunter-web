@@ -11,7 +11,7 @@ import { HelpObject, useCreateVcCvContext } from 'context/createVcCv_state'
 import RemovableItem from 'components/ui/RemovableItem'
 import { ILanguageKnowledge } from 'data/interfaces/IJob'
 import { ISpecializationModalProps } from 'components/modals/CvModals/Specialization'
-import { ISource, ISpecializationCategory } from 'data/interfaces/Common'
+import { ISource, ISpecializationCategory, IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { periods } from 'utils/commonObjects'
 import CheckboxField from '@/components/fields/CheckboxField'
 import { TranslateCompensationType,  TranslateCurrency,  TranslateEducationType,  TranslateEmploymentType,  TranslateLanguage,  TranslateLanguageKnowLevel, TranslateScheduleType, TranslateVacancyLookType, TranslateWorkExperience } from 'utils/enumsTranslations'
@@ -31,11 +31,10 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerFieldsModal'
 import { SalaryModalArgs } from '@/components/modals/SalaryModal'
 import { colors } from 'styles/variables'
-import { FilterParams } from 'pages/recruiting'
 
 interface Props {
-  onFilterChange: (data: Partial<FilterParams>) => void
-  initialFields?: FilterParams
+  onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
+  initialFields?: IVacancyCvSearchParams
   onCancel?: () => void
 }
 
@@ -49,7 +48,7 @@ export default function FilterHirer(props: Props) {
   const locationContext = useLocationContext()
   const [activeAccordeon, setActiveAccordeon] = useState<number>(null)
 
-  const initialValues:Partial<FilterParams> = {
+  const initialValues:Partial<IVacancyCvSearchParams> = {
     employment: [],
     schedule: [],
     compensation: undefined,
@@ -67,7 +66,7 @@ export default function FilterHirer(props: Props) {
     search: undefined,
   }
 
-  const formik = useFormik<Partial<FilterParams>>({
+  const formik = useFormik<Partial<IVacancyCvSearchParams>>({
     initialValues: {
       ...initialValues,
       ...props.initialFields
@@ -163,7 +162,7 @@ export default function FilterHirer(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries?.map(el => locationContext.countries.get(el)),
+      initials: formik.values.countries?.map(el => locationContext.countries.get(el as number)),
       onSubmit: (r) => {
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
@@ -213,6 +212,8 @@ export default function FilterHirer(props: Props) {
       const _newGeos: Map<number, ISource> = new Map()
       const _newVerticals: Map<number, ISource> = new Map()
       const _newSources: Map<number, ISource> = new Map()
+      const _newLangs: Map<string, ILanguageKnowledge> = new Map()
+
       props.initialFields?.geos?.forEach(el => {
         _newGeos.set(el, sourcesContext.geos.get(el))
       })
@@ -222,13 +223,17 @@ export default function FilterHirer(props: Props) {
       props.initialFields?.sources?.forEach(el => {
         _newSources.set(el, sourcesContext.sources.get(el))
       })
+      props.initialFields.languageKnowledges.map(el => {
+        _newLangs.set(el.language, el)
+      })
 
       creationContext.setHelpObjects(
         {...creationContext.helpObjects, 
           activeSources: _newSources,
           activeGeos: _newGeos,
+          languageKnowledges: _newLangs,
           activeVerticals: _newVerticals,
-          countries: props.initialFields?.countries?.map(el => locationContext.countries.get(el)).filter(Boolean)||[],
+          countries: props.initialFields?.countries?.map(el => locationContext.countries.get(el as number)).filter(Boolean)||[],
         }
       )      
   }, [props.initialFields])
@@ -622,7 +627,7 @@ export default function FilterHirer(props: Props) {
             <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
-            <CheckboxListField 
+            <RadioListField 
             name={'experience'} 
             rootClass={styles.radioField}
             options={Object.values(WorkExperience).map(el => {

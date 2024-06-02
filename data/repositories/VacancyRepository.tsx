@@ -156,6 +156,7 @@ export default class VacancyRepository {
     data?.categories&&data.categories.length>0&&(dataToSend.categories = data.categories.join(','))
     data?.experience&&data.experience.length>0&&(dataToSend.experience = data.experience.join(','))
     data?.cities&&data.cities.length>0&&(dataToSend.cities = data.cities.join(','))
+    data?.countries&&data.countries.length>0&&(dataToSend.countries = data.countries.join(','))
     data?.schedule&&data.schedule.length>0&&(dataToSend.schedule = data.schedule.join(','))
     data?.languageKnowledges&&data.languageKnowledges.length > 0&&(dataToSend.languageKnowledges = JSON.stringify(data.languageKnowledges.map(el=> {return {language: el.language, levels: [el.level]}} )))
     const res = await request({
