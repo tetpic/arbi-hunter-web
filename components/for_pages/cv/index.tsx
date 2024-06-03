@@ -152,6 +152,7 @@ export default function CvPage(props: Props) {
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     .then(res=> {
+      debugger
       if(res === false ) {
         appContext.showSnackbar(t('cv_deletedOrHidden'), SnackbarType.error)
         router.back()
@@ -324,6 +325,7 @@ export default function CvPage(props: Props) {
         </div>
         <SalaryItem cv={currentCv} />
         <Statistics 
+        
         className={styles.stats}
         items={[
           {name: t('cv_pagee_shows'), count: currentCv?.totalShows},

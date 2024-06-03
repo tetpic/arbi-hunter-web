@@ -4,7 +4,7 @@ import { IMessage } from 'data/interfaces/IChat'
 import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
 import { ImageViewerModalProps } from '@/components/modals/ImageViewerModal'
-import { ModalType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import Spinner from '@/components/ui/Spinner'
 import Image from 'next/image'
 import ImageHelper from 'utils/ImageHelper'
@@ -26,14 +26,17 @@ export default function ImageNode(props: Props) {
         </div>
       })
     }
-  {msg.assets&&msg.assets.length>0&&msg.assets.map(image=> {
-    return <div className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
+  {
+  msg.assets 
+  && msg.assets.length>0 
+  && msg.assets.map((image, index)=> {
+    return <div key={msg.id+index.toString()} className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
       <Image 
       unoptimized
-      onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromSource(image.source)})} 
-      src={ImageHelper.urlFromSource(image.source)} 
+      width={msg.assets.length>1?200:400}
+      onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: ImageHelper.urlFromFile(image, Preset.mdResize)})} 
+      src={ImageHelper.urlFromFile(image, Preset.sResize)} 
       alt={'asset'} 
-      width={msg.assets.length>1?200:400} 
       height={msg.assets.length>1?200:400} 
       />   
     </div>

@@ -83,24 +83,21 @@ export default function FilterEmployee(props: Props) {
   }
 
   const openSpecializationModal = () => {
-    if(isTabletWidth) {
-      appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, {
-        manyItems: true,
-        onSubmit: (data)=>{
-          creationContext.setActiveSubcategory(data)
-          formik.setFieldValue('categories', data.map(el=> el?.id))
-        },
-        onClose: ()=>appContext.hideBottomSheet(),
-      }, 0.9)
-      return
-    } 
-    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
+    const _args: ISpecializationModalProps = {
       manyItems: true,
+      activeSubCategories: creationContext.activeSubCategory,
       onSubmit: (data)=>{
-        creationContext.setActiveSubcategory(data)
-        formik.setFieldValue('categories', data.map(el=> el?.id))
+        const categoriesMap: Map<number, ISpecializationCategory> = new Map()
+        creationContext.activeSubCategory.map(el => categoriesMap.set(el.id, el))
+        data.forEach(el => categoriesMap.set(el.id, el))
+        creationContext.setActiveSubcategory([...categoriesMap.values()])
+        formik.setFieldValue('categories', [...categoriesMap.keys()])
       },
-    })
+      onClose: ()=>appContext.hideBottomSheet(),
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, _args, 0.9)
+    :appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, _args)
   }
 
   const openSourcesModal = (t: Pick<ISoursesModalArgs, 'type'>) => {
@@ -114,11 +111,9 @@ export default function FilterEmployee(props: Props) {
       data: [...sourcesContext[t.type].values()],
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
-    if (isTabletWidth) {
-      appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, t.type ==='verticals'&&380||t.type === 'geos'&&220||460)
-      return
-    }
-    appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
+    isTabletWidth
+    ? appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, t.type ==='verticals'&&380||t.type === 'geos'&&220||460)
+    : appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
   }
 
 

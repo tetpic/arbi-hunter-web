@@ -68,7 +68,9 @@ export default function SideFilterEmployee(props: Props) {
       countries: [],
       cities: [],
       exclude: '',
-      isRemote: false
+      isRemote: undefined,
+      salaryMin: '',
+      salaryMax: '',
     },
     onSubmit: null
   })
@@ -88,8 +90,7 @@ export default function SideFilterEmployee(props: Props) {
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
       initials: formik.values.countries.map(el => locationContext.countries.get(Number(el))),
-      onSubmit: (r) => {
-        
+      onSubmit: (r) => {        
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
       },
@@ -108,9 +109,11 @@ export default function SideFilterEmployee(props: Props) {
 
   const init = async() => {
     sourcesContext.init(['sources', 'verticals', 'geos'])
-    creationContext.setSubCategories({search: undefined, withCVsCount: true})   
+    // такой лимит поставлен потому что нет метода для получения списка именно субкатегорий по id
+    creationContext.setSubCategories({search: undefined, withVacanciesCount: true, limit: 2000})   
     locationContext.getCountries({page: 1, limit: 195})
     locationContext.getInitialGeonames({countries: props.initialFields.countries as number[], cities: props.initialFields.cities})
+
     formik.setValues((v) => ({...v, ...props.initialFields}))
     setTimeout(()=>{
       isInited.current = true
@@ -131,7 +134,7 @@ export default function SideFilterEmployee(props: Props) {
   useEffect(()=>{
     creationContext.setActiveSubcategory(_=>{
       const result = formik.values.categories.map(el=> creationContext.subCategories.get(el))
-      return result
+      return [...result]
     })
   }, [formik.values.categories, creationContext.subCategories])
 
@@ -154,10 +157,11 @@ export default function SideFilterEmployee(props: Props) {
         name={'categories'} 
         itemLabelClassName={styles.categoryLabel}
         options={
-          [...creationContext.activeSubCategory.filter(Boolean),
+          [
+            ...creationContext.activeSubCategory.filter(Boolean),
             ...[...creationContext.subCategories.entries()].filter(([k, v])=> !formik.values.categories.includes(k)).map(el=> el[1]).slice(0, 3)
           ].map(el=> {
-            return {value: el.id, label: <P useThemeColor className={styles.categoryLabel}>{el.name} <span>{el.cvsCount}</span></P> }
+            return {value: el?.id, label: <P useThemeColor className={styles.categoryLabel}>{el?.name} {el?.vacanciesCount &&<span>{el?.vacanciesCount}</span>}</P> }
           })
         }/>
         {isTabletWidth&&<Spacer basis={4}/>}
@@ -183,17 +187,22 @@ export default function SideFilterEmployee(props: Props) {
           <InputField 
           styleType={'hidden'} 
           color={'white'} 
-          name={'salaryMax'}
+          name={'salaryMin'}
           label={t('from')}
           labelType={'static'}
+          isNumbersOnly
+          priceFormatting
           />
           <span>-</span>
           <InputField 
           styleType={'hidden'} 
           color={'white'} 
-          name={'salaryMin'}
+          name={'salaryMax'}
           label={t('to')}
           labelType={'static'}
+          isNumbersOnly
+          priceFormatting
+
           />
         </div>
         <TagsRadioList wrap className={styles.tags} name={'currency'} options={[

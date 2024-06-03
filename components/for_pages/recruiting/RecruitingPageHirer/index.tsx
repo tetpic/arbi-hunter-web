@@ -77,7 +77,7 @@ function RecruitingPageHirerInner(props: Props) {
         })
       ),
     }
-    const clearedFilters = clearObject({..._filters})
+    const clearedFilters = clearObject(_filters)
     cvContext.findCvs(clearedFilters)
     .then(_=>setLoading(false))
   }
@@ -89,7 +89,6 @@ function RecruitingPageHirerInner(props: Props) {
   const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
 
   const onFilterChange =(data: any) => {
-    debugger
     setPage('cvs')
     cvContext.setPage(1)
     setLoading(true)
@@ -151,16 +150,6 @@ function RecruitingPageHirerInner(props: Props) {
         <Link className={styles.createLink} href={'/create/vacancy'}>{t('recruiting_hir_toPlaceVacancy')}</Link>
       </div>
     }
-
-    {/* {isTabletWidth && 
-      <TitleForSection title={' '} onBackClick={router.back}/>
-    }
-    <MainSearchBar
-     placeholder={t('search_cv')} fullWidth className={styles.searchBar} 
-     onChange={(s)=>onFilterChange({...currentFilters, search: s.search})}
-     initialSearch={searchString}
-     onFilterClick={onFilterClick}
-     /> */}
       <div className={styles.searchBarWrapper}>
         {isTabletWidth && 
           <TitleForSection title={' '} onBackClick={router.back} className={styles.title}/>
@@ -191,7 +180,7 @@ function RecruitingPageHirerInner(props: Props) {
       {!isTabletWidth &&
         <StickyBox className={styles.filters}  offsetTop={100} offsetBottom={20}>
           <div className={styles.filter}>
-            <SideFilterHirer onFilterChange={onFilterChange} initialFields={currentFilters}/>
+            <SideFilterHirer  onFilterChange={onFilterChange} initialFields={currentFilters}/>
           </div>
         </StickyBox>
       }

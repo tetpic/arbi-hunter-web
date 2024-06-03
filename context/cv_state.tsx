@@ -123,6 +123,7 @@ export function CvWrapper(props: Props) {
   const getCv = (id: number): Promise<boolean> => {
     return CvRepository.getById(id)
     .then(res=> {
+      debugger
       setCurrentCvState(res)
       return true
     })

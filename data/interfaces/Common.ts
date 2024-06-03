@@ -248,6 +248,7 @@ export interface IVacancyCvSearchParams {
   currency?: Currency,
   salaryMin?: number|string,
   salaryMax?: number|string,
+  salary?: number|string,
   commissionMin?: number,
   commissionMax?: number,
   gybridCommissionMin?: number,

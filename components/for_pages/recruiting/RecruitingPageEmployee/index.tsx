@@ -10,7 +10,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import React from 'react'
 import StickyBox from 'react-sticky-box'
 import { useAppContext } from 'context/state'
-import { LanguageKnowLevel, SearchIn } from 'types/enums'
+import { CompensationType, LanguageKnowLevel, SearchIn } from 'types/enums'
 import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -63,7 +63,8 @@ function RecruitingPageEmployeeInner(props: Props) {
     const dataToSend: IVacancyCvSearchParams = {
       ...data,
       ...currentFilters,
-      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.geonameid),
+      compensation: data?.compensation||CompensationType.Salary,
+      countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.geonameid),    
       languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
         {
           language: el.language, 
@@ -71,7 +72,6 @@ function RecruitingPageEmployeeInner(props: Props) {
         })
       ),
     }
-    debugger
     clearObject(dataToSend)
     vacancyContext.findVacancies( clearObject(dataToSend), _page)
     .then(_=>{
