@@ -88,24 +88,21 @@ export default function FilterHirer(props: Props) {
   }
 
   const openSpecializationModal = () => {
-    if(isTabletWidth) {
-      appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, {
-        manyItems: true,
-        onSubmit: (data)=>{
-          creationContext.setActiveSubcategory(data)
-          formik.setFieldValue('categories', data.map(el=> el.id))
-        },
-        onClose: ()=>appContext.hideBottomSheet(),
-      }, 0.9)
-      return
-    } 
-    appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, {
+    const _args: ISpecializationModalProps = {
       manyItems: true,
+      activeSubCategories: creationContext.activeSubCategory,
       onSubmit: (data)=>{
-        creationContext.setActiveSubcategory(data)
-        formik.setFieldValue('categories', data.map(el=> el.id))
+        const categoriesMap: Map<number, ISpecializationCategory> = new Map()
+        creationContext.activeSubCategory.map(el => categoriesMap.set(el?.id, el))
+        data.forEach(el => categoriesMap.set(el?.id, el))
+        creationContext.setActiveSubcategory([...categoriesMap.values()])
+        formik.setFieldValue('categories', [...categoriesMap.keys()])
       },
-    })
+      onClose: ()=>{appContext.hideBottomSheet(), appContext.hideModal()},
+    }
+    isTabletWidth
+    ?appContext.showBottomSheet<ISpecializationModalProps>(ModalType.SpecializationModal, _args, 0.9)
+    :appContext.showModal<ISpecializationModalProps>(ModalType.SpecializationModal, _args)
   }
 
   const openCompensationModal = (title: string) => {
@@ -164,7 +161,7 @@ export default function FilterHirer(props: Props) {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
       initials: formik.values.countries?.map(el => locationContext.countries.get(el as number)),
       onSubmit: (r) => {
-        formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
+        formik.setFieldValue('countries', [...r.map(el => el?.geonameid)])
         locationContext.getCountries(null, r)
         creationContext.setHelpObjects({...creationContext.helpObjects, countries: r})
       },
@@ -224,7 +221,7 @@ export default function FilterHirer(props: Props) {
         _newSources.set(el, sourcesContext.sources.get(el))
       })
       props.initialFields.languageKnowledges.map(el => {
-        _newLangs.set(el.language, el)
+        _newLangs.set(el?.language, el)
       })
 
       creationContext.setHelpObjects(
@@ -246,10 +243,10 @@ export default function FilterHirer(props: Props) {
       sources: [...creationContext.helpObjects.activeSources.keys()],
       verticals: [...creationContext.helpObjects.activeVerticals.keys()],
       geos: [...creationContext.helpObjects.activeGeos.keys()],
-      countries: creationContext.helpObjects?.countries?.map(el=> el.geonameid).filter(Boolean),
+      countries: creationContext.helpObjects?.countries?.map(el=> el?.geonameid).filter(Boolean),
     }
     creationContext.activeSubCategory&&
-    Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el.id):creationContext.activeSubCategory[0])
+    Array.isArray(creationContext.activeSubCategory?creationContext.activeSubCategory.map(el => el?.id):creationContext.activeSubCategory[0])
     formik.setValues(values)
   }, [creationContext.helpObjects, creationContext.activeSubCategory])
 
@@ -281,7 +278,7 @@ export default function FilterHirer(props: Props) {
           }
           {creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
             creationContext.activeSubCategory.map(el=> {
-              return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
+              return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
             })
           }
             <P 
@@ -296,7 +293,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
             {
               creationContext.activeSubCategory.map(el=> {
-                return (<RemovableItem key={el.id} onClick={()=>onRemoveCategory(el)} text={el.name} />)
+                return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
               })
             }
           </div>
@@ -390,7 +387,7 @@ export default function FilterHirer(props: Props) {
             options={[
               {value: null, label: t('allTheTime')},
               ...periods.map(el=>{
-                return {value: el.value, label: el.name}
+                return {value: el?.value, label: el?.name}
               })         
             ]} 
             />
@@ -398,7 +395,7 @@ export default function FilterHirer(props: Props) {
             formik.values.forLastNumberOfDays &&
             <div className={styles.itemContent}>
               <RemovableItem 
-              text={periods.find(el => el.value === formik.values.forLastNumberOfDays).name}
+              text={periods.find(el => el?.value === formik.values.forLastNumberOfDays).name}
               onClick={()=>formik.setFieldValue('forLastNumberOfDays', null)}
               /> 
             </div>
@@ -449,7 +446,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
             creationContext.helpObjects.countries.map(el=> {
-              return (<RemovableItem key={el.geonameid} onClick={()=>{}} text={el.locName} />)
+              return (<RemovableItem key={el?.geonameid} onClick={()=>{}} text={el?.locName} />)
             })
           }
             <P 
@@ -464,7 +461,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
             {
               creationContext.helpObjects.countries.map(el=> {
-                return (<RemovableItem key={el.geonameid} onClick={()=>{}} text={el.locName} />)
+                return (<RemovableItem key={el?.geonameid} onClick={()=>{}} text={el?.locName} />)
               })
             }
           </div>
@@ -687,9 +684,9 @@ export default function FilterHirer(props: Props) {
             && creationContext.helpObjects&& [...creationContext.helpObjects?.languageKnowledges.values()]
               .map((el)=> 
                 <RemovableItem 
-              key={el.language} 
+              key={el?.language} 
               onClick={()=>removeLanguage(el)} 
-              text={`${TranslateLanguage(el.language, t)}, ${TranslateLanguageKnowLevel(el.level, true)}`} 
+              text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, true)}`} 
               /> 
             )
             } 
@@ -707,9 +704,9 @@ export default function FilterHirer(props: Props) {
               [...creationContext.helpObjects?.languageKnowledges.values()]
               .map((el)=> 
                 <RemovableItem 
-                key={el.language} 
+                key={el?.language} 
                 onClick={()=>removeLanguage(el)} 
-                text={`${TranslateLanguage(el.language, t)}, ${TranslateLanguageKnowLevel(el.level, true)}`} 
+                text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, true)}`} 
                 /> 
               )
             }

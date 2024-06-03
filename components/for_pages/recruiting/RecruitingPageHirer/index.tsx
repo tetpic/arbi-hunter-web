@@ -25,7 +25,8 @@ import useTranslation from 'next-translate/useTranslation'
 import { useUserContext } from 'context/user_state'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useLocationContext } from 'context/location_state'
-import { LanguageKnowLevel } from 'types/enums'
+import { CompensationType, LanguageKnowLevel } from 'types/enums'
+import { useCreateVcCvContext } from 'context/createVcCv_state'
 
 
 interface Props {
@@ -49,6 +50,7 @@ function RecruitingPageHirerInner(props: Props) {
   const {t} = useTranslation()
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
+  const creationContext = useCreateVcCvContext()
   const [loading, setLoading] = useState<boolean>(true)
   const [currentFilters, setCurrentFilters] = useState<Partial<IVacancyCvSearchParams>>(props.filters||{})
   const appContext = useAppContext()
@@ -68,6 +70,7 @@ function RecruitingPageHirerInner(props: Props) {
       ...currentFilters,
       ...data,
       countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.country),
+      compensation: data?.compensation||CompensationType.Salary,
       salaryMin: Number((data||currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
       salaryMax: Number((data||currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null,
       languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
@@ -107,6 +110,8 @@ function RecruitingPageHirerInner(props: Props) {
     if(props.vcId) {
       vacancyContext.setCurrentVacancy({id: props.vcId})
     }
+    creationContext.setSubCategories({search: undefined, withCVsCount: true, limit: 2000})   
+
     setTimeout(()=>{
       isInited.current = true      
     }, 200)
