@@ -56,6 +56,7 @@ export default function InputField(props: Props) {
   const showError = meta.touched && !!meta.error
   const { ref: phoneRef, value} = useIMask({ mask: '+7 000 000 00 00' })
   const [focused, setFocused] = useState(false)
+
   useEffect(() => {
     if (props.format === 'phone' && phoneRef.current && phoneRef.current.value) {
       helpers.setValue(phoneRef.current.value)      
@@ -82,24 +83,20 @@ export default function InputField(props: Props) {
     props.onKeyUp&&props.onKeyUp(e)
   }
 
-  
-
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     if(props.priceFormatting || props.isNumbersOnly) {
       const numbers = e.target.value.replace(/[^0-9]/g, '') as string
-      props.isNumbersOnly && (e.target.value = numbers)
+      props.isNumbersOnly && (helpers.setValue(numbers))
       const formatted = Formatter.formatNumber(Number(numbers))
-      props.priceFormatting && (e.target.value = formatted==='0'?'':formatted)
+      props.priceFormatting && (helpers.setValue(formatted==='0'?'':formatted))
     }
   }
   
   useEffect(()=>{
-    if(props.priceFormatting && field.value) {
+    if(props.priceFormatting && field.value) {      
       helpers.setValue(Formatter.formatNumber(Number(field.value.replaceAll(' ', ''))))
     }
   }, [])
-
-  
 
   return (
     <div className={classNames(styles.root, props.className, styles[theme] )} data-cy={'input_'+props.name} data-field={props.name}>
@@ -115,9 +112,9 @@ export default function InputField(props: Props) {
         {props.labelType === 'static'? <FieldLabel className={classNames(styles.staticLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         {props.labelType === 'underlined'? <FieldLabel className={classNames(styles.staticLabel, styles.underlinedLabel, props.labelClassName)}>{props.label}</FieldLabel>:null}
         <input
+          {...field}          
           readOnly={props.readonly}
-          {...field}
-          value = {props.value||field.value}
+          value = {props.value||field.value||''}
           ref={props.format === 'phone' ? phoneRef as any : null}
           type={props.type ?? 'text'}
           disabled={props.disabled}

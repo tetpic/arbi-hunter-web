@@ -1,6 +1,6 @@
 @import 'styles/index';
 
-  .side {
+  %side {
     padding: 8px 16px;
     border-radius: 14px;
     margin-block: 8px;
@@ -15,7 +15,7 @@
   }
 
   .leftMessage {
-    @extend .side;
+    @extend  %side;
     align-self: flex-start;
     background-color: var(--greyToPurpleGrey);
     margin-left: 26px;
@@ -25,7 +25,7 @@
   }
 
   .rightMessage {
-    @extend .side;
+    @extend  %side;
     align-self: flex-end;
     background-color: var(--blueBlackToWhitePurple);
     margin-right: 26px;

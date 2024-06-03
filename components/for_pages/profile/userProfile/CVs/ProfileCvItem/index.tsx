@@ -7,7 +7,7 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
-import { InterfaceLanguage, ModalType} from 'types/enums'
+import { InterfaceLanguage, ModalType, ModerationStatusType} from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
@@ -50,7 +50,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       e.preventDefault()
       e.stopPropagation()
     }
-    if(!cv?.subscriptions && !cv.published) {
+    if(!cv.published) {
       router.push({pathname:'/create/cv', query: {id: cv.id, progress: 7, fromOtherPage: true}})
       return
     }
@@ -109,9 +109,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const archiveOptions:IOptionList[] = [
     {title: t('item_edit'), onClick: editHandler},
-    {title: t('item_publish'), onClick: archiveHandler},
-    {title: t('item_remove'), onClick: (e)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
-  ]
+    (cv.moderationStatus === ModerationStatusType.Approved && {title: t('item_publish'), onClick: archiveHandler}),
+    {title: t('item_remove'), onClick: removeHandler, style: {color: colors.red}},
+  ].filter(Boolean)
 
   const options = <OptionsList 
   options={props.type === 'drafts'&&draftOptions||props.type === 'archive'&&archiveOptions||defaultOptions} 
@@ -136,9 +136,6 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     time.setHours(time.getHours() + 4 )
     return time
   }
-
-
-
 
   const vacanciesCounter = cv.categories[0].vacanciesCount||0
 
@@ -179,9 +176,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       className={styles.stats}
       title={t('item_statistics')}     
       items={[
-        {name: t('item_shows'), count: cv.totalProposals},
+        {name: t('item_shows'), count: cv.totalShows},
         {name: t('item_views'), count: cv.totalViews},
-        {name: t('item_feedbacks'), count: cv.totalApplications},
+        {name: t('item_feedbacks'), count: cv.totalProposals},
       ]}
       />
       ||

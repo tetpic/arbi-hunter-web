@@ -87,6 +87,7 @@ export default function Cv(props: Props) {
   }
 
   const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
+    debugger
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar(t('create_setSpecialization'), SnackbarType.error)
@@ -105,7 +106,10 @@ export default function Cv(props: Props) {
         }
       })
       .catch(err=>{        
-        appContext.showSnackbar(err, SnackbarType.error)
+        appContext.showSnackbar(err.message, SnackbarType.error)
+        if(!noReplace) {
+          router.back()      
+        }
       })
     }
     else {
@@ -117,7 +121,7 @@ export default function Cv(props: Props) {
         }
       })
       .catch(err=>{
-        appContext.showSnackbar(err, SnackbarType.error)
+        appContext.showSnackbar(err.message, SnackbarType.error)
         setLoading(false)
       })
     }

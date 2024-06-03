@@ -10,6 +10,7 @@
   user-select: none;
   cursor: pointer;
   background-color: transparent;
+  will-change: transform;
 
   &_active {
     color: var(--pTextColor);
@@ -36,16 +37,29 @@
 }
 
 .buttonBack {
+  min-width: 100px;
+  width: 120px;
   display: block;
   position: absolute;
   top: calc(50%);
   transform: translate(0%, -50%);
+  transform-style: preserve-3d;
+  
   left: 4px;
   background-color: var(--buttonDefaultColor);
   width: 45%;
+  will-change: transform;
   height: calc(100% - 8px);
   border-radius: 7px;
-  transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  transition-delay: .3s;
+  transition-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  transition-duration: .4s;
+  @include mq($TabletWidth, max) {
+    transition-timing-function: ease-in-out;
+    transition-duration: .2s;
+    transition-delay: .3s;
+  }
+  // transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
   &_active {
     left: 100%;

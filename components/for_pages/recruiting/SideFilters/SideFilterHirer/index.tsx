@@ -40,27 +40,29 @@ export default function SideFilterHirer(props: Props) {
   const [showMore, setShowMore] = useState(false)
   const {t} = useTranslation()
 
+  const initialValues:Partial<IVacancyCvSearchParams> = {
+    employment: [],
+    schedule: [],
+    compensation: undefined,
+    forLastNumberOfDays: undefined,
+    languageKnowledges: [],
+    experience: [],
+    categories: [],
+    gender: [],
+    vacancyLookType: [], 
+    relocation: [],
+    verticals: [],
+    sources: [],
+    ageMax: undefined,
+    ageMin: undefined,
+    countries: [],
+    cities: [],
+    isRemote: undefined,
+  }
+
 
   const formik = useFormik<Partial<IVacancyCvSearchParams>>({
-    initialValues: {
-      employment: [],
-      schedule: [],
-      compensation: undefined,
-      forLastNumberOfDays: undefined,
-      languageKnowledges: [],
-      experience: [],
-      categories: [],
-      gender: [],
-      vacancyLookType: [], 
-      relocation: [],
-      verticals: [],
-      sources: [],
-      ageMax: undefined,
-      ageMin: undefined,
-      countries: [],
-      cities: [],
-      isRemote: false
-    },
+    initialValues,
     onSubmit: null
   })
 
@@ -110,6 +112,7 @@ export default function SideFilterHirer(props: Props) {
     init()
   }, [])
 
+
   useEffect(()=>{
     if(formik.values.countries.length > 0) {
       locationContext.countries.size > 0 && locationContext.getCities({page: 1, limit: 3}, formik.values?.countries?.map(el=> locationContext.countries?.get(el as number)?.country))  
@@ -126,7 +129,6 @@ export default function SideFilterHirer(props: Props) {
   useEffect(()=>{
     props.onFilterChange(formik.values)
   }, [formik.values])
-
 
   return (<div className={styles.root}> 
     <FormikProvider value={formik}>
@@ -181,7 +183,7 @@ export default function SideFilterHirer(props: Props) {
           rootClass={styles.radioField}
           name={'countries'} 
           options={[
-            ...formik.values.countries.map(el => locationContext.countries.get(el as number)), 
+            ...formik.values.countries?.map(el => locationContext.countries.get(el as number)), 
             ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el?.geonameid)).slice(0, 3)]
             .map(el=>{
             return {value: el?.geonameid, label: el?.locName}
@@ -203,8 +205,10 @@ export default function SideFilterHirer(props: Props) {
           <CheckboxListField 
           rootClass={styles.radioField}
           name={'cities'} 
-          options={[...locationContext.cities.entries()].map(el=> {
-            return {value: el[0], label: el[1].name}
+          options={[
+            ...formik.values.cities?.map(el => locationContext.cities.get(el as number)),
+            ...[...locationContext.cities.values()].filter(c => !formik.values.cities.includes(c?.id))].map(el=> {
+            return {value: el?.id, label: el?.name}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
@@ -266,7 +270,7 @@ export default function SideFilterHirer(props: Props) {
         <p className={styles.fieldTitle} onClick={()=> setActiveAccordeon(activeAccordeon === 2 ? null : 2)}>
           <span>{t('age')}</span> {isTabletWidth &&<ArrowDownSvg className={activeAccordeon === 2&&styles.active}/>}
         </p>
-        <div className={styles.inputsWrapper}>
+        <div className={styles.inputsWrapper}>        
           <InputField  
           isNumbersOnly
           maxLength={2} 
@@ -274,13 +278,13 @@ export default function SideFilterHirer(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'ageMin'} 
+          value={formik.values.ageMin}
           label={t('from')} 
           labelType={'static'}
-          labelClassName={styles.label}
-          priceFormatting
+          labelClassName={styles.label}          
           error={t('create_oneOfFieldsMustBeFilled')}
           />
-          <span> – </span>
+          <span> – </span>        
           <InputField  
           isNumbersOnly
           labelType={'static'}
@@ -290,8 +294,8 @@ export default function SideFilterHirer(props: Props) {
           styleType={'default'} 
           color={'default'} 
           name={'ageMax'} 
-          label={t('to')} 
-          priceFormatting
+          value={formik.values.ageMax}
+          label={t('to')}           
           error={t('create_oneOfFieldsMustBeFilled')}
           />
         </div>
@@ -394,9 +398,10 @@ export default function SideFilterHirer(props: Props) {
       </Form> 
     </FormikProvider>
     <Button 
+    type={'button'}
     styleType={['grey', 'wide']} 
     altStyleType={['whitePurple', 'wide']}
-    onClick={formik.handleReset}
+    onClick={()=>formik.setValues(initialValues)}
     className={styles.resetButton}
     >
       {t('filters_clearAll')}
