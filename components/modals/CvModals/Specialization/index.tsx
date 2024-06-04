@@ -48,7 +48,8 @@ function SpecializationModalInner(props: Props) {
   const scrollBar = useRef<Scrollbars>(null!)
 
   const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
-    if(!data.specialization) {
+    debugger
+    if(!data.specialization && !args.manyItems) {
       appContext.showSnackbar(t('create_setSpecializationAlt'), SnackbarType.error)
       return
     }

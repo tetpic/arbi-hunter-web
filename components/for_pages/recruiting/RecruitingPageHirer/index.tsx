@@ -70,10 +70,10 @@ function RecruitingPageHirerInner(props: Props) {
       ...currentFilters,
       ...data,
       countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.country),
-      compensation: data?.compensation||CompensationType.Salary,
-      salaryMin: Number((data||currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
-      salaryMax: Number((data||currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null,
-      languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
+      compensation: data?.compensation||(((data||currentFilters)?.salaryMin || (data||currentFilters).salaryMax) && CompensationType.Salary),
+      salaryMin: Number((data || currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
+      salaryMax: Number((data || currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null,
+      languageKnowledges: (data || currentFilters)?.languageKnowledges?.map(el => (
         {
           language: el.language, 
           levels: languageLevels.slice(languageLevels.indexOf(el.level), languageLevels.length)

@@ -63,8 +63,10 @@ function RecruitingPageEmployeeInner(props: Props) {
     const dataToSend: IVacancyCvSearchParams = {
       ...data,
       ...currentFilters,
-      compensation: data?.compensation||CompensationType.Salary,
+      compensation: data?.compensation||(((data||currentFilters)?.salaryMin || (data||currentFilters).salaryMax) && CompensationType.Salary),
       countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.geonameid),    
+      salaryMin: Number((data || currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
+      salaryMax: Number((data || currentFilters)?.salaryMax?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMax?.toString().replaceAll(' ', ''))||null,
       languageKnowledges: (data||currentFilters)?.languageKnowledges?.map(el => (
         {
           language: el.language, 

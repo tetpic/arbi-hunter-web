@@ -131,13 +131,23 @@ export default function FilterEmployee(props: Props) {
   const openCityModal = () => {
     appContext.showModal<ICityModalArgs>(ModalType.CityModal, {
       initialCountries: formik.values.countries?.map(el => locationContext.countries.get(Number(el))).filter(Boolean)||[],
-      onSubmit: (r) => {
-        formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el?.id)])
-        locationContext.getCities(null, null, r)
-        creationContext.setHelpObjects({...creationContext.helpObjects, cities: [...creationContext.helpObjects.cities, ...r]})
+      onSubmit: (result) => {
+
+        const citiesMap: Map<number, ISearchCityResult> = new Map()
+        creationContext.helpObjects?.cities?.forEach(el=> el && citiesMap.set(el?.id, el))
+        result.forEach(el => el && citiesMap.set(el?.id, el))
+
+        formik.setFieldValue('cities', [...citiesMap.keys()])
+        locationContext.getCities(null, null, result)
+        creationContext.setHelpObjects({...creationContext.helpObjects, cities: [...citiesMap.values()]})
       },
     })
   }
+
+  useEffect(()=>{
+    console.log(creationContext.helpObjects.cities)
+    
+  }, [creationContext.helpObjects.cities])
 
   const onRemoveCategory = (category: ISpecializationCategory) => {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f?.id !== category?.id):state)

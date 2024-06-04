@@ -115,6 +115,7 @@ export default function FilterHirer(props: Props) {
         },
         title,
         onSubmit: (data)=>{
+          debugger
           formik.setValues({...formik.values, ...data})
           appContext.hideBottomSheet()
         }
@@ -363,7 +364,9 @@ export default function FilterHirer(props: Props) {
           ||
           (formik.values.salaryMin||formik.values.salaryMax||formik.values.compensation) &&
           <div className={styles.itemContent}>
-            <RemovableItem text={
+            <RemovableItem 
+            onClick={()=>formik.setValues({...formik.values, compensation: undefined, salaryMax: undefined, salaryMin: undefined, currency: undefined})}
+            text={
               formik.values.compensation
               ?TranslateCompensationType(formik.values.compensation, t)
               :[formik.values.salaryMin && t('fromCapitalized') + ' ' + formik.values.salaryMin, formik.values.salaryMax && t('to') + ' ' + formik.values.salaryMax].filter(Boolean).join(' - ') + ' ' + TranslateCurrency(formik.values.currency)
@@ -418,7 +421,7 @@ export default function FilterHirer(props: Props) {
             })} 
             />
             ||
-            formik.values.vacancyLookType.length > 0 &&
+            formik.values.vacancyLookType?.length > 0 &&
             <div className={styles.itemContent}>
               {
                 formik.values.vacancyLookType.map(el => {
@@ -577,7 +580,7 @@ export default function FilterHirer(props: Props) {
             name={'employment'} 
             options={Object.values(EmploymentType).map(el => {return {label: TranslateEmploymentType(el, t), value: el}})}/>           
             ||
-            formik.values.employment.length > 0 &&
+            formik.values.employment?.length > 0 &&
             <div className={styles.itemContent}>
               {
                 formik.values.employment.map(el =>{
@@ -605,7 +608,7 @@ export default function FilterHirer(props: Props) {
             })} 
             />          
             ||
-            formik.values.schedule.length > 0 &&
+            formik.values.schedule?.length > 0 &&
             <div className={styles.itemContent}>
               {
                 formik.values.schedule.map(el => {

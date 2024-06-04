@@ -34,7 +34,7 @@ export default function SalaryModal(props: Props) {
     compensation: undefined,
     salaryMax: undefined,
     salaryMin: undefined,
-    currency: undefined,
+    currency: Currency.RUB,
   }
 
   const submit = (data: Partial<IVacancyCvSearchParams>) => {
@@ -44,7 +44,7 @@ export default function SalaryModal(props: Props) {
 
   const formik = useFormik<Pick<IVacancyCvSearchParams, 'salaryMax'|'salaryMin'|'currency'|'compensation'>>(
     {
-      initialValues: {...initialValues, ...args.initialValues},
+      initialValues: {...initialValues, ...args.initialValues, currency: Currency.RUB},
       onSubmit: submit
     }
   )

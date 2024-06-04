@@ -40,6 +40,7 @@ function CountryModalInner(props: Props) {
   
 
   const submit = (data: {country: IGeoName[], search: string})=> {
+    debugger
     args.onSubmit(data.country)
     props.onClose()
   }
@@ -71,7 +72,7 @@ function CountryModalInner(props: Props) {
     }
     <div className={styles.buttonsWrapper}>
       <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
-      <Button styleType={['gradient']} type='submit'>{t('set')}</Button>
+      <Button styleType={['gradient']} type='button' onClick={formik.submitForm}>{t('set')}</Button>
     </div>
   </div>)
 
