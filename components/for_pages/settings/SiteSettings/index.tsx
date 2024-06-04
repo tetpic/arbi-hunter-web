@@ -41,7 +41,7 @@ export default function SiteSettings(props: Props) {
     UserRepository.editCurrentUser({language: data.language})
     .then(user => {
       userContext.updateUser(user)
-      appContext.showSnackbar('Сохранено', SnackbarType.success)
+      appContext.showSnackbar(t('saved'), SnackbarType.success)
     })
   }
 

@@ -30,12 +30,12 @@ export default function ViewItem(props: Props) {
     <P 
     styleType={['medium', 'w500', 'alignCenter',  profile.activityStatus === ActivityStatus.Online?'green':'greyLight']}>
       <DotSvg color={profile.activityStatus === ActivityStatus.Online?colors.green:colors.red}/> 
-      {profile.activityStatus === ActivityStatus.Online?'Сейчас онлайн': 'Был в сети '  + Formatter.formatDate(profile.lastActivityAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian} )}
+      {profile.activityStatus === ActivityStatus.Online?t('views_online'): t('views_offline')  + Formatter.formatDate(profile.lastActivityAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian} )}
     </P>
     <div className={styles.watched}>
-      <P styleType={['medium', 'w500', 'greyLight']}>Просмотрено</P>
+      <P styleType={['medium', 'w500', 'greyLight']}>{t('views_watched')}</P>
       <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDate(props.view.createdAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian, timeOptions: {hour: 'numeric', minute: 'numeric', year: 'numeric'}} )}</P>
     </div>
-    <Button href={'/personal/' + profile.id} styleType={['gradient', 'phoneWide']}>{userType === ProfileType.Hirer?'Профиль компании': 'Профиль соискателя'}</Button>
+    <Button href={'/personal/' + profile.id} styleType={['gradient', 'phoneWide']}>{userType === ProfileType.Hirer?t('views_companyProfile'): t('views_employeeProfile')}</Button>
   </div>)
 }

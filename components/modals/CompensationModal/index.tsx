@@ -86,7 +86,7 @@ export default function CompensationModal(props: Props) {
         <TagsRadioList 
         name={'currency'} 
         options={[
-          {value: Currency.RUB, label: 'Руб'},
+          {value: Currency.RUB, label: t('rubShort')},
           {value: Currency.GRN, label: 'UAH'},
           {value: Currency.USD, label: Currency.USD},
           {value: Currency.EUR, label: 'EUR'},

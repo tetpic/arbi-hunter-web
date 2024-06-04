@@ -75,7 +75,7 @@ export default function ApplicationModal(props: Props) {
             name={'cvId'}/>
             ||
             <>
-            <P styleType={['greyLight', 'small', 'w500']}>Резюме для отклика</P>
+            <P styleType={['greyLight', 'small', 'w500']}>{t('application_cv')}</P>
             <Spacer basis={8}/>
             <P styleType={['medium', 'w500']} useThemeColor>{filteredCvs[0].categories[0].name}</P>
             </>

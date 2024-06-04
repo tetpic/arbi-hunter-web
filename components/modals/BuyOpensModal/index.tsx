@@ -39,17 +39,17 @@ export default function BuyOpensModal(props: Props) {
       </div>
       <P styleType={['large', 'w600', 'textCenter']}
       >
-        Чтобы открыть контакты, купите доступ к базе резюме
+        {t('shop_contactsOpenInfo')}
       </P>
       <P styleType={['medium', 'w500', 'textCenter']}
       >
-        чтобы связаться с этим и другими соискателями
+        {t('shop_contactsOpenInfo2')}
       </P>
       <Button 
       styleType={['gradient']}
       onClick={onBuyClick}
       >
-        Купить доступ
+        {t('shop_buyAccess')}
       </Button>
     </div>
   )

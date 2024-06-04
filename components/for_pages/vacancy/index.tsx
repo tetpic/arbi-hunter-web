@@ -254,7 +254,7 @@ export default function VacancyPage(props: Props) {
               styleType={['gradient', 'phoneWide']}
               onClick={makeResponse}
               >
-              Откликнуться с другого резюме
+              {t('vacancy_page_applyFromOtherCv')}
             </Button>
             }
           {(!lastProposal) && currentVacancy.applicationsByCurrentUser.length===0 && freeToApplyCvs.length > 0 &&

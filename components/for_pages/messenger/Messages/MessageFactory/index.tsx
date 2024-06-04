@@ -111,12 +111,12 @@ export default function MessageFactory(props: Props) {
   }
 
   const allOptions: {[key: string]: IOptionList|null} = {
-    reply: {title: 'Ответить', icon: <AnswerMessageSvg/>, onClick: replyHandler},
-    copy: {title: 'Скопировать', icon: <DoubleSvg/> ,onClick: ()=>copyToClipboard(props.message.message)},
-    setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: 'Закрепить', icon: <PinMessageSvg/>, onClick: setPinned},
-    forward: {title: 'Переслать', icon: <ShareMessageSvg/>, onClick: openForwardModal},
-    choose: {title: 'Выбрать', icon: <SetMessageSvg/>, onClick: onSet},
-    remove: {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
+    reply: {title: t('chat_reply'), icon: <AnswerMessageSvg/>, onClick: replyHandler},
+    copy: {title: t('chat_copyMessage'), icon: <DoubleSvg/> ,onClick: ()=>copyToClipboard(props.message.message)},
+    setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: t('chat_pin'), icon: <PinMessageSvg/>, onClick: setPinned},
+    forward: {title: t('chat_forwardMesssage'), icon: <ShareMessageSvg/>, onClick: openForwardModal},
+    choose: {title: t('chat_setMessage'), icon: <SetMessageSvg/>, onClick: onSet},
+    remove: {title: t('chat_removeMessage'), icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
   }
 
   const rightOptions: IOptionList[] = [allOptions.remove, allOptions.forward, allOptions.setPinned]
@@ -156,7 +156,7 @@ export default function MessageFactory(props: Props) {
   const stats = (
     <>
     <div className={styles.stats} ref={itemRef} key={props.message.id}>
-    {props.message.forwarded&&<P styleType={['small', 'greyLight']}>Переслано от {getUserName(msg.profile)}</P>}
+    {props.message.forwarded&&<P styleType={['small', 'greyLight']}>{t('chat_forwardedFrom')} {getUserName(msg.profile)}</P>}
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
       <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>     
     </div>

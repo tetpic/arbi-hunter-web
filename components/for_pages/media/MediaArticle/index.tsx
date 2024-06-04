@@ -52,7 +52,7 @@ export default function MediaArticle(props: Props) {
         navigator.share&&shareData({url: process.env.host + '/media/article/' + article.id})
         ||
         copyToClipboard(process.env.host + '/media/article/' + article.id)
-        appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+        appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
       }},
       // (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg color={isLightTheme?colors.black:''}/>})
     ]
