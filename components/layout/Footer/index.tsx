@@ -78,7 +78,7 @@ export default function Footer(props: Props) {
           <Link href={'/serviceterms'}>
             <P styleType={['medium', 'w500']} useThemeColor>{t('footer_serviceTerms')}</P>
           </Link>
-          <Link href={'/useterms'}>
+          <Link href={'/privacy'}>
             <P styleType={['medium', 'w500']} useThemeColor>{t('footer_useTerms')}</P>
           </Link>
         </div>

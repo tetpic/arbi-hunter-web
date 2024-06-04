@@ -6,11 +6,11 @@ import LocationRepository from 'data/repositories/LocationRepository'
 import { useUserContext } from 'context/user_state'
 import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
 import Button from '@/components/ui/Button'
-import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+// import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
 import { InterfaceLanguage, ModalType, SnackbarType } from 'types/enums'
 import { IChangeLanguageModalArgs } from '@/components/modals/ChangeLanguageModal'
-import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
+// import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import Cookies from 'js-cookie'
 import setLanguage from 'next-translate/setLanguage'
 import useTranslation from 'next-translate/useTranslation'
@@ -92,11 +92,11 @@ export default function SiteSettings(props: Props) {
           requestFn={() => LocationRepository.searchCity({country: currentCountryCode})} 
           />
           
-          <div className={styles.langSelection} onClick={onLangChange}>
+          {/* <div className={styles.langSelection} onClick={onLangChange}>
             <p className={styles.langTitle}>{t('app_language')}</p>
             <p className={styles.lang}>{TranslateInterfaceLanguage(formik.values.language)}</p>
             <ArrowRightSvg/>
-          </div>
+          </div> */}
           
           <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
         </Form>
