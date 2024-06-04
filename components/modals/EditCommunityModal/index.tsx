@@ -19,12 +19,14 @@ import { useResize } from 'components/hooks/useResize'
 import styles from './index.module.scss'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
 }
 
 export default function EditCommunityModal(props: Props) {
+  const {t} = useTranslation()
   const communityContext = useCommunityContext()
   const appContext = useAppContext()
   const modalArgs = appContext.modalArguments as ICommunity
@@ -52,7 +54,7 @@ export default function EditCommunityModal(props: Props) {
   })
 
   const body = (<div className={styles.body}>
-    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={'Редактирование'}/>
+    <TitleForSection onBackClick={()=>{isTabletWidth&&appContext.hideModal()}} title={t('community_editing')}/>
     <FormikProvider value={formik}>
     <Form className={styles.form}>
     <div className={styles.image}>
@@ -76,7 +78,7 @@ export default function EditCommunityModal(props: Props) {
       </label>
       <div className={styles.editSvg}><EditSvg/></div>
     </div>
-    <InputField minLength={2} className={styles.input} labelType='top' label='Название сообщества'  styleType={'default'} color={'default'} name={'name'}/>
+    <InputField minLength={2} className={styles.input} labelType='top' label={t('community_nameFull')}  styleType={'default'} color={'default'} name={'name'}/>
     <div className={styles.dropZone}>
       <label className={styles.imageLabel}>
       <FileInput setImages={setPreviewImage}/>
@@ -86,8 +88,8 @@ export default function EditCommunityModal(props: Props) {
         !previewImage && !communityContext.currentCommunity?.image?.source &&
         <div className={styles.inputWrapper}>
           <DownloadCloudSvg/>
-          <p className={styles.addBanneer}>Добавить баннер <br />
-           <span> Фото, видео, gif</span>
+          <p className={styles.addBanneer}>{t('comunity_addBanner')} <br />
+           <span> {t('community_imageFormats')}</span>
           </p>
         </div>
         ||
@@ -103,7 +105,7 @@ export default function EditCommunityModal(props: Props) {
       </label>
       
     </div>
-    <Button type={'button'} className={styles.yellowButton} onClick={formik.submitForm}>Сохранить</Button>
+    <Button type={'button'} className={styles.yellowButton} onClick={formik.submitForm}>{t('save')}</Button>
     </Form>
   </FormikProvider>
   </div>)

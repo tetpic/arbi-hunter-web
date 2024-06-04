@@ -75,7 +75,7 @@ export default function UserEditor(props: Props) {
     >
        {
         !characterContext.currentCharacter.current?.id &&
-          'Купить персонажа'
+          t('profile_editor_buyCharacter')
         ||
         cost > 0 && 
           <>

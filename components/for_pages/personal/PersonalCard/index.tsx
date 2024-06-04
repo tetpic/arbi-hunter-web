@@ -158,7 +158,7 @@ export default function PersonalCard(props: Props) {
       <P useThemeColor styleType={['w600', 'huge']}>{personalContext?.currentProfile?.company||personalContext?.currentProfile?.firstName + ' ' + personalContext?.currentProfile?.lastName}</P>
       <P useThemeColor styleType={['w500', 'medium','greyLight']}>{personalContext.currentProfile?.city?.locName}</P>
       {isMy &&
-        <P useThemeColor styleType={['w500', 'small', 'greyLight']}>ID пользователя: {userContext?.currentProfile?.id} </P>
+        <P useThemeColor styleType={['w500', 'small', 'greyLight']}>{t('userId')} {userContext?.currentProfile?.id} </P>
       }
     </div>
 

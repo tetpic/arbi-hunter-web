@@ -97,7 +97,7 @@ export default function ContactsModal(props: Props) {
           className={styles.copyButton}
           onClick={()=> {
             copyToClipboard(el.text)
-            appContext.showSnackbar('Скопировано', SnackbarType.success)
+            appContext.showSnackbar(t('copied'), SnackbarType.success)
           }}
           >
             <DoubleSvg color={colors.blue}/>

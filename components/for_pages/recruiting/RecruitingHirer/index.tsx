@@ -49,7 +49,7 @@ export default function RecruitingHirer(props: Props) {
       <Head/>
       <Search 
       title={t('landing_hir_findVc')} 
-      tags={['Media Buyer', 'Affiliate Manger', 'Frontented-Разработчик', 'SMM-менеджер']}
+      tags={['Media Buyer', 'Affiliate Manger', t('frontender'), t('smm_manager')]}
       />
       <Reasons profileType={ProfileType.Hirer}/>
     
@@ -62,7 +62,7 @@ export default function RecruitingHirer(props: Props) {
       <Categories 
       count={t('landing_hir_cvCounter')} 
       imagesExamples={[userExample1, userExample2, userExample3, userExample4, userExample5, userExample6]} 
-      titles={['Маркетинг', 'Разработка', 'Менеджмент']} 
+      titles={[t('marketing'), t('development'), t('management')]} 
       images={isLightTheme?[recruitingCatWalletLight, recruitingCatPointLight, recruitingCatMessageLight]:[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}
       />
       <Button 

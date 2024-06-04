@@ -346,10 +346,10 @@ export default function FilterHirer(props: Props) {
               </div>
 
               <TagsRadioList className={styles.tags} name={'currency'} options={[
-                {value: Currency.RUB, label: 'Руб'},
+                {value: Currency.RUB, label: t('rubShort')},
                 {value: Currency.USD, label: Currency.USD},
                 {value: Currency.EUR, label: 'Euro'},
-                {value: Currency.GRN, label: 'Гривны'},
+                {value: Currency.GRN, label: t('grivnes')},
               ]}/>
             </>
             }

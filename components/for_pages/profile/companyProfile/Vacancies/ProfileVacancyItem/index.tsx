@@ -62,8 +62,8 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
   const removeHandler =()=> {
     const _args:RemoveCvVcConfirmModalArgs = {
-      title: 'Удалить вакансию?',
-      text: !props.type?'Отменить удаление будет невозможно. Вместо удаления можно перевести вакансию в архив.':'Отменить удаление будет невозможно.',
+      title: t('vacancy_item_removeConfirm')+'?',
+      text: !props.type?t('vacancy_item_removeInfoFull'):t('vacancy_item_removeInfoShort'),
       onRemove: () => {
         vacancyContext.removeVacancy(vacancy.id, props.type)
         props.onRemove?.(vacancy.id)
@@ -73,8 +73,8 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
         archiveHandler()
         isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       }:undefined,
-      removeText: 'Удалить вакансию?',
-      archiveText: 'Скрыть вакансию'
+      removeText: t('vacancy_item_removeConfirm'),
+      archiveText: t('vacancy_item_hideVacancy')
     }
     isTabletWidth
     ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 300), 200)
@@ -121,7 +121,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     e.preventDefault()
     e.stopPropagation()
     if (isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с вакансией'}, props.type === 'archive'&&280||props.type === 'drafts'&&220||380)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: t('vacancy_item_actionsWithVacancy')}, props.type === 'archive'&&280||props.type === 'drafts'&&220||380)
     }
     else {
       openDropDown(!dropDown)
@@ -161,7 +161,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
         <P styleType={['large', 'w600']} useThemeColor>{vacancy.categories[0].translations.find(t => t.languageCode === lang)?.name||vacancy.name}</P>
         {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
-          <p className={styles.city}>г. {vacancy.city?.locName}</p>
+          <p className={styles.city}>{t('ruCity')} {vacancy.city?.locName}</p>
         }
         {vacancy.isRemote &&
           <p className={styles.city}>{t('remote')}</p>

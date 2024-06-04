@@ -5,6 +5,18 @@
   "search_vacancy": "Поиск вакансий",
   "search_byName":"Поиск по названию",
   "employee": "Соискатель",
+  "rubShort":"Руб",
+  "rubFull":"Рубли",
+  "dollars":"Доллары",
+  "euro":"Евро",
+  "grivnes":"Гривны",
+
+  "cpaWires":"CPA-сети",
+  "marketing":"Маркетинг",
+  "frontender":"Frontented-Разработчик",
+  "smm_manager":"SMM-менеджер",
+  "development": "Разработка",
+  "management": "Менеджмент",
   
   "hirer": "Компания",
   "hirer_alt": "Работодатель",
@@ -79,6 +91,13 @@
   "no": "Нет",
   "send":"Отправить",
   "add":"Добавить",
+  "linkCopied":"Ссылка скопирована",
+  "copied":"Скопировано",
+  "userId":"ID пользователя:",
+  "ruCity":"г.",
+  "watched":"Просмотрено",
+  "unWatched":"Не просмотрено",
+  "saved":"Сохранено",
 
   
   "gender_male": "Мужчина",
@@ -152,6 +171,9 @@
   "participant1":"участник",
   "participant2":"участника",
   "participant3":"участников",
+  "message1":"сообщение",
+  "message2":"сообщения",
+  "message3":"сообщений",
 
 
 
@@ -216,6 +238,7 @@
 
 
   "application_setCv":"Укажите резюме для отклика",
+  "application_cv":"Резюме для отклика",
   "application_coverLetter":"Сопроводительное письмо",
   "application_cvSend":"Ваше резюме успешно отправлено",
   "application_send":"Ответ отправлен",
@@ -224,6 +247,15 @@
   "application_watchRelevantVacancies":"Смотреть похожие резюме",
   "application_goToFeedbacks":"Перейти в раздел откликов",
 
+
+  "banner_createVacancy": "Создайте вакансию",
+  "banner_hireTheBest":"Нанимай лучших в своем деле!",
+  "banner_createCv": "Создайте резюме",
+  "banner_findThebestJob":"Найди работу мечты в лучшей компании!",
+  "banner_vipCvs":"VIP-резюме",
+  "banner_vipVacancies":"VIP-вакансии",
+  "banner_watchAllVipCvs":"Смотреть все vip-резюме",
+  "banner_watchAllVipVacancies":"Смотреть все vip-вакансии",
 
 
   "create_description": "Описание",
@@ -326,6 +358,10 @@
   "community_createPost":"Создать запись",
   "community_setName":"Введите название сообщества",
   "community_setCategory":"Выберите категорию",
+  "community_editing":"Редактирование",
+  "community_nameFull":"Название сообщества",
+  "comunity_addBanner":"Добавить баннер",
+  "community_imageFormats":"Фото, видео, gif",
 
   
   
@@ -358,7 +394,29 @@
   "chat_enterMessage":"Введите сообщение...",
   "chat_withoutCoverLetter":"Без сопроводительного письма",
   "chat_coverLetter":"Сопроводительное письмо",
-
+  "chat_deleteChatConfirmMessage":"Вы действительно хотите удалить чат с ",
+  "chat_changeFolder": "Сменить папку",
+  "chat_unpin":"Открепить",
+  "chat_pin":"Закрепить",
+  "chat_remove": "Удалить",
+  "chat_removeChat":"Удалить чат",
+  "chat_removeMassagesConfirm1":"Вы действительно хотите удалить ",
+  "chat_choosen":"Выбрано",
+  "chat_choosenMessages":"Выбрано сообщений:",
+  "chat_proposal":"Приглашение",
+  "chat_files":"Файлы",
+  "chat_voiceMessage":"Голосовое сообщение",
+  "chat_reply":"Ответить",
+  "chat_copyMessage":"Скопировать",
+  "chat_forwardMesssage":"Переслать",
+  "chat_setMessage":"Выбрать",
+  "chat_removeMessage":"Удалить",
+  "chat_forwardedFrom":"Переслано от",
+  "chat_chooseFolder":"Выберите папку",
+  "chat_send":"Отправить...",
+  "chat_message":"Сообщение",
+  "chat_comment":"Комментарий",
+  
 
 
   "create_addPortfolio":"Добавить порфтолио",
@@ -475,6 +533,12 @@
   "cv_item_openProfile": "Открыть профиль",
   "cv_item_removeConfirm":"Вы действительно хотите удалить резюме?",
   "cv_item_removerOrHidden":"Резюме было скрыто или удалено",
+  "cv_item_removeCv":"Удалить резюме",
+  "cv_item_hideCv":"Скрыть резюме",
+  "cv_item_actionsWithCv":"Действия с резюме",
+  "cv_item_removeInfoFull":"Отменить удаление будет невозможно. Вместо удаления можно перевести резюме в архив.",
+  "cv_item_removeInfoShort":"Отменить удаление будет невозможно.",
+  "cv_item_moveToTopTime":"Можно поднять в ",
 
 
   "cv_page_noOpensAvailable": "Нет доступных открытий контактов",
@@ -919,7 +983,19 @@
   "shop_purchased":"Купленные услуги",
   "shop_delayedPurchases":"Отложенные заказы",
   "shop_paymentsArchive":"Архив пополнений",
+  "shop_contactsOpenInfo1":"Чтобы открыть контакты, купите доступ к базе резюме",
+  "shop_contactsOpenInfo2":"чтобы связаться с этим и другими соискателями",
+  "shop_buyAccess":"Купить доступ",
+  
 
+
+  "views_allTime":"Просмотры за все время",
+  "views_empty":"Пока нет просмотров",
+  "views_watched":"Просмотрено",
+  "views_onlineNow":"Сейчас онлайн",
+  "views_offline":"Был в сети",
+  "views_companyProfile":"Профиль компании",
+  "views_employeeProfile":"Профиль соискателя",
 
 
   "vacancy_page_edit":"Редактировать",
@@ -942,6 +1018,13 @@
   "vacancy_page_contacts": "Контакты",
   "vacancy_page_contactInfo": "Контактная информация",
   "vacancy_page_writeInChat": "Написать в чат",
+  "vacancy_page_applyFromOtherCv":"Откликнуться с другого резюме",
+
+  "vacancy_item_removeConfirm":"Удалить вакансию",
+  "vacancy_item_removeInfoFull":"Отменить удаление будет невозможно. Вместо удаления можно перевести вакансию в архив.",
+  "vacancy_item_removeInfoShort":"Отменить удаление будет невозможно.",
+  "vacancy_item_hideVacancy":"Скрыть вакансию",
+  "vacancy_item_actionsWithVacancy":"Действия с вакансией",
 
   "vacancies_searchInMy": "Поиск в моих вакансиях",
   "vacancies_myVacancies": "Мои вакансии",

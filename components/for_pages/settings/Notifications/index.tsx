@@ -28,7 +28,7 @@ export default function Notifications(props: Props) {
     onSubmit: (data) => {
       userContext.updateUser({...userContext.user, ...data})
       .then(_ => {
-        appContext.showSnackbar('Сохранено', SnackbarType.success)
+        appContext.showSnackbar(t('saved'), SnackbarType.success)
       })
     }
   })

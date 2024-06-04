@@ -206,10 +206,10 @@ export default function SideFilterEmployee(props: Props) {
           />
         </div>
         <TagsRadioList wrap className={styles.tags} name={'currency'} options={[
-          {value: Currency.RUB, label: 'Рубли'},
-          {value: Currency.USD, label: 'Доллары'},
-          {value: Currency.EUR, label: 'Евро'},
-          {value: Currency.GRN, label: 'Гривны'},
+          {value: Currency.RUB, label: t('rubFull')},
+          {value: Currency.USD, label: t('dollars')},
+          {value: Currency.EUR, label: t('euro')},
+          {value: Currency.GRN, label: t('grivnes')},
         ]}/>
         <Spacer basis={16}/>
         <CheckboxField 

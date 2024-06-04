@@ -67,7 +67,7 @@ export default function ForwardMessageModal(props: Props) {
   const body = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P useThemeColor styleType={['large', 'w600']}>Отправить...</P>
+        <P useThemeColor styleType={['large', 'w600']}>{t('chat_send')}</P>
         <Button 
         styleType={['icon', 'circle','backTransparent']} 
         altStyleType={['icon','circle', 'backTransparent', 'invertSvg']}
@@ -97,7 +97,7 @@ export default function ForwardMessageModal(props: Props) {
   const message = (
     <div className={styles.root}>
        <div className={styles.top}>
-       <P useThemeColor styleType={['large', 'w600']}>Сообщение</P>
+       <P useThemeColor styleType={['large', 'w600']}>{t('chat_message')}</P>
         <Button 
         styleType={['icon', 'circle','backTransparent']} 
         altStyleType={['icon','circle', 'backTransparent', 'invertSvg']}
@@ -118,13 +118,13 @@ export default function ForwardMessageModal(props: Props) {
           </div>
         </div>
         {args.forwardedMessagesList?.length > 0 &&
-          <P style={{paddingBlock: '10px'}} styleType={['medium', 'w500']} useThemeColor>Переслать {args.forwardedMessagesList?.length} сообщений</P>
+          <P style={{paddingBlock: '10px'}} styleType={['medium', 'w500']} useThemeColor>{t('chat_forwardMesssage')} {args.forwardedMessagesList?.length} {Formatter.pluralize(args.forwardedMessagesList?.length, t('message1'), t('message2'), t('message3'))}</P>
         } 
         {args.forwardedMessage && <>
           <div className={styles.message}>
             <MessageFactory profileId={0} message={args.forwardedMessage} application={undefined}/>
           </div>
-          <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>Комментарий</P>
+          <P useThemeColor styleType={['medium', 'w500']} className={styles.subTitle}>{t('chat_comment')}</P>
           <FormikProvider value={formik} >
             <Form className={styles.form}>
               <TextAreaField name={'message'}

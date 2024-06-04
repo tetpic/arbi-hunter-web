@@ -71,8 +71,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const removeHandler =()=> {
     const _args:RemoveCvVcConfirmModalArgs = {
-      title: 'Удалить резюме?',
-      text: !props.type?'Отменить удаление будет невозможно. Вместо удаления можно перевести резюме в архив.':'Отменить удаление будет невозможно.',
+      title: t('cv_item_removeCv') + '?',
+      text: !props.type?t('cv_item_removeInfoFull'):t('cv_item_removeInfoShort'),
       onRemove: () => {
         cvContext.deleteCv(cv.id)
         isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
@@ -81,8 +81,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         archiveHandler()
         isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
       }:undefined,
-      removeText: 'Удалить резюме',
-      archiveText: 'Скрыть резюме'
+      removeText: t('cv_item_removeCv'),
+      archiveText: t('cv_item_hideCv')
     }
     isTabletWidth
     ? setTimeout(()=>appContext.showBottomSheet<RemoveCvVcConfirmModalArgs>(ModalType.RemoveCvVcConfirmModal, _args, 180), 200)
@@ -120,7 +120,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const openModal = () => {
     if(isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: 'Действия с резюме'}, props.type === 'archive'&&280||props.type==='drafts'&&220||380)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, title: t('cv_item_actionsWithCv')}, props.type === 'archive'&&280||props.type==='drafts'&&220||380)
     }
     else {
       openDropDown(!dropDown)
@@ -200,7 +200,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
           >
             {cv.topAt 
             && Number(cvTopTimePlusTime()) > Number(new Date())
-            &&  'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})
+            &&  t('cv_item_moveToTopTime') + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})
               ||
               t('item_upriseInSearch')
             }

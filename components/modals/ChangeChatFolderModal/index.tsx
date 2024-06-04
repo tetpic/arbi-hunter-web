@@ -42,7 +42,7 @@ export default function ChangeChatFolderModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <ClosingTitle classNames={{wrapper:styles.title}} onClose={props.onClose} title={'Выберите папку'}/>
+      <ClosingTitle classNames={{wrapper:styles.title}} onClose={props.onClose} title={t('chat_chooseFolder')}/>
       <FormikProvider value={formik}>
         <Form>
           <RadioListField name={'chatFolderId'} options={

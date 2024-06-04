@@ -9,6 +9,7 @@ import ViewsRepository from 'data/repositories/ViewsRepository'
 import { IView } from 'data/interfaces/IView'
 import P from '@/components/ui/P'
 import Spinner from '@/components/ui/Spinner'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   profileType:ProfileType
@@ -17,7 +18,7 @@ interface Props {
 export default function Views(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
-
+  const {t} = useTranslation()
   const activeCvsItem = (cvContext.savedCvs.filter(el=> el.published === true&&el.subscriptions))
   const activeVacanciesItem = (vacancyContext.activeVacancies)
   const [views, setViewsState] = useState<Map<number, IView>>(new Map)
@@ -77,13 +78,13 @@ export default function Views(props: Props) {
 
 
   return (<div className={styles.root}> 
-    <Title title={'Просмотры за все время'} />
+    <Title title={t('views_allTime')} />
     <div className={styles.itemsWrapper}>
       {isLoaded&&views&&[...views.values()].map(view => {
         return <ViewItem key={view.id} view={view} />
       })
       ||
-      isLoaded &&views&& views.size === 0 && <P styleType={['w500', 'medium']}>Пока нет просмотров</P>
+      isLoaded &&views&& views.size === 0 && <P styleType={['w500', 'medium']}>{t('views_empty')}</P>
       ||
       !isLoaded && <Spinner size={24}/>
     }

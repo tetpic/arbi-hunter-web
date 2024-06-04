@@ -181,7 +181,7 @@ export default function Messages(props: Props) {
       setChoosenIds(new Set)
     }
     appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
-      text: `Вы действительно хотите удалить ${choosenIds.size} cообщений?`,
+      text: `${t('chat_removeMassagesConfirm1')} ${choosenIds.size} ${Formatter.pluralize(choosenIds.size, t('message1'), t('message2') ,t('message3'))}?`,
       callback: () => {
         _removeMessages()
         appContext.hideModal()
@@ -192,7 +192,7 @@ export default function Messages(props: Props) {
 
   const removeChat = () => {
     const _args:IConfirmModalProps  = {
-      text: `Вы действительно хотите удалить чат с ${getUserName(collocutor)}`,
+      text: t('chat_deleteChatConfirmMessage') +  getUserName(collocutor),
       callback: () => {
         ChatRepository.removeOneChat(Number(dialog.chat.id))
         .then(res => {
@@ -259,13 +259,13 @@ export default function Messages(props: Props) {
         <div className={styles.topChooseMode}>
           <Button onClick={removeChat}>
             <P styleType={['blue', 'w500', 'medium']}>
-              Удалить чат
+              {t('chat_removeChat')}
             </P>
           </Button>
-          <P styleType={['large', 'w600']} useThemeColor >Выбрано {choosenIds.size}</P>
+          <P styleType={['large', 'w600']} useThemeColor >{t('chat_choosen')} {choosenIds.size}</P>
           <Button onClick={()=>setChoosenIds(new Set)}> 
             <P styleType={['blue', 'w500', 'medium']}>
-              Отменить
+              {t('cancel')}
             </P>
           </Button>
         </div>
@@ -291,11 +291,11 @@ export default function Messages(props: Props) {
               <P styleType={['greyLight', 'w500','small']}>{
                 el.type === MessageType.Text&&el.message
                 ||
-                el.type === MessageType.Application&&'Приглашение'
+                el.type === MessageType.Application&&t('chat_proposal')
                 ||
-                el.type === MessageType.Asset&&'Файлы'
+                el.type === MessageType.Asset&&t('chat_files')
                 ||
-                el.type === MessageType.Voice &&'Голосовое сообщение'
+                el.type === MessageType.Voice &&t('chat_voiceMessage')
               }</P>
             </div>
           })}
@@ -415,7 +415,7 @@ export default function Messages(props: Props) {
         {choosenIds.size > 0 &&
           <div className={styles.choosenActions}>
             {!isTabletWidth &&
-              <P styleType={['greyLight', 'w600', 'medium']} useThemeColor>Выбрано сообщений: {choosenIds.size}</P>
+              <P styleType={['greyLight', 'w600', 'medium']} useThemeColor>{t('chat_choosenMessages')} {choosenIds.size}</P>
             }
             <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={deleteHandler}><TrashBasketAltSvg color={colors.blue}/></Button>
             <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
@@ -478,7 +478,7 @@ export default function Messages(props: Props) {
                 dialog.recordVoice(true)
               }}
               >
-                Отмена
+                {t('cancel')}
               </P>
             </>
             ||

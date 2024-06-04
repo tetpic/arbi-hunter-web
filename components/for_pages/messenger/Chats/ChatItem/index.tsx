@@ -21,6 +21,7 @@ import { useAppContext } from 'context/state'
 import { ChangeChatFolderModalArgs } from '@/components/modals/ChangeChatFolderModal'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   chat: IChat
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function ChatItem(props: Props) {
+  const {t} = useTranslation()
   const chat = props.chat
   const chatContext = useChatContext()
   const appContext = useAppContext()
@@ -80,7 +82,7 @@ export default function ChatItem(props: Props) {
   const removeChat = () => {
     openDropDown(false)
     const _args:IConfirmModalProps = {
-      text: `Вы действительно хотите удалить чат с ${getUserName(collocutor)}`,
+      text: t('chat_deleteChatConfirmMessage') + getUserName(collocutor),
       callback: () => {
         ChatRepository.removeOneChat(chat.id)
         .then(res => {
@@ -96,9 +98,9 @@ export default function ChatItem(props: Props) {
   
  
   const optionsList: IOptionList[] = [
-    chatContext.folders.size>0&&(chatContext.folders.size ===1? !chat.profiles?.[0]?.pinned:true)&&{title: 'Сменить папку',  icon: <FolderSvg/>,onClick: changeFolder},
-    {title: chat.profiles[0].pinned?'Открепить':'Закрепить', icon: <PinMessageSvg/> , onClick: pinChat},
-    {title: 'Удалить', icon: <TrashBasketSvg/>, onClick: removeChat}
+    chatContext.folders.size>0&&(chatContext.folders.size ===1? !chat.profiles?.[0]?.pinned:true)&&{title: t('chat_changeFolder'),  icon: <FolderSvg/>,onClick: changeFolder},
+    {title: chat.profiles[0].pinned?t('chat_unpin'):t('chat_pin'), icon: <PinMessageSvg/> , onClick: pinChat},
+    {title: t('chat_remove'), icon: <TrashBasketSvg/>, onClick: removeChat}
   ].filter(Boolean)
 
 

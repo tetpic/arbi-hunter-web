@@ -104,7 +104,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
       <UserPic className={styles.userPic} size={44} image={getUserImageSource(item.profile.profileType === ProfileType.Hirer?item.profile:vc?.profile, Preset.smallIconCrop)}/>
       <P styleType={['w600','large']} useThemeColor className={styles.company}>{item.profile.profileType === ProfileType.Hirer?item.profile.company: vc?.company||vc?.contactName}</P>
       {(vc?.isRemote || vc?.city) &&
-        <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`г. ${vc.city?.locName}`}</P>
+        <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`${t('ruCity')} ${vc.city?.locName}`}</P>
       }
       <ThreeDotsButton onMouseEnter={openModalHandler} onClick={openModalHandler} />
       {!isTabletWidth &&
@@ -134,9 +134,9 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
     <div className={styles.bottom}>
       <p className={styles.time}>{Formatter.formatToShortYear(item.createdAt)}</p>
       {(item?.status !== ApplicationStatus.Applied || item.type !== undefined) &&
-      <P styleType={['green', 'medium', 'w500', 'alignCenter']}><CheckSvg color={colors.green}/> Просмотрено</P>
+      <P styleType={['green', 'medium', 'w500', 'alignCenter']}><CheckSvg color={colors.green}/> {t('watched')}</P>
       ||
-      <P styleType={['medium', 'greyLight']}>Не просмотрено</P>
+      <P styleType={['medium', 'greyLight']}>{t('unWatched')}</P>
       }
     </div>
 
