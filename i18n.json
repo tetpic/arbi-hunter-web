@@ -1,5 +1,5 @@
 {
-  "locales": ["ru", "en", "ua"],
+  "locales": ["ru"],
   "defaultLocale": "ru",
   "defaultNS": "common",
   "pages": {
