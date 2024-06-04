@@ -83,14 +83,13 @@ export default function SideFilterEmployee(props: Props) {
         creationContext.setSubCategories(null, r)
         formik.setFieldValue('categories', [...formik.values.categories, ...r.map(el => el.id)])
       },
-      onClose: null,
     })
   }
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
       initials: formik.values.countries.map(el => locationContext.countries.get(Number(el))),
-      onSubmit: (r) => {        
+      onSubmit: (r) => {   
         formik.setFieldValue('countries', [...r.map(el => el.geonameid)])
         locationContext.getCountries(null, r)
       },
@@ -103,6 +102,7 @@ export default function SideFilterEmployee(props: Props) {
       onSubmit: (r) => {
         formik.setFieldValue('cities', [...formik.values.cities, ...r.map(el => el.id)])
         locationContext.getCities(null, null, r)
+        setTimeout(()=> {appContext.hideModal()}, 50)
       },
     })
   }

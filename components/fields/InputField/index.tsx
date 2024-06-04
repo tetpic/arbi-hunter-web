@@ -86,9 +86,9 @@ export default function InputField(props: Props) {
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     if(props.priceFormatting || props.isNumbersOnly) {
       const numbers = e.target.value.replace(/[^0-9]/g, '') as string
-      props.isNumbersOnly && (helpers.setValue(numbers))
+      props.isNumbersOnly && (e.target.value = numbers)
       const formatted = Formatter.formatNumber(Number(numbers))
-      props.priceFormatting && (helpers.setValue(formatted==='0'?'':formatted))
+      props.priceFormatting && (e.target.value = formatted==='0'?'':formatted)
     }
   }
   
