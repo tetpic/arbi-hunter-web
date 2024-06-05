@@ -58,7 +58,8 @@ export default function MessageFactory(props: Props) {
   const dialog = useChatDialogContext()
   const chats = chatContext.chats
   const msg = props.message.forwarded?props.message.forwarded:props.message
-  const timeout = useRef<ReturnType<typeof setInterval>>()
+  const timeout = useRef<ReturnType<typeof setTimeout>>()
+
   
   
   const collocutor = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?'me':'other'
@@ -101,7 +102,6 @@ export default function MessageFactory(props: Props) {
     .then(res => {
       
     })
-    // alert('set pinned')
     openDropDown(false)
   }
 
@@ -132,13 +132,18 @@ export default function MessageFactory(props: Props) {
     active={dropDown} 
     getRef={(r)=>{dropRef.current = r}} 
     usePopper
-    popperPlacement={isPhoneWidth?'auto':'left-start'}
+    popperPlacement={isPhoneWidth?'auto-end':'left-start'}
     onClose={()=>{openDropDown(false)}}/>
   )
 
-  const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {    
-    e.preventDefault()
-    openDropDown(true)
+  const onRightClick = (e: React.MouseEvent<any>, type: 'context'|'touch') => {    
+    e?.preventDefault()
+    if(type === 'context') {
+      openDropDown(true)
+    }
+    else if(type === 'touch') {
+      timeout.current = setTimeout(()=>openDropDown(true), 680)
+    }
   }
 
   const replyedMessage = (
@@ -164,7 +169,16 @@ export default function MessageFactory(props: Props) {
   )
 
   const textMessage = (
-    <div className={side} ref={itemRef} onContextMenu={onRightClick}  key={props.message.id}>
+    <div 
+    className={side} 
+    ref={itemRef} 
+    onContextMenu={(e)=>onRightClick(e, 'context')}  
+    onTouchStart={(e)=>onRightClick(null, 'touch')}
+    onTouchCancel={() => clearTimeout(timeout.current)}
+    onTouchMove={() => clearTimeout(timeout.current)}
+    onTouchEnd={() => clearTimeout(timeout.current)}
+    key={props.message.id}
+    >
       {optionsDropDown}
       {replyedMessage}
       <p className={styles.message}>
@@ -178,7 +192,11 @@ export default function MessageFactory(props: Props) {
     <div 
     key={props.message.id} 
     ref={itemRef} 
-    onContextMenu={onRightClick} 
+    onContextMenu={(e)=>onRightClick(e, 'context')} 
+    onTouchStart={(e)=>onRightClick(null, 'touch')}
+    onTouchCancel={() => clearTimeout(timeout.current)}
+    onTouchEnd={() => clearTimeout(timeout.current)}
+    onTouchMove={() => clearTimeout(timeout.current)}
     className={classNames(
       side, 
       styles.asset, 
@@ -206,7 +224,15 @@ export default function MessageFactory(props: Props) {
 
   const applicationMessage = (<>
 
-    <div className={side} ref={itemRef } onContextMenu={onRightClick}  >
+    <div 
+    className={side} 
+    ref={itemRef } 
+    onContextMenu={(e)=>onRightClick(e, 'context')}  
+    onTouchStart={(e)=>onRightClick(null, 'touch')}
+    onTouchCancel={() => clearTimeout(timeout.current)}
+    onTouchEnd={() => clearTimeout(timeout.current)}
+    onTouchMove={() => clearTimeout(timeout.current)}
+    >
     { optionsDropDown}
       {replyedMessage}
         <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
@@ -226,7 +252,16 @@ export default function MessageFactory(props: Props) {
   )
 
   const proposalMessage = (<>
-    <div className={side} onContextMenu={onRightClick}  ref={itemRef }  key={props.message.id}>
+    <div 
+    className={side} 
+    onContextMenu={(e)=>onRightClick(e, 'context')}  
+    onTouchStart={(e)=>onRightClick(null, 'touch')}
+    onTouchCancel={() => clearTimeout(timeout.current)}
+    onTouchEnd={() => clearTimeout(timeout.current)}
+    onTouchMove={() => clearTimeout(timeout.current)}
+    ref={itemRef }  
+    key={props.message.id}
+    >
       {optionsDropDown}
       {replyedMessage}
       <p className={styles.message}>{t('chat_cvApplication')}</p>
@@ -239,7 +274,7 @@ export default function MessageFactory(props: Props) {
   </>)
 
   const voiceMessage = (
-    <div className={side} onContextMenu={onRightClick}  ref={itemRef } key={props.message.id}>
+    <div className={side} onContextMenu={(e)=>onRightClick(e, 'context')}  ref={itemRef } key={props.message.id}>
       {optionsDropDown}
       {replyedMessage}
       {msg?.assets?.length > 0 &&

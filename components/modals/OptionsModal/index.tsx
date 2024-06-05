@@ -45,7 +45,7 @@ export default function OptionsModal(props: Props) {
   const children = props.children||args?.children
   const [popperElement, setPopperElement] = useState(null)
   const popper = usePopper(props.usePopperRoot, popperElement, {
-    placement: props.popperPlacement||'bottom', 
+    placement: props.popperPlacement||'top', 
     strategy: 'absolute',
     modifiers: [
     {name: 'offset', options: {offset: [0, 10]}},
