@@ -49,6 +49,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
               state.delete(tariff.id)
               return new Map(state)
             })
+            appContext.showSnackbar('Персонаж куплен', SnackbarType.success)
             userContext.refreshUser()
           })
           .catch(_=> {
@@ -122,6 +123,10 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       appContext.showSnackbar(t('shop_Insufficient_funds'), SnackbarType.error)
       return
     }
+    if(tariff.price === 0 ){
+      buyHandler(null)
+      return
+    }
     const args:PurchasePreviewModalArgs = {
       tariff: tariff,
       tariffs: tariffContext.packets,
@@ -173,7 +178,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       } 
       <P>{tariff.description}</P>
       {props.type === 'buy' &&
-        <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{t('shop_buy')}</Button>
+        <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{tariff.price > 0? t('shop_buy'):t('save')}</Button>
       }
       {props.type === 'info' &&
         <P 

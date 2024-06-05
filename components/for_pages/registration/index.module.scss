@@ -120,7 +120,11 @@
   column-gap: 8px;
   margin-top: 16px;
   @include mq($TabletWidth, max) {
-    margin-top: auto;
+    padding-bottom: 24px;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 32px);
+    left: 16px;
   }
 }
 
@@ -129,4 +133,20 @@
   font-weight: $medium;
   color: $greyLight;
   margin-bottom: 24px;
+}
+
+.checkCircle {
+  flex-shrink: 0;
+}
+
+.link {
+  color: $blue;
+}
+
+.agreement {
+  margin-top: auto;
+  @include mq($TabletWidth, max) {
+    padding-top: 24px;
+    padding-bottom: 60px;
+  }
 }

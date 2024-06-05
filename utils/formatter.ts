@@ -171,7 +171,8 @@ export default class Formatter {
       let m1=oldDate.getMonth()+(oldDate.getFullYear()*12)
       let m2=newDate.getMonth()+(newDate.getFullYear()*12)
       let result = (m2-m1)
-      return result === 0 ? 1 : result
+      console.log(result)
+      return result === 0 ? 1 : Math.abs(result)
     })
     .reduce((p, c)=>{return p+c}, 0)
   

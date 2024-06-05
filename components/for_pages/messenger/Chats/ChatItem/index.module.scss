@@ -16,6 +16,11 @@
   position: relative;
   
   @include transitionDefault;
+
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    flex-shrink: 0;
+  }
   // @include hover {
   //   background-color: $grey;
   // }
@@ -71,4 +76,31 @@
 
 .active {
   background-color: var(--greyToPurpleGrey);
+}
+
+.container {
+  @include mq($TabletWidth, max) {
+    display: flex;
+    overflow: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+
+  .squareButton {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    width: 72px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
 }
