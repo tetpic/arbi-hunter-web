@@ -128,7 +128,11 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
         (item.status==='accepted'||(item.type !== ProposalRequestType.Rejection && item.type !== undefined)) && ApplicationStatus.Accepted
       ])}
       >
-        {TranslateProposalType(status||item?.status)}
+        {TranslateProposalType((item.type === ProposalRequestType.Rejection||item.status === ApplicationStatus.Rejected) && ApplicationStatus.Rejected
+        ||
+        ( item.status==='applied'&& item.type === undefined) && ApplicationStatus.Applied
+        ||
+        (item.status==='accepted'||(item.type !== ProposalRequestType.Rejection && item.type !== undefined)) && ApplicationStatus.Accepted)}
       </p>
     }
     <div className={styles.bottom}>

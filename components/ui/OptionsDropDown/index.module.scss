@@ -21,11 +21,12 @@
 
 .modalWrapperWithPopper {
   position: absolute;
-  width: 100%;
-  // top: 40px;
+  width: 10px;
+  top: 50%;
   pointer-events: none;
   opacity: 0;
-  right: 0;
+  right: 50%;
+
   z-index: 10;
 
   &_active {
