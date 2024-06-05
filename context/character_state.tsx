@@ -176,7 +176,7 @@ export function CharacterWrapper(props: Props) {
     }
     setSavingProcess(true)   
     if(!characterId.current) {
-      appContext.showSnackbar('Купите тариф редактирования персонажа', SnackbarType.error)
+      appContext.showSnackbar('Выберите тариф редактирования персонажа', SnackbarType.error)
       setTimeout(() => {
         router.push({pathname: '/shop', query: {page: ShopPages.Packets}})
       })

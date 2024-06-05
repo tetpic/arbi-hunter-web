@@ -5,6 +5,7 @@ import { useUserContext } from 'context/user_state'
 import { useCvContext } from 'context/cv_state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { PurchaseType } from 'types/enums'
 
 interface Props {
   purchaseTypes?: string[]
@@ -30,7 +31,7 @@ export default function ShopPackets(props: Props) {
   }
 
   return (<div className={styles.root}> 
-    {[...tariffContext.packets.entries()].filter(([key, value]) => value.price > 0&&(props.purchaseTypes?props.purchaseTypes.includes(value.purchaseType): true) ).map(([key, value])=> {
+    {[...tariffContext.packets.entries()].filter(([key, value]) => value.purchaseType === PurchaseType.Character||value.price > 0&&(props.purchaseTypes?props.purchaseTypes.includes(value.purchaseType): true) ).map(([key, value])=> {
       return <PurchaseItem 
       type='buy'
       tariff={value} 

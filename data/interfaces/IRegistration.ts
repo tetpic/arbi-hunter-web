@@ -16,6 +16,7 @@ export interface IRegistrationComplete {
   telegramNickname : string,
   email: string,
   company?: string|undefined,
+  agreement?: boolean
 }
 
 export interface ILogin {

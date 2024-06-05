@@ -7,7 +7,7 @@ import Checkbox from '../CheckboxListField/Checkbox'
 
 
 interface Props<T> extends IField<T> {
-  label?: string
+  label?: any
   itemClassName?: string
   activeClassName?: string
   itemLabelClassName?: string
@@ -33,8 +33,7 @@ export default function CheckboxField<T>(props: Props<T>) {
   const [field, _, helpers] = useField<T>(props as any)
   const {value} = field
 
-  const handleCheckboxChanged = (val: T) => {
-    props.value
+  const handleCheckboxChanged = (val: T) => {   
     helpers.setValue(!val?props.value:undefined)
   }
 
@@ -46,7 +45,8 @@ export default function CheckboxField<T>(props: Props<T>) {
         className={classNames(props.itemClassName)}
         labelClassName={props.itemLabelClassName}
         activeClassName={props.activeClassName}
-        value={value} isActive={value === props.value} label={label}
+        value={value} 
+        isActive={value === props.value} label={label}
         onChange={(v) => handleCheckboxChanged(v)}
       />
     </div>

@@ -22,6 +22,8 @@ import { ChangeChatFolderModalArgs } from '@/components/modals/ChangeChatFolderM
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
+import { colors } from 'styles/variables'
+import UnPinSvg from '@/components/svg/UnPinSvg'
 
 interface Props {
   chat: IChat
@@ -98,9 +100,9 @@ export default function ChatItem(props: Props) {
   
  
   const optionsList: IOptionList[] = [
-    chatContext.folders.size>0&&(chatContext.folders.size ===1? !chat.profiles?.[0]?.pinned:true)&&{title: t('chat_changeFolder'),  icon: <FolderSvg/>,onClick: changeFolder},
-    {title: chat.profiles[0].pinned?t('chat_unpin'):t('chat_pin'), icon: <PinMessageSvg/> , onClick: pinChat},
-    {title: t('chat_remove'), icon: <TrashBasketSvg/>, onClick: removeChat}
+    chatContext.folders.size>0&&{title: t('chat_changeFolder'),  icon: <FolderSvg/>,onClick: changeFolder, style: isTabletWidth?{backgroundColor: colors.green}:{}},
+    {title: chat.profiles[0].pinned?t('chat_unpin'):t('chat_pin'), icon: chat.profiles[0].pinned?<UnPinSvg/>:<PinMessageSvg/> , onClick: pinChat, style: isTabletWidth?{backgroundColor: colors.yellow}:{}},
+    {title: t('chat_remove'), icon: <TrashBasketSvg color={isTabletWidth&&colors.white} />, onClick: removeChat, style: isTabletWidth?{backgroundColor: colors.red}:{}}
   ].filter(Boolean)
 
 
@@ -109,29 +111,44 @@ export default function ChatItem(props: Props) {
 
 
   return (
-    <div className={classNames(styles.root, props.isActive&&styles.active)} ref={itemRef} onContextMenu={onRightClick} onClick={onClickHandler}> 
-      <UserPic 
-      size={56} 
-      className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
-      image={getUserImageSource(collocutor, Preset.smallIconCrop)}
-      />
-      {props.chat.profiles?.[0]?.pinned &&
-        <PinMessageSvg className={styles.pinIcon}/>
-      }
-      <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
-      <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
-      <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
-      {props.chat.totalUnread > 0&&
-        <p className={styles.counter}>{props.chat.totalUnread}</p>
-      }
-      <OptionsDropDown 
-      usePopper
-      options={options} 
-      active={dropDown} 
-      key={chat.id}
-      getRef={(r)=>{dropRef.current = r}}
-      onClose={()=>{openDropDown(false)}}/>
+    <div className={styles.container}>
 
+      <div className={classNames(styles.root, props.isActive&&styles.active)} ref={itemRef} onContextMenu={onRightClick} onClick={onClickHandler}> 
+        <UserPic 
+        size={56} 
+        className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
+        image={getUserImageSource(collocutor, Preset.smallIconCrop)}
+        />
+        {props.chat.profiles?.[0]?.pinned &&
+          <PinMessageSvg className={styles.pinIcon}/>
+        }
+        <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
+        <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
+        <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
+        {props.chat.totalUnread > 0&&
+          <p className={styles.counter}>{props.chat.totalUnread}</p>
+        }
+        {!isTabletWidth &&
+          <OptionsDropDown 
+          usePopper
+          options={options} 
+          active={dropDown} 
+          key={chat.id}
+          getRef={(r)=>{dropRef.current = r}}
+          onClose={()=>{openDropDown(false)}}/>
+        }
+      </div>
+      {isTabletWidth &&
+        <div className={styles.buttons}>
+          {optionsList.map(el => {
+            return <div className={styles.squareButton} style={el.style||{}} onClick={e => {
+              e.stopPropagation()
+              e.preventDefault()  
+              el.onClick(e)
+            }}>{el.icon}</div>
+          })}
+        </div>
+      }
     </div>
   )
 }

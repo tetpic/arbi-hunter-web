@@ -17,6 +17,7 @@ import CrossSvg from '@/components/svg/CrossSvg'
 import Title from '@/components/ui/TitleForSection'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
+import { useEffect } from 'react'
 
 
 interface Props {
@@ -41,7 +42,6 @@ export default function DetailsModal(props: Props) {
     initialValues: {
       ...args.values,
       ...args.initialValues,
-      
     },
     onSubmit: args.onSubmit
   })
@@ -51,6 +51,25 @@ export default function DetailsModal(props: Props) {
     args.onDelete?.(formik.values)
     props.onClose()
   }
+
+  useEffect(()=>{
+    if(
+      new Date(
+        [formik.values.experienceInfo?.[0].toDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.toDate.split('.')[1]].join('.')
+      ) < 
+      new Date(
+        [formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('.')
+      )
+    ) {
+        formik.setFieldValue('experienceInfo[0].toDate', null)
+      }
+  }, [formik.values?.experienceInfo?.[0]?.fromDate])
+
+  useEffect(()=>{
+    if(new Date('01.01.'+formik.values?.educationInfo?.[0]?.toDate) < new Date('01.01.'+formik.values?.educationInfo?.[0]?.fromDate)) {
+      formik.setFieldValue('educationInfo[0].toDate', null)
+    }
+  }, [formik.values?.educationInfo?.[0]?.fromDate])
 
 
 
@@ -76,13 +95,14 @@ export default function DetailsModal(props: Props) {
       className={styles.dateField}
       validate={Validator.required}
       />
-      {!formik.values?.experienceInfo?.[0].toPresent &&
+      {!formik.values?.experienceInfo?.[0]?.toPresent &&
         <DateField 
         name={'experienceInfo[0].toDate'} 
         styleType={'default'} 
         label={t('create_cv_workEnd')} 
         showMonthYearPicker
-        minDate={formik.values?.experienceInfo&&([formik.values.experienceInfo[0].fromDate.split('.')[0], '01', formik.values.experienceInfo[0].fromDate.split('.')[1]].join('.'))}
+        minDate={formik.values?.experienceInfo
+          &&([formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('.'))}
         formatOptions={{
           formatMatcher: 'best fit', year: 'numeric', month: '2-digit'
         }}
@@ -118,7 +138,11 @@ export default function DetailsModal(props: Props) {
       />
     </div>
     <SectionSubtitle text={t('create_cv_achivements')} className={styles.title} />
-    <TextAreaField autoSize name={'experienceInfo[0].description'} value={formik.values.experienceInfo?.[0].description} onChange={(val)=>{formik.setFieldValue('experienceInfo[0].description', val.currentTarget.value)}}/>
+    <TextAreaField 
+    autoSize 
+    name={'experienceInfo[0].description'} 
+    value={formik.values.experienceInfo?.[0]?.description} 
+    onChange={(val)=>{formik.setFieldValue('experienceInfo[0].description', val.currentTarget.value)}}/>
   </>)
 
   const educationInfoForm = (<>
@@ -128,7 +152,7 @@ export default function DetailsModal(props: Props) {
     <SectionSubtitle text={t('create_cv_educationPlace')} title={t('create_cv_educationPlace')} className={styles.title}/>
     }
     
-      <SectionSubtitle text={t('create_cv_educationYears')} className={styles.title}/>
+    <SectionSubtitle text={t('create_cv_educationYears')} className={styles.title}/>
     
     <div className={styles.period}>
       <DateField 
@@ -150,7 +174,7 @@ export default function DetailsModal(props: Props) {
         label={t('create_cv_educationEnd')} 
         dateFormat='yyyy'        
         showYearPicker
-        minDate={formik.values?.educationInfo?.[0]?.fromDate}
+        minDate={new Date('01.01.' +formik.values?.educationInfo?.[0]?.fromDate)}
 
         formatOptions={{
           year: 'numeric'

@@ -26,6 +26,7 @@ import { IRegistrationModalProps } from 'components/modals/RegistrationModal'
 import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import CheckboxField from '@/components/fields/CheckboxField'
 
 interface Props {
   token?: string
@@ -59,6 +60,7 @@ export default function Registration(props: Props) {
     email: '',
     countryId: undefined,
     cityId: undefined,
+    agreement: false
   }
   if(userContext.profileType === ProfileType.Hirer) {
     initialValues.company = ''
@@ -134,11 +136,13 @@ export default function Registration(props: Props) {
 
     switch(page||progress) {
       case 1: (async() => {
+        debugger
         const values = ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
-        const isLoginExist = await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
+        const isLoginExist = formik.values.email.length > 0 && await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
         const filteredErrors = errors.filter(el=> el[1] !== undefined)
         filteredErrors.forEach(e=> e && setErr(e[0], e[1]))
+        if(filteredErrors.length > 0) return
 
         if(filteredErrors.length === 0 && (!isLoginExist.exists || !isLoginExist.isRegistrationCompleted || isLoginExist.profilesCount === 0)) {
           appContext.showModal<IRegistrationModalProps>(ModalType.RegistrationModal, {
@@ -195,6 +199,9 @@ export default function Registration(props: Props) {
     validate={Validator.combine([Validator.required, Validator.email])}
     />
     <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
+    <div className={styles.agreement}>
+      <CheckboxField circleClassName={styles.checkCircle} name={'agreement'} value={true} label={<>Создавая аккаунт, Вы соглашаетесь с условиями использования сервиса, изложенными в <Link className={styles.link} href={'/privacy'}>Политике конфиденциальности.</Link></>}/>
+    </div>
     </>
   )
 
@@ -330,6 +337,11 @@ export default function Registration(props: Props) {
     })*/
   }, [])
 
+  useEffect(()=>{
+    console.log(formik.values.agreement)
+    
+  }, [formik.values.agreement])
+
   return (
     <div className={styles.root}>
       {!isTabletWidth&&
@@ -366,7 +378,7 @@ export default function Registration(props: Props) {
                   {t('registration_getRegister')}
                 </Button>
                 ||
-                <Button title="next" className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>{t('continue')}</Button>
+                <Button title="next" disabled={formik.values.agreement === undefined||formik.values.agreement ===false} className={styles.submitButton} type='button' onClick={()=> nextPageValidator()}>{t('continue')}</Button>
               }
             </div>
           </Form>

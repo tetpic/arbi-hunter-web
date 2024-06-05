@@ -152,7 +152,6 @@ export default function CvItem({cv, ...props}: Props) {
     }
   }
 
-
   const rejectionHandler = () => {
     const _args: IProposalTextModalProps = {
       type: ApplicationBSSelectType.Reject, 
@@ -218,16 +217,19 @@ export default function CvItem({cv, ...props}: Props) {
         })}
       </P>
 
-      {cv.experienceInfo && cv.experienceInfo.length > 0 &&
         <div className={styles.item__block}>
           <P styleType={['small', 'greyLight']}>
             {t('cv_item_experience')} 
           </P>
-          <P styleType={['medium', 'w500']} useThemeColor>
-            {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
-          </P>
+          {cv.experienceInfo && cv.experienceInfo.length > 0 && 
+            <P styleType={['medium', 'w500']} useThemeColor>
+              {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
+            </P>
+            ||
+            <P styleType={['medium', 'w500']} useThemeColor>Не указан</P>
+
+          }
         </div>
-      }
 
       {cv.lastExperienceInfo &&
       <div className={styles.item__block}>
