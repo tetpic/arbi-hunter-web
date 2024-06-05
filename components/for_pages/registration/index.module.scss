@@ -141,6 +141,10 @@
 
 .link {
   color: $blue;
+  cursor: pointer;
+  @include hover {
+    text-decoration: underline;
+  }
 }
 
 .agreement {
@@ -149,4 +153,14 @@
     padding-top: 24px;
     padding-bottom: 60px;
   }
+}
+
+.checkLabel {
+  font-size: 12px !important;
+  @include mq($TabletWidth, max) {
+  }
+}
+
+.check {
+  align-items: flex-start !important;
 }
