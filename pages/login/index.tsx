@@ -48,7 +48,7 @@ export default function LoginPage(props: Props) {
   }
 
   return ( 
-    <ContentLayout hideMobileHeader>
+    <ContentLayout title={'Вход'} hideMobileHeader>
       <Login/>
     </ContentLayout>
   )

@@ -63,9 +63,9 @@ export default function Compensation(props: Props) {
       {compensation.value !== CompensationType.Contract &&
         <TagsRadioList name={'currency'} options={[
           {value: Currency.USD, label: Currency.USD},
-          {value: Currency.RUB, label: 'Рубль'},
+          {value: Currency.RUB, label: t('rouble')},
           {value: Currency.EUR, label: 'Euro'},
-          {value: Currency.GRN, label: 'Гривны'},
+          {value: Currency.GRN, label: t('grivnes')},
         ]}/>
       }
 
