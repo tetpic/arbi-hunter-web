@@ -51,7 +51,7 @@ export default function ContentLayout(props: Props) {
     {
       props.title &&
       <Head>
-        <title>{`Arbi Hunter|${props.title}`}</title>
+        <title>{`Arbi Hunter | ${props.title}`}</title>
         <meta name='description' content={props.description||props.title}/>
       </Head>
     }

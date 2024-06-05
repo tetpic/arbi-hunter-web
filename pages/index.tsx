@@ -36,7 +36,7 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 export default function Page(props: Props) {
   const {isTabletWidth} = useAppContext().size
   return (
-    <ContentLayout withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
+    <ContentLayout title={'Главная страница'}  withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
       <VacancyWrapper>
         <PersonalWrapper>
         {

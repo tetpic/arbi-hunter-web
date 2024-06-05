@@ -9,8 +9,6 @@
   "rubFull":"Рубли",
   "dollars":"Доллары",
   "euro":"Евро",
-  "grivnes":"Гривны",
-
   "cpaWires":"CPA-сети",
   "marketing":"Маркетинг",
   "frontender":"Frontented-Разработчик",
@@ -98,6 +96,9 @@
   "watched":"Просмотрено",
   "unWatched":"Не просмотрено",
   "saved":"Сохранено",
+  "rouble": "Рубль",
+  "grivnes":"Гривны",
+  "fillTheField":"Заполните поле",
 
   
   "gender_male": "Мужчина",

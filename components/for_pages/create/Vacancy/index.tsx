@@ -258,10 +258,10 @@ export default function Vacancy(props: Props) {
           formik.values.showPhone && formik.values.phone.trim().length === 0
         ]
         if(vals.filter(Boolean).length > 0) {
-          vals[0]&&setErr('contactName', 'Заполните поле')
-          vals[1]&&setErr('email', 'Заполните поле')
-          vals[2]&&setErr('telegramNickname', 'Заполните поле')
-          vals[3]&&setErr('phone', 'Заполните поле')     
+          vals[0]&&setErr('contactName', t('fillTheField'))
+          vals[1]&&setErr('email', t('fillTheField'))
+          vals[2]&&setErr('telegramNickname', t('fillTheField'))
+          vals[3]&&setErr('phone', t('fillTheField'))     
         }
         else {
           setProgress(pageNumber||progress+1)
