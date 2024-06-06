@@ -62,6 +62,10 @@ export function ThreeModel(props: IThreeModelProps) {
   
   }, [animations])
 
+  useEffect(()=>{
+    console.log(`Head_${props.face !== '1' &&props.emotion||'0'}_0`)    
+  }, [props])
+
   if(props.model === 'woman') {
     return (
       <group {...props}  ref={mesh} dispose={null}>
@@ -102,10 +106,10 @@ export function ThreeModel(props: IThreeModelProps) {
         <group name={'Арматура'} key={2}>
           <primitive object={nodes.Spine} />
           <skinnedMesh 
-          name={`Body_${props.body||'0'}${props.body||'_0'}`} 
-          geometry={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].geometry} 
+          name={`Body_${props.body||'0'}${props.color||'_0'}`} 
+          geometry={nodes[`Body_${props.body||'0'}_${props.color||'0'}`].geometry} 
           material={materials[`Body_${props.color||'0'}`]} 
-          skeleton={nodes[`Body_${props.body||'0'}_${props.body||'0'}`].skeleton} />
+          skeleton={nodes[`Body_${props.body||'0'}_${props.color||'0'}`].skeleton} />
           {props.cap && props.model === 'man' &&
             <skinnedMesh name={`Cap_${props.cap}`} geometry={nodes[`Cap_${props.cap}`].geometry} material={materials[`Cap_${props.cap}`]} skeleton={nodes[`Cap_${props.cap}`].skeleton} />
           }
@@ -122,7 +126,11 @@ export function ThreeModel(props: IThreeModelProps) {
           {props.hair !== undefined && 
             <skinnedMesh name={`Hair_${!props.cap&&props.hair||'0'}`} geometry={nodes[`Hair_${!props.cap&&props.hair||'0'}`].geometry} material={materials[`Hair_${!props.cap&&props.hair||'0'}`]} skeleton={nodes[`Hair_${!props.cap&&props.hair||'0'}`].skeleton} />
           }
-          <skinnedMesh name={`Head_${props.face !== '1' &&props.emotion||'0'}_${props.face !== '1' &&props.emotion||'0'}`} geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_${props.emotion||'0'}`].geometry} material={materials[`Head_${props.color||'0'}`]} skeleton={nodes[`Head_${props.emotion||'0'}_${props.emotion||'0'}`].skeleton} />
+          <skinnedMesh 
+          name={`Head_${props.face !== '1' &&props.emotion||'0'}_0`} 
+          geometry={nodes[`Head_${props.face !== '1' &&props.emotion||'0'}_0`].geometry} 
+          material={materials[`Head_${props.color||'0'}`]} 
+          skeleton={nodes[`Head_${props.emotion||'0'}_0`].skeleton} />
           <skinnedMesh name={`Jacket_${props.jacket||'3'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'3'}`]} skeleton={nodes[`Jacket_${props.jacket||'3'}_${props.body||'0'}`].skeleton} />
         </group>
       </group> 
