@@ -41,7 +41,7 @@ export default function FileInput(props: Props) {
       if(file.type === 'image/heic') {
         await heic2any({blob:file, toType: 'image/jpeg', quality: 0.8})
         .then((res: Blob) => {
-          fileToSend = new File([res], 'name')
+          fileToSend = new File([res], 'name.jpg', {type: 'image/jpeg'})
         })
         .catch((err: any)=> {
           appContext.showSnackbar(err.toString(), SnackbarType.error)

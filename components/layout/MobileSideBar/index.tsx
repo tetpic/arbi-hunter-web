@@ -327,7 +327,7 @@ export default function MobileSideBar(props: Props) {
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
 
-      <Link href={'/serviceterms'} className={styles.link} onClick={props.onClose}>
+      <Link href={'/rules'} className={styles.link} onClick={props.onClose}>
         <P useThemeColor styleType={['w500', 'medium']}>{t('footer_serviceTerms')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>

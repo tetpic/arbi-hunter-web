@@ -200,7 +200,7 @@ export default function Registration(props: Props) {
     />
     <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
     <div className={styles.agreement}>
-      <CheckboxField circleClassName={styles.checkCircle} itemClassName={styles.check} itemLabelClassName={styles.checkLabel} name={'agreement'} value={true} label={<>Создавая аккаунт, Вы соглашаетесь с условиями использования сервиса, изложенными в <Link className={styles.link} href={'/privacy'}>Политике конфиденциальности.</Link></>}/>
+      <CheckboxField circleClassName={styles.checkCircle} itemClassName={styles.check} itemLabelClassName={styles.checkLabel} name={'agreement'} value={true} label={<>Продолжая регистрацию, Вы принимаете  <Link className={styles.link} href={'/privacy'}>политику конфиденциальности </Link> и <Link className={styles.link} href={'/rules'}>правила сервиса </Link></>}/>
     </div>
     </>
   )
