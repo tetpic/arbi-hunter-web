@@ -63,6 +63,8 @@ function RecruitingPageEmployeeInner(props: Props) {
     const dataToSend: IVacancyCvSearchParams = {
       ...data,
       ...currentFilters,
+      //что бы ни вводил, выбирает слова и соединяет их через запятую без пробелов
+      exclude: (data.exclude||currentFilters.exclude)?.replace(/[\p{P}\p{S}_]/gu, '').trim().replace(/\s+/g, ' ').trim().split(' ').join(','),
       compensation: data?.compensation||(((data||currentFilters)?.salaryMin || (data||currentFilters).salaryMax) && CompensationType.Salary),
       countries: (data||currentFilters)?.countries?.map(el => locationContext.countries.get(el as number)?.geonameid),    
       salaryMin: Number((data || currentFilters)?.salaryMin?.toString().replaceAll(' ', '')) || Number(currentFilters?.salaryMin?.toString().replaceAll(' ', ''))||null,
