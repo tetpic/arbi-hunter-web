@@ -39,7 +39,7 @@ export default function FileInput(props: Props) {
     for(const file of files) {
       let fileToSend = file
       if(file.type === 'image/heic') {
-        await heic2any({blob:file, toType: 'image/png'})
+        await heic2any({blob:file, toType: 'image/jpeg', quality: 0.8})
         .then((res: Blob) => {
           fileToSend = new File([res], 'name')
         })
