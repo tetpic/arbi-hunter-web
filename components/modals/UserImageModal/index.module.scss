@@ -22,6 +22,7 @@
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
+  position: relative;
 }
 
 .active {
@@ -53,4 +54,11 @@
 .userPic {
   background-color: #3E3E4D;
   pointer-events: none;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

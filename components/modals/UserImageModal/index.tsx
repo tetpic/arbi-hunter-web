@@ -14,6 +14,9 @@ import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import Spinner from '@/components/ui/Spinner'
+// import dynamic from 'next/dynamic'
+// const heic2any = dynamic(() => import('heic2any'), { ssr: false })
 
 interface Props {
   onClose: () => void
@@ -26,16 +29,18 @@ export interface IUserImageModalProps {
 }
 
 export default function UserImageModal(props: Props) {
+  
   const appContext = useAppContext()
   const userContext = useUserContext()
   const args: IUserImageModalProps = props.isBottomSheet? appContext.bottomSheetArguments:appContext.modalArguments
   const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile?.useOwnLogo? 'logo' :'image')
   const [image, setImage] = useState<PreviewImage>()
 
-  const onSave = () => {
+  const onSave = async () => {
     args.onSave({image, type})
     props.onClose()    
   }
+
 
   const body = (
     <div className={styles.root}>
@@ -49,14 +54,19 @@ export default function UserImageModal(props: Props) {
           <p>Индивидуальный аватар</p>
         </div>
         <label className={classNames(styles.item, type==='image' && styles.active)} onClick={()=>setType('image')}>
-          <FileInput setImages={setImage} accept={['.jpg','.jpeg', '.png']} multiple={false}/>
+          <FileInput setImages={setImage} accept={['.jpg','.jpeg', '.png', '.heic']} multiple={false}/>
+          <div style={{position: 'relative'}}>
+
           <UserPic
           className={styles.userPic}
           size={88}
           image={image
             ?(image?.data?ImageHelper.urlFromFile(image?.data, Preset.iconCrop):URL.createObjectURL(image.image)) 
             :userContext?.currentProfile?.image&&ImageHelper.urlFromFile(userContext?.currentProfile?.image, Preset.iconCrop)}
-          />
+            />
+          {image && !image.loaded && image.image && <Spinner straight className={styles.spinner} size={24}/>}
+            </div>
+
           <p>Загрузить фото</p>
         </label>
       </div>
