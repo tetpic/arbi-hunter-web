@@ -35,7 +35,7 @@ export default function Vacancy(props: Props) {
 
   return (<>
    <NextSeo
-        title={props.vacancy.name}
+        title={'Вакансия ' + props.vacancy.name}
         description={'Зарплата ' + getSalary({vacancy: props.vacancy}, t)}
         openGraph={{
           type: 'website',
