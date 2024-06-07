@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
   vacancy?: IVacancy
@@ -77,6 +78,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
 
     const[signal] = getNewSignal('likeHandler')
     if(!vacancy.isSavedByCurrentProfile) {
+      sendToMetrika(AppMetricaEvent.AddToSaved)
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem(vacancy)

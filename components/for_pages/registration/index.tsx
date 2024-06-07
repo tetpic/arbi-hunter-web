@@ -27,6 +27,7 @@ import { clearObject } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import CheckboxField from '@/components/fields/CheckboxField'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
   token?: string
@@ -84,6 +85,7 @@ export default function Registration(props: Props) {
 
       RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
+        sendToMetrika(AppMetricaEvent.FinishRegistration)
         setTimeout(() => {
           userContext.updateUser()
         }, 300)
@@ -326,6 +328,7 @@ export default function Registration(props: Props) {
   }, [props.token])
 
   useEffect(()=>{
+    sendToMetrika(AppMetricaEvent.StartRegistration)
     //эту строчку не удалять. Пока что регистрация запрещена на основном сайте, когда откроют - раскомментировать
     // isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
     /*appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {

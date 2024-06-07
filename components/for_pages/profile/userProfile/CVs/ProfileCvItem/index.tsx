@@ -7,7 +7,7 @@ import ThreeDotsButton from 'components/ui/ThreeDotsButton'
 import UserPic from 'components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
-import { InterfaceLanguage, ModalType, ModerationStatusType} from 'types/enums'
+import { InterfaceLanguage, ModalType, ModerationStatusType, SnackbarType} from 'types/enums'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useRef } from 'react'
@@ -23,6 +23,7 @@ import { useTariffContext } from 'context/tariff_state'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
+import { copyToClipboard } from 'utils/helpers'
 
 interface Props {
   cv: ICV
@@ -93,12 +94,17 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     router.push({pathname: '/create/cv', query: {id: cv.id, progress: 7, fromOtherPage: true, improve: true}})
   }
 
+  const copyToClipboardHandler = () => {
+    copyToClipboard(process.env.host + '/cv/' + cv.id)
+    appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+  }
+
   const defaultOptions:IOptionList[] = [
     // {title: t('item_remove'), onClick: editHandler},
     {title: t('item_edit'), onClick: editHandler},
     {title: cv?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
     {title: t('item_upgrade'), onClick: upgradeTariffHandler},
-    {title: t('item_share')},
+    {title: t('item_share'), onClick: copyToClipboardHandler},
     {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
   ]
 

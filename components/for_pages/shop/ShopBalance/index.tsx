@@ -11,6 +11,7 @@ import Button from '@/components/ui/Button'
 import { useAppContext } from 'context/state'
 import { AppTheme, ModalType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
 }
@@ -23,6 +24,8 @@ export default function ShopBalance(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
 
   const openRefillModal = () => {
+    sendToMetrika(AppMetricaEvent.GoToReplenishment)
+
     isTabletWidth?
     appContext.showBottomSheet(ModalType.RefillBalanceModal, undefined, 440)
     :

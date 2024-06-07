@@ -17,14 +17,14 @@ export function Model(props) {
           <primitive object={nodes.Spine} />
           <skinnedMesh name="Body_0_0" geometry={nodes.Body_0_0.geometry} material={materials.Body_0} skeleton={nodes.Body_0_0.skeleton} />
           <skinnedMesh name="Body_0_1" geometry={nodes.Body_0_1.geometry} material={materials.Body_1} skeleton={nodes.Body_0_1.skeleton} />
-          <skinnedMesh name="Body_0_2" geometry={nodes.Body_0_2.geometry} material={materials.Body_2} skeleton={nodes.Body_0_2.skeleton} />
           <skinnedMesh name="Body_1_0" geometry={nodes.Body_1_0.geometry} material={materials.Body_0} skeleton={nodes.Body_1_0.skeleton} />
           <skinnedMesh name="Body_1_1" geometry={nodes.Body_1_1.geometry} material={materials.Body_1} skeleton={nodes.Body_1_1.skeleton} />
           <skinnedMesh name="Body_1_2" geometry={nodes.Body_1_2.geometry} material={materials.Body_2} skeleton={nodes.Body_1_2.skeleton} />
+          <skinnedMesh name="Body_0_2" geometry={nodes.Body_0_2.geometry} material={materials.Body_2} skeleton={nodes.Body_0_2.skeleton} />
           <skinnedMesh name="Body_2_0" geometry={nodes.Body_2_0.geometry} material={materials.Body_0} skeleton={nodes.Body_2_0.skeleton} />
           <skinnedMesh name="Body_2_1" geometry={nodes.Body_2_1.geometry} material={materials.Body_1} skeleton={nodes.Body_2_1.skeleton} />
           <skinnedMesh name="Body_2_2" geometry={nodes.Body_2_2.geometry} material={materials.Body_2} skeleton={nodes.Body_2_2.skeleton} />
-          <skinnedMesh name="Body_3_0" geometry={nodes.Body_3_0.geometry} material={materials.Body_3} skeleton={nodes.Body_3_0.skeleton} />
+          <skinnedMesh name="Body_Unic" geometry={nodes.Body_Unic.geometry} material={materials.Body_Unic} skeleton={nodes.Body_Unic.skeleton} />
           <skinnedMesh name="Cap_0" geometry={nodes.Cap_0.geometry} material={materials.Cap_0} skeleton={nodes.Cap_0.skeleton} />
           <skinnedMesh name="Cap_1" geometry={nodes.Cap_1.geometry} material={materials.Cap_1} skeleton={nodes.Cap_1.skeleton} />
           <skinnedMesh name="Cap_2" geometry={nodes.Cap_2.geometry} material={materials.Cap_2} skeleton={nodes.Cap_2.skeleton} />
@@ -50,7 +50,7 @@ export function Model(props) {
           <skinnedMesh name="Eye_0" geometry={nodes.Eye_0.geometry} material={materials.Eye_0} skeleton={nodes.Eye_0.skeleton} />
           <skinnedMesh name="Face_0" geometry={nodes.Face_0.geometry} material={materials.Face_0} skeleton={nodes.Face_0.skeleton} />
           <skinnedMesh name="Face_1" geometry={nodes.Face_1.geometry} material={materials.Face_1} skeleton={nodes.Face_1.skeleton} />
-          <skinnedMesh name="Face_2" geometry={nodes.Face_2.geometry} material={materials.Face_2} skeleton={nodes.Face_2.skeleton} />
+          <skinnedMesh name="Face_Unic" geometry={nodes.Face_Unic.geometry} material={materials.Face_Unic} skeleton={nodes.Face_Unic.skeleton} />
           <skinnedMesh name="Glasses_0" geometry={nodes.Glasses_0.geometry} material={materials.Glasses_0} skeleton={nodes.Glasses_0.skeleton} />
           <skinnedMesh name="Glasses_1" geometry={nodes.Glasses_1.geometry} material={materials.Glasses_1} skeleton={nodes.Glasses_1.skeleton} />
           <skinnedMesh name="Glasses_2" geometry={nodes.Glasses_2.geometry} material={materials.Glasses_2} skeleton={nodes.Glasses_2.skeleton} />
@@ -61,7 +61,7 @@ export function Model(props) {
           <skinnedMesh name="Hair_3" geometry={nodes.Hair_3.geometry} material={materials.Hair_3} skeleton={nodes.Hair_3.skeleton} />
           <skinnedMesh name="Hair_4" geometry={nodes.Hair_4.geometry} material={materials.Hair_4} skeleton={nodes.Hair_4.skeleton} />
           <skinnedMesh name="Hair_5" geometry={nodes.Hair_5.geometry} material={materials.Hair_5} skeleton={nodes.Hair_5.skeleton} />
-          <skinnedMesh name="Hair_6" geometry={nodes.Hair_6.geometry} material={materials.Hair_6} skeleton={nodes.Hair_6.skeleton} />
+          <skinnedMesh name="Hair_Unic" geometry={nodes.Hair_Unic.geometry} material={materials.Hair_Unic} skeleton={nodes.Hair_Unic.skeleton} />
           <skinnedMesh name="Head_0_0" geometry={nodes.Head_0_0.geometry} material={materials.Head_0} skeleton={nodes.Head_0_0.skeleton} />
           <skinnedMesh name="Head_0_1" geometry={nodes.Head_0_1.geometry} material={materials.Head_1} skeleton={nodes.Head_0_1.skeleton} />
           <skinnedMesh name="Head_0_2" geometry={nodes.Head_0_2.geometry} material={materials.Head_2} skeleton={nodes.Head_0_2.skeleton} />
@@ -71,7 +71,7 @@ export function Model(props) {
           <skinnedMesh name="Head_2_0" geometry={nodes.Head_2_0.geometry} material={materials.Head_0} skeleton={nodes.Head_2_0.skeleton} />
           <skinnedMesh name="Head_2_1" geometry={nodes.Head_2_1.geometry} material={materials.Head_1} skeleton={nodes.Head_2_1.skeleton} />
           <skinnedMesh name="Head_2_2" geometry={nodes.Head_2_2.geometry} material={materials.Head_2} skeleton={nodes.Head_2_2.skeleton} />
-          <skinnedMesh name="Head_3_0" geometry={nodes.Head_3_0.geometry} material={materials.Head_3} skeleton={nodes.Head_3_0.skeleton} />
+          <skinnedMesh name="Head_Unic" geometry={nodes.Head_Unic.geometry} material={materials.Head_Unic} skeleton={nodes.Head_Unic.skeleton} />
           <skinnedMesh name="Jacket_0_0" geometry={nodes.Jacket_0_0.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_0.skeleton} />
           <skinnedMesh name="Jacket_0_1" geometry={nodes.Jacket_0_1.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_1.skeleton} />
           <skinnedMesh name="Jacket_0_2" geometry={nodes.Jacket_0_2.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_2.skeleton} />

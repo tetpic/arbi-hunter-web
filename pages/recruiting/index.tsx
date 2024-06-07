@@ -13,7 +13,9 @@ import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
+import { useEffect } from 'react'
 import { CookiesType } from 'types/enums'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Query {
   vcId?: number
@@ -55,6 +57,10 @@ export default function Recruiting(props: Props) {
   if(props.category) {
     params.categories = [props.category]
   }
+  
+  useEffect(()=>{
+    sendToMetrika(AppMetricaEvent.OpenListSearch)
+  }, [])
   
 
   return (<ContentLayout hideMobileHeader title='Рекрутинг'>

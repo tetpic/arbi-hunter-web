@@ -28,6 +28,7 @@ import CvPreview from '../../preview/cv'
 import { IDetailsModalProps } from '@/components/modals/DetailsModal'
 import useTranslation from 'next-translate/useTranslation'
 import CrossSvg from '@/components/svg/CrossSvg'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 
 interface Props {
@@ -87,7 +88,6 @@ export default function Cv(props: Props) {
   }
 
   const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
-    debugger
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar(t('create_setSpecialization'), SnackbarType.error)
@@ -115,6 +115,7 @@ export default function Cv(props: Props) {
     else {
       CvRepository.updateCV(creationContext.draftId.current, sendData)
       .then(res => {
+        sendToMetrika(AppMetricaEvent.CreateCv)
         appContext.showSnackbar(t('create_cv_savedSuccess'), SnackbarType.success)
         if(!noReplace) {
           router.push('/cvs')      

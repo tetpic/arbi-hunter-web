@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, createContext, useCallback, useContext, useSt
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ModerationStatusType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface IState {
   currentVacancy: IVacancy
@@ -145,6 +146,7 @@ export function VacancyWrapper(props: Props) {
   
 
   const saveVacancy = (id: number) => {
+    sendToMetrika(AppMetricaEvent.AddToSaved)
     VacancyRepository.addVcToSaved(id)
     .then(res=> {
       setSavedVacancies()

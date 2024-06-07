@@ -26,6 +26,7 @@ import VacancyPreview from '../../preview/vacancy'
 import useTranslation from 'next-translate/useTranslation'
 import Title from '@/components/ui/TitleForSection'
 import CrossSvg from '@/components/svg/CrossSvg'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
   id?: number
@@ -169,6 +170,7 @@ export default function Vacancy(props: Props) {
     else {
       VacancyRepository.editVacancyById(sendData, creationContext.draftId.current)
       .then(res => {
+        sendToMetrika(AppMetricaEvent.CreateVacancy)
         appContext.showSnackbar(t('create_vacancy_saved'), SnackbarType.success)
         setTimeout(()=> {
           !noRedirect&&router.push('/vacancies')  

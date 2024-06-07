@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, createContext, useContext, useState } from 'r
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface IState {
   savedCvs: ICV[],
@@ -71,6 +72,7 @@ export function CvWrapper(props: Props) {
   
   const saveCv = async (id: number) => {
     try {
+      sendToMetrika(AppMetricaEvent.AddToSaved)
       const res = await CvRepository.addCvToSaved({id})
       setSavedCvs()
       return true

@@ -36,6 +36,7 @@ import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
 import ChatRepository from 'data/repositories/ChatRepository'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import Head from 'next/head'
 
 
 interface Props {
@@ -156,6 +157,14 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
+      <Head>
+        <meta property="og:title"  content={'Вакансия '+currentVacancy?.name} />       
+        <meta property="og:url" content={process.env.HOST + '/vacancy' + currentVacancy?.id} />
+        <meta property="og:description"  content={currentVacancy?.description}/>
+        <meta property="og:image" content={process.env.HOST + '/images/ahFooter.svg'} />
+        <meta property="og:image:width" content="400"/>
+        <meta property="og:image:height" content="400"/>
+      </Head>
       {!isTabletWidth &&
       <BackTextButton onClick={router.back}/>
       }
