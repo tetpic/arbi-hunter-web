@@ -57,7 +57,7 @@ export default function VacancyPage(props: Props) {
   const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
   const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
-  const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
+  const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser?.length -1]||null
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
 
 
@@ -108,11 +108,11 @@ export default function VacancyPage(props: Props) {
       router.back()
       return
     }
-    if(currentVacancy && currentVacancy.categories.length > 0) {
+    if(currentVacancy && currentVacancy.categories?.length > 0) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
       VacancyRepository.searchVacancies({categories: [currentVacancy.categories[0].id]})
       .then(res=> {
-        if(res?.data.length >  1) {
+        if(res?.data?.length >  1) {
           const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 3).filter(el => el.id !== currentVacancy.id)
           setOtherCompanyVacancies(randomItems)
         }
@@ -258,7 +258,7 @@ export default function VacancyPage(props: Props) {
             </Button>
           </>
           }
-           {freeToApplyCvs.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
+           {freeToApplyCvs?.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
               <Button
               styleType={['gradient', 'phoneWide']}
               onClick={makeResponse}
@@ -266,7 +266,7 @@ export default function VacancyPage(props: Props) {
               {t('vacancy_page_applyFromOtherCv')}
             </Button>
             }
-          {(!lastProposal) && currentVacancy.applicationsByCurrentUser.length===0 && freeToApplyCvs.length > 0 &&
+          {(!lastProposal) && currentVacancy.applicationsByCurrentUser?.length===0 && freeToApplyCvs?.length > 0 &&
             <Button 
             styleType={['gradient', 'phoneWide']}
             onClick={makeResponse}
@@ -343,7 +343,7 @@ export default function VacancyPage(props: Props) {
         </div>
       }
 
-      {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
+      {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges?.length > 0 && 
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_languagesKnowledges')}</P>
           <TagList 
