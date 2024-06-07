@@ -73,7 +73,7 @@ export const getAge = (age: number): string => {
   return age + ' ' + Formatter.pluralize(age, 'год', 'года', 'лет')
 }
 
-export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t: Translate):string|null => {
+export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):string|null => {
   const salary = data.cv&&(Formatter.formatNumber(Number(data.cv?.salary)) + ' ' + TranslateCurrency(data.cv?.currency))
   ||data.vacancy&&
     [

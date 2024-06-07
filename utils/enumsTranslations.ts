@@ -36,12 +36,12 @@ export const TranslateHirerRole = (p: HirerRole, t: Translate) => {
   }
 }
 
-export const TranslateCurrency = (c: Currency) => {
+export const TranslateCurrency = (c: Currency, svg?: boolean) => {
   switch(c) {
     case Currency.EUR:
-      return '€'
+      return svg?' euro':'€'
     case Currency.RUB: 
-      return '₽'
+      return svg? ' руб.':'₽'
     case Currency.USD:
       return '$'
     case Currency.GRN:
@@ -102,18 +102,18 @@ export const TranslateWorkExperience = (w: WorkExperience, t: Translate) => {
   }
 }
 
-export const TranslateCompensationType = (c: CompensationType, t: Translate) => {
+export const TranslateCompensationType = (c: CompensationType, t?: Translate) => {
   switch(c) {
     // case CompensationType.Commission: 
     // return 'Процент'
     case CompensationType.Contract:
-      return t('compensation_contract')
+      return t?.('compensation_contract')||'Договорная'
     // case CompensationType.Gybrid: 
     //   return 'Гибрид'
     // case CompensationType.Piecework: 
     //   return 'Сдельная'
     case CompensationType.Salary:
-      return t('compensation_salary')
+      return t?.('compensation_salary')||'Зарплата'
     }
 }
 
