@@ -53,7 +53,7 @@ export default function Vacancy(props: Props) {
         }}
       />
 
-  <ContentLayout title='Вакансия' hideMobileHeader>
+  <ContentLayout hideMobileHeader>
     <PersonalWrapper key={'vacancy_page'+props.id}>
       <VacancyWrapper>
         <VacancyPage id={Number(props.id)}/>
