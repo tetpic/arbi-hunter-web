@@ -41,13 +41,14 @@ export default class CvRepository {
     return res
   }
 
-  static async getById(data: number, profile?: ProfileType, token?: string): Promise<ICV|null> {
+  static async getById(data: number, profile? : ProfileType, token?: string): Promise<ICV|null> {
     const res = await request({
       method: 'get',
       url: `/api/cv/${data}`,
       profile,
       token
     })
+    debugger
     if(res.err) {
       return null
     }

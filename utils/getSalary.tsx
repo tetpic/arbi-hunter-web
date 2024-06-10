@@ -5,7 +5,7 @@ import { ICV } from 'data/interfaces/ICV'
 import { CompensationType } from 'types/enums'
 
 export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):string|number|null => {
-  const salary = data.cv&&Number(data.cv?.salary.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ') + ' ' + TranslateCurrency(data.cv?.currency))
+  const salary = data.cv&&Number(data.cv?.salary.toString() + ' ' + TranslateCurrency(data.cv?.currency, true))
   ||data.vacancy&&
     [
       data.vacancy?.salaryMin&&('от '+ data.vacancy?.salaryMin.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ') + TranslateCurrency(data.vacancy?.currency, true)), 
@@ -14,8 +14,8 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):s
   const compensation = data.vacancy?.compensation||data.cv?.compensation
   
 
-  if((!Boolean(salary.toString()?.trim()) && compensation === CompensationType.Salary)) {
-    return null
+  if((!Boolean(salary?.toString()?.trim()) && compensation === CompensationType.Salary)) {
+    return salary
   }
 
   switch(compensation) {

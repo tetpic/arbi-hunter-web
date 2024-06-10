@@ -155,11 +155,18 @@ export default function CvPage(props: Props) {
       debugger
       if(res === false ) {
         appContext.showSnackbar(t('cv_deletedOrHidden'), SnackbarType.error)
-        router.back()
+        // router.back()
       }
     })
-    vacancyContext.setVacancies()
-    folderContext.getAllFolders()
+    if(userContext.currentProfile) {
+      vacancyContext.setVacancies()
+      folderContext.getAllFolders()
+    }
+    else {
+      setTimeout(() => {
+        router.push('/login')
+      }, 4000)
+    }
   }, [])
 
 
@@ -201,6 +208,10 @@ export default function CvPage(props: Props) {
     return <div className={styles.root}>
       <Spinner size={24}/>
     </div>
+  }
+
+  if(!userContext.currentProfile) {
+    return <></>
   }
 
 

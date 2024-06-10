@@ -44,9 +44,7 @@ export default function Vacancy(props: Props) {
           title: 'ArbiHunter | ' + props.vacancy.name + ` | работа в компании ${props.vacancy.company}`,
           description: 'Зарплата: ' 
           + getSalary({vacancy: props.vacancy}, t) 
-          + `. Требуемый опыт: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ' лет': 'не требуется'}. 
-          Занятость: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?'Удаленно. ':'Oфис. '}
-          Работа в компании ${props.vacancy.company}.`,
+          + `. Требуемый опыт: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ' лет': 'не требуется'}. Занятость: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?'Удаленно. ':'Oфис. '} Работа в компании ${props.vacancy.company}.`,
           images: [
             {
               url: `${process.env.host}/api/share-image/vacancy/${props.vacancy.id}`,
