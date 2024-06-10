@@ -43,6 +43,7 @@ export default async function handler(request: Request) {
             lineHeight: '62px',
             flexDirection: 'column',
             padding: '0 82px',
+            minWidth: '900px'
           }}
         >
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800}}>
@@ -51,13 +52,15 @@ export default async function handler(request: Request) {
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', marginTop: '66px', fontWeight: 800}}>
             {vacancy.company}
           </div>
-          <div style={{ display: 'flex', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
+          <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
             {vacancy.categories[0].name}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '44px', fontSize: '32px', lineHeight: '20px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '32px', lineHeight: '20px', fontWeight: 700 }}>
             {salary ?? ''}
-            {!!location && !!salary && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
+            {!!location && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
             {location ?? ''}
+            {<div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
+            {vacancy.isRemote ? 'Удаленно' : 'Офис'}
           </div>
         </div>
       </div>
