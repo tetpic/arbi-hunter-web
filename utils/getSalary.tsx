@@ -15,7 +15,7 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):s
   
 
   if((!Boolean(salary?.toString()?.trim()) && compensation === CompensationType.Salary)) {
-    return salary
+    return null
   }
 
   switch(compensation) {

@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/server'
 import { ICV } from 'data/interfaces/ICV'
 import { TranslateCurrency } from 'utils/enumsTranslations'
-import Formatter from 'utils/formatter'
 
 export const config = {
   runtime: 'edge',
@@ -16,7 +15,7 @@ export default async function handler(request: Request) {
     { next: { revalidate: 0 } }
   ).then((res) => res.json() as Promise<ICV>)
   
-  const salary = cv.salary?Formatter.formatPrice(Number(cv.salary)) + TranslateCurrency(cv.currency, true):'Договорная'
+  const salary = cv.salary?cv.salary+ ` ${TranslateCurrency(cv.currency)}`:'Договорная'
   const location = [cv.country?.locName, cv?.city?.locName]
     .filter((i) => !!i)
     .join(', ')
