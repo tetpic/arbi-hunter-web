@@ -7,6 +7,7 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import useTranslation from 'next-translate/useTranslation'
 import { NextSeo} from 'next-seo'
 import { getSalary } from 'utils/helpers'
+import { TranslateEmploymentType, TranslateWorkExperience } from 'utils/enumsTranslations'
 
 
 interface Query {
@@ -40,16 +41,25 @@ export default function Vacancy(props: Props) {
         openGraph={{
           type: 'website',
           url: `${process.env.host}/vacancy/${props.vacancy.id}`,
-          title: props.vacancy.name,
-          description: 'Зарплата: ' + getSalary({vacancy: props.vacancy}, t),
+          title: 'ArbiHunter | ' + props.vacancy.name + ` | работа в компании ${props.vacancy.company}`,
+          description: 'Зарплата: ' 
+          + getSalary({vacancy: props.vacancy}, t) 
+          + `. Требуемый опыт: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ' лет': 'не требуется'}. 
+          Занятость: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?'Удаленно. ':'Oфис. '}
+          Работа в компании ${props.vacancy.company}.`,
           images: [
             {
               url: `${process.env.host}/api/share-image/vacancy/${props.vacancy.id}`,
-              width: 1280,
-              height: 670,
-              alt: props.vacancy.name,
+              width: 1200,
+              height: 630,
+              type: 'image/png',
             },
           ],
+        }}
+        twitter={{
+          handle: '@handle',
+          site: '@site',
+          cardType: 'summary_large_image',
         }}
       />
 
