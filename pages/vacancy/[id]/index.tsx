@@ -49,12 +49,6 @@ export default function Vacancy(props: Props) {
               height: 670,
               alt: props.vacancy.name,
             },
-            {
-              url: `${process.env.host}/images/ahFullLogo.svg`,
-              width: 1350,
-              height: 390,
-              alt: props.vacancy.name,
-            },
           ],
         }}
       />
