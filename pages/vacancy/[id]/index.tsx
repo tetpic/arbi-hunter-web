@@ -35,18 +35,24 @@ export default function Vacancy(props: Props) {
 
   return (<>
    <NextSeo
-        title={'Вакансия ' + props.vacancy.name}
-        description={'Зарплата ' + getSalary({vacancy: props.vacancy}, t)}
+        title={'ArbiHunter | Вакансия ' + props.vacancy.name}
+        description={'Зарплата: ' + getSalary({vacancy: props.vacancy}, t)}
         openGraph={{
           type: 'website',
           url: `${process.env.host}/vacancy/${props.vacancy.id}`,
           title: props.vacancy.name,
-          description: 'Зарплата ' + getSalary({vacancy: props.vacancy}, t),
+          description: 'Зарплата: ' + getSalary({vacancy: props.vacancy}, t),
           images: [
             {
               url: `${process.env.host}/api/share-image/vacancy/${props.vacancy.id}`,
-              width: 540,
-              height: 450,
+              width: 1280,
+              height: 670,
+              alt: props.vacancy.name,
+            },
+            {
+              url: `${process.env.host}/images/ahFullLogo.svg`,
+              width: 1350,
+              height: 390,
               alt: props.vacancy.name,
             },
           ],

@@ -81,9 +81,10 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):s
       data.vacancy?.salaryMax&&('до '+Formatter.formatNumber(data.vacancy?.salaryMax) + TranslateCurrency(data.vacancy?.currency))
     ].filter(Boolean).join(' ')
   const compensation = data.vacancy?.compensation||data.cv?.compensation
+
   
 
-  if((!Boolean(salary?.trim()) && compensation === CompensationType.Salary) || !salary) {
+  if((!Boolean(salary?.trim()) && compensation === CompensationType.Salary)) {
     return null
   }
 

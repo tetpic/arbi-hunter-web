@@ -50,7 +50,6 @@ export function Model(props) {
           <skinnedMesh name="Eye_0" geometry={nodes.Eye_0.geometry} material={materials.Eye_0} skeleton={nodes.Eye_0.skeleton} />
           <skinnedMesh name="Face_0" geometry={nodes.Face_0.geometry} material={materials.Face_0} skeleton={nodes.Face_0.skeleton} />
           <skinnedMesh name="Face_1" geometry={nodes.Face_1.geometry} material={materials.Face_1} skeleton={nodes.Face_1.skeleton} />
-          <skinnedMesh name="Face_Unic" geometry={nodes.Face_Unic.geometry} material={materials.Face_Unic} skeleton={nodes.Face_Unic.skeleton} />
           <skinnedMesh name="Glasses_0" geometry={nodes.Glasses_0.geometry} material={materials.Glasses_0} skeleton={nodes.Glasses_0.skeleton} />
           <skinnedMesh name="Glasses_1" geometry={nodes.Glasses_1.geometry} material={materials.Glasses_1} skeleton={nodes.Glasses_1.skeleton} />
           <skinnedMesh name="Glasses_2" geometry={nodes.Glasses_2.geometry} material={materials.Glasses_2} skeleton={nodes.Glasses_2.skeleton} />
@@ -71,7 +70,9 @@ export function Model(props) {
           <skinnedMesh name="Head_2_0" geometry={nodes.Head_2_0.geometry} material={materials.Head_0} skeleton={nodes.Head_2_0.skeleton} />
           <skinnedMesh name="Head_2_1" geometry={nodes.Head_2_1.geometry} material={materials.Head_1} skeleton={nodes.Head_2_1.skeleton} />
           <skinnedMesh name="Head_2_2" geometry={nodes.Head_2_2.geometry} material={materials.Head_2} skeleton={nodes.Head_2_2.skeleton} />
-          <skinnedMesh name="Head_Unic" geometry={nodes.Head_Unic.geometry} material={materials.Head_Unic} skeleton={nodes.Head_Unic.skeleton} />
+          <skinnedMesh name="Head_Unic_0" geometry={nodes.Head_Unic_0.geometry} material={materials.Head_Unic} skeleton={nodes.Head_Unic_0.skeleton} />
+          <skinnedMesh name="Head_Unic_1" geometry={nodes.Head_Unic_1.geometry} material={materials.Head_Unic} skeleton={nodes.Head_Unic_1.skeleton} />
+          <skinnedMesh name="Head_Unic_2" geometry={nodes.Head_Unic_2.geometry} material={materials.Head_Unic} skeleton={nodes.Head_Unic_2.skeleton} />
           <skinnedMesh name="Jacket_0_0" geometry={nodes.Jacket_0_0.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_0.skeleton} />
           <skinnedMesh name="Jacket_0_1" geometry={nodes.Jacket_0_1.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_1.skeleton} />
           <skinnedMesh name="Jacket_0_2" geometry={nodes.Jacket_0_2.geometry} material={materials.Jacket_0} skeleton={nodes.Jacket_0_2.skeleton} />
