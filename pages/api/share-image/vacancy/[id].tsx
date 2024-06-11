@@ -30,7 +30,7 @@ export default async function handler(request: Request) {
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          paddingTop: '100px',
+          paddingTop: '80px',
           justifyContent: 'center',
           height: '100%',
           width: '100%',
@@ -48,8 +48,11 @@ export default async function handler(request: Request) {
             fontSize: '120px',
             lineHeight: '62px',
             flexDirection: 'column',
-            padding: '0 82px',
-            minWidth: '900px'
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            height: '460px',
+            padding: '0 100px',
+            minWidth: '1000px'
           }}
         >
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800}}>
@@ -61,7 +64,7 @@ export default async function handler(request: Request) {
           <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
             {vacancy.categories[0].name}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '42px', lineHeight: '20px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  alignItems: 'center', marginTop: 'auto', fontSize: '42px', lineHeight: '52px', fontWeight: 700 }}>
             {salary ?? ''}
             {!!location && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
             {location ?? ''}
