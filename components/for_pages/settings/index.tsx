@@ -72,7 +72,11 @@ export default function SettingsPage(props: Props) {
     SettingsNavigation.SiteSettings,
   ]
 
-  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems).map(el=> {return {name: translatePersonalNavigation(el, t, userContext.currentProfile?.profileType), type: el}})
+  const items = (userContext.currentProfile?.profileType === ProfileType.Hirer?hirerItems:employeeItems)
+  .map(el=> {return {
+    name: translatePersonalNavigation(el, t, userContext.currentProfile?.profileType), 
+    type: el
+  }})
 
   const getComponent = () => {
     switch(activeItem) {

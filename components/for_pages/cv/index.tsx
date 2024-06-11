@@ -351,7 +351,6 @@ export default function CvPage(props: Props) {
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           <FavoritesButton 
           altStyleType={['icon', 'white']}
-          showStar 
           onClick={saveCvToFavorites} 
           isActive={currentCv?.isSavedByCurrentProfile}/>
         </div>
@@ -421,7 +420,7 @@ export default function CvPage(props: Props) {
               {t('item_continueEditing')}
             </Button>
           }  
-          <Button styleType={['borderGradient']} altStyleType={['whitePurple']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
+          <Button styleType={['borderGradient', 'phoneWide']} altStyleType={['whitePurple']} href={{pathname: '/recruiting', query: {filters: JSON.stringify({categories: [currentCv?.categories[0].id]})}}}>
             {currentCv?.categories[0].vacanciesCount||0} {t('cv_page_appropriateVcs')}
           </Button>
         </div>
