@@ -64,7 +64,7 @@ export default function Cv(props: Props) {
       description={`Резюме ${props.cv.categories[0].name}`+' Зарплата: ' + getSalary({cv: props.cv}, t)}
       openGraph={{
         type: 'website',
-      url: `${process.env.host}/cv/${props.cv.id}`,
+      url: `${process.env.HOST_ROOT}/cv/${props.cv.id}`,
       title: 'ArbiHunter | Резюме ' +  props.cv.categories[0].name,
       description: [
         `Зарплата:  ${getSalary({cv: props.cv}, t)}`,
@@ -73,7 +73,7 @@ export default function Cv(props: Props) {
       ].filter(Boolean).join(', '),
       images: [
         {
-          url: `${process.env.host}/api/share-image/cv/${props.cv.id}`,
+          url: `${process.env.HOST_ROOT}/api/share-image/cv/${props.cv.id}`,
           width: 1200,
           height: 630,
           type: 'image/png',

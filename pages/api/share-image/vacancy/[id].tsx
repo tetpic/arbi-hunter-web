@@ -11,7 +11,7 @@ export default async function handler(request: Request) {
   const id = url.searchParams.get('id')
 
   const getFont = async () => {
-    const response = await fetch(`${process.env.host}/fonts/Montserrat-SemiBold.ttf`)
+    const response = await fetch(`${process.env.HOST_ROOT}/fonts/Montserrat-SemiBold.ttf`)
      const buffer = await response.arrayBuffer()
      return buffer
    }
@@ -36,7 +36,7 @@ export default async function handler(request: Request) {
           width: '100%',
           color: 'white',
           backgroundColor: '#f1f1f1',
-          backgroundImage: `url("${process.env.host}/images/ahFooter.svg"), linear-gradient(60deg, #22222a 20%, #a46cdc 65%,  #586de4 100%)`,
+          backgroundImage: `url("${process.env.HOST_ROOT}/images/ahFooter.svg"), linear-gradient(60deg, #22222a 20%, #a46cdc 65%,  #586de4 100%)`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: '100% 120%',
           backgroundPosition: 'bottom center',
@@ -53,7 +53,7 @@ export default async function handler(request: Request) {
           }}
         >
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800}}>
-            <img src={`${process.env.host}/images/ahFullLogo.svg`} alt="" width={320}  />
+            <img src={`${process.env.HOST_ROOT}/images/ahFullLogo.svg`} alt="" width={320}  />
           </div>
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', marginTop: '66px', fontWeight: 800}}>
             {vacancy.company}

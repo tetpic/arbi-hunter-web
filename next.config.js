@@ -5,12 +5,14 @@ const nextConfig = nextTranslate({
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    host: process.env.HOST
+    host: process.env.HOST,
+    HOST_ROOT: process.env.HOST_ROOT
   },
 
   publicRuntimeConfig: {
     HOST: process.env.HOST,
     HOST_INNER: process.env.HOST,
+    HOST_ROOT: process.env.HOST_ROOT,
     NODE_ENV: process.env.NODE_ENV || 'development',
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',
@@ -24,6 +26,7 @@ const nextConfig = nextTranslate({
   serverRuntimeConfig: {
     HOST: process.env.HOST,
     HOST_INNER: process.env.HOST_INNER,
+    HOST_ROOT: process.env.HOST_ROOT,
     NODE_ENV: process.env.NODE_ENV || 'development',
     DEV: process.env.NODE_ENV === 'development',
     PROD: process.env.NODE_ENV !== 'development',

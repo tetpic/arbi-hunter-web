@@ -47,7 +47,7 @@ export default function SavedMedia() {
         }        
       },
       {title: t('media_article_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
-        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        copyToClipboard(process.env.HOST_ROOT + '/media/article/' + article.id)
         appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
       {title: t('media_article_share'),icon: <ShareSvg/>},

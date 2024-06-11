@@ -95,7 +95,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   }
 
   const copyToClipboardHandler = () => {
-    copyToClipboard(process.env.host + '/cv/' + cv.id)
+    copyToClipboard(process.env.HOST_ROOT + '/cv/' + cv.id)
     appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
   }
 

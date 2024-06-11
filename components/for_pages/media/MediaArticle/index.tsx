@@ -45,13 +45,13 @@ export default function MediaArticle(props: Props) {
       //   }        
       // },
       {title: t('media_article_copyLink'),icon: <LinkSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
-        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        copyToClipboard(process.env.HOST_ROOT + '/media/article/' + article.id)
         appContext.showSnackbar(t('media_article_linkCopied'), SnackbarType.success)
       }},
       {title: t('media_article_share'),icon: <ShareSvg color={isLightTheme?colors.black:''}/>, onClick: ()=>{
-        navigator.share&&shareData({url: process.env.host + '/media/article/' + article.id})
+        navigator.share&&shareData({url: process.env.HOST_ROOT + '/media/article/' + article.id})
         ||
-        copyToClipboard(process.env.host + '/media/article/' + article.id)
+        copyToClipboard(process.env.HOST_ROOT + '/media/article/' + article.id)
         appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
       }},
       // (props.article?.articleCategory?.categoryType !== CategoryType.Knowledge&&{title: t('media_article_hide'),icon: <CloseEyeSvg color={isLightTheme?colors.black:''}/>})

@@ -50,14 +50,14 @@ export default function Vacancy(props: Props) {
       description={'Зарплата: ' + getSalary({vacancy: props.vacancy}, t)}
       openGraph={{
         type: 'website',
-        url: `${process.env.host}/vacancy/${props.vacancy.id}`,
+        url: `${process.env.HOST_ROOT}/vacancy/${props.vacancy.id}`,
         title: 'ArbiHunter | ' + props.vacancy.name + ` | работа в компании ${props.vacancy.company}`,
         description: 'Зарплата: ' 
         + getSalary({vacancy: props.vacancy}, t) 
         + `. Требуемый опыт: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ' лет': 'не требуется'}. Занятость: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?'Удаленно. ':'Oфис. '} Работа в компании ${props.vacancy.company}.`,
         images: [
           {
-            url: `${process.env.host}/api/share-image/vacancy/${props.vacancy.id}`,
+            url: `${process.env.HOST_ROOT}/api/share-image/vacancy/${props.vacancy.id}`,
             width: 1200,
             height: 630,
             type: 'image/png',

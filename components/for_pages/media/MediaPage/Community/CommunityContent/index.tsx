@@ -49,7 +49,7 @@ export default function CommunityContent(props: Props) {
           onClick: () => appContext.showModal(ModalType.CreateCommunityArticleModal, {article})
         },
         {title: t('community_copyLink'),icon: <LinkSvg/>, onClick: ()=>{
-          copyToClipboard(process.env.host + '/media/article/' + article.id)
+          copyToClipboard(process.env.HOST_ROOT + '/media/article/' + article.id)
           appContext.showSnackbar(t('community_linkCopied'), SnackbarType.success)
         }},
         {
