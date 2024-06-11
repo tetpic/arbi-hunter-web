@@ -64,7 +64,7 @@ function RecruitingPageHirerInner(props: Props) {
 
   const {isTabletWidth} = appContext.size
 
-  const findCvs = (data?: Partial<IVacancyCvSearchParams>):void => {
+  const findCvs = (data?: Partial<IVacancyCvSearchParams>, _page?: number):void => {
     const languageLevels = Object.values(LanguageKnowLevel)
     const _filters:IVacancyCvSearchParams = {
       ...currentFilters,
@@ -81,7 +81,7 @@ function RecruitingPageHirerInner(props: Props) {
       ),
     }
     const clearedFilters = clearObject(_filters)
-    cvContext.findCvs(clearedFilters)
+    cvContext.findCvs(clearedFilters, _page)
     .then(_=>setLoading(false))
   }
 
@@ -97,7 +97,9 @@ function RecruitingPageHirerInner(props: Props) {
     setLoading(true)
     setSearchString(data.search)
     setCurrentFilters(data)
-    findVacanciesThrottle.callback(data)
+    setTimeout(()=>{
+      findVacanciesThrottle.callback(data, 1)
+    }, 200)
     const clearedForQuery = clearObject(data)
     router.replace({query: {filters: JSON.stringify(clearedForQuery) }}, undefined, {shallow: true})
   }

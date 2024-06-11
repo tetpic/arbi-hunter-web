@@ -23,7 +23,6 @@ import {   TranslateEmploymentType, TranslateScheduleType, TranslateVacancyLookT
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
-import CheckboxField from '@/components/fields/CheckboxField'
 
 interface Props {
   onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
@@ -326,14 +325,15 @@ export default function SideFilterHirer(props: Props) {
           options={[
             {label: TranslateScheduleType(ScheduleType.FullDay, t), value: ScheduleType.FullDay},
             {label: TranslateScheduleType(ScheduleType.Flexible, t), value: ScheduleType.Flexible},
+            {label: TranslateScheduleType(ScheduleType.Remote, t), value: ScheduleType.Remote},
           ]} 
           />
-           <CheckboxField 
+           {/* <CheckboxField 
           rootClass={styles.radioField}
           name={'isRemote'} 
           value={true}
           label={TranslateScheduleType(ScheduleType.Remote, t)}
-          />
+          /> */}
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>
 

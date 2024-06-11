@@ -111,13 +111,7 @@ function RecruitingPageEmployeeInner(props: Props) {
   }
 
   const onFilterClick = ()=>{
-    // if(!isTabletWidth) {
-      setPage('filters')
-    //   return 
-    // }
-    // appContext.showModal<IRecruitingFiltersModalProps>(ModalType.RecruitingFiltersModal, {
-    //   onFilterChange: (data)=>onFilterChange(data)
-    // })
+    setPage('filters')
   }
 
   useEffect(()=>{

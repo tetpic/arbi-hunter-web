@@ -60,8 +60,6 @@ export default function VacancyPage(props: Props) {
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
 
 
-
-
   const makeResponse = () => {
     if(!userContext.isLogged) {
       router.push('/login')
@@ -106,6 +104,10 @@ export default function VacancyPage(props: Props) {
     }
   }
 
+  const openContactsHandler = () => {
+
+  }
+
   useEffect(()=>{
     if(currentVacancy && !currentVacancy?.profile) {
       router.back()
@@ -141,7 +143,7 @@ export default function VacancyPage(props: Props) {
   </div> 
 
   const companyCard = (
-    <Link href={'/personal/'+currentVacancy.profile?.id} className={styles.companyCard}>
+    <Link href={userContext.isLogged?'/personal/'+currentVacancy.profile?.id: '/login'} className={styles.companyCard}>
       <UserPic 
       image={currentVacancy.profile?.logo&&ImageHelper.urlFromFile(currentVacancy.profile?.logo, Preset.smallIconCrop)} 
       size={67}/>
@@ -164,10 +166,10 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
-      {!isTabletWidth &&
+      {!isTabletWidth && userContext.isLogged &&
       <BackTextButton onClick={router.back}/>
       }
-      {isTabletWidth &&
+      {isTabletWidth && userContext.isLogged &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {!isMyVacancy &&
@@ -281,7 +283,15 @@ export default function VacancyPage(props: Props) {
             <Button 
             styleType={['black', 'borderBlue', 'phoneWide']} 
             altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
-            onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
+            onClick={()=>{
+              if(userContext.isLogged) {
+                setIsShowContacts(state=> ([true, state[1]]))
+              }
+              else {
+                router.push('/login')
+              }
+            }}
+            >
               {t('vacancy_page_showContacts')}
             </Button>
           
@@ -358,7 +368,14 @@ export default function VacancyPage(props: Props) {
             <Button 
             styleType={['black', 'wide', 'borderBlue']} 
             altStyleType={['gradient']}
-            onClick={()=>setIsShowContacts(state=> ([state[0], true]))}
+            onClick={()=>{
+              if(userContext.isLogged) {
+                setIsShowContacts(state=> ([state[0], true]))
+              }
+              else {
+                router.push('/login')
+              }
+            }}
             >
               {t('vacancy_page_showContacts')}
             </Button>

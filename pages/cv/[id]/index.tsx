@@ -74,16 +74,16 @@ export default function Cv(props: Props) {
       images: [
         {
           url: `${process.env.host}/api/share-image/cv/${props.cv.id}`,
-        width: 1200,
-      height: 630,
-      type: 'image/png',
+          width: 1200,
+          height: 630,
+          type: 'image/png',
       },
       ],
       }}
       twitter={{
         handle: '@handle',
-      site: '@site',
-      cardType: 'summary_large_image',
+        site: '@site',
+        cardType: 'summary_large_image',
       }}
       />
     }
