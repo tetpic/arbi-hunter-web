@@ -50,7 +50,7 @@ export default function Title(props: Props) {
         <div className={styles.filler}></div>
       }
       {isTabletWidth && props.link &&
-        <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>Все <ArrowRightSvg color={isLightTheme&&'black'}/></Link>
+        <Link className={classNames(styles.link, props.itemClassName)} href={props.link}>{t('watchAllAlt')} <ArrowRightSvg color={isLightTheme&&'black'}/></Link>
       }
       {isTabletWidth && props.onAllWatchClick && 
         <div 

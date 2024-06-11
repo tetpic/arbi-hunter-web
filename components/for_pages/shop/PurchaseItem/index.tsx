@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 
 interface Props {
@@ -43,13 +44,14 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       case PurchaseType.Character : {
         CharacterRepository.createCharacter({gender: 'male'})
         .then(_=> {
+          sendToMetrika(AppMetricaEvent.CreateCharacter)
           CharacterRepository.buyCharacter()
           .then(_=> {
             tariffContext.setPacketsState(state=> {
               state.delete(tariff.id)
               return new Map(state)
             })
-            appContext.showSnackbar('Персонаж куплен', SnackbarType.success)
+            appContext.showSnackbar(t('shop_characterBought'), SnackbarType.success)
             userContext.refreshUser()
           })
           .catch(_=> {

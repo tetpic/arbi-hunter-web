@@ -36,7 +36,7 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 export default function Page(props: Props) {
   const {isTabletWidth} = useAppContext().size
   return (
-    <ContentLayout title={'Главная страница'}  withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
+    <ContentLayout title={'Главная страница'} description='ArbiHunter — HR-сервис будущего. Создай профиль, заполни резюме и получи job offer в арбитраже трафика прямо сейчас!'  withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} withMobileMenu={Boolean(props?.profile)}>
       <VacancyWrapper>
         <PersonalWrapper>
         {

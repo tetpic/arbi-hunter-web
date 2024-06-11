@@ -31,6 +31,7 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerFieldsModal'
 import { SalaryModalArgs } from '@/components/modals/SalaryModal'
 import { colors } from 'styles/variables'
+import { IGeoName } from 'data/interfaces/ILocation'
 
 interface Props {
   onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
@@ -160,7 +161,7 @@ export default function FilterHirer(props: Props) {
 
   const openCountryModal = () => {
     appContext.showModal<ICountryModalProps>(ModalType.CountryModal, {
-      initials: formik.values.countries?.map(el => locationContext.countries.get(el as number)),
+      initials: formik.values.countries?.map(el => locationContext.countries.get(Number(el))),
       onSubmit: (r) => {
         formik.setFieldValue('countries', [...r.map(el => el?.geonameid)])
         locationContext.getCountries(null, r)
@@ -185,6 +186,11 @@ export default function FilterHirer(props: Props) {
       languageKnowledges: new Map,
     }
     creationContext.setHelpObjects(newHelpObject)
+  }
+
+  const onRemoveCountry = (el: IGeoName) => {
+    formik.setFieldValue('countries', formik.values.countries.filter(f=> f !== el?.geonameid))
+    creationContext.setHelpObjects({...creationContext.helpObjects, countries: creationContext.helpObjects.countries.filter(f=> f.geonameid !== el?.geonameid)})
   }
 
   const openFieldsModal = (type: HirerFieldType, title: string, height: number) => {
@@ -449,7 +455,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
           {creationContext.helpObjects?.countries?.length > 0 &&
             creationContext.helpObjects.countries.map(el=> {
-              return (<RemovableItem key={el?.geonameid} onClick={()=>{}} text={el?.locName} />)
+              return (<RemovableItem key={el?.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el?.locName} />)
             })
           }
             <P 
@@ -464,7 +470,7 @@ export default function FilterHirer(props: Props) {
           <div className={styles.itemContent}>
             {
               creationContext.helpObjects.countries.map(el=> {
-                return (<RemovableItem key={el?.geonameid} onClick={()=>{}} text={el?.locName} />)
+                return (<RemovableItem key={el?.geonameid} onClick={()=>{onRemoveCountry(el)}} text={el?.locName} />)
               })
             }
           </div>
@@ -627,7 +633,7 @@ export default function FilterHirer(props: Props) {
             <span>{t('filters_experience')}</span> {isTabletWidth &&<ArrowDownSvg color={isLightTheme&&colors.black}/>}
           </p>
           {!isTabletWidth &&
-            <RadioListField 
+            <CheckboxListField 
             name={'experience'} 
             rootClass={styles.radioField}
             options={Object.values(WorkExperience).map(el => {

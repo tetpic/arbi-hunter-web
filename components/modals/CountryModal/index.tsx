@@ -17,6 +17,7 @@ import useTranslation from 'next-translate/useTranslation'
 export interface ICountryModalProps {
   onSubmit: (country: IGeoName[]) => void
   initials?: IGeoName[]
+  countries?: IGeoName[]
 }
 
 interface Props {
@@ -40,7 +41,6 @@ function CountryModalInner(props: Props) {
   
 
   const submit = (data: {country: IGeoName[], search: string})=> {
-    debugger
     args.onSubmit(data.country)
     props.onClose()
   }
@@ -54,7 +54,12 @@ function CountryModalInner(props: Props) {
   })
 
   useEffect(()=>{
-    locationContext.getCountries({search: formik.values.search}, null, formik.values.country)  
+    debugger
+    console.log(locationContext.countries)
+    
+    if(locationContext.countries.size === 0) {
+      locationContext.getCountries({search: formik.values.search, page: 1, limit: 198}, null, formik.values.country)  
+    }
   }, [formik.values.search])
 
   const body = (<div className={styles.root}>

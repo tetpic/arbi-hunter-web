@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, createContext, useContext, useState } from 'r
 import { useCreateVcCvContext } from './createVcCv_state'
 import { useUserContext } from './user_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface IState {
   savedCvs: ICV[],
@@ -18,7 +19,7 @@ interface IState {
   deleteCv: (id: number) => void
   updateCv: (id: number, cv: Partial<ICV>, onSave?: ()=>void) =>void
   editCv: (cv: ICV) => void
-  findCvs: (data?: IVacancyCvSearchParams) => Promise<boolean>
+  findCvs: (data?: IVacancyCvSearchParams, _page?: number) => Promise<boolean>
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
   total: number,
@@ -71,6 +72,7 @@ export function CvWrapper(props: Props) {
   
   const saveCv = async (id: number) => {
     try {
+      sendToMetrika(AppMetricaEvent.AddToSaved)
       const res = await CvRepository.addCvToSaved({id})
       setSavedCvs()
       return true
@@ -103,11 +105,11 @@ export function CvWrapper(props: Props) {
     })
   }
 
-  const findCvs = async(data?: IVacancyCvSearchParams) => {
-    const res = await CvRepository.findCvs(data, page, 40)
+  const findCvs = async(data?: IVacancyCvSearchParams, _page?: number) => {
+    const res = await CvRepository.findCvs(data, _page||page, 40)
     if(typeof res === 'object') {
       setFoundCvsState(state=> {
-        page === 1&& state.clear()
+        (_page||page) === 1&& state.clear()
         res.data.forEach(el=> state.set(el.id, el))
         return new Map(state)
       })

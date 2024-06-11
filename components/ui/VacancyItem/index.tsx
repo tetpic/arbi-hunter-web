@@ -23,6 +23,8 @@ import { useRouter } from 'next/router'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
+import { useUserContext } from 'context/user_state'
 
 interface Props {
   vacancy?: IVacancy
@@ -33,27 +35,33 @@ interface Props {
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const {t, lang} = useTranslation()
   const appContext = useAppContext()
+  const userContext = useUserContext()
   const {isTabletWidth} = appContext.size
   const cvContext = useCvContext()
   const {getNewSignal} = useAbortController()
   const router = useRouter()
-  const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser.length -1]||null
+  const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser?.length -1]||null
   const isLightTheme = appContext.theme === AppTheme.Light
 
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    const _args:IApplicationModalProps = {
-      cvs: cvContext.savedCvs.filter(el => el.published), 
-      vacancy: vacancy,
-      onSet: () => {
-        onChangeItem(vacancy)
-      }
-    } 
-    isTabletWidth
-    ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, _args)
-    :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, _args)
+    if(!userContext.isLogged) {
+      router.push('/login')
+    }
+    else {
+      const _args:IApplicationModalProps = {
+        cvs: cvContext.savedCvs.filter(el => el.published), 
+        vacancy: vacancy,
+        onSet: () => {
+          onChangeItem(vacancy)
+        }
+      } 
+      isTabletWidth
+      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, _args)
+      :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, _args)
+    }
   }
 
   const openChat = (e: React.MouseEvent) => {
@@ -77,6 +85,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
 
     const[signal] = getNewSignal('likeHandler')
     if(!vacancy.isSavedByCurrentProfile) {
+      sendToMetrika(AppMetricaEvent.AddToSaved)
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem(vacancy)
@@ -103,7 +112,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     <div className={styles.top}>
       <div className={ styles.card}>
         {smallCard &&
-        <UserPic straightSizes className={styles.userPic} image={ImageHelper.urlFromFile(vacancy.profile.logo, Preset.iconCrop)} size={42}/>
+          <UserPic straightSizes className={styles.userPic} image={ImageHelper.urlFromFile(vacancy.profile.logo, Preset.iconCrop)} size={42}/>
         }
         <P 
         styleType={['large', 'w600']} 
@@ -141,7 +150,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
           {vacancy.profile.activityStatus === ActivityStatus.Online?'В сети':`Был в сети ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt)}`}
         </p>
       }
-      {vacancy.proposalsToCurrentUser.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&
+      {vacancy.proposalsToCurrentUser?.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&
         <P  styleType={['medium', 'w500']} className={styles.greenBadge} > Вас пригласили!</P>
         ||
         lastProposal?.type === ProposalRequestType.Rejection &&

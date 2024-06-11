@@ -20,6 +20,7 @@ import { Form,  FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { ApplicationBSSelectType,  ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -42,6 +43,7 @@ export default function ProposalTextModal(props: Props) {
   const proposalRepository = useFeedbacksContext()
   const [pattern, setPattern] = useState<IPattern>(null)
   const [type, setTypeState] = useState<ProposalRequestType>(null)
+  const {t} = useTranslation()
 
   const submit = async(data: IProposal) => {
     const dataToSend:IProposal = {
@@ -61,7 +63,7 @@ export default function ProposalTextModal(props: Props) {
       }
     })
     .catch(err=>{
-      appContext.showSnackbar(`Невозможно отправить ${pattern.type === ProposalRequestType.Rejection?'отказ': 'приглашение'}. Вакансия или резюме удалено или не опубликовано`, SnackbarType.error)
+      appContext.showSnackbar(`${pattern.type === ProposalRequestType.Rejection?t('proposalModal_cantSendReject'): t('proposalModal_cantSendInvite')}. ${t('proposalModal_vcOrCvRemovedOrHidden')}`, SnackbarType.error)
     })
   }
 
@@ -129,7 +131,7 @@ export default function ProposalTextModal(props: Props) {
       <FormikProvider value={formik} >
         <Form className={styles.form}>
             <RichTextField name={'coverLetter'} key={type+pattern?.template} value={pattern?.template} className={styles.coverLetter}/>
-          <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>Отправить</Button>
+          <Button className={styles.buttonGradient} type='button' onClick={formik.submitForm}>{t('send')}</Button>
         </Form>
       </FormikProvider>
     </>
@@ -139,7 +141,7 @@ export default function ProposalTextModal(props: Props) {
     return (
       <BottomSheetLayout>
         <BottomSheetBody>
-            <Title className={styles.title} title={modalArguments.type === ApplicationBSSelectType.Reject?'Отказ': 'Приглашение'} showButton onBackClick={props.onClose} />
+            <Title className={styles.title} title={modalArguments.type === ApplicationBSSelectType.Reject?t('proposalModal_reject'): t('proposalModal_inviting')} showButton onBackClick={props.onClose} />
             {body}
         </BottomSheetBody>
       </BottomSheetLayout>
@@ -149,7 +151,7 @@ export default function ProposalTextModal(props: Props) {
   return (
     <ModalLayout mobileFullScreen className={styles.layout}>
       <ModalBody>
-        <Title className={styles.title} title={modalArguments.type === ApplicationBSSelectType.Reject?'Отказ': 'Приглашение'} showButton onBackClick={props.onClose} />
+        <Title className={styles.title} title={modalArguments.type === ApplicationBSSelectType.Reject?t('proposalModal_reject'): t('proposalModal_inviting')} showButton onBackClick={props.onClose} />
         {body}
       </ModalBody>
     </ModalLayout>

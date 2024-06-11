@@ -5,6 +5,7 @@ import TitleForSection from 'components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import { NavigationSet } from 'types/types'
 import NavigationItem from './NavigationItem'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props<T extends string|number> {
   setPage: (p: T) => void
@@ -30,6 +31,7 @@ interface Props<T extends string|number> {
 export default function Navigation<T extends string|number>(props: Props<T>) {
   const {isTabletWidth} = useResize()
   const router = useRouter()
+  const {t} = useTranslation()
 
   const onClickHandler = (s: T) => {
     props.setPage(s)
@@ -42,7 +44,7 @@ export default function Navigation<T extends string|number>(props: Props<T>) {
     <div className={classNames(styles.rootWrapper, props.wrapperClassName)}>
 
     {isTabletWidth && props.title &&
-    <TitleForSection title={props.title||'Настройка профиля'} onBackClick={()=>{router.back()}}/>
+    <TitleForSection title={props.title||t('settings_profile')} onBackClick={()=>{router.back()}}/>
     }
     <nav className={styles.wrapper}>
       {props.navSet.length > 0&&props.navSet.map((el, index)=> {

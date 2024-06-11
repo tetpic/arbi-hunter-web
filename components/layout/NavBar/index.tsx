@@ -24,6 +24,7 @@ import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import ExitSvg from '@/components/svg/ExitSvg'
 import Button from '@/components/ui/Button'
+import SupportSvg from '@/components/svg/SupportSvg'
 
 interface Props {
 }
@@ -88,6 +89,11 @@ export default function NavBar(props: Props) {
       path: '/base',
       text: t('nav_knowlegdeBase'),
       icon: <QuestionSvg className={styles.linkSvg}/>
+    },
+    support: {
+      path: 'https://t.me/arbihunter_support',
+      text: t('nav_support'),
+      icon: <SupportSvg className={styles.linkSvg}/>
     }
   }
 
@@ -98,7 +104,8 @@ export default function NavBar(props: Props) {
     linksSet.shop, 
     linksSet.settings, 
     linksSet.personality, 
-    linksSet.knowledge
+    linksSet.knowledge,
+    linksSet.support
   ]
   const hirerLinks = [
     linksSet.vacancies, 
@@ -106,7 +113,9 @@ export default function NavBar(props: Props) {
     linksSet.shop, 
     linksSet.settings, 
     linksSet.managers, 
-    linksSet.knowledge
+    linksSet.knowledge,
+    linksSet.support
+
   ]
   
   const activePath = router.pathname

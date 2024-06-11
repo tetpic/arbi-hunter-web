@@ -15,6 +15,7 @@ import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import P from '@/components/ui/P'
 import { useEffect } from 'react'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -23,6 +24,7 @@ interface Props {
 
 export default function RefillBalanceModal(props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
 
   const submit = (data: RefillBalanceData) => {
     const amount = data.amount.toString().replaceAll(' ', '')    
@@ -31,7 +33,7 @@ export default function RefillBalanceModal(props: Props) {
       location.assign(res.payUrl)
     })
     .catch(err => {
-      appContext.showSnackbar(err?.message||'Ошибка платежной системы', SnackbarType.error)
+      appContext.showSnackbar(err?.message||t('payments_paymentServerError'), SnackbarType.error)
     })
   }
 
@@ -63,7 +65,7 @@ export default function RefillBalanceModal(props: Props) {
   const body = (
     <div className={styles.root}>
       <div className={styles.top}>
-        <P styleType={['large', 'w600']} useThemeColor>Пополнение баланса</P>
+        <P styleType={['large', 'w600']} useThemeColor>{t('payments_fillBalance')}</P>
 
       <Button altStyleType={['invertSvg']} className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
       </div>
@@ -72,7 +74,7 @@ export default function RefillBalanceModal(props: Props) {
           <InputField 
           styleType={'default'} 
           labelType={'top'} 
-          label='Сумма' 
+          label={t('payments_sum')} 
           name={'amount'} 
           color={'default'} 
           isNumbersOnly
@@ -81,12 +83,12 @@ export default function RefillBalanceModal(props: Props) {
           />
           <TagsRadioList name={'currency'} options={formik.values.paymentType === PaymentType.CARD? cardCurrencyOptions : cryptoCurrencyOptions}/>
           
-          <P styleType={['medium', 'w600']} useThemeColor>Тип оплаты</P>
+          <P styleType={['medium', 'w600']} useThemeColor>{t('payments_paymentType')}</P>
           <TagsRadioList name={'paymentType'} options={[
-            {label: 'Банковской картой', value: PaymentType.CARD},
-            {label: 'Криптовалютой', value: PaymentType.CRYPTO},
+            {label: t('payments_bankCard'), value: PaymentType.CARD},
+            {label: t('payments_crypto'), value: PaymentType.CRYPTO},
           ]}/>
-          <Button styleType={['gradient']} type='submit'>Пополнить</Button>
+          <Button styleType={['gradient']} type='submit'>{t('payments_fill')}</Button>
         </Form>
       </FormikProvider>
     </div>

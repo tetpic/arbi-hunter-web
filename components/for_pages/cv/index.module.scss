@@ -103,17 +103,11 @@
       flex-wrap: wrap;
     }
 
-
-
     .chatButton {
       min-width: 120px;
     }
-
-    
   }
 }
-
-
 
 .salary {
   font-size: $text20;
@@ -143,7 +137,6 @@
     background-color: var(--backColorAlt);
     border-radius: 16px;
     padding: 16px;
-  
 
     &__bottom {
       margin-top: 8px;
@@ -166,7 +159,6 @@
     padding-block: 8px;
     border-bottom: 1px var(--borderColor) solid;
   }
-  
 }
 
 .buttonsWrapper {
@@ -191,8 +183,6 @@
   border-radius: 8px;
 }
 
-
-
 .userTop {
   margin-bottom: 32px;
   margin-top: 24px;
@@ -207,7 +197,7 @@
     justify-content: space-between;
     column-gap: 16px;
   
-    button, a {
+    button {
       flex: 1 1;
     }
 
@@ -256,6 +246,15 @@
 
 .copyButton {
   margin-left: auto;
+}
+
+.portfoilo {
+  @include lineClamp(1);
+  @include hover {
+    p {
+      text-decoration: underline;
+    }
+  }
 }
 
 

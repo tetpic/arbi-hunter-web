@@ -12,6 +12,8 @@ interface IRuntimeConfig {
   FREE_COURSES_ID: number
   POPULAR_COURSES_ID: number
   LOAD_LIMIT: number
+  YA_METRIKA_ID: string
+  GOOGLE_METRIKA_ID: string
 }
 
 interface IServerRuntimeConfig {

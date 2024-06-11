@@ -5,6 +5,7 @@ import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import Button from 'components/ui/Button'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -13,6 +14,7 @@ interface Props {
 export default function VcResponsesFilterModal(props: Props) {
 
   const feedbacksContext = useFeedbacksContext()
+  const {t} = useTranslation()
 
   const removeFilters = () => {
     feedbacksContext.setFilterOptions()
@@ -25,9 +27,9 @@ export default function VcResponsesFilterModal(props: Props) {
 
   const title=(
     <div className={styles.titleWrapper}>
-      <p className={styles.back} onClick={backHandler}>Отмена</p>
-      <p className={styles.title}>Фильтры</p>
-      <p className={styles.next} onClick={props.onClose}>Готово</p>
+      <p className={styles.back} onClick={backHandler}>{t('cancel')}</p>
+      <p className={styles.title}>{t('filters')}</p>
+      <p className={styles.next} onClick={props.onClose}>{t('ready')}</p>
     </div>
   )
 
@@ -36,7 +38,7 @@ export default function VcResponsesFilterModal(props: Props) {
     <BottomSheetBody>
       {title}
       <ResponsesFilter/>
-      <Button onClick={removeFilters} className={styles.button}>Сбросить фильтры</Button>
+      <Button onClick={removeFilters} className={styles.button}>{t('filters_reset')}</Button>
     </BottomSheetBody>
   </BottomSheetLayout>
   )

@@ -30,6 +30,7 @@ import { colors } from 'styles/variables'
 import useTranslation from 'next-translate/useTranslation'
 import Formatter from 'utils/formatter'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
+import SupportSvg from '@/components/svg/SupportSvg'
 
 interface Props {
   onClose: ()=>void
@@ -232,6 +233,16 @@ export default function MobileSideBar(props: Props) {
         <div className={styles.shopicon}><ShopSmallSvg color={colors.blue}/></div>
         <P useThemeColor styleType={['w500', 'medium', 'blue']}>{t('nav_shop')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.blue}/></Button>
+      </Link>
+
+      <Link 
+      href={{pathname: 'https://t.me/arbihunter_support'}} 
+      onClick={props.onClose}
+      className={styles.link}
+      >
+        <div className={styles.shopicon}><SupportSvg/></div>
+        <P useThemeColor styleType={['w500', 'medium']}>Техподдержка</P>
+        <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
       </Link>
     </div>
 

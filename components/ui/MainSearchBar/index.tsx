@@ -90,7 +90,7 @@ export default function MainSearchBar(props: Props) {
   return (
     <div className={classNames(styles.container, props.fullWidth&&styles.container_wide)}>
       <div className={classNames(isLightTheme?styles.rootLight:styles.root, props.className, props.fullWidth&&styles.fullWidth)}>
-        <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||'Поиск'} /> 
+        <input onKeyDown={(e)=> e.key==='Enter' && submit()} className={styles.input} value={search} onChange={(e)=> setSearchValue(e.target.value)} type="text" placeholder={props.placeholder||t('search')} /> 
         {props.onFilterClick &&
         <Button 
         title='filter button' 

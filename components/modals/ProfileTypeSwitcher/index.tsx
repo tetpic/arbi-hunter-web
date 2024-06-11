@@ -10,6 +10,7 @@ import Button from 'components/ui/Button'
 import Image from 'next/image'
 import BriefCaseAltSvg from 'components/svg/BriefCaseAltSvg'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: () => void
@@ -18,6 +19,7 @@ interface Props {
 export default function ProfileTypeSwitcher(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {t} = useTranslation()
 
 
   const body = (
@@ -26,20 +28,20 @@ export default function ProfileTypeSwitcher(props: Props) {
         <Image src={'/favicon.svg'} alt={'logo'} width={110} height={110}/>
       </div>
 
-      <p className={styles.heading}>Выберите способ регистрации</p>
+      <p className={styles.heading}>{t('registration_switcher_setRegMethod')}</p>
       <div className={styles.types}>
         <div onClick={() =>userContext.setProfileType(ProfileType.Employee)} className={classNames(styles.item, userContext.profileType === ProfileType.Employee && styles.active)}>
           <UserSvg  color={userContext.profileType === ProfileType.Employee && colors.blueLight}/>
-          <p className={styles.title}>Частное лицо</p>
-          <p className={styles.subTitle}>Я хочу найти работу для себя</p>
+          <p className={styles.title}>{t('registration_employee')}</p>
+          <p className={styles.subTitle}>{t('registration_workForMe')}</p>
         </div>
         <div onClick={() =>userContext.setProfileType(ProfileType.Hirer )} className={classNames(styles.item, userContext.profileType === ProfileType.Hirer && styles.active)}>
           <BriefCaseAltSvg  color={userContext.profileType === ProfileType.Hirer && colors.blueLight}/>
-          <p className={styles.title}>Компания</p>
-          <p className={styles.subTitle}>Я хочу найти сотрудников</p>
+          <p className={styles.title}>{t('registration_company')}</p>
+          <p className={styles.subTitle}>{t('registration_wantFindEmployees')}</p>
         </div>
       </div>
-      <Button className={styles.submitButton} onClick={()=> appContext.hideModal()}><span>Продолжить</span></Button>
+      <Button className={styles.submitButton} onClick={()=> appContext.hideModal()}><span>{t('continue')}</span></Button>
     </div>
   )
 

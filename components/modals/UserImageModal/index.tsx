@@ -15,6 +15,7 @@ import { Preset } from 'types/enums'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import Spinner from '@/components/ui/Spinner'
+import useTranslation from 'next-translate/useTranslation'
 // import dynamic from 'next/dynamic'
 // const heic2any = dynamic(() => import('heic2any'), { ssr: false })
 
@@ -35,6 +36,7 @@ export default function UserImageModal(props: Props) {
   const args: IUserImageModalProps = props.isBottomSheet? appContext.bottomSheetArguments:appContext.modalArguments
   const [type, setType] = useState<'logo'|'image'>(userContext.currentProfile?.useOwnLogo? 'logo' :'image')
   const [image, setImage] = useState<PreviewImage>()
+  const {t} = useTranslation()
 
   const onSave = async () => {
     args.onSave({image, type})
@@ -51,7 +53,7 @@ export default function UserImageModal(props: Props) {
           size={88}
           image={userContext?.currentProfile?.logo&&ImageHelper.urlFromFile(userContext?.currentProfile?.logo, Preset.iconCrop)}
           />
-          <p>Индивидуальный аватар</p>
+          <p>{t('personal_customAvatar')}</p>
         </div>
         <label className={classNames(styles.item, type==='image' && styles.active)} onClick={()=>setType('image')}>
           <FileInput setImages={setImage} accept={['.jpg','.jpeg', '.png', '.heic']} multiple={false}/>
@@ -67,15 +69,15 @@ export default function UserImageModal(props: Props) {
           {image && !image.loaded && image.image && <Spinner straight className={styles.spinner} size={24}/>}
             </div>
 
-          <p>Загрузить фото</p>
+          <p>{t('personal_uploadPhoto')}</p>
         </label>
       </div>
       <div className={styles.buttonsWrapper}>
         <Button className={styles.button} onClick={props.onClose}>
-          Отмена
+          {t('cancel')}
         </Button>
         <Button className={styles.buttonGradient} onClick={()=>onSave()}>
-          Применить
+          {t('apply')}
         </Button>
       </div>
     </div>    

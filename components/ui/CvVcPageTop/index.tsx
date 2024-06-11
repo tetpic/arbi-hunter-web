@@ -14,6 +14,7 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import { useRef, useState } from 'react'
 import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import { useTranslation } from 'next-i18next'
 
 interface Props {
   title: string
@@ -29,6 +30,7 @@ export default function CvVcPageTop(props: Props) {
   const liked = useRef(props.cv?props.cv.isSavedByCurrentProfile:props.vc.isSavedByCurrentProfile)
   const [isLiked, setIsLiked] = useState<boolean>(liked.current)
   const userContext = useUserContext()
+  const {t} = useTranslation()
 
 
   const likeItem = ()=>{
@@ -66,7 +68,7 @@ export default function CvVcPageTop(props: Props) {
     <div className={styles.left}>
       <Title title={props.title}/>
       {props.city && 
-        <p className={styles.city}>г. {props.city}</p>
+        <p className={styles.city}>{t('ruCity')} {props.city}</p>
       }
       <SalaryItem cv={props.cv} vacancy={props.vc} />
     </div>

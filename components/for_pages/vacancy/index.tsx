@@ -56,23 +56,26 @@ export default function VacancyPage(props: Props) {
   const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
   const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
-  const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser.length -1]||null
+  const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser?.length -1]||null
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
 
 
-
-
   const makeResponse = () => {
-    const args:  IApplicationModalProps={
-      vacancy: currentVacancy, 
-      cvs: cvContext.savedCvs,
-      onSet: () => {
-        vacancyContext.setCurrentVacancy({id: props.id})  
-      }
+    if(!userContext.isLogged) {
+      router.push('/login')
     }
-    isTabletWidth
+    else {
+      const args:  IApplicationModalProps={
+        vacancy: currentVacancy, 
+        cvs: cvContext.savedCvs,
+        onSet: () => {
+          vacancyContext.setCurrentVacancy({id: props.id})  
+        }
+      }
+      isTabletWidth
       ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args)
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
+    }
   }
 
   const likeHandler = () => {
@@ -94,7 +97,6 @@ export default function VacancyPage(props: Props) {
     if(activeChat[0]){
       ChatRepository.getChatByContactId(currentVacancy.profile.id, {proposalId: lastProposal.id})
       .then(res=>{
-        
         if(res) {
           router.push('/messenger?chat=' + res.id)
         }
@@ -102,19 +104,27 @@ export default function VacancyPage(props: Props) {
     }
   }
 
+  const openContactsHandler = () => {
+
+  }
+
   useEffect(()=>{
     if(currentVacancy && !currentVacancy?.profile) {
       router.back()
       return
     }
-    if(currentVacancy && currentVacancy.categories.length > 0) {
+    if(currentVacancy && currentVacancy.categories?.length > 0) {
       vacancyContext.findVacancies({categories: currentVacancy.categories.map(e=>e.id)})
       VacancyRepository.searchVacancies({categories: [currentVacancy.categories[0].id]})
       .then(res=> {
-        if(res?.data.length >  1) {
+        if(res?.data?.length >  1) {
           const randomItems = Formatter.randomElementsFromArray<IVacancy>(res.data, 3).filter(el => el.id !== currentVacancy.id)
           setOtherCompanyVacancies(randomItems)
         }
+      })
+      .catch(e => {
+        // eslint-disable-next-line no-console
+        console.warn(e)
       })
     }
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
@@ -133,7 +143,7 @@ export default function VacancyPage(props: Props) {
   </div> 
 
   const companyCard = (
-    <Link href={'/personal/'+currentVacancy.profile?.id} className={styles.companyCard}>
+    <Link href={userContext.isLogged?'/personal/'+currentVacancy.profile?.id: '/login'} className={styles.companyCard}>
       <UserPic 
       image={currentVacancy.profile?.logo&&ImageHelper.urlFromFile(currentVacancy.profile?.logo, Preset.smallIconCrop)} 
       size={67}/>
@@ -156,10 +166,10 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
-      {!isTabletWidth &&
+      {!isTabletWidth && userContext.isLogged &&
       <BackTextButton onClick={router.back}/>
       }
-      {isTabletWidth &&
+      {isTabletWidth && userContext.isLogged &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {!isMyVacancy &&
@@ -167,7 +177,7 @@ export default function VacancyPage(props: Props) {
           }
         </div>
       }
-      {!isMyVacancy &&companyCard}
+      {!isMyVacancy && companyCard}
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
         {isMyVacancy &&
@@ -238,7 +248,7 @@ export default function VacancyPage(props: Props) {
       }
 
       {!isMyVacancy &&
-        <div className={styles.buttonsWrapper}>
+        <div className={styles.buttonsWrapper} style={{zIndex: 60}}>
           {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection && 
           <>
             <Button 
@@ -249,7 +259,7 @@ export default function VacancyPage(props: Props) {
             </Button>
           </>
           }
-           {freeToApplyCvs.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
+           {freeToApplyCvs?.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
               <Button
               styleType={['gradient', 'phoneWide']}
               onClick={makeResponse}
@@ -257,7 +267,7 @@ export default function VacancyPage(props: Props) {
               {t('vacancy_page_applyFromOtherCv')}
             </Button>
             }
-          {(!lastProposal) && currentVacancy.applicationsByCurrentUser.length===0 && freeToApplyCvs.length > 0 &&
+          {(!lastProposal) && currentVacancy.applicationsByCurrentUser?.length===0 && freeToApplyCvs?.length > 0 &&
             <Button 
             styleType={['gradient', 'phoneWide']}
             onClick={makeResponse}
@@ -273,7 +283,15 @@ export default function VacancyPage(props: Props) {
             <Button 
             styleType={['black', 'borderBlue', 'phoneWide']} 
             altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
-            onClick={()=>setIsShowContacts(state=> ([true, state[1]]))}>
+            onClick={()=>{
+              if(userContext.isLogged) {
+                setIsShowContacts(state=> ([true, state[1]]))
+              }
+              else {
+                router.push('/login')
+              }
+            }}
+            >
               {t('vacancy_page_showContacts')}
             </Button>
           
@@ -287,7 +305,7 @@ export default function VacancyPage(props: Props) {
             }
           </div>
           }
-          {!isTabletWidth && <>
+          {!isTabletWidth && userContext.currentProfile && <>
             <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
             <Button 
             styleType={['icon', 'black']} 
@@ -334,7 +352,7 @@ export default function VacancyPage(props: Props) {
         </div>
       }
 
-      {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
+      {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges?.length > 0 && 
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_languagesKnowledges')}</P>
           <TagList 
@@ -350,7 +368,14 @@ export default function VacancyPage(props: Props) {
             <Button 
             styleType={['black', 'wide', 'borderBlue']} 
             altStyleType={['gradient']}
-            onClick={()=>setIsShowContacts(state=> ([state[0], true]))}
+            onClick={()=>{
+              if(userContext.isLogged) {
+                setIsShowContacts(state=> ([state[0], true]))
+              }
+              else {
+                router.push('/login')
+              }
+            }}
             >
               {t('vacancy_page_showContacts')}
             </Button>

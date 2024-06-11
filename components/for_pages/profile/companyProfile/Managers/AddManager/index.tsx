@@ -18,6 +18,7 @@ import { useState } from 'react'
 import TextAreaField from '@/components/fields/TextAreaField'
 import { useUserContext } from 'context/user_state'
 import useTranslation from 'next-translate/useTranslation'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
   onClose: ()=> void
@@ -45,6 +46,7 @@ export default function AddManager(props: Props) {
     else {
       ManagerRepository.createNewManager(data)
       .then(res=> {
+        sendToMetrika(AppMetricaEvent.CreateManager)
         props.onClose()
       })
       .catch(err=> {})

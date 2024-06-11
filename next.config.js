@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs')
 const nextTranslate = require('next-translate-plugin')
 const nextConfig = nextTranslate({
   reactStrictMode: true,
@@ -17,7 +17,9 @@ const nextConfig = nextTranslate({
     ROBOTS_FILE: process.env.ROBOTS_FILE,
     LOAD_LIMIT: process.env.LOAD_LIMIT,
     FREE_COURSES_ID: process.env.FREE_COURSES_ID,
-    POPULAR_COURSES_ID: process.env.POPULAR_COURSES_ID
+    POPULAR_COURSES_ID: process.env.POPULAR_COURSES_ID,
+    YA_METRIKA_ID: process.env.YA_METRIKA_ID,
+    GOOGLE_METRIKA_ID: process.env.GOOGLE_METRIKA_ID
   },
   serverRuntimeConfig: {
     HOST: process.env.HOST,
@@ -60,8 +62,8 @@ module.exports = withSentryConfig(
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
 
-    org: "xo-media-group-ltd",
-    project: "arbihunter-web",
+    org: 'xo-media-group-ltd',
+    project: 'arbihunter-web',
     debug:  false,
 
     // For all available options, see:
@@ -88,4 +90,4 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+)

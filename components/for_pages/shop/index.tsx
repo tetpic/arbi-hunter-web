@@ -15,6 +15,7 @@ import { PurchaseType } from 'types/enums'
 import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useAppContext } from 'context/state'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
 }
@@ -38,6 +39,7 @@ export default function Shop(props: Props) {
   const router = useRouter()
 
   useEffect(()=>{
+    sendToMetrika(AppMetricaEvent.GoToStore)
     if(userContext.currentProfile?.profileType === ProfileType.Employee) {
       cvContext.setSavedCvs()
       characterContext.init().then((res)=>{        

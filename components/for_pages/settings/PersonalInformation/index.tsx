@@ -7,8 +7,9 @@ import { useUserContext } from 'context/user_state'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { SnackbarType } from 'types/enums'
-import Validator from 'utils/Validator'
+// import Validator from 'utils/Validator'
 import useTranslation from 'next-translate/useTranslation'
+import Validator from 'utils/Validator'
 
 interface Props {
 }
@@ -18,8 +19,10 @@ export default function PersonalInformation(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const personalContext = useUserContext()
 
   const submitData = (data: Partial<IUserProfile>) =>{
+    
     userContext.editCurrentProfile(data)
     .then(res=> {
       if(res) {
@@ -30,8 +33,8 @@ export default function PersonalInformation(props: Props) {
 
   const dataFormik = useFormik<Partial<IUserProfile>>({
     initialValues: {
-      firstName: userContext.currentProfile?.firstName,
-      lastName: userContext.currentProfile?.lastName,
+      firstName: userContext.user?.firstName,
+      lastName: userContext.user?.lastName,
       patronymic: userContext.currentProfile?.patronymic,
       email: userContext.currentProfile?.email,
       phone: userContext.currentProfile?.phone

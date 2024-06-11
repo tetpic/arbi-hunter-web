@@ -10,6 +10,7 @@ import { useState } from 'react'
 import Button from 'components/ui/Button'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=>void
@@ -27,6 +28,7 @@ export interface ISearchFilterModalProps {
 
 export default function SearchFilterModal(props: Props) {
   const appContext = useAppContext()
+  const {t} = useTranslation()
   const args:ISearchFilterModalProps =props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
   const [categories, setCategories] = useState<[ICategory, boolean][]>(args.categories&&args.categories.map(el=>[el, args.activeCategories.includes(el.id)]))
   const [periods, setPeriods] = useState<[{name: string, value: number}, boolean][]>(args.periods.map(el=>[el, args.activePeriod===el.value]))
@@ -46,7 +48,7 @@ export default function SearchFilterModal(props: Props) {
     {args.categories &&
     <>
       <TagList 
-      title={'Категории'} 
+      title={t('categories')} 
       titleClassName={styles.title}
       tags={
         categories.map(([el, isActive])=>({
@@ -66,7 +68,7 @@ export default function SearchFilterModal(props: Props) {
     }
 
     <TagList 
-    title={'Период'} 
+    title={t('period')} 
     tags={
       periods.map(([el, isActive])=>({
         name: el.name,
@@ -84,8 +86,8 @@ export default function SearchFilterModal(props: Props) {
     titleClassName={styles.title}/>
 
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.cancel} onClick={props.onClose}>Отменить</Button>
-      <Button className={styles.accept} onClick={submit}>Применить</Button>
+      <Button className={styles.cancel} onClick={props.onClose}>{t('cancel')}</Button>
+      <Button className={styles.accept} onClick={submit}>{t('continue')}</Button>
     </div>
   </>)
 

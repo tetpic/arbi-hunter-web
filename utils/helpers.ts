@@ -73,7 +73,7 @@ export const getAge = (age: number): string => {
   return age + ' ' + Formatter.pluralize(age, 'год', 'года', 'лет')
 }
 
-export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t: Translate):string|null => {
+export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):string|null => {
   const salary = data.cv&&(Formatter.formatNumber(Number(data.cv?.salary)) + ' ' + TranslateCurrency(data.cv?.currency))
   ||data.vacancy&&
     [
@@ -81,9 +81,10 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t: Translate):st
       data.vacancy?.salaryMax&&('до '+Formatter.formatNumber(data.vacancy?.salaryMax) + TranslateCurrency(data.vacancy?.currency))
     ].filter(Boolean).join(' ')
   const compensation = data.vacancy?.compensation||data.cv?.compensation
+
   
 
-  if((!Boolean(salary?.trim()) && compensation === CompensationType.Salary) || !salary) {
+  if((!Boolean(salary?.trim()) && compensation === CompensationType.Salary)) {
     return null
   }
 

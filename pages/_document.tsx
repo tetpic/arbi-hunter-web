@@ -36,7 +36,6 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#812292"/>
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
           <link rel="preconnect" href="https://fonts.gstatic.com" /> 
-          <meta name="description" content="ArbiHunter — HR-сервис будущего. Создай профиль, заполни резюме и получи job offer в арбитраже трафика прямо сейчас!"/>      
           <meta name="msapplication-TileColor" content="#da532c"/>
           <meta name="msapplication-navbutton-color" content={colors.backgroundBlack} />
           <meta name="theme-color" content={colors.backgroundBlack}/>

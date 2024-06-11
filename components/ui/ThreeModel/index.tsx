@@ -19,6 +19,7 @@ export interface IThreeModelProps {
     color?: number|string,
     r?: number
     actions: ModelActions
+    unic: 'unic'|undefined
 }
 
 
@@ -63,7 +64,7 @@ export function ThreeModel(props: IThreeModelProps) {
   }, [animations])
 
   useEffect(()=>{
-    console.log(`Head_${props.face !== '1' &&props.emotion||'0'}_0`)    
+    console.log(props)    
   }, [props])
 
   if(props.model === 'woman') {
@@ -99,7 +100,7 @@ export function ThreeModel(props: IThreeModelProps) {
       </group>
     )
   }
-  else if(props.model === 'man') {
+  else if(props.model === 'man' && !props.unic) {
   return (      
     <group {...props} key={2} ref={mesh} dispose={null}>
          <group name={'Scene'}>
@@ -136,10 +137,41 @@ export function ThreeModel(props: IThreeModelProps) {
       </group> 
     </group>
   )
-}
-else {
-  return null
-}
+  }
+  else if(props.unic && props.unic === 'unic') {
+    return (
+
+    <group {...props} key={3} ref={mesh} dispose={null}>
+      <group name={'Scene'}>
+        <group name={'Арматура'} key={3}>
+          <primitive object={nodes.Spine} />
+          <skinnedMesh 
+          name={`Body_${props.body||'0'}${props.color||'_0'}`} 
+          geometry={nodes[`Body_${props.body||'0'}_0`].geometry} 
+          material={materials['Body_0']} 
+          skeleton={nodes[`Body_${props.body||'0'}_0`].skeleton} />
+
+          {props.chain !== undefined &&
+          <skinnedMesh name={`Chain_${props.chain}_${props.body||'0'}`} geometry={nodes[`Chain_${props.chain}_${props.body||'0'}`].geometry} material={materials[`Chain_${props.chain}`]} skeleton={nodes[`Chain_${props.chain}_${props.body||'0'}`].skeleton} />
+          }
+          
+          {props.glasses !== undefined && 
+            <skinnedMesh name={`Glasses_${props.glasses}`} geometry={nodes[`Glasses_${props.glasses}`].geometry} material={materials[`Glasses_${props.glasses}`]} skeleton={nodes[`Glasses_${props.glasses}`].skeleton} />
+          }
+          
+          <skinnedMesh name="Hair_Unic" geometry={nodes.Hair_Unic.geometry} material={materials.Hair_Unic} skeleton={nodes.Hair_Unic.skeleton} />
+
+          <skinnedMesh name="Head_Unic_{props.emotion||'0'}" geometry={nodes[`Head_Unic_${props.emotion||'0'}`].geometry} material={materials.Head_Unic} skeleton={nodes[`Head_Unic_${props.emotion||'0'}`].skeleton} />
+          <skinnedMesh name={`Jacket_${props.jacket||'7'}_${props.body||'0'}`} geometry={nodes[`Jacket_${props.jacket||'7'}_${props.body||'0'}`].geometry} material={materials[`Jacket_${props.jacket||'7'}`]} skeleton={nodes[`Jacket_${props.jacket||'7'}_${props.body||'0'}`].skeleton} />
+        </group>
+      </group> 
+    </group>
+        )
+
+  }
+  else {
+    return null
+  }
 }
 
 useGLTF.preload('/models/model_man.glb', true, true, (loader) => {

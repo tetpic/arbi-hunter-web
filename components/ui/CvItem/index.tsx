@@ -31,6 +31,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { IProposal } from 'data/interfaces/IProposal'
 import { IApplication } from 'data/interfaces/IApplication'
+import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 
 interface Props {
   cv: ICV
@@ -113,6 +114,7 @@ export default function CvItem({cv, ...props}: Props) {
 
 
   const addToSaved = (signal: AbortSignal, folderId?: number ) => {
+    sendToMetrika(AppMetricaEvent.AddToSaved)
     CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
     .then(res=> {
       props.onChangeItem()      
@@ -226,7 +228,7 @@ export default function CvItem({cv, ...props}: Props) {
               {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
             </P>
             ||
-            <P styleType={['medium', 'w500']} useThemeColor>Не указан</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('notPresented')}</P>
 
           }
         </div>

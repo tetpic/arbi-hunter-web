@@ -9,7 +9,7 @@ import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { useRouter } from 'next/router'
-import { InterfaceLanguage, ModalType, ModerationStatusType} from 'types/enums'
+import { InterfaceLanguage, ModalType, ModerationStatusType, SnackbarType} from 'types/enums'
 import Formatter from 'utils/formatter'
 
 import  { IOptionsModalProps } from 'components/modals/OptionsModal'
@@ -23,7 +23,7 @@ import P from '@/components/ui/P'
 import { useTariffContext } from 'context/tariff_state'
 import useTranslation from 'next-translate/useTranslation'
 import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
-import { daysBetween } from 'utils/helpers'
+import { copyToClipboard, daysBetween } from 'utils/helpers'
 import classNames from 'classnames'
 
 interface Props {
@@ -85,11 +85,16 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
     router.push({pathname:'/shop', query: {page: 'packets'}})
   }
 
+  const copyToClipboardHandler = () => {
+    copyToClipboard(process.env.host + '/vacancy/' + vacancy.id)
+    appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
+  }
+
   const allOptions = {
     edit:  {title: t('item_edit'), onClick: editHandler},
     archive: {title: vacancy?.published?t('item_archive'):t('item_publish'), onClick: archiveHandler},
     upgrade: {title: t('item_upgrade'), onClick: upgradeTariffHandler},
-    share: {title: t('item_share')},
+    share: {title: t('item_share'), onClick: copyToClipboardHandler },
     remove: {title: t('item_remove'), onClick: (e: any)=> {e.stopPropagation();removeHandler()}, style: {color: colors.red}},
     publish: {title: t('item_publish'), onClick: archiveHandler},
   }

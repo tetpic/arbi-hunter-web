@@ -106,7 +106,7 @@ export default function ContactsModal(props: Props) {
         </P>
       )
     })}    
-    {
+    {!!props.vacancy.proposalsToCurrentUser &&
       props.vacancy.proposalsToCurrentUser.filter(el => el.type !== ProposalRequestType.Rejection&&el.status === ApplicationStatus.Applied).length>0&&
        <Button onClick={openChat} styleType={['gradient', 'wide']}>{t('vacancy_page_writeInChat')}</Button>
     }

@@ -106,9 +106,8 @@ export function UserWrapper(props: Props) {
   }
 
   const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<IUserProfile|false> => {
-    if(data.email||data.phone) {
+    if(data.phone) {
       const dataToSend = {
-        email: data.email,
         phone: data.phone, 
         firstName: data.firstName,
         lastName: data.lastName,
