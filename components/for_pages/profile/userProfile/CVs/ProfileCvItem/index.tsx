@@ -96,7 +96,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const copyToClipboardHandler = () => {
     copyToClipboard(process.env.host + '/cv/' + cv.id)
-    appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+    appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
   }
 
   const defaultOptions:IOptionList[] = [
@@ -145,7 +145,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   const vacanciesCounter = cv.categories[0].vacanciesCount||0
 
-  return (<div className={classNames(styles.root, props.className)} onClick={()=>router.push(`/cv/${cv.id}`)}> 
+  return (<div className={classNames(styles.root, props.className)} onClick={()=>!props.type&&router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image}/>
       <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</P>

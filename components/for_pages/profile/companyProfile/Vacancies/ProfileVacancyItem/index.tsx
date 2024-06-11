@@ -87,7 +87,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
 
   const copyToClipboardHandler = () => {
     copyToClipboard(process.env.host + '/vacancy/' + vacancy.id)
-    appContext.showSnackbar('Ссылка скопирована', SnackbarType.success)
+    appContext.showSnackbar(t('linkCopied'), SnackbarType.success)
   }
 
   const allOptions = {

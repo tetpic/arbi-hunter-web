@@ -18,6 +18,7 @@ import { IProposal } from 'data/interfaces/IProposal'
 import classNames from 'classnames'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -34,12 +35,13 @@ export default function ResponseModal(props: Props) {
   const appContext = useAppContext()
   const args: IResponseModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [currentCv, setCurrentCv] = useState<ICV>(null)
+  const {t} = useTranslation()
 
   const submit = (data: {coverLetter: string}) => {
     ApplicationRepository.patchApplicationRespond(args.application.id, data)
     .then(res=> {
       
-      appContext.showSnackbar('Сопроводительное письмо успешно отправлено', SnackbarType.success)
+      appContext.showSnackbar(t('response_sendComplete'), SnackbarType.success)
       args.onSubmit(res)
       props.onClose()
     })
@@ -57,12 +59,12 @@ export default function ResponseModal(props: Props) {
       <Form>
     <div className={styles.top}>
       <UserPic className={styles.picture}/>
-      <p className={styles.resume}>Резюме</p>
+      <p className={styles.resume}>{t('response_cv')}</p>
       <p className={styles.name}>{currentCv?.categories[0]?.name}</p>
     </div>
     <div className={classNames(styles.form, props.isBottomSheet&&styles.form__bottom)}>
         <TextAreaField 
-        placeholder='Ваше сопроводительное письмо' 
+        placeholder={t('response_yourCoverLetter')} 
         areaClassname={styles.textArea}
         autoSize
         onChange={(e)=>formik.setValues({coverLetter: e.currentTarget.value})}
@@ -70,7 +72,7 @@ export default function ResponseModal(props: Props) {
         validate={Validator.required}
         />
         <Button styleType={['gradient', 'phoneWide']} className={styles.button} type='submit'>
-          Отправить
+          {t('send')}
         </Button>
       </div>
       </Form>

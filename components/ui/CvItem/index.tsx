@@ -228,7 +228,7 @@ export default function CvItem({cv, ...props}: Props) {
               {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
             </P>
             ||
-            <P styleType={['medium', 'w500']} useThemeColor>Не указан</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{t('notPresented')}</P>
 
           }
         </div>

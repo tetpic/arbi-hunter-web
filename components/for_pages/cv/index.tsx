@@ -301,6 +301,44 @@ export default function CvPage(props: Props) {
     </div>
   </>)
 
+  const links = [
+    currentCv.profile.email&&{
+      href: 'mailto:'+currentCv.email, 
+      text: currentCv.profile.email,
+      icon: <MailAltSvg/>
+    },
+    currentCv.profile.phone&&{
+      href: 'tel:'+currentCv.profile.phone, 
+      text: currentCv.profile.phone,
+      icon: <PhoneSvg/>
+    },
+    (currentCv.telegramNickname||currentCv.profile.telegramNickname)&&{
+      href: `tg://resolve?domain=${currentCv.telegramNickname}`, 
+      text: currentCv.telegramNickname||currentCv.profile.telegramNickname,
+      icon: <TelegramSvg/>
+    },
+    currentCv.whatsapp &&{
+      href: `https://wa.me/${currentCv.whatsapp}`,
+      text: currentCv.whatsapp,
+      icon: <WhatsAppSvg/>
+    },
+    currentCv.skype && {
+      href: `skype:${currentCv.skype}?chat`,
+      text: currentCv.skype,
+      icon: <SkypeSvg/>
+    },
+    currentCv.linkedin && {
+      href: currentCv.linkedin,
+      text: currentCv.linkedin,
+      icon: <LinkedInSvg/>
+    },
+    currentCv.viber && {
+      href: 'viber://chat?number=+'+currentCv.viber,
+      text: currentCv.viber,
+      icon: <ViberLogoSvg/>
+    }
+  ].filter(Boolean)
+
 
   return (
     <div className={styles.root}>
@@ -336,7 +374,6 @@ export default function CvPage(props: Props) {
         </div>
         <SalaryItem cv={currentCv} />
         <Statistics 
-        
         className={styles.stats}
         items={[
           {name: t('cv_pagee_shows'), count: currentCv?.totalShows},
@@ -349,7 +386,7 @@ export default function CvPage(props: Props) {
           {Number(cvTopTimePlusTime()) > Number(new Date())
           &&  
           <P styleType={['w500', 'medium', 'greyLight']}>
-           {'Можно поднять в ' + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})}
+           {t('cv_page_canUprise') + Formatter.formatDate(cvTopTimePlusTime(), {timeOptions: {hour: 'numeric', minute: 'numeric', month: undefined, year: undefined, day: undefined}, lang: lang as InterfaceLanguage})}
           </P>
           ||        
           <P styleType={['w500', 'medium', 'blue']} className={styles.moveToTop}  onClick={moveToTopHandler}>
@@ -391,6 +428,7 @@ export default function CvPage(props: Props) {
 
       </div>
       }
+      
 
       {!isMyCv &&
         <div className={styles.userCard}>
@@ -401,140 +439,25 @@ export default function CvPage(props: Props) {
       {(currentCv?.isContactsOpen||userContext.currentProfile?.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
           <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_contacts')}</P>
-          {currentCv.profile.email &&
-          <Link href={`mailto:${currentCv.email}`}>
-            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><MailAltSvg/></Button>
-              {currentCv.profile.email}
-              <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.profile.email)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-            </P>
-          </Link>
-          }
-          {currentCv.profile.phone &&
-          <Link href={`tel:${currentCv.phone}`}>
-            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><PhoneSvg/></Button>
-              {Formatter.formatPhone(currentCv.phone||currentCv.profile?.phone)}
-              <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.phone||currentCv.profile?.phone)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-            </P>
-  
-          </Link>
-          }
-          {(currentCv.telegramNickname||currentCv.profile.telegramNickname) &&
-          <Link href={`tg://resolve?domain=${currentCv.telegramNickname}`}>
-            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><TelegramSvg/></Button>
-              {currentCv.telegramNickname||currentCv.profile.telegramNickname}
-              <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.telegramNickname||currentCv.profile.telegramNickname)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-            </P>
-          </Link>
-          }
-          {currentCv.whatsapp &&
-          <Link href={`https://wa.me/${currentCv.whatsapp}`} target='_blank'>
-            <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-              <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><WhatsAppSvg/></Button>
-              {currentCv.whatsapp}
-              <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.whatsapp)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-            </P>
-          </Link>
-          }
-          {currentCv.skype &&
-          <Link href={`skype:${currentCv.skype}?chat`}>
-          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><SkypeSvg/></Button>
-            {currentCv.skype}
-            <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.skype)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-          </P>
-          </Link>
-          }
-          {currentCv.linkedin &&
-          <Link href={currentCv.linkedin}>
-          <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-            <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><LinkedInSvg/></Button>
-            {currentCv.linkedin}
-            <Button 
-              onClick={(e)=>{
-                e.stopPropagation()
-                e.preventDefault()
-                copyToClipboard(currentCv.linkedin)
-                appContext.showSnackbar('Скопировано', SnackbarType.success)
-              }}
-              className={styles.copyButton}
-              >
-                <DoubleSvg color={colors.blue}/>
-              </Button>
-          </P>
-          </Link>
-          }
-          {currentCv.viber &&
-            <Link href={'viber://chat?number=+'+currentCv.viber}>
-              <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
-                <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}><ViberLogoSvg/></Button>
-                {currentCv.viber}
-                <Button 
-                onClick={(e)=>{
-                  e.stopPropagation()
-                  e.preventDefault()
-                  copyToClipboard(currentCv.viber)
-                  appContext.showSnackbar('Скопировано', SnackbarType.success)
-                }}
-                className={styles.copyButton}
-                >
-                  <DoubleSvg color={colors.blue}/>
-                </Button>
-              </P>
-            </Link>
-          }
+          {links.map(el => (
+             <Link href={el.href}>
+             <P useThemeColor styleType={['w500', 'medium', 'alignCenter']}>
+               <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']}>{el.icon}</Button>
+               {el.text}
+               <Button 
+               onClick={(e)=>{
+                 e.stopPropagation()
+                 e.preventDefault()
+                 copyToClipboard(el.text)
+                 appContext.showSnackbar(t('copied'), SnackbarType.success)
+               }}
+               className={styles.copyButton}
+               >
+                 <DoubleSvg color={colors.blue}/>
+               </Button>
+             </P>
+           </Link>
+          ))}
         </div>
       }
 
@@ -596,7 +519,7 @@ export default function CvPage(props: Props) {
                 {el.description &&
                   <P useThemeColor styleType={['medium', 'w500']}>{el.description}</P>
                 }
-                <P useThemeColor styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                <P useThemeColor styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||t('toPresent')}</P>
               </div>
               })
             }
@@ -618,7 +541,7 @@ export default function CvPage(props: Props) {
                   {el.faculty &&
                     <P useThemeColor styleType={['w500', 'medium']}>{el.faculty}</P>
                   }
-                  <P  styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||'по н.в.'}</P>
+                  <P  styleType={['w500', 'medium', 'greyLight']}>{el.fromDate} - {el.toDate||t('toPresent')}</P>
                 </div>
               })
               }
@@ -657,7 +580,9 @@ export default function CvPage(props: Props) {
         <div className={styles.item}>
           <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_portfolio')}</P>
           {currentCv.portfolio &&
-            <P useThemeColor styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+            <Link href={currentCv.portfolio} target={'_blank'} className={styles.portfoilo}>
+              <P useThemeColor styleType={['w500', 'medium']}>{currentCv.portfolio}</P>
+            </Link>
           }
           <FilesList disabledRemoving previews={currentCv.assets.map(el=> ({data: el, loaded: true, id: el.id })) as PreviewImage[]}/>
         </div>

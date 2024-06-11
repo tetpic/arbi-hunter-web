@@ -11,6 +11,7 @@ import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   image?: string
@@ -26,6 +27,7 @@ interface Props {
  */
 export default function CourseItem(props: Props) {
   const router = useRouter()
+  const {t} = useTranslation()
 
   return (
     <div className={classNames(styles.item, props.className)} onClick={()=> router.push('/courses/' + props.course.id)}>
@@ -56,17 +58,17 @@ export default function CourseItem(props: Props) {
         {/* <FavoritesButton className={styles.heartButton}/> */}
       </div>
       <div className={styles.bottom}>
-        <p className={styles.lessonsCount}><PlayButtonSvg/>{props.course.stepsCount} {Formatter.pluralize(Number(props.course.stepsCount), 'урок', 'урока', 'уроков')}</p>
+        <p className={styles.lessonsCount}><PlayButtonSvg/>{props.course.stepsCount} {Formatter.pluralize(Number(props.course.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</p>
         <p className={styles.courseName} title={props.course.name}>{props.course.name}</p>
-        <p className={styles.price}>от {Formatter.formatPrice(props.course.price)}/месяц</p>
+        <p className={styles.price}>{t('from')} {Formatter.formatPrice(props.course.price)}/{t('month')}</p>
         <div className={styles.rating}>
           <span>
             <UserSvg className={styles.userSvg}/>
-            {props.course.completedCount} {Formatter.pluralize(props.course.completedCount, 'ученик', 'ученика', 'учеников')}
+            {props.course.completedCount} {Formatter.pluralize(props.course.completedCount, t('student1'),  t('student2'),  t('student3'))}
           </span>         
           <span>
             <StarSvg className={styles.starSvg}/>
-            {props.course?.rating || '0.0'} из 5 
+            {props.course?.rating || '0.0'} {t('outOf')} 5 
           </span>       
         </div>
       </div>

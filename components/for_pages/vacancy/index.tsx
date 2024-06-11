@@ -63,16 +63,21 @@ export default function VacancyPage(props: Props) {
 
 
   const makeResponse = () => {
-    const args:  IApplicationModalProps={
-      vacancy: currentVacancy, 
-      cvs: cvContext.savedCvs,
-      onSet: () => {
-        vacancyContext.setCurrentVacancy({id: props.id})  
-      }
+    if(!userContext.isLogged) {
+      router.push('/login')
     }
-    isTabletWidth
+    else {
+      const args:  IApplicationModalProps={
+        vacancy: currentVacancy, 
+        cvs: cvContext.savedCvs,
+        onSet: () => {
+          vacancyContext.setCurrentVacancy({id: props.id})  
+        }
+      }
+      isTabletWidth
       ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args)
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
+    }
   }
 
   const likeHandler = () => {
@@ -94,7 +99,6 @@ export default function VacancyPage(props: Props) {
     if(activeChat[0]){
       ChatRepository.getChatByContactId(currentVacancy.profile.id, {proposalId: lastProposal.id})
       .then(res=>{
-        
         if(res) {
           router.push('/messenger?chat=' + res.id)
         }
@@ -117,6 +121,7 @@ export default function VacancyPage(props: Props) {
         }
       })
       .catch(e => {
+        // eslint-disable-next-line no-console
         console.warn(e)
       })
     }
@@ -170,7 +175,7 @@ export default function VacancyPage(props: Props) {
           }
         </div>
       }
-      {!isMyVacancy &&companyCard}
+      {!isMyVacancy && companyCard}
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
         {isMyVacancy &&
@@ -241,7 +246,7 @@ export default function VacancyPage(props: Props) {
       }
 
       {!isMyVacancy &&
-        <div className={styles.buttonsWrapper}>
+        <div className={styles.buttonsWrapper} style={{zIndex: 60}}>
           {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection && 
           <>
             <Button 
@@ -290,7 +295,7 @@ export default function VacancyPage(props: Props) {
             }
           </div>
           }
-          {!isTabletWidth && <>
+          {!isTabletWidth && userContext.currentProfile && <>
             <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
             <Button 
             styleType={['icon', 'black']} 

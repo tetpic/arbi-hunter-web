@@ -85,7 +85,7 @@ export default function HirerFieldsModal(props: Props) {
           name={'forLastNumberOfDays'}
           rootClass={styles.radioField}
           options={[
-            {value: null, label: 'Все время'},
+            {value: null, label: t('allTheTime')},
             ...periods.map(el=>{
               return {value: el.value, label: el.name}
             })         

@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
-import { ModalType, Preset, SnackbarType } from 'types/enums'
+import { ModalType, Preset } from 'types/enums'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useResize } from 'components/hooks/useResize'
 import OptionsDropDown from '../OptionsDropDown'
@@ -23,6 +23,7 @@ import ImageHelper from 'utils/ImageHelper'
 import { IFile } from 'data/interfaces/Common'
 import FavoritesButton from '../FavoritesButton'
 import P from '../P'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   article: IArticle
@@ -58,6 +59,7 @@ export default function NewsArticle(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
   const {isTabletWidth} = useResize()
+  const {t} = useTranslation()
 
 
   const optionsList = <OptionsList 
@@ -66,18 +68,19 @@ export default function NewsArticle(props: Props) {
 
   const likeHandler = (a: IArticle)=> {
     if(!userContext.currentProfile) {
-      appContext.showSnackbar('Чтобы проявить свою восхищенность новостью - пожалуйста, зарегистрируйтесь', SnackbarType.success)
-      return
+      router.push('/login')
     }
-    const article: IArticle = {...a, isLikedByCurrentProfile: isLiked} 
-    mediaContext.likeArticle(article)
-    .then(_=>setIsLiked(!isLiked))
+    else {
+      const article: IArticle = {...a, isLikedByCurrentProfile: isLiked} 
+      mediaContext.likeArticle(article)
+      .then(_=>setIsLiked(!isLiked))
+    }
   }
 
   const openModal = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.stopPropagation()
     e.preventDefault()
-    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {title: props.optionsTitle||'Действия с медиа', children: optionsList}, 230)
+    appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {title: props.optionsTitle||t('media_actionsWithMedia'), children: optionsList}, 230)
   }
 
   useEffect(()=>{

@@ -15,6 +15,7 @@ import { IPagination } from 'types/types'
 import P from '@/components/ui/P'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose: ()=> void
@@ -26,6 +27,7 @@ export interface ICommunityMembersModalProps {
 }
 
 export default function MembersModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const args: ICommunityMembersModalProps = appContext.modalArguments
 
@@ -63,9 +65,9 @@ export default function MembersModal(props: Props) {
   const top = (<div className={styles.top}>
     <div className={styles.navigation}>
       <BackBtn className={styles.button} onClick={props.onClose} bgColor={'transparent'}/>
-      <p className={styles.title}>Участники</p>
+      <p className={styles.title}>{t('media_members')}</p>
     </div>
-    <input type="text" onChange={(e)=> searchUsers.callback(e)} className={styles.input} placeholder={'Поиск по участникам'}/>
+    <input type="text" onChange={(e)=> searchUsers.callback(e)} className={styles.input} placeholder={t('media_searchByMembers')}/>
   </div>)
 
   const body = (<div className={styles.bodyWrapper}>
@@ -89,7 +91,7 @@ export default function MembersModal(props: Props) {
       )
     })
     ||
-    <P useThemeColor className={'empty'}>Участников не найдено</P>
+    <P useThemeColor className={'empty'}>{t('media_membersNotFound')}</P>
     }
   </InfiniteScroll>
   </div>)

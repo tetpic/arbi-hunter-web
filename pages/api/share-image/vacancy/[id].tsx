@@ -61,7 +61,7 @@ export default async function handler(request: Request) {
           <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
             {vacancy.categories[0].name}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '32px', lineHeight: '20px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '42px', lineHeight: '20px', fontWeight: 700 }}>
             {salary ?? ''}
             {!!location && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
             {location ?? ''}

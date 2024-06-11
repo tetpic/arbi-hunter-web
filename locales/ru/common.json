@@ -44,6 +44,7 @@
   "unavailable": "Недоступно",
   "error": "Ошибка",
   "ready": "Готово",  
+  "period":"Период",
   "cancel": "Отменить",
   "delete": "Удалить",
   "save":"Сохранить",
@@ -69,6 +70,8 @@
   "to": "до",
   "fromCapitalized":"От",
   "toPresent":"по н.в.",
+  "toPresentAlt":"н.в.",
+  "toAlt":"по",
   "toPresentLong":"по настоящее время",
   "post": "Разместить", 
   "close": "Закрыть",
@@ -90,6 +93,7 @@
   "send":"Отправить",
   "add":"Добавить",
   "linkCopied":"Ссылка скопирована",
+  "copyLink": "Скопировать сылку",
   "copied":"Скопировано",
   "userId":"ID пользователя:",
   "ruCity":"г.",
@@ -99,6 +103,11 @@
   "rouble": "Рубль",
   "grivnes":"Гривны",
   "fillTheField":"Заполните поле",
+  "buy":"Купить",
+  "notPresented":"Не указан",
+
+  "pageInDevelopment":"Страница находится в разработке",
+  "backToMainPage":"Вернуться на главную страницу",
 
   
   "gender_male": "Мужчина",
@@ -257,6 +266,9 @@
   "banner_vipVacancies":"VIP-вакансии",
   "banner_watchAllVipCvs":"Смотреть все vip-резюме",
   "banner_watchAllVipVacancies":"Смотреть все vip-вакансии",
+
+  "branding_buyDescriton1": "Купите платное брендирование компании",
+  "branding_buyDescriton2": "И получите доступ ко всем возможностям кастомизации вакансии!",
 
 
   "create_description": "Описание",
@@ -417,6 +429,9 @@
   "chat_send":"Отправить...",
   "chat_message":"Сообщение",
   "chat_comment":"Комментарий",
+  "chat_removeForMe":"Удалить у меня",
+  "chat_removeForAll":"Удалить у всех",
+  "chat_removeMessageConfirmation":"Вы действительно хотите удалить это сообщение?",
   
 
 
@@ -540,6 +555,8 @@
   "cv_item_removeInfoFull":"Отменить удаление будет невозможно. Вместо удаления можно перевести резюме в архив.",
   "cv_item_removeInfoShort":"Отменить удаление будет невозможно.",
   "cv_item_moveToTopTime":"Можно поднять в ",
+  "cv_item_inviteHasSend":"Приглашение выслано",
+
 
 
   "cv_page_noOpensAvailable": "Нет доступных открытий контактов",
@@ -569,6 +586,7 @@
   "cv_page_relocation": "Переезд возможен", 
   "cv_page_businesstrips":"Командировки возможны",
   "cv_page_noBusinesstrips":"Командировки невозможны",
+  "cv_page_canUprise": "Можно поднять в ", 
   "cv_addedToBlackList":"Резюме добавлено в черный список",
   "cv_deletedOrHidden": "CV удалено или скрыто", 
 
@@ -642,6 +660,7 @@
   
   "filter":"Фильтр",
   "filters":"Фильтры",
+  "filters_reset":"Сбросить фильтры",
   "filters_searchOnlyIn": "Искать только",
   "filters_findCompany": "Поиск по компании:",
   "filters_country": "Страна",
@@ -742,6 +761,11 @@
   
   
   "registration": "Регистрация",
+  "registration_switcher_setRegMethod":"Выберите способ регистрации",
+  "registration_employee":"Частное лицо",
+  "registration_workForMe":"Я хочу найти работу для себя",
+  "registration_company":"Компания",
+  "registration_wantFindEmployees":"Я хочу найти сотрудников",
   "registration_getRegister": "Зарегистрироваться",
   "registration_companyName": "Название компании",
   "registration_haveAccount": "Уже есть аккаунт?",
@@ -750,7 +774,22 @@
   "registration_enterCorrectPhone": "Введите корректный номер",
   "registration_enterCorrectEmail": "Введите корректный email",
   "registration_chooseCityAndCountry": "Выберите страну и город из списка",
+  "registration_enterCode": "Введите код",
+  "registration_enterCorrectCode": "Введите правильный код",
+  "registration_sendCodeTo": "Отправили код на",
+  "registration_sendCodeAgain": "Отправить код повторно",
+  "registration_repeatAfter": "Повторить через",
+  "registration_number": "номер",
 
+  
+  "registration_enterDescription1": "Введите его, чтобы мы убедились что",
+  "registration_enterDescription2": "это вы, а не кто-то другой",
+
+  "response_sendComplete":"Сопроводительное письмо успешно отправлено",
+  "response_cv":"Резюме",
+  "response_yourCoverLetter":"Ваше сопроводительное письмо",
+  
+  
 
   "settings": "Настройки",
   "settings_access": "Настройки доступа",
@@ -760,6 +799,7 @@
   "settings_blackListEmployee": "Скрытые вакансии",
   "settings_notification": "Уведомления",
   "settings_patterns": "Шаблоны",
+  "settings_profile":"Настройка профиля",
 
 
 
@@ -859,6 +899,13 @@
   "media_news_share":"Поделиться",
   "media_news_hide":"Скрыть",
   "media_noAddedItems":"Нет добавленных медиа",
+  "media_removeFromFavorites": "Удалить из избранного",
+  "media_saveToFavorites": "Cохранить в избранное",
+  "media_edit": "Редактировать", 
+  "media_actionsWithMedia":"Действия с медиа",
+  "media_members":"Участники",
+  "media_searchByMembers":"Поиск по участникам",
+  "media_membersNotFound":"Участников не найдено",
   
 
   "media_noCommunitiesLoaded": "Нет загруженных сообществ",
@@ -912,9 +959,7 @@
   "nav_modelSettings":"Настройки персонажа",
   "nav_nightMode": "Ночной режим",
   "nav_infofmation":"ИНФОРМАЦИЯ",
-
-
-
+  "nav_support": "Техподдержка",
 
 
   "profile_active": "Активные",
@@ -952,9 +997,61 @@
   "profile_emailNotifications":"Почтовые рассылки",
   "profile_pushNotifications":"Push-уведомления",
 
+  "proposalModal_chooseVc":"Выберите вакансию",
+  "proposalModal_invite":"Пригласить",
+  "proposalModal_cantSendReject":"Невозможно отправить отказ",
+  "proposalModal_reject":"Отказ",
+  "proposalModal_inviting":"Приглашение",
+  "proposalModal_cantSendInvite":"Невозможно отправить приглашение",
+  
+  "proposalModal_vcOrCvRemovedOrHidden":"')}. Вакансия или резюме удалено или не опубликовано",
+  
+
+  "personal_changeBackground": "Изменить фон",
+  "personal_changeBanner": "Изменить баннер",
+  "personal_photoVideoGif": "Фото, видео, gif",
+  "personal_text":"Текст",
+  "personal_image":"Изображение",
+  "personal_gallery":"Галерея",
+  "personal_video":"Видео",
+  "personal_address":"Адрес",
+  "personal_divider":"Разделитель",
+  "personal_addBlock":"Добавить блок",
+  "personal_addVideo": "Добавить видео",
+  "personal_header": "Заголовок",
+  "personal_banner": "Баннер",
+  "personal_columns": "Колонки",
+  "personal_collage": "Коллаж",
+  "personal_links": "Ссылки",
+  "personal_textVideo": "Текст и видео",
+  "personal_html": "HTML",
+  "personal_noInfo":"Нет информации",
+  "personal_about":"О себе",
+  "personal_personalInfo": "Личная информация",
+  "personal_changePassword": "Изменить пароль",
+  "personal_contacts":"Контактная информация",
+  "personal_editProfile":"Редактировать профиль",
+  "personal_chooseVacancyLookType":"Выберите статус",
+  "personal_addLink":"Добавьте ссылку",
+  "personal_columnColor":"Цвет колонки",
+  "personal_title":"Заголовок",
+  "personal_customBackground":"Индивидуальный фон",
+  "personal_uploadPhoto":"Загрузить фото",
+  "personal_customAvatar":"Индивидуальный аватар",
+
+  "payments_paymentServerError": "Ошибка платежной системы",
+  "payments_fillBalance":"Пополнение баланса",
+  "payments_sum":"Сумма",
+  "payments_paymentType":"Тип оплаты",
+  "payments_bankCard":"Банковской картой",
+  "payments_crypto":"Криптовалютой",
+  "payments_fill":"Пополнить",
+
+
 
 
   "shop_balance": "Баланс",
+  "shop_characterBought": "Персонаж куплен",
   "shop_profileBalance": "Баланс профиля",
   "shop_packets": "Пакеты услуг",
   "shop_branding":"Брендинг",
@@ -1000,6 +1097,7 @@
 
 
   "vacancy_page_edit":"Редактировать",
+  "vacancy_page_removedOrHidden":"Вакансия скрыта или удалена",
   "vacancy_page_salaryCounter":"на руки",
   "vacancy_page_expires":"Истекает",
   "vacancy_page_shows":"Показы",
@@ -1058,39 +1156,6 @@
   "knowledgeBase_linkCopied":"Ссылка скопирована",
 
 
-  "proposalModal_chooseVc":"Выберите вакансию",
-  "proposalModal_invite":"Пригласить",
-
-  "personal_changeBackground": "Изменить фон",
-  "personal_changeBanner": "Изменить баннер",
-  "personal_photoVideoGif": "Фото, видео, gif",
-  "personal_text":"Текст",
-  "personal_image":"Изображение",
-  "personal_gallery":"Галерея",
-  "personal_video":"Видео",
-  "personal_address":"Адрес",
-  "personal_divider":"Разделитель",
-  "personal_addBlock":"Добавить блок",
-  "personal_addVideo": "Добавить видео",
-  "personal_header": "Заголовок",
-  "personal_banner": "Баннер",
-  "personal_columns": "Колонки",
-  "personal_collage": "Коллаж",
-  "personal_links": "Ссылки",
-  "personal_textVideo": "Текст и видео",
-  "personal_html": "HTML",
-  "personal_noInfo":"Нет информации",
-  "personal_about":"О себе",
-  "personal_personalInfo": "Личная информация",
-  "personal_changePassword": "Изменить пароль",
-  "personal_contacts":"Контактная информация",
-  "personal_editProfile":"Редактировать профиль",
-  "personal_chooseVacancyLookType":"Выберите статус",
-  "personal_addLink":"Добавьте ссылку",
-  "personal_columnColor":"Цвет колонки",
-  "personal_title":"Заголовок",
-  "personal_customBackground":"Индивидуальный фон",
-  "personal_uploadPhoto":"Загрузить фото",
 
   "responses_onlyNew":"Только новые"
 

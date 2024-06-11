@@ -5,6 +5,7 @@ import UserPic from '../../UserPic'
 import Formatter from 'utils/formatter'
 import P from '../../P'
 import { ActivityStatus } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   cv: ICV
@@ -13,6 +14,7 @@ interface Props {
 
 export default function CvItemTop(props: Props) {
   const {isTabletWidth} = useAppContext().size
+  const {t} = useTranslation()
 
   return ( 
     <div className={styles.top}>
@@ -23,16 +25,11 @@ export default function CvItemTop(props: Props) {
         <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{props.cv.categories[0].name}</P>
       }
       {props.cv.profile.activityStatus === ActivityStatus.Online &&
-        <P styleType={['medium', 'w500', 'green']} className={styles.sub}>Сейчас онлайн</P>
+        <P styleType={['medium', 'w500', 'green']} className={styles.sub}>{t('views_onlineNow')}</P>
       }
       {props.cv.profile.lastActivityAt && props.cv.profile.activityStatus === ActivityStatus.Offline &&
-        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>Был в сети {Formatter.formatDateRelative(props.cv.profile.lastActivityAt)}</P>
+        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>{t('views_offline')} {Formatter.formatDateRelative(props.cv.profile.lastActivityAt)}</P>
       }
-      {/* {props.cv.isContactsOpen &&
-        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>
-          {props.cv.profile?.firstName} {props.cv.profile?.lastName} {props.cv.age&&props.cv.age +' '+ Formatter.pluralize(props.cv.age, 'год', 'года', 'лет')} 
-        </P>
-      } */}
     </div>
   )
 }

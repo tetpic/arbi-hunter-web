@@ -1,5 +1,6 @@
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   title: string,
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function InfoList(props: Props) {
+  const {t} = useTranslation()
 
   return (
     <div className={styles.root}>
@@ -16,7 +18,7 @@ export default function InfoList(props: Props) {
         return (
           <div className={styles.item} key={index}>
             <p className={styles.timeLine}>
-              c {el.fromDate} по {el.toDate||'н.в.'} <br/>
+              c {el.fromDate} {t('toAlt')} {el.toDate||t('toPresentAlt')} <br/>
               {Formatter.fullTimeLine([[el.fromDate, el.toDate]])}
             </p>
             <p className={styles.name}>{el.name}</p>

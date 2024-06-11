@@ -8,6 +8,7 @@ import { useUserContext } from 'context/user_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { SnackbarType } from 'types/enums'
 import { useAppContext } from 'context/state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   // onClose: () => void
@@ -16,12 +17,13 @@ interface Props {
 export default function NewPasswordModal(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const {t} = useTranslation()
 
 
   const submit = (data: any) => {
     UserRepository.passwordChangeConfirmation(data).then(res=>{
       userContext.setToken(res.accessToken)
-      appContext.showSnackbar('Пароль успешно изменен', SnackbarType.success)
+      appContext.showSnackbar(t('login_passwordRestoreComplete'), SnackbarType.success)
       appContext.hideModal()
     })
     .catch(err=> alert(err.toString()))
@@ -36,12 +38,12 @@ export default function NewPasswordModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <p className={styles.title}>Введите новый пароль</p>
+      <p className={styles.title}>{t('login_enterNewPassword')}</p>
       <FormikProvider value={formik}>
         <Form className={styles.form}>
           <PasswordField name='newPassword'/>
         </Form>
-        <Button onClick={formik.submitForm} className={styles.button}>Изменить</Button>
+        <Button onClick={formik.submitForm} className={styles.button}>{t('edit')}</Button>
       </FormikProvider>
     </div>
   )

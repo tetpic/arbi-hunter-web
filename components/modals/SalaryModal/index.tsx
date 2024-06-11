@@ -60,7 +60,7 @@ export default function SalaryModal(props: Props) {
       styleType={'default'} 
       color={'default'} 
       name={'salaryMin'} 
-      label={'oт'} 
+      label={t('from')} 
       labelType={'static'}
       labelClassName={styles.label}
       priceFormatting
@@ -77,7 +77,7 @@ export default function SalaryModal(props: Props) {
       styleType={'default'} 
       color={'default'} 
       name={'salaryMax'} 
-      label={'до'} 
+      label={t('to')} 
       priceFormatting
       error={t('filters_oneFieldShouldBeFilled')}
       suffix={<P styleType={['medium', 'greyLight']} >{TranslateCurrency(formik.values.currency)}</P>}
@@ -85,10 +85,10 @@ export default function SalaryModal(props: Props) {
     </div>
 
     <TagsRadioList className={styles.tags} name={'currency'} options={[
-      {value: Currency.RUB, label: 'Руб'},
+      {value: Currency.RUB, label: t('rubShort')},
       {value: Currency.USD, label: Currency.USD},
       {value: Currency.EUR, label: 'Euro'},
-      {value: Currency.GRN, label: 'Гривны'},
+      {value: Currency.GRN, label: t('grivnes')},
     ]}/>
     </>}
   

@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { colors } from 'styles/variables'
 import { ModalType } from 'types/enums'
 import styles from './index.module.scss'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: ()=>void
@@ -37,6 +38,7 @@ enum ActionItems {
 
 
 export default function MediaItemActionsModal(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const communityContext = useCommunityContext()
   const args: {isAdmin: boolean, news: IArticle} = props.isBottomSheet?appContext.bottomSheetArguments: appContext.modalArguments
@@ -48,13 +50,13 @@ export default function MediaItemActionsModal(props: Props) {
         case ActionItems.Copy:
           return {
             icon: <LinkSvg/>, 
-            title: 'Скопировать сылку', 
+            title: t('copyLink'), 
             onClick: ()=>{}
           }
         case ActionItems.Save: 
           return {
             icon: isSaved?<BookmarkFilledSvg/>:<BookmarkEmptySvg/>,
-            title: isSaved?'Удалить из избранного':'Cохранить в избранное',
+            title: isSaved?t('media_removeFromFavorites'):t('media_saveToFavorites'),
             onClick: ()=>{
               communityContext.saveArticle(args.news.id)
               .then(_=>{
@@ -65,19 +67,19 @@ export default function MediaItemActionsModal(props: Props) {
         case ActionItems.Share:
           return {
             icon: <ShareSvg/>,
-            title: 'Поделиться',
+            title: t('media_news_share'),
             onClick: ()=>{}
           }
         case ActionItems.Hide:
           return {
             icon: <CloseEyeSvg/>,
-            title: 'Скрыть',
+            title: t('media_article_hide'),
             onClick: ()=> {}
           }
         case ActionItems.Edit: 
           return {
             icon: <EditSvg/>,
-            title: 'Редактировать',
+            title: t('media_edit'),
             onClick: ()=>{
               appContext.showModal(ModalType.CreateCommunityArticleModal, args.news)
             }
@@ -85,7 +87,7 @@ export default function MediaItemActionsModal(props: Props) {
         case ActionItems.Delete: 
           return {
             icon: <TrashBasketSvg/>,
-            title: 'Удалить',
+            title: t('delete'),
             onClick: ()=>{
               communityContext.removeNews(args.news.id)
               .then(_=> appContext.hideModal())
@@ -97,7 +99,7 @@ export default function MediaItemActionsModal(props: Props) {
   }
 
   const top = (<div className={styles.top}>
-    <p className={styles.title}>Действия с медиа</p>
+    <p className={styles.title}>{t('media_actionsWithMedia')}</p>
     <Button onClick={props.onClose}><CrossSvg/></Button>
   </div>)
 

@@ -8,6 +8,7 @@ import { useUserContext } from 'context/user_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import FilterEmployee from '@/components/for_pages/recruiting/Filters/FilterEmployee'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -20,11 +21,12 @@ export interface IRecruitingFiltersModalProps {
 export default function RecruitingFiltersModal(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
+  const {t} = useTranslation()
   const args = appContext.modalArguments as IRecruitingFiltersModalProps
 
   return (<ModalLayout mobileFullScreen>
     <ModalBody className={styles.modalBody}>
-      <TitleForSection title={'Фильтры'} onBackClick={props.onClose}/>
+      <TitleForSection title={t('filters')} onBackClick={props.onClose}/>
       {userContext.currentProfile?.profileType === ProfileType.Hirer &&
       <FilterHirer onFilterChange={args.onFilterChange}/>
       ||

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/ui/Button'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -24,7 +25,8 @@ export default function RemoveMessageConfirmModal(props: Props) {
   const appContext = useAppContext()
   const args:RemoveMessageConfirmModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [deleteType, setDeleteType] = useState<'forAll'|'forMe'>()
-
+  const {t} = useTranslation()
+ 
   useEffect(()=>{
     if(deleteType) {
       args.onSend(deleteType)
@@ -34,12 +36,22 @@ export default function RemoveMessageConfirmModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <P useThemeColor styleType={['w500', 'small', 'textCenter']} >Вы действительно хотите удалить это сообщение?</P>
-      <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']} onClick={()=>setDeleteType('forMe')}><P styleType={['red', 'w500']}>Удалить у меня</P></Button>
+      <P useThemeColor styleType={['w500', 'small', 'textCenter']} >{t('chat_removeMessageConfirmation')}</P>
+      <Button 
+      styleType={['grey', 'wide']} 
+      altStyleType={['white', 'wide']} 
+      onClick={()=>setDeleteType('forMe')}>
+        <P styleType={['red', 'w500']}>{t('chat_removeForMe')}</P>
+      </Button>
       {args.canRemoveForAll &&
-       <Button styleType={['grey', 'wide' ]} altStyleType={['white', 'wide']}   onClick={()=>setDeleteType('forAll')}><P styleType={['red', 'w500']}>Удалить у всех</P></Button>
+       <Button 
+       styleType={['grey', 'wide' ]} 
+       altStyleType={['white', 'wide']}   
+       onClick={()=>setDeleteType('forAll')}>
+        <P styleType={['red', 'w500']}>{t('chat_removeForAll')}</P>
+      </Button>
       }
-      <Button styleType={['grey', 'blue', 'wide']} onClick={props.onClose}>Отмена</Button>
+      <Button styleType={['grey', 'blue', 'wide']} onClick={props.onClose}>{t('cancel')}</Button>
     </div>
   )
 

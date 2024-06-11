@@ -14,6 +14,7 @@ import Button from 'components/ui/Button'
 import { IRegistrationData } from 'data/interfaces/IRegistration'
 import useAbortController from 'components/hooks/useAbortController'
 import ModalBody from '@/components/layout/Modal/ModalBody'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   onClose?: () => void
@@ -35,6 +36,7 @@ export interface IRegistrationModalProps {
 export default function RegistrationModal(props: Props) {
   const appContext = useAppContext()
   const authContext = useAuthContext()
+  const {t} = useTranslation()
 
   const [loading, setLoading] = useState<boolean>(false)
   const [seconds, setSeconds] = useState<number>(0)
@@ -45,7 +47,7 @@ export default function RegistrationModal(props: Props) {
 
   const submit = async(data: IRegistrationData) => {
     if(data.code.length < 4) {
-      authContext.showOtpError(true, 'Введите код')
+      authContext.showOtpError(true, t('registration_enterCode'))
       return
     }
     setLoading(true)
@@ -53,7 +55,7 @@ export default function RegistrationModal(props: Props) {
     authContext.confirmCode({phone: args.phone, code: data.code, email: args.email, newPassword: args.newPassword}, args.needRestore)
     .then(res=>{
       if(res===false) {
-        authContext.showOtpError(true, 'Введите правильный код')
+        authContext.showOtpError(true, t('registration_enterCorrectCode'))
       }
       else {
         args.onComplete()
@@ -62,7 +64,9 @@ export default function RegistrationModal(props: Props) {
       setLoading(false)
     })
     .catch(err=>{
-      // authContext.showOtpError(true, 'Введите правильный код')
+      // eslint-disable-next-line no-console
+      console.warn(err)
+      
     })
   }
 
@@ -103,12 +107,12 @@ export default function RegistrationModal(props: Props) {
 
 
   const codeField = (<>
-    <p className={styles.confirmTitle}>Отправили код на {args.phone?'номер':'e-mail'} <br /> 
+    <p className={styles.confirmTitle}>{t('registration_sendCodeTo')} {args.phone?t('registration_number'):'e-mail'} <br /> 
     {args.phone&&Formatter.formatPhone(args.phone)||args.email}
     </p>
     <p className={styles.disclaimer}>
-      Введите его, чтобы мы убедились что <br />
-      это вы, а не кто-то другой
+      {t('registration_enterDescription1')} <br />
+      {t('registration_enterDescription2')}
     </p>
 
     <OtpCodeField
@@ -121,25 +125,17 @@ export default function RegistrationModal(props: Props) {
     />
 
   <div className={styles.buttonsWrapper}>
-    {/* <Button
-    className={classNames(styles.navButton, styles.navButton_yellow)} 
-    type={'button'} 
-    onClick={()=>authContext.showOtpError(true, 'Введите правильный код')  }
-    spinner={loading}
-    >
-      Продолжить
-    </Button> */}
     <Button 
     onClick={props.onClose}
     className={classNames(styles.navButton, styles.navButton_black)} 
     type={'button'} 
     >
-      Отменить
+      {t('cancel')}
     </Button>
   </div>
   {seconds === 0 
-    ? <p className={styles.refreshCode} >Отправить код повторно</p>
-    : <p className={styles.timeRemain}>Повторить через {Formatter.formatSecondsToTime(seconds)}</p>
+    ? <p className={styles.refreshCode} >{t('registration_sendCodeAgain')}</p>
+    : <p className={styles.timeRemain}>{t('registration_repeatAfter')} {Formatter.formatSecondsToTime(seconds)}</p>
   }
   <p className={styles.confirmTitle} data-cy={'confirmCode'} data-value={code}>{code}</p>
   </>)

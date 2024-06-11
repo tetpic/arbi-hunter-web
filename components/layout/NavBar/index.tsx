@@ -92,7 +92,7 @@ export default function NavBar(props: Props) {
     },
     support: {
       path: 'https://t.me/arbihunter_support',
-      text: 'Техподдержка',
+      text: t('nav_support'),
       icon: <SupportSvg className={styles.linkSvg}/>
     }
   }

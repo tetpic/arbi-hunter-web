@@ -51,7 +51,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
               state.delete(tariff.id)
               return new Map(state)
             })
-            appContext.showSnackbar('Персонаж куплен', SnackbarType.success)
+            appContext.showSnackbar(t('shop_characterBought'), SnackbarType.success)
             userContext.refreshUser()
           })
           .catch(_=> {
