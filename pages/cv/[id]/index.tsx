@@ -49,7 +49,7 @@ export default function Cv(props: Props) {
     <>
      <NextSeo
         title={'ArbiHunter | Резюме ' + props.cv?.categories[0].name}
-        description={`Резюме ${props.cv.categories[0].name}`+'Зарплата: ' + getSalary({cv: props.cv}, t)}
+        description={`Резюме ${props.cv.categories[0].name}`+' Зарплата: ' + getSalary({cv: props.cv}, t)}
         openGraph={{
           type: 'website',
           url: `${process.env.host}/cv/${props.cv.id}`,

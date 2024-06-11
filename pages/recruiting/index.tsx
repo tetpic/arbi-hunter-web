@@ -37,16 +37,20 @@ export interface FilterParams extends Omit<IVacancyCvSearchParams, 'countries'> 
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
   const token = context.req.cookies[CookiesType.accessToken]||null
   const profile = context.req.cookies[CookiesType.profileType]||null
-  const vacancies = await VacancyRepository.searchVacancies({forLastNumberOfDays: 30})
+  const vacancies = await VacancyRepository.searchVacancies({forLastNumberOfDays: 30}).catch(e => {console.log('Server Error: ', e); return null})
+
   const filters = context.query?.filters||null
   const vcId = context.query?.vcId||null
   const cvId = context.query?.cvId||null
   const category = context.query?.category||null
-  if(profile) {
-    return {props: {profileType: profile, auth: token, vcId, cvId, category, vacancies: vacancies.data.slice(0, 10), filters: filters||null}}
+  if(profile && vacancies) {
+    return {props: {profileType: profile, auth: token, vcId, cvId, category, vacancies: vacancies?.data?.slice(0, 10)||undefined, filters: filters||null}}
+  }
+  else if(vacancies) {
+    return {props: {vacancies: vacancies?.data?.slice(0, 10)||undefined}}
   }
   else {
-    return {props: {vacancies: vacancies.data.slice(0, 10)}}
+    return {props: {profileType: profile, auth: token, vcId, cvId, category, filters: filters||null}}
   }
 }) 
 

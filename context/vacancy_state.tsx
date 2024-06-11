@@ -208,15 +208,22 @@ export function VacancyWrapper(props: Props) {
   }
 
   const findVacancies = useCallback(async (data?: IVacancyCvSearchParams, _page?: number):Promise<boolean> => {
-    const res = await VacancyRepository.searchVacancies(data, _page||page, 40)
-    if(typeof res === 'object') {
-      setFoundVacancies(state=>{
-        (_page||page === 1) && state.clear()
-        res.data.forEach(el=> state.set(el.id, el))
-        return new Map(state)
-      })
-      setTotal(res.total)
+    try {
+
+      const res = await VacancyRepository.searchVacancies(data, _page||page, 40).catch(e => {})
+      if(typeof res === 'object') {
+        setFoundVacancies(state=>{
+          (_page||page === 1) && state.clear()
+          res.data.forEach(el=> state.set(el.id, el))
+          return new Map(state)
+        })
+        setTotal(res.total)
+      }
     }
+    catch{(e: any)=> {
+      console.warn(e)
+      return false
+    }}
     return true
   }, [page])
 

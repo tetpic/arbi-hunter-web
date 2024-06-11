@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/server'
 import { ICV } from 'data/interfaces/ICV'
-import { TranslateCurrency } from 'utils/enumsTranslations'
+import { getSalary } from 'utils/getSalary'
 
 export const config = {
   runtime: 'edge',
@@ -14,8 +14,14 @@ export default async function handler(request: Request) {
     `${process.env.host}/api/cv/${id}`,
     { next: { revalidate: 0 } }
   ).then((res) => res.json() as Promise<ICV>)
+
+  const getFont = async () => {
+    const response = await fetch(`${process.env.host}/fonts/Montserrat-SemiBold.ttf`)
+     const buffer = await response.arrayBuffer()
+     return buffer
+   }
   
-  const salary = cv.salary?cv.salary+ ` ${TranslateCurrency(cv.currency)}`:'Договорная'
+  const salary = getSalary({cv})||'Договорная'
   const location = [cv.country?.locName, cv?.city?.locName]
     .filter((i) => !!i)
     .join(', ')
@@ -31,9 +37,9 @@ export default async function handler(request: Request) {
           width: '100%',
           color: 'white',
           backgroundColor: '#f1f1f1',
-          backgroundImage: `url("${process.env.host}/images/ahFooter.svg"), linear-gradient(90deg, #a46cdc 0%, #586de4 100%)`,
+          backgroundImage: `url("${process.env.host}/images/ahFooter.svg"), linear-gradient(60deg, #22222a 20%, #a46cdc 65%,  #586de4 100%)`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '120% 160%',
+          backgroundSize: '100% 120%',
           backgroundPosition: 'bottom center',
         }}
       >
@@ -50,10 +56,10 @@ export default async function handler(request: Request) {
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800}}>
             <img src={`${process.env.host}/images/ahFullLogo.svg`} alt="" width={320}  />
           </div>
-          <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
-            {cv.categories[0].name}
+          <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '52px', lineHeight: '32px'  }}>
+            {cv.categories?.[0]?.name}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '32px', lineHeight: '20px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '144px', fontSize: '42px', lineHeight: '20px', fontWeight: 700 }}>
             {salary || ''}
             {!!location && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
             {location ?? ''}
@@ -62,6 +68,16 @@ export default async function handler(request: Request) {
           </div>
         </div>
       </div>
-    )
+    ), 
+    {
+      fonts: [
+        {
+          name: 'Montserrat',
+          data: await getFont(),
+          style: 'normal',
+          weight: 600
+        }
+      ],
+    }
   )
 }

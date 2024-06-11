@@ -10,6 +10,12 @@ export default async function handler(request: Request) {
   const url = new URL(request.url)
   const id = url.searchParams.get('id')
 
+  const getFont = async () => {
+    const response = await fetch(`${process.env.host}/fonts/Montserrat-SemiBold.ttf`)
+     const buffer = await response.arrayBuffer()
+     return buffer
+   }
+
   const vacancy: IVacancy = await fetch(
     `${process.env.host}/api/vacancy/${id}`,
     { next: { revalidate: 0 } }
@@ -30,9 +36,9 @@ export default async function handler(request: Request) {
           width: '100%',
           color: 'white',
           backgroundColor: '#f1f1f1',
-          backgroundImage: `url("${process.env.host}/images/ahFooter.svg"), linear-gradient(90deg, #a46cdc 0%, #586de4 100%)`,
+          backgroundImage: `url("${process.env.host}/images/ahFooter.svg"), linear-gradient(60deg, #22222a 20%, #a46cdc 65%,  #586de4 100%)`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '120% 160%',
+          backgroundSize: '100% 120%',
           backgroundPosition: 'bottom center',
         }}
       >
@@ -64,6 +70,16 @@ export default async function handler(request: Request) {
           </div>
         </div>
       </div>
-    )
+    ),
+    {
+      fonts: [
+        {
+          name: 'Montserrat',
+          data: await getFont(),
+          style: 'normal',
+          weight: 600
+        }
+      ],
+    }
   )
 }

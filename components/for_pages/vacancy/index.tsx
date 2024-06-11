@@ -116,6 +116,9 @@ export default function VacancyPage(props: Props) {
           setOtherCompanyVacancies(randomItems)
         }
       })
+      .catch(e => {
+        console.warn(e)
+      })
     }
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
