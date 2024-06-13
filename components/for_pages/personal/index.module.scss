@@ -25,6 +25,9 @@
   flex-direction: column;
   row-gap: 16px;
   margin-block: 16px;
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+  }
 }
 
 .root {
