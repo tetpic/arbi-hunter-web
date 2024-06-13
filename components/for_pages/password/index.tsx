@@ -66,7 +66,7 @@ export default function Password(props: Props) {
     <FormikProvider value={formik}>
       <Form className={styles.content}>
         <P useThemeColor className={styles.title}>
-        {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
+        {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} />}
         {t('login_restoringPassword')}
         </P>
         {step === 1 &&

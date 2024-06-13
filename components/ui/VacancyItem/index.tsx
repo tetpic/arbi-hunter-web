@@ -107,7 +107,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   //@ts-ignore
   style={{'--gradientColor1': '#'+vacancy.subscriptions?.tariff?.colors[0]+'50', '--gradientColor2':'#'+vacancy.subscriptions?.tariff?.colors[1]+'50'}}
   href={'/vacancy/'+vacancy.id}> 
-    <FavoritesButton styleType={['icon', 'backTransparent']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
+    <FavoritesButton styleType={['icon', 'black']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>
       <div className={ styles.card}>

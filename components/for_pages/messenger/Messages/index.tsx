@@ -228,6 +228,12 @@ export default function Messages(props: Props) {
       }
     }, [dialog.chat])
 
+  if(!chatContext.currentChatId) {
+    return <div className={styles.root} style={{position: 'relative'}}>
+      <P styleType={['large', 'w600']} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>Выберите чат</P>
+    </div>
+  }
+
 
   return (
     <div className={styles.root}> 
@@ -236,7 +242,7 @@ export default function Messages(props: Props) {
         {dialog.chat &&
         <>
           {isTabletWidth &&
-            <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
+            <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)}/>
           }
           <UserPic 
           size={48} 

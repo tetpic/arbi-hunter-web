@@ -401,7 +401,7 @@ export default function VacancyPage(props: Props) {
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_sameVacancies')}</P>
           <div className={styles.vacancies}>
-            {otherCompanyVacncies.filter(el=> el.id !== currentVacancy.id).map(el => <VacancyItem key={el.id} vacancy={el} />)}
+            {otherCompanyVacncies.filter(el=> el.id !== currentVacancy.id).map(el => <VacancyItem key={el.id} vacancy={el} smallCard={isTabletWidth} />)}
           </div>
         </div>
       }

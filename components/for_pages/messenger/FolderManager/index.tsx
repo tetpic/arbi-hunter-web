@@ -112,7 +112,7 @@ function FolderEditor(props: Props) {
       <div className={styles.top}>
         {isTabletWidth &&
           <>
-            <BackBtn onClick={props.onBack} bgColor={'transparent'}/>
+            <BackBtn onClick={props.onBack} />
             <Title title={t('chat_settings')}/>
             <p className={styles.change} onClick={formik.submitForm}>{t('chat_ready')}</p>
           </>
@@ -186,7 +186,7 @@ export default function FolderManager() {
             <BackBtn 
             onClick={creationMode
               ?()=>{setCreationMode(false)}
-              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} bgColor={'transparent'}/>
+              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])}/>
             <Title title={t('chat_folders')}/>
             <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?t('chat_ready'): t('chat_folders_edit')}</p>
           </>

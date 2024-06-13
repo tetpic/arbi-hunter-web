@@ -179,13 +179,16 @@ export function ChatWrapper(props: Props) {
 
   const setSearch = (search?: string) => {
     ChatRepository.getChatList({search})
-    .then(res=>setChats(state => {
-      state.clear()
-      res.data.forEach(el=> {
-        state.set(el.id, el)
+    .then(res=> {
+      setTotalChats(res.total)
+      setChats(state => {
+        state.clear()
+        res.data.forEach(el=> {
+          state.set(el.id, el)
+        })
+        return new Map(state)
       })
-      return new Map(state)
-    }))
+    })
   }
 
   const setChatsFromFolder = async (chatName: string) => {

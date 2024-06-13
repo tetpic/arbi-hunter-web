@@ -54,9 +54,6 @@ function CountryModalInner(props: Props) {
   })
 
   useEffect(()=>{
-    debugger
-    console.log(locationContext.countries)
-    
     if(locationContext.countries.size === 0) {
       locationContext.getCountries({search: formik.values.search, page: 1, limit: 198}, null, formik.values.country)  
     }

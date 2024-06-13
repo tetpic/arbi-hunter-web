@@ -62,7 +62,7 @@ export default function BackgroundSwitchModal(props: Props) {
         <p>{t('personal_customBackground')}</p>
       </div>
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
-        <FileInput setImages={setImage} accept={['image/png', 'image/jpeg']}/>
+        <FileInput setImages={setImage} accept={['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/heic']}/>
         {(image?.data?.source) &&
           <Image 
           unoptimized

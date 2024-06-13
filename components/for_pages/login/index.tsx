@@ -111,7 +111,7 @@ export default function Login() {
       }
       <div className={styles.content}>
         <P styleType={['alignCenter', 'w500', 'huge']} useThemeColor>
-          {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
+          {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} />}
           {t('login')}
         </P>
         <P styleType={['w500', 'alignCenter', 'large']} useThemeColor>

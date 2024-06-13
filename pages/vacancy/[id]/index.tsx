@@ -10,6 +10,8 @@ import { getSalary } from 'utils/helpers'
 import { TranslateEmploymentType, TranslateWorkExperience } from 'utils/enumsTranslations'
 import P from '@/components/ui/P'
 import { useRouter } from 'next/router'
+import { useUserContext } from 'context/user_state'
+import { useEffect } from 'react'
 
 
 interface Query {
@@ -36,12 +38,15 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 export default function Vacancy(props: Props) {
   const {t} = useTranslation()
   const router = useRouter()
+  const userContext = useUserContext()
 
-  if(!props.vacancy) {
-    setTimeout(() => {
-      router.push('/')
-    }, 4000)
-  }
+  useEffect(()=>{
+    if(!props.vacancy && !userContext.isLogged) {
+      setTimeout(() => {
+        router.push('/')
+      }, 4000)
+    }
+  }, [])
 
   return (<>
   {props.vacancy &&

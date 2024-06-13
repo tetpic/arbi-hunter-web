@@ -37,7 +37,7 @@ export default function CommunityNewsViewModal(props: Props) {
   }, [])
 
   const navigation = (<div className={styles.navigation}>
-    <BackBtn className={styles.backBtn} onClick={props.onClose} bgColor={'transparent'}/>
+    <BackBtn className={styles.backBtn} onClick={props.onClose} />
   </div>)
 
 

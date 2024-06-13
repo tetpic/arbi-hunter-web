@@ -116,7 +116,6 @@ export default function FilterHirer(props: Props) {
         },
         title,
         onSubmit: (data)=>{
-          debugger
           formik.setValues({...formik.values, ...data})
           appContext.hideBottomSheet()
         }

@@ -53,7 +53,6 @@ export default function ProposalTextModal(props: Props) {
     }
     proposalRepository.createProposal(dataToSend)
     .then(res=>{
-      debugger
       if(typeof res === 'object' && modalArguments.onSubmit) {
         modalArguments.onSubmit(dataToSend.type, data.coverLetter, res)
       }

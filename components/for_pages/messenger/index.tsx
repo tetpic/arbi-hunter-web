@@ -61,7 +61,7 @@ export default function Messenger(props: Props) {
       {chatContext.component.get(ChatComponent.Chat) && 
         <Chats chats={[...chats.values()]} chatId={chatContext.currentChatId} onSelect={handleSelectChat} />
       }
-      <ChatDialogWrapper chatId={chatContext.currentChatId||[...chats.values()][0]?.id} chat={chats.get(chatContext.currentChatId)||[...chats.values()][0]}>
+      <ChatDialogWrapper chatId={chatContext.currentChatId} chat={chats.get(chatContext.currentChatId)}>
         {chatContext.component.get(ChatComponent.Folder) && !chatContext.loading &&
           <FolderManager/>
           ||

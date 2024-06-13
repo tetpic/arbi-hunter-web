@@ -36,7 +36,6 @@ function CityModalInner(props: Props) {
   const {t} = useTranslation()
 
   const submit = (data: {search: string, cities: ISearchCityResult[]}) => {
-    debugger
     args.onSubmit(data.cities)
     props.onClose()
   }

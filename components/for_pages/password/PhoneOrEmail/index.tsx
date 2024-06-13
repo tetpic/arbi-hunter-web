@@ -23,7 +23,6 @@ export default function PhoneOrEmail(props: Props) {
   const checkEmail = async () => {   
     const isRegistered = await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
     .then(res => {
-      debugger
       if(!res.exists || !res.isRegistrationCompleted || res.profilesCount === 0) {
         return false
       }

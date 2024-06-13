@@ -48,7 +48,6 @@ export default class CvRepository {
       profile,
       token
     })
-    debugger
     if(res.err) {
       return null
     }
