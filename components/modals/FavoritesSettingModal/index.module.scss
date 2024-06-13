@@ -19,6 +19,12 @@
 
 .closeBtn {
   align-self: flex-end;
+  
+  @include mq($TabletWidth, max) {
+    position: absolute;
+    top: 4px;
+    right: 16;
+  }
 }
 
 .buttonsWrapper {

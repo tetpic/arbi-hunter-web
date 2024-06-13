@@ -11,3 +11,9 @@
     
   }
 }
+
+.title {
+  @include mq($TabletWidth, max) {
+    justify-content: center;
+  }
+}

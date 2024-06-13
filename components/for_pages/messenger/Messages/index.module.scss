@@ -72,6 +72,7 @@
   @include mq ($TabletWidth, max) {
     grid-template-areas: 'd n i';
     grid-template-columns: repeat(1fr);
+    padding: 16px;
   }
 
   .userPic {
@@ -393,7 +394,7 @@
   display: flex;
   align-items: center;
   column-gap: 8px;
-  height: 60px;
+  height: clamp(32px, 3vw, 60px);
   width: 100%;
   border-bottom: 1px $grey solid;
   @include transitionDefault;
@@ -407,7 +408,8 @@
   // }
   
   .pinnedImage {
-    padding: 10px;
+    padding: clamp(4px, 1vw, 10px);
+    padding-left: 16px;
   }
   
   .pinnedMessagesWrapper {
@@ -430,6 +432,10 @@
     max-height: 60px;
     flex-shrink: 0;
     padding: 8px;
+
+    p {
+      @include lineClamp(1)
+    }
   }
 
 }

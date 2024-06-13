@@ -17,7 +17,6 @@
     max-height: 96vh;
     @media screen and (max-width: 900px){
       max-height: unset;
-      min-height: -webkit-fill-available;
     }
   }
 }

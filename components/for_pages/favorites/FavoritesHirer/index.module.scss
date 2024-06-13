@@ -6,6 +6,7 @@
   margin-bottom: 64px;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
+    margin-top: 16px;
   }
 }
 
@@ -18,4 +19,8 @@
   button {
     flex-shrink: 0;
   }
+}
+
+.foldersWrapper {
+  margin-top: 16px;
 }

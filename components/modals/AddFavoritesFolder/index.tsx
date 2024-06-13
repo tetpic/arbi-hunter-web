@@ -47,7 +47,7 @@ export default function AddFavoritesFolder(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <P styleType={['w600', 'huge']} useThemeColor>{t('favorites_createFolderTitle')}</P>
+      <P styleType={['w600', 'huge']} useThemeColor>{args.initialData?'Редактирование папки':t('favorites_createFolderTitle')}</P>
       <FormikProvider value={formik}>
         <Form>
           <InputField 

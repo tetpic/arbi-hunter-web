@@ -50,9 +50,6 @@
 
   .time {
     grid-area: t;
-    font-size: $smallText;
-    font-weight: $regular;
-    color: $greyLight;
   }
 
   .counter {
@@ -102,5 +99,14 @@
       width: 32px;
       height: 32px;
     }
+  }
+}
+
+.pinIcon {
+  width: 18px;
+  height: 18px;
+
+  path {
+    stroke: $greyLight;
   }
 }

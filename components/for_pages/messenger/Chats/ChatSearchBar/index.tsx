@@ -19,6 +19,7 @@ import useTranslation from 'next-translate/useTranslation'
 import PlusSvg from '@/components/svg/PlusSvg'
 import P from '@/components/ui/P'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   onSearch: (value: string) => void
@@ -66,8 +67,10 @@ export default function ChatSearchBar(props: Props) {
   return (
   <div className={styles.root}> 
     <div className={styles.rootWrapper}>
-      {isTabletWidth &&
+      {isTabletWidth && <>
+      <Spacer basis={24}/>
         <Title className={styles.title} title={t('chat_main')}/>
+      </>
       }
       <div className={classNames(styles.inputWrapper, (active||chatContext.component.get(ChatComponent.Folder))&&styles.inputWrapper_active)}>
         {chatContext.component.get(ChatComponent.Folder) &&

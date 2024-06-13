@@ -100,7 +100,13 @@ export default function MessageFactory(props: Props) {
   const setPinned = () => {
     ChatRepository.setMessagePinned(Number(props.message.id), !props.message.pinned)
     .then(res => {
-      
+      if(res) {
+        dialog.setPinned(res)
+        }
+    })
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.warn(err)
     })
     openDropDown(false)
   }

@@ -1,7 +1,7 @@
 @import 'styles/index';
 
   %side {
-    padding: 8px 16px;
+    padding: 16px;
     border-radius: 14px;
     margin-block: 8px;
     display: flex;
@@ -11,6 +11,7 @@
     position: relative;
     @include mq($TabletWidth, max) {
       max-width: 80%;
+      padding: 16px 16px 8px
     }
   }
 

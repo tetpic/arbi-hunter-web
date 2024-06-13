@@ -31,8 +31,7 @@ export default function AudioNode(props: Props) {
       setIsPlay(true)
       timer.current = setInterval(() => {
         setTimeState(audio.current.currentTime)
-      }, 200)
-
+      }, 50)
     }
     else {
       audio.current.pause()
@@ -91,26 +90,28 @@ function getDuration(event: any) {
  }, [audio.current.duration])
 
   return (<div className={styles.root}> 
-    <Button onClick={playPauseHandler}>
+    <Button onClick={playPauseHandler} >
       {play &&
-        <PauseButtonSvg/>
+        <PauseButtonSvg className={styles.playSvg}/>
         ||
-        <PlayButtonWhiteSvg/>
+        <PlayButtonWhiteSvg className={styles.playSvg}/>
       }
     </Button>
     <div className={styles.audioNode}>
       
     {/* <DumbAudioWaveSvg/> */}
-    <AudioVisualizer 
-    key={'audio-visualizer'}
-    blob={blob}
-    width={188} 
-    height={32} 
-    barWidth={2}
-    gap={2}   
-    currentTime={time}
-    barPlayedColor={'#2F80ED'}
-    />
+    <div className={styles.visualizerWrapper}>
+      <AudioVisualizer 
+      key={'audio-visualizer'}
+      blob={blob}
+      width={188} 
+      height={100} 
+      barWidth={2}
+      gap={2}   
+      currentTime={time}
+      barPlayedColor={'#2F80ED'}
+      />
+    </div>
     <P styleType={['greyLight']} useThemeColor>{time > 0 && Formatter.formatSecondsToTime(time) + ' / '}{Formatter.formatSecondsToTime(duration)}</P>
 
     </div>

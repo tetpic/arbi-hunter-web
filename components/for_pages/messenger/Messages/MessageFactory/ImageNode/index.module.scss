@@ -17,6 +17,7 @@
   position: relative;
   max-height: 50vh;
   max-height: 400px;
+  height: auto;
 
   .spinner {
     position: absolute;
@@ -25,15 +26,26 @@
     transform: translate(-50%, -50%);
   }
 
-  &_half {
-    width: 48%;
-  }
+
 
   img {
     width: auto;
+    height: auto;
     max-width: 100%;
     max-height: 400px;
     object-fit: contain;
     transition: .1s linear;
+  }
+
+  &_half {
+    width: 48%;
+    max-width: 450px;
+    display: flex;
+    justify-content: center;
+
+    img {
+      height: unset;
+      height: revert-layer;
+    }
   }
 }

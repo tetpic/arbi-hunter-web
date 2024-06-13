@@ -83,7 +83,7 @@ export default function FavoritesHirerFolder(props: Props) {
       getRef={  (r) => {dropRef.current = r}} 
       onClose={()=>openDropDown(false)}/>
     </div>
-    <Spacer basis={16}/>
+    <Spacer basis={8}/>
     <Accordeon isActive={isActive}>
       <div className={styles.stats}>
         <P useThemeColor>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
