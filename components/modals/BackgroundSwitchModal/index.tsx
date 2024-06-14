@@ -25,8 +25,9 @@ interface Props {
 }
 
 export interface IBackgroundSwitchModalArgs {
-  onSave: (data: {image: PreviewImage, type?: 'place'|'custom'}) => void
+  onSave: (data: {image: PreviewImage, type?: 'place'|'custom'|'building'}) => void
   currentBackground?: IBackground
+  currentBuilding?: IBackground
 }
 
 export default function BackgroundSwitchModal(props: Props) {
@@ -35,7 +36,7 @@ export default function BackgroundSwitchModal(props: Props) {
   const userContext = useUserContext()
   const args: IBackgroundSwitchModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   
-  const [type, setType] = useState<'place'|'custom'>(userContext.currentProfile?.useOwnLogo? 'custom' :'place')
+  const [type, setType] = useState<'place'|'custom'|'building'>(userContext.currentProfile?.useOwnLogo? 'custom' :'place')
   const [image, setImage] = useState<PreviewImage>(userContext.currentProfile?.profileType === ProfileType.Hirer&& userContext.currentProfile.useOwnLogo && args.currentBackground &&{data: args.currentBackground?.image, id: args.currentBackground?.imageId, loaded: true})
 
   const onSave = () => {
@@ -61,6 +62,22 @@ export default function BackgroundSwitchModal(props: Props) {
         />
         <p>{t('personal_customBackground')}</p>
       </div>
+      {userContext.currentProfile.profileType === ProfileType.Hirer &&
+      <div className={classNames(styles.item)} 
+      onClick={()=>{
+        args.onSave({image, type:'building'})
+        props.onClose()    
+      }}
+      >
+        <Image src={'/images/buildings/building2.png'} 
+        className={styles.customBack}
+        alt={'user custom build'}
+        width={500}
+        height={200}
+        />
+        <p>Выбрать здание</p>
+      </div>
+      }
       <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
         <FileInput setImages={setImage} accept={['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/heic']}/>
         {(image?.data?.source) &&

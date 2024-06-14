@@ -291,8 +291,12 @@
   canvas {
     width: calc(100% - 10px);
     @include mq($TabletWidth, max) {
-      width: calc(100% - 64px);
+      width: calc(100% - 84px);
     }
+  }
+
+  svg {
+    flex-shrink: 0;
   }
 }
 

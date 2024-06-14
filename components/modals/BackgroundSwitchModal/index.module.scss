@@ -5,6 +5,7 @@
   width: 100%;
   justify-content: space-between;
   padding-inline: 24px;
+  column-gap: 8px;
 }
 
 .item {
@@ -24,6 +25,7 @@
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
+  border: 2px solid transparent;
 
   p {
     position: relative;

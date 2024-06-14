@@ -509,7 +509,7 @@ export default function Messages(props: Props) {
               </P> */}
             </>
             ||
-            <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none'}} alt='microphone icon'/>
+            <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
           }
         </div>
         ||

@@ -48,20 +48,32 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
 
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
+    debugger
     if(!item.id) {
       appContext.showSnackbar(t('profile_wrongApplication'), SnackbarType.error)
       openDropDown(false)
       return
     }
-    try{
-      item.type&&
-      await ProposalRepository.changeProposalStatusByEmployee(item?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
-      ||
-      await ApplicationRepository.patchApplicationRespond(item.id, {status: ApplicationStatus.Rejected, deletedByEmployee: deletedByEmployee})
+    if(('proposals' in item && item.proposals[0])) {
+      await ProposalRepository.changeProposalStatusByEmployee(item?.proposals[0].id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+      .catch(_ => {
+        appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+      })
       onRemove(item.id)
     }
-    catch(err) {
-      appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+    else if(('application' in item && !item.application)) {
+      await ProposalRepository.changeProposalStatusByEmployee(item?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+      .catch(_ => {
+        appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+      })
+      onRemove(item.id)
+    }
+    else {
+      await ApplicationRepository.patchApplicationRespond(item.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+      .catch(_ => {
+        appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+      })
+      onRemove(item.id)
     }
     openDropDown(false)
   }
@@ -73,7 +85,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
       <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
     }
     <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
-    {(item?.status === ApplicationStatus.Accepted||item?.status === ApplicationStatus.Applied) && 
+    {(item?.status === ApplicationStatus.Accepted||item?.status === ApplicationStatus.Applied) && (('proposals' in item && item.proposals[0])||('application' in item && !item.application)) &&
       <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
      }
     {isTabletWidth &&

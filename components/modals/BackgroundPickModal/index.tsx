@@ -24,7 +24,7 @@ interface Props {
 }
 
 export interface IBackgroundPickModalArguments {
-  withBuildPicker?: boolean
+  buildPicker?: boolean
   currentBackground?: IFile
   currentBuild?: IFile
   hirerLogo?: IFile,
@@ -39,7 +39,7 @@ export default function BackgroundPickModal(props: Props) {
   const userContext = useUserContext()
   const profileType = userContext.currentProfile?.profileType
   const args: IBackgroundPickModalArguments = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
-  const [page, setPage] = useState<'back'|'build'>('back')
+  const [page, setPage] = useState<'back'|'build'>(args.buildPicker? 'build' : 'back')
   const [currentBackground, setCurrentBackground] = useState<IFile>(args.currentBackground)
   const [currentBuild, setCurrentBuild] = useState<IFile>(args.currentBuild)
   const [backgrounds, setBackgrounds] = useState<Map<number, IBackground>>(new Map)
@@ -47,7 +47,7 @@ export default function BackgroundPickModal(props: Props) {
   const [customBackground, setCustomBackground] = useState<PreviewImage>()
 
   useEffect(()=>{
-    if(args.withBuildPicker) {
+    if(args.buildPicker) {
       BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Buildings})
       .then(res => {
         const filtered = res.filter(b => b.profileType === profileType)
@@ -63,6 +63,7 @@ export default function BackgroundPickModal(props: Props) {
           setCurrentBuild(filtered[0].image)
         }
       })
+      return
     }
     BackgroundRepository.getBackground({categoryId: BackgroundCategoryType.Places})
     .then(res => {
@@ -197,11 +198,7 @@ export default function BackgroundPickModal(props: Props) {
   const buttons = (
     <div className={styles.buttonsWrapper}>
       <Button className={styles.backButton} onClick={() => page === 'build'?setPage('back'):props.onClose()}>{page === 'build'? t('back'): t('cancel')}</Button>
-      {args.withBuildPicker && page === 'back' &&
-        <Button onClick={() => setPage('build')} className={styles.nextButton}>{t('next')}</Button>
-        ||
-        <Button className={styles.nextButton} onClick={onSave}>{t('save')}</Button>
-      }
+      <Button className={styles.nextButton} onClick={onSave}>{t('save')}</Button>
     </div>
   )
 

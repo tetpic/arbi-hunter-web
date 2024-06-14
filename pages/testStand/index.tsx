@@ -14,7 +14,9 @@ export default function TestStand(props: Props) {
 
   return (
     <ContentLayout >
-      <div className={styles.root}></div>
+      <div className={styles.root}>
+        <input type='text' className={styles.input}/>
+      </div>
     </ContentLayout>
   )
 }

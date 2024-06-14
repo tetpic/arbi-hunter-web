@@ -64,6 +64,7 @@ export default function Feedbacks() {
     const cvEntries:[number, IProposal|IApplication][] = [...CVFeedbacks.entries()]
     
     const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.vacancyDeletedOrHidden&&!value.deletedByEmployee)
+    console.log(itemsActiveFilter)
     const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
 
     switch(page) {
@@ -79,7 +80,30 @@ export default function Feedbacks() {
       case ReviewsNavigation.Invite: 
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined))
+          itemsActiveFilter.filter(([_, value])=>  
+            // если это мой отзыв
+            // if('proposals' in value) {
+            //   if(value.proposals.length > 0) {
+            //     return value.proposals[0].status === ApplicationStatus.Accepted
+            //   }
+            //   else {
+            //     return value.status === ApplicationStatus.Accepted
+            //   }
+            // }
+            // // если это приглашение компании
+            // else {
+            //   if(value.application?.status) {
+            //     return value.application?.status === ApplicationStatus.Accepted
+            //   }
+            //   else {
+            //     return value.status === ApplicationStatus.Accepted
+            //   }
+            // }
+
+            value.status==='accepted'
+          ||(value.type !== ProposalRequestType.Rejection && value.type !== undefined)
+        
+          )
           .map(([app, vc])=>{
             state.set(app, vc)
           })
