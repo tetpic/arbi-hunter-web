@@ -6,7 +6,7 @@ import TextSvg from 'components/svg/TextSvg'
 import PhotoBigSvg from 'components/svg/PhotoBigSvg'
 import PhotoDoubleSvg from 'components/svg/PhotoDoubleSvg'
 import VideoCameraSvg from 'components/svg/VideoCameraSvg'
-import LocationSvg from 'components/svg/LocationSvg'
+// import LocationSvg from 'components/svg/LocationSvg'
 import ScaleSvg from 'components/svg/ScaleSvg'
 import { ModalType, PersonalBlockType, PurchaseType } from 'types/enums'
 import { IAddPersonalBlockModalProps } from 'components/modals/AddPersonalBlockModal'
@@ -48,7 +48,7 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_image'), free: true, icon: <PhotoBigSvg/>, type: PersonalBlockType.Image, onClick: () => showModal(PersonalBlockType.Image)},
     {name: t('personal_gallery'), free: false, icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
     {name: t('personal_video'), free: true, icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
-    {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
+    // {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
     {name: t('personal_divider'),free: false, icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
     }},
