@@ -37,7 +37,11 @@ export interface FilterParams extends Omit<IVacancyCvSearchParams, 'countries'> 
 export const getServerSideProps = (async (context: {query: Query, req: { cookies: { [x: string]: any } } }) => {
   const token = context.req.cookies[CookiesType.accessToken]||null
   const profile = context.req.cookies[CookiesType.profileType]||null
-  const vacancies = await VacancyRepository.searchVacancies({forLastNumberOfDays: 30}).catch(e => {console.log('Server Error: ', e); return null})
+  const vacancies = await VacancyRepository.searchVacancies({forLastNumberOfDays: 30})
+  .catch(e => {
+    // eslint-disable-next-line no-console
+    console.log('Server Error: ', e); return null
+  })
 
   const filters = context.query?.filters||null
   const vcId = context.query?.vcId||null

@@ -339,11 +339,6 @@ export default function Registration(props: Props) {
     })*/
   }, [])
 
-  useEffect(()=>{
-    console.log(formik.values.agreement)
-    
-  }, [formik.values.agreement])
-
   return (
     <div className={styles.root}>
       {!isTabletWidth&&

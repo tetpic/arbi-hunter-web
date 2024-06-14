@@ -144,11 +144,6 @@ export default function FilterEmployee(props: Props) {
     })
   }
 
-  useEffect(()=>{
-    console.log(creationContext.helpObjects.cities)
-    
-  }, [creationContext.helpObjects.cities])
-
   const onRemoveCategory = (category: ISpecializationCategory) => {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f?.id !== category?.id):state)
     formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category?.id))

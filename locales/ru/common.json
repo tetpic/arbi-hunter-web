@@ -394,7 +394,7 @@
   "chat_folder_add":"Добавить чаты",
   "chat_folder_allFolders": "ВСЕ ПАПКИ",
   "chat_folder_creationInfo": "Вы можете создать папки с нужными чатами и переключаться между ними.",
-  "chat_folderCreate": "Создать новую папку", 
+  "chat_folderCreate": "Создать папку", 
   "chat_allChats": "Все чаты",
   "chat_notFound": "Чатов не найдено",
   "chat_online": "В сети",
@@ -654,7 +654,7 @@
   "favorites_vcItem_expeience":"Опыт",
   "favorites_vcItem_published":"Опубликовано",
   "favorites_vcItem_hirerIsOnline":"Работодатель сейчас онлайн",
-  "favorites_vcItem_wasOnline":"Был в сети",
+  "favorites_vcItem_wasOnline":"Был в сети ",
   "favorites_vcItem_youInvited":"Вас пригласили",
   "favorites_vcItem_youRejected":"Вам отказали",
   
@@ -1091,7 +1091,7 @@
   "views_empty":"Пока нет просмотров",
   "views_watched":"Просмотрено",
   "views_onlineNow":"Сейчас онлайн",
-  "views_offline":"Был в сети",
+  "views_offline":"Был в сети ",
   "views_companyProfile":"Профиль компании",
   "views_employeeProfile":"Профиль соискателя",
 

@@ -10,13 +10,6 @@
   min-height: 100px;
   row-gap: 16px;
   justify-content: space-evenly;
-  @include mq($TabletWidth, max) {
-    max-width: 80vw;
-  }
-}
-
-.text {
-
 }
 
 .buttonsWrapper {

@@ -289,7 +289,10 @@
   }
 
   canvas {
-    width: calc(100% - 160px);
+    width: calc(100% - 10px);
+    @include mq($TabletWidth, max) {
+      width: calc(100% - 64px);
+    }
   }
 }
 

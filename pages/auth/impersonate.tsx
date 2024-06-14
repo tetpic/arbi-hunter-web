@@ -22,6 +22,7 @@ export const getServerSideProps = async (context: any) => {
       },
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e)
     return {
       props: {},

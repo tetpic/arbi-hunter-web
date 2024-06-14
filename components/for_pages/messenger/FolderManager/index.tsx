@@ -243,9 +243,11 @@ export default function FolderManager() {
           creationMode && <FolderEditor folderToEdit={folderToEdit} onBack={()=>setCreationMode(false)}/>
         }
         {!creationMode && 
-          <Button className={styles.createBtn} onClick={()=>setCreationMode(true)}> 
-            <p><PlusSvg/><span>{t('chat_folderCreate')}</span></p>
+        <div className={styles.buttonsWrapper}>
+          <Button className={styles.createBtn} styleType={['gradient', 'phoneWide']} onClick={()=>setCreationMode(true)}> 
+            <P >{t('chat_folderCreate')}</P>
           </Button>
+        </div>
         }
   </div>)
 }

@@ -77,7 +77,7 @@ export default function ChatItem(props: Props) {
       }
     }
     isTabletWidth
-    ?appContext.showBottomSheet<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args)
+    ?appContext.showBottomSheet<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args, chatContext.folders.size < 5?((chatContext.folders.size*32) + 190):400)
     :appContext.showModal<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args )
   }
    

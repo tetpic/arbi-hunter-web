@@ -139,6 +139,9 @@
   padding-right: 60px !important;
   background-color: var(--secondaryColor) !important; 
   border: 2px var(--borderPerimeter) solid !important;
+  @include mq($TabletWidth, max) {
+    padding-right: 16px !important;
+  }
 
   
 }

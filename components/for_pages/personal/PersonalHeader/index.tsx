@@ -170,7 +170,7 @@ export default function PersonalHeader(props: Props) {
     ||
     <Image 
     src={personalContext.currentProfile?.profileType===ProfileType.Hirer
-      ?'/images/cities/companyDefaultBack.png'
+      ?'/images/cities/newyork.png'
       :'/images/rooms/coworking.png'
     } 
     className={styles.background} alt={'moscow'} 

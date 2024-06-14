@@ -146,7 +146,7 @@
   @include mq($TabletWidth, max) {
     width: 100%;
     row-gap: 16px;
-
+    margin-top: -46px;
     align-items: center;
     position: relative;
   }

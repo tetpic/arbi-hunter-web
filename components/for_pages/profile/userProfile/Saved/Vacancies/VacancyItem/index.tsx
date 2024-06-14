@@ -84,7 +84,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
   const openModalHandler =(e: React.MouseEvent<Element, MouseEvent>)=> {
     e.stopPropagation()
     if (isTabletWidth) {
-      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, itemWrapperClassName: styles.optionsWrapper}, 300)
+      appContext.showBottomSheet<IOptionsModalProps>(ModalType.OptionsModal, {children: options, itemWrapperClassName: styles.optionsWrapper}, 270)
     }
     else {
       openDropDown(!dropDown)

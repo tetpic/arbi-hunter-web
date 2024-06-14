@@ -104,13 +104,16 @@ export default function PersonalPage(props: Props) {
         return
       }
       else if(res === null && personalTariff.price > userContext.user.balance) {
-        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+        const _args : IConfirmModalProps = {
           text: t('shop_insufficientBalance'),
           maxWidth: 320,
           callback: () => {
             router.push({pathname: '/shop', query: {page: ShopPages.Balance}})
           }
-        })
+        }
+        isTabletWidth
+          ? appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
+          : appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
         return
       }
       else {

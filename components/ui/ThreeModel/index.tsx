@@ -63,10 +63,6 @@ export function ThreeModel(props: IThreeModelProps) {
   
   }, [animations])
 
-  useEffect(()=>{
-    console.log(props)    
-  }, [props])
-
   if(props.model === 'woman') {
     return (
       <group {...props}  ref={mesh} dispose={null}>

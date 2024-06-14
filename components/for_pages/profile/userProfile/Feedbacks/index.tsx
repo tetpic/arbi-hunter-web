@@ -77,8 +77,6 @@ export default function Feedbacks() {
         break
 
       case ReviewsNavigation.Invite: 
-      console.log(itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined)))
-      
         setFiltered(state=> {
           state.clear()
           itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined))

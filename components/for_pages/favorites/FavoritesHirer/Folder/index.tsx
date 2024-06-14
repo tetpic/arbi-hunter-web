@@ -47,11 +47,14 @@ export default function FavoritesHirerFolder(props: Props) {
   }
 
   const deletefolder = () => {
-    appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+    const _args: IConfirmModalProps = {
       text: t('favorites_confirmDeletion'),
       callback: () => foldersContext.deleteFolder(props.folder.id),
       maxWidth: 400
-    })
+    }
+    isTabletWidth
+      ? appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
+      : appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
   }
 
   const openDropdownHandler = (e: React.MouseEvent<Element, MouseEvent>) => {

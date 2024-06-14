@@ -18,5 +18,6 @@
   @include mq($TabletWidth, max) {
     flex-wrap: nowrap !important;
     overflow: auto;
+    padding-bottom: 8px;
   }
 }

@@ -3,7 +3,7 @@
 .article {
   @include mq($TabletWidth, max) {
     background-color: unset !important;
-    padding-bottom: 80px;
+    padding-top: unset;
   }
 }
 

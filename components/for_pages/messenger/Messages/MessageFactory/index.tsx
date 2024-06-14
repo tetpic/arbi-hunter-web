@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationStatus, MessageType, ModalType } from 'types/enums'
+import { ApplicationStatus, MessageType, ModalType, SnackbarType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
@@ -111,6 +111,11 @@ export default function MessageFactory(props: Props) {
     openDropDown(false)
   }
 
+  const onCopy = () => {
+    copyToClipboard(props.message.message||props.message.application?.coverLetter||props.message.proposal?.coverLetter||'')
+    appContext.showSnackbar(t('copied'), SnackbarType.success)
+  }
+
   const onSet = () => {
     props.onSet(props.message)
     openDropDown(false)
@@ -118,7 +123,7 @@ export default function MessageFactory(props: Props) {
 
   const allOptions: {[key: string]: IOptionList|null} = {
     reply: {title: t('chat_reply'), icon: <AnswerMessageSvg/>, onClick: replyHandler},
-    copy: {title: t('chat_copyMessage'), icon: <DoubleSvg/> ,onClick: ()=>copyToClipboard(props.message.message)},
+    copy: {title: t('chat_copyMessage'), icon: <DoubleSvg/> ,onClick: onCopy},
     setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: t('chat_pin'), icon: <PinMessageSvg/>, onClick: setPinned},
     forward: {title: t('chat_forwardMesssage'), icon: <ShareMessageSvg/>, onClick: openForwardModal},
     choose: {title: t('chat_setMessage'), icon: <SetMessageSvg/>, onClick: onSet},
