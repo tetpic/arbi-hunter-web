@@ -54,26 +54,29 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
       openDropDown(false)
       return
     }
-    if(('proposals' in item && item.proposals[0])) {
-      await ProposalRepository.changeProposalStatusByEmployee(item?.proposals[0].id, {status: ApplicationStatus.Rejected, deletedByEmployee})
-      .catch(_ => {
-        appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
-      })
-      onRemove(item.id)
+    if('proposals' in item) {
+      if(item.proposals.length > 0 && !deletedByEmployee) {
+        await ProposalRepository.changeProposalStatusByEmployee(item.proposals[0].id, {status: ApplicationStatus.Rejected})
+        .catch(_ => {
+          appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+        })
+        deletedByEmployee ? onRemove(item.id):refreshCallback()
+      }
+      else {
+        await ApplicationRepository.patchApplicationRespond(item.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
+        .catch(_ => {
+          appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
+        })
+        deletedByEmployee ? onRemove(item.id):refreshCallback()
+      }
     }
-    else if(('application' in item && !item.application)) {
+    if('application' in item) {
       await ProposalRepository.changeProposalStatusByEmployee(item?.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
       .catch(_ => {
         appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
       })
-      onRemove(item.id)
-    }
-    else {
-      await ApplicationRepository.patchApplicationRespond(item.id, {status: ApplicationStatus.Rejected, deletedByEmployee})
-      .catch(_ => {
-        appContext.showSnackbar(t('profile_applicationNotFound'), SnackbarType.error)
-      })
-      onRemove(item.id)
+      deletedByEmployee ? onRemove(item.id):refreshCallback()
+      return
     }
     openDropDown(false)
   }
@@ -133,18 +136,20 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
   
     {item.status  &&
       <p className={classNames(styles.status, styles[
-        (item.type === ProposalRequestType.Rejection||item.status === ApplicationStatus.Rejected) && ApplicationStatus.Rejected
-        ||
-        ( item.status==='applied'&& item.type === undefined) && ApplicationStatus.Applied
-        ||
-        (item.status==='accepted'||(item.type !== ProposalRequestType.Rejection && item.type !== undefined)) && ApplicationStatus.Accepted
+        ('proposals' in item && ((item.proposals[0] && item.proposals[0].status === ApplicationStatus.Rejected) || item.status === ApplicationStatus.Rejected)) && ApplicationStatus.Rejected
+        || ('proposals' in item && (item.status === ApplicationStatus.Accepted && (item.proposals[0] && item.proposals[0].status !== ApplicationStatus.Rejected))) && ApplicationStatus.Accepted
+        || ('proposals' in item && item.proposals.length === 0 && item.status === ApplicationStatus.Applied) && ApplicationStatus.Applied
+        || ('application' in item && (item.status === ApplicationStatus.Rejected || item.type === ProposalRequestType.Rejection)) && ApplicationStatus.Rejected
+        || ('application' in item && item.status !== ApplicationStatus.Rejected) && ApplicationStatus.Accepted
       ])}
       >
-        {TranslateProposalType((item.type === ProposalRequestType.Rejection||item.status === ApplicationStatus.Rejected) && ApplicationStatus.Rejected
-        ||
-        ( item.status==='applied'&& item.type === undefined) && ApplicationStatus.Applied
-        ||
-        (item.status==='accepted'||(item.type !== ProposalRequestType.Rejection && item.type !== undefined)) && ApplicationStatus.Accepted)}
+        {TranslateProposalType(
+          ('proposals' in item && ((item.proposals[0] && item.proposals[0].status === ApplicationStatus.Rejected) || item.status === ApplicationStatus.Rejected)) && ApplicationStatus.Rejected
+          || ('proposals' in item && (item.status === ApplicationStatus.Accepted && (item.proposals[0] && item.proposals[0].status !== ApplicationStatus.Rejected))) && ApplicationStatus.Accepted
+          || ('proposals' in item && item.proposals.length === 0 && item.status === ApplicationStatus.Applied) && ApplicationStatus.Applied
+          || ('application' in item && item.status === ApplicationStatus.Rejected || item.type === ProposalRequestType.Rejection) && ApplicationStatus.Rejected
+          || ('application' in item && item.status !== ApplicationStatus.Rejected) && ApplicationStatus.Accepted
+        )}
       </p>
     }
     <div className={styles.bottom}>

@@ -80,30 +80,13 @@ export default function Feedbacks() {
       case ReviewsNavigation.Invite: 
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=>  
-            // если это мой отзыв
-            // if('proposals' in value) {
-            //   if(value.proposals.length > 0) {
-            //     return value.proposals[0].status === ApplicationStatus.Accepted
-            //   }
-            //   else {
-            //     return value.status === ApplicationStatus.Accepted
-            //   }
-            // }
-            // // если это приглашение компании
-            // else {
-            //   if(value.application?.status) {
-            //     return value.application?.status === ApplicationStatus.Accepted
-            //   }
-            //   else {
-            //     return value.status === ApplicationStatus.Accepted
-            //   }
-            // }
-
-            value.status==='accepted'
-          ||(value.type !== ProposalRequestType.Rejection && value.type !== undefined)
-        
-          )
+          itemsActiveFilter.filter(([_, value])=>  {
+            return (
+              ('proposals' in value && (value.status === ApplicationStatus.Accepted && (value.proposals[0] && value.proposals[0].status !== ApplicationStatus.Rejected))) && ApplicationStatus.Accepted
+              ||
+              ('application' in value && value.status !== ApplicationStatus.Rejected)
+            )
+          })
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -141,7 +124,12 @@ export default function Feedbacks() {
       case ReviewsNavigation.Reject:
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.type === ProposalRequestType.Rejection||value.status === ApplicationStatus.Rejected)
+          itemsActiveFilter.filter(([_, value])=> {
+            return (
+              ('proposals' in value && ((value.proposals[0] && value.proposals[0].status === ApplicationStatus.Rejected) || value.status === ApplicationStatus.Rejected))
+              || ('application' in value && (value.status === ApplicationStatus.Rejected || value.type === ProposalRequestType.Rejection))
+            )
+          })
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -214,8 +202,7 @@ export default function Feedbacks() {
               }  
               onRemove={(id)=>onRemove(id)} vc={item.vacancy} item={item} refreshCallback={feedBackContext.setCVResponses}/>)
           })
-          ||
-          loading &&
+          ||loading &&
           <Spinner size={24}/>
           ||
           <P useThemeColor className={'empty'}>{t('profile_feedbacks_noFeed')}</P>
