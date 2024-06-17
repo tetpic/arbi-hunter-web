@@ -74,10 +74,7 @@ export default function FilterHirer(props: Props) {
       ...clearObject(props.initialFields)
     },
     onSubmit: props.onFilterChange
-  })
-
-  console.log(props.initialFields)
-  
+  }) 
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = creationContext.helpObjects
@@ -230,7 +227,7 @@ export default function FilterHirer(props: Props) {
       props.initialFields?.sources?.forEach(el => {
         _newSources.set(el, sourcesContext.sources.get(el))
       })
-      props.initialFields?.languageKnowledges.map(el => {
+      props.initialFields?.languageKnowledges?.map(el => {
         _newLangs.set(el?.language, el)
       })
 
@@ -725,7 +722,7 @@ export default function FilterHirer(props: Props) {
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
       <Button 
-      styleType={['grey']} 
+      styleType={['grey','phoneWide']} 
       altStyleType={['white']}
       onClick={resetAll}
       className={styles.resetButton}
@@ -734,7 +731,7 @@ export default function FilterHirer(props: Props) {
       </Button>
 
       <Button
-      styleType={['gradient']}
+      styleType={['gradient', 'phoneWide']}
       onClick={()=>props.onFilterChange(formik.values)}
       >
         {t('searchAlt')}

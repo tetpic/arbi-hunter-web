@@ -18,6 +18,7 @@ import { Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
+import SwiperList from '@/components/ui/SwiperList'
 
 interface Props {
   onClose: () => void
@@ -33,6 +34,7 @@ export interface IBackgroundSwitchModalArgs {
 export default function BackgroundSwitchModal(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const userContext = useUserContext()
   const args: IBackgroundSwitchModalArgs = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   
@@ -43,65 +45,88 @@ export default function BackgroundSwitchModal(props: Props) {
     args.onSave({image, type})
     props.onClose()    
   }
+  
+  const backBlock = (
+    <div className={classNames(styles.item, type==='place' && styles.active)} onClick={()=>setType('place')}>
+    <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
+    className={styles.customBack}
+    alt={'user custom background'}
+    width={500}
+    height={200}
+    />
+
+    <UserPic 
+    className={styles.userPic}
+    size={88}
+    image={'/images/cities/cityPreview.png'}
+    />
+    <p>{t('personal_customBackground')}</p>
+  </div>
+  )
+
+  const buildBlock = (
+    <div className={classNames(styles.item)} 
+    onClick={()=>{
+      args.onSave({image, type:'building'})
+      props.onClose()    
+    }}
+    >
+      <Image src={'/images/buildings/building2.png'} 
+      className={styles.customBack}
+      alt={'user custom build'}
+      width={500}
+      height={200}
+      />
+      <p>Выбрать здание</p>
+    </div>
+  )
+
+  const avatarBlock = (
+    <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
+    <FileInput setImages={setImage} accept={['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/heic']}/>
+    {(image?.data?.source) &&
+      <Image 
+      unoptimized
+       src={
+        image? 
+        (image?.data?ImageHelper.urlFromFile(image?.data, Preset.smResize):URL.createObjectURL(image.image)) 
+        : userContext.currentProfile.useOwnLogo
+        &&ImageHelper.urlFromFile(args.currentBackground?.image, Preset.smResize)
+      } 
+      className={styles.customBack}
+      alt={'user custom background'}
+      width={500}
+      height={200}
+      />
+      ||
+     
+      <div className={styles.emptyPhoto}>
+        <PhotoCameraSvg color='#7C7C8C'/>
+      </div>
+    }
+    <p>{t('personal_uploadPhoto')}</p>
+  </label>
+  )
 
   const body = (    
   <div className={styles.root}>
     <div className={styles.switcher}>
-      <div className={classNames(styles.item, type==='place' && styles.active)} onClick={()=>setType('place')}>
-        <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
-        className={styles.customBack}
-        alt={'user custom background'}
-        width={500}
-        height={200}
-        />
-
-        <UserPic 
-        className={styles.userPic}
-        size={88}
-        image={'/images/cities/cityPreview.png'}
-        />
-        <p>{t('personal_customBackground')}</p>
-      </div>
-      {userContext.currentProfile.profileType === ProfileType.Hirer &&
-      <div className={classNames(styles.item)} 
-      onClick={()=>{
-        args.onSave({image, type:'building'})
-        props.onClose()    
-      }}
-      >
-        <Image src={'/images/buildings/building2.png'} 
-        className={styles.customBack}
-        alt={'user custom build'}
-        width={500}
-        height={200}
-        />
-        <p>Выбрать здание</p>
-      </div>
+      {isTabletWidth &&
+        <SwiperList swiperProps={{
+          loop: false
+        }}>
+          {backBlock}
+          {userContext.currentProfile.profileType === ProfileType.Hirer && buildBlock}
+          {avatarBlock}
+        </SwiperList>
+        ||
+        <>
+          {backBlock}
+          {userContext.currentProfile.profileType === ProfileType.Hirer && buildBlock}
+          {avatarBlock}
+        </>
       }
-      <label className={classNames(styles.item, type==='custom' && styles.active)} onClick={()=>setType('custom')}>
-        <FileInput setImages={setImage} accept={['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/heic']}/>
-        {(image?.data?.source) &&
-          <Image 
-          unoptimized
-           src={
-            image? 
-            (image?.data?ImageHelper.urlFromFile(image?.data, Preset.smResize):URL.createObjectURL(image.image)) 
-            : userContext.currentProfile.useOwnLogo
-            &&ImageHelper.urlFromFile(args.currentBackground?.image, Preset.smResize)
-          } 
-          className={styles.customBack}
-          alt={'user custom background'}
-          width={500}
-          height={200}
-          />
-          ||
-         
-          <div className={styles.emptyPhoto}>
-            <PhotoCameraSvg color='#7C7C8C'/>
-          </div>
-        }
-        <p>{t('personal_uploadPhoto')}</p>
-      </label>
+
     </div>
     <div className={styles.buttonsWrapper}>
       <Button className={styles.button} onClick={props.onClose}>

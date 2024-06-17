@@ -81,6 +81,7 @@ export default function Registration(props: Props) {
         phone: userContext.user?.phone||data.phone,
         profileType: userContext.profileType
       }
+      delete data.agreement
       const sendData = clearObject(data)
 
       RegistrationRepository.completeRegistration(sendData)

@@ -266,9 +266,8 @@ export function ChatDialogWrapper(props: Props) {
 
 
   const recordVoice = async (stop?: boolean) => {
-    
     if(stop ) {
-      recorder.current.stop()
+      recorder.current?.stop()
       recorder.current = null
       clearInterval(starterInterval.current)
       setRecordTime(null)
@@ -277,9 +276,13 @@ export function ChatDialogWrapper(props: Props) {
     }
     else {
       if(recorder.current || recorder.current?.state === 'recording') {
+        console.log('stop record')        
         recorder.current.stop()
+        recorder.current = null
         clearInterval(starterInterval.current)
         setRecordTime(null)
+        setChunks(null)
+
         return
       }
       else {
@@ -321,7 +324,8 @@ export function ChatDialogWrapper(props: Props) {
 
   //если появляется аудио дорожка - отправляем сообщение
   useEffect(()=>{
-    if(chunks && recorder.current) {
+    // @ts-ignore
+    if(chunks && chunks[0].size > 0) {
       const audioFile = new File(chunks, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
       sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
       setChunks(null)

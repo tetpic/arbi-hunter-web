@@ -33,8 +33,8 @@ export default function PersonalInformation(props: Props) {
 
   const dataFormik = useFormik<Partial<IUserProfile>>({
     initialValues: {
-      firstName: userContext.user?.firstName,
-      lastName: userContext.user?.lastName,
+      firstName: userContext.currentProfile?.firstName,
+      lastName: userContext.currentProfile?.lastName,
       patronymic: userContext.currentProfile?.patronymic,
       email: userContext.currentProfile?.email,
       phone: userContext.currentProfile?.phone

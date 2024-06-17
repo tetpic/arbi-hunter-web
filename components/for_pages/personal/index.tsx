@@ -84,7 +84,7 @@ export default function PersonalPage(props: Props) {
     .then(res => {
       const personalTariff = [...tariffContext?.packets.values()][0]
       if(res === null && personalTariff.price < userContext.user.balance) {
-        appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+        const _args : PurchasePreviewModalArgs = {
           tariff: [...tariffContext.packets.values()][0], 
           onBuy: (data) => {
             PurchaseRepository.purchaseItem({...clearObject(data), tariffId: personalTariff.id})
@@ -100,7 +100,10 @@ export default function PersonalPage(props: Props) {
             })
           },
           tariffs: tariffContext?.packets,
-        })
+        }
+        isTabletWidth
+          ? appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, _args, 360)
+          : appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, _args)
         return
       }
       else if(res === null && personalTariff.price > userContext.user.balance) {

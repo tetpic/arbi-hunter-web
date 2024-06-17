@@ -488,17 +488,13 @@ export default function Messages(props: Props) {
           }
         }}
         onMouseDown={(e) => {
-          if(!dialog.recorder.current) {
-            dialog.recordVoice()
-          }
+          dialog.recordVoice()
         }}
         onMouseUp={(e) => {
           dialog.recordVoice()
         }}
         onMouseLeave={(e) => {
-          if(dialog.recorder?.current?.state === 'recording') {
-            dialog.recordVoice(true)
-          }
+          dialog.recordVoice(true)
         }}
         onContextMenu={(e)=>{
           e.preventDefault()

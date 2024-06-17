@@ -39,6 +39,13 @@
     content: '';
     width: 36px;
   }
+
+  &_noBack {
+    justify-content: center;
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .input {

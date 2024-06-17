@@ -214,7 +214,7 @@ export default function EditableBlock(props: Props) {
             <Image 
             unoptimized
             priority
-            src={ImageHelper.urlFromFile(el, Preset.xlResize)}
+            src={ImageHelper.urlFromFile(el, Preset.mdResize)}
             onClick={()=>showImagePreview(ImageHelper.urlFromFile(el, Preset.xlResize))}
             alt={props.block.title + ' image'} 
             width={1240}
