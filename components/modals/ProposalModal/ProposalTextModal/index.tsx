@@ -51,6 +51,7 @@ export default function ProposalTextModal(props: Props) {
       coverLetter: data.coverLetter,    
       type: type
     }
+    dataToSend.applicationId = null
     proposalRepository.createProposal(dataToSend)
     .then(res=>{
       if(typeof res === 'object' && modalArguments.onSubmit) {

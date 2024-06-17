@@ -254,10 +254,10 @@ export default function Vacancy(props: Props) {
       break
       case 7: {      
         const vals = [
-          formik.values.showContactName && formik.values.contactName.trim().length === 0,
-          formik.values.showEmail && formik.values.email.trim().length === 0,
-          formik.values.showTelegramNickname && formik.values.telegramNickname.trim().length === 0,
-          formik.values.showPhone && formik.values.phone.trim().length === 0
+          formik.values.showContactName && (!formik.values.contactName || formik.values.contactName?.trim().length === 0),
+          formik.values.showEmail && (!formik.values.email||formik.values.email?.trim().length === 0),
+          formik.values.showTelegramNickname && (!formik.values.telegramNickname || formik.values.telegramNickname?.trim().length === 0),
+          formik.values.showPhone && (!formik.values.phone||formik.values.phone?.trim().length === 0)
         ]
         if(vals.filter(Boolean).length > 0) {
           vals[0]&&setErr('contactName', t('fillTheField'))

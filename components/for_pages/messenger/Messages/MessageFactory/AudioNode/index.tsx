@@ -56,6 +56,10 @@ useEffect(()=>{
   fetch(audio.current.src)
   .then(response => response.blob())
   .then(setBlob)
+  .catch(err => {
+    // eslint-disable-next-line no-console
+    console.warn(err)
+  })
   // const audioSource = audioContext.createMediaElementSource(audioElement)
   
 

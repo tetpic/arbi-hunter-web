@@ -278,7 +278,13 @@ export function ChatDialogWrapper(props: Props) {
         recorder.current = new MediaRecorder(stream)
         recorder.current.audioBitsPerSecond
         recorder.current.ondataavailable = (e) => {
-          setChunks([e.data])
+          if(e.data.size > 0) {
+            debugger
+            setChunks([e.data])
+          }
+          else {
+            clearInterval(starterInterval.current)
+          }
         }
       }
       if(recorder.current && recorder.current.state === 'recording') {
@@ -287,6 +293,7 @@ export function ChatDialogWrapper(props: Props) {
         setRecordTime(0)
         return
       }
+      clearInterval(starterInterval.current)
       recorder.current.start()
       //@ts-ignore
       starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)

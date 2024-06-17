@@ -9,7 +9,7 @@ import { IApplication } from 'data/interfaces/IApplication'
 import { ICV } from 'data/interfaces/ICV'
 import { useRouter } from 'next/router'
 import {  useEffect, useState } from 'react'
-import { ModalType } from 'types/enums'
+import { InterfaceLanguage, ModalType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import Button from '../Button'
 import UserPic from '../UserPic'
@@ -45,7 +45,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   const folderContext = useFavoritesFolderContext()
   const userContext = useUserContext()
   const {getNewSignal} = useAbortController()
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
  
   
   const experience = 
@@ -131,7 +131,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     <div className={styles.top} onClick={()=>(application?.cvId||cv?.id)&&router.push(application?.cvId?'/cv/'+application?.cvId: '/cv/'+cv?.id)}>
       <UserPic size={46} image={getUserImageSource(application.profile.profileType === ProfileType.Employee?application.profile:cv.profile)} className={styles.userPic}/>
       <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>
-        {currentCV?.position||currentCV?.categories[0].name||t('cv_item_setPosition')}
+        {currentCV?.position||currentCV?.categories[0].name||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
       </P>
       <P styleType={['medium', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, t('year1'), t('year2'), t('year3'))}</P>
       {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}
@@ -158,6 +158,14 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
       {chat&& 
         <Button styleType={['black']} altStyleType={['white']} onClick={chatbuttonClickHandler} >{t('cv_item_chat')}</Button>
       }
+      <P 
+      styleType={['medium', 'w500', 'greyLight']} 
+      style={{marginLeft: 'auto'}}>
+        {Formatter.formatDate(application.createdAt, {
+          lang: lang as InterfaceLanguage,
+          timeOptions: {year: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}
+        })}
+      </P>
     </div>
   </div>
   )

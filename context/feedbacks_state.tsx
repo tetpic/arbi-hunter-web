@@ -80,7 +80,10 @@ export function FeedbacksWrapper(props: Props) {
       console.log(_applications, filteredProposals)
       setVCResponsesState(state => {
         state.clear();
-        [..._applications, ...filteredProposals].sort((a, b) => new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime()?-1:1).forEach(el => {
+        [..._applications, ...filteredProposals]
+        .sort((a, b) => new Date(b.createdAt).getTime() < new Date(a.createdAt).getTime()?-1:1)
+        // .filter(el => el.deletedByEmployee === false )
+        .forEach(el => {
           state.set(el.id, el as IApplication)
         })
         return new Map(state)
