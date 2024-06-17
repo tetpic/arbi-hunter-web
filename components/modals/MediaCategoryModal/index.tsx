@@ -35,7 +35,7 @@ function MediaCategoryModalInner(props: Props) {
   }
 
   const body = (<div className={styles.root}>
-    <BackBtn className={styles.backBtn} onClick={onCloseHandler} bgColor={'transparent'}/>
+    <BackBtn className={styles.backBtn} onClick={onCloseHandler} />
     <Title className={styles.title} title={args.title} />
     <SearchBar onSubmit={search}/>
     <NewsByCategories category={args.currentCategory} scrollableTarget='modalBody'/>

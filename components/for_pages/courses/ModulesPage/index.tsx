@@ -120,7 +120,7 @@ export default function ModulesPage() {
     <div className={styles.body}>
      {!courseContext.blocksLoading && 
      <> {isTabletWidth&&
-        <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)} bgColor={'transparent'}/>
+        <BackBtn className={styles.backButton} onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)} />
         ||
         <BackTextButton onClick={()=>router.push(`/courses/${courseContext.currentCourse.id}?page=modules`)}/>
       }

@@ -108,15 +108,14 @@
   }
 }
 
-.createBtn {
+.buttonsWrapper {
   margin-top: 32px;
   margin-inline: auto;
-  @include buttonGradient;
 
-  p {
-    display: flex;
-    column-gap: 8px;
-    align-items: center;
+  @include mq($TabletWidth, max) {
+    margin-top: auto;
+    padding: 16px;
+    width: 100%;
   }
 }
 

@@ -40,7 +40,6 @@ import ChatRepository from 'data/repositories/ChatRepository'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
-import Spacer from '@/components/ui/Spacer'
 import TextareaAutosize from 'react-textarea-autosize'
 
 
@@ -208,7 +207,6 @@ export default function Messages(props: Props) {
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
-
   //TODO:  убрать получение cv после оптимизации запросов к чатам и сообщениям
     useEffect(()=>{
       if(dialog.chat) {
@@ -228,6 +226,12 @@ export default function Messages(props: Props) {
       }
     }, [dialog.chat])
 
+  if(!chatContext.currentChatId) {
+    return <div className={styles.root} style={{position: 'relative'}}>
+      <P styleType={['large', 'w600']} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>Выберите чат</P>
+    </div>
+  }
+
 
   return (
     <div className={styles.root}> 
@@ -236,7 +240,7 @@ export default function Messages(props: Props) {
         {dialog.chat &&
         <>
           {isTabletWidth &&
-            <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)} bgColor={'transparent'}/>
+            <BackBtn className={styles.backButton} altStyleType={['icon', 'white', 'invertSvg']} onClick={(e) => onBackClick(e)}/>
           }
           <UserPic 
           size={48} 
@@ -462,31 +466,58 @@ export default function Messages(props: Props) {
            /> */}
         </>
         }
-        { choosenIds.size === 0 &&     
-        <div className={classNames(styles.microphoneWrapper, dialog.recorder?.current?.state === 'recording'&&styles.recording)} onClick={()=>dialog.recordVoice()}>
+        { choosenIds.size === 0 && value.length === 0 && pastedFiles.size === 0 &&
+        <div 
+        className={classNames(styles.microphoneWrapper, dialog.recordTime !== null &&styles.recording)} 
+        onTouchStart={()=>{
+          dialog.recordVoice()
+        }} 
+        onTouchEnd={(e) => {   
+          if(dialog.recorder?.current?.state === 'recording') {
+            dialog.recordVoice()
+          }
+        }} 
+        onTouchMove={(e) => {
+          if(dialog.recorder?.current?.state === 'recording') {
+            dialog.recordVoice(true)
+          }
+        }}
+        onTouchCancel={(e) => {
+          if(dialog.recorder?.current?.state === 'recording') {
+            dialog.recordVoice()
+          }
+        }}
+        onMouseDown={(e) => {
+          dialog.recordVoice()
+        }}
+        onMouseUp={(e) => {
+          dialog.recordVoice()
+        }}
+        onMouseLeave={(e) => {
+          dialog.recordVoice(true)
+        }}
+        onContextMenu={(e)=>{
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+        >
           {
-          dialog.recorder?.current?.state === 'recording' &&
+          dialog.recordTime !== null &&
             <>
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
-              <Spacer basis={16}/>
-              <P styleType={['small', 'w500', 'greyLight']}
-              onClick={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-                dialog.recordVoice(true)
-              }}
-              >
+              {/* <P styleType={['small', 'w500', 'greyLight']}>
                 {t('cancel')}
-              </P>
+              </P> */}
             </>
             ||
-            (value.length > 0 || pastedFiles.size > 0) &&
-            <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
-            ||
-            <img src={'/icons/microphone.svg'} alt='microphone icon'/>
+            <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
           }
+        </div>
+        ||
+        <div className={styles.microphoneWrapper}>
+          <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
         </div>
         }
       </div>

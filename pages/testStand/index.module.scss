@@ -1,7 +1,11 @@
 @import 'styles/index';
 
 .root {
-  background-color: red;
+  background-color: rgba(49, 49, 109, 0.377);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 
   :global {
 
@@ -37,6 +41,7 @@
     }
   }
 }
+
 
 .day {
   height: 44px;

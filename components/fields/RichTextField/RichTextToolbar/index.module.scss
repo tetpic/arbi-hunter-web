@@ -2,8 +2,8 @@
 
 .root {
   display: flex;
-  column-gap: 8px;
-  row-gap: 8px;
+  column-gap: 12px;
+  row-gap: 12px;
   flex-wrap: wrap;
   perspective: 1000px;
   perspective-origin: center;
@@ -17,9 +17,10 @@
 .button {
   border: 1px var(--greyLightToPurpleGrey) solid;
   border-radius: 8px;  
-  font-size: $smallText;
-  min-width: 24px;
-  height: 24px;
+  font-size: $mediumText;
+  min-width: 32px;
+  flex-shrink: 0;
+  height: 32px;
   padding: 0px 4px;
   cursor: pointer;
   transition: background-color .3s ease-in-out;
@@ -29,11 +30,17 @@
     animation-fill-mode: forwards;
     background-color: $greyLight;
   }
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .colorInput {
-    border: 1px var(--greyLightToPurpleGrey) solid;
+  border: 1px var(--greyLightToPurpleGrey) solid;
 }
+
 .colorInput {
   position: relative;
   width: 24px;

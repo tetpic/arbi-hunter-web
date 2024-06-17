@@ -6,6 +6,7 @@ import PauseButtonSvg from 'components/svg/PauseButtonSvg'
 import { AudioVisualizer } from '../../../../../../node_modules/react-audio-visualize'
 import P from '@/components/ui/P'
 import Formatter from 'utils/formatter'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 
 // import { buffer } from 'stream/consumers'
 
@@ -16,101 +17,114 @@ interface Props {
 
 export default function AudioNode(props: Props) {
   // const audio = useRef<HTMLAudioElement>(null!)
-  const audio = useRef<HTMLMediaElement>(new Audio(props.audioSrc))
+  const [audio, setAudio] = useState<HTMLMediaElement>(new Audio(props.audioSrc))
   const [play, setIsPlay] = useState<boolean>(false)
   const [blob, setBlob] = useState<Blob>()
   const timer = useRef<ReturnType<typeof setInterval>>()
-  const [time, setTimeState] = useState<number>()
-  const [duration, setDuration] = useState<number>(audio.current.duration)
-  const visualizerRef = useRef<HTMLCanvasElement>(null)
-  audio.current.crossOrigin = 'anonymous'
+  const [time, setTimeState] = useState<number>(0)
+  const [duration, setDuration] = useState<number>(audio.duration)
+  const visualizerRef = useRef<HTMLDivElement>(null)
+  audio.crossOrigin = 'anonymous'
+  const [active, setActive] = useDetectOutsideClick(visualizerRef, false)
 
   const playPauseHandler = () => {
-    if(audio.current && audio.current.paused ) {
-      audio.current.play()
+    if(audio && audio.paused ) {
+      setActive(true)
+      audio?.play()
+      console.log('play')   
+         
       setIsPlay(true)
       timer.current = setInterval(() => {
-        setTimeState(audio.current.currentTime)
-      }, 200)
-
+        setTimeState(state => {
+          const _audioTime = Number(audio?.currentTime.toFixed(2))
+          if(_audioTime && _audioTime > 0) {
+            return _audioTime
+          }
+          else {
+            return state + 0.1
+          }
+        })
+      }, 100)
     }
     else {
-      audio.current.pause()
+      audio.pause()
+      console.log('pause')
       setIsPlay(false)
       clearInterval(timer.current)
     }
   }
 
-  audio.current.addEventListener('ended', ()=>{
-    clearInterval(timer.current)
-    setTimeState(0)
-    setIsPlay(false)
-  })
 
-  /*выдает ошибку 
-  Failed to execute 'createMediaElementSource' on 'AudioContext': 
-  HTMLMediaElement already connected previously to a different MediaElementSourceNode.
-  */
 useEffect(()=>{
-  const audioContext = new AudioContext()
-  const audioElement = audio.current
-  fetch(audio.current.src)
+  fetch(audio.src)
   .then(response => response.blob())
   .then(setBlob)
-  // const audioSource = audioContext.createMediaElementSource(audioElement)
-  
-
-  // const analyser = audioContext.createAnalyser()
-
-  // audioSource.connect(analyser)
-  // audioSource.connect(audioContext.destination)
-
-  // analyser.fftSize = 32
-  // const bufferLength = analyser.frequencyBinCount
-  // const dataArray = new Uint8Array(bufferLength)
-
-  // analyser.getByteFrequencyData(dataArray)
-
-
+  .catch(err => {
+    // eslint-disable-next-line no-console
+    console.warn(err)
+  })
 }, [])
+
+useEffect(()=>{
+  if(audio && audio.played) {
+    audio.addEventListener('ended', ()=>{
+      audio.pause()
+      audio.currentTime = 0
+      clearInterval(timer.current)
+      setTimeState(0)
+      setIsPlay(false)
+    })
+  }
+}, [audio])
 
 function getDuration(event: any) {
   event.target.currentTime = 0
-  event.target.removeEventListener('timeupdate', getDuration)
+  audio.removeEventListener('timeupdate', getDuration)
   setDuration(event.target.duration)
 }
 
  useEffect(()=>{ 
-  audio.current.onloadedmetadata = () => {
-    if(!Number.isInteger(audio.current.duration)) {
-      audio.current.currentTime = 1e101
-      audio.current.addEventListener('timeupdate', getDuration)
+  audio.onloadedmetadata = () => {
+    if(!Number.isInteger(audio.duration)) {
+      audio.currentTime = 100000
+      audio.addEventListener('timeupdate', getDuration)
     }    
   }
-  
- }, [audio.current.duration])
+ }, [])
 
-  return (<div className={styles.root}> 
-    <Button onClick={playPauseHandler}>
+ useEffect(()=>{
+  if(!active ) {
+    audio.pause()
+    audio.currentTime = 0
+    clearInterval(timer.current)
+    setTimeState(0)
+    setIsPlay(false)
+  }
+ }, [active])
+
+  return (<div className={styles.root} ref={visualizerRef} key={'visualizer node'}> 
+    <Button onClick={playPauseHandler} >
       {play &&
-        <PauseButtonSvg/>
+        <PauseButtonSvg className={styles.playSvg}/>
         ||
-        <PlayButtonWhiteSvg/>
+        <PlayButtonWhiteSvg className={styles.playSvg}/>
       }
     </Button>
     <div className={styles.audioNode}>
       
     {/* <DumbAudioWaveSvg/> */}
-    <AudioVisualizer 
-    key={'audio-visualizer'}
-    blob={blob}
-    width={188} 
-    height={32} 
-    barWidth={2}
-    gap={2}   
-    currentTime={time}
-    barPlayedColor={'#2F80ED'}
-    />
+    <div className={styles.visualizerWrapper}>
+      <AudioVisualizer 
+      key={'visualizer'}
+      blob={blob}
+      width={188} 
+      height={100} 
+      barWidth={2}
+      gap={2}   
+      currentTime={time}
+      barPlayedColor={'#2F80ED'}
+      />
+    </div>
     <P styleType={['greyLight']} useThemeColor>{time > 0 && Formatter.formatSecondsToTime(time) + ' / '}{Formatter.formatSecondsToTime(duration)}</P>
 
     </div>

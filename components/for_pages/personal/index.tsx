@@ -84,7 +84,7 @@ export default function PersonalPage(props: Props) {
     .then(res => {
       const personalTariff = [...tariffContext?.packets.values()][0]
       if(res === null && personalTariff.price < userContext.user.balance) {
-        appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, {
+        const _args : PurchasePreviewModalArgs = {
           tariff: [...tariffContext.packets.values()][0], 
           onBuy: (data) => {
             PurchaseRepository.purchaseItem({...clearObject(data), tariffId: personalTariff.id})
@@ -100,17 +100,23 @@ export default function PersonalPage(props: Props) {
             })
           },
           tariffs: tariffContext?.packets,
-        })
+        }
+        isTabletWidth
+          ? appContext.showBottomSheet<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, _args, 360)
+          : appContext.showModal<PurchasePreviewModalArgs>(ModalType.PurchasePreviewModal, _args)
         return
       }
       else if(res === null && personalTariff.price > userContext.user.balance) {
-        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+        const _args : IConfirmModalProps = {
           text: t('shop_insufficientBalance'),
           maxWidth: 320,
           callback: () => {
             router.push({pathname: '/shop', query: {page: ShopPages.Balance}})
           }
-        })
+        }
+        isTabletWidth
+          ? appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
+          : appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
         return
       }
       else {
@@ -123,6 +129,11 @@ export default function PersonalPage(props: Props) {
       if(personalContext.currentProfile?.profileType === ProfileType.Hirer 
         && (formik.values.cityId !== userContext.currentProfile?.cityId||formik.values.company !== userContext.currentProfile?.company)) {
         userContext.editCurrentProfile(formik.values)
+        .then(res => {
+          if(res) {
+            personalContext.setCurrentProfile(res)
+          }
+        })
       }
     })
   }
@@ -163,7 +174,7 @@ export default function PersonalPage(props: Props) {
   )
 
   const hirerEditor = (<>
-    {isEditing && 
+    {isEditing && !isTabletWidth &&
       <ContentItem className={classNames(styles.bodyItem, isEditing&&styles.bodyItem_edit)}>
         <EditToolbar/>
       </ContentItem>
@@ -176,7 +187,7 @@ export default function PersonalPage(props: Props) {
       </>
       }
       {personalContext.blocks.size > 0 &&
-      <PersonalBody isEditing={!props.id&&isEditing} webView={props.webView}/>
+      <PersonalBody isEditing={!props.id && isEditing && !isTabletWidth} webView={props.webView}/>
       ||
       <div className={styles.emptyWrapper}>
         <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
@@ -246,7 +257,7 @@ export default function PersonalPage(props: Props) {
   </>)
 
   return (<div className={styles.root}> 
-    {isMy && userContext.currentProfile?.profileType === ProfileType.Employee &&isTabletWidth && !isEditing &&
+    {isMy && !isEditing && isTabletWidth &&
       <Button 
       className={styles.mobileEditButton} 
       styleType={['icon', 'black', 'svg24']} 
@@ -268,7 +279,6 @@ export default function PersonalPage(props: Props) {
     }
     {!props.webView &&
       <PersonalCard 
-
       save={() => personalContext.updatePersonalPage()} 
       isEditable={!props.id} 
       noHeader={!isHeaderExist}
@@ -290,7 +300,7 @@ export default function PersonalPage(props: Props) {
           <LocationDropDownInput
           onSetOption={cityHandler} 
           name={'cityName'} 
-          value = {userContext?.currentProfile?.city?.locName}
+          value = {personalContext.currentProfile?.city?.locName}
           labelName={t('city')}
           requestFn={() => LocationRepository.searchCity({country: personalContext.currentProfile?.country?.country})} 
           />

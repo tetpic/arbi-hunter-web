@@ -55,18 +55,18 @@ export default function DetailsModal(props: Props) {
   useEffect(()=>{
     if(
       new Date(
-        [formik.values.experienceInfo?.[0].toDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.toDate.split('.')[1]].join('.')
+        [formik.values.experienceInfo?.[0].toDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.toDate.split('.')[1]].join('/')
       ) < 
       new Date(
-        [formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('.')
+        [formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('/')
       )
     ) {
         formik.setFieldValue('experienceInfo[0].toDate', null)
       }
-  }, [formik.values?.experienceInfo?.[0]?.fromDate])
+  }, [formik.values?.experienceInfo?.[0]?.fromDate, formik.values?.experienceInfo?.[0]?.toDate])
 
   useEffect(()=>{
-    if(new Date('01.01.'+formik.values?.educationInfo?.[0]?.toDate) < new Date('01.01.'+formik.values?.educationInfo?.[0]?.fromDate)) {
+    if(new Date('01/01/'+formik.values?.educationInfo?.[0]?.toDate) < new Date('01/01/'+formik.values?.educationInfo?.[0]?.fromDate)) {
       formik.setFieldValue('educationInfo[0].toDate', null)
     }
   }, [formik.values?.educationInfo?.[0]?.fromDate])
@@ -102,7 +102,7 @@ export default function DetailsModal(props: Props) {
         label={t('create_cv_workEnd')} 
         showMonthYearPicker
         minDate={formik.values?.experienceInfo
-          &&([formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('.'))}
+          &&([formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('/'))}
         formatOptions={{
           formatMatcher: 'best fit', year: 'numeric', month: '2-digit'
         }}
@@ -174,7 +174,7 @@ export default function DetailsModal(props: Props) {
         label={t('create_cv_educationEnd')} 
         dateFormat='yyyy'        
         showYearPicker
-        minDate={new Date('01.01.' +formik.values?.educationInfo?.[0]?.fromDate)}
+        minDate={new Date('01/01/' +formik.values?.educationInfo?.[0]?.fromDate)}
 
         formatOptions={{
           year: 'numeric'

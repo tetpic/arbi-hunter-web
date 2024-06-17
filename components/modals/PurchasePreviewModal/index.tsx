@@ -306,7 +306,7 @@ export default function PurchasePreviewModal(props: Props) {
         <P useThemeColor styleType={['w500', 'greyLight', 'small']}>{t('shop_activationTime')}: {Formatter.formatDate(formik.values.startAt, {timeOptions:{day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>
       }
       <div className={styles.buttonsWrapper}>
-        {args.tariff?.purchaseType !== PurchaseType.Character &&
+        {args.tariff?.purchaseType !== PurchaseType.Character &&  args.tariff?.purchaseType !== PurchaseType.PersonalPage &&
         <Button styleType={['grey', 'wide']} altStyleType={['whitePurple']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
         }
         <Button 

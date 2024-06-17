@@ -1,4 +1,3 @@
-import BackTextButton from '@/components/ui/BackTextButton'
 import styles from './index.module.scss'
 import Title from '@/components/ui/TitleForSection'
 import PreviewItem from '@/components/ui/PreviewItem'
@@ -21,6 +20,9 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import Formatter from 'utils/formatter'
 import useTranslation from 'next-translate/useTranslation'
 import { Preset } from 'types/enums'
+import BackBtn from '@/components/ui/BackBtn'
+import { useAppContext } from 'context/state'
+import BackTextButton from '@/components/ui/BackTextButton'
 
 interface Props {
   id?: number
@@ -33,6 +35,8 @@ interface Props {
 export default function VacancyPreview(props: Props) {
   const {t} = useTranslation()
   const creationContext = useCreateVcCvContext()
+  const appContext = useAppContext()
+  const isTabletWidth = appContext.size.isTabletWidth
   const currentVacancy = props.vacancy
   const userContext = useUserContext()
 
@@ -48,7 +52,11 @@ export default function VacancyPreview(props: Props) {
 
   return (
   <div className={styles.root}> 
-    <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
+    {isTabletWidth &&
+      <BackBtn onClick={()=>props.onBack()} className={styles.backButton}/>
+      ||
+      <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
+    }
     <Title title={t('create_vacancy_preview')}/>
 
     <div className={styles.itemsWrapper}>
@@ -136,9 +144,9 @@ export default function VacancyPreview(props: Props) {
 
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} onClick={()=>props.onBack()} title={'back'} className={styles.button}>{t('back')}</Button>
-      {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 &&
-        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={props.onPublish}  className={styles.button}>{t('publish')}</Button>
-      }
+      {/* {currentVacancy.completedSteps && currentVacancy.completedSteps.length > 6 && */}
+        {/* <Button styleType={['gradient', 'phoneWide']} altStyleType={['white']} title={'next'} onClick={props.onPublish}  className={styles.button}>{t('publish')}</Button> */}
+      {/* } */}
     </div>
 
   </div>

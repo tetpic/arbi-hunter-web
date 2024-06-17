@@ -193,12 +193,13 @@ export function CharacterWrapper(props: Props) {
         return CharacterRepository.buyItem(item.id)
       }))
       .catch(_ => {
-        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+        const _args: IConfirmModalProps = {
           text: 'Недостаточно средств. Хотите пополнить баланс?',
           callback: () => {
             router.push('/shop')
           }
-        })
+        }
+        appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
         setSavingProcess(false)
         return false
       })

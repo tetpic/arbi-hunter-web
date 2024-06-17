@@ -64,7 +64,7 @@ export default function MembersModal(props: Props) {
 
   const top = (<div className={styles.top}>
     <div className={styles.navigation}>
-      <BackBtn className={styles.button} onClick={props.onClose} bgColor={'transparent'}/>
+      <BackBtn className={styles.button} onClick={props.onClose} />
       <p className={styles.title}>{t('media_members')}</p>
     </div>
     <input type="text" onChange={(e)=> searchUsers.callback(e)} className={styles.input} placeholder={t('media_searchByMembers')}/>

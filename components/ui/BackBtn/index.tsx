@@ -9,7 +9,6 @@ interface Props {
   defaultPosition?: boolean
   color?: string
   className?: string
-  bgColor: 'transparent' | 'white'
   size?: 'normal' | 'medium' | 'large'
   altStyleType?:  ButtonStyle[]
 }

@@ -19,6 +19,7 @@
   margin-top: 24px;
   @include mq($TabletWidth, max) {
     margin-top: auto;
+    padding-block: 16px;
   }
 }
 

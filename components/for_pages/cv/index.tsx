@@ -152,7 +152,6 @@ export default function CvPage(props: Props) {
   useEffect(()=>{
     cvContext.getCv(Number(props.cvId))
     .then(res=> {
-      debugger
       if(res === false ) {
         appContext.showSnackbar(t('cv_deletedOrHidden'), SnackbarType.error)
         // router.back()

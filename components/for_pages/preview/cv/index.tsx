@@ -28,6 +28,8 @@ import { useCreateVcCvContext } from 'context/createVcCv_state'
 import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import BackBtn from '@/components/ui/BackBtn'
+import { useAppContext } from 'context/state'
 
 
 interface Props {
@@ -40,6 +42,8 @@ interface Props {
 export default function CvPreview(props: Props) {
   const {t} = useTranslation()
   const creationContext = useCreateVcCvContext()
+  const appContext = useAppContext()
+  const isTabletWidth = appContext.size.isTabletWidth
   const userContext = useUserContext()
   const currentCv = props.cv
 
@@ -53,7 +57,11 @@ export default function CvPreview(props: Props) {
   if(!currentCv) return null
 
   return (<div className={styles.root}> 
-    <BackTextButton onClick={()=>props.onBack()} className={styles.backButton}/>
+    {isTabletWidth &&
+      <BackBtn onClick={() => props.onBack()} className={styles.backButton}/>
+      ||
+      <BackTextButton onClick={() => props.onBack()} className={styles.backButton}/>
+    }
     <Title title={t('create_cv_preview')}/>
     <div className={styles.itemsWrapper}>
       <PreviewItem 
@@ -265,9 +273,9 @@ export default function CvPreview(props: Props) {
 
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient']} title={'back'} onClick={()=>props.onBack()} className={styles.button}>{t('back')}</Button>
-      {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
-        <Button styleType={['black']} altStyleType={['white']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>{t('publish')}</Button>
-      }
+      {/* {currentCv.completedSteps && currentCv.completedSteps.length > 6 &&
+        <Button styleType={['gradient', 'phoneWide']} altStyleType={['white']} title={'next'} onClick={()=>props.onBack()}  className={styles.button}>{t('publish')}</Button>
+      } */}
     </div>
   </div>)
 }

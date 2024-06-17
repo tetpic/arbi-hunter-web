@@ -11,6 +11,9 @@
   margin-top: 24px;
   cursor: pointer;
   position: relative;
+  @include mq($TabletWidth, max) {
+    margin-top: 8px;
+  }
 }
 
 .threeDots {

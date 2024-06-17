@@ -39,6 +39,7 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c"/>
           <meta name="msapplication-navbutton-color" content={colors.backgroundBlack} />
           <meta name="theme-color" content={colors.backgroundBlack}/>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
           <Script id={'google-tag-manager'} strategy="afterInteractive">
             {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

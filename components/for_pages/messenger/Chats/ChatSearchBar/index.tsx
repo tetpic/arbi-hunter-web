@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import LoupeSvg from 'components/svg/LoupeSvg'
 import FiltersSvg from 'components/svg/FiltersSvg'
 import Button from 'components/ui/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import FolderClosedSvg from 'components/svg/FolderClosedSvg'
 import { ChatComponent, useChatContext } from 'context/chat_state'
@@ -18,6 +18,8 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
 import PlusSvg from '@/components/svg/PlusSvg'
 import P from '@/components/ui/P'
+import { useThrottleFn } from '@react-cmpt/use-throttle'
+import Spacer from '@/components/ui/Spacer'
 
 interface Props {
   onSearch: (value: string) => void
@@ -51,12 +53,24 @@ export default function ChatSearchBar(props: Props) {
     }
   }
 
+  const throttleSearch = useThrottleFn(() => {
+    props.onSearch(inputValue!)
+  }, 300)
+
+  useEffect(()=>{
+    if(inputValue && inputValue.trim().length > 0) {
+      throttleSearch.callback()
+    }
+  }, [inputValue])
+
 
   return (
   <div className={styles.root}> 
     <div className={styles.rootWrapper}>
-      {isTabletWidth &&
+      {isTabletWidth && <>
+      <Spacer basis={24}/>
         <Title className={styles.title} title={t('chat_main')}/>
+      </>
       }
       <div className={classNames(styles.inputWrapper, (active||chatContext.component.get(ChatComponent.Folder))&&styles.inputWrapper_active)}>
         {chatContext.component.get(ChatComponent.Folder) &&

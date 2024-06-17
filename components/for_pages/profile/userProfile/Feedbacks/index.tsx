@@ -64,6 +64,7 @@ export default function Feedbacks() {
     const cvEntries:[number, IProposal|IApplication][] = [...CVFeedbacks.entries()]
     
     const itemsActiveFilter = cvEntries.filter(([key, value]) => !value.vacancyDeletedOrHidden&&!value.deletedByEmployee)
+    console.log(itemsActiveFilter)
     const itemsHiddenFilter = cvEntries.filter(([key, value])=> value.cvDeletedOrHidden||value.vacancyDeletedOrHidden)
 
     switch(page) {
@@ -77,11 +78,15 @@ export default function Feedbacks() {
         break
 
       case ReviewsNavigation.Invite: 
-      console.log(itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined)))
-      
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.status==='accepted'||(value.type !== ProposalRequestType.Rejection && value.type !== undefined))
+          itemsActiveFilter.filter(([_, value])=>  {
+            return (
+              ('proposals' in value && (value.status === ApplicationStatus.Accepted && (value.proposals[0] && value.proposals[0].status !== ApplicationStatus.Rejected))) && ApplicationStatus.Accepted
+              ||
+              ('application' in value && value.status !== ApplicationStatus.Rejected)
+            )
+          })
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -119,7 +124,12 @@ export default function Feedbacks() {
       case ReviewsNavigation.Reject:
         setFiltered(state=> {
           state.clear()
-          itemsActiveFilter.filter(([_, value])=> value.type === ProposalRequestType.Rejection||value.status === ApplicationStatus.Rejected)
+          itemsActiveFilter.filter(([_, value])=> {
+            return (
+              ('proposals' in value && ((value.proposals[0] && value.proposals[0].status === ApplicationStatus.Rejected) || value.status === ApplicationStatus.Rejected))
+              || ('application' in value && (value.status === ApplicationStatus.Rejected || value.type === ProposalRequestType.Rejection))
+            )
+          })
           .map(([app, vc])=>{
             state.set(app, vc)
           })
@@ -192,8 +202,7 @@ export default function Feedbacks() {
               }  
               onRemove={(id)=>onRemove(id)} vc={item.vacancy} item={item} refreshCallback={feedBackContext.setCVResponses}/>)
           })
-          ||
-          loading &&
+          ||loading &&
           <Spinner size={24}/>
           ||
           <P useThemeColor className={'empty'}>{t('profile_feedbacks_noFeed')}</P>

@@ -20,6 +20,7 @@ interface Props {
   placeholder?: string
   withInput?: boolean|undefined
   disabledButton?: boolean|undefined
+  disableBackButton?: boolean
   className?: string
 }
 
@@ -45,9 +46,11 @@ export default function Body(props: Props) {
 
   return (<>
   {props.title &&
-    <P useThemeColor styleType={['large', 'w600', 'alignCenter']} className={styles.title}>
+    <P useThemeColor styleType={['large', 'w600', 'alignCenter']} className={classNames(styles.title, props.disableBackButton && styles.title_noBack)}>
       {/* {!isPhoneWidth &&  */}
+      {!props.disableBackButton && 
         <Button styleType={['icon', 'black']} altStyleType={['icon', 'white', 'invertSvg']} onClick={()=>props.onClose()}><ArrowLeftSvg className={styles.arrow}/></Button>
+      }
       {/* } */}
       {props.title}
     </P>

@@ -1,10 +1,16 @@
 @import 'styles/index';
 
+
 .switcher {
   display: flex;
   width: 100%;
   justify-content: space-between;
   padding-inline: 24px;
+  column-gap: 8px;
+  @include mq($TabletWidth, max) {
+    padding-inline: unset;
+    overflow: scroll;
+  }
 }
 
 .item {
@@ -24,6 +30,9 @@
   color: $white;
   font-weight: $medium;
   font-size: $mediumText;
+  border: 2px solid transparent;
+  min-width: 180px;
+  min-height: 204px;
 
   p {
     position: relative;

@@ -45,7 +45,7 @@ export default class ChatRepository {
     return res
   }
 
-  static async setMessagePinned(messageId: number, pinned: boolean): Promise<any|null> {
+  static async setMessagePinned(messageId: number, pinned: boolean): Promise<IMessage|null> {
     const res = await request({
       method: 'patch',
       url: `/api/chat/messages/${messageId}/setPinned`,

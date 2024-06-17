@@ -2,13 +2,11 @@
 
 .root {
   margin-top: 48px;
-  padding-bottom: 120px;
   max-width: 638px;
   min-height: 70vh;
   @include mq($TabletWidth, max) {
     margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
-    padding-bottom: 100px !important;
   }
 
   .tag {

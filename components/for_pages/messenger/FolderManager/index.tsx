@@ -112,7 +112,7 @@ function FolderEditor(props: Props) {
       <div className={styles.top}>
         {isTabletWidth &&
           <>
-            <BackBtn onClick={props.onBack} bgColor={'transparent'}/>
+            <BackBtn onClick={props.onBack} />
             <Title title={t('chat_settings')}/>
             <p className={styles.change} onClick={formik.submitForm}>{t('chat_ready')}</p>
           </>
@@ -186,7 +186,7 @@ export default function FolderManager() {
             <BackBtn 
             onClick={creationMode
               ?()=>{setCreationMode(false)}
-              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])} bgColor={'transparent'}/>
+              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])}/>
             <Title title={t('chat_folders')}/>
             <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?t('chat_ready'): t('chat_folders_edit')}</p>
           </>
@@ -243,9 +243,11 @@ export default function FolderManager() {
           creationMode && <FolderEditor folderToEdit={folderToEdit} onBack={()=>setCreationMode(false)}/>
         }
         {!creationMode && 
-          <Button className={styles.createBtn} onClick={()=>setCreationMode(true)}> 
-            <p><PlusSvg/><span>{t('chat_folderCreate')}</span></p>
+        <div className={styles.buttonsWrapper}>
+          <Button className={styles.createBtn} styleType={['gradient', 'phoneWide']} onClick={()=>setCreationMode(true)}> 
+            <P >{t('chat_folderCreate')}</P>
           </Button>
+        </div>
         }
   </div>)
 }

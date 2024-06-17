@@ -80,12 +80,15 @@ export default function SetTariff(props: Props) {
         })
         .catch(_=> {
           appContext.hideModal()
-          appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, {
+          const _args:IConfirmModalProps = {
             text: t('shop_insufficientBalance'),
             callback: () => {
               router.push('/shop')
             }
-          })
+          }
+          isTabletWidth 
+            ? appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
+            : appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
         })
       }
     }

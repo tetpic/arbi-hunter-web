@@ -57,14 +57,36 @@ export default function PersonalHeader(props: Props) {
               currentBackground: cBack?.image|| null,
               currentBuild: cBuild?.image || null,
               hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
-              withBuildPicker: currentProfile?.profileType === ProfileType.Hirer,
-              onSave: (background, building) => {                  
-                BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
+              buildPicker: false,
+              onSave: (background, _) => {                  
+                BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, cBuild?.id].filter(Boolean)}, currentProfile?.profileType)
                 .then(_ => {
                   personalContext.refreshBackgrounds()
                 })
                 if(currentProfile?.profileType === ProfileType.Hirer) {
-                  userContext.editCurrentProfile({imageId: building?.image?.id||null, useOwnLogo: false})        
+                  userContext.editCurrentProfile({useOwnLogo: false})        
+                }
+              }
+            }
+            isTabletWidth
+            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 370)
+            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args)
+          }, 100)
+        }
+        else if(data.type === 'building') {
+          setTimeout(()=> {
+            const _args:IBackgroundPickModalArguments =  {
+              currentBackground: cBack?.image|| null,
+              currentBuild: cBuild?.image || null,
+              hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
+              buildPicker: true,
+              onSave: (_, building) => {        
+                BackgroundRepository.setBackgrounds({backgroundsIds: [cBack?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
+                .then(_ => {
+                  personalContext.refreshBackgrounds()
+                })
+                if(currentProfile?.profileType === ProfileType.Hirer) {
+                  userContext.editCurrentProfile({imageId: building?.image?.id||null})        
                 }
               }
             }
@@ -95,12 +117,12 @@ export default function PersonalHeader(props: Props) {
 
   const editingButton = (()=>{
     if(!isTabletWidth) {
-      return <div className={styles.editButton} onClick={openBackgroundPickModal}>
+      return <div className={styles.editButton} onClick={() => openBackgroundPickModal()}>
       {t('personal_changeBackground')} <EditPencilSvg/>
       </div>
     }
     else {
-      return <div className={styles.editButton} onClick={openBackgroundPickModal}>
+      return <div className={styles.editButton} onClick={() =>openBackgroundPickModal()}>
       <DownloadCloudSvg color='white'/>
       <div>
         <p>{t('personal_changeBanner')}</p>      
@@ -170,7 +192,7 @@ export default function PersonalHeader(props: Props) {
     ||
     <Image 
     src={personalContext.currentProfile?.profileType===ProfileType.Hirer
-      ?'/images/cities/companyDefaultBack.png'
+      ?'/images/cities/newyork.png'
       :'/images/rooms/coworking.png'
     } 
     className={styles.background} alt={'moscow'} 

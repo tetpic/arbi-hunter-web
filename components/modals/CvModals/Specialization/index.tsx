@@ -35,6 +35,7 @@ export interface ISpecializationModalProps {
 
 function SpecializationModalInner(props: Props) {
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const args:ISpecializationModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const cvContext = useCreateVcCvContext()
   const {activeCategory, setActiveCategory} = cvContext
@@ -48,7 +49,6 @@ function SpecializationModalInner(props: Props) {
   const scrollBar = useRef<Scrollbars>(null!)
 
   const submit = (data: {specialization: ISpecializationCategory|ISpecializationCategory[]}) => {
-    debugger
     if(!data.specialization && !args.manyItems) {
       appContext.showSnackbar(t('create_setSpecializationAlt'), SnackbarType.error)
       return
@@ -95,6 +95,7 @@ function SpecializationModalInner(props: Props) {
     onSave={formik.submitForm} 
     title={t('filters_specializations')}
     withInput={false}
+    disableBackButton={isTabletWidth}
     >
       <FormikProvider value={formik}>
         <Form>

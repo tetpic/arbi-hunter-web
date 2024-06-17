@@ -147,7 +147,7 @@ export default function PersonalCard(props: Props) {
       ||
       props.isEditing && personalContext.currentProfile?.profileType === ProfileType.Hirer &&
       <label>
-      <FileInput setImages={(data)=> saveLogo(data)}/>
+      <FileInput setImages={(data)=> saveLogo(data)} accept={['image/png', 'image/jpg', 'image/jpeg', 'image/heic', 'image/gif', 'image/webp']}/>
       <div  className={styles.photoButton}>
         <EditPencilSvg color={isLightTheme&&colors.black}/>
       </div>

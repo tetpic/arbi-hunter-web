@@ -103,7 +103,7 @@ export default function CommunityHeader() {
       }
     </div>
     {isTabletWidth && 
-    <BackBtn className={styles.back} onClick={()=>router.back()} bgColor={'transparent'}/>
+    <BackBtn className={styles.back} onClick={()=>router.back()} />
     }
 
 

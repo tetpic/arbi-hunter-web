@@ -77,7 +77,7 @@ export default function ChatItem(props: Props) {
       }
     }
     isTabletWidth
-    ?appContext.showBottomSheet<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args)
+    ?appContext.showBottomSheet<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args, chatContext.folders.size < 5?((chatContext.folders.size*32) + 190):400)
     :appContext.showModal<ChangeChatFolderModalArgs>(ModalType.ChangeChatFolderModal, _args )
   }
    
@@ -108,8 +108,6 @@ export default function ChatItem(props: Props) {
 
   const options = <OptionsList options={optionsList} onMouseLeave={()=>openDropDown(false)}/>
 
-
-
   return (
     <div className={styles.container}>
 
@@ -119,11 +117,14 @@ export default function ChatItem(props: Props) {
         className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  
         image={getUserImageSource(collocutor, Preset.smallIconCrop)}
         />
-        {props.chat.profiles?.[0]?.pinned &&
-          <PinMessageSvg className={styles.pinIcon}/>
-        }
+       
         <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
-        <p className={styles.time}>{Formatter.formatDateRelative(chat.lastMessageAt)}</p>
+        <P className={styles.time} styleType={['small', 'greyLight', 'alignCenter']}>
+          {Formatter.formatDateRelative(chat.lastMessageAt)}  
+          {props.chat.profiles?.[0]?.pinned &&
+            <PinMessageSvg className={styles.pinIcon}/>
+          }
+        </P>
         <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message} </p>
         {props.chat.totalUnread > 0&&
           <p className={styles.counter}>{props.chat.totalUnread}</p>

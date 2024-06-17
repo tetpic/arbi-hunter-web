@@ -144,11 +144,6 @@ export default function FilterEmployee(props: Props) {
     })
   }
 
-  useEffect(()=>{
-    console.log(creationContext.helpObjects.cities)
-    
-  }, [creationContext.helpObjects.cities])
-
   const onRemoveCategory = (category: ISpecializationCategory) => {
     creationContext.setActiveSubcategory(state=>Array.isArray(state)?state.filter(f=> f?.id !== category?.id):state)
     formik.setFieldValue('categories', formik.values.categories.filter(f=> f !== category?.id))
@@ -388,22 +383,17 @@ export default function FilterEmployee(props: Props) {
             {t('filters_specs')}
           </p>
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory?.length === 0 && 
-            <P styleType={['medium', 'w500']} useThemeColor>
-              {t('filters_any')}
+            {creationContext.activeSubCategory?.length > 0 &&
+              creationContext.activeSubCategory?.map(el=> {
+                return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
+              })
+            }
+            <P 
+            styleType={['medium', 'w500', 'underlined', 'blue']}
+            onClick={()=>openSpecializationModal()}
+            >
+              {t('filters_addSpecs')}
             </P>
-          }
-          {creationContext.activeSubCategory?.length > 0 &&
-            creationContext.activeSubCategory?.map(el=> {
-              return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
-            })
-          }
-          <P 
-          styleType={['medium', 'w500', 'underlined', 'blue']}
-          onClick={()=>openSpecializationModal()}
-          >
-            {t('filters_addSpecs')}
-          </P>
           </div>
         </div>
 

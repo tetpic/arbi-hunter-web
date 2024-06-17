@@ -59,7 +59,7 @@ export default function FavoritesPageHirer(props: Props) {
     }
 
     isTabletWidth
-    ?appContext.showBottomSheet<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, _modalArgs, 424)
+    ?appContext.showBottomSheet<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, _modalArgs, 384)
     :appContext.showModal<FavoritesSettingModalArgs>(ModalType.FavoritesSettingModal, _modalArgs)
   }
 
@@ -80,8 +80,11 @@ export default function FavoritesPageHirer(props: Props) {
   return (<div className={styles.root}> 
     <Title title={t('favorites_title')} rightButton={titleButtons}/>
     <ItemNavigation activeItem={page} items={pageItems(t)} onClick={setPage}/>
-    {foldersContext.allFolders.sort((a)=> a.default?-1:1).map((el, index) => {
-      return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0}/>
-    })}
+    <div className={styles.foldersWrapper}>
+
+      {foldersContext.allFolders.sort((a)=> a.default?-1:1).map((el, index) => {
+        return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0}/>
+      })}
+    </div>
   </div>)
 }

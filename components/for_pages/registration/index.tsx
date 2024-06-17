@@ -81,6 +81,7 @@ export default function Registration(props: Props) {
         phone: userContext.user?.phone||data.phone,
         profileType: userContext.profileType
       }
+      delete data.agreement
       const sendData = clearObject(data)
 
       RegistrationRepository.completeRegistration(sendData)
@@ -138,7 +139,6 @@ export default function Registration(props: Props) {
 
     switch(page||progress) {
       case 1: (async() => {
-        debugger
         const values = ['email', 'password']
         const errors = await Promise.all(values.map(v=>formik.validateField(v).then(r=> [v, r] as [string, string])))
         const isLoginExist = formik.values.email.length > 0 && await RegistrationRepository.checkEmailOrPhoneExists(formik.values.email)
@@ -340,11 +340,6 @@ export default function Registration(props: Props) {
     })*/
   }, [])
 
-  useEffect(()=>{
-    console.log(formik.values.agreement)
-    
-  }, [formik.values.agreement])
-
   return (
     <div className={styles.root}>
       {!isTabletWidth&&
@@ -352,7 +347,7 @@ export default function Registration(props: Props) {
       }
       <div className={styles.content}>
         <P useThemeColor className={styles.title}>
-          {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} bgColor={'white'}/>}
+          {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} />}
           {t('registration')}
           {!isTabletWidth&&<Image src={'/icons/scribe.png'} width={'24'} height={'24'} alt={'scribeIcon'}/>}
         </P>

@@ -126,6 +126,7 @@ export interface ISpecializationCategory extends TimeStamp {
   name: string,
   description: string|null,
   baseId: number,
+  key: null|'sub-other'
   isMain: boolean
   vacanciesCount?: number|null,
   cvsCount?: number|null,

@@ -188,7 +188,7 @@ export default function CurrentCourse(props: Props) {
             //   <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
             // </Button>
             ||
-            <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} bgColor={'transparent'}/>
+            <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
             }
           </div>
       </>

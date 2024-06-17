@@ -49,6 +49,7 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_gallery'), free: false, icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
     {name: t('personal_video'), free: true, icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
     // {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
+    // {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
     {name: t('personal_divider'),free: false, icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
     }},
