@@ -7,9 +7,15 @@
   row-gap: 16px;
   max-height: 60vh;
   @include mq($TabletWidth, max) {
-    min-height: calc(100vh - 26px);
-    min-height: calc(100dvh - 26px);
+    min-height: calc(100vh - 32px);
+    min-height: calc(100dvh - 32px);
   }
+}
+
+.list {
+  height: 100%;
+  overflow: auto;
+  padding-bottom: 60px;
 }
 
 .buttonsWrapper {
@@ -19,6 +25,10 @@
   margin-top: auto;
   position: sticky;
   bottom: 16px;
+  @include mq($TabletWidth, max) {
+    position: absolute;
+    width: calc(100% - 32px);
+  }
 }
 
 .modalLayout {

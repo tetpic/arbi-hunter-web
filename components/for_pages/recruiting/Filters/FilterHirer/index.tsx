@@ -32,6 +32,7 @@ import { HirerFieldType, HirerFieldsModalArgs } from '@/components/modals/HirerF
 import { SalaryModalArgs } from '@/components/modals/SalaryModal'
 import { colors } from 'styles/variables'
 import { IGeoName } from 'data/interfaces/ILocation'
+import { clearObject } from 'utils/helpers'
 
 interface Props {
   onFilterChange: (data: Partial<IVacancyCvSearchParams>) => void
@@ -70,10 +71,13 @@ export default function FilterHirer(props: Props) {
   const formik = useFormik<Partial<IVacancyCvSearchParams>>({
     initialValues: {
       ...initialValues,
-      ...props.initialFields
+      ...clearObject(props.initialFields)
     },
     onSubmit: props.onFilterChange
   })
+
+  console.log(props.initialFields)
+  
 
   const removeLanguage = (l: ILanguageKnowledge) => {
     const helperState = creationContext.helpObjects
@@ -226,7 +230,7 @@ export default function FilterHirer(props: Props) {
       props.initialFields?.sources?.forEach(el => {
         _newSources.set(el, sourcesContext.sources.get(el))
       })
-      props.initialFields.languageKnowledges.map(el => {
+      props.initialFields?.languageKnowledges.map(el => {
         _newLangs.set(el?.language, el)
       })
 
@@ -277,16 +281,11 @@ export default function FilterHirer(props: Props) {
           </p>
           {!isTabletWidth &&
           <div className={styles.itemContent}>
-          {creationContext.activeSubCategory&&creationContext.activeSubCategory?.length === 0 && !isTabletWidth &&
-            <P styleType={['medium', 'w500']} useThemeColor>
-              {t('filters_any')}
-            </P>
-          }
-          {creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
-            creationContext.activeSubCategory.map(el=> {
-              return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
-            })
-          }
+            {creationContext.activeSubCategory&&creationContext.activeSubCategory.length > 0 &&
+              creationContext.activeSubCategory.map(el=> {
+                return (<RemovableItem key={el?.id} onClick={()=>onRemoveCategory(el)} text={el?.name} />)
+              })
+            }
             <P 
             styleType={['medium', 'w500', 'underlined', 'blue']}
             onClick={()=>openSpecializationModal()}

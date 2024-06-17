@@ -11,6 +11,8 @@ import { useAppContext } from 'context/state'
 import { useEffect } from 'react'
 import Button from '@/components/ui/Button'
 import useTranslation from 'next-translate/useTranslation'
+import Title from '@/components/ui/TitleForSection'
+import { clearObject } from 'utils/helpers'
 
 export interface ICityModalArgs {
   initialCountries: IGeoName[]
@@ -32,6 +34,7 @@ export default function CityModal(props: Props) {
 function CityModalInner(props: Props) {
   const locationContext = useLocationContext()
   const appContext = useAppContext()
+  const {isTabletWidth} = appContext.size
   const args: ICityModalArgs = appContext.modalArguments
   const {t} = useTranslation()
 
@@ -51,22 +54,24 @@ function CityModalInner(props: Props) {
   )
 
   useEffect(()=>{
-    locationContext.getCities({search: formik.values.search, limit: 1000}, args.initialCountries.map(el=> el.country))  
+    locationContext.getCities(clearObject({search: formik.values.search, limit: 1000}), args.initialCountries.map(el=> el.country))  
   }, [formik.values.search])
-
-  useEffect(()=>{
-    locationContext.getCities(null, args.initialCountries.map(el=> el.country))
-  }, [])
 
   const body = (
     <div className={styles.root}> 
+    {isTabletWidth &&<Title title={'Города'} onBackClick={props.onClose}/>}
+   
     <InputField styleType={'default'} color={'white'} name={'search'} prefix={<LoupeSvg/>}/>
-    <CheckboxListField name={'cities'} options={
-      [...locationContext.cities.values()].map(el=> ({label: el.name, value: el}))
-    }/>
+    <div className={styles.list}>
+      <CheckboxListField name={'cities'} options={
+        [...locationContext.cities.values()].map(el=> ({label: el.name, value: el}))
+      }/>
+    </div>
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
-      <Button styleType={['gradient']} type='submit'>{t('set')}</Button>
+      {!isTabletWidth && 
+        <Button styleType={['grey']} onClick={props.onClose}>{t('cancel')}</Button>
+      }
+      <Button styleType={['gradient', 'phoneWide']} type='submit'>{t('save')}</Button>
     </div>
 
     </div>
@@ -76,7 +81,7 @@ function CityModalInner(props: Props) {
     <ModalLayout className={styles.modalLayout} mobileFullScreen>
       <ModalBody>
         <FormikProvider value={formik}>
-          <Form>
+          <Form className={styles.form}>
             {body}
           </Form>
         </FormikProvider>

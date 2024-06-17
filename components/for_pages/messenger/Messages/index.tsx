@@ -468,11 +468,11 @@ export default function Messages(props: Props) {
         }
         { choosenIds.size === 0 && value.length === 0 && pastedFiles.size === 0 &&
         <div 
-        className={classNames(styles.microphoneWrapper, dialog.recorder?.current?.state === 'recording'&&styles.recording)} 
+        className={classNames(styles.microphoneWrapper, dialog.recordTime !== null &&styles.recording)} 
         onTouchStart={()=>{
           dialog.recordVoice()
         }} 
-        onTouchEnd={(e) => {          
+        onTouchEnd={(e) => {   
           if(dialog.recorder?.current?.state === 'recording') {
             dialog.recordVoice()
           }
@@ -482,8 +482,15 @@ export default function Messages(props: Props) {
             dialog.recordVoice(true)
           }
         }}
+        onTouchCancel={(e) => {
+          if(dialog.recorder?.current?.state === 'recording') {
+            dialog.recordVoice()
+          }
+        }}
         onMouseDown={(e) => {
-          dialog.recordVoice()
+          if(!dialog.recorder.current) {
+            dialog.recordVoice()
+          }
         }}
         onMouseUp={(e) => {
           dialog.recordVoice()
@@ -499,7 +506,7 @@ export default function Messages(props: Props) {
         }}
         >
           {
-          dialog.recorder?.current?.state === 'recording' &&
+          dialog.recordTime !== null &&
             <>
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>

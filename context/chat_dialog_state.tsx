@@ -65,7 +65,7 @@ export function ChatDialogWrapper(props: Props) {
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
   const [chunks, setChunks] = useState<BlobPart[]>()
-  const [recordTime, setRecordTime] = useState<number>(0)
+  const [recordTime, setRecordTime] = useState<number>(null)
   const [pinned, setPinnedState] = useState<Map<number, IMessage>>(new Map)
   
   const scrollableTarget = useRef<HTMLElement | null>(null)
@@ -75,6 +75,7 @@ export function ChatDialogWrapper(props: Props) {
   const reconnectRef = useRef<boolean>(false)
   const windowFocusInit = useRef(false)
   const starterInterval = useRef<number>()
+  const streamRef = useRef<MediaStream>(null)
   
   const windowFocused = useWindowFocus()
   const limit = 30
@@ -265,38 +266,45 @@ export function ChatDialogWrapper(props: Props) {
 
 
   const recordVoice = async (stop?: boolean) => {
+    
     if(stop ) {
       recorder.current.stop()
       recorder.current = null
       clearInterval(starterInterval.current)
-      setRecordTime(0)
+      setRecordTime(null)
+      setChunks(null)
       return
     }
     else {
-      if(!recorder.current) {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true})
-        recorder.current = new MediaRecorder(stream)
-        recorder.current.audioBitsPerSecond
+      if(recorder.current || recorder.current?.state === 'recording') {
+        recorder.current.stop()
+        clearInterval(starterInterval.current)
+        setRecordTime(null)
+        return
+      }
+      else {
+        clearInterval(starterInterval.current)
+        if(!streamRef.current) {
+          streamRef.current = await navigator.mediaDevices?.getUserMedia({audio: true}).catch(e => null)
+        }      
+        recorder.current = new MediaRecorder(streamRef.current)
         recorder.current.ondataavailable = (e) => {
           if(e.data.size > 0) {
-            debugger
             setChunks([e.data])
           }
           else {
             clearInterval(starterInterval.current)
+            recorder.current = null
+            setRecordTime(null)
           }
         }
-      }
-      if(recorder.current && recorder.current.state === 'recording') {
-        recorder.current.stop()
-        clearInterval(starterInterval.current)
+        recorder.current.start()
         setRecordTime(0)
+        //@ts-ignore
+        starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)        
         return
       }
-      clearInterval(starterInterval.current)
-      recorder.current.start()
-      //@ts-ignore
-      starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+    
     }
   }
 
@@ -317,6 +325,7 @@ export function ChatDialogWrapper(props: Props) {
       const audioFile = new File(chunks, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
       sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
       setChunks(null)
+      recorder.current = null
     }
   }, [chunks])
 

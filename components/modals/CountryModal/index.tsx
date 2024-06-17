@@ -13,6 +13,7 @@ import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
 import { colors } from 'styles/variables'
 import useTranslation from 'next-translate/useTranslation'
+import Title from '@/components/ui/TitleForSection'
 
 export interface ICountryModalProps {
   onSubmit: (country: IGeoName[]) => void
@@ -35,6 +36,7 @@ export default  function CountryModal (props: Props) {
 function CountryModalInner(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
+  const {isTabletWidth } = appContext.size
   const isLightTheme = appContext.theme === AppTheme.Light
   const args: ICountryModalProps = appContext.modalArguments
   const locationContext = useLocationContext()
@@ -60,6 +62,9 @@ function CountryModalInner(props: Props) {
   }, [formik.values.search])
 
   const body = (<div className={styles.root}>
+    {isTabletWidth &&
+      <Title title={'Страны'} onBackClick={props.onClose}/>
+    }
     <InputField 
     styleType={'default'} 
     color={'white'} 
@@ -68,13 +73,17 @@ function CountryModalInner(props: Props) {
     placeholder={t('search')}
     />
     {locationContext.countries.size > 0 &&
-      <CheckboxListField  name={'country'} options={
-        [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el.locName, value: el}))
-      }/>
+      <div className={styles.list}>
+        <CheckboxListField  name={'country'} options={
+          [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el.locName, value: el}))
+        }/>
+      </div>
     }
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
-      <Button styleType={['gradient']} type='button' onClick={formik.submitForm}>{t('set')}</Button>
+      {!isTabletWidth &&
+        <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
+      }
+      <Button styleType={['gradient', 'phoneWide']} type='button' onClick={formik.submitForm}>{t('save')}</Button>
     </div>
   </div>)
 
