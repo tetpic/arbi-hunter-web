@@ -125,10 +125,6 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
       appContext.showSnackbar(t('shop_Insufficient_funds'), SnackbarType.error)
       return
     }
-    if(tariff.price === 0 ){
-      buyHandler(null)
-      return
-    }
     const args:PurchasePreviewModalArgs = {
       tariff: tariff,
       tariffs: tariffContext.packets,

@@ -165,3 +165,12 @@
     height: clamp(190px, 50vw, 300px);
   }
 }
+
+
+.backWrapper {
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

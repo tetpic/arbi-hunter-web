@@ -55,10 +55,10 @@ export default function DetailsModal(props: Props) {
   useEffect(()=>{
     if(
       new Date(
-        [formik.values.experienceInfo?.[0].toDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.toDate.split('.')[1]].join('/')
+        [formik.values.experienceInfo?.[0].toDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.toDate?.split('.')[1]].join('/')
       ) < 
       new Date(
-        [formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate.split('.')[1]].join('/')
+        [formik.values.experienceInfo?.[0].fromDate?.split('.')[0], '01', formik.values.experienceInfo?.[0]?.fromDate?.split('.')[1]].join('/')
       )
     ) {
         formik.setFieldValue('experienceInfo[0].toDate', null)

@@ -49,7 +49,7 @@ export default function Contacts(props: Props) {
 
       <PhoneCountryField 
       styleType={'horizontal'} 
-      disabled={true} 
+      disabled={false} 
       placeholder={t('phone')} 
       name={'phone'}
       label={t('phone')}

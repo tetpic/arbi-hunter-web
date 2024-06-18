@@ -15,7 +15,9 @@
   // margin-top: -24px;
   display: flex;
   justify-content: center;
+  min-height: 200px;
   @include mq($TabletWidth, max) {
+    overflow: hidden;
     >div {
       overflow: unset;
       width: 100%;

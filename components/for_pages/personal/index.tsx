@@ -180,12 +180,6 @@ export default function PersonalPage(props: Props) {
       </ContentItem>
     }
     <ContentItem  className={styles.bodyItem}>
-      {tariffContext?.activeSubscriptions?.size === 0 && !isEditing &&
-      <>
-        <P styleType={['grey', 'medium', 'w500']}>{t('shop_brandingSubcriptionNotFound')}</P>
-        <Spacer basis={24}/>
-      </>
-      }
       {personalContext.blocks.size > 0 &&
       <PersonalBody isEditing={!props.id && isEditing && !isTabletWidth} webView={props.webView}/>
       ||

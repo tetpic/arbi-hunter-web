@@ -47,13 +47,19 @@ export default function BackgroundSwitchModal(props: Props) {
   }
   
   const backBlock = (
-    <div className={classNames(styles.item, type==='place' && styles.active)} onClick={()=>setType('place')}>
-    <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
-    className={styles.customBack}
-    alt={'user custom background'}
-    width={500}
-    height={200}
-    />
+    <div 
+    className={classNames(styles.item, type==='place' && styles.active)} 
+    onClick={()=>{
+      args.onSave({image, type:'place'})
+      props.onClose()    
+    }}
+    >
+      <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
+      className={styles.customBack}
+      alt={'user custom background'}
+      width={500}
+      height={200}
+      />
 
     <UserPic 
     className={styles.userPic}

@@ -197,7 +197,7 @@ export default function BackgroundPickModal(props: Props) {
 
   const buttons = (
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.backButton} onClick={() => page === 'build'?setPage('back'):props.onClose()}>{page === 'build'? t('back'): t('cancel')}</Button>
+      <Button className={styles.backButton} onClick={() => props.onClose()}>{t('cancel')}</Button>
       <Button className={styles.nextButton} onClick={onSave}>{t('save')}</Button>
     </div>
   )

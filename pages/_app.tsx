@@ -66,7 +66,6 @@ function MyApp({Component, pageProps}: AppProps) {
       <AppWrapper isMobile={pageProps.isMobile} theme={pageProps.theme}>
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
           <ManagerWrapper>
-          {/* <VacancyWrapper> */}
           <CvWrapper>
           <PatternWrapper>
           <FeedbacksWrapper>
@@ -77,11 +76,6 @@ function MyApp({Component, pageProps}: AppProps) {
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
-              {/* {loading &&
-                <Spinner className='mainSpinner' size={32}/>        
-              } */}
-          
-
             <Layout webView={pageProps.webViewOnly}> 
               <Component {...pageProps} />
             </Layout>
