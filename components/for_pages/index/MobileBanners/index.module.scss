@@ -19,20 +19,7 @@
 
 .imageWrapper {
   position: relative;
-  &:before {
-    content: '';
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: $blueGradient;
-    opacity: .3;
-    filter: blur(30px);
-    border-radius: 50%;
-  }
-
+  
   img {
     position: relative;
     z-index: 1;
@@ -42,7 +29,7 @@
 .defaultBanner {
   padding: 16px;
   border-radius: 16px;
-  background-color: var(--backColor);
+  background-color: #2e2d37;
   display: grid ;
   margin-inline: 16px;
   column-gap: 16px;
@@ -70,16 +57,19 @@
   @extend .defaultBanner;
   grid-template-areas: 't i' 'd d' 'b b';
   grid-template-columns: 1fr auto;
-  margin-top: 140px;
+  margin-top: 124px;
+  // margin-top: 142px;
 
   .imageWrapper {
     height: 20px;
     display: flex;
     align-items: flex-end;
+    transform: translateY(13px)
   }
 
 }
 
 .vipVacancy {
   @extend .vipCv;
+  margin-top: 142px;
 }

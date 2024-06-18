@@ -25,7 +25,7 @@ interface Props {
 export default function FavoritesPage(props: Props) {
 
   return (
-    <ContentLayout title='Избранное'>
+    <ContentLayout title='Избранное' hideMobileHeader withMobileMenu={props.profileType === ProfileType.Hirer }>
       {props.profileType === ProfileType.Hirer 
         ? <FavoritesFolderWrapper>
             <FavoritesPageHirer/> 

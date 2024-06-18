@@ -477,11 +477,6 @@ export default function Messages(props: Props) {
             dialog.recordVoice()
           }
         }} 
-        onTouchMove={(e) => {
-          if(dialog.recorder?.current?.state === 'recording') {
-            dialog.recordVoice(true)
-          }
-        }}
         onTouchCancel={(e) => {
           if(dialog.recorder?.current?.state === 'recording') {
             dialog.recordVoice()

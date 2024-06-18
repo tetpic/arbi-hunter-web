@@ -9,6 +9,7 @@
     max-width: 50%;
     color: var(--pTextColor);
     position: relative;
+    user-select: text;
     @include mq($TabletWidth, max) {
       max-width: 80%;
       padding: 16px 16px 8px

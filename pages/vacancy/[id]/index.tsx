@@ -12,6 +12,7 @@ import P from '@/components/ui/P'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useEffect } from 'react'
+import { TariffWrapper} from 'context/tariff_state'
 
 
 interface Query {
@@ -79,6 +80,7 @@ export default function Vacancy(props: Props) {
 
   <ContentLayout hideMobileHeader>
     <PersonalWrapper key={'vacancy_page'+props.id}>
+    <TariffWrapper>
       <VacancyWrapper>
         {props.vacancy &&
           <VacancyPage id={Number(props.id)}/>
@@ -86,6 +88,7 @@ export default function Vacancy(props: Props) {
           <P styleType={['textCenter']} style={{paddingBlock: '100px'}}>{t('vacancy_page_removedOrHidden')}</P>
         }
       </VacancyWrapper>
+    </TariffWrapper>
     </PersonalWrapper>
   </ContentLayout>
   </>

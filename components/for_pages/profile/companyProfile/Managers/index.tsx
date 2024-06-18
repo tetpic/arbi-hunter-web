@@ -15,6 +15,7 @@ import { HirerRole } from 'types/enums'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
 
 
 export default function Managers() {
@@ -25,6 +26,7 @@ export default function Managers() {
   const {isTabletWidth} = appContext.size
   const [addManagerModal, showManagerModal] = useState<boolean>(false)
   const [managerToEdit, setManagerToEdit] = useState<IManager>()
+  const router = useRouter()
   
 
   const removeManagerHandler = (el: IManager) => {
@@ -42,7 +44,7 @@ export default function Managers() {
 
 
   return (<>{!addManagerModal && <div className={styles.root}> 
-    <Title title={t('nav_managers')}/>
+    <Title title={t('nav_managers')} onBackClick={router.back}/>
     <div className={styles.managers}>
       <InfiniteScroll 
       height={'100%'}
@@ -66,7 +68,10 @@ export default function Managers() {
          }
       </InfiniteScroll>
       {isTabletWidth && 
-         <Button className={styles.addButton} onClick={()=>showManagerModal(true)}>{t('managers_addNew')}</Button>
+      <div className={styles.buttonsWrapper}>
+
+         <Button  styleType={['gradient', 'phoneWide']} onClick={()=>showManagerModal(true)}>{t('managers_addNew')}</Button>
+      </div>
       }
     </div>
     <div className={styles.head}>

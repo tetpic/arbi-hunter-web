@@ -106,7 +106,7 @@ export default function CvItem({cv, ...props}: Props) {
     })
     .catch(err => {
       isTabletWidth
-      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 280)
+      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
       :appContext.showModal(ModalType.BuyOpensModal)
       setIsLoading(false)
     })

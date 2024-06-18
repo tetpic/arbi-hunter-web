@@ -3,7 +3,7 @@
 .slide {
   width: calc(33% - 4px);
   max-width: 372px;
-  min-width: 300px;
+  min-width: 220px;
 }
 
 .swiper {
@@ -35,6 +35,9 @@
 .image {
   width: 100%;
   object-fit: cover;
+  max-height: 27vw;
+  border-radius: 16px; 
+  
 }
 
 .title {
@@ -42,8 +45,9 @@
 }
 
 .titleOnly {
-  @include lineClamp(3);
-  height: 75px;
+  @include lineClamp(2);
+  margin-bottom: 24px;
+ 
 }
 
 .description {
@@ -61,7 +65,7 @@
 .tag {
   padding: 4px 8px;
   background-color: $red;
-  font-size: $largeText;
+  font-size: 12px;
   font-weight: $medium;
   color: $white;
   border-radius: 6px;

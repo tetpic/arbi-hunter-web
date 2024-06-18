@@ -36,7 +36,8 @@ export default function CategoriesList<T extends {[key: string]: any}>(props: Pr
     <SwiperList 
     hideNav={props.hideNav} 
     className={classNames(styles.root, props.className)} 
-    swiperProps={{spaceBetween: isTabletWidth?8:16, loop: false, freeMode: {
+    slideClassName={styles.slide}
+    swiperProps={{spaceBetween: isTabletWidth?0:16, loop: false, freeMode: {
       // momentum: false,
       // momentumBounce: false,
       sticky: false

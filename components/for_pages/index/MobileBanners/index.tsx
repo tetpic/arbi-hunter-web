@@ -13,7 +13,7 @@ export default function MobileBanners(props: Props) {
 
   const vacancyCreate = (
     <div className={styles.vacancyBanner}>
-    <P style={{gridArea: 't'}} styleType={['w800', 'large']} useThemeColor>{t('banner_createVacancy')}</P>
+    <P style={{gridArea: 't'}} styleType={['w800', 'huge']} useThemeColor>{t('banner_createVacancy')}</P>
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_hireTheBest')}</P>
     <Button href={'/create/vacancy'} styleType={['gradient']} className={styles.create}>{t('create')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>
@@ -24,7 +24,7 @@ export default function MobileBanners(props: Props) {
 
   const cvCreate = (
     <div className={styles.cvBanner}>
-    <P style={{gridArea: 't'}} styleType={['w800', 'large']} useThemeColor>{t('banner_createCv')}</P>
+    <P style={{gridArea: 't'}} styleType={['w800', 'huge']} useThemeColor>{t('banner_createCv')}</P>
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_findThebestJob')}</P>
     <Button href={'/create/cv'} styleType={['gradient']} className={styles.create}>{t('create')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>
@@ -35,7 +35,7 @@ export default function MobileBanners(props: Props) {
 
   const vipCv = (
     <div className={styles.vipCv}>
-    <P style={{gridArea: 't'}} styleType={['w800', 'large']} useThemeColor>{t('banner_vipCvs')}</P>
+    <P style={{gridArea: 't'}} styleType={['w800', 'huge']} useThemeColor>{t('banner_vipCvs')}</P>
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_hireTheBest')}</P>
     <Button href={'/recruiting'} styleType={['gradient', 'phoneWide']} className={styles.create}>{t('banner_watchAllVipCvs')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>
@@ -45,7 +45,7 @@ export default function MobileBanners(props: Props) {
   )
   const vipVacancy = (
     <div className={styles.vipVacancy}>
-    <P style={{gridArea: 't'}} styleType={['w800', 'large']} useThemeColor>{t('banner_vipVacancies')}</P>
+    <P style={{gridArea: 't'}} styleType={['w800', 'huge']} useThemeColor>{t('banner_vipVacancies')}</P>
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_findThebestJob')}</P>
     <Button href={'/recruiting'} styleType={['gradient', 'phoneWide']} className={styles.create}>{t('banner_watchAllVipVacancies')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>

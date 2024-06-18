@@ -7,7 +7,7 @@ interface Props {
 export default function ManagersPage(props: Props) {
 
   return (
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       <Managers/>
     </ContentLayout>
   )

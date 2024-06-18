@@ -109,7 +109,7 @@ export default function Shop(props: Props) {
   })()
 
   return (<div className={styles.root}> 
-  <Title title={t('shop')} className={styles.title}/>
+  <Title title={t('shop')} onBackClick={()=>router.back()}/>
   <ItemNavigation onAllWidth={isTabletWidth}  className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
 
   {getPage}

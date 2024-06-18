@@ -108,9 +108,9 @@ export default function MobileSideBar(props: Props) {
     }} 
     className={styles.userCard}
     >
-      <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} size={64}/>
+      <UserPic image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)} straightSizes size={64}/>
       <div className={styles.userCardContent}>
-        <P useThemeColor styleType={['w500', 'medium']}>{getUserName(userContext.currentProfile)}</P>
+        <P useThemeColor styleType={['w500', 'medium']} className={styles.name}>{getUserName(userContext.currentProfile)}</P>
         <P 
         styleType={['w500', 'medium', 'greyLight']}
         >

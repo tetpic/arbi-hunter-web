@@ -13,6 +13,7 @@
   .categoryItem {
     @include mq($TabletWidth, max){
       display: flex;
+      row-gap: unset !important;
       flex-direction: column;
     }
   }
@@ -97,6 +98,12 @@
   margin-top: 56px;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
+    font-size: 14px;
+    margin-top: 32px;
+
+    p{
+     font-size: 14px;
+    }
   }
 }
 
@@ -167,7 +174,7 @@
   @include mq($MdDesktopWidth, max) {
     width: calc(100% - 32px);
     bottom: 0;
-    transform: translateY(60%);
+    transform: translateY(61%);
   }
 
   .cards {
@@ -185,14 +192,15 @@
     grid-template-areas: 'd i' 'c c';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
-    background-color: #737389b3;
-    backdrop-filter: blur(3px);
+    background-color: #f5f2f730; 
+     backdrop-filter: blur(3px);
     width: calc(33% - 10px);
     @include mq($PhoneWidth, max) {
       grid-template-areas: 'i''d''c';
       justify-items: center;
       width: calc(33.3% - 8px);
       padding: 8px;
+      border-radius: 10px;
     }
   }
 
@@ -207,7 +215,7 @@
   .count {
     grid-area: c;
     font-size: $text18;
-    font-weight: $bold;
+    font-weight: $semibold;
     color: $white;
   }
 
@@ -226,6 +234,7 @@
     min-height: 35px;
     @include mq($TabletWidth, max) {
       min-height: unset;
+      font-size: 12px;
     }
   }
 }

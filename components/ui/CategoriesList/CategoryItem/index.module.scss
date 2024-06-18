@@ -19,13 +19,8 @@
   object-fit: cover;
   position: relative;
   grid-area: i;
-
-  .image {
-    animation: rotateAndScale 5s linear infinite;
-  }
 }
 
-@include rotateAndScale;
 
 .swiperSlide {
   max-width: 330px;
@@ -100,7 +95,7 @@
     display: grid;
     grid-template-areas: 't i' 'b i';
     grid-template-columns: 55% 45%;
-    background-color: var(--secondaryColor);
+    background-color: var(--backColorAlt);
     margin-inline: 4px;
     overflow: hidden;
     position: relative;
@@ -119,15 +114,18 @@
     border-radius: 16px;
     background-color: var(--secondaryColor);
     @include mq($TabletWidth, max) {
-      width: 70%;
-      height: 100%;
-      background: $gradientAlt;
+      width: 100px;
+      height: 100px;
+      background: #7a45ffc4;
       top: 0px;
       left: unset;
       right: -20px;
       border-radius: 50%;
       opacity: .3;
       filter: blur(20px);
+      top: 41%;
+      transform: translate(-50%, -50%);
+      left: 50%;
     }
   }
 

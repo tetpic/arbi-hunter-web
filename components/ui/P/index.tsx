@@ -7,7 +7,7 @@ import { AppTheme } from 'types/enums'
 export type ParagraphStyleType = 
 'small'|'medium'|'large'|'huge'|
 'w500'|'w600'|'w700'|'w800'|
-'fs32'|'fs36'|'fs20'|
+'fs32'|'fs36'|'fs20'| 'fs10' | 'fs12'|
 'white'|'grey'|'greyLight'|'blue'|'purple'|
 'underlined'|'green'|'red'|
 'alignEnd'|'alignCenter'|'alignStart'|'textCenter'

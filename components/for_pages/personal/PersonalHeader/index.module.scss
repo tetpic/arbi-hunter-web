@@ -111,6 +111,10 @@
   @extend .rive;
   top: 40px;
   z-index: 1;
+  @include mq($TabletWidth, max) {
+    width: max(100%, 770px);
+    height: max(80%, 71px);
+  }
 }
 
 .personalModel {

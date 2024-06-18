@@ -6,6 +6,7 @@
   background-color: var(--secondaryColor);
   display: inline-block;
   border: 2px var(--borderPerimeter) solid;
+  flex-shrink: 0;
   // aspect-ratio: 1;
 
 
