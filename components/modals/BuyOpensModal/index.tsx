@@ -21,7 +21,7 @@ export default function BuyOpensModal(props: Props) {
   const router = useRouter()
 
   const onBuyClick = () => {
-    router.push({pathname: '/shop', query: {page: ShopPages.Packets}})
+    router.push({pathname: '/shop', query: {page: ShopPages.Opens}})
     props.onClose()
   }
 

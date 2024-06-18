@@ -25,6 +25,7 @@ export enum ShopPages  {
   Packets = 'packets',
   Branding = 'branding',
   Orders =  'orders',
+  Opens = 'opens'
 }
 
 export default function Shop(props: Props) {
@@ -68,7 +69,7 @@ export default function Shop(props: Props) {
 
   const navSet = (()=>{
     const employeeObj = [ShopPages.Balance, ShopPages.Packets, ShopPages.Orders, ]
-    const hirerObj = [ShopPages.Balance, ShopPages.Packets, ShopPages.Branding, ShopPages.Orders,  ]
+    const hirerObj = [ShopPages.Balance, ShopPages.Packets,  ShopPages.Opens, ShopPages.Branding, ShopPages.Orders,  ]
 
     let result = (userContext.currentProfile?.profileType===ProfileType.Employee?employeeObj:hirerObj).map(page => {
       switch(page) {
@@ -78,6 +79,8 @@ export default function Shop(props: Props) {
           return {name: t('shop_packets'), type: page}
         case ShopPages.Orders:
           return {name: t('shop_orders'), type: page}
+        case ShopPages.Opens:
+          return {name: 'Открытия', type: page}
         case ShopPages.Branding:
           return {name: t('shop_branding'), type: page}
       }
@@ -87,8 +90,7 @@ export default function Shop(props: Props) {
 
   const hirerPurchaseTypes = [
     PurchaseType.VacancyTariff,
-    PurchaseType.ContactsOpen,
-    PurchaseType.AddContactsOpen
+    PurchaseType.AddContactsOpen,
   ]
   const employeePurchaseTypes = [
     PurchaseType.Character,
@@ -103,6 +105,8 @@ export default function Shop(props: Props) {
         return <ShopPackets purchaseTypes={userContext.currentProfile?.profileType===ProfileType.Employee?employeePurchaseTypes:hirerPurchaseTypes}/>
       case ShopPages.Branding:
         return <ShopPackets purchaseTypes={[PurchaseType.PersonalPage]}/>
+      case ShopPages.Opens:
+        return <ShopPackets purchaseTypes={[PurchaseType.ContactsOpen]}/>
       case ShopPages.Orders:
         return <ShopOrders/>
     }

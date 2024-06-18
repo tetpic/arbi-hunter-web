@@ -86,13 +86,14 @@ export default function ContactsModal(props: Props) {
     {contacts.map(el => {
       return (
         <P 
+        className={styles.contact}
         styleType={['alignCenter', 'medium', 'w500']} useThemeColor
         >
         <Button 
         styleType={['icon', 'black']}
         altStyleType={['icon', 'gradient']}
         >{el.icon}</Button> 
-          {el.text}
+          <span>{el.text}</span>
           <Button styleType={['icon']}
           className={styles.copyButton}
           onClick={()=> {
