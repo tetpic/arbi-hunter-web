@@ -77,11 +77,13 @@ export default function Header(props: Props) {
 
 
   return (
-    <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar)} ref={dropdownRef}>
+    <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar, !userContext.currentProfile&&styles.noProfile)} ref={dropdownRef}>
       {/* {(!userContext.isLogged || !userContext.currentProfile) && */}
-      <Link href={'/'} className={styles.logo}>
-        <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
-      </Link>
+      {(!isTabletWidth || !userContext.isLogged) && 
+        <Link href={'/'} className={styles.logo}>
+          <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
+        </Link>
+      }
       {/* } */}
       <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
@@ -190,7 +192,13 @@ export default function Header(props: Props) {
             </>}
           </div>
           ||
-          <Button styleType={['icon', 'black']} altStyleType={['icon','white']} onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}><MenuButtonSvg color={isLightTheme&&colors.greyLight}/></Button>
+          <Button 
+          styleType={['icon', 'black']}  
+          altStyleType={['icon','white']} 
+          className={styles.menuButton}
+          onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}>
+            <MenuButtonSvg color={isLightTheme&&colors.greyLight}/>
+          </Button>
         }
       </div>
     </div>

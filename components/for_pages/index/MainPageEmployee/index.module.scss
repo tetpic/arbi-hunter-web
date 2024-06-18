@@ -10,6 +10,7 @@
     @include mq($TabletWidth, max){
       display: flex;
       flex-direction: column;
+      row-gap: unset;
     }
   }
 }
@@ -33,7 +34,7 @@
     width: calc(100% - 32px);
   }
   @include mq($TabletWidth, max) {
-      bottom: -75px
+      bottom: -70px
   }
 
   .cards {
@@ -57,7 +58,7 @@
     grid-template-areas: 'd i' 'c i';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
-    background-color: #737389b3;
+    background-color: #f5f2f730; 
     backdrop-filter: blur(3px);
     width: calc(33% - 10px);
     @include transitionDefault;
@@ -70,16 +71,13 @@
       justify-items: center;
       width: calc(33% - 4px);
       padding-block: 12px;
+      border-radius: 10px;
     }
     
     .desc {
       color: $white;
       min-height: unset;
-    }
-
-
-    span {
-      color: $blue;
+      font-size: $smallText;
     }
   }
 
@@ -140,6 +138,10 @@
   margin-top: 32px;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
+
+    p {
+      font-size: 14px;
+    }
   }
 }
 

@@ -93,6 +93,7 @@ export default function CourseFeedbackModal(props: Props) {
             <div className={styles.svgStarWrapper}  
             onClick={()=> setRate(index+1)} 
             onMouseEnter={()=>{mouseEnterHandler(index+1)}}
+            onTouchStart={()=> mouseEnterHandler(index+1)}
             >
               <StarFilledSvg color={color} className={styles.starSvg}/>
             </div>)
@@ -112,7 +113,7 @@ export default function CourseFeedbackModal(props: Props) {
     </div>
   )
 
-  return (<ModalLayout className={styles.modalLayout}>
+  return (<ModalLayout className={styles.modalLayout} mobileFullScreen>
     <ModalBody>
       {body}
     </ModalBody>

@@ -23,6 +23,7 @@ export default function ArticlesList(props: Props) {
   const appContext = useAppContext()
   const {t, lang} = useTranslation()
   const isLightTheme = appContext.theme === AppTheme.Light
+  const {isTabletWidth} = appContext.size
   const router = useRouter()
 
 
@@ -45,13 +46,15 @@ export default function ArticlesList(props: Props) {
             className={styles.image}
             />
             <div className={styles.content}>
-              <P styleType={['fs20', 'w600']} useThemeColor className={classNames(props.onlyTitles?styles.titleOnly:styles.title)}>{el.name}</P>
+              <P styleType={['small', 'w600']} useThemeColor className={classNames(props.onlyTitles?styles.titleOnly:styles.title)}>{el.name}</P>
                 {!props.onlyTitles &&
                 <P styleType={['medium','greyLight']} className={styles.description}><TextNode html={el.blocks[0]?.body}/></P>
                 }
                 <div className={styles.bottom}>
                   <div className={styles.tag}>{el.articleCategory.translations.find(el => el.languageCode === 'ru').name.split(' ')[0]}</div>
-                  <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt, {locale: lang as InterfaceLanguage})} {t('ago')}</P>
+                  {!isTabletWidth &&
+                    <P styleType={['small', 'w500']} useThemeColor>{Formatter.formatDistanceToNow(el.createdAt, {locale: lang as InterfaceLanguage})} {t('ago')}</P>
+                  }
                 </div>
             </div>
           </div>

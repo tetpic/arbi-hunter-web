@@ -24,12 +24,16 @@ export default function Layout(props: Props) {
   return ( 
   <div className={styles.root}  id={'mainLayout'}>
     <StickyContainer>
-      {(!appContext.hideHeader ?? !props.webView) &&
+
+      {(!appContext.hideHeader ?? !props.webView) && (!isTabletWidth||!userContext.isLogged) &&
       <Sticky>
         {({style, distanceFromTop}) => <div className={styles.headerWrapper}  style={style}>
           <Header distanceFromTop={distanceFromTop}  />
         </div>}
       </Sticky>
+      ||
+      (!appContext.hideHeader ?? !props.webView) && isTabletWidth && 
+      <Header distanceFromTop={0}/>
       }
       <div className={styles.content}>
       {userContext.isLogged && !isTabletWidth && !props.webView && 

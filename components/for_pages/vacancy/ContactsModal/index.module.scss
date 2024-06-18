@@ -17,6 +17,7 @@
   opacity: 0;
   @include transitionDefault;
   z-index: 6;
+  max-width: 88vw;
 }
 
 .active {
@@ -32,4 +33,14 @@
 
 .copyButton {
   margin-left: auto;
+}
+
+.contact {
+  max-width: 100%;
+  
+  span {
+    @include lineClamp(2);
+    word-break: break-all;
+
+  }
 }

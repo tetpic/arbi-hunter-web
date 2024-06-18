@@ -24,11 +24,10 @@ import FavoritesButton from '@/components/ui/FavoritesButton'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import HtmlText from '@/components/ui/HtmlText'
 import TagList from '@/components/ui/TagList'
-import { TranslateLanguage, TranslateLanguageKnowLevel, TranslateTariffType } from 'utils/enumsTranslations'
+import { TranslateLanguage, TranslateLanguageKnowLevel} from 'utils/enumsTranslations'
 import VacancyItem from '@/components/ui/VacancyItem'
 import PencilSvg from '@/components/svg/PencilSvg'
 import { colors } from 'styles/variables'
-import classNames from 'classnames'
 import Statistics from '@/components/ui/Statistics'
 import Link from 'next/link'
 import ContactsModal from './ContactsModal'
@@ -36,6 +35,8 @@ import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
 import ChatRepository from 'data/repositories/ChatRepository'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import { useTariffContext } from 'context/tariff_state'
+import EditPencilSvg from '@/components/svg/EditPencilSvg'
 
 
 interface Props {
@@ -49,6 +50,7 @@ export default function VacancyPage(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const personalContext = usePersonalContext()
+  const tariffContext = useTariffContext()
   const {isTabletWidth} = appContext.size
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
   const {currentVacancy, foundVacancies} = vacancyContext
@@ -58,6 +60,8 @@ export default function VacancyPage(props: Props) {
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
   const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser?.length -1]||null
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
+  const tariff = tariffContext?.packets?.get(props.id)
+
 
 
   const makeResponse = () => {
@@ -174,13 +178,19 @@ export default function VacancyPage(props: Props) {
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {!isMyVacancy &&
             <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
+            ||
+            <Button  
+            onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)}  
+            styleType={['icon', 'svg24', 'black']}>
+              <EditPencilSvg/>
+            </Button>
           }
         </div>
       }
       {!isMyVacancy && companyCard}
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
-        {isMyVacancy &&
+        {isMyVacancy && !isTabletWidth &&
           <P 
           styleType={['blue', 'alignCenter', 'medium', 'w500']} 
           onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)} 
@@ -196,12 +206,15 @@ export default function VacancyPage(props: Props) {
       }
       {isMyVacancy && 
         <div className={styles.topLine}>
-          <P 
-          styleType={['w600', 'medium']} 
-          className={classNames(styles.tariff, styles['tariff_'+currentVacancy.tariff])}
+        {currentVacancy.subscriptions?.tariff &&
+          <p 
+          className={styles.tariff} 
+          /* @ts-ignore */
+          style={currentVacancy.subscriptions.tariff.colors&&{'--gradientColor1': '#'+currentVacancy.subscriptions.tariff.colors?.[0], '--gradientColor2': '#'+currentVacancy.subscriptions.tariff.colors?.[1]}}
           >
-            {TranslateTariffType(currentVacancy.tariff)}
-          </P>
+            {currentVacancy.subscriptions.tariff.name}
+          </p>
+        }
 
           <P 
           styleType={['small', 'green']} 

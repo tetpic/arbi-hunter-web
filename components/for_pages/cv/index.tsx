@@ -47,6 +47,7 @@ import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import DoubleSvg from '@/components/svg/DoubleSvg'
+import EditPencilSvg from '@/components/svg/EditPencilSvg'
 
 
 interface Props {
@@ -92,14 +93,18 @@ export default function CvPage(props: Props) {
     })
   }
 
-  const openContacts = () => {
+  const openContacts = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
     CvRepository.openContacts(currentCv.id)
-    .then(_=> {
+    .then(res=> {
       cvContext.saveCv(currentCv.id)
       cvContext.getCv(Number(props.cvId))
     })
-    .catch(_ => {
-      appContext.showSnackbar(t('cv_page_noOpensAvailable'), SnackbarType.error)
+    .catch(err => {
+      isTabletWidth
+      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
+      :appContext.showModal(ModalType.BuyOpensModal)
     })
   }
 
@@ -348,10 +353,18 @@ export default function CvPage(props: Props) {
       {isTabletWidth &&
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
+          {isMyCv &&
+          <Button styleType={['icon', 'black', 'svg24']}  onClick={()=>router.push('/create/cv?id='+currentCv.id)} >
+            <EditPencilSvg/>
+          </Button>
+          ||
           <FavoritesButton 
           altStyleType={['icon', 'white']}
           onClick={saveCvToFavorites} 
+          showStar
           isActive={currentCv?.isSavedByCurrentProfile}/>
+          }
+       
         </div>
       }
 
@@ -362,13 +375,15 @@ export default function CvPage(props: Props) {
           <P useThemeColor styleType={['fs20', 'w600']}>
             {currentCv?.categories[0].name}
           </P>
-          <P 
-          styleType={['blue', 'alignCenter', 'medium', 'w500']} 
-          onClick={()=>router.push('/create/cv?id='+currentCv.id)} 
-          className={styles.edit}
-          >
-            <PencilSvg color={colors.blue}/> {t('cv_page_edit')}
-          </P>
+          {!isTabletWidth &&
+            <P 
+            styleType={['blue', 'alignCenter', 'medium', 'w500']} 
+            onClick={()=>router.push('/create/cv?id='+currentCv.id)} 
+            className={styles.edit}
+            >
+              <PencilSvg color={colors.blue}/> {t('cv_page_edit')}
+            </P>
+          }
         </div>
         <SalaryItem cv={currentCv} />
         <Statistics 

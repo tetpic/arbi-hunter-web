@@ -285,7 +285,14 @@ export default function MessageFactory(props: Props) {
   </>)
 
   const voiceMessage = (
-    <div className={side} onContextMenu={(e)=>onRightClick(e, 'context')}  ref={itemRef } key={props.message.id}>
+    <div className={side} 
+    onContextMenu={(e)=>onRightClick(e, 'context')}  
+    onTouchStart={(e)=>onRightClick(null, 'touch')}
+    onTouchCancel={() => clearTimeout(timeout.current)}
+    onTouchEnd={() => clearTimeout(timeout.current)}
+    onTouchMove={() => clearTimeout(timeout.current)}
+    ref={itemRef } 
+    key={props.message.id}>
       {optionsDropDown}
       {replyedMessage}
       {msg?.assets?.length > 0 &&

@@ -41,13 +41,20 @@
   background-color: var(--backColor);
   border-radius: 16px;
   column-gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 
   .userCardContent {
     display: flex;
     flex-direction: column;
     row-gap: 8px;
+    max-width: calc(100% - 110px);
   }
+}
+
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .arrow {

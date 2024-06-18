@@ -38,7 +38,7 @@ export default function CategoryItem<T extends {[key: string]: any}>(props: Prop
         className={styles.image}
         />
       </div>
-      <P useThemeColor styleType={['large', 'w600']} className={styles.name} title={category.name}>{category.name}</P>
+      <P useThemeColor styleType={['small', 'w600']} className={styles.name} title={category.name}>{category.name}</P>
       {props.articlesCounter && category.articlesCount &&
         <div  className={styles.artCounter} ><span>{category.articlesCount} {Formatter.pluralize(+category.articlesCount, t('articlesCounter1'), t('articlesCounter2'), t('articlesCounter3') )}</span></div>
       }

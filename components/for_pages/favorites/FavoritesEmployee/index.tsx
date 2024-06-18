@@ -15,6 +15,7 @@ import CvItem from '@/components/ui/CvItem'
 import FavoritesVacancyItem from '../FavoritesVacancyItem'
 import Formatter from 'utils/formatter'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
 
 interface Props {
 }
@@ -27,6 +28,7 @@ export default function FavoritesPageEmployee(props: Props) {
   const [page, setPage] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
   const profileType = userContext.currentProfile?.profileType
+  const router = useRouter()
 
 
   const getItems = () => {
@@ -73,7 +75,7 @@ export default function FavoritesPageEmployee(props: Props) {
 
   return (
     <div className={styles.root}>
-      <Title title={t('favorites_title')}/>
+      <Title title={t('favorites_title')} onBackClick={()=>router.back()}/>
       <div className={styles.top}>
         <P styleType={['medium', 'w500']} useThemeColor>{t('favorites_vacancies')}</P>
         <P styleType={['medium', 'w500']} useThemeColor>{total} {Formatter.pluralize(total, t('vacancies1'), t('vacancies2'), t('vacancies3'))}</P>

@@ -1,7 +1,7 @@
 @import 'styles/index';
 
 .root {
-  margin-top: clamp(24px, 7vw, 48px);
+  margin-top: clamp(16px, 3vw, 48px);
   max-width: 556px;
   margin-bottom: 42px;
   @include mq($TabletWidth, max) {

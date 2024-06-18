@@ -122,7 +122,6 @@ export default function MainPageHirer() {
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                {stats?.responsesCount.responses_count_prev_interval}
                 { Number(stats?.responsesCount.responses_count_interval)>0 &&
                   <span>
                     {' + '+ stats?.responsesCount.responses_count_interval}
@@ -137,7 +136,6 @@ export default function MainPageHirer() {
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                {stats?.viewsCount.views_count_prev_interval}
                 { Number(stats?.viewsCount.views_count_interval)>0 &&
                   <span>
                     {' + '+ stats?.viewsCount.views_count_interval}
@@ -152,7 +150,7 @@ export default function MainPageHirer() {
               {!stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                {stats?.viewsCount.views_count_prev_interval}
+               
                 { Number(stats?.viewsCount.views_count_interval)>0 &&
                   <span>
                     {' + '+ stats?.viewsCount.views_count_interval}

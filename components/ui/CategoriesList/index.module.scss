@@ -1,6 +1,6 @@
 @import 'styles/index';
 .wrapper {
-  height: 188px;
+  height: 170px;
 }
 
 .root {
@@ -18,3 +18,10 @@
   }
 
 }
+
+.slide {
+    max-width: 330px;
+    width: 25%;
+    min-width: 144px;
+
+  }

@@ -8,7 +8,6 @@ import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
-import CrossSvg from '@/components/svg/CrossSvg'
 import { ShopPages } from '@/components/for_pages/shop'
 
 interface Props {
@@ -22,28 +21,17 @@ export default function BuyOpensModal(props: Props) {
   const router = useRouter()
 
   const onBuyClick = () => {
-    router.push({pathname: '/shop', query: {page: ShopPages.Packets}})
+    router.push({pathname: '/shop', query: {page: ShopPages.Opens}})
     props.onClose()
   }
 
 
   const body = (
     <div className={styles.root}>
-      <div className={styles.buttonsWrapper}>
-        <Button 
-        styleType={['black', 'circle']} 
-        onClick={props.onClose}
-        >
-          <CrossSvg/>
-        </Button>
-      </div>
+     
       <P styleType={['large', 'w600', 'textCenter']}
       >
-        {t('shop_contactsOpenInfo')}
-      </P>
-      <P styleType={['medium', 'w500', 'textCenter']}
-      >
-        {t('shop_contactsOpenInfo2')}
+        {t('shop_contactsOpenInfo1')}
       </P>
       <Button 
       styleType={['gradient']}
