@@ -65,7 +65,7 @@ export function ChatDialogWrapper(props: Props) {
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
   const [chunks, setChunks] = useState<BlobPart[]>()
-  const [recordTime, setRecordTime] = useState<number>(0)
+  const [recordTime, setRecordTime] = useState<number>(null)
   const [pinned, setPinnedState] = useState<Map<number, IMessage>>(new Map)
   
   const scrollableTarget = useRef<HTMLElement | null>(null)
@@ -274,6 +274,7 @@ export function ChatDialogWrapper(props: Props) {
     }
     else {
       if(!recorder.current) {
+        debugger
         const stream = await navigator.mediaDevices.getUserMedia({audio: true})
         recorder.current = new MediaRecorder(stream)
         recorder.current.audioBitsPerSecond
