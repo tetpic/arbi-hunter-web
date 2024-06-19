@@ -77,7 +77,7 @@ export default function VacancyPage(props: Props) {
         }
       }
       isTabletWidth
-      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args)
+      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, args,  args.cvs.length > 1 ? undefined : 180)
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
     }
   }

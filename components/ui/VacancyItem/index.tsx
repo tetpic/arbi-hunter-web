@@ -59,7 +59,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
       } 
       isTabletWidth
-      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, _args)
+      ?appContext.showBottomSheet<IApplicationModalProps>(ModalType.ApplicationModal, _args, _args.cvs.length > 1 ? undefined : 180)
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, _args)
     }
   }

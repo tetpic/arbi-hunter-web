@@ -22,6 +22,7 @@ import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import Spacer from '@/components/ui/Spacer'
+import { useRouter } from 'next/router'
 
 interface Props {
   onClose: ()=>void
@@ -37,6 +38,8 @@ export interface IApplicationModalProps {
 export default function ApplicationModal(props: Props) {
   const {t} = useTranslation()
   const appContex = useAppContext()
+  const {isTabletWidth} = appContex.size
+  const router = useRouter()
   const modalArguments:IApplicationModalProps = props.isBottomSheet?appContex.bottomSheetArguments:appContex.modalArguments
 
   const [showTextField, setShowTextField] = useState<boolean>(false)
@@ -64,6 +67,25 @@ export default function ApplicationModal(props: Props) {
     onSubmit: submit
   })
 
+  const onCreateNewCV = () => {
+    router.push('/create/cv')
+    setTimeout(()=>{
+      props.onClose()
+    }, 50)
+  }
+
+  const noCv = (
+    <div className={styles.root} >
+      {!isTabletWidth &&
+        <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+      }
+      <P styleType={['medium', 'w500', 'textCenter']}>У вас нет активных резюме</P>
+      <Spacer basis={16}/>
+      <Button styleType={['gradient','phoneWide']} onClick={onCreateNewCV}>{t('create')}</Button>
+      
+    </div>
+  )
+
   const body = (
     <div className={styles.root} >
       <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
@@ -71,13 +93,13 @@ export default function ApplicationModal(props: Props) {
         <Form className={styles.form}>
           {filteredCvs.length > 1 &&
             <RadioListField 
-            options={filteredCvs.map(cv => {return {value: cv.id, label: cv.categories[0].name }})} 
+            options={filteredCvs.map(cv => {return {value: cv.id, label: cv?.categories?.[0]?.name }})} 
             name={'cvId'}/>
             ||
             <>
             <P styleType={['greyLight', 'small', 'w500']}>{t('application_cv')}</P>
             <Spacer basis={8}/>
-            <P styleType={['medium', 'w500']} useThemeColor>{filteredCvs[0].categories[0].name}</P>
+            <P styleType={['medium', 'w500']} useThemeColor>{filteredCvs?.[0]?.categories?.[0]?.name}</P>
             </>
           }
           {showTextField && 
@@ -96,7 +118,7 @@ export default function ApplicationModal(props: Props) {
     return (
       <BottomSheetLayout>
         <BottomSheetBody>
-          {body}
+          {modalArguments.cvs.length>0?body:noCv}
         </BottomSheetBody>
       </BottomSheetLayout>
     )
@@ -104,7 +126,7 @@ export default function ApplicationModal(props: Props) {
 
   return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>
-      {body}
+     {modalArguments.cvs.length>0?body:noCv}
 
     </ModalBody>
   </ModalLayout>)
