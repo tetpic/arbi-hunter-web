@@ -117,13 +117,11 @@ export default function BackgroundSwitchModal(props: Props) {
   const body = (    
   <div className={styles.root}>
     <div className={styles.switcher}>
-      {isTabletWidth &&
+      {isTabletWidth && userContext.currentProfile.profileType === ProfileType.Hirer &&
         <SwiperList swiperProps={{
           loop: false
         }}>
-          {backBlock}
-          {userContext.currentProfile.profileType === ProfileType.Hirer && buildBlock}
-          {avatarBlock}
+          {[backBlock, userContext.currentProfile.profileType === ProfileType.Hirer && buildBlock, avatarBlock].filter(Boolean)}
         </SwiperList>
         ||
         <>

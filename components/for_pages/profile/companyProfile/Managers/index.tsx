@@ -12,7 +12,6 @@ import Manager from './ManagerItem'
 import Title from '@/components/ui/TitleForSection'
 import { useUserContext } from 'context/user_state'
 import { HirerRole } from 'types/enums'
-import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
@@ -62,9 +61,6 @@ export default function Managers() {
               manager={el}/>
             )
            })
-           ||
-           managerContext.managers.size === 0 && managerContext.managersTotal === 0 &&
-           <P useThemeColor className={'empty'}>{t('managers_noAdded')}</P>
          }
       </InfiniteScroll>
       {isTabletWidth && 

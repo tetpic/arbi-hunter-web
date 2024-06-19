@@ -12,17 +12,12 @@ import { useTariffContext } from 'context/tariff_state'
 import { ModalType, Preset, PurchaseType } from 'types/enums'
 import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
-import P from '@/components/ui/P'
 import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/router'
-import SearchBar from '@/components/ui/SearchBar'
 import { useAppContext } from 'context/state'
-import LoupeSvg from '@/components/svg/LoupeSvg'
 import Button from '@/components/ui/Button'
 import PlusSvg from '@/components/svg/PlusSvg'
 import { SearchModalArgs } from '@/components/modals/SearchModal'
-import DotSvg from '@/components/svg/DotSvg'
-import { colors } from 'styles/variables'
 
 interface Props {
 }
@@ -118,32 +113,30 @@ export default function CVs(props: Props) {
       rightButton={isTabletWidth &&
         <div className={styles.buttonsWrapper}>
           <Button styleType={['icon', 'black']} onClick={()=>router.push('/create/cv')}><PlusSvg/></Button>
-          <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button>
+          {/* <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button> */}
         </div>
       }/>
-      {!isTabletWidth &&
+      {/* {!isTabletWidth &&
         <SearchBar 
         key={'cvsSearchbar'}
         className={styles.search} 
         placeholder={t('profile_searchInMyCvs')}
         onSubmit={(data)=>onSearch(data.search)}
         />
-      }
+      } */}
 
       <ItemNavigation activeItem={activeItem} items={items} onClick={(n)=>setActiveItem(n)}  onAllWidth={isTabletWidth}/>
       {
       filteredCvs?.length > 0 && 
-      (filteredCvs).map((el, index) => 
-        <ProfileCvItem  
-        cv={el} 
-        key={index}
-        isLast={index > 0 &&index===filteredCvs.length -1} 
-        image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)}  
-        type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
-        />
-      )
-      ||
-      <P useThemeColor className={'empty'}>{t('profile_cvs_empty')}</P>
+        (filteredCvs).map((el, index) => 
+          <ProfileCvItem  
+          cv={el} 
+          key={index}
+          isLast={index > 0 &&index===filteredCvs.length -1} 
+          image={getUserImageSource(userContext.currentProfile, Preset.smallIconCrop)}  
+          type={(activeItem===CVNavigation.Drafts&&'drafts')||(activeItem===CVNavigation.Archive&&'archive')||null} 
+          />
+        )
       }
       <Spacer basis={24}/>
     </div>

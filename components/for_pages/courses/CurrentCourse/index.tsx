@@ -127,14 +127,7 @@ export default function CurrentCourse(props: Props) {
     }
   }, [])
 
-  useEffect(()=>{
-    if(isTabletWidth) {
-      appContext.setHideHeader(true)
-    }
-    return (()=> {
-      appContext.setHideHeader(false)
-    })
-  }, [isTabletWidth])
+
 
   return (<div className={styles.root}> 
     <div className={styles.header}>

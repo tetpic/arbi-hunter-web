@@ -20,8 +20,6 @@
   visibility: visible;
 }
 
-
-
 .text {
   display: flex;
   align-items: center;
@@ -31,7 +29,10 @@
 
 .black {
   @include buttonBlack;
- 
+
+  span {
+    color: #4d5db7;
+  }
 }
 
 .grey{
@@ -145,6 +146,14 @@
 .disabled {
   pointer-events: none;
   opacity: .5;
+}
+
+.blueText {
+  color: $blue;
+}
+
+.purpleText {
+  color: $purple;
 }
 
 

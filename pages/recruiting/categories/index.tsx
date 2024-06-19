@@ -37,7 +37,7 @@ export default function RecruitingCategories (props: Props) {
       
       <div className={styles.wrapper}>
         {props.categories.map(el => {
-          return <CategoryItem category={el} itemClassName={styles.category} onClick={onCategoryClickHandler}/>
+          return <CategoryItem category={el} imageWrapperClassName={styles.imageWrapper} itemClassName={styles.category} onClick={onCategoryClickHandler}/>
         })}
       </div>
     </div>
