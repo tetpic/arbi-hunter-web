@@ -145,7 +145,7 @@ export default function SetTariff(props: Props) {
             width={70} 
             height={70} 
             unoptimized
-            src={ImageHelper.urlFromFile(el.icon, Preset.xsCrop)} 
+            src={ImageHelper.urlFromFile(el.icon, Preset.mdCrop)} 
             className={el.key.includes('Vip')?styles.crown:styles.topIcon}
             />
             <P styleType={['w500', 'large']} className={styles.tariffType}>{el.name}</P>

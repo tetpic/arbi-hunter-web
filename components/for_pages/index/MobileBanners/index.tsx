@@ -39,7 +39,7 @@ export default function MobileBanners(props: Props) {
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_hireTheBest')}</P>
     <Button href={'/recruiting'} styleType={['gradient', 'phoneWide']} className={styles.create}>{t('banner_watchAllVipCvs')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>
-      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={120} height={82}/>
+      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={480} height={328}/>
     </div>
   </div>
   )
@@ -49,7 +49,7 @@ export default function MobileBanners(props: Props) {
     <P style={{gridArea: 'd'}}  styleType={['small']} useThemeColor>{t('banner_findThebestJob')}</P>
     <Button href={'/recruiting'} styleType={['gradient', 'phoneWide']} className={styles.create}>{t('banner_watchAllVipVacancies')}</Button>
     <div className={styles.imageWrapper} style={{gridArea: 'i'}}>
-      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={120} height={82}/>
+      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={480} height={328}/>
     </div>
   </div>
   )
