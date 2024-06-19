@@ -35,7 +35,7 @@ interface Props {
 export default function Course(props: Props) {
   // console.count('course main refreshed')
   return (
-    <ContentLayout title={`Курсы|${props.course.name}`}>
+    <ContentLayout title={`Курсы|${props.course.name}`} hideMobileHeader>
       <CoursesWrapper>
         <CurrentCourse course={props.course} page={props.page} id={Number(props.id)}/>
       </CoursesWrapper>

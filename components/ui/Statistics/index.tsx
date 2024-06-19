@@ -13,7 +13,7 @@ export default function Statistics(props: Props) {
 
 
   return (<div className={classNames(styles.stats, props.className) }>
-    <P styleType={['medium', 'w500']} useThemeColor>{props.title}</P>
+    <P styleType={['medium', 'w500']}  useThemeColor>{props.title}</P>
     <div className={styles.items}>
       {props.items&&props.items.length>0&&
         props.items.map((el, index)=>{

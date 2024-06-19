@@ -13,6 +13,8 @@ import { AppTheme } from 'types/enums'
 export type ButtonStyle = 
 'black'|
 'grey'|
+'blueText' |
+'purpleText' |
 'gradient'|
 'blue'|
 'white'|

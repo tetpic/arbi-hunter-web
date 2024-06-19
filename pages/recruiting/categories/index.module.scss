@@ -4,7 +4,7 @@
   margin-top: 24px;
   display: flex;
   flex-direction: column;
-  row-gap: clamp(16px, 4vw, 24px);
+  row-gap: 24px;
   max-width: 768px;
   margin-bottom: 24px;
   @include mq($TabletWidth, max) {
@@ -17,7 +17,7 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 16px;
+  column-gap: 24px;
   row-gap: 16px;
 
 }
@@ -28,9 +28,19 @@
   margin: unset !important;
 
   @include mq($TabletWidth, max) {
-    width: calc(50% - 8px);
+    width: calc(50% - 12px);
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
+    padding-inline: 8px;
+    padding-top: 0px;
+  }
+
+  .imageWrapper {
+    @include mq($TabletWidth, max) {
+      width: 33vw;
+      height: 33vw;
+
+    }
   }
 }

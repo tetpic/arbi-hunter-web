@@ -140,17 +140,20 @@
   .name{
     grid-area: t;
     position: relative;
-    min-height: 50px;
+    min-height: 30px;
+    justify-self: flex-end;
+    text-align: start;
+    display: flex;
+    align-items: flex-end;
+    align-self: center;
     text-align: center;
     @include lineClamp(2);
     @include mq($TabletWidth, max) {
-      align-self: flex-start;
-      justify-self: flex-end;
       text-align: start;
+      align-self: flex-start;
       @include lineClamp(3);
       display: flex;
-      align-items: flex-end;
-      min-height: 38px;
+      min-height: 25px;
     }
   }
   

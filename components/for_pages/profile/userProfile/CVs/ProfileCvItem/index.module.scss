@@ -54,7 +54,6 @@
   grid-template-columns: auto 1fr auto;
   align-items: start;
   column-gap: 16px;
-  row-gap: 8px;
   width: 100%;
   height: fit-content;
 
@@ -76,7 +75,7 @@
 }
 
 .refreshed {
-  font-size: $mediumText;
+  font-size: clamp(12px, 2vw, 14px);
   font-weight: $medium;
   color: $greyLight;
   margin-right: auto;
@@ -99,4 +98,10 @@
     background-color: transparent !important;
     padding: unset !important;
   }
+}
+
+.tariffWrapper  {
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
 }

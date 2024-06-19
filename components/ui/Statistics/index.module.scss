@@ -2,7 +2,6 @@
 
 .stats {
   display: flex;
-  row-gap: 8px;
   flex-direction: column;
   padding: 16px;
   background-color: var(--greyToBackground);
@@ -11,10 +10,10 @@
   max-width: 370px;
 
   &_desc {
-    font-size: $mediumText;
+    font-size: clamp(12px, 2vw, 14px);    
     color: $greyLight;
     font-weight: $medium;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
 
   .items {

@@ -9,7 +9,7 @@ import { useCoursesContext } from 'context/courses_state'
 import ICourse, { ICourseBlock } from 'data/interfaces/ICourse'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { colors } from 'styles/variables'
 import Formatter from 'utils/formatter'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
@@ -31,26 +31,14 @@ export default function CourseModules({course}: Props) {
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
   const router = useRouter()
 
-  useEffect(()=>{
-    if(courseModules?.size === 0) {
-      setCourseModules(course.id)
-      .then(_ => {
-        setLoadingBlocks(false)
-      })
-    }  
-    else {
-      setLoadingBlocks(false)
-    }
-  }, [])
-
-
 
   const onTitleClick = (c: ICourseBlock) => {
     setActiveModule(state=> state===c?null:c)
   }
+  
 
   return (<div className={styles.root}> 
-    {!loadingBlocks && courseModules.size > 0 &&
+    {courseModules.size > 0 &&
       [...courseModules.entries()].map(([k, v], blockIndex)=> (
         <div className={styles.item} key={k.id}>
           <div className={styles.top} onClick={() => onTitleClick(k)}>

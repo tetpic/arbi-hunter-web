@@ -27,7 +27,7 @@ export default class Formatter {
     const recievedDate = new Date(date)
     recievedDate.setDate(recievedDate.getDate()+(options?.plusDays||0))
 
-    return new Intl.DateTimeFormat(options.lang||'ru', {
+    return new Intl.DateTimeFormat(options?.lang||'ru', {
       day: 'numeric',
       month: 'long',
       ...options?.timeOptions

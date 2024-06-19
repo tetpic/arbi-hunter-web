@@ -147,9 +147,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
   return (<div className={classNames(styles.root, props.className)} onClick={()=>!props.type&&router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic} image={props.image}/>
+      <UserPic className={styles.userPic} image={props.image} size={46}/>
       <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</P>
-      <P  className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatToShortYear(cv.updatedAt)}</P>
+      <P  className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatDate(cv.updatedAt, {lang: lang as InterfaceLanguage, timeOptions: {year: 'numeric'}})}</P>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()
         e.preventDefault()
@@ -166,6 +166,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
     </div>
 
     {tariff &&
+    <div className={styles.tariffWrapper}>
       <P
       styleType={['medium', 'w500']}
       className={styles.tariff} 
@@ -174,6 +175,9 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       >
         {tariff.name}
       </P>
+
+      <P styleType={['small', 'greyLight', 'w500']}>Истекает {Formatter.formatDate(cv.subscriptions.endAt, {lang: lang as InterfaceLanguage})}</P>
+    </div>
     }
 
 
@@ -184,7 +188,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       items={[
         {name: t('item_shows'), count: cv.totalShows},
         {name: t('item_views'), count: cv.totalViews},
-        {name: t('item_feedbacks'), count: cv.totalProposals},
+        {name: t('item_totalProposals'), count: cv.totalProposals},
       ]}
       />
       ||
@@ -261,7 +265,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         }
         {!props.type &&
           <Button 
-          styleType={['black']}
+          styleType={['black', 'purpleText']}
           altStyleType={['whitePurple']}
           onClick={(e)=> {
             e.stopPropagation()

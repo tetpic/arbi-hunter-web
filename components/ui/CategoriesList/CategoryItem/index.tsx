@@ -15,6 +15,7 @@ interface Props<T> {
   onClick?: (category: T) => void
   itemClassName?: string
   articlesCounter?: boolean
+  imageWrapperClassName?: string
 }
 
 export default function CategoryItem<T extends {[key: string]: any}>(props: Props<T>) {
@@ -27,7 +28,7 @@ export default function CategoryItem<T extends {[key: string]: any}>(props: Prop
     onClick={()=>props.onClick(category)}
     className={classNames(styles.categoryItem, props.itemClassName, isLightTheme&&styles.categoryItem_light)}
     >
-      <div className={styles.imageWrapper}>
+      <div className={classNames(styles.imageWrapper, props.imageWrapperClassName)}>
         <Image 
         unoptimized
         src={ImageHelper.urlFromFile(category.image, Preset.xsResize)}

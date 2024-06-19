@@ -9,11 +9,12 @@
 
 .input {
   width: 100%;
+  max-height: 40px;
 }
 
 .suggestions {
   display: flex;
   flex-direction: column;
-  row-gap: 16px;
+  row-gap: 8px;
   margin-top: 32px;
 }
