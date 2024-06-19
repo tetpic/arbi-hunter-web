@@ -242,7 +242,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         }
 
         {props.type === 'drafts' && cv.completedSteps?.length > 6 &&
-          <Button styleType={['black']} altStyleType={['whitePurple']}
+          <Button styleType={['grey']} altStyleType={['whitePurple']}
           onClick={(e)=>{
             e.preventDefault()
             e.stopPropagation()
@@ -253,7 +253,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
 
         {(cv.published || cv.publishedAt) && cv.moderationStatus === 'approved'&& props.type && 
           <Button 
-          styleType={['black']}
+          styleType={['grey']}
           altStyleType={['whitePurple']}
           onClick={(e)=> {
             e.stopPropagation()
@@ -265,7 +265,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         }
         {!props.type &&
           <Button 
-          styleType={['black', 'purpleText']}
+          styleType={['grey', 'purpleText']}
           altStyleType={['whitePurple']}
           onClick={(e)=> {
             e.stopPropagation()

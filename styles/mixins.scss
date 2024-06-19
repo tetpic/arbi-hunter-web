@@ -364,7 +364,7 @@
 
 @mixin buttonBlack {
   @include buttonDefault;
-  background-color: $grey;
+  background-color: $black;
   position: relative;
   span {
     color: $blue;
@@ -379,8 +379,6 @@
 
 @mixin buttonGray {
   @include buttonDefault;
-  font-size: $mediumText;
-  font-weight: $semibold;
   background-color: $grey;
   color: $white;
   @include hover {

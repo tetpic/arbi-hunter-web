@@ -146,4 +146,11 @@
   white-space: nowrap;
 }
 
+.title {
+  @include mq($TabletWidth, max) {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
 

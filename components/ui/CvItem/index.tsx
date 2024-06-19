@@ -175,7 +175,7 @@ export default function CvItem({cv, ...props}: Props) {
   //@ts-ignore
   style={{'--gradientColor1': '#'+cv.subscriptions?.tariff?.colors[0]+'50', '--gradientColor2':'#'+cv.subscriptions?.tariff?.colors[1]+'50'}}
   href={'cv/'+cv.id}> 
-    <FavoritesButton className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
+    <FavoritesButton styleType={['grey', 'icon']} className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
     {userImage && !isTabletWidth &&
       <Image 
       unoptimized
@@ -255,11 +255,11 @@ export default function CvItem({cv, ...props}: Props) {
         <Button styleType={['gradient', 'phoneWide']}  onClick={openChat}>{t('cv_item_chat')}</Button>
       }
       {isOpenContacts && 
-        <Button styleType={['borderBlue', 'black', 'wide','backTransparent']} altStyleType={['borderBlue', 'white' ,'wide']} ><P altStyleType={['blue']}>{t('cv_item_contacts')}</P></Button>
+        <Button styleType={['borderBlue', 'grey', 'wide','backTransparent']} altStyleType={['borderBlue', 'white' ,'wide']} ><P altStyleType={['blue']}>{t('cv_item_contacts')}</P></Button>
       }
       {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
         <Button 
-        styleType={['icon', 'black']} 
+        styleType={['icon', 'grey']} 
         altStyleType={['borderBlue', 'white', 'icon' ]}
         onClick={(e)=> {
           e.preventDefault()

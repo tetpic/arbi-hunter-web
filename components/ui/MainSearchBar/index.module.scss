@@ -15,6 +15,9 @@
   margin-inline: auto;
   width: 100%;
   height: clamp(48px, 9vw, 56px);
+  @include mq($TabletWidth, max) {
+    background-color: $black !important
+  }
 }
 
 .rootLight {

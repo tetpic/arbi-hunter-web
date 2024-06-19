@@ -110,7 +110,7 @@ export default function Login() {
         <UserRegImage type={userContext.profileType} className={styles.regImage}/>
       }
       <div className={styles.content}>
-        <P styleType={['alignCenter', 'w500', 'huge']} useThemeColor>
+        <P styleType={['alignCenter', 'w500', 'huge']} className={styles.title} useThemeColor>
           {isTabletWidth&&<BackBtn onClick={()=>{router.back()}} />}
           {t('login')}
         </P>

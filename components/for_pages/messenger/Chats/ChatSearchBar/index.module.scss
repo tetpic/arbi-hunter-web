@@ -31,6 +31,7 @@
   @include mq($TabletWidth, max) {
     order: 3;
     width: calc(100% - 48px);
+    background-color: $black !important;
   }
 
   &_active {
@@ -73,6 +74,7 @@
 .button {
   @include mq($TabletWidth, max) {
     order: 2;
+    background-color: $black !important
   }
 }
 

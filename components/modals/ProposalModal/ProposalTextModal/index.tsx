@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react'
 import { ApplicationBSSelectType,  ModalType,  ProposalRequestType, SnackbarType } from 'types/enums'
 import { TranslatePatternType } from 'utils/enumsTranslations'
 import useTranslation from 'next-translate/useTranslation'
+import { clearObject } from 'utils/helpers'
 
 interface Props {
   onClose: () => void
@@ -51,8 +52,7 @@ export default function ProposalTextModal(props: Props) {
       coverLetter: data.coverLetter,    
       type: type
     }
-    dataToSend.applicationId = null
-    proposalRepository.createProposal(dataToSend)
+    proposalRepository.createProposal(clearObject(dataToSend))
     .then(res=>{
       if(typeof res === 'object' && modalArguments.onSubmit) {
         modalArguments.onSubmit(dataToSend.type, data.coverLetter, res)

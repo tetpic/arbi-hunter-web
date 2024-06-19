@@ -292,11 +292,12 @@ export default function CvPage(props: Props) {
         <>
           <FavoritesButton 
           showStar
+          styleType={['icon', 'grey']}
           altStyleType={['icon', 'whitePurple']}
           onClick={saveCvToFavorites} 
           isActive={currentCv?.isSavedByCurrentProfile}
           />
-          <Button styleType={['icon', 'black']} onClick={addCvToBlackList} altStyleType={['icon', 'whitePurple', 'invertSvg']}>
+          <Button styleType={['icon', 'grey']} onClick={addCvToBlackList} altStyleType={['icon', 'whitePurple', 'invertSvg']}>
             <CloseEyeSvg/>
           </Button>
         </>
@@ -354,7 +355,7 @@ export default function CvPage(props: Props) {
         <div className={styles.topButtons}>
           <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {isMyCv &&
-          <Button styleType={['icon', 'black', 'svg24']}  onClick={()=>router.push('/create/cv?id='+currentCv.id)} >
+          <Button styleType={['icon', 'grey', 'svg24']}  onClick={()=>router.push('/create/cv?id='+currentCv.id)} >
             <EditPencilSvg/>
           </Button>
           ||

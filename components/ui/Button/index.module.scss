@@ -37,6 +37,10 @@
 
 .grey{
   @include buttonGray;
+
+  span {
+    color: #4d5db7;
+  }
 }
 
 .gradient{

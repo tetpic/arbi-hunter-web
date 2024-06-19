@@ -1,5 +1,11 @@
 @import "styles/index";
 
+.root {
+  @include mq($TabletWidth, max) {
+    background-color: $black !important;
+  }
+}
+
 
 
 .arrow {

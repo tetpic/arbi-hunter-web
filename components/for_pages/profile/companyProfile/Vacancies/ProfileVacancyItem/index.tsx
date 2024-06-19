@@ -233,7 +233,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
             onClick={(e)=>{
               router.push({pathname:'/recruiting', query: {filters: JSON.stringify({categories: [vacancy.categories[0].id]}), vcId: vacancy.id}})
             }} 
-            styleType={['black']} altStyleType={['white']}  
+            styleType={['grey']} altStyleType={['white']}  
             >
               {t('item_relevantCvs')}
             </Button>
@@ -247,7 +247,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
             onClick={(e)=>{
               router.push(`/responses/${vacancy.id}/`)
             }} 
-            styleType={['black']}
+            styleType={['grey']}
             altStyleType={['whitePurple']}
             >
               {t('item_watchReviews')}
@@ -273,7 +273,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
              >
               {t('item_publish')}
             </Button>
-             <Button styleType={['black']} altStyleType={['white']} onClick={editHandler}
+             <Button styleType={['grey']} altStyleType={['white']} onClick={editHandler}
              >
               {t('item_edit')}
             </Button>
