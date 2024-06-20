@@ -34,7 +34,7 @@ export default function ConfirmModal(props: Props) {
       <P styleType={['medium', 'w500']} useThemeColor>{modalArguments.text}</P>
       <div className={styles.buttonsWrapper}>
         <Button styleType={['gradient', 'wide']} onClick={onTrueClickHandler}>{t('yes')}</Button>
-        <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']}  onClick={props.onClose}>{t('no')}</Button>
+        <Button styleType={['grey', 'wide', 'whiteText']} altStyleType={['white', 'wide']}  onClick={props.onClose}>{t('no')}</Button>
       </div>
     </div>
   )

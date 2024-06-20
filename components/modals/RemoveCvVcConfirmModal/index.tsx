@@ -33,7 +33,7 @@ export default function RemoveCvVcConfirmModal(props: Props) {
       <div className={styles.buttonsWrapper}>
         <Button styleType={['gradient', 'wide']} onClick={args.onRemove}>{args.removeText}</Button>
         {args.onArchive &&
-        <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']} onClick={args.onArchive}>{args.archiveText}</Button>
+        <Button styleType={['grey', 'wide', 'whiteText']} altStyleType={['white', 'wide']} onClick={args.onArchive}>{args.archiveText}</Button>
         }
       </div>
     </div>

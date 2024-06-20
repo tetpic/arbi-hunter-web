@@ -138,10 +138,6 @@ export default function VCFeedbacks(props: Props) {
     init()
   }, [])
 
-  useEffect(()=>{
-    console.log(responsesContext.filteredVcResponses)
-  }, [responsesContext.filteredVcResponses])
-
   return (<div className={styles.root}> 
   <div className={styles.main}>
   <Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>

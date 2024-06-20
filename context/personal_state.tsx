@@ -29,14 +29,16 @@ const PersonalContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  initialBacks?: IBackground[]
+  profile?: IUserProfile
 }
 
 export function PersonalWrapper(props: Props) {
   const userContext = useUserContext()
   const [personalPage, setPersonalPageState] = useState<IPersonalPage>(null)
   const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets?: IFile[], layout?: any}>>(new Map)
-  const [currentProfile, setCurrentProfile] = useState<IUserProfile>(null) 
-  const [backgrounds, setBackgroundsState] = useState<Map<BackgroundCategoryType, IBackground>>(undefined)
+  const [currentProfile, setCurrentProfile] = useState<IUserProfile>(props.profile) 
+  const [backgrounds, setBackgroundsState] = useState<Map<BackgroundCategoryType, IBackground>>(new Map(props.initialBacks?.map(el=> [el.category?.id||null , el])))
   const [weather, setWeater] = useState<IBackground>()
   const [transport, setTransport] = useState<IBackground>()
   const [loading, setLoading] = useState(true)
@@ -63,13 +65,11 @@ export function PersonalWrapper(props: Props) {
     })
   }
 
-  const setBackgrounds =  async(profile: IUserProfile): Promise<[] | IBackground[]> => {
+  const setBackgrounds =  async(profile: IUserProfile, _initialBacks?: IBackground[]): Promise<[] | IBackground[]> => {
     setLoading(true)
-    const backs = await BackgroundRepository.getBackground({profileId: profile?.id})
-    
-      
-    profile?.profileType === ProfileType.Hirer 
-    && setRives(backs)
+    const backs = _initialBacks||await BackgroundRepository.getBackground({profileId: profile?.id})
+
+    profile?.profileType === ProfileType.Hirer && setRives(backs)
 
     setBackgroundsState(new Map(backs.map(el=> [el.category?.id||null , el])))
     
@@ -142,6 +142,12 @@ export function PersonalWrapper(props: Props) {
     setRives(backs)
     setBackgroundsState(new Map(backs.map(el=> [el.category.id, el])))
   }
+
+  useEffect(()=>{
+    if(props.initialBacks && props.profile) {
+      setBackgrounds(props.profile, props.initialBacks)
+    }
+  }, [props.initialBacks, props.profile])
 
   useEffect(()=>{
     return ()=>{

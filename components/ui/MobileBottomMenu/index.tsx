@@ -28,8 +28,6 @@ export default function MobileBottomMenu(props: Props) {
     settings: '/settings'
   }
 
-  console.log(path)
-
   return (<div className={styles.root}> 
   <div className={styles.links}>
     <Button styleType={['icon', 'backTransparent']} href={routes.home}><MenuHomeSvg color={path === routes.home ? colors.blue : colors.greyLight} /></Button>

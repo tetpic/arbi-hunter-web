@@ -25,6 +25,7 @@ import { colors } from 'styles/variables'
 
 interface Props {
   distanceFromTop: number
+  authorized?: boolean
 }
 
 export default function Header(props: Props) {
@@ -77,9 +78,9 @@ export default function Header(props: Props) {
 
 
   return (
-    <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar, !userContext.currentProfile&&styles.noProfile)} ref={dropdownRef}>
+    <div className={classnames(styles.root, styles[direction], appContext.isNavBarActive&&styles.hoveredNavBar, (!userContext.currentProfile||!props.authorized)&&styles.noProfile)} ref={dropdownRef}>
       {/* {(!userContext.isLogged || !userContext.currentProfile) && */}
-      {(!isTabletWidth || !userContext.isLogged) && 
+      {(!props.authorized) && 
         <Link href={'/'} className={styles.logo}>
           <Image src={'/favicon.svg'} alt={'logo'} width={40} height={40}/>
         </Link>
@@ -105,7 +106,7 @@ export default function Header(props: Props) {
           </div>
         }
 
-        {!isTabletWidth &&
+        {(!isTabletWidth) &&
           <div className={classnames(styles.userWrapper, !userContext.currentProfile&&styles.userWrapper_unlogged)}>
             {!userContext.currentProfile && <>
               <Button
@@ -120,7 +121,7 @@ export default function Header(props: Props) {
               <Button
               disabled={activePath === loginPath}
               href={loginPath}
-              styleType={['grey', 'borderWhite', 'backTransparent']}
+              styleType={['grey', 'borderWhite', 'whiteText', 'backTransparent']}
               altStyleType={['gradient']}
               >
                 {t('login')}

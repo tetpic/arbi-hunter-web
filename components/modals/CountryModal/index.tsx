@@ -81,7 +81,7 @@ function CountryModalInner(props: Props) {
     }
     <div className={styles.buttonsWrapper}>
       {!isTabletWidth &&
-        <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
+        <Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
       }
       <Button styleType={['gradient', 'phoneWide']} type='button' onClick={formik.submitForm}>{t('save')}</Button>
     </div>

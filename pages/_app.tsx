@@ -76,7 +76,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
                 />
             </Head>
-            <Layout webView={pageProps.webViewOnly}> 
+            <Layout webView={pageProps.webViewOnly} authorized={Boolean(pageProps.token)}> 
               <Component {...pageProps} />
             </Layout>
           

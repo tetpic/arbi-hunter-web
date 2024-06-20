@@ -30,6 +30,7 @@ import { useRouter } from 'next/router'
 import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import MobileBanners from '../MobileBanners'
+import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -81,13 +82,15 @@ export default function MainPageEmployee() {
   }
 
   const init = async() => {
-    const [stats, categories, courses, news, backs] = await Promise.all([
+    const [stats, categories, courses, news, ] = await Promise.all([
       UserRepository.getStats(),
       CategoryRepository.getCategories(),
       CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       ArticlesRepository.getNews({isTop: true}),
-      personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
     ])
+    personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
+    personalContext.setBackgrounds(userContext.currentProfile)
+
     setStats(stats)
     setCategories(state=> {
       categories.forEach(el=> {
@@ -107,7 +110,6 @@ export default function MainPageEmployee() {
       })
       return state
     })
-    personalContext.setBackgrounds(backs)
 
     setTimeout(()=> {
       setLoad(true)
@@ -149,7 +151,16 @@ export default function MainPageEmployee() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        <PersonalHeader action={action} showNextAnimation={()=>!disableClick&&showNextAnimation()} useModel/>
+        { personalContext.personalPage &&
+          <PersonalHeader 
+          action={action} 
+          showNextAnimation={()=>!disableClick&&showNextAnimation()}  
+          useModel
+          initialBackground={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
+          />
+          ||
+          <div style={{height: 'clamp(100px, 70vw, 418px)'}}></div>
+        }
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>

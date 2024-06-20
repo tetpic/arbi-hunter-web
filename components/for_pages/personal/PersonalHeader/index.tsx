@@ -31,6 +31,7 @@ interface Props {
   action?: ModelActions 
   allowDefaultBackground?: boolean
   showMobileBack?: boolean
+  initialBackground?: IBackground
 }
 
 export default function PersonalHeader(props: Props) {
@@ -42,7 +43,7 @@ export default function PersonalHeader(props: Props) {
   const router = useRouter()
   const currentProfile = useUserContext().currentProfile
   const {isTabletWidth} = appContext.size
-  const [backImage, setBackImage] = useState<IBackground>()
+  const [backImage, setBackImage] = useState<IBackground>(props.initialBackground)
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
   const profileType = personalContext?.currentProfile?.profileType
 
@@ -216,7 +217,7 @@ export default function PersonalHeader(props: Props) {
     && profileType===ProfileType.Hirer 
     && weatherRive}
 
-    <div className={props.useModel?styles.personalModel:styles.personalImageWrapper}>
+    <div className={classNames(props.useModel?styles.personalModel:styles.personalImageWrapper, personalContext.loading && styles.loading)}>
       {
       personalContext.currentProfile?.profileType === ProfileType.Hirer 
       && building

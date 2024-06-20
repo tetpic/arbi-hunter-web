@@ -26,7 +26,7 @@ export  function ApplicationHirerNode (props: Props) {
 
   return (<>
     <Button 
-    styleType={['grey']}
+    styleType={['grey', 'whiteText']}
     altStyleType={['white']}
     onClick={()=>{
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, 
@@ -45,7 +45,7 @@ export  function ApplicationHirerNode (props: Props) {
      </Button>
       
     <Button 
-    styleType={['grey']}
+    styleType={['grey', 'whiteText']}
     altStyleType={['white']}
     onClick={()=>{
       appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {

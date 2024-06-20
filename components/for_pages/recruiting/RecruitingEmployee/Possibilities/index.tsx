@@ -89,7 +89,7 @@ export default function Possibilities(props: Props) {
       {currentCompany.descriptions.map((el, i)=>{
         return <p key={i} className={styles.desc}>{el}</p>
       })}
-      <Button styleType={['grey']} altStyleType={['gradient']} className={styles.button}>{t('landing_em_possibilities_open')}</Button>
+      <Button styleType={['grey', 'whiteText']} altStyleType={['gradient']} className={styles.button}>{t('landing_em_possibilities_open')}</Button>
     </div>
 
   </section>)

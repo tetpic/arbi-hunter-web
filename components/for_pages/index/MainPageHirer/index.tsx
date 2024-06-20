@@ -108,11 +108,15 @@ export default function MainPageHirer() {
     <div className={styles.root}>
       <div className={styles.top}>
 
+      {personalContext.backgrounds &&
         <Buildings 
         useDefaultImage 
         profile={userContext.currentProfile} 
         background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
         />
+        ||
+        <div style={{height: 'clamp(100px, 70vw, 418px)'}}></div>
+      }
         
         <div className={styles.statsWeek}>
           <div className={styles.cards}>

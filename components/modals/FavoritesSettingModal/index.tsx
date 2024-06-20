@@ -64,7 +64,7 @@ export default function FavoritesSettingModal(props: Props) {
           options={args.initialFolders.map(el => ({value: el.id, label: el.name}))}
           />
           <div className={styles.buttonsWrapper}>
-            <Button styleType={['grey', 'wide']} altStyleType={['white', 'wide']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
+            <Button styleType={['grey', 'wide', 'whiteText']} altStyleType={['white', 'wide']} type='button' onClick={props.onClose}>{t('cancel')}</Button>
             <Button styleType={['gradient', 'wide']} type='button' onClick={formik.submitForm}>{t('save')}</Button>
           </div>
         </Form>

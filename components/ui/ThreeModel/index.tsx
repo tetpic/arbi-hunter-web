@@ -25,6 +25,17 @@ export interface IThreeModelProps {
 
 
 export function ThreeModel(props: IThreeModelProps) {
+  if(props.model === 'man') {
+    useGLTF.preload('/models/model_man.glb', true, true, (loader) => {
+      loader.setCrossOrigin('anonymous')
+    })
+  }
+  if(props.model === 'woman') {
+    useGLTF.preload('/models/model_woman.glb', true, true, (loader) => {
+      loader.setCrossOrigin('anonymous')
+    })
+  }
+  
   const mesh = useRef()
   const characterContext = useCharacterContext()
   const currentAction = useRef<ModelActions>(props.actions)
@@ -170,9 +181,3 @@ export function ThreeModel(props: IThreeModelProps) {
   }
 }
 
-useGLTF.preload('/models/model_man.glb', true, true, (loader) => {
-    loader.setCrossOrigin('anonymous')
-})
-useGLTF.preload('/models/model_woman.glb', true, true, (loader) => {
-    loader.setCrossOrigin('anonymous')
-})

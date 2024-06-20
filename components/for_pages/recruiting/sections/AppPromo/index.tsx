@@ -63,11 +63,11 @@ export default function AppPromo(props: Props) {
         {t('landing_promo_desc')}
       </P>
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey']} altStyleType={['whitePurple']} href={'https://apps.apple.com/us/app/arbihunter/id6478117103'} className={styles.button}>
+        <Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']} href={'https://apps.apple.com/us/app/arbihunter/id6478117103'} className={styles.button}>
           <Image src={appleIcon} alt={'apple icon'} width={20} height={20}/>
           <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>
-        <Button styleType={['grey']} altStyleType={['whitePurple']} href={'https://play.google.com/store/apps/details?id=com.arbi.hunter'} className={styles.button}>
+        <Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']} href={'https://play.google.com/store/apps/details?id=com.arbi.hunter'} className={styles.button}>
           <Image src={googleIcon} alt={'google play icon'}/>
           <P styleType={['w600', 'large']} useThemeColor>Download Now</P>
         </Button>

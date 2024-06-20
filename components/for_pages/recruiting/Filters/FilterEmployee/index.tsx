@@ -552,7 +552,7 @@ export default function FilterEmployee(props: Props) {
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
       <Button 
-      styleType={['grey', 'phoneWide']} 
+      styleType={['grey', 'phoneWide', 'whiteText']} 
       altStyleType={['whitePurple']}
       onClick={resetAll}
       className={styles.resetButton}
@@ -561,7 +561,7 @@ export default function FilterEmployee(props: Props) {
       </Button>
 
       <Button
-      styleType={['gradient', 'phoneWide']}
+      styleType={['gradient', 'phoneWide', 'whiteText']}
       onClick={()=>props.onFilterChange(formik.values)}
       >
         {t('searchAlt')}

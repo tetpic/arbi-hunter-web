@@ -68,7 +68,7 @@ export default function AddFavoritesFolder(props: Props) {
         <div className={styles.buttonsWrapper}>
           <Button 
           type='button' 
-          styleType={['grey', 'wide']} 
+          styleType={['grey', 'wide', 'whiteText']} 
           altStyleType={['white', 'wide']}
           onClick={props.onClose}
           >

@@ -9,6 +9,7 @@ import { useAppContext } from 'context/state'
 
 interface Props {
   children: ReactElement
+  authorized?: boolean
   webView?: boolean
 }
 
@@ -28,12 +29,12 @@ export default function Layout(props: Props) {
       {(!appContext.hideHeader ?? !props.webView) && (!isTabletWidth||!userContext.isLogged) &&
       <Sticky>
         {({style, distanceFromTop}) => <div className={styles.headerWrapper}  style={style}>
-          <Header distanceFromTop={distanceFromTop}  />
+          <Header distanceFromTop={distanceFromTop} authorized={props.authorized} />
         </div>}
       </Sticky>
       ||
       (!appContext.hideHeader ?? !props.webView) && isTabletWidth && 
-      <Header distanceFromTop={0}/>
+      <Header distanceFromTop={0} authorized={props.authorized}/>
       }
       <div className={styles.content}>
       {userContext.isLogged && !isTabletWidth && !props.webView && 

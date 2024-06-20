@@ -403,7 +403,7 @@ export default function SideFilterEmployee(props: Props) {
       </Form> 
     </FormikProvider>
     <Button 
-    styleType={['grey', 'wide']} 
+    styleType={['grey', 'wide', 'whiteText']} 
     altStyleType={['whitePurple', 'wide']}
     onClick={formik.handleReset}
     className={styles.resetButton}

@@ -6,7 +6,8 @@ const nextConfig = nextTranslate({
   swcMinify: true,
   env: {
     host: process.env.HOST,
-    HOST_ROOT: process.env.HOST_ROOT
+    HOST_ROOT: process.env.HOST_ROOT,
+    DEV: process.env.DEV
   },
 
   publicRuntimeConfig: {

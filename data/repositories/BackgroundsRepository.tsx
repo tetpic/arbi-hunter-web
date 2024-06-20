@@ -5,11 +5,13 @@ import request from 'utils/request'
 
 export default class BackgroundRepository {
 
-  static async getBackground(data?: {profileId?: number, categoryId?: BackgroundCategoryType}): Promise<IBackground[]|[]> {
+  static async getBackground(data?: {profileId?: number, categoryId?: BackgroundCategoryType}, token?: string, profileType?: ProfileType): Promise<IBackground[]|[]> {
     const res = await request({
       method: 'get',
       url: '/api/background',
-      data
+      data,
+      token,
+      profile: profileType
     })
     if(res.err) {
       return null

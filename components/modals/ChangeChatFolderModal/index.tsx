@@ -55,7 +55,7 @@ export default function ChangeChatFolderModal(props: Props) {
       </FormikProvider>
       <div className={styles.buttonsWrapper}>
         <Button 
-        styleType={['grey', 'wide']} 
+        styleType={['grey', 'wide', 'whiteText']} 
         altStyleType={['white','wide']} 
         onClick={props.onClose}>
           {t('cancel')}

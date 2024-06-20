@@ -135,7 +135,7 @@ export default function ForwardMessageModal(props: Props) {
           </FormikProvider>
         </>}
         <div className={styles.buttonsWrapper}>
-          <Button styleType={['grey', 'phoneWide']} onClick={()=>{setCurrentPage('chats')}} altStyleType={['white']}>{t('back')}</Button>
+          <Button styleType={['grey', 'phoneWide', 'whiteText']} onClick={()=>{setCurrentPage('chats')}} altStyleType={['white']}>{t('back')}</Button>
           <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm}>{t('send')}</Button>
         </div>
       </div>

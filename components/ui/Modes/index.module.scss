@@ -15,8 +15,10 @@
   &_active {
     color: var(--pTextColor);
   }
-  @include mq($MPhoneWidth, max) { 
-    font-size: 12px;
+  @include mq($PhoneWidth, max) { 
+    font-size: clamp(12px, 4vw, 14px);
+  }
+  @include mq($MPhoneWidth, max) {
     padding: 6px 10px;
   }
   

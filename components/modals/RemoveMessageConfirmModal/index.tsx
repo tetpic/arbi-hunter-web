@@ -38,20 +38,20 @@ export default function RemoveMessageConfirmModal(props: Props) {
     <div className={styles.root}>
       <P useThemeColor styleType={['w500', 'small', 'textCenter']} >{t('chat_removeMessageConfirmation')}</P>
       <Button 
-      styleType={['grey', 'wide']} 
+      styleType={['grey', 'wide', 'whiteText']} 
       altStyleType={['white', 'wide']} 
       onClick={()=>setDeleteType('forMe')}>
         <P styleType={['red', 'w500']}>{t('chat_removeForMe')}</P>
       </Button>
       {args.canRemoveForAll &&
        <Button 
-       styleType={['grey', 'wide' ]} 
+       styleType={['grey', 'wide' , 'whiteText']} 
        altStyleType={['white', 'wide']}   
        onClick={()=>setDeleteType('forAll')}>
         <P styleType={['red', 'w500']}>{t('chat_removeForAll')}</P>
       </Button>
       }
-      <Button styleType={['grey', 'blue', 'wide']} onClick={props.onClose}>{t('cancel')}</Button>
+      <Button styleType={['wide','grey', 'whiteText']} onClick={props.onClose}>{t('cancel')}</Button>
     </div>
   )
 

@@ -66,7 +66,7 @@ export default function Body(props: Props) {
       </div>
   <div className={styles.buttonsWrapper}>
     {!isPhoneWidth && 
-      <Button styleType={['grey']} altStyleType={['whitePurple']} type='button' onClick={(e) => {
+      <Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']} type='button' onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
         props.onClose()}} >{t('cancel')}</Button>

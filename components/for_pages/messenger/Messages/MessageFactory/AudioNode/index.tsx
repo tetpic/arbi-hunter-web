@@ -31,7 +31,6 @@ export default function AudioNode(props: Props) {
     if(audio && audio.paused ) {
       setActive(true)
       audio?.play()
-      console.log('play')   
          
       setIsPlay(true)
       timer.current = setInterval(() => {
@@ -48,7 +47,6 @@ export default function AudioNode(props: Props) {
     }
     else {
       audio.pause()
-      console.log('pause')
       setIsPlay(false)
       clearInterval(timer.current)
     }

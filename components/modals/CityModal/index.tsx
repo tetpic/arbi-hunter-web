@@ -69,7 +69,7 @@ function CityModalInner(props: Props) {
     </div>
     <div className={styles.buttonsWrapper}>
       {!isTabletWidth && 
-        <Button styleType={['grey']} onClick={props.onClose}>{t('cancel')}</Button>
+        <Button styleType={['grey', 'whiteText']} onClick={props.onClose}>{t('cancel')}</Button>
       }
       <Button styleType={['gradient', 'phoneWide']} type='submit'>{t('save')}</Button>
     </div>

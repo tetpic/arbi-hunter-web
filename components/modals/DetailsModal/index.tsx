@@ -271,7 +271,7 @@ export default function DetailsModal(props: Props) {
             </div>
             <div className={styles.buttonWrapper}>
               {!isTabletWidth &&
-                <Button styleType={['grey']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?t('delete'):t('cancelAlt')}</Button>
+                <Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']} title='closeModal' type='button' onClick={args.initialValues?deleteHandler:props.onClose}>{args.initialValues?t('delete'):t('cancelAlt')}</Button>
               }
               <Button styleType={['phoneWide']} className={styles.sendButton} title='addButton' type='button' onClick={formik.submitForm}>{args.initialValues?t('save'):t('continue')}</Button>
             </div>

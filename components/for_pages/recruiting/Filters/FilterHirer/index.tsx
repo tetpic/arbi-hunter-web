@@ -722,7 +722,7 @@ export default function FilterHirer(props: Props) {
     </FormikProvider>
     <div className={styles.buttonsWrapper}>
       <Button 
-      styleType={['grey','phoneWide']} 
+      styleType={['grey','phoneWide', 'whiteText']} 
       altStyleType={['white']}
       onClick={resetAll}
       className={styles.resetButton}

@@ -2,7 +2,6 @@ import ModalLayout from '@/components/layout/Modal/ModalLayout'
 import styles from './index.module.scss'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import classNames from 'classnames'
-import UserPic from '@/components/ui/UserPic'
 import { useAppContext } from 'context/state'
 import { useUserContext } from 'context/user_state'
 import { useState } from 'react'
@@ -54,18 +53,12 @@ export default function BackgroundSwitchModal(props: Props) {
       props.onClose()    
     }}
     >
-      <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview.png':'/images/rooms/home.png'} 
+      <Image src={userContext.currentProfile.profileType === ProfileType.Hirer?'/images/cities/cityPreview2.png':'/images/rooms/home.png'} 
       className={styles.customBack}
       alt={'user custom background'}
       width={500}
       height={200}
       />
-
-    <UserPic 
-    className={styles.userPic}
-    size={88}
-    image={'/images/cities/cityPreview.png'}
-    />
     <p>{t('personal_customBackground')}</p>
   </div>
   )

@@ -144,7 +144,7 @@ export default function PurchasePreviewModal(props: Props) {
       <div className={styles.buttonsWrapper}>
         <Button 
         type='button'
-        styleType={['grey', 'wide']} 
+        styleType={['grey', 'wide', 'whiteText']} 
         altStyleType={['whitePurple', 'wide']}
         onClick={() => {setType(PurchaseStep.default)}}
         >
@@ -176,7 +176,7 @@ export default function PurchasePreviewModal(props: Props) {
       <div className={styles.buttonsWrapper}>
         <Button 
         type='button'
-        styleType={['grey', 'wide']} 
+        styleType={['grey', 'wide', 'whiteText']} 
         altStyleType={['whitePurple', 'wide']}
         onClick={() => {
           formik.setFieldValue('date', undefined)
@@ -307,7 +307,7 @@ export default function PurchasePreviewModal(props: Props) {
       }
       <div className={styles.buttonsWrapper}>
         {args.tariff?.purchaseType !== PurchaseType.Character &&  args.tariff?.purchaseType !== PurchaseType.PersonalPage &&
-        <Button styleType={['grey', 'wide']} altStyleType={['whitePurple']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
+        <Button styleType={['grey', 'wide', 'whiteText']} altStyleType={['whitePurple']} type='button' onClick={() => setType(PurchaseStep.calendar)}>{t('shop_setActivationTimeAlt')}</Button>
         }
         <Button 
         type='button'

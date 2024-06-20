@@ -174,7 +174,7 @@ export default function ChatFilterModal(props: Props) {
         {currentElement()}
         {currentPage === Pages.Main &&
           <div className={styles.buttons}>
-            <Button type='button' onClick={onClear} styleType={['grey', 'phoneWide']} altStyleType={['white']}>{t('clear')}</Button>
+            <Button type='button' onClick={onClear} styleType={['grey', 'phoneWide', 'whiteText']} altStyleType={['white']}>{t('clear')}</Button>
             <Button type='submit' styleType={['gradient', 'phoneWide']}>{t('apply')}</Button>
           </div>
         }

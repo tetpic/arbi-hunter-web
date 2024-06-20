@@ -77,7 +77,6 @@ export function FeedbacksWrapper(props: Props) {
           const filteredProposals = proposals.filter(el => {
             return !proposals.find(e => el.vacancyId === e.vacancyId && el.cvId === e.cvId && (new Date(el.createdAt)).getTime() < (new Date(e.createdAt)).getTime())
           })
-      console.log(_applications, filteredProposals)
       setVCResponsesState(state => {
         state.clear();
         [..._applications, ...filteredProposals]

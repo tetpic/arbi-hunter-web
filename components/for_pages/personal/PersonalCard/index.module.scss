@@ -123,20 +123,31 @@
 }
 
 .vacancyLookType {
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    display: flex;
+    
+  }
   
   .activelyLooking {
     background-color: $greenLight;
-    color: $green;
+    span{
+      color: $green;
+    }
   }
   
   .passivelyLooking {
     background-color: $yellowLight;
-    color: $yellow;
+    span {
+      color: $yellow;
+    }
   }
   
   .notLooking {
-    color: $red;
     background-color: $redLight;
+    span {
+      color: $red;
+    }
   }
 }
 

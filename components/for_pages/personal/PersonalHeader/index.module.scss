@@ -5,11 +5,16 @@
   overflow: hidden;
   margin-top: 48px;
   position: relative;
+  @include transitionDefault;
   @include mq($TabletWidth, max) {
     margin-top: unset;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
   }
+}
+
+.loading {
+  filter: blur(4px);
 }
 
 .back {

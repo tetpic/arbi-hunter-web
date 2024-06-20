@@ -398,7 +398,7 @@ export default function SideFilterHirer(props: Props) {
     </FormikProvider>
     <Button 
     type={'button'}
-    styleType={['grey', 'wide']} 
+    styleType={['grey', 'wide', 'whiteText']} 
     altStyleType={['whitePurple', 'wide']}
     onClick={()=>formik.setValues(initialValues)}
     className={styles.resetButton}

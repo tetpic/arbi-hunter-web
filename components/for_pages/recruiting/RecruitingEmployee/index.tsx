@@ -124,7 +124,7 @@ export default function RecruitingEmployee(props: Props) {
     titles={[t('cpaWires'), t('marketing'), 'Media Buying']} 
     images={isLightTheme?[s3Light, s1Light, s2Light]:[s3, s1, s2]}/>
     {!isTabletWidth &&
-      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey', 'whiteText']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
     <Reasons profileType={ProfileType.Employee}/>
@@ -143,7 +143,7 @@ export default function RecruitingEmployee(props: Props) {
       <ArticlesList news={[...news.values()]} onlyTitles/>
     }
     {!isTabletWidth &&
-      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}}  styleType={['grey', 'whiteText']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
 
     <Title 
@@ -156,7 +156,7 @@ export default function RecruitingEmployee(props: Props) {
     }
 
     {!isTabletWidth &&
-      <Button onClick={()=>{router.push('/registration')}} styleType={['grey']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
+      <Button onClick={()=>{router.push('/registration')}} styleType={['grey', 'whiteText']} altStyleType={['white', 'borderGrey']} className={styles.watchAll}>{t('watchAll')}</Button>
     }
     
     <AppPromo cards={[slide3, slide4, slide5]}/>

@@ -126,7 +126,7 @@ export default function MobileSideBar(props: Props) {
     className={classnames(styles.links, styles.balanceLink)}>
       <P style={{gridArea: 't'}} styleType={['w500', 'medium']} >{t('shop_profileBalance')}</P>
       <P style={{gridArea: 'm'}} styleType={['w800', 'fs20', 'alignCenter']}><ArbiCoinSvg/> {Formatter.formatPrice(userContext.user.balance)||0}</P>
-      <Button styleType={['grey']}  className={styles.fillbutton}>{t('shop_fill')} <ArrowRightSvg/></Button>
+      <Button styleType={['grey', 'whiteText']}  className={styles.fillbutton}>{t('shop_fill')} <ArrowRightSvg/></Button>
 
     </Link>
 

@@ -56,13 +56,14 @@
     top: 12px;
     left: 0;
     right: 0;
+    column-gap: 8px;
     padding-inline: 16px;
     z-index: 0;
     height: 50px;
     &:before {
       content: '';
       display: block;
-      width: 34px;
+      width: 32px;
     }
   }
 }

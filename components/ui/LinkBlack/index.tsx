@@ -9,5 +9,5 @@ interface Props {
 
 export default function LinkBlack(props: Props) {
 
-  return (<Button styleType={['grey']} altStyleType={['whitePurple']}  className={styles.link} href={props.href}> {props.children}</Button>)
+  return (<Button styleType={['grey', 'whiteText']} altStyleType={['whitePurple']}  className={styles.link} href={props.href}> {props.children}</Button>)
 }

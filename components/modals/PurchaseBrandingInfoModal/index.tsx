@@ -25,7 +25,7 @@ export default function PurchaseBrandingInfoModal(props: Props) {
       <P styleType={['huge', 'w600', 'textCenter']}>{t('branding_buyDescriton1')}</P>
       <P styleType={['large', 'w500', 'textCenter']}>{t('branding_buyDescriton2')}</P>
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['grey', 'wide']} onClick={props.onClose}>{t('close')}</Button>
+        <Button styleType={['grey', 'wide', 'whiteText']} onClick={props.onClose}>{t('close')}</Button>
         <Button styleType={['gradient', 'wide']} 
         onClick={() => {
           router.push({pathname: '/shop', query: {page: ShopPages.Branding}})

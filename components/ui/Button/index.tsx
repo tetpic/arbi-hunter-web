@@ -14,6 +14,7 @@ export type ButtonStyle =
 'black'|
 'grey'|
 'blueText' |
+'whiteText' |
 'purpleText' |
 'gradient'|
 'blue'|

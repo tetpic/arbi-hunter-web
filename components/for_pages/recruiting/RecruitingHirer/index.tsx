@@ -66,7 +66,7 @@ export default function RecruitingHirer(props: Props) {
       images={isLightTheme?[recruitingCatWalletLight, recruitingCatPointLight, recruitingCatMessageLight]:[recruitingCatWallet, recruitingCatPoint, recruitingCatMessage]}
       />
       <Button 
-      styleType={['grey']} 
+      styleType={['grey', 'whiteText']} 
       altStyleType={['white', 'borderGrey']} 
       onClick={()=>router.push('/registration')}
       className={styles.watchAll}>
