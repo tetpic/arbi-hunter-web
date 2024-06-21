@@ -86,10 +86,11 @@ export default function Registration(props: Props) {
 
       RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
+        debugger
         sendToMetrika(AppMetricaEvent.FinishRegistration)
-        setTimeout(() => {
-          userContext.updateUser()
-        }, 300)
+        // setTimeout(() => {
+        //   userContext.updateUser()
+        // }, 300)
       })
       .catch(err=> {
         setDisableButton(false)
