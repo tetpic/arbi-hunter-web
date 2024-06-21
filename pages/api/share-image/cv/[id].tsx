@@ -12,7 +12,7 @@ export default async function handler(request: Request) {
   const id = url.searchParams.get('id')
 
   const cv: ICV = await fetch(
-    `${process.env.host}/api/cv/${id}`,
+    `${process.env.HOST_INNER}/api/cv/${id}`,
     { next: { revalidate: 0 } }
   ).then((res) => res.json() as Promise<ICV>)
 

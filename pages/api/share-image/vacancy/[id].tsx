@@ -12,7 +12,7 @@ export default async function handler(request: Request) {
   const id = url.searchParams.get('id')
 
   const vacancy: IVacancy = await fetch(
-    `${process.env.host}/api/vacancy/${id}`,
+    `${process.env.HOST_INNER}/api/vacancy/${id}`,
     { next: { revalidate: 0 } }
   ).then((res) => res.json() as Promise<IVacancy>)
   const salary = getSalary({vacancy})
