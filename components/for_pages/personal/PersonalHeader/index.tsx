@@ -43,9 +43,10 @@ export default function PersonalHeader(props: Props) {
   const router = useRouter()
   const currentProfile = useUserContext().currentProfile
   const {isTabletWidth} = appContext.size
-  const [backImage, setBackImage] = useState<IBackground>(props.initialBackground)
+  const [backImage, setBackImage] = useState<IBackground>(props.initialBackground||personalContext.backgrounds?.get(BackgroundCategoryType.Places))
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
   const profileType = personalContext?.currentProfile?.profileType
+  console.log(backImage)
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -134,7 +135,7 @@ export default function PersonalHeader(props: Props) {
   })()
 
   useEffect(()=>{
-    if(personalContext.backgrounds) {
+    if(personalContext.backgrounds && !backImage) {
       setBackImage(personalContext.backgrounds?.get(BackgroundCategoryType.Places))  
     }
   }, [personalContext.backgrounds])
@@ -177,7 +178,8 @@ export default function PersonalHeader(props: Props) {
     <div className={styles.backWrapper}>
       <Image 
       unoptimized
-      src={ImageHelper.urlFromFile(backImage.image, Preset.lgResize)} 
+      priority
+      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 
@@ -188,7 +190,8 @@ export default function PersonalHeader(props: Props) {
     <div className={styles.backWrapper}>
       <Image 
       unoptimized
-      src={ImageHelper.urlFromFile(backImage.image, Preset.lgResize)} 
+      priority
+      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 
@@ -200,7 +203,7 @@ export default function PersonalHeader(props: Props) {
       src={personalContext.currentProfile?.profileType===ProfileType.Hirer
         ?'/images/cities/newyork.png'
         :'/images/rooms/coworking.png'
-      } 
+      }       
       className={styles.background} alt={'moscow'} 
       width={1148} 
       height={300} />

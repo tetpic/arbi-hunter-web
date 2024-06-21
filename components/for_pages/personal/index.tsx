@@ -71,7 +71,7 @@ export default function PersonalPage(props: Props) {
 
   const saveBranding = () => {
     if(personalContext.currentProfile?.profileType === ProfileType.Employee ) {
-      userContext.editCurrentProfile({...userContext.currentProfile, bio: formik.values.bio, })
+      userContext.editCurrentProfile({...clearObject(userContext.currentProfile), bio: formik.values.bio, })
       .then(res => {
         if(res) {
           personalContext.setPersonalPage({profile: res})

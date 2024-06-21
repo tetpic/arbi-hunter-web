@@ -186,7 +186,11 @@ export default function FolderManager() {
             <BackBtn 
             onClick={creationMode
               ?()=>{setCreationMode(false)}
-              :()=>chatContext.setComponent([{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}])}/>
+              :()=>chatContext.setComponent(
+                isTabletWidth
+                ? [{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: false}]
+                : [{component: ChatComponent.Folder, active: false}, {component: ChatComponent.Chat, active: true}, {component: ChatComponent.Dialog, active: true}]
+              )}/>
             <Title title={t('chat_folders')}/>
             <p className={styles.change} onClick={()=>setDeleteFolderMode(!deleteFolderMode)}>{deleteFolderMode?t('chat_ready'): t('chat_folders_edit')}</p>
           </>

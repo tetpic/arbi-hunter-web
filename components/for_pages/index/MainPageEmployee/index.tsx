@@ -151,7 +151,7 @@ export default function MainPageEmployee() {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        { personalContext.personalPage &&
+        {!personalContext.loading &&
           <PersonalHeader 
           action={action} 
           showNextAnimation={()=>!disableClick&&showNextAnimation()}  
@@ -160,6 +160,7 @@ export default function MainPageEmployee() {
           />
           ||
           <div style={{height: 'clamp(100px, 70vw, 418px)'}}></div>
+
         }
         <div className={styles.statsWeek}>
           <div className={styles.cards}>

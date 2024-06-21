@@ -63,7 +63,7 @@ export default function Messenger(props: Props) {
       }
       <ChatDialogWrapper chatId={chatContext.currentChatId} chat={chats.get(chatContext.currentChatId)}>
         {chatContext.component.get(ChatComponent.Folder) && !chatContext.loading &&
-          <FolderManager/>
+          <FolderManager />
           ||
         chatContext.component.get(ChatComponent.Dialog)  && !chatContext.loading && chatContext.chats.size > 0 &&
           <Messages onBackClick={()=>chatContext.setComponent([{component: ChatComponent.Chat, active: true}, {component: ChatComponent.Folder, active: false}])}/>
