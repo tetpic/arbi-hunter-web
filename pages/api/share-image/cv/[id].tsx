@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/server'
 import { ICV } from 'data/interfaces/ICV'
 import { getSalary } from 'utils/getSalary'
-import {AH_FOOTER_IMAGE, AH_FULL_LOGO_IMAGE, getFont} from 'utils/shareImage'
+import { getFont, getShareImageBgBase64} from 'utils/shareImage'
 
 export const config = {
   runtime: 'edge',
@@ -31,10 +31,9 @@ export default async function handler(request: Request) {
           height: '100%',
           width: '100%',
           color: 'white',
-          backgroundColor: '#f1f1f1',
-          backgroundImage: `url("${AH_FOOTER_IMAGE}"), linear-gradient(60deg, #22222a 20%, #a46cdc 65%,  #586de4 100%)`,
+          backgroundImage: `url("data:image/png;base64,${await getShareImageBgBase64()}")`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '100% 120%',
+          backgroundSize: '100% 100%',
           backgroundPosition: 'bottom center',
         }}
       >
@@ -51,8 +50,8 @@ export default async function handler(request: Request) {
             minWidth: '1000px'
           }}
         >
-          <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800}}>
-            <img src={`${AH_FULL_LOGO_IMAGE}`} alt="" width={320}  />
+          <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800, height: '92.44px'}}>
+
           </div>
           <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '52px', lineHeight: '32px'  }}>
             {cv.categories?.[0]?.name}
