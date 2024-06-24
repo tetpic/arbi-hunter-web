@@ -2,6 +2,7 @@ import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import Messenger from 'components/for_pages/messenger'
 import { ChatSocketWrapper } from 'context/chat_socket_state'
 import { ChatWrapper } from 'context/chat_state'
+import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -26,11 +27,13 @@ export default function MessengerPage(props: Query) {
   
   return (
     <ErrorBoundary href={'/messenger'}>
-    <ChatSocketWrapper>
-      <ChatWrapper initialChat={Number(props.chat)}>
-        <Messenger chat={Number(props.chat)}/>
-      </ChatWrapper>
-    </ChatSocketWrapper>
+      <FeedbacksWrapper>
+        <ChatSocketWrapper>
+          <ChatWrapper initialChat={Number(props.chat)}>
+            <Messenger chat={Number(props.chat)}/>
+          </ChatWrapper>
+        </ChatSocketWrapper>
+      </FeedbacksWrapper>
     </ErrorBoundary>
   )
 }

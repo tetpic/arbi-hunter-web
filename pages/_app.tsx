@@ -6,7 +6,6 @@ import { useEffect, useState} from 'react'
 import {getSelectorsByUserAgent} from 'react-device-detect'
 import 'swiper/css/bundle'
 import Head from 'next/head'
-import 'swiper/css'
 import {CookiesProvider} from 'react-cookie'
 import { AppTheme, CookiesType, InterfaceLanguage } from 'types/enums'
 import Layout from 'components/layout'
@@ -17,9 +16,7 @@ import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
-import { ManagerWrapper } from 'context/manager_state'
 import { PatternWrapper } from 'context/pattern_state'
-import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -65,15 +62,13 @@ function MyApp({Component, pageProps}: AppProps) {
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile} theme={pageProps.theme}>
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
-          <ManagerWrapper>
           <CvWrapper>
           <PatternWrapper>
-          <FeedbacksWrapper>
           <AuthWrapper>
             <Head>
               <meta
                 name="viewport"
-                content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
+                content="width=device-width, initial-scale=1, viewport-fit=cover"
                 />
             </Head>
             <Layout webView={pageProps.webViewOnly} authorized={Boolean(pageProps.token)}> 
@@ -85,11 +80,8 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <Snackbar/>}
             
           </AuthWrapper>
-          </FeedbacksWrapper>
           </PatternWrapper>
           </CvWrapper>
-          {/* </VacancyWrapper> */}
-          </ManagerWrapper>
         </UserWrapper>
       </AppWrapper>
     </CookiesProvider>

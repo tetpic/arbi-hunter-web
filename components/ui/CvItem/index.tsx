@@ -32,6 +32,7 @@ import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { IProposal } from 'data/interfaces/IProposal'
 import { IApplication } from 'data/interfaces/IApplication'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 
 interface Props {
   cv: ICV
@@ -46,6 +47,7 @@ export default function CvItem({cv, ...props}: Props) {
   const vacancyContext = useVacancyContext()
   const userContext = useUserContext()
   const folderContext = useFavoritesFolderContext()
+  const feedbacksContext = useFeedbacksContext()
 
   const defaultImage = '/icons/defaultUser.svg'
   const userImage = getUserImageSource(cv.profile, Preset.sCrop)
@@ -64,7 +66,8 @@ export default function CvItem({cv, ...props}: Props) {
         type: ApplicationBSSelectType.ThisVacancy, 
         vcId: props.initialVacancy.id, 
         cv, 
-        onSubmit: props.onChangeItem
+        onSubmit: props.onChangeItem,
+        createProposal: feedbacksContext.createProposal
       }
       isTabletWidth
       ? appContext.showBottomSheet<IProposalTextModalProps>(ModalType.ProposalTextModal, args)
@@ -74,6 +77,7 @@ export default function CvItem({cv, ...props}: Props) {
     const args = { cv, 
       page: ProposalModalPager.OtherVacancy,
       activeVacancies: [...vacancyContext.activeVacancies.values()],
+      createProposal: feedbacksContext.createProposal
     }
     isTabletWidth
     ?appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, args)
@@ -163,7 +167,8 @@ export default function CvItem({cv, ...props}: Props) {
       onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
         props.onChangeItem
         // dialog.refreshMessage(Number(cv.message.id), {...props.message, proposal: {...props.application, ...proposal}})
-      }
+      },
+      createProposal: feedbacksContext.createProposal
     }
     appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, _args)
     

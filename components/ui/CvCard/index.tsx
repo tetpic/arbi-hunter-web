@@ -25,6 +25,7 @@ import P from '../P'
 import { getUserImageSource } from 'utils/helpers'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 
 interface ItemProps {
   cv: ICV
@@ -43,6 +44,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   const [currentCV, setCurrentCV] = useState<ICV>(cv)
   const vacancyContext = useVacancyContext()
   const folderContext = useFavoritesFolderContext()
+  const feedBacksContext = useFeedbacksContext()
   const userContext = useUserContext()
   const {getNewSignal} = useAbortController()
   const {t, lang} = useTranslation()
@@ -107,23 +109,15 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
 
 
   const inviteHandler = () => {
-    if(isTabletWidth) {
-      appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, 
-        {application: application, 
-          cv: cv, 
-          page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy,
-          activeVacancies: [...vacancyContext.activeVacancies.values()]          
-        })
+    const _args: IProposalModalProps =  {application: application, 
+      cv: cv, 
+      page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy,
+      activeVacancies: [...vacancyContext.activeVacancies.values()],
+      createProposal: feedBacksContext.createProposal
     }
-    else {
-      appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, 
-        {application: application, 
-          fn: props.onChangeItem, 
-          cv: cv, 
-          page: application?ProposalModalPager.Invite:ProposalModalPager.OtherVacancy,
-          activeVacancies: [...vacancyContext.activeVacancies.values()]
-        })
-    }
+    isTabletWidth
+     ? appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, _args)
+     : appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, _args)
   }
 
   return (

@@ -27,6 +27,7 @@ export default function FavoritesButton(props: Props) {
 
   return (
     <Button 
+    title='make it favorite'
     styleType={props.styleType||['icon', 'black']}
     altStyleType={props.altStyleType||props.styleType||['icon', 'whitePurple'] }
     onClick={(e)=>props.onClick(e)} 

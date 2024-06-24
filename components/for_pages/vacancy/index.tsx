@@ -151,6 +151,7 @@ export default function VacancyPage(props: Props) {
         }
       </div>
       <Button 
+      title={'To company profile'}
       className={styles.companyArrow} 
       styleType={['icon', 'backTransparent']} 
       altStyleType={['icon', 'backTransparent', 'invertSvg']}
@@ -168,11 +169,12 @@ export default function VacancyPage(props: Props) {
       }
       {isTabletWidth && props.isAuthed &&
         <div className={styles.topButtons}>
-          <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
+          <Button title='Back' onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {!isMyVacancy &&
             <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
             ||
             <Button  
+            title='Edit'
             onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)}  
             styleType={['icon', 'svg24', 'black']}>
               <EditPencilSvg/>
@@ -239,7 +241,7 @@ export default function VacancyPage(props: Props) {
             router.push(`/responses/${currentVacancy.id}/`)
           }} 
           >
-            {t('vacancy_page_viewApplicetions')}
+            {t('vacancy_page_viewApplications')}
           </Button>
           <Button 
           styleType={['black', 'borderBlue', 'phoneWide']}
@@ -275,7 +277,7 @@ export default function VacancyPage(props: Props) {
             }
           {(!lastProposal) && currentVacancy.applicationsByCurrentUser?.length===0 && freeToApplyCvs?.length > 0 &&
             <Button 
-            styleType={['gradient', 'phoneWide']}
+            styleType={['gradient', 'wide']}
             onClick={makeResponse}
             >
               {t('vacancy_page_makeApply')}

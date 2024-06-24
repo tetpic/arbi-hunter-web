@@ -9,7 +9,6 @@ import ModalLayout from 'components/layout/Modal/ModalLayout'
 import { IApplicationSuccessModalProps } from 'components/modals/ApplicationSuccessModal'
 import Button from 'components/ui/Button'
 import Title from 'components/ui/TitleForSection'
-import { useFeedbacksContext } from 'context/feedbacks_state'
 import { usePatternContext } from 'context/pattern_state'
 import { useAppContext } from 'context/state'
 import { IApplication } from 'data/interfaces/IApplication'
@@ -34,6 +33,7 @@ export interface IProposalTextModalProps {
   application?: IApplication, 
   cv: ICV,
   onSubmit?: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => void
+  createProposal: (p: IProposal) => Promise<boolean | IProposal>
 }
 
 export default function ProposalTextModal(props: Props) {
@@ -41,7 +41,6 @@ export default function ProposalTextModal(props: Props) {
   const modalArguments:IProposalTextModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments 
   const {application, cv, vcId} = modalArguments
   const patternContext = usePatternContext()
-  const proposalRepository = useFeedbacksContext()
   const [pattern, setPattern] = useState<IPattern>(null)
   const [type, setTypeState] = useState<ProposalRequestType>(null)
   const {t} = useTranslation()
@@ -52,7 +51,7 @@ export default function ProposalTextModal(props: Props) {
       coverLetter: data.coverLetter,    
       type: type
     }
-    proposalRepository.createProposal(clearObject(dataToSend))
+    modalArguments.createProposal(clearObject(dataToSend))
     .then(res=>{
       if(typeof res === 'object' && modalArguments.onSubmit) {
         modalArguments.onSubmit(dataToSend.type, data.coverLetter, res)

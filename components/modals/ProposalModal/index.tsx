@@ -17,6 +17,7 @@ import { TranslateApplicationBSSelectType } from 'utils/enumsTranslations'
 import { IProposalTextModalProps } from './ProposalTextModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
+import { IProposal } from 'data/interfaces/IProposal'
 
 
 interface Props {
@@ -40,6 +41,8 @@ export interface IProposalModalProps {
   page?: ProposalModalPager
   fn?: () => void
   activeVacancies?: IVacancy[]
+  createProposal: (p: IProposal) => Promise<boolean | IProposal>
+
 }
 
 export default function ProposalModal(props: Props) {
@@ -58,7 +61,13 @@ export default function ProposalModal(props: Props) {
       setPage(ProposalModalPager.OtherVacancy)
     }
     else {
-      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {...data, cv: modalArguments.cv, application: modalArguments.application, onSubmit: modalArguments.fn})
+      appContext.showModal<IProposalTextModalProps>(ModalType.ProposalTextModal, {
+        ...data, 
+        cv: modalArguments.cv, 
+        application: modalArguments.application, 
+        onSubmit: modalArguments.fn, 
+        createProposal: modalArguments.createProposal
+      })
     }
   }
 

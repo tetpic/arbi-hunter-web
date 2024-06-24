@@ -48,6 +48,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import DoubleSvg from '@/components/svg/DoubleSvg'
 import EditPencilSvg from '@/components/svg/EditPencilSvg'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 
 
 interface Props {
@@ -59,6 +60,7 @@ export default function CvPage(props: Props) {
   const cvContext = useCvContext()
   const folderContext = useFavoritesFolderContext()
   const userContext = useUserContext()
+  const feedBacksContext = useFeedbacksContext()
   const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
   const appContext = useAppContext()
@@ -69,17 +71,15 @@ export default function CvPage(props: Props) {
   const isMyCv = currentCv?.profileId === userContext.currentProfile?.id
 
   const makeResponse = () => {
-    if(isTabletWidth) {
-      appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv,
-        page: ProposalModalPager.OtherVacancy,
-        activeVacancies: [...vacancyContext.activeVacancies.values()]
-      })
-      return
-    }
-    appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  { cv: currentCv, 
+    const _args:IProposalModalProps = { 
+      cv: currentCv,
       page: ProposalModalPager.OtherVacancy,
-      activeVacancies: [...vacancyContext.activeVacancies.values()]
-    })
+      activeVacancies: [...vacancyContext.activeVacancies.values()],
+      createProposal: feedBacksContext.createProposal
+    }
+    isTabletWidth
+      ? appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal,  _args)
+      : appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  _args)
   }
 
   const goToChat = () => {

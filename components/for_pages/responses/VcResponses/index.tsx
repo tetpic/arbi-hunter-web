@@ -3,7 +3,7 @@ import CvCard from 'components/ui/CvCard'
 import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { ApplicationStatus, ModalType, ProposalRequestType} from 'types/enums'
+import { ApplicationStatus, ProposalRequestType} from 'types/enums'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
@@ -110,10 +110,6 @@ export default function VCFeedbacks(props: Props) {
     folderContext.getAllFolders()
   }, [])
 
-  const openFiltersHandler = () => {
-    appContext.showBottomSheet(ModalType.VcResponsesFilterModal)
-  }
-
   const onNavigationClick = (t: VCNaviagation) => {
     setCurrentPage(t)
     if(isTabletWidth) {
@@ -147,10 +143,6 @@ export default function VCFeedbacks(props: Props) {
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
-      {/* {isTabletWidth
-      ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?t('filters'):t('filter')} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
-      :<ResponsesFilter />
-      } */}
       {
         responsesContext.filteredVcResponses.length>0&&!loading&&
         responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
@@ -165,8 +157,5 @@ export default function VCFeedbacks(props: Props) {
     }
 
   </div>
-  {/* {((showNav  && isTabletWidth) || !isTabletWidth) && responsesContext.VCFeedbacks &&
-    <ResponsesNavigation items={navSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} />
-  } */}
   </div>)
 }

@@ -5,7 +5,6 @@ import Sheet from 'react-modal-sheet'
 import { ModalType } from 'types/enums'
 import ProposalModal from 'components/modals/ProposalModal'
 import OptionsModal from 'components/modals/OptionsModal'
-import VcResponsesFilterModal from 'components/modals/VcResponsesFilterModal'
 import MediaItemActionsModal from 'components/modals/MediaItemActionsModal'
 import ChatsFolderModal from 'components/modals/ChatsFolderModal'
 import ChatFilterModal from 'components/modals/ChatFilterModal'
@@ -61,15 +60,6 @@ export default function BottomSheetContainer(props: Props) {
           disableScrollLocking
         >
           <OptionsModal isBottomSheet={true} onClose={appContext.hideBottomSheet}/>
-        </Sheet>
-        <Sheet
-          isOpen={appContext.bottomSheet == ModalType.VcResponsesFilterModal}
-          onClose={appContext.hideBottomSheet}
-          snapPoints={[0.9]}
-          disableDrag={appContext.modalNonSkippable}
-          disableScrollLocking
-        >
-          <VcResponsesFilterModal  onClose={appContext.hideBottomSheet}/>
         </Sheet>
         <Sheet
           isOpen={appContext.bottomSheet == ModalType.MediaItemActionsModal}

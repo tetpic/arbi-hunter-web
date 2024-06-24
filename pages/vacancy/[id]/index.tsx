@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useEffect } from 'react'
 import { CookiesType } from 'types/enums'
+import { CvWrapper } from 'context/cv_state'
 
 
 interface Query {
@@ -82,11 +83,14 @@ export default function Vacancy(props: Props) {
   <ContentLayout hideMobileHeader>
     <PersonalWrapper key={'vacancy_page'+props.id}>
       <VacancyWrapper vacancy={props.vacancy}>
+        <CvWrapper>
+
         {props.vacancy &&
           <VacancyPage id={Number(props.id)} isAuthed={props.isAuthed}/>
           ||
           <P styleType={['textCenter']} style={{paddingBlock: '100px'}}>{t('vacancy_page_removedOrHidden')}</P>
         }
+        </CvWrapper>
       </VacancyWrapper>
     </PersonalWrapper>
   </ContentLayout>
