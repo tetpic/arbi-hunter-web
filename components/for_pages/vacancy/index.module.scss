@@ -11,6 +11,13 @@
     margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
   }
+
+  .tag {
+    padding: 12px 16px;
+    border-radius: 14px;
+    background-color: $black;
+    border: unset !important;
+  }
 }
 
 .topButtons {
@@ -147,7 +154,7 @@
   width: 100% !important;
   max-width: unset !important;
   padding-right: 60px !important;
-  background-color: var(--secondaryColor) !important; 
+  background-color: var(--backColor) !important; 
   border: 2px var(--borderPerimeter) solid !important;
   @include mq($TabletWidth, max) {
     padding-right: 16px !important;

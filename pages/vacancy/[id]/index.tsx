@@ -12,7 +12,7 @@ import P from '@/components/ui/P'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useEffect } from 'react'
-import { TariffWrapper} from 'context/tariff_state'
+import { CookiesType } from 'types/enums'
 
 
 interface Query {
@@ -21,19 +21,20 @@ interface Query {
 }
 
 interface Props extends Query {
+  isAuthed?: boolean
 }
 
 export const getServerSideProps = (async (context: { query: Query; req: { cookies: { [x: string]: any } } }) => {
   const id  = Number(context.query.id)
-  // const profileType = context.req.cookies[CookiesType.profileType]
-  // const token = context.req.cookies[CookiesType.accessToken]
+  const profileType = context.req.cookies[CookiesType.profileType]
+  const token = context.req.cookies[CookiesType.accessToken]
 
 
   if(id === 0 || !id) {
     return {redirect: {destination: '/', permanent: false}}
   }
-  const vacancy = await VacancyRepository.getVacancyById(id).catch(err =>null)
-  return {props: {id, vacancy}}
+  const vacancy = await VacancyRepository.getVacancyById(id, profileType, token).catch(err =>null)
+  return {props: {id, vacancy, isAuthed: Boolean(token)}}
 }) 
 
 export default function Vacancy(props: Props) {
@@ -80,15 +81,13 @@ export default function Vacancy(props: Props) {
 
   <ContentLayout hideMobileHeader>
     <PersonalWrapper key={'vacancy_page'+props.id}>
-    <TariffWrapper>
-      <VacancyWrapper>
+      <VacancyWrapper vacancy={props.vacancy}>
         {props.vacancy &&
-          <VacancyPage id={Number(props.id)}/>
+          <VacancyPage id={Number(props.id)} isAuthed={props.isAuthed}/>
           ||
           <P styleType={['textCenter']} style={{paddingBlock: '100px'}}>{t('vacancy_page_removedOrHidden')}</P>
         }
       </VacancyWrapper>
-    </TariffWrapper>
     </PersonalWrapper>
   </ContentLayout>
   </>
