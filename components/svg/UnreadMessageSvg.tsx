@@ -1,0 +1,14 @@
+interface Props {
+  color?: string
+  className?: string
+}
+
+export default function UnreadMessageSvg(props: Props) {
+  return (
+    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 21.1076H19.2759C19.6257 21.1076 19.8674 20.7576 19.7434 20.4304L19.2459 19.1172C18.9845 18.4272 19.1275 17.6516 19.5491 17.0461C20.1826 16.1363 21 14.725 21 13.4999M18 11C18 15.1421 14.6421 18.5 10.5 18.5H3.72413C3.3743 18.5 3.13262 18.15 3.25656 17.8228L3.89762 16.1309C4.12684 15.5259 4.03271 14.855 3.75001 14.2731C3.26951 13.284 3 12.1735 3 11C3 6.85786 6.35786 3.5 10.5 3.5C14.6421 3.5 18 6.85786 18 11Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+
+  )
+}
+

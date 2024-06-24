@@ -1,6 +1,6 @@
-import { DataNotifyType } from "types/enums"
-import { TimeStamp } from "./Common"
-import { IUser } from "./IUser"
+import { DataNotifyType } from 'types/enums'
+import { TimeStamp } from './Common'
+import { IUser } from './IUser'
 
 export interface INotification extends TimeStamp{
     id: number,
@@ -26,4 +26,16 @@ export interface INotification extends TimeStamp{
     cvId: number|null,
     readedByUsers: IUser|IUser[],
     targetTypeName: string // "Одному пользователю"
+}
+
+export enum ItemsNotificationType {
+    ChatMessage = 'chatMessage',
+    Admin = 'admin',
+    NewApplication = 'newApplication',
+    NewProposal = 'newProposal',
+    UserRegistered = 'userRegistered',
+    UserBlocked = 'userBlocked',
+    UserUnBlocked = 'userUnBlocked',
+    CvRejected = 'cvRejected',
+    VacancyRejected = 'vacancyRejected'
 }

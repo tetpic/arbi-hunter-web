@@ -19,9 +19,14 @@ import NotificationSvg from '@/components/svg/NotificationSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
 import StarSvg from '@/components/svg/StarSvg'
 import useTranslation from 'next-translate/useTranslation'
-import { AlertModalArgs } from '@/components/modals/AlertModal'
 import ImageHelper from 'utils/ImageHelper'
 import { colors } from 'styles/variables'
+import NotificationRepository from 'data/repositories/NotificationRepository'
+import OptionsDropDown from '@/components/ui/OptionsDropDown'
+import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import Notifications from '@/components/ui/Notifications'
+import { ItemsNotificationType } from 'data/interfaces/INotification'
+import NoNotificationSvg from '@/components/svg/NoNotificationSvg'
 
 interface Props {
   distanceFromTop: number
@@ -42,20 +47,31 @@ export default function Header(props: Props) {
   const activePath = router.asPath
   const regPath = '/registration'
   const loginPath = '/login'
+  const dropRef = useRef(null!)
+  const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const refreshNotificationInterval = useRef<ReturnType<typeof setInterval>>()
+  const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>()
+
+  const allowedStatsTypes = profileType === ProfileType.Employee ?
+  [
+    ItemsNotificationType.ChatMessage,
+    ItemsNotificationType.Admin,
+    ItemsNotificationType.NewProposal,
+    ItemsNotificationType.UserBlocked
+  ]
+  :
+  [
+    ItemsNotificationType.NewApplication,
+    ItemsNotificationType.Admin,
+    ItemsNotificationType.UserBlocked,
+    ItemsNotificationType.ChatMessage,
+  ]
+
+  const stats = _stats?.filter(s=> allowedStatsTypes.includes(s.type))
 
   const onSearchbarSubmit = (data: {search?: string}) => {
     const filters = JSON.parse(router?.query?.filters as string||'{}')
     router.push({pathname: '/recruiting', query: {filters: JSON.stringify({...filters, search: data?.search})}})
-  }
-
-  const showInfo = () => {
-    appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br />
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
-      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
-      </>,
-      onClick: ()=>{appContext.hideModal()}
-    })
   }
 
   useEffect(()=>{
@@ -75,6 +91,26 @@ export default function Header(props: Props) {
     }
   }, [props.distanceFromTop])
 
+  useEffect(()=>{
+    if(isTabletWidth) {
+      if(dropDown) {
+        document.body.style.overflow = 'hidden'
+      }
+      else {
+        document.body.style.overflow = 'unset'
+      }
+    }
+  }, [dropDown])
+
+  useEffect(()=>{
+    if(!refreshNotificationInterval.current && props.authorized) {
+      NotificationRepository.getUnreadStats().then(res => setStats(res.items))
+      refreshNotificationInterval.current = setInterval(()=>{
+        NotificationRepository.getUnreadStats().then(res => setStats(res.items))
+      }, 20000)
+    }
+  }, [])
+
 
 
   return (
@@ -86,7 +122,7 @@ export default function Header(props: Props) {
         </Link>
       }
       {/* } */}
-      <div className={classnames(styles.contentWrapper, 'contentWrapper')}>
+      <div className={classnames(styles.contentWrapper, props.authorized && styles.contentWrapper_authorized, 'contentWrapper')}>
         {(!userContext.isLogged || !userContext.currentProfile) &&
           <Modes
           buttons={[
@@ -136,14 +172,31 @@ export default function Header(props: Props) {
               >
                 {t('create_cv')}
               </Button>
-              <Button
-              styleType={['icon', 'black']}
-              altStyleType={['icon','white']}
-              className={styles.iconButton}
-              href={'/notifications'}
-              >
-                <NotificationSvg color={isLightTheme?colors.black:''}/>
-              </Button>
+              <div className={styles.notifications}>
+                <Button
+                buttonRef={dropdownRef}
+                onClick={()=>openDropDown(!dropDown)}
+                styleType={['icon', 'black']}
+                altStyleType={['icon','white']}
+                className={styles.iconButton}
+                >
+                  {stats?.length > 0 &&
+                    <NotificationSvg color={isLightTheme?colors.black:''}/>
+                    ||
+                    <NoNotificationSvg />
+                  }
+                </Button>
+                <OptionsDropDown 
+                usePopper
+                className={styles.dropdown}
+                popperPlacement='bottom-end'
+                options={<Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>} 
+                active={dropDown} 
+                key={'notifications'}
+                getRef={(r)=>{dropRef.current = r}}
+                onClose={()=>{openDropDown(false)}}
+                />
+              </div>
               <Button
               styleType={['icon', 'black', 'svg24']}
               altStyleType={['icon','white', 'svg24', 'invertSvg']}
@@ -168,14 +221,31 @@ export default function Header(props: Props) {
               >
                  {t('create_vacancy')}
               </Button>
-              <Button
-              href={'/notifications'}
-              styleType={['icon', 'black']}
-              altStyleType={['icon', 'white']}
-              className={styles.iconButton}
-              >
-                <NotificationSvg color={isLightTheme?colors.black:''}/>
-              </Button>
+              <div className={styles.notifications}>
+                <Button
+                buttonRef={dropdownRef}
+                onClick={()=>openDropDown(!dropDown)}
+                styleType={['icon', 'black']}
+                altStyleType={['icon', 'white']}
+                className={styles.iconButton}
+                >
+                  {stats?.length > 0 &&
+                  <NotificationSvg color={isLightTheme?colors.black:''}/>
+                  ||
+                  <NoNotificationSvg />
+                  }
+                </Button>
+                <OptionsDropDown 
+                usePopper
+                className={styles.dropdown}
+                options={<Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>} 
+                active={dropDown} 
+                key={'notifications'}
+                popperPlacement='bottom-end'
+                getRef={(r)=>{dropRef.current = r}}
+                onClose={()=>{openDropDown(false)}}
+                />
+              </div>
               <Button
               styleType={['icon', 'black', 'svg24']}
               altStyleType={['icon', 'white', 'invertSvg']}
@@ -193,6 +263,28 @@ export default function Header(props: Props) {
             </>}
           </div>
           ||
+          <>
+          {props.authorized &&
+            <div className={styles.notifications}>
+              <Button
+              buttonRef={dropdownRef}
+              onClick={()=>openDropDown(!dropDown)}
+              styleType={['icon', 'black']}
+              altStyleType={['icon','white']}
+              className={styles.menuButton}
+              >
+                {stats?.length > 0 &&
+                  <NotificationSvg color={isLightTheme?colors.black:''}/>
+                  ||
+                  <NoNotificationSvg />
+                }
+              </Button>
+              {dropDown &&
+                <Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>
+              }
+            </div>
+          }
+
           <Button 
           styleType={['icon', 'black']}  
           altStyleType={['icon','white']} 
@@ -200,6 +292,7 @@ export default function Header(props: Props) {
           onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}>
             <MenuButtonSvg color={isLightTheme&&colors.greyLight}/>
           </Button>
+            </>
         }
       </div>
     </div>

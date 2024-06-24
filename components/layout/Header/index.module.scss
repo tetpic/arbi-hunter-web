@@ -66,6 +66,14 @@
       width: 32px;
     }
   }
+
+  &_authorized {
+    @include mq($TabletWidth, max) {
+      &:before {
+        display: none
+      }
+    }
+  }
 }
 
 .linksWrapper {
@@ -162,6 +170,23 @@
   position: relative;
   @include mq($TabletWidth, max) {
     z-index: 2;
+  }
+}
+
+.notifications {
+  position: relative;
+
+  .dropdown {
+    width: 100%;
+    height: 1px;
+    bottom: -10px;
+
+    transform: unset;
+    top: unset;
+    left: 0;
+    >div {
+      background-color: $black;
+    }
   }
 }
 
