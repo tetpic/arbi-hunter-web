@@ -4,7 +4,6 @@ import { useCharacterContext } from 'context/character_state'
 import { useEffect, useState } from 'react'
 import { useCvContext } from 'context/cv_state'
 import Spinner from 'components/ui/Spinner'
-import { useUserContext } from 'context/user_state'
 import { IStats } from 'data/interfaces/IUser'
 import UserRepository from 'data/repositories/UserRepository'
 import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
@@ -37,7 +36,6 @@ export default function MainPageEmployee() {
   const router =  useRouter()
   const personalContext = usePersonalContext()
   const characterContext = useCharacterContext()
-  const userContext  = useUserContext()
   const cvContext = useCvContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -88,8 +86,6 @@ export default function MainPageEmployee() {
       CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       ArticlesRepository.getNews({isTop: true}),
     ])
-    personalContext.setPersonalPage({profileId: userContext.currentProfile?.id})
-    personalContext.setBackgrounds(userContext.currentProfile)
 
     setStats(stats)
     setCategories(state=> {
@@ -113,7 +109,7 @@ export default function MainPageEmployee() {
 
     setTimeout(()=> {
       setLoad(true)
-    }, 100)
+    }, 10)
   }
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
@@ -140,28 +136,18 @@ export default function MainPageEmployee() {
   }, [characterContext.modelLoaded])
 
 
-  if(!load) {
-    return(
-      <div className={styles.root}>
-        <Spinner size={32}/>
-      </div>
-    )
-  }
+
 
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        {!personalContext.loading &&
-          <PersonalHeader 
-          action={action} 
-          showNextAnimation={()=>!disableClick&&showNextAnimation()}  
-          useModel
-          initialBackground={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
-          />
-          ||
-          <div style={{height: 'clamp(100px, 70vw, 418px)'}}></div>
-
-        }
+        <PersonalHeader 
+        action={action} 
+        showNextAnimation={()=>!disableClick&&showNextAnimation()}  
+        useModel
+        initialBackground={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
+        /> 
+        {load &&
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
@@ -208,14 +194,17 @@ export default function MainPageEmployee() {
             </Link>
           </div>
         </div>
+        }
+
       </div>
 
-      {isTabletWidth &&
+      {isTabletWidth && load &&
       <>
         <MobileBanners type={ cvContext.savedCvs.length > 0 ? 'vipVacancy' : 'cvCreate'}/>
       </>
       }
 
+      {load && <>
       <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{router.push('/recruiting/categories')}}/>
       <CategoriesList 
       onClick={(c) => onCategoryClickHandler(c)}
@@ -224,9 +213,6 @@ export default function MainPageEmployee() {
       link={'/recruiting?categories='}
       itemClassName={styles.categoryItem}
       />
-
-      {/* <Title title={t('mainPage_em_bestVCs')} className={styles.title}  onAllWatchClick={()=>{}}/>
-      <CvVcCompilation/> */}
 
       <Title title={t('mainPage_em_articles')} className={styles.title}  />
       {news.size > 0 &&
@@ -237,6 +223,8 @@ export default function MainPageEmployee() {
       {popularCourses.size > 0 &&
         <CoursesList courses={[...popularCourses.values()]}/>
       }
+      </>}
+
     </div>
   )
 

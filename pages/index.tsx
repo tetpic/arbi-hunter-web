@@ -7,9 +7,11 @@ import { PersonalWrapper } from 'context/personal_state'
 import { useAppContext } from 'context/state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { IBackground } from 'data/interfaces/IBackground'
+import { IPersonalPage } from 'data/interfaces/IPersonal'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
+import PersonalRepository from 'data/repositories/PersonalRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { CookiesType } from 'types/enums'
 
@@ -22,6 +24,7 @@ interface Props {
   profileType?: ProfileType
   profile?: IUserProfile
   backgrounds?: IBackground[]
+  personalPage: IPersonalPage
 }
 
 export const getServerSideProps = (async (context: {req: { cookies: { [x: string]: any } }, query: Query }) => {
@@ -34,9 +37,9 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
   if(profileType && token) {
     const user = await UserRepository.getCurrentUser(token)
     const currentProfile = user.profiles[0]
-
+    const personalPage = await PersonalRepository.getPersonalPageById(currentProfile.id)
     const backgrounds = await BackgroundRepository.getBackground({profileId: currentProfile?.id}, token, profileType)
-    return {props: {profileType, profile:currentProfile, backgrounds}}
+    return {props: {profileType, profile:currentProfile, backgrounds, personalPage}}
   }
   else {
     return {props: {}}
@@ -44,7 +47,7 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 }) 
 
 export default function Page(props: Props) {
-  const {isTabletWidth} = useAppContext().size
+  const {isTabletWidth} = useAppContext().size  
   
   return (
     <ContentLayout 
@@ -52,8 +55,8 @@ export default function Page(props: Props) {
     description='ArbiHunter — HR-сервис будущего. Создай профиль, заполни резюме и получи job offer в арбитраже трафика прямо сейчас!'  
     withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} 
     withMobileMenu={Boolean(props?.profile)}>
+      <PersonalWrapper profile={props?.profile} initialBacks={props?.backgrounds} personalPage={props?.personalPage}>
       <VacancyWrapper>
-        <PersonalWrapper profile={props?.profile} initialBacks={props?.backgrounds}>
         {
         props?.profile?.profileType === ProfileType.Employee &&
         <CharacterWrapper>
@@ -65,8 +68,8 @@ export default function Page(props: Props) {
         ||
         <MainLanding/>
         }
-        </PersonalWrapper>
       </VacancyWrapper>
+      </PersonalWrapper>
     </ContentLayout>
   )
 }

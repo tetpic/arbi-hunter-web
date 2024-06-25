@@ -29,7 +29,6 @@ interface Props {
   useModel?: boolean
   showNextAnimation?: () => void
   action?: ModelActions 
-  allowDefaultBackground?: boolean
   showMobileBack?: boolean
   initialBackground?: IBackground
 }
@@ -160,7 +159,6 @@ export default function PersonalHeader(props: Props) {
     animations={personalContext.weather.riveKeys.map(el=> el.key)}
     />
   }, [personalContext.weather])
-
 
   return (<div className={styles.root}> 
     {isTabletWidth && props.showMobileBack &&

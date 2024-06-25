@@ -21,6 +21,9 @@
 .noProfile {
   @include mq($SmDesktopWidth, max) {
     padding: 16px 16px;
+    .contentWrapper {
+      flex-direction: row;
+    }
     .menuButton {
       background-color: #2d2d37 !important;
     }
@@ -54,6 +57,7 @@
     padding: unset;
     position: absolute;
     top: 12px;
+    flex-direction: row-reverse;
     left: 0;
     right: 0;
     column-gap: 8px;

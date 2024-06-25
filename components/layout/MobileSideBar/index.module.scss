@@ -2,7 +2,7 @@
 
 .root {
   opacity: 0;
-  width: clamp(270px, 100vw, 375px);
+  width: 100%;
   background: var(--backGroundColor);
   transition: .3s ease-in-out;
   overflow: auto;

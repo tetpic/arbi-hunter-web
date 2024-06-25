@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 import Image from 'next/image'
 import { IUserProfile } from 'data/interfaces/IUser'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import { IBackground } from 'data/interfaces/IBackground'
 import { usePersonalContext } from 'context/personal_state'
 import { useMemo } from 'react'
@@ -44,12 +43,12 @@ export default function Buildings(props: Props) {
 
   
 
-  //todo: отрефакторить условия
   return (
   <div className={styles.imageSettings}>
-    {(props.background || props.useDefaultImage) && props.profile?.profileType === ProfileType.Hirer &&
+    {(props.background || props.useDefaultImage) && 
       <Image 
       unoptimized
+      priority
       className={styles.background} 
       src={props.background
         ?ImageHelper.urlFromFile(props.background.image, Preset.xlResize)
@@ -59,29 +58,22 @@ export default function Buildings(props: Props) {
       width={770} 
       height={300} />
       ||
-      props.profile?.useOwnLogo && props.profile?.profileType === ProfileType.Hirer && props.profile?.image &&
+      props.profile?.useOwnLogo&& props.profile?.image &&
       <Image 
       unoptimized 
+      priority
       className={styles.background} 
-      src={ImageHelper.urlFromFile(props.profile.image,Preset.xlResize)} 
+      src={ImageHelper.urlFromFile(props.profile.image,Preset.bannerResize)} 
       alt={'back'} 
       width={770} 
       height={300} />
-      ||props.profile?.profileType === ProfileType.Employee && props.background &&
-      <Image 
-      unoptimized 
-      className={styles.background} 
-      src={ImageHelper.urlFromFile(props.background.image, Preset.xlResize)} 
-      alt={'back'} 
-      width={770} 
-      height={300} />
-
     }
     {
-      props.background && props.profile?.image && props.profile?.logo && props.profile?.profileType === ProfileType.Hirer && !props.profile?.useOwnLogo &&
+      props.background && props.profile?.image && props.profile?.logo && !props.profile?.useOwnLogo &&
       <div className={styles.buildingWrapper}>
         <Image 
         unoptimized
+        priority
         className={styles.building} 
         src={ImageHelper.urlFromFile(props.profile?.image, Preset.sResize)} 
         width={250} 
@@ -95,18 +87,10 @@ export default function Buildings(props: Props) {
         style={{top: props.profile?.image?.focalPoint?.y*100+'%', left: props.profile?.image?.focalPoint?.x*100+'%'}}
         alt={''}/>
       </div>
-      ||
-      props.profile?.profileType === ProfileType.Employee && props.profile?.useOwnLogo && props.profile?.logo &&
-      <Image 
-      unoptimized
-      src={ImageHelper.urlFromFile(props.profile?.logo, Preset.sCrop)}
-      alt={''} width={370} height={370}
-      className={styles.userLogo}
-      />
     }
 
-    {props.profile?.profileType === ProfileType.Hirer&&weatherRive}
-    {props.profile?.profileType === ProfileType.Hirer&&transportRive}
+    {weatherRive}
+    {transportRive}
   </div>
   )
 }

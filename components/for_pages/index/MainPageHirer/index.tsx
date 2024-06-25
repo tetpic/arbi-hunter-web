@@ -1,7 +1,6 @@
 import styles from './index.module.scss'
 
 import { useEffect, useState } from 'react'
-import { useUserContext } from 'context/user_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IStats } from 'data/interfaces/IUser'
 import Buildings from '../../profile/Personal/Buildings'
@@ -34,7 +33,6 @@ import { useVacancyContext } from 'context/vacancy_state'
 
 export default function MainPageHirer() {
   const {t} = useTranslation()
-  const userContext = useUserContext()
   const personalContext = usePersonalContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -47,12 +45,11 @@ export default function MainPageHirer() {
   const vacancyContext = useVacancyContext()
 
   const init = async() => {
-    const [ stats, courses, categories, news, backs] = await Promise.all([
+    const [ stats, courses, categories, news] = await Promise.all([
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
       CategoryRepository.getCategories(),
       ArticlesRepository.getNews({isTop: true}),
-      personalContext.setPersonalPage({profileId: userContext.currentProfile?.id}) 
     ])
     setStats(stats)
     setPopularCourses(state => {
@@ -73,20 +70,14 @@ export default function MainPageHirer() {
       })
       return state
     })
-    personalContext.setBackgrounds(backs)
     vacancyContext.setVacancies()
-
     setTimeout(()=> {
       setLoad(true)
-    }, 200)
+    }, 10)
   }
 
   useEffect(()=>{
     init()
-    document.body.style.overflowX = 'hidden'
-    return ()=>{
-      document.body.style.overflowX = 'hidden'
-    }
   }, [])
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
@@ -96,28 +87,17 @@ export default function MainPageHirer() {
     })
   }
 
-  if(!load) {
-    return  (
-      <div className={styles.root}>
-        <Spinner size={32}/>
-      </div>
-    )
-  }
-
   return (
     <div className={styles.root}>
       <div className={styles.top}>
 
-      {personalContext.backgrounds &&
         <Buildings 
         useDefaultImage 
-        profile={userContext.currentProfile} 
+        profile={personalContext.currentProfile} 
         background={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
         />
-        ||
-        <div style={{height: 'clamp(100px, 70vw, 418px)'}}></div>
-      }
         
+        {load &&
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <Link className={styles.card} href={'/responses'}>
@@ -165,12 +145,16 @@ export default function MainPageHirer() {
             </Link>
           </div>
         </div>
+        }
+
       </div>
 
 
-      {isTabletWidth &&
+      {isTabletWidth && load &&
         <MobileBanners type={(vacancyContext.activeVacancies.size === 0&&vacancyContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
       }
+
+      {load &&<>
 
       <Title title={t('mainPage_hir_categories')} className={styles.title} onAllWatchClick={()=>router.push('/recruiting/categories')}/>
       <CategoriesList 
@@ -181,10 +165,6 @@ export default function MainPageHirer() {
       categories={[...categories.values()].filter(e=> e.image)}
       />
 
-{/* 
-      <Title title={t('mainPage_hir_bestCvs')} className={styles.title}/>
-      <CvVcCompilation/> */}
-
       <Title title={t('mainPage_hir_articles')} className={styles.title}/>
       {news.size > 0 &&
         <ArticlesList onlyTitles news={[...news.values()]}/>
@@ -194,6 +174,8 @@ export default function MainPageHirer() {
       {popularCourses.size > 0 &&
         <CoursesList courses={[...popularCourses.values()]}/>
       }
+      </>}
+
     </div>
   )
 }

@@ -330,16 +330,12 @@ export default function Registration(props: Props) {
 
   useEffect(()=>{
     sendToMetrika(AppMetricaEvent.StartRegistration)
-    //эту строчку не удалять. Пока что регистрация запрещена на основном сайте, когда откроют - раскомментировать
-    // isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
-    /*appContext.showModal<AlertModalArgs>(ModalType.AlertModal, {
-      text: <>Всем привет! <br />
-      Мы решили еще немного улучшить нашу платформу, чтобы вы смогли на 100% оценить качество и функционал,
-      следите за новостями в телеграм группе &ldquo;ArbiHunter&rdquo;, чтобы не пропустить дату открытия регистрации ;)
-      </>,
-      onClick: ()=>{appContext.hideModal()}
-    })*/
   }, [])
+
+  useEffect(()=>{
+    isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
+  
+  }, [isTabletWidth])
 
   return (
     <div className={styles.root}>

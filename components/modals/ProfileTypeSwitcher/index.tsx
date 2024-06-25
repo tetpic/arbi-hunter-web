@@ -41,13 +41,15 @@ export default function ProfileTypeSwitcher(props: Props) {
           <p className={styles.subTitle}>{t('registration_wantFindEmployees')}</p>
         </div>
       </div>
-      <Button className={styles.submitButton} onClick={()=> appContext.hideModal()}><span>{t('continue')}</span></Button>
+      <div className={styles.buttonsWrapper}>
+        <Button className={styles.submitButton} onClick={()=> appContext.hideModal()}><span>{t('continue')}</span></Button>
+      </div>
     </div>
   )
 
   return (
     <ModalLayout mobileFullScreen className={styles.modalLayout}>
-      <ModalBody>
+      <ModalBody className={styles.modalBody}>
         {body}
       </ModalBody>
     </ModalLayout>

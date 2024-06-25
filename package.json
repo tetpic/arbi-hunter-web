@@ -83,13 +83,14 @@
     "dev": "next dev -H 127.0.0.1 -p 3088",
     "build": "next build",
     "start": "next start",
-    "start-dev":"next start -H 127.0.0.1 -p 3088",
+    "start-dev": "next start -H 127.0.0.1 -p 3088",
     "lint": "next lint",
     "plop": "plop",
     "ts": "tsc --noEmit",
     "test": "jest",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "find:unused": "next-unused"
   },
   "pre-commit": [
     "lint",
