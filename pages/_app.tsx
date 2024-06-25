@@ -20,7 +20,7 @@ import { PatternWrapper } from 'context/pattern_state'
 import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import Router from 'next/router'
+import { Montserrat } from 'next/font/google'
 
 
 export interface AppProps extends NextAppProps {
@@ -36,9 +36,10 @@ export interface AppProps extends NextAppProps {
   }
 }
 
+const montserrat = Montserrat({ subsets: ['cyrillic'] })
+
 function MyApp({Component, pageProps}: AppProps) {
   const [clientVisible, setClientVisible] = useState(false)
-  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
       setClientVisible(true)
@@ -48,15 +49,6 @@ function MyApp({Component, pageProps}: AppProps) {
       }
     },
   [])
-
-  useEffect(()=>{
-    Router.events.on('routeChangeStart', ()=> {
-      setLoading(true)
-    })
-    Router.events.on('routeChangeComplete', ()=> {
-      setLoading(false)
-    })  
-  }, [])
 
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
@@ -71,9 +63,11 @@ function MyApp({Component, pageProps}: AppProps) {
                 content="width=device-width, initial-scale=1, viewport-fit=cover"
                 />
             </Head>
+            <main className={montserrat.className}>
             <Layout webView={pageProps.webViewOnly} authorized={Boolean(pageProps.token)}> 
               <Component {...pageProps} />
             </Layout>
+            </main>
           
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <ModalContainer/>}
