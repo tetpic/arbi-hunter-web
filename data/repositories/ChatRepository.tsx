@@ -1,20 +1,23 @@
 import { AxiosRequestConfig } from 'axios'
 import IChat, { IChatFolder, IChatProfile, IMessage, MessageFilterOptions } from 'data/interfaces/IChat'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import { IUserProfile } from 'data/interfaces/IUser'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
 export default class ChatRepository {
-  static async getChatList(option: MessageFilterOptions, config?: AxiosRequestConfig): Promise<IPagination<IChat>|null> {
+  static async getChatList(option: MessageFilterOptions, config?: AxiosRequestConfig, token?: string, profileType?: ProfileType): Promise<IPagination<IChat>|null> {
     const res = await request({
       method: 'get',
       url: '/api/chat/dialog',
       data: {
-        ...option,
         sort: 'lastMessageAt,DESC',      
         limit: 1000, 
+        ...option,
       },
-      config
+      config,
+      token,
+      profile: profileType
     })
     if(res.err) {
       

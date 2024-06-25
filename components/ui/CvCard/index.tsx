@@ -15,7 +15,6 @@ import Button from '../Button'
 import UserPic from '../UserPic'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
-import FavoritesButton from '../FavoritesButton'
 import CvRepository from 'data/repositories/CvRepository'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
@@ -127,18 +126,26 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
       <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>
         {currentCV?.position||currentCV?.categories[0].name||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
       </P>
-      <P styleType={['medium', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, t('year1'), t('year2'), t('year3'))}</P>
-      {/* <LikeButton className={styles.heartButton} active={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/> */}
-      <FavoritesButton showStar className={styles.heartButton} isActive={currentCV?.isSavedByCurrentProfile} onClick={saveHandler}/>
+      <P styleType={['small', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, t('year1'), t('year2'), t('year3'))}</P>
+      <P styleType={['small', 'greyLight', 'w600']} className={styles.fback}>Отклик</P>
+      <P 
+      styleType={['small', 'w600' ]}
+      className={styles.timeStamp} 
+      style={{marginLeft: 'auto'}}>
+        {Formatter.formatDate(application.createdAt, {
+          lang: lang as InterfaceLanguage,
+          timeOptions: {year: 'numeric', month: '2-digit'}
+        })}
+      </P>
     </div>
     <div className={styles.middle}>
-      <P styleType={['medium', 'w500', 'greyLight']} >{t('cv_item_experience')}</P>
-      <P styleType={['medium', 'w500']} useThemeColor className={styles.data}>{experience}</P>
+      <P styleType={['small', 'w500', 'greyLight']} >{t('cv_item_experience')}</P>
+      <P styleType={['small', 'w500']} useThemeColor className={styles.data}>{experience}</P>
     </div>
     {cv?.lastExperienceInfo &&
     <div className={styles.middle}>
-      <P styleType={['medium', 'w500', 'greyLight']} >{t('cv_item_lastWorkPlace')}</P>
-      <P styleType={['medium', 'w500']} useThemeColor className={styles.data}>{currentCV?.lastExperienceInfo?.description&&currentCV?.lastExperienceInfo?.description} {currentCV?.lastExperienceInfo?.company&&('"' + currentCV?.lastExperienceInfo?.company + '"')}</P>
+      <P styleType={['small', 'w500', 'greyLight']} >{t('cv_item_lastWorkPlace')}</P>
+      <P styleType={['small', 'w500']} useThemeColor className={styles.data}>{currentCV?.lastExperienceInfo?.description&&currentCV?.lastExperienceInfo?.description} {currentCV?.lastExperienceInfo?.company&&('"' + currentCV?.lastExperienceInfo?.company + '"')}</P>
     </div>
     }
     {
@@ -147,19 +154,13 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
         <P styleType={['medium', 'w500', 'greyLight']} >{t('cv_item_inviteHasSend')}</P>
       </div>
     }
+
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={inviteHandler}>{t('cv_item_invite')}</Button>
+      <Button styleType={['gradient', 'phoneWide']} className={styles.button} onClick={inviteHandler}>{t('cv_item_invite')}</Button>
       {chat&& 
-        <Button styleType={['grey', 'whiteText']} altStyleType={['white']} onClick={chatbuttonClickHandler} >{t('cv_item_chat')}</Button>
+        <Button styleType={['grey']} altStyleType={['white']} onClick={chatbuttonClickHandler} >{t('cv_item_chat')}</Button>
       }
-      <P 
-      styleType={['medium', 'w500', 'greyLight']} 
-      style={{marginLeft: 'auto'}}>
-        {Formatter.formatDate(application.createdAt, {
-          lang: lang as InterfaceLanguage,
-          timeOptions: {year: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}
-        })}
-      </P>
+    
     </div>
   </div>
   )

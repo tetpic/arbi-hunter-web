@@ -12,7 +12,7 @@
 
 .top {
   display: grid;
-  grid-template-areas: "i p h" "i n h";
+  grid-template-areas: "i p fback" "i n timestamp";
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr 1fr;
   align-items: flex-start;
@@ -27,6 +27,7 @@
   flex-wrap: wrap;
   align-items: center;
   column-gap: 8px;
+  align-self: flex-end;
 }
 
 .userPic {
@@ -41,7 +42,7 @@
 .middle {
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  row-gap: 4px;
   margin-top: 16px;
 
   .data {
@@ -52,7 +53,7 @@
 }
 
 .heartButton {
-  grid-area: h;
+  grid-area: fback;
 }
 
 .buttonsWrapper {
@@ -66,15 +67,21 @@
 
 .button {
   align-self: flex-end;
-  @include buttonGradient;
-  @include mq($TabletWidth, max) {
-    width: 100%;
-    max-width: 360px;
-  }
 }
 
 .buttonBorderGradient {
   @extend .button;
   @include buttonBorderGradient;
+}
+
+.timeStamp {
+  grid-area: timestamp;
+  align-self: flex-end;
+}
+
+.fback {
+  grid-area: fback;
+  justify-self: flex-end;
+  text-align: end;
 }
 

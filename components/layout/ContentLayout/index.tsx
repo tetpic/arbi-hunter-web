@@ -39,9 +39,7 @@ export default function ContentLayout(props: Props) {
       appContext.setHideHeader(true)
     }
     else {
-      return (()=> {
-        appContext.setHideHeader(false)
-      })
+      appContext.setHideHeader(false)
     }
   
   }, [isTabletWidth, props.isMobile])

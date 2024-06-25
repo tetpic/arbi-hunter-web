@@ -9,7 +9,7 @@ interface Props {
 export default function MyCvsPage(props: Props) {
   const router = useRouter()
 
-  return (<ContentLayout disabledNavBar hideMobileHeader title={'Мои резюме'}>
+  return (<ContentLayout hideMobileHeader title={'Мои резюме'}>
     <TariffWrapper>
       <CVs/>
     </TariffWrapper>
