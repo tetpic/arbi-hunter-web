@@ -199,6 +199,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
             className={styles.build} 
             src={ImageHelper.urlFromFile(vacancy?.profile?.image, Preset.sResize)} 
             alt='build' 
+            priority
             width={256} height={300}
             />
             <Image 
@@ -206,6 +207,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
             className={styles.logo} 
             src={ImageHelper.urlFromFile(vacancy?.profile?.logo, Preset.smallIconCrop)} 
             alt={'def image'} 
+            priority
             style={{top: vacancy?.profile?.image.focalPoint.y*100 + '%', left: vacancy?.profile?.image.focalPoint.x*100 + '%'}} 
             width={60} height={60}/>
           </>

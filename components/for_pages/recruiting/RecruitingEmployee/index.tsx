@@ -74,7 +74,9 @@ export default function RecruitingEmployee(props: Props) {
       'Head',
       'Eyes',
       'Boot',]} 
-    className={styles.image}/>
+    className={styles.image}
+    useOffscreenRenderer
+    />
   }, [])
 
   const init = async() => {

@@ -52,7 +52,7 @@ export default function Buildings(props: Props) {
       unoptimized
       className={styles.background} 
       src={props.background
-        ?ImageHelper.urlFromFile(props.background.image, Preset.mdResize)
+        ?ImageHelper.urlFromFile(props.background.image, Preset.xlResize)
         :'/images/cities/newyork.png'
       } 
       alt={'back'} 
@@ -63,7 +63,7 @@ export default function Buildings(props: Props) {
       <Image 
       unoptimized 
       className={styles.background} 
-      src={ImageHelper.urlFromFile(props.profile.image,Preset.mdResize)} 
+      src={ImageHelper.urlFromFile(props.profile.image,Preset.xlResize)} 
       alt={'back'} 
       width={770} 
       height={300} />
@@ -71,7 +71,7 @@ export default function Buildings(props: Props) {
       <Image 
       unoptimized 
       className={styles.background} 
-      src={ImageHelper.urlFromFile(props.background.image, Preset.mdResize)} 
+      src={ImageHelper.urlFromFile(props.background.image, Preset.xlResize)} 
       alt={'back'} 
       width={770} 
       height={300} />

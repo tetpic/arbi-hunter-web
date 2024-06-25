@@ -46,7 +46,6 @@ export default function PersonalHeader(props: Props) {
   const [backImage, setBackImage] = useState<IBackground>(props.initialBackground||personalContext.backgrounds?.get(BackgroundCategoryType.Places))
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
   const profileType = personalContext?.currentProfile?.profileType
-  console.log(backImage)
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -179,7 +178,7 @@ export default function PersonalHeader(props: Props) {
       <Image 
       unoptimized
       priority
-      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
+      src={ImageHelper.urlFromFile(backImage.image, Preset.xlResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 
@@ -191,7 +190,7 @@ export default function PersonalHeader(props: Props) {
       <Image 
       unoptimized
       priority
-      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
+      src={ImageHelper.urlFromFile(backImage.image, Preset.xlResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 
