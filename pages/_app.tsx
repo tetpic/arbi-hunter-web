@@ -21,6 +21,7 @@ import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { Montserrat } from 'next/font/google'
+import { IndexPageWrapper } from 'context/index_page_state'
 
 
 export interface AppProps extends NextAppProps {
@@ -57,6 +58,8 @@ function MyApp({Component, pageProps}: AppProps) {
           <CvWrapper>
           <PatternWrapper>
           <AuthWrapper>
+          <IndexPageWrapper>
+
             <Head>
               <meta
                 name="viewport"
@@ -73,6 +76,7 @@ function MyApp({Component, pageProps}: AppProps) {
             {clientVisible && <ModalContainer/>}
             {clientVisible && <Snackbar/>}
             
+          </IndexPageWrapper>
           </AuthWrapper>
           </PatternWrapper>
           </CvWrapper>

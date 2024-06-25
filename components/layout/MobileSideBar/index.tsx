@@ -51,7 +51,7 @@ export default function MobileSideBar(props: Props) {
     setActive(false)
     setTimeout(()=> {
       props.onClose()
-    }, 300)
+    }, 50)
   }
 
   useEffect(()=>{

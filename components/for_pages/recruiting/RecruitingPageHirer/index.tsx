@@ -89,7 +89,7 @@ function RecruitingPageHirerInner(props: Props) {
     setPage('filters')
   }
 
-  const findVacanciesThrottle = useThrottleFn(findCvs, 1000)
+  const findVacanciesThrottle = useThrottleFn(findCvs, 200)
 
   const onFilterChange =(data: any) => {
     setPage('cvs')
@@ -105,6 +105,7 @@ function RecruitingPageHirerInner(props: Props) {
   }
 
   const init = async() => {
+    findCvs()
     if (!userContext.currentProfile.addSavedToDefaultFolder) {
       folderContext.getAllFolders()
     }
@@ -116,7 +117,7 @@ function RecruitingPageHirerInner(props: Props) {
 
     setTimeout(()=>{
       isInited.current = true      
-    }, 200)
+    }, 50)
   }
 
   useEffect(()=>{
@@ -135,7 +136,9 @@ function RecruitingPageHirerInner(props: Props) {
   }, [router.query.filters, locationContext.countries])
 
   useEffect(()=>{
-    findVacanciesThrottle.callback()
+    if(isInited.current) {
+      findVacanciesThrottle.callback()
+    }
   }, [cvContext.page])
 
   if(page === 'filters'){
@@ -198,9 +201,7 @@ function RecruitingPageHirerInner(props: Props) {
         loader={<Spinner size={24}/>} 
         dataLength={cvContext.foundCvs?.size + 1}>
           <div className={styles.vacanciesWrapper}>
-            {loading && <Spinner size={24}/>
-              ||
-              !loading && cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
+            {cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
                 return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy}  key={cv.id} onChangeItem={()=> findVacanciesThrottle.callback()}/>
               })
               ||

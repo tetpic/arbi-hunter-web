@@ -210,7 +210,7 @@ export function VacancyWrapper(props: Props) {
   const findVacancies = useCallback(async (data?: IVacancyCvSearchParams, _page?: number):Promise<boolean> => {
     try {
 
-      const res = await VacancyRepository.searchVacancies(data, _page||page, 40).catch(e => {})
+      const res = await VacancyRepository.searchVacancies(data, _page||page, 10).catch(e => {})
       if(typeof res === 'object') {
         setFoundVacancies(state=>{
           (_page||page === 1) && state.clear()

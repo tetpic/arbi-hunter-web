@@ -4,19 +4,12 @@ import { useCharacterContext } from 'context/character_state'
 import { useEffect, useState } from 'react'
 import { useCvContext } from 'context/cv_state'
 import Spinner from 'components/ui/Spinner'
-import { IStats } from 'data/interfaces/IUser'
-import UserRepository from 'data/repositories/UserRepository'
 import { ModelActions } from 'components/for_pages/profile/userProfile/UserEditor'
 import PersonalHeader from '../../personal/PersonalHeader'
 import { usePersonalContext } from 'context/personal_state'
 import Title from '@/components/ui/TitleForSection'
 import CategoriesList from '@/components/ui/CategoriesList'
 import {  ISpecializationCategory } from 'data/interfaces/Common'
-import CoursesRepository from 'data/repositories/CoursesRepository'
-import {  Languages } from 'types/enums'
-import ICourse from 'data/interfaces/ICourse'
-import ArticlesRepository from 'data/repositories/ArticlesRepository'
-import { IArticle } from 'data/interfaces/IArticle'
 import ArticlesList from '../ArticlesList'
 import CoursesList from '../CoursesList'
 import CategoryRepository from 'data/repositories/CategoryRepository'
@@ -24,12 +17,12 @@ import EyeOpenSmallSvg from '@/components/svg/EyeOpenSmallSvg'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
-import { runtimeConfig } from 'config/runtimeConfig'
 import { useRouter } from 'next/router'
 import SwapItemsSvg from '@/components/svg/SwapItemsSvg'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import MobileBanners from '../MobileBanners'
 import { BackgroundCategoryType } from 'data/interfaces/IBackground'
+import { useIndexPageContext } from 'context/index_page_state'
 
 export default function MainPageEmployee() {
   const {t} = useTranslation()
@@ -39,12 +32,8 @@ export default function MainPageEmployee() {
   const cvContext = useCvContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
-  const [load, setLoad] = useState<boolean>(false)
-  const [stats, setStats] = useState<IStats>(null)
   const [action, setAction] = useState<ModelActions>(ModelActions.LongAnimation)
-  const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
-  const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
-  const [news, setNews] = useState<Map<number, IArticle>>(new Map)
+  const indexPageContext = useIndexPageContext()
 
 
   const actionsAllowedMap: {type: ModelActions, duration: number}[] = characterContext.variant.model === 'man'?
@@ -79,39 +68,6 @@ export default function MainPageEmployee() {
     }, init?.duration||temporaryAnimation.duration)
   }
 
-  const init = async() => {
-    const [stats, categories, courses, news, ] = await Promise.all([
-      UserRepository.getStats(),
-      CategoryRepository.getCategories(),
-      CoursesRepository.getCourses({page: 1, limit: 20, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
-      ArticlesRepository.getNews({isTop: true}),
-    ])
-
-    setStats(stats)
-    setCategories(state=> {
-      categories.forEach(el=> {
-        state.set(el.id, el)
-      })
-      return new Map(state)
-    })
-    setPopularCourses(state => {
-      courses.data.forEach(c => {
-        state.set(c.id, c)
-      })
-      return state
-    })
-    setNews(state => {
-      news.data.forEach(el => {
-        state.set(el.id, el)
-      })
-      return state
-    })
-
-    setTimeout(()=> {
-      setLoad(true)
-    }, 10)
-  }
-
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
     CategoryRepository.getSubCategoriesByCategoryId(c.id)
     .then(res => {
@@ -122,7 +78,9 @@ export default function MainPageEmployee() {
   useEffect(()=>{
     characterContext.init()
     cvContext.setSavedCvs()
-    init()
+    if(!indexPageContext.loaded){
+      indexPageContext.init()
+    }
   }, [])
 
   useEffect(()=>{
@@ -147,18 +105,18 @@ export default function MainPageEmployee() {
         useModel
         initialBackground={personalContext.backgrounds?.get(BackgroundCategoryType.Places)}
         /> 
-        {load &&
+        {indexPageContext.loaded &&
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
             <Link className={styles.card} href={{pathname: 'profile', query: {page:'feedbacks'}}}>
               <p className={styles.desc}>{t('mainPage_em_feedBacks')}</p>
               <SwapItemsSvg className={styles.icon}/>
-              {!stats && <Spinner className={styles.count} size={22}/>
+              {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(stats?.responsesCount.responses_count_interval)>0 &&
+                { Number(indexPageContext.stats?.responsesCount.responses_count_interval)>0 &&
                   <span>
-                    {' + '+ stats?.responsesCount.responses_count_interval}
+                    {' + '+ indexPageContext.stats?.responsesCount.responses_count_interval}
                   </span>
                 }
               </p>
@@ -167,12 +125,12 @@ export default function MainPageEmployee() {
             <Link className={styles.card} href={{pathname: 'recruiting'}}>
               <p className={styles.desc}>{t('mainPage_em_vacancies')}</p>
               <DocumentSheetSvg className={styles.icon}/>
-              {!stats && <Spinner className={styles.count} size={22}/>
+              {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(stats?.newVacanciesCount.new_vacancies_count_interval)>0 &&
+                { Number(indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval)>0 &&
                   <span>
-                    {' + '+ stats?.newVacanciesCount.new_vacancies_count_interval}
+                    {' + '+ indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval}
                   </span>
                 }
               </p>
@@ -181,12 +139,12 @@ export default function MainPageEmployee() {
             <Link className={styles.card} href={{pathname: '/views'}}>
               <p className={styles.desc}>{t('mainPage_em_watches')}</p>
              <EyeOpenSmallSvg className={styles.icon}/>
-              {!stats && <Spinner className={styles.count} size={22}/>
+              {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(stats?.viewsCount.views_count_interval)>0 &&
+                { Number(indexPageContext.stats?.viewsCount.views_count_interval)>0 &&
                   <span>
-                    {' + '+ stats?.viewsCount.views_count_interval}
+                    {' + '+ indexPageContext.stats?.viewsCount.views_count_interval}
                   </span>
                 }
               </p>
@@ -198,30 +156,30 @@ export default function MainPageEmployee() {
 
       </div>
 
-      {isTabletWidth && load &&
+      {isTabletWidth && indexPageContext.loaded &&
       <>
         <MobileBanners type={ cvContext.savedCvs.length > 0 ? 'vipVacancy' : 'cvCreate'}/>
       </>
       }
 
-      {load && <>
+      {indexPageContext.loaded && <>
       <Title title={t('mainPage_em_categories')} className={styles.title} onAllWatchClick={()=>{router.push('/recruiting/categories')}}/>
       <CategoriesList 
       onClick={(c) => onCategoryClickHandler(c)}
       watchMoreHref={'/recruiting/categories'}       
-      categories={[...categories.values()].filter(e=> e.image)} 
+      categories={[...indexPageContext.categories.values()].filter(e=> e.image)} 
       link={'/recruiting?categories='}
       itemClassName={styles.categoryItem}
       />
 
       <Title title={t('mainPage_em_articles')} className={styles.title}  />
-      {news.size > 0 &&
-        <ArticlesList onlyTitles news={[...news.values()]}/>
+      {indexPageContext.news.size > 0 &&
+        <ArticlesList onlyTitles news={[...indexPageContext.news.values()]}/>
       }
 
       <Title title={t('mainPage_em_freeeCourses')} className={styles.title}  onAllWatchClick={()=>{}}/>
-      {popularCourses.size > 0 &&
-        <CoursesList courses={[...popularCourses.values()]}/>
+      {indexPageContext.popularCourses.size > 0 &&
+        <CoursesList courses={[...indexPageContext.popularCourses.values()]}/>
       }
       </>}
 
