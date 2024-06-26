@@ -45,6 +45,7 @@ export function IndexPageWrapper(props: Props) {
 
 
   const init = async() => {
+    if(!userContext.user|| !userContext.currentProfile) return
     const [ _stats, _courses, _categories, _news] = await Promise.all([
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
@@ -87,14 +88,14 @@ export function IndexPageWrapper(props: Props) {
   useEffect(()=>{
     if(!userContext.currentProfile) {
       clearStats()
+      setNews(new Map)
+      setCategories(new Map)
+      setPopularCourses(new Map)
+      setLoaded(false)
+
     }
-    else {
-      UserRepository.getStats()
-      .then(res => {
-        setStats(res)
-      })
-    }
-  }, [userContext.currentProfile])
+   
+  }, [userContext.currentProfile, userContext.token])
 
 
   const value: IState = {

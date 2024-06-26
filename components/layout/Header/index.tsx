@@ -50,22 +50,22 @@ export default function Header(props: Props) {
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const refreshNotificationInterval = useRef<ReturnType<typeof setInterval>>()
-  const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>()
 
   const allowedStatsTypes = profileType === ProfileType.Employee ?
   [
     ItemsNotificationType.ChatMessage,
     ItemsNotificationType.Admin,
     ItemsNotificationType.NewProposal,
-    ItemsNotificationType.UserBlocked
   ]
   :
   [
     ItemsNotificationType.NewApplication,
     ItemsNotificationType.Admin,
-    ItemsNotificationType.UserBlocked,
     ItemsNotificationType.ChatMessage,
   ]
+  const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>(allowedStatsTypes.map(t=> ({type: t, count: 0})))
+
+
 
   const stats = _stats?.filter(s=> allowedStatsTypes.includes(s.type))
 
@@ -76,7 +76,6 @@ export default function Header(props: Props) {
 
   useEffect(()=>{
     if(!isTabletWidth) {
-
       if(props.distanceFromTop > fromTop && props.distanceFromTop <= -40) {
         setDirection('up')
         setFromTop(props.distanceFromTop)
@@ -108,9 +107,17 @@ export default function Header(props: Props) {
       clearInterval(refreshNotificationInterval.current)
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
-      NotificationRepository.getUnreadStats().then(res => setStats(res.items))
+      NotificationRepository.getUnreadStats().then(res => setStats(_ => {
+        return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
+      }))
+      .catch(err => 
+        // eslint-disable-next-line no-console
+        console.warn(err)
+      )
       refreshNotificationInterval.current = setInterval(()=>{
-        NotificationRepository.getUnreadStats().then(res => setStats(res.items))
+        NotificationRepository.getUnreadStats().then(res => setStats(_ => {
+          return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
+        }))
         .catch(err => 
           // eslint-disable-next-line no-console
           console.warn(err)
@@ -281,7 +288,7 @@ export default function Header(props: Props) {
               altStyleType={['icon','white']}
               className={styles.menuButton}
               >
-                {stats?.length > 0 &&
+                {stats?.map(el => el.count).filter(Boolean).length > 0 &&
                   <NotificationSvg color={isLightTheme?colors.black:''}/>
                   ||
                   <NoNotificationSvg />

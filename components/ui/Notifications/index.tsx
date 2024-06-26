@@ -164,7 +164,7 @@ export default function Notifications(props: Props) {
       styleType={['w500', 'medium']}  
       className={styles.banner__button}
       onClick={()=>{
-        router.push('/settings')
+        router.push({pathname: '/settings', query: {page: 'notifications'}})
         props.onClose()
       }}
       >Перейти в настройки</P>
