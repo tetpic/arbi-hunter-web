@@ -76,7 +76,7 @@ export default class FavoritesFolderRepository {
     return res
   }
 
-  static async getCvsInFolder(folderId: number, page: number, limit: number): Promise<IPagination<ICV>|null> {
+  static async getCvsInFolder(folderId: number, page?: number, limit?: number): Promise<IPagination<ICV>|null> {
     const res = await request({
       method: 'get',
       url: '/api/cv',
