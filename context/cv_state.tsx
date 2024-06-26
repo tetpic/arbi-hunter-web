@@ -26,6 +26,7 @@ interface IState {
   setBlackListedCVs: () => void
   removeFromBlackList: (id?: number) => void
   moveToTop: (cvId: number, onSet?: ()=>void) => void
+  setFoundCvsState: Dispatch<SetStateAction<Map<number, ICV>>>
 }
 
 const CvContext = createContext<Partial<IState>>({})
@@ -173,7 +174,8 @@ export function CvWrapper(props: Props) {
     total,
     setBlackListedCVs,
     removeFromBlackList,
-    moveToTop
+    moveToTop,
+    setFoundCvsState
   }
 
   return (

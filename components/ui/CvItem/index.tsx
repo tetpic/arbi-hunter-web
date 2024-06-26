@@ -37,7 +37,7 @@ import { useFeedbacksContext } from 'context/feedbacks_state'
 interface Props {
   cv: ICV
   initialVacancy?: IVacancy
-  onChangeItem?: () => void
+  onChangeItem?: (cv?: ICV) => void
 }
 
 export default function CvItem({cv, ...props}: Props) {
@@ -66,7 +66,7 @@ export default function CvItem({cv, ...props}: Props) {
         type: ApplicationBSSelectType.ThisVacancy, 
         vcId: props.initialVacancy.id, 
         cv, 
-        onSubmit: props.onChangeItem,
+        onSubmit: ()=>props.onChangeItem(),
         createProposal: feedbacksContext.createProposal
       }
       isTabletWidth
@@ -121,7 +121,7 @@ export default function CvItem({cv, ...props}: Props) {
     sendToMetrika(AppMetricaEvent.AddToSaved)
     CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
     .then(res=> {
-      props.onChangeItem()      
+      props.onChangeItem({...cv, isSavedByCurrentProfile: true})      
     })
     .catch(_=>{})
   }
@@ -129,7 +129,7 @@ export default function CvItem({cv, ...props}: Props) {
   const removeFromSaved = (signal: AbortSignal) => {
     CvRepository.removeCvFromSaved(cv.id, {signal})
     .then(_=> {
-      props.onChangeItem()
+      props.onChangeItem({...cv, isSavedByCurrentProfile: false})
     })
     .catch(_=>{})
   }

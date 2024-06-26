@@ -40,7 +40,7 @@ export function FavoritesFolderWrapper(props: Props) {
     try {
       const res = await FavoritesFolderRepository.getFolderList()
       const cvs = await Promise.all(res.data
-        .map(el => FavoritesFolderRepository.getCvsInFolder(el.id, 1, LIMIT)
+        .map(el => FavoritesFolderRepository.getCvsInFolder(el.id)
           .then(c => {
             return [el.id, [{cvs: c.data, page: c.page, total: c.total}]] as [number, {cvs:ICV[], page: number, total: number}[]]
           })

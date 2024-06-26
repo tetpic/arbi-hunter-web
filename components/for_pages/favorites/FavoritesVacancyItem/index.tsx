@@ -25,7 +25,11 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
   
 
   return (<Link href={'/vacancy/'+vacancy.id} className={styles.root}> 
-    <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={()=>{onLikeClick(vacancy.id)}}/>
+    <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={(e)=>{
+      e.stopPropagation()
+      e.preventDefault()
+      onLikeClick(vacancy.id)
+      }}/>
     <div className={styles.top}>
       <UserPic className={styles.userPic} size={42} image={image}/>
       <div className={styles.topContent}>

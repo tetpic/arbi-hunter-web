@@ -27,6 +27,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useLocationContext } from 'context/location_state'
 import { CompensationType, LanguageKnowLevel } from 'types/enums'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
+import { ICV } from 'data/interfaces/ICV'
 
 
 interface Props {
@@ -202,7 +203,21 @@ function RecruitingPageHirerInner(props: Props) {
         dataLength={cvContext.foundCvs?.size + 1}>
           <div className={styles.vacanciesWrapper}>
             {cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem cv={cv} initialVacancy={vacancyContext.currentVacancy}  key={cv.id} onChangeItem={()=> findVacanciesThrottle.callback()}/>
+                return <CvItem 
+                cv={cv} 
+                initialVacancy={vacancyContext.currentVacancy}  
+                key={cv.id} 
+                onChangeItem={(_cv: ICV)=> {
+                  if(_cv) {
+                    cvContext.setFoundCvsState(state => {
+                      state.set(_cv.id, _cv)
+                      return new Map(state)
+                    })
+                  }
+                  else {
+                    findCvs()
+                  }
+                }}/>
               })
               ||
               !loading && <P useThemeColor className='empty'>{t('recruiting_noFoundCvs')}</P>
