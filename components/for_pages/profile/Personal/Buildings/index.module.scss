@@ -100,6 +100,8 @@
   @include mq($TabletWidth, max) {
     width: max(100%, 770px);
     height: max(80%, 71px);
+    top: unset;
+    bottom: 0
   }
 
 

@@ -206,7 +206,6 @@ export default function BackgroundPickModal(props: Props) {
     return <BottomSheetLayout>
       <BottomSheetBody>
         <div className={styles.modalWrapper}>
-          {/* {back} */}
           {page === 'build'? buildPicker: backPicker}   
           {buttons}   
           </div>

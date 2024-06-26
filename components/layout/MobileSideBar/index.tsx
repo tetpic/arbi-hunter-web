@@ -25,7 +25,6 @@ import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
 import { Preset } from 'types/enums'
 import StarSvg from '@/components/svg/StarSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
-import { useAppContext } from 'context/state'
 import { colors } from 'styles/variables'
 import useTranslation from 'next-translate/useTranslation'
 import Formatter from 'utils/formatter'
@@ -40,7 +39,6 @@ interface Props {
 export default function MobileSideBar(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
-  const appContext = useAppContext()
   const [active, setActive] = useState<boolean>(false)
   const router = useRouter()
   const isLogged = userContext.isLogged
@@ -51,13 +49,13 @@ export default function MobileSideBar(props: Props) {
     setActive(false)
     setTimeout(()=> {
       props.onClose()
-    }, 50)
+    }, 300)
   }
 
   useEffect(()=>{
     setTimeout(() => {
       setActive(true)
-    }, 20)
+    }, 300)
   }, [])
 
   return (
@@ -80,7 +78,7 @@ export default function MobileSideBar(props: Props) {
       className={styles.button} 
       onClick={()=>{
         router.push('/registration')
-        props.onClose()
+        closeHandler()
       }} 
       styleType={['wide', 'gradient']}
       >
@@ -90,7 +88,7 @@ export default function MobileSideBar(props: Props) {
       className={styles.button} 
       onClick={()=>{
         router.push('/login')
-        props.onClose()
+        closeHandler()
       }}
       styleType={['wide', 'black']}
       altStyleType={['wide', 'whitePurple']}
@@ -104,7 +102,7 @@ export default function MobileSideBar(props: Props) {
     <div 
     onClick={()=>{
       router.push('/personal/my')
-      props.onClose()
+      closeHandler()
     }} 
     className={styles.userCard}
     >
@@ -121,7 +119,7 @@ export default function MobileSideBar(props: Props) {
     </div>
 
     <Link 
-    onClick={props.onClose}
+    onClick={closeHandler}
     href={'/shop'}
     className={classnames(styles.links, styles.balanceLink)}>
       <P style={{gridArea: 't'}} styleType={['w500', 'medium']} >{t('shop_profileBalance')}</P>
@@ -135,7 +133,7 @@ export default function MobileSideBar(props: Props) {
       {profileType === ProfileType.Employee &&
         <Link 
         href={{pathname: '/cvs'}} 
-        onClick={props.onClose}
+        onClick={closeHandler}
         className={styles.link}
         >
           <div className={styles.icon}><FolderSvg/></div>
@@ -149,7 +147,7 @@ export default function MobileSideBar(props: Props) {
         href={{
           pathname: '/vacancies',
         }} 
-        onClick={props.onClose}
+        onClick={closeHandler}
         className={styles.link}
         >
           <div className={styles.icon}><DocumentUserSvg/></div>
@@ -164,7 +162,7 @@ export default function MobileSideBar(props: Props) {
           pathname: '/profile',
           query: {page: 'feedbacks'}
         }} 
-        onClick={props.onClose}
+        onClick={closeHandler}
         className={styles.link}
         >
           <div className={styles.icon}><ChatFeedbackSvg/></div>
@@ -175,7 +173,7 @@ export default function MobileSideBar(props: Props) {
 
       <Link 
       href={'/favorites'} 
-      onClick={props.onClose}
+      onClick={closeHandler}
       className={styles.link}
       >
         <div className={styles.icon}>{profileType === ProfileType.Hirer?<StarSvg/>:<HeartSvg/>}</div>
@@ -185,7 +183,7 @@ export default function MobileSideBar(props: Props) {
     </div>
 
     <div className={styles.links}>
-      <Link href={'/settings'} className={styles.link} onClick={props.onClose}>
+      <Link href={'/settings'} className={styles.link} onClick={closeHandler}>
         <div className={styles.icon}><SettingSvg/></div>
         <P useThemeColor styleType={['w500', 'medium']}>{t('settings')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
@@ -197,7 +195,7 @@ export default function MobileSideBar(props: Props) {
           pathname: '/profile',
           query: {page: 'edit'}
         }} 
-        onClick={props.onClose}
+        onClick={closeHandler}
         className={styles.link}
         >
           <div className={styles.icon}><ManSvg/></div>
@@ -208,7 +206,7 @@ export default function MobileSideBar(props: Props) {
       {profileType === ProfileType.Hirer &&
         <Link 
         href={'/managers'} 
-        onClick={props.onClose}
+        onClick={closeHandler}
         className={styles.link}
         >
           <div className={styles.icon}><UserDoubleSvg/></div>
@@ -219,7 +217,7 @@ export default function MobileSideBar(props: Props) {
     </div>
 
     <div className={styles.links}>
-      <Link href={'/base'} className={styles.link} onClick={props.onClose}>
+      <Link href={'/base'} className={styles.link} onClick={closeHandler}>
         <div className={styles.icon}><QuestionSvg/></div>
         <P useThemeColor styleType={['w500', 'medium']}>{t('nav_knowlegdeBase')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
@@ -227,7 +225,7 @@ export default function MobileSideBar(props: Props) {
 
       <Link 
       href={{pathname: '/shop'}} 
-      onClick={props.onClose}
+      onClick={closeHandler}
       className={styles.link}
       >
         <div className={styles.shopicon}><ShopSmallSvg color={colors.blue}/></div>
@@ -237,7 +235,7 @@ export default function MobileSideBar(props: Props) {
 
       <Link 
       href={{pathname: 'https://t.me/arbihunter_support'}} 
-      onClick={props.onClose}
+      onClick={closeHandler}
       className={styles.link}
       >
         <div className={styles.shopicon}><SupportSvg/></div>

@@ -7,8 +7,9 @@ import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import UserRepository from 'data/repositories/UserRepository'
-import { createContext, useContext,  useState } from 'react'
+import { createContext, useContext,  useEffect,  useState } from 'react'
 import { Languages } from 'types/enums'
+import { useUserContext } from './user_state'
 
 interface IState {
   stats: IStats
@@ -17,6 +18,7 @@ interface IState {
   news: Map<number, IArticle>
   loaded: boolean
   init: () => void
+  clearStats: () => void
 }
 
 
@@ -33,6 +35,7 @@ export function IndexPageWrapper(props: Props) {
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
   const [loaded, setLoaded] = useState<boolean>(false)
+  const userContext = useUserContext()
 
   const init = async() => {
     const [ _stats, _courses, _categories, _news] = await Promise.all([
@@ -65,6 +68,22 @@ export function IndexPageWrapper(props: Props) {
     }, 20)
   }
 
+  const clearStats = () => {
+    setStats(undefined)
+  }
+
+  useEffect(()=>{
+    if(!userContext.currentProfile) {
+      clearStats()
+    }
+    else {
+      UserRepository.getStats()
+      .then(res => {
+        setStats(res)
+      })
+    }
+  }, [userContext.currentProfile])
+
 
   const value: IState = {
     stats,
@@ -72,7 +91,8 @@ export function IndexPageWrapper(props: Props) {
     popularCourses,
     news,
     init,
-    loaded
+    loaded,
+    clearStats
   }
 
   return (

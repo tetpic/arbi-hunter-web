@@ -53,12 +53,12 @@ export default function PersonalHeader(props: Props) {
       onSave: (data) => {
         if(data.type === 'place') {
           setTimeout(()=> {
-            const _args:IBackgroundPickModalArguments =  {
+            const _pickModalArgs:IBackgroundPickModalArguments =  {
               currentBackground: cBack?.image|| null,
               currentBuild: cBuild?.image || null,
               hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
               buildPicker: false,
-              onSave: (background, _) => {                  
+              onSave: (background, _) => {      
                 BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, cBuild?.id].filter(Boolean)}, currentProfile?.profileType)
                 .then(_ => {
                   personalContext.refreshBackgrounds()
@@ -69,8 +69,8 @@ export default function PersonalHeader(props: Props) {
               }
             }
             isTabletWidth
-            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 370)
-            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args)
+            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _pickModalArgs, 370)
+            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _pickModalArgs)
           }, 100)
         }
         else if(data.type === 'building') {
@@ -80,7 +80,7 @@ export default function PersonalHeader(props: Props) {
               currentBuild: cBuild?.image || null,
               hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
               buildPicker: true,
-              onSave: (_, building) => {        
+              onSave: (_, building) => {    
                 BackgroundRepository.setBackgrounds({backgroundsIds: [cBack?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
                 .then(_ => {
                   personalContext.refreshBackgrounds()
@@ -133,7 +133,7 @@ export default function PersonalHeader(props: Props) {
   })()
 
   useEffect(()=>{
-    if(personalContext.backgrounds && !backImage) {
+    if(personalContext.backgrounds) {
       setBackImage(personalContext.backgrounds?.get(BackgroundCategoryType.Places))  
     }
   }, [personalContext.backgrounds])

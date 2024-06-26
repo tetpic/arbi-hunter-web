@@ -274,7 +274,6 @@ export function ChatDialogWrapper(props: Props) {
     }
     else {
       if(!recorder.current) {
-        debugger
         const stream = await navigator.mediaDevices.getUserMedia({audio: true})
         recorder.current = new MediaRecorder(stream)
         recorder.current.audioBitsPerSecond

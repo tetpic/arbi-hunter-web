@@ -101,8 +101,7 @@ export default function VCFeedbacks(props: Props) {
   }, [currentPage, responsesContext.VCFeedbacks])
 
   useEffect(()=>{
-    vacancyContext.setVacancies()
-    folderContext.getAllFolders()
+    // vacancyContext.setVacancies()
   }, [])
 
   const onNavigationClick = (t: VCNaviagation) => {
@@ -133,13 +132,13 @@ export default function VCFeedbacks(props: Props) {
   <div className={styles.main}>
   <Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>
     
-    <ItemNavigation activeItem={currentPage} items={navSet} onClick={onNavigationClick}/>
+    <ItemNavigation key={'vc_responses'} activeItem={currentPage} items={navSet} onClick={onNavigationClick}/>
     <Spacer basis={24}/>
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
       {
-        responsesContext.filteredVcResponses.length>0&&!loading&&
+        responsesContext.filteredVcResponses.length>0&&
         responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
           return <CvCard onChangeItem={changeItem} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })

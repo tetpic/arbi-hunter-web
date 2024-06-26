@@ -43,13 +43,12 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
       setActiveWidth(activeItemSize?.width)
       setTransition(activeItemSize?.left - box.left)
     }
-  }, [props.activeItem])  
+  }, [props.activeItem, props.items])  
 
 
 
   return (
       <div className={classNames(styles.root, props.className, styles[theme]) }> 
-
         <div className={styles.wrapper} ref={wrapperRef} >
           <div className={classNames(styles.items, props.onAllWidth&&styles.itemsWide)} ref={itemsListRef}>
             {props.items.length > 0 && props.items

@@ -22,6 +22,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import SystemSvg from '@/components/svg/SystemSvg'
 import MessageReadSvg from '@/components/svg/MessageReadSvg'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 interface Props {
   active?: boolean
@@ -156,6 +157,18 @@ export default function Notifications(props: Props) {
     ||
     <P styleType={['w600', 'large']}>Уведомления</P>
   }
+    <div className={styles.banner}>
+      <P styleType={['w500', 'medium']} className={styles.banner__title}>Не забудьте о настройках телефона </P>
+      <P styleType={['small']} className={styles.banner__sub}>Включите уведомления там, чтобы ничего не пропустить</P>
+      <P styleType={['w500', 'medium']}  className={styles.banner__button}>Перейти в настройки</P>
+      <Image 
+      src={'/images/notificationPage/bell.png'} 
+      className={styles.banner__image}
+      alt={''} 
+      width={122} 
+      height={122}
+      />
+    </div>
     <div className={styles.notificationList}>
       {Boolean(props.stats?.length) && props.stats.map((el, index) => {
         const stat = getStat(el.type, el.count)

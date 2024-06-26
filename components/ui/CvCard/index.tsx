@@ -15,8 +15,8 @@ import Button from '../Button'
 import UserPic from '../UserPic'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
-import CvRepository from 'data/repositories/CvRepository'
-import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
+// import CvRepository from 'data/repositories/CvRepository'
+// import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
@@ -61,46 +61,46 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     router.push('/messenger?chat=' + chat.id)
   }
 
-  const addToSaved = (signal: AbortSignal, folderId?: number ) => {
-    CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
-    .then(res=> {
-      props.onChangeItem(res)      
-    })
-    .catch(_=>{})
-  }
+  // const addToSaved = (signal: AbortSignal, folderId?: number ) => {
+  //   CvRepository.addCvToSaved({id: cv.id, favouriteFolderId: folderId}, {signal})
+  //   .then(res=> {
+  //     props.onChangeItem(res)      
+  //   })
+  //   .catch(_=>{})
+  // }
 
-  const removeFromSaved = (signal: AbortSignal) => {
-    CvRepository.removeCvFromSaved(cv.id, {signal})
-    .then(res=> {
-      props.onChangeItem(res)
-    })
-    .catch(_=>{})
-  }
+  // const removeFromSaved = (signal: AbortSignal) => {
+  //   CvRepository.removeCvFromSaved(cv.id, {signal})
+  //   .then(res=> {
+  //     props.onChangeItem(res)
+  //   })
+  //   .catch(_=>{})
+  // }
 
-  const showFolderModal = (signal: AbortSignal) =>{
-    const _modalArgs:ChooseFolderToSaveArgs = {
-      initialFolders: folderContext.allFolders,
-      onChoose: (folderId) => {
-        addToSaved(signal, folderId)
-      }
+  // const showFolderModal = (signal: AbortSignal) =>{
+  //   const _modalArgs:ChooseFolderToSaveArgs = {
+  //     initialFolders: folderContext.allFolders,
+  //     onChoose: (folderId) => {
+  //       addToSaved(signal, folderId)
+  //     }
 
-    }
-    isTabletWidth
-    ? appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
-    :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
-  }
+  //   }
+  //   isTabletWidth
+  //   ? appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
+  //   :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs)
+  // }
 
-  const saveHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    const [signal] = getNewSignal('likeHandler')
-    if(!cv.isSavedByCurrentProfile) {
-      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(signal)
-    }
-    else {
-      removeFromSaved(signal)
-    }
-  }
+  // const saveHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+  //   e.preventDefault()
+  //   e.stopPropagation()
+  //   const [signal] = getNewSignal('likeHandler')
+  //   if(!cv.isSavedByCurrentProfile) {
+  //     userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(signal)
+  //   }
+  //   else {
+  //     removeFromSaved(signal)
+  //   }
+  // }
 
   useEffect(()=>{
     setCurrentCV(cv)

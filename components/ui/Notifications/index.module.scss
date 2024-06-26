@@ -116,3 +116,43 @@
     }
   }
 }
+
+.banner {
+  display: none;
+  padding: 16px;
+  border-radius: 16px;
+  grid-template-areas: 'title image' 'sub image' 'button image';
+  grid-template-columns: 1fr auto;
+  column-gap: 16px;
+  row-gap: 0;
+  margin-block: 16px;
+  background: $gradientIndigo;
+
+  &__title {
+    grid-area: title;
+  }
+
+  &__sub {
+    grid-area: sub;
+  }
+
+  &__image {
+    grid-area: image;
+    margin-inline: -16px;
+  }
+
+  &__button {
+    grid-area: button;
+    padding-block: 2px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.212);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  @include mq($TabletWidth, max) {
+    display: grid;
+  }
+}

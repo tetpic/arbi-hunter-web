@@ -116,6 +116,7 @@
   @extend .rive;
   top: 40px;
   z-index: 1;
+  width: 100%;
   @include mq($TabletWidth, max) {
     width: max(100%, 770px);
     height: max(80%, 71px);

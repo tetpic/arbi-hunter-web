@@ -102,23 +102,19 @@ export default function Header(props: Props) {
     }
   }, [dropDown])
 
-  useEffect(()=>{
-    if(!refreshNotificationInterval.current && props.authorized && userContext.currentProfile) {
-      NotificationRepository.getUnreadStats().then(res => setStats(res.items))
-      refreshNotificationInterval.current = setInterval(()=>{
-        NotificationRepository.getUnreadStats().then(res => setStats(res.items))
-      }, 20000)
-    }
-  }, [])
   
   useEffect(()=>{
     if(!userContext.currentProfile ) {
       clearInterval(refreshNotificationInterval.current)
     }
-
-    if(!refreshNotificationInterval.current) {
+    if(!refreshNotificationInterval.current && userContext.currentProfile) {
+      NotificationRepository.getUnreadStats().then(res => setStats(res.items))
       refreshNotificationInterval.current = setInterval(()=>{
         NotificationRepository.getUnreadStats().then(res => setStats(res.items))
+        .catch(err => 
+          // eslint-disable-next-line no-console
+          console.warn(err)
+        )
       }, 20000)
     }
   }, [userContext.currentProfile])

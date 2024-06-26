@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Footer from '../Footer'
 import { useAppContext } from 'context/state'
 import { useResize } from 'components/hooks/useResize'
-import { useEffect } from 'react'
+import { useInsertionEffect } from 'react'
 import { useUserContext } from 'context/user_state'
 import classnames from 'classnames'
 import MobileBottomMenu from '@/components/ui/MobileBottomMenu'
@@ -34,7 +34,7 @@ export default function ContentLayout(props: Props) {
   const isLogged = userContext.isLogged
   const {isTabletWidth} = useResize()
 
-  useEffect(()=>{
+  useInsertionEffect(()=>{
     if((isTabletWidth||props.isMobile)&&props.hideMobileHeader) {
       appContext.setHideHeader(true)
     }
