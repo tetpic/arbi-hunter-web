@@ -160,7 +160,14 @@ export default function Notifications(props: Props) {
     <div className={styles.banner}>
       <P styleType={['w500', 'medium']} className={styles.banner__title}>Не забудьте о настройках телефона </P>
       <P styleType={['small']} className={styles.banner__sub}>Включите уведомления там, чтобы ничего не пропустить</P>
-      <P styleType={['w500', 'medium']}  className={styles.banner__button}>Перейти в настройки</P>
+      <P 
+      styleType={['w500', 'medium']}  
+      className={styles.banner__button}
+      onClick={()=>{
+        router.push('/settings')
+        props.onClose()
+      }}
+      >Перейти в настройки</P>
       <Image 
       src={'/images/notificationPage/bell.png'} 
       className={styles.banner__image}

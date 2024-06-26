@@ -10,6 +10,7 @@ import UserRepository from 'data/repositories/UserRepository'
 import { createContext, useContext,  useEffect,  useState } from 'react'
 import { Languages } from 'types/enums'
 import { useUserContext } from './user_state'
+import { IVacancy } from 'data/interfaces/IVacancy'
 
 interface IState {
   stats: IStats
@@ -17,7 +18,10 @@ interface IState {
   popularCourses: Map<number, ICourse>
   news: Map<number, IArticle>
   loaded: boolean
+  archiveVacancies: Map<number, IVacancy>
+  activeVacancies: Map<number, IVacancy>
   init: () => void
+  setVacancies: (activeVacancies: Map<number, IVacancy>, archiveVacancies: Map<number, IVacancy>) => void
   clearStats: () => void
 }
 
@@ -36,6 +40,9 @@ export function IndexPageWrapper(props: Props) {
   const [news, setNews] = useState<Map<number, IArticle>>(new Map)
   const [loaded, setLoaded] = useState<boolean>(false)
   const userContext = useUserContext()
+  const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
+  const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
+
 
   const init = async() => {
     const [ _stats, _courses, _categories, _news] = await Promise.all([
@@ -68,6 +75,11 @@ export function IndexPageWrapper(props: Props) {
     }, 20)
   }
 
+  const setVacancies = (activeVacancies: Map<number, IVacancy>, archiveVacancies: Map<number, IVacancy>) => {
+    setActiveVacanciesState(activeVacancies)
+    setArchiveVacanciesState(archiveVacancies)
+  }
+
   const clearStats = () => {
     setStats(undefined)
   }
@@ -92,7 +104,10 @@ export function IndexPageWrapper(props: Props) {
     news,
     init,
     loaded,
-    clearStats
+    clearStats,
+    activeVacancies,
+    archiveVacancies,
+    setVacancies
   }
 
   return (

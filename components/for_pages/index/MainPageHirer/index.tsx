@@ -37,7 +37,9 @@ export default function MainPageHirer() {
     if(!indexPageContext.loaded) {
       indexPageContext.init()
     }
-    vacancyContext.setVacancies()
+    vacancyContext.setVacancies().then(_ => {
+      indexPageContext.setVacancies(vacancyContext.activeVacancies, vacancyContext.archiveVacancies)
+    })
   }, [])
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
@@ -110,8 +112,10 @@ export default function MainPageHirer() {
       </div>
 
 
-      {isTabletWidth && indexPageContext.loaded &&
-        <MobileBanners type={(vacancyContext.activeVacancies.size === 0&&vacancyContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
+      {isTabletWidth && indexPageContext.loaded && 
+        <MobileBanners type={(indexPageContext.activeVacancies.size === 0&&indexPageContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
+        ||
+        isTabletWidth && <div style={{height: 123, marginTop: 124}}></div>
       }
 
       {indexPageContext.loaded &&<>
