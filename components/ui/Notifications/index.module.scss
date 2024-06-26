@@ -1,0 +1,158 @@
+@import 'styles/index';
+
+.icon {
+  background: linear-gradient(45deg, var(--color1), var(--color2));
+  border-radius: 16px;
+  padding: 4px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: icon;
+}
+
+.notificationList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 36px;
+}
+
+.root {
+  min-width: 375px;
+  padding: 16px;
+  border-radius: 26px;
+  @include mq($TabletWidth, max) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 100;
+    border-radius: unset;
+    background-color: $backgroundBlack;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.item {
+  display: grid;
+  grid-template-areas: 'icon name badge' 'icon counter badge';
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+.listItem {
+  @include mq($TabletWidth, max) {
+    grid-template-areas: 'badge name icon';
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    
+    .counterText {
+      display: none;
+    }
+  }
+}
+
+.name {
+  grid-area: name;
+}
+
+.counterText {
+  grid-area: counter;
+}
+
+.counterBadge {
+  grid-area: badge;
+  background-color: $greenLight;
+  padding: 4px 6px;
+  min-width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;  
+  align-self: flex-end;
+}
+
+.closeButton {
+  grid-area: badge;
+  align-self: flex-start;
+}
+
+.divider {
+  height: 2px;
+  background-color: $grey;
+  width: 100%;
+  margin-block: 16px;
+}
+
+.messages {
+  height: 320px;
+  overflow: auto;
+  @include mq($TabletWidth, max) {
+    height: 100%;
+  }
+  >div {
+    height: 100%;
+  }
+
+  .messageWrapper {
+    display: flex;
+    margin-top: 8px;
+  }
+  
+  .message {
+    padding: 8px 16px;
+    background-color: $grey;
+    border-radius: 16px;
+
+
+    .readIcon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.banner {
+  display: none;
+  padding: 16px;
+  border-radius: 16px;
+  grid-template-areas: 'title image' 'sub image' 'button image';
+  grid-template-columns: 1fr auto;
+  column-gap: 16px;
+  row-gap: 0;
+  margin-block: 16px;
+  background: $gradientIndigo;
+
+  &__title {
+    grid-area: title;
+  }
+
+  &__sub {
+    grid-area: sub;
+  }
+
+  &__image {
+    grid-area: image;
+    margin-inline: -16px;
+  }
+
+  &__button {
+    grid-area: button;
+    padding-block: 2px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.212);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  @include mq($TabletWidth, max) {
+    display: grid;
+  }
+}

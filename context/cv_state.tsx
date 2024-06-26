@@ -106,7 +106,7 @@ export function CvWrapper(props: Props) {
   }
 
   const findCvs = async(data?: IVacancyCvSearchParams, _page?: number) => {
-    const res = await CvRepository.findCvs(data, _page||page, 40)
+    const res = await CvRepository.findCvs(data, _page||page, 10)
     if(typeof res === 'object') {
       setFoundCvsState(state=> {
         (_page||page) === 1&& state.clear()

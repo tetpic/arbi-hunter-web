@@ -111,7 +111,7 @@ export default function ChatItem(props: Props) {
   return (
     <div className={styles.container}>
 
-      <div className={classNames(styles.root, props.isActive&&styles.active)} ref={itemRef} onContextMenu={onRightClick} onClick={onClickHandler}> 
+      <div className={classNames(styles.root, props.isActive&&!isTabletWidth&&styles.active)} ref={itemRef} onContextMenu={onRightClick} onClick={onClickHandler}> 
         <UserPic 
         size={56} 
         className={classNames(styles.userPic, props.isActive&&styles.userPic_active)}  

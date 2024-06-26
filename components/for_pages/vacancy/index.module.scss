@@ -11,6 +11,13 @@
     margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
   }
+
+  .tag {
+    padding: 12px 16px;
+    border-radius: 14px;
+    background-color: $black;
+    border: unset !important;
+  }
 }
 
 .topButtons {
@@ -21,6 +28,7 @@
 
 .contactsButton {
   position: relative;
+  white-space: nowrap;
   @include mq($TabletWidth, max) {
     width: 100%;
   }
@@ -77,6 +85,7 @@
   min-width: 350px;
   @include mq($TabletWidth, max) {
     width: 100%;
+    min-width: unset;
   }
 
   .companyArrow {
@@ -95,7 +104,6 @@
   align-items: center;
   column-gap: 16px;
   position: relative;
-  width: fit-content;
   z-index: 2;
   @include mq($TabletWidth, max) {
     flex-wrap: wrap;
@@ -147,7 +155,7 @@
   width: 100% !important;
   max-width: unset !important;
   padding-right: 60px !important;
-  background-color: var(--secondaryColor) !important; 
+  background-color: var(--backColor) !important; 
   border: 2px var(--borderPerimeter) solid !important;
   @include mq($TabletWidth, max) {
     padding-right: 16px !important;

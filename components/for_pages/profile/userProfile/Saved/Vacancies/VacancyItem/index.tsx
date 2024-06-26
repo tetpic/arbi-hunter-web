@@ -48,7 +48,6 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
 
 
   const rejectHandler = async(deletedByEmployee?: boolean) => {
-    debugger
     if(!item.id) {
       appContext.showSnackbar(t('profile_wrongApplication'), SnackbarType.error)
       openDropDown(false)

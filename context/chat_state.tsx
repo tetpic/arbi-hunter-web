@@ -51,6 +51,7 @@ const ChatContext = createContext<Partial<IState>>({})
 interface Props {
   children: React.ReactNode
   initialChat?: number
+  chatList?: IChat[]
 }
 
 
@@ -65,7 +66,7 @@ export function ChatWrapper(props: Props) {
   const windowFocused = useWindowFocus()
   const isLoggedRef = useRef<boolean>(isLogged)
   const scrollableTarget = useRef<HTMLElement | null>(null)
-  const [chats, setChats] = useState<Map<number, IChat>>(new Map)
+  const [chats, setChats] = useState<Map<number, IChat>>(new Map(props.chatList?.map(el=> [el.id, el])))
   const [currentChatId, setCurrentChatId] = useState<number | null>(props.initialChat)
   const [totalChats, setTotalChats] = useState<number>(null)
   const [page, setPage] = useState<number>(1)
@@ -104,7 +105,9 @@ export function ChatWrapper(props: Props) {
     }
     abortControllerRef.current = new AbortController()
     try {
+      console.time('loadChatsInContext')
       const data = await ChatRepository.getChatList(filters, {signal: abortControllerRef.current?.signal!})
+      console.timeEnd('loadChatsInContext')
       abortControllerRef.current = null
       setChats(state=> {
         state.clear()
@@ -129,7 +132,7 @@ export function ChatWrapper(props: Props) {
   const init = async () => {
     await loadChats(1)
     await setFoldersFromInit()
-    setTimeout(()=>setLoading(false), 300)
+    setTimeout(()=>setLoading(false), 50)
   }
 
   const fetchMore = async () => {
@@ -140,6 +143,7 @@ export function ChatWrapper(props: Props) {
   const setFilter = (data?: IChatsFilter) => {
     
     if(!data) {
+      console.log('set chats in setFilter')
       setChats(chatsRef.current)
       setFilterState(null)
       return
@@ -156,6 +160,8 @@ export function ChatWrapper(props: Props) {
 
   const decreaseUnreadCount = (chatId: number)=> {
     if(chats.size === 0) return
+    console.log('set chats in decreaseUnreadCount')
+
     setChats(state=> {
       const chatNeeded = state.get(chatId)
       if(!chatNeeded) return state
@@ -180,6 +186,8 @@ export function ChatWrapper(props: Props) {
   const setSearch = (search?: string) => {
     ChatRepository.getChatList({search})
     .then(res=> {
+      console.log('set chats in setSearch')
+
       setTotalChats(res.total)
       setChats(state => {
         state.clear()
@@ -195,11 +203,15 @@ export function ChatWrapper(props: Props) {
     const folderToSet = [...folders.values()].find(el => el.name === chatName)||null
     if(folderToSet) {
       const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id})
+      console.log('set chats in setChatsFromFolder')
+
       setChats(new Map(chats.data.map(el=> [el.id, el])))
       router.replace({query: { ...router.query, chat: chats.data[0]?.id}}, undefined, {shallow: true})
       setCurrentChatId(chats.data[0]?.id)
     }
     else {
+      console.log('set chats in setChatsFromFolder')
+
       setChats(chatsRef.current)
     }
   }
@@ -242,6 +254,8 @@ export function ChatWrapper(props: Props) {
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({})
     if(data.data) {
+      console.log('set chats in debouncedReconnect')
+
       setChats(new Map(data.data.map(el=> [el.id, el])) ?? new Map)
       setTotalChats(data.total)
     }
@@ -261,6 +275,8 @@ export function ChatWrapper(props: Props) {
     }
     const subscription = chatSocket.messageState$.subscribe((message) => {
       if (chats.has(message.chatId)) {
+        console.log('set chats in subscription')
+
         setChats(state => {
           const newState = [...state.values()].map(i => i.id === message.chatId ? {
             ...i,
@@ -327,7 +343,7 @@ export function ChatWrapper(props: Props) {
   const value: IState = {
     currentChatId,
     setCurrentChatId,
-    chats,
+    chats: chats?chats:new Map(props.chatList?.map(el=> [el.id, el])),
     totalChats,
     loading,
     fetchMore,

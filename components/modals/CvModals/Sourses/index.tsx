@@ -69,7 +69,7 @@ export default function SourcesModal(props: Props) {
     >
       <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{title}</P>
       <div className={styles.wrapper} data-cy={'sources_wrapper'}>
-        <TagList tags={args.data.map(el => (
+        <TagList tagClassName={styles.tag}  tags={args.data.map(el => (
           {
             name: el.title,
             isActive: choosenElements.has(el.id),

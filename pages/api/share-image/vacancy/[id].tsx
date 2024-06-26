@@ -49,16 +49,16 @@ export default async function handler(request: Request) {
             minWidth: '1000px'
           }}
         >
-          <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 800, height: '92.44px'}}>
+          <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', fontWeight: 600, height: '92.44px'}}>
 
           </div>
           <div style={{ display: 'flex', fontSize: '40px', lineHeight: '20px', marginTop: '66px', fontWeight: 800}}>
             {vacancy.company}
           </div>
-          <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 900, marginTop: '32px', lineHeight: '32px'  }}>
+          <div style={{ display: 'flex', width: '100%', fontSize: '52px', fontWeight: 600, marginTop: '32px', lineHeight: '32px'  }}>
             {vacancy.categories[0].name}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  alignItems: 'center', marginTop: 'auto', fontSize: '42px', lineHeight: '52px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  alignItems: 'center', marginTop: 'auto', fontSize: '42px', lineHeight: '52px', fontWeight: 600 }}>
             {salary ?? ''}
             {!!location && <div style={{width: '8px', height: '8px', borderRadius: '8px', backgroundColor: '#ffffff', marginLeft: '16px', marginRight: '16px'}}></div> }
             {location ?? ''}

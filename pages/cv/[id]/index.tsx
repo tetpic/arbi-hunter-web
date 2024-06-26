@@ -2,6 +2,7 @@ import P from '@/components/ui/P'
 import CvPage from 'components/for_pages/cv'
 import ContentLayout from 'components/layout/ContentLayout'
 import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
+import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { PersonalWrapper } from 'context/personal_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ICV } from 'data/interfaces/ICV'
@@ -90,14 +91,16 @@ export default function Cv(props: Props) {
   
   <ContentLayout title='Резюме' hideMobileHeader>
     <PersonalWrapper key={'cv_page'+props.id}>
-      <VacancyWrapper>
-        <FavoritesFolderWrapper>
-          {props.cv
-            ?<CvPage cvId={props.id}/>
-            : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>Резюме скрыто или удалено</P>
-          }
-        </FavoritesFolderWrapper>
-      </VacancyWrapper>
+      <FeedbacksWrapper>
+        <VacancyWrapper>
+          <FavoritesFolderWrapper>
+            {props.cv
+              ?<CvPage cvId={props.id}/>
+              : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>Резюме скрыто или удалено</P>
+            }
+          </FavoritesFolderWrapper>
+        </VacancyWrapper>
+      </FeedbacksWrapper>
     </PersonalWrapper> 
   </ContentLayout>
     </>

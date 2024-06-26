@@ -6,7 +6,6 @@ import { useEffect, useState} from 'react'
 import {getSelectorsByUserAgent} from 'react-device-detect'
 import 'swiper/css/bundle'
 import Head from 'next/head'
-import 'swiper/css'
 import {CookiesProvider} from 'react-cookie'
 import { AppTheme, CookiesType, InterfaceLanguage } from 'types/enums'
 import Layout from 'components/layout'
@@ -17,13 +16,12 @@ import BottomSheetContainer from 'components/layout/BottomSheetContainer'
 import { AuthWrapper } from 'context/auth_state'
 import UserRepository from 'data/repositories/UserRepository'
 import { IUser } from 'data/interfaces/IUser'
-import { ManagerWrapper } from 'context/manager_state'
 import { PatternWrapper } from 'context/pattern_state'
-import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { CvWrapper } from 'context/cv_state'
 import ModalContainer from 'components/layout/ModalContainer'
 import { ProfileType } from 'data/interfaces/IRegistration'
-import Router from 'next/router'
+import { Montserrat } from 'next/font/google'
+import { IndexPageWrapper } from 'context/index_page_state'
 
 
 export interface AppProps extends NextAppProps {
@@ -39,9 +37,10 @@ export interface AppProps extends NextAppProps {
   }
 }
 
+const montserrat = Montserrat({ subsets: ['cyrillic'] })
+
 function MyApp({Component, pageProps}: AppProps) {
   const [clientVisible, setClientVisible] = useState(false)
-  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
       setClientVisible(true)
@@ -52,44 +51,35 @@ function MyApp({Component, pageProps}: AppProps) {
     },
   [])
 
-  useEffect(()=>{
-    Router.events.on('routeChangeStart', ()=> {
-      setLoading(true)
-    })
-    Router.events.on('routeChangeComplete', ()=> {
-      setLoading(false)
-    })  
-  }, [])
-
   return (
     <CookiesProvider cookies={(Component as any).universalCookies}>
       <AppWrapper isMobile={pageProps.isMobile} theme={pageProps.theme}>
         <UserWrapper token={pageProps.token} profileType={pageProps.profileType} user={pageProps.user}>
-          <ManagerWrapper>
           <CvWrapper>
           <PatternWrapper>
-          <FeedbacksWrapper>
           <AuthWrapper>
+          <IndexPageWrapper>
+
             <Head>
               <meta
                 name="viewport"
-                content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"
+                content="width=device-width, initial-scale=1, viewport-fit=cover"
                 />
             </Head>
+            <main className={montserrat.className}>
             <Layout webView={pageProps.webViewOnly} authorized={Boolean(pageProps.token)}> 
               <Component {...pageProps} />
             </Layout>
+            </main>
           
             {clientVisible && <BottomSheetContainer/>}
             {clientVisible && <ModalContainer/>}
             {clientVisible && <Snackbar/>}
             
+          </IndexPageWrapper>
           </AuthWrapper>
-          </FeedbacksWrapper>
           </PatternWrapper>
           </CvWrapper>
-          {/* </VacancyWrapper> */}
-          </ManagerWrapper>
         </UserWrapper>
       </AppWrapper>
     </CookiesProvider>

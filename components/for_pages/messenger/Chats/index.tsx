@@ -5,8 +5,6 @@ import {useEffect, useRef, useState } from 'react'
 import ChatItem from './ChatItem'
 import IChat from 'data/interfaces/IChat'
 import { useChatContext } from 'context/chat_state'
-import Spinner from 'components/ui/Spinner'
-import { colors } from 'styles/variables'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
@@ -37,10 +35,10 @@ export default function Chats(props: Props) {
   ]
 
   useEffect(()=>{
-    chatContext.setChatsFromFolder(page)
+    if(!chatContext.loading) {
+      chatContext.setChatsFromFolder(page)
+    }
   }, [page])
-
-
   
   const initial = (e: React.DragEvent<HTMLDivElement>) => {
     setInitialPos(e.clientX)
@@ -59,20 +57,18 @@ export default function Chats(props: Props) {
       </div>
       <div className={styles.chats}>
         {
-          !chatContext.loading && props.chats.length > 0
+          props.chats.length > 0
           && [
             ...props.chats.filter(el => el.profiles?.[0]?.pinned), 
             ... props.chats.filter(el => !el.profiles?.[0]?.pinned)
             ].map((chat)=> {
             return (
-              <ChatItem chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
+              <ChatItem key={chat.id} chat={chat} onClick={() => props.onSelect(chat)} isActive={chatContext.currentChatId === chat.id} />
             )
           })
           ||
-          chatContext.totalChats === 0 && props.chats.length === 0 && !chatContext.loading &&
+          chatContext.totalChats === 0 &&
           <P styleType={['medium', 'w500']} className={styles.empty}>{t('chat_notFound')}</P>
-          ||
-          <Spinner size={32} color={colors.blue}/>
         }
       </div>
       <div className={styles.draggable} draggable={true} onDragStart={initial} onDrag={(e)=> resize(e)}></div>

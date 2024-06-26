@@ -10,6 +10,7 @@ import { IView } from 'data/interfaces/IView'
 import P from '@/components/ui/P'
 import Spinner from '@/components/ui/Spinner'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
 
 interface Props {
   profileType:ProfileType
@@ -24,6 +25,7 @@ export default function Views(props: Props) {
   const [views, setViewsState] = useState<Map<number, IView>>(new Map)
   const isInited = useRef<boolean>(false)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const router = useRouter()
 
 
   useEffect(()=>{
@@ -64,7 +66,6 @@ export default function Views(props: Props) {
   }
 
   useEffect(()=>{
-    
     if(activeCvsItem.length > 0 && !isInited.current) {
       getCvViews()
       isInited.current = true
@@ -78,7 +79,7 @@ export default function Views(props: Props) {
 
 
   return (<div className={styles.root}> 
-    <Title title={t('views_allTime')} />
+    <Title title={t('views_allTime')} onBackClick={router.back}/>
     <div className={styles.itemsWrapper}>
       {isLoaded&&views&&[...views.values()].map(view => {
         return <ViewItem key={view.id} view={view} />

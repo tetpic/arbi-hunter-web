@@ -27,15 +27,16 @@ export default function FavoritesButton(props: Props) {
 
   return (
     <Button 
+    title='make it favorite'
     styleType={props.styleType||['icon', 'black']}
     altStyleType={props.altStyleType||props.styleType||['icon', 'whitePurple'] }
     onClick={(e)=>props.onClick(e)} 
     className={classnames(styles.heartButton,  props.className)} 
     >
       {props.showStar && 
-      <StarSvg size={props.size||24} color={colors.greyLight}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
+      <StarSvg size={props.size||24} color={colors.white}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
       ||
-      <HeartSvg size={props.size||24} color={colors.greyLight}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
+      <HeartSvg size={props.size||24} color={colors.white}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
       }
     </Button>
   )

@@ -24,7 +24,7 @@ export default function ViewsPage(props: Props) {
   
 
   return (
-    <ContentLayout>
+    <ContentLayout hideMobileHeader>
       {props.profileType === ProfileType.Employee &&       
           <Views profileType={props.profileType} />       
         ||

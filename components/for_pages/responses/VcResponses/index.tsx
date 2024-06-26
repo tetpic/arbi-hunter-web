@@ -1,16 +1,13 @@
 import styles from './index.module.scss'
 import CvCard from 'components/ui/CvCard'
-import Spinner from 'components/ui/Spinner'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useEffect, useState } from 'react'
-import { ApplicationStatus, ModalType, ProposalRequestType} from 'types/enums'
+import { ApplicationStatus, ProposalRequestType} from 'types/enums'
 import { useResize } from 'components/hooks/useResize'
 import Title from 'components/ui/TitleForSection'
 import { useRouter } from 'next/navigation'
 import { IStat } from 'data/interfaces/IProposal'
-import { useAppContext } from 'context/state'
 import { useVacancyContext } from 'context/vacancy_state'
-import P from '@/components/ui/P'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { ICV } from 'data/interfaces/ICV'
 import { Translate } from 'next-translate'
@@ -51,9 +48,8 @@ const TranslateVCNavigation = (v: VCNaviagation, t: Translate) =>{
 export default function VCFeedbacks(props: Props) {  
   const {t} = useTranslation()
   const responsesContext = useFeedbacksContext()
-  const appContext = useAppContext()
   const vacancyContext = useVacancyContext()
-  const {setStats, stats, filterOptions} = responsesContext
+  const {setStats, stats} = responsesContext
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState<VCNaviagation>(VCNaviagation.All)
   const {isTabletWidth} = useResize()
@@ -73,7 +69,6 @@ export default function VCFeedbacks(props: Props) {
 
   useEffect(()=>{
     navigationSet(stats)
-   
   }, [stats, responsesContext.VCFeedbacks])
 
 
@@ -106,13 +101,8 @@ export default function VCFeedbacks(props: Props) {
   }, [currentPage, responsesContext.VCFeedbacks])
 
   useEffect(()=>{
-    vacancyContext.setVacancies()
-    folderContext.getAllFolders()
+    // vacancyContext.setVacancies()
   }, [])
-
-  const openFiltersHandler = () => {
-    appContext.showBottomSheet(ModalType.VcResponsesFilterModal)
-  }
 
   const onNavigationClick = (t: VCNaviagation) => {
     setCurrentPage(t)
@@ -142,31 +132,20 @@ export default function VCFeedbacks(props: Props) {
   <div className={styles.main}>
   <Title onBackClick={()=>router.back()} title={t('item_feedbacks')} className={styles.title}/>
     
-    <ItemNavigation activeItem={currentPage} items={navSet} onClick={onNavigationClick}/>
+    <ItemNavigation key={'vc_responses'} activeItem={currentPage} items={navSet} onClick={onNavigationClick}/>
     <Spacer basis={24}/>
 
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
-      {/* {isTabletWidth
-      ?<p className={styles.openFilters} onClick={openFiltersHandler}><FiltersSvg/>{filterOptions.size>0?t('filters'):t('filter')} {filterOptions.size>0&&<span className={styles.counter}>{filterOptions.size}</span>}</p>
-      :<ResponsesFilter />
-      } */}
       {
-        responsesContext.filteredVcResponses.length>0&&!loading&&
+        responsesContext.filteredVcResponses.length>0&&
         responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
           return <CvCard onChangeItem={changeItem} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
-        ||
-        loading && <Spinner size={24} />
-        ||
-        <P useThemeColor className={'empty'}>{t('profile_feedbacks_noFeed')}</P>
       }
       </>
     }
 
   </div>
-  {/* {((showNav  && isTabletWidth) || !isTabletWidth) && responsesContext.VCFeedbacks &&
-    <ResponsesNavigation items={navSet} onClick={(t: VCNaviagation) => onNavigationClick(t)} active={currentPage} />
-  } */}
   </div>)
 }

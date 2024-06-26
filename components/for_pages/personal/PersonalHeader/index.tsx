@@ -29,7 +29,6 @@ interface Props {
   useModel?: boolean
   showNextAnimation?: () => void
   action?: ModelActions 
-  allowDefaultBackground?: boolean
   showMobileBack?: boolean
   initialBackground?: IBackground
 }
@@ -46,7 +45,6 @@ export default function PersonalHeader(props: Props) {
   const [backImage, setBackImage] = useState<IBackground>(props.initialBackground||personalContext.backgrounds?.get(BackgroundCategoryType.Places))
   const building = personalContext.backgrounds?.get(BackgroundCategoryType.Buildings)||undefined
   const profileType = personalContext?.currentProfile?.profileType
-  console.log(backImage)
 
   const openBackgroundPickModal = () => {
     const cBack = personalContext.backgrounds.get(BackgroundCategoryType.Places) 
@@ -55,12 +53,12 @@ export default function PersonalHeader(props: Props) {
       onSave: (data) => {
         if(data.type === 'place') {
           setTimeout(()=> {
-            const _args:IBackgroundPickModalArguments =  {
+            const _pickModalArgs:IBackgroundPickModalArguments =  {
               currentBackground: cBack?.image|| null,
               currentBuild: cBuild?.image || null,
               hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
               buildPicker: false,
-              onSave: (background, _) => {                  
+              onSave: (background, _) => {      
                 BackgroundRepository.setBackgrounds({backgroundsIds: [background?.id, cBuild?.id].filter(Boolean)}, currentProfile?.profileType)
                 .then(_ => {
                   personalContext.refreshBackgrounds()
@@ -71,8 +69,8 @@ export default function PersonalHeader(props: Props) {
               }
             }
             isTabletWidth
-            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args, 370)
-            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _args)
+            ?appContext.showBottomSheet<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _pickModalArgs, 370)
+            :appContext.showModal<IBackgroundPickModalArguments>(ModalType.BackgroundPickModal, _pickModalArgs)
           }, 100)
         }
         else if(data.type === 'building') {
@@ -82,7 +80,7 @@ export default function PersonalHeader(props: Props) {
               currentBuild: cBuild?.image || null,
               hirerLogo: currentProfile?.profileType === ProfileType.Hirer && currentProfile?.logo,
               buildPicker: true,
-              onSave: (_, building) => {        
+              onSave: (_, building) => {    
                 BackgroundRepository.setBackgrounds({backgroundsIds: [cBack?.id, building?.id].filter(Boolean)}, currentProfile?.profileType)
                 .then(_ => {
                   personalContext.refreshBackgrounds()
@@ -135,7 +133,7 @@ export default function PersonalHeader(props: Props) {
   })()
 
   useEffect(()=>{
-    if(personalContext.backgrounds && !backImage) {
+    if(personalContext.backgrounds) {
       setBackImage(personalContext.backgrounds?.get(BackgroundCategoryType.Places))  
     }
   }, [personalContext.backgrounds])
@@ -162,7 +160,6 @@ export default function PersonalHeader(props: Props) {
     />
   }, [personalContext.weather])
 
-
   return (<div className={styles.root}> 
     {isTabletWidth && props.showMobileBack &&
       <Button 
@@ -179,7 +176,7 @@ export default function PersonalHeader(props: Props) {
       <Image 
       unoptimized
       priority
-      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
+      src={ImageHelper.urlFromFile(backImage.image, Preset.xlResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 
@@ -191,7 +188,7 @@ export default function PersonalHeader(props: Props) {
       <Image 
       unoptimized
       priority
-      src={ImageHelper.urlFromFile(backImage.image, Preset.bannerResize)} 
+      src={ImageHelper.urlFromFile(backImage.image, Preset.xlResize)} 
       className={styles.background} 
       alt={'back'} 
       width={1148} 

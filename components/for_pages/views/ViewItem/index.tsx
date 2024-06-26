@@ -30,7 +30,7 @@ export default function ViewItem(props: Props) {
     <P 
     styleType={['medium', 'w500', 'alignCenter',  profile.activityStatus === ActivityStatus.Online?'green':'greyLight']}>
       <DotSvg color={profile.activityStatus === ActivityStatus.Online?colors.green:colors.red}/> 
-      {profile.activityStatus === ActivityStatus.Online?t('views_online'): t('views_offline')  + Formatter.formatDate(profile.lastActivityAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian} )}
+      {profile.activityStatus === ActivityStatus.Online?t('views_onlineNow'): t('views_offline')  + Formatter.formatDate(profile.lastActivityAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian} )}
     </P>
     <div className={styles.watched}>
       <P styleType={['medium', 'w500', 'greyLight']}>{t('views_watched')}</P>

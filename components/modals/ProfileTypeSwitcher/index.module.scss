@@ -3,9 +3,10 @@
 .root {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 40px);
-  height: calc(100dvh - 40px);
-  padding-top: 72px;
+  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
+  height: 100%;
+  padding-top: clamp(40px, 10vh, 72px);
   align-items: center;
 }
 
@@ -53,6 +54,8 @@
   display: flex;
   column-gap: 16px;
   width: 100%;
+  margin-top: auto;
+
 
   .item {
     border-radius: 16px;
@@ -91,5 +94,15 @@
   .active {
     border: 2px $blue solid;
   }
+}
+
+.buttonsWrapper {
+  padding-block: 16px;
+  width: 100%;
+}
+
+.modalBody {
+  height: 100vh;
+  height: 100dvh;
 }
 

@@ -31,11 +31,12 @@ interface Props {
   children: React.ReactNode
   initialBacks?: IBackground[]
   profile?: IUserProfile
+  personalPage?: IPersonalPage
 }
 
 export function PersonalWrapper(props: Props) {
   const userContext = useUserContext()
-  const [personalPage, setPersonalPageState] = useState<IPersonalPage>(null)
+  const [personalPage, setPersonalPageState] = useState<IPersonalPage>(props.personalPage)
   const [blocks, setBlocks] = useState<Map<number, {block: IPersonalPageBlock, assets?: IFile[], layout?: any}>>(new Map)
   const [currentProfile, setCurrentProfile] = useState<IUserProfile>(props.profile) 
   const [backgrounds, setBackgroundsState] = useState<Map<BackgroundCategoryType, IBackground>>(new Map(props.initialBacks?.map(el=> [el.category?.id||null , el])))
@@ -160,13 +161,13 @@ export function PersonalWrapper(props: Props) {
 
 
   const value: IState = {
-    personalPage,
+    personalPage: props.personalPage||personalPage,
     setPersonalPage,
     updatePersonalPage,
     blocks, 
     setBlocks, 
-    currentProfile,
-    backgrounds,
+    currentProfile: props.profile||currentProfile,
+    backgrounds: props.initialBacks?new Map(props.initialBacks?.map(el=> [el.category?.id||null , el])):backgrounds,
     refreshBackgrounds,
     weather,
     transport,

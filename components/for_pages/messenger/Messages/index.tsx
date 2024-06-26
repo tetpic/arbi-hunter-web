@@ -430,8 +430,7 @@ export default function Messages(props: Props) {
         <label>
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
-        </label>
-        
+        </label>        
         <TextareaAutosize 
           value={value} 
           onChange={(e)=>{
@@ -444,26 +443,9 @@ export default function Messages(props: Props) {
               setValue(e.currentTarget.value)
             }
             }} 
-          // onKeyDown={(e)=>e.key==='Enter'&&&&enterPressHandler(e)} 
           className={styles.input}
-          // type="text" 
           placeholder={t('chat_enterMessage')} 
         />
-        {/* <textarea value={value} ref={inputRef} onChange={(e)=>{
-          if(userContext.currentProfile?.profileType === ProfileType.Employee
-            && dialog.chat?.employeeCanWrite === false
-          ) {
-            return
-          }
-          else {
-            setValue(e.currentTarget.value)
-          }
-          }} 
-          onKeyDown={(e)=>e.key==='Enter'&&!isTabletWidth&&enterPressHandler(e)} 
-          className={styles.input}
-          // type="text" 
-           placeholder={t('chat_enterMessage')} 
-           /> */}
         </>
         }
         { choosenIds.size === 0 && value.length === 0 && pastedFiles.size === 0 &&
@@ -502,9 +484,6 @@ export default function Messages(props: Props) {
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <RecordSvg/>
-              {/* <P styleType={['small', 'w500', 'greyLight']}>
-                {t('cancel')}
-              </P> */}
             </>
             ||
             <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>

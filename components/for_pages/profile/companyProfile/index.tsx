@@ -10,6 +10,7 @@ import { NavigationSet } from 'types/types'
 import { ProfilePages } from 'context/profile_page_state'
 import { TariffWrapper } from 'context/tariff_state'
 import { useRouter } from 'next/router'
+import { ManagerWrapper } from 'context/manager_state'
 
 
 interface Props {
@@ -32,7 +33,11 @@ export default function CompanyProfile(props: Props) {
       case ProfilePages.Personal:
       return <Personal/>
       case ProfilePages.Managers:
-      return <Managers/>
+      return (
+        <ManagerWrapper>
+          <Managers/>
+        </ManagerWrapper>
+      )
       case ProfilePages.Saved:
       return <Saved/>
       case ProfilePages.Vacancies:

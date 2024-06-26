@@ -112,7 +112,7 @@ export default function FilterEmployee(props: Props) {
       choosenElements: new Map(creationContext.helpObjects[t.type === 'sources'? 'activeSources':t.type === 'geos'? 'activeGeos':'activeVerticals'])
     }
     isTabletWidth
-    ? appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, t.type ==='verticals'&&380||t.type === 'geos'&&220||460)
+    ? appContext.showBottomSheet<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet, t.type ==='verticals'&&380||t.type === 'geos'&&250||460)
     : appContext.showModal<ISoursesModalArgs>(ModalType.SourcesModal, dataToSet)
   }
 

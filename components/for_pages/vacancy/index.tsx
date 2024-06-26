@@ -35,12 +35,13 @@ import useTranslation from 'next-translate/useTranslation'
 import ImageHelper from 'utils/ImageHelper'
 import ChatRepository from 'data/repositories/ChatRepository'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
-import { useTariffContext } from 'context/tariff_state'
 import EditPencilSvg from '@/components/svg/EditPencilSvg'
 
 
 interface Props {
   id?: number
+  vacancy?: IVacancy
+  isAuthed?: boolean
 }
 
 export default function VacancyPage(props: Props) {
@@ -50,19 +51,15 @@ export default function VacancyPage(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const personalContext = usePersonalContext()
-  const tariffContext = useTariffContext()
-  const {isTabletWidth} = appContext.size
+  const { isTabletWidth } = appContext.size
   const [otherCompanyVacncies, setOtherCompanyVacancies] = useState<IVacancy[]>([])
-  const {currentVacancy, foundVacancies} = vacancyContext
+  const { currentVacancy } = vacancyContext
   const router = useRouter()
-  const isMyVacancy = userContext.currentProfile?.id === currentVacancy?.profile?.id
+  const isMyVacancy = props.isAuthed?userContext.currentProfile?.id === currentVacancy?.profile?.id:false
   const salary = getSalary({vacancy:currentVacancy}, t)
   const [isShowContacts, setIsShowContacts] = useState<[boolean, boolean]>([false, false])
   const lastProposal = currentVacancy?.proposalsToCurrentUser?.[currentVacancy.proposalsToCurrentUser?.length -1]||null
   const freeToApplyCvs = cvContext.savedCvs.filter(cv => !currentVacancy?.applicationsByCurrentUser?.map(el => el.cvId).includes(cv.id)&&cv.published&&cv.moderationStatus === ModerationStatusType.Approved)
-  const tariff = tariffContext?.packets?.get(props.id)
-
-
 
   const makeResponse = () => {
     if(!userContext.isLogged) {
@@ -106,10 +103,6 @@ export default function VacancyPage(props: Props) {
         }
       })
     }
-  }
-
-  const openContactsHandler = () => {
-
   }
 
   useEffect(()=>{
@@ -158,6 +151,7 @@ export default function VacancyPage(props: Props) {
         }
       </div>
       <Button 
+      title={'To company profile'}
       className={styles.companyArrow} 
       styleType={['icon', 'backTransparent']} 
       altStyleType={['icon', 'backTransparent', 'invertSvg']}
@@ -170,16 +164,17 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
-      {!isTabletWidth && userContext.isLogged &&
+      {!isTabletWidth && props.isAuthed &&
       <BackTextButton onClick={router.back}/>
       }
-      {isTabletWidth && userContext.isLogged &&
+      {isTabletWidth && props.isAuthed &&
         <div className={styles.topButtons}>
-          <Button onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
+          <Button title='Back' onClick={router.back} styleType={['icon', 'black']}  altStyleType={['icon', 'invertSvg', 'white']}><ArrowLeftSvg/></Button>
           {!isMyVacancy &&
             <FavoritesButton altStyleType={['white', 'icon']} onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
             ||
             <Button  
+            title='Edit'
             onClick={()=>router.push('/create/vacancy?id='+currentVacancy.id)}  
             styleType={['icon', 'svg24', 'black']}>
               <EditPencilSvg/>
@@ -246,7 +241,7 @@ export default function VacancyPage(props: Props) {
             router.push(`/responses/${currentVacancy.id}/`)
           }} 
           >
-            {t('vacancy_page_viewApplicetions')}
+            {t('vacancy_page_viewApplications')}
           </Button>
           <Button 
           styleType={['black', 'borderBlue', 'phoneWide']}
@@ -282,7 +277,7 @@ export default function VacancyPage(props: Props) {
             }
           {(!lastProposal) && currentVacancy.applicationsByCurrentUser?.length===0 && freeToApplyCvs?.length > 0 &&
             <Button 
-            styleType={['gradient', 'phoneWide']}
+            styleType={['gradient', 'wide']}
             onClick={makeResponse}
             >
               {t('vacancy_page_makeApply')}
@@ -318,7 +313,7 @@ export default function VacancyPage(props: Props) {
             }
           </div>
           }
-          {!isTabletWidth && userContext.currentProfile && <>
+          {!isTabletWidth && props.isAuthed && <>
             <FavoritesButton onClick={likeHandler} isActive={currentVacancy.isSavedByCurrentProfile}/>
             <Button 
             styleType={['icon', 'black']} 
@@ -340,28 +335,28 @@ export default function VacancyPage(props: Props) {
       {currentVacancy.skills?.length > 0 &&
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_skills')}</P>
-          <TagList tags={currentVacancy.skills.map(el=> ({name: el.title}))}/>
+          <TagList tagClassName={styles.tag} tags={currentVacancy.skills.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.sources?.length > 0 &&
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_sources')}</P>
-          <TagList tags={currentVacancy.sources.map(el=> ({name: el.title}))}/>
+          <TagList tagClassName={styles.tag} tags={currentVacancy.sources.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.geos?.length > 0 &&
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_geos')}</P>
-          <TagList tags={currentVacancy.geos.map(el=> ({name: el.title}))}/>
+          <TagList tagClassName={styles.tag} tags={currentVacancy.geos.map(el=> ({name: el.title}))}/>
         </div>
       }
 
       {currentVacancy.verticals?.length > 0 &&
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_verticals')}</P>
-          <TagList tags={currentVacancy.verticals.map(el=> ({name: el.title}))}/>
+          <TagList tagClassName={styles.tag} tags={currentVacancy.verticals.map(el=> ({name: el.title}))}/>
         </div>
       }
 
@@ -369,6 +364,7 @@ export default function VacancyPage(props: Props) {
         <div className={styles.item}>
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_languagesKnowledges')}</P>
           <TagList 
+          tagClassName={styles.tag}
           tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
         </div>
       }

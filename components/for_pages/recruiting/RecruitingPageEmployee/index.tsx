@@ -84,7 +84,7 @@ function RecruitingPageEmployeeInner(props: Props) {
     })
   }
 
-  const findVacanciesThrottle = useThrottleFn(findVacancies, 1000)
+  const findVacanciesThrottle = useThrottleFn(findVacancies, 300)
 
   const onFilterChange =(data: Partial<IVacancyCvSearchParams>) => {
     setLoading(true)
@@ -116,6 +116,7 @@ function RecruitingPageEmployeeInner(props: Props) {
 
   useEffect(()=>{
     cvContext.setSavedCvs()
+    findVacancies(currentFilters)
     setTimeout(()=>{
       isInited.current = true      
     }, 200)
@@ -125,11 +126,10 @@ function RecruitingPageEmployeeInner(props: Props) {
     document.querySelector('#mainLayout').scrollIntoView()
   }, [currentFilters])
 
-
-
-
   useEffect(()=>{    
-    findVacanciesThrottle.callback(currentFilters)
+    if(isInited.current) {
+      findVacanciesThrottle.callback(currentFilters)
+    }
   }, [vacancyContext.page])
 
 

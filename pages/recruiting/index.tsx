@@ -5,6 +5,7 @@ import RecruitingPageHirer from 'components/for_pages/recruiting/RecruitingPageH
 import ContentLayout from 'components/layout/ContentLayout'
 import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
+import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { LocationWrapper } from 'context/location_state'
 import { SourcesWrapper } from 'context/sources_state'
 import { useUserContext } from 'context/user_state'
@@ -74,6 +75,7 @@ export default function Recruiting(props: Props) {
   return (<ContentLayout hideMobileHeader title='Рекрутинг'>
     <SourcesWrapper>
     <CreateVcCvWrapper>
+    <FeedbacksWrapper>
     <LocationWrapper initials={{cities: params?.cities, countries: params?.countries}}>
       {!props.auth&&((props.profileType === ProfileType.Employee && profileType === ProfileType.Employee)||profileType === ProfileType.Employee) &&
         <RecruitingEmployee vacancies={props.vacancies} />
@@ -83,7 +85,7 @@ export default function Recruiting(props: Props) {
       }
       {
         props.auth && props.profileType=== ProfileType.Employee &&
-          <RecruitingPageEmployee filters={params}/>
+        <RecruitingPageEmployee filters={params}/>
         ||
         props.auth && props.profileType === ProfileType.Hirer &&
         <FavoritesFolderWrapper>
@@ -92,6 +94,7 @@ export default function Recruiting(props: Props) {
       }
 
     </LocationWrapper>
+    </FeedbacksWrapper>
     </CreateVcCvWrapper>
     </SourcesWrapper>
   </ContentLayout>)

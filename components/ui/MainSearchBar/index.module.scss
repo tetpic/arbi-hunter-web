@@ -101,3 +101,9 @@
   width: 100%;
   max-width: unset;
 }
+
+.textButton {
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
+}

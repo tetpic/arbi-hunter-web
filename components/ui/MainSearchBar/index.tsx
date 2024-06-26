@@ -107,7 +107,7 @@ export default function MainSearchBar(props: Props) {
           altStyleType={['backTransparent', 'icon', 'invertSvg']}
           title='search button' 
           onClick={()=> submit()} 
-          // className={styles.button}
+          className={styles.loupeButton}
           >
             <LoupeSvg />
           </Button>
@@ -117,7 +117,7 @@ export default function MainSearchBar(props: Props) {
           styleType={['gradient']}
           title='search button' 
           onClick={()=> submit()} 
-          // className={styles.button}
+          className={styles.textButton}
           >
             {t('searchAlt')}
           </Button>

@@ -12,6 +12,7 @@ import { IProposal } from 'data/interfaces/IProposal'
 import { IResponseModalProps } from 'components/modals/ResponseModal'
 import PlusSvg from 'components/svg/PlusSvg'
 import useTranslation from 'next-translate/useTranslation'
+import { useFeedbacksContext } from 'context/feedbacks_state'
 
 interface Props {
   application?: IApplication
@@ -22,6 +23,7 @@ interface Props {
 export  function ApplicationHirerNode (props: Props) {
   const appContext = useAppContext()
   const dialog = useChatDialogContext()
+  const feedBacksContext = useFeedbacksContext()
   const {t} = useTranslation()
 
   return (<>
@@ -34,6 +36,7 @@ export  function ApplicationHirerNode (props: Props) {
           application: props.application, 
           cv: props.application?.cv, 
           vcId: props.application?.vacancyId,
+          createProposal: feedBacksContext.createProposal,
           onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {            
             dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
           }
@@ -53,6 +56,7 @@ export  function ApplicationHirerNode (props: Props) {
         application: props.application, 
         cv: props.application.cv, 
         vcId: props.application.vacancyId,
+        createProposal: feedBacksContext.createProposal,
         onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
           dialog.refreshMessage(Number(props.message.id), {...props.message, proposal: {...props.application, ...proposal}})
         }

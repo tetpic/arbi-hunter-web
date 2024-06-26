@@ -51,9 +51,9 @@ function translatePersonalNavigation(p: SettingsNavigation, t: Translate, profil
 
 export default function SettingsPage(props: Props) {
   const {t} = useTranslation()
-  const [activeItem, setActiveItem] = useState<SettingsNavigation>(SettingsNavigation.Personal)
-  const userContext = useUserContext()
   const router = useRouter()
+  const [activeItem, setActiveItem] = useState<SettingsNavigation>(router.query.page as SettingsNavigation||SettingsNavigation.Personal)
+  const userContext = useUserContext()
 
   const employeeItems = [
     SettingsNavigation.Personal, 
@@ -77,6 +77,10 @@ export default function SettingsPage(props: Props) {
     name: translatePersonalNavigation(el, t, userContext.currentProfile?.profileType), 
     type: el
   }})
+
+  // useEffect(()=>{
+  //   if(router.)
+  // }, [router])
 
   const getComponent = () => {
     switch(activeItem) {
