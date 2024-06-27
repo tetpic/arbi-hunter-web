@@ -72,8 +72,22 @@ export default function FavoritesPageHirer(props: Props) {
 
   const titleButtons = (
     <div className={styles.buttonsWrapper}>
-      <Button styleType={['grey', 'whiteText', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openAddFolderModal}><PlusSvg/> {!isTabletWidth&&t('favorites_add')}</Button>
-      <Button disabled={isLoading} styleType={['grey', 'whiteText', 'icon', 'svg24']} altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} onClick={openSettingsModal}><SettingSvg/> {!isTabletWidth&&t('favorites_settings')}</Button>
+      <Button 
+      styleType={['grey', 'whiteText', 'icon', 'svg24']} 
+      altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} 
+      onClick={openAddFolderModal}
+      >
+        <PlusSvg/> {!isTabletWidth&&t('favorites_add')}
+      </Button>
+
+      <Button 
+      disabled={isLoading} 
+      styleType={['grey', 'whiteText', 'icon', 'svg24']} 
+      altStyleType={isTabletWidth?['white', 'invertSvg', 'icon', 'svg24']:['white', 'invertSvg', 'icon']} 
+      onClick={openSettingsModal}
+      >
+        <SettingSvg/> {!isTabletWidth&&t('favorites_settings')}
+      </Button>
     </div>
   )
 
@@ -83,7 +97,7 @@ export default function FavoritesPageHirer(props: Props) {
     <div className={styles.foldersWrapper} id={'foldersWrapper'}>
 
       {foldersContext.allFolders.sort((a)=> a.default?-1:1).map((el, index) => {
-        return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0}/>
+        return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0} />
       })}
     </div>
   </div>)

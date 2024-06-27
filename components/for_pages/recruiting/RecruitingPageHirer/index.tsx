@@ -108,7 +108,7 @@ function RecruitingPageHirerInner(props: Props) {
   const init = async() => {
     findCvs()
     if (!userContext.currentProfile.addSavedToDefaultFolder) {
-      folderContext.getAllFolders()
+      folderContext.getAllFolders(true)
     }
     vacancyContext.setVacancies()
     if(props.vcId) {

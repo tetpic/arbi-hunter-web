@@ -11,14 +11,16 @@ interface IState {
     page: number;
     total: number;
   }[]>
+  /** key - folder id, value - {total, page}  */
   currentFolderPage: Map<number, {total: number, page: number}>
-  getAllFolders: () => void 
+  getAllFolders: (noCvs?: boolean) => void 
   addCvsPageToFolder: (folderId: number, page: number) => void
   createNewFolder: (data: IFolderCreate) => Promise<IFolder>
   updateFolder: (folderId: number, data: Partial<IFolderCreate>) => Promise<IFolder>
   deleteFolder: (folderId: number) => Promise<any>
   removeCvFromFolder: (folderId: number, cvId: number) => void
   setSettings: (data: { addSavedToDefaultFolder: boolean, defaultFolderId: number}) => void
+  getMoreCvsByFolder: (folderId: number, page: number) => void
 }
 
 const LIMIT = 10
@@ -27,20 +29,28 @@ const FavoritesFolderContext = createContext<Partial<IState>>({})
 
 interface Props {
   children: React.ReactNode
+  initialFolders?: IFolder[]
 }
 
 export function FavoritesFolderWrapper(props: Props) {
   const userContext = useUserContext()
-  const [allFolders, setAllFoldersState] = useState<IFolder[]>([])
+  const [allFolders, setAllFoldersState] = useState<IFolder[]>(props.initialFolders||[])
   const [cvsByFolderId, setCvsByFolderState] = useState<Map<number, {cvs:ICV[], page: number, total: number}[]>>(new Map)
   const [currentFolderPage, setCurrentFolderPageState] = useState<Map<number, {total: number, page: number}>>(new Map)
 
 
-  const getAllFolders = async () => {
+  const getAllFolders = async (noCvs?: boolean) => {
     try {
-      const res = await FavoritesFolderRepository.getFolderList()
-      const cvs = await Promise.all(res.data
-        .map(el => FavoritesFolderRepository.getCvsInFolder(el.id)
+      const _folders = props.initialFolders?{data:props.initialFolders}:await FavoritesFolderRepository.getFolderList()
+
+
+      !props.initialFolders && setAllFoldersState(_folders.data)
+
+      if(!noCvs) {
+
+
+      const cvs = await Promise.all(_folders.data
+        .map(el => FavoritesFolderRepository.getCvsInFolder(el.id, 1, LIMIT)
           .then(c => {
             return [el.id, [{cvs: c.data, page: c.page, total: c.total}]] as [number, {cvs:ICV[], page: number, total: number}[]]
           })
@@ -60,8 +70,9 @@ export function FavoritesFolderWrapper(props: Props) {
         })
         return new Map(state)
       })
+    }
 
-      setAllFoldersState(res.data)
+
     }
     catch (err) {
       //TODO:обработка ошибок
@@ -77,6 +88,19 @@ export function FavoritesFolderWrapper(props: Props) {
     })
     setCurrentFolderPageState(state => {
       state.set(folderId, {total: cvs.total, page: cvs.page})
+      return new Map(state)
+    })
+  }
+
+  const getMoreCvsByFolder = async(folderId: number, page: number) => {
+    const _newCvs = await FavoritesFolderRepository.getCvsInFolder(folderId, page, LIMIT)
+    setCvsByFolderState(state => {
+      const folderValues = state.get(folderId)
+      state.set(folderId, [...folderValues, {cvs: _newCvs.data, page: _newCvs.page, total: _newCvs.total}])
+      return new Map(state)
+    })
+    setCurrentFolderPageState(state => {
+      state.set(folderId, {total: _newCvs.total, page: _newCvs.page})
       return new Map(state)
     })
   }
@@ -153,7 +177,8 @@ export function FavoritesFolderWrapper(props: Props) {
     updateFolder,
     deleteFolder,
     removeCvFromFolder,
-    setSettings
+    setSettings,
+    getMoreCvsByFolder
   }
 
   return (

@@ -35,8 +35,6 @@ export default function FavoritesHirerFolder(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
-  const [page, setPage] = useState<number>(1)
-  const [total, setTotal] = useState<number>(0)
 
   const editFolder = () => {
     const _modalArgs:AddFavoritesFolderArgs = {
@@ -90,17 +88,20 @@ export default function FavoritesHirerFolder(props: Props) {
     </div>
     <Spacer basis={8}/>
     <Accordeon isActive={isActive}>
+      {foldersContext.currentFolderPage.get(props.folder.id)?.total > 0 &&
       <div className={styles.stats}>
-        <P useThemeColor>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
+        <P useThemeColor styleType={['greyLight', 'medium', 'w600']}>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
       </div>
+      }
+      {foldersContext.cvsByFolderId.get(props.folder.id)?.length > 0 &&
         <InfiniteScroll 
-        next={function () {
-          throw new Error('Function not implemented.')
-        } } 
-        hasMore={false} 
+        next={() => {
+          foldersContext.getMoreCvsByFolder(props.folder.id, foldersContext.currentFolderPage.get(props.folder.id).page + 1)
+        }} 
+        hasMore={foldersContext.cvsByFolderId.get(props.folder.id)?.length < foldersContext.currentFolderPage.get(props.folder.id)?.total} 
         loader={''} 
         scrollableTarget={'#foldersWrapper'}
-        dataLength={0}>
+        dataLength={foldersContext.cvsByFolderId.get(props.folder.id)?.length}>
           <div className={styles.cvsWrapper}>
             {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
               return el.cvs.map(cv => {
@@ -109,6 +110,7 @@ export default function FavoritesHirerFolder(props: Props) {
             })}
           </div>
         </InfiniteScroll>
+      }
     </Accordeon>
   </div>)
 }
