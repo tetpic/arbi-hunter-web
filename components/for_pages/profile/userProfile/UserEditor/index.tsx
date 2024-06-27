@@ -119,10 +119,6 @@ export default function UserEditor(props: Props) {
     })
   )
 
-  useEffect(()=>{
-    console.log(sortedVariants)
-  }, [sortedVariants])
-
   const commonUser = userContext.currentProfile.id !== Number(process.env.IMNEARID)
 
   return (

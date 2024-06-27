@@ -62,9 +62,9 @@ export default function PersonalPage(props: Props) {
 
   const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'>>({
     initialValues: {
-      company: currentProfile?.company || '',
-      cityId: currentProfile?.cityId || null,
-      bio: currentProfile?.bio || '',
+      company: personalContext?.currentProfile?.company || '',
+      cityId: personalContext?.currentProfile?.cityId || null,
+      bio: personalContext?.currentProfile?.bio || '',
     },
     onSubmit: () => {}
   })
@@ -211,6 +211,7 @@ export default function PersonalPage(props: Props) {
       <P styleType={['large', 'w600']} useThemeColor>{t('personal_contacts')}</P>
       <Spacer basis={16}/>
       <div className={styles.contacts}>
+        {personalContext.currentProfile?.email &&
         <Link className={styles.contact} href={`mailto:${personalContext.currentProfile?.email}`}>
           <P styleType={['medium', 'alignCenter']} useThemeColor >
             <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><MailConvertSvg/></Button>
@@ -220,6 +221,8 @@ export default function PersonalPage(props: Props) {
             </Button>
           </P>
         </Link>
+        }
+        {personalContext.currentProfile?.phone &&
         <Link className={styles.contact} href={`tel:${personalContext.currentProfile?.phone}`}> 
         <P styleType={['medium', 'alignCenter']} useThemeColor >
           <Button styleType={['icon', 'grey']} altStyleType={['icon', 'whitePurple', 'invertSvg']}><PhoneSvg/></Button>
@@ -229,6 +232,8 @@ export default function PersonalPage(props: Props) {
           </Button>
         </P>
         </Link>
+        }
+        
         {personalContext.currentProfile?.telegramNickname &&
         <Link className={styles.contact} href={`tg://resolve?domain=${personalContext.currentProfile?.telegramNickname}`}>
           <P styleType={['medium', 'alignCenter']} useThemeColor >
@@ -251,7 +256,7 @@ export default function PersonalPage(props: Props) {
   </>)
 
   return (<div className={styles.root}> 
-    {isMy && !isEditing && isTabletWidth &&
+    {isMy && !isEditing && isTabletWidth && !props.webView &&
       <Button 
       className={styles.mobileEditButton} 
       styleType={['icon', 'black', 'svg24']} 
@@ -303,13 +308,14 @@ export default function PersonalPage(props: Props) {
     }
     {personalContext.currentProfile?.profileType === ProfileType.Hirer && hirerEditor}
     {personalContext.currentProfile?.profileType === ProfileType.Employee && employeeEditor}
-
-  
     {isEditing &&
       <Button 
       styleType={['gradient']} 
       onClick={saveBranding} 
-      className={styles.saveButton}>{t('save')}</Button>
+      className={styles.saveButton}
+      >
+        {t('save')}
+      </Button>
     }
   </div>)
 }

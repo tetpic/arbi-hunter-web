@@ -11,6 +11,8 @@ import Image from 'next/image'
 import BriefCaseAltSvg from 'components/svg/BriefCaseAltSvg'
 import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
+import { useRouter } from 'next/router'
+import BackBtn from '@/components/ui/BackBtn'
 
 interface Props {
   onClose: () => void
@@ -20,10 +22,15 @@ export default function ProfileTypeSwitcher(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {t} = useTranslation()
+  const router = useRouter()
 
 
   const body = (
     <div className={styles.root}>
+      <BackBtn className={styles.backBtn} onClick={() => {
+        router.back()
+        props.onClose()
+      }}/>
       <div className={styles.imageWrapper}>
         <Image src={'/favicon.svg'} alt={'logo'} width={110} height={110}/>
       </div>
