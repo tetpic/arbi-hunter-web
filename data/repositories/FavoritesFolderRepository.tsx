@@ -1,5 +1,6 @@
 import { ICV } from 'data/interfaces/ICV'
 import { IFolder, IFolderCreate } from 'data/interfaces/IFolder'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import { IPagination } from 'types/types'
 import request from 'utils/request'
 
@@ -7,10 +8,12 @@ import request from 'utils/request'
 
 export default class FavoritesFolderRepository {
 
-  static async getFolderList(): Promise<IPagination<IFolder>> {
+  static async getFolderList(token?: string, profile?: ProfileType): Promise<IPagination<IFolder>> {
     const res = await request({
       method: 'get',
       url: '/api/favourite-folder',
+      token,
+      profile
     })
     if(res.err) {
       return null

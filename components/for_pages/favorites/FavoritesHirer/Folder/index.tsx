@@ -19,6 +19,7 @@ import { AppTheme, ModalType } from 'types/enums'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 interface Props {
   folder: IFolder
@@ -87,16 +88,29 @@ export default function FavoritesHirerFolder(props: Props) {
     </div>
     <Spacer basis={8}/>
     <Accordeon isActive={isActive}>
+      {foldersContext.currentFolderPage.get(props.folder.id)?.total > 0 &&
       <div className={styles.stats}>
-        <P useThemeColor>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
+        <P useThemeColor styleType={['greyLight', 'medium', 'w600']}>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
       </div>
-      <div className={styles.cvsWrapper}>
-        {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
-          return el.cvs.map(cv => {
-            return <CvItem cv={cv} onChangeItem={() => foldersContext.removeCvFromFolder(props.folder.id, cv.id)} key={cv.id}/>
-          })
-        })}
-      </div>
+      }
+      {foldersContext.cvsByFolderId.get(props.folder.id)?.length > 0 &&
+        <InfiniteScroll 
+        next={() => {
+          foldersContext.getMoreCvsByFolder(props.folder.id, foldersContext.currentFolderPage.get(props.folder.id).page + 1)
+        }} 
+        hasMore={foldersContext.cvsByFolderId.get(props.folder.id)?.length < foldersContext.currentFolderPage.get(props.folder.id)?.total} 
+        loader={''} 
+        scrollableTarget={'#foldersWrapper'}
+        dataLength={foldersContext.cvsByFolderId.get(props.folder.id)?.length}>
+          <div className={styles.cvsWrapper}>
+            {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
+              return el.cvs.map(cv => {
+                return <CvItem cv={cv} onChangeItem={() => foldersContext.removeCvFromFolder(props.folder.id, cv.id)} key={cv.id}/>
+              })
+            })}
+          </div>
+        </InfiniteScroll>
+      }
     </Accordeon>
   </div>)
 }

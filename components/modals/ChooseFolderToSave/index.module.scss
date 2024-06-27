@@ -34,7 +34,7 @@
   flex-direction: column;
   row-gap: 16px;
   @include mq($TabletWidth, max) {
-    min-height: 85%;
+    min-height: calc(100% - 56px);  
   }
 }
 

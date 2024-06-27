@@ -316,6 +316,16 @@ svg {
   z-index: 10 !important;
 }
 
+#nprogress .bar {
+  
+  top: unset !important;
+  bottom: 0 !important
+}
+
+#nprogress .peg {
+  display: none !important;
+}
+
 
 // #mountpoint {
 //   position: absolute;

@@ -7,7 +7,8 @@ const nextConfig = nextTranslate({
   env: {
     host: process.env.HOST,
     HOST_ROOT: process.env.HOST_ROOT,
-    DEV: process.env.DEV
+    DEV: process.env.DEV,
+    IMNEARID: process.env.IMNEARID
   },
 
   publicRuntimeConfig: {

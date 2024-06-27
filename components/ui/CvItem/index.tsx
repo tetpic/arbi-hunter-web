@@ -142,7 +142,7 @@ export default function CvItem({cv, ...props}: Props) {
       }
     }
     isTabletWidth
-    ?appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _args)
+    ?appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _args, 400)
     :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _args)
   }
 

@@ -62,7 +62,7 @@ export default function MainPageHirer() {
         {indexPageContext.loaded &&
         <div className={styles.statsWeek}>
           <div className={styles.cards}>
-            <Link className={styles.card} href={'/responses'}>
+            <Link className={styles.card} href={'/vacancies'}>
               <p className={styles.desc}>{t('mainPage_hir_feedbacks')}</p>
               <SwapItemsSvg className={styles.icon}/>
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>

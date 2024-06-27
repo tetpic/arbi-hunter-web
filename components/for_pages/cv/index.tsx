@@ -116,7 +116,7 @@ export default function CvPage(props: Props) {
       }
     }
     isTabletWidth
-    ?appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs, 420)
+    ?appContext.showBottomSheet<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs, 400)
     :appContext.showModal<ChooseFolderToSaveArgs>(ModalType.ChooseFolderToSave, _modalArgs )
   }
 
@@ -164,7 +164,7 @@ export default function CvPage(props: Props) {
     })
     if(userContext.currentProfile) {
       vacancyContext.setVacancies()
-      folderContext.getAllFolders()
+      folderContext.getAllFolders(true)
     }
     else {
       setTimeout(() => {
