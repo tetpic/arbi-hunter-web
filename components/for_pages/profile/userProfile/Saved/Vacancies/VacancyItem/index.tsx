@@ -36,7 +36,6 @@ interface Props {
 }
 
 //TODO: доделать всплывашку OptionsModal
-
 export default function VacancyItem({vc, item, refreshCallback, onRemove, status}: Props) {  
   const appContext = useAppContext()
   const router = useRouter()
@@ -91,7 +90,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
       <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
      }
     {isTabletWidth &&
-      <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.option, styles.back)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>
+      <P  useThemeColor className={classNames(styles.option)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>
     }
   </div>)
 

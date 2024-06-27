@@ -6,12 +6,16 @@
   height: calc(100vh - 80px);
   height: calc(100dvh - 80px);
   height: 100%;
-  padding-top: clamp(40px, 10vh, 72px);
   align-items: center;
+}
+
+.backBtn {
+  align-self: flex-start;
 }
 
 .imageWrapper {
   position: relative;
+  margin-top: 24px;
 
   &:before {
     content: '';

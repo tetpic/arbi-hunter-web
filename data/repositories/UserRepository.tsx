@@ -131,10 +131,12 @@ export default class UserRepository {
     return res
   }
 
-  static async getUserProfileById(id: number): Promise<IUserProfile|null> {
+  static async getUserProfileById(id: number, token?: string, profile?: ProfileType): Promise<IUserProfile|null> {
     const res = await request({
       method: 'get',
       url: `/api/profile/${id}`,
+      token,
+      profile
     })
     if(res.err) {
       return null

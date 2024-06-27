@@ -124,6 +124,10 @@ export default function Header(props: Props) {
         )
       }, 20000)
     }
+
+    return ()=>{
+      clearInterval(refreshNotificationInterval.current)
+    }
   }, [userContext.currentProfile])
 
 
@@ -195,7 +199,7 @@ export default function Header(props: Props) {
                 altStyleType={['icon','white']}
                 className={styles.iconButton}
                 >
-                  {stats?.length > 0 &&
+                  {stats?.map(el => el.count).filter(Boolean).length > 0 &&
                     <NotificationSvg color={isLightTheme?colors.black:''}/>
                     ||
                     <NoNotificationSvg />
@@ -244,7 +248,7 @@ export default function Header(props: Props) {
                 altStyleType={['icon', 'white']}
                 className={styles.iconButton}
                 >
-                  {stats?.length > 0 &&
+                  {stats?.map(el => el.count).filter(Boolean).length > 0 &&
                   <NotificationSvg color={isLightTheme?colors.black:''}/>
                   ||
                   <NoNotificationSvg />

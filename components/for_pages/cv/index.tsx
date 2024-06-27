@@ -171,6 +171,10 @@ export default function CvPage(props: Props) {
         router.push('/login')
       }, 4000)
     }
+
+    return () => {
+      cvContext.getCv(null, true)
+    }
   }, [])
 
 

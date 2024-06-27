@@ -95,7 +95,7 @@ export default function Cv(props: Props) {
         <VacancyWrapper>
           <FavoritesFolderWrapper>
             {props.cv
-              ?<CvPage cvId={props.id}/>
+              ? <CvPage cvId={props.id}/>
               : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>Резюме скрыто или удалено</P>
             }
           </FavoritesFolderWrapper>

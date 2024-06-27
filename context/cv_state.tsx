@@ -11,7 +11,7 @@ import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 interface IState {
   savedCvs: ICV[],
   foundCvs: Map<number, ICV>,
-  getCv: (id: number) => Promise<boolean>
+  getCv: (id: number, clear?: boolean) => Promise<boolean>
   currentCv: ICV,
   setSavedCvs: ()=>Promise<boolean>
   saveCv: (id: number)=> Promise<boolean>
@@ -123,17 +123,23 @@ export function CvWrapper(props: Props) {
     router.push(`/create/cv?id=${cv.id}`)
   }
 
-  const getCv = (id: number): Promise<boolean> => {
-    return CvRepository.getById(id)
-    .then(res=> {
-      setCurrentCvState(res)
-      return true
-    })
-    .catch(err => {
+  const getCv = (id: number, clear?: boolean): Promise<boolean> => {
+    if(clear) {
       setCurrentCvState(undefined)
-      return false
-
-    })
+      return new Promise((res) => res(true))
+    }
+    else {
+      return CvRepository.getById(id)
+      .then(res=> {
+        setCurrentCvState(res)
+        return true
+      })
+      .catch(err => {
+        setCurrentCvState(undefined)
+        return false
+        
+      })
+    }
   }
 
   const moveToTop= (cvId: number, onSet?: ()=>void) => {
