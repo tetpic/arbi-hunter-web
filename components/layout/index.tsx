@@ -6,6 +6,8 @@ import NavBar from './NavBar'
 import { Sticky, StickyContainer } from 'react-sticky'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
+import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar'
+
 
 interface Props {
   children: ReactElement
@@ -43,6 +45,13 @@ export default function Layout(props: Props) {
       {props.children}
       </div>
     </StickyContainer>
+    <ProgressBar
+    options={{ showSpinner: false}}
+    height='2px'
+    shallowRouting
+    color='#8e6cdf'
+    />
+
   </div>
 
   )

@@ -80,7 +80,7 @@ export default function FavoritesPageHirer(props: Props) {
   return (<div className={styles.root}> 
     <Title title={t('favorites_title')} rightButton={titleButtons}/>
     <ItemNavigation activeItem={page} items={pageItems(t)} onClick={setPage}/>
-    <div className={styles.foldersWrapper}>
+    <div className={styles.foldersWrapper} id={'foldersWrapper'}>
 
       {foldersContext.allFolders.sort((a)=> a.default?-1:1).map((el, index) => {
         return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0}/>

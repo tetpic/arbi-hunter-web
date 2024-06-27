@@ -5,7 +5,6 @@ import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
 import P from '@/components/ui/P'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import CvItem from '@/components/ui/CvItem'
-// import SortArrowsSvg from '@/components/svg/SortArrowsSvg'
 import { useRef, useState } from 'react'
 import classnames from 'classnames'
 import Accordeon from '@/components/ui/Accordeon'
@@ -20,6 +19,7 @@ import { AppTheme, ModalType } from 'types/enums'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 interface Props {
   folder: IFolder
@@ -35,6 +35,8 @@ export default function FavoritesHirerFolder(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
+  const [page, setPage] = useState<number>(1)
+  const [total, setTotal] = useState<number>(0)
 
   const editFolder = () => {
     const _modalArgs:AddFavoritesFolderArgs = {
@@ -91,13 +93,22 @@ export default function FavoritesHirerFolder(props: Props) {
       <div className={styles.stats}>
         <P useThemeColor>{foldersContext.currentFolderPage.get(props.folder.id)?.total} {t('cv1')}</P>
       </div>
-      <div className={styles.cvsWrapper}>
-        {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
-          return el.cvs.map(cv => {
-            return <CvItem cv={cv} onChangeItem={() => foldersContext.removeCvFromFolder(props.folder.id, cv.id)} key={cv.id}/>
-          })
-        })}
-      </div>
+        <InfiniteScroll 
+        next={function () {
+          throw new Error('Function not implemented.')
+        } } 
+        hasMore={false} 
+        loader={''} 
+        scrollableTarget={'#foldersWrapper'}
+        dataLength={0}>
+          <div className={styles.cvsWrapper}>
+            {foldersContext.cvsByFolderId.get(props.folder.id)?.map(el => {
+              return el.cvs.map(cv => {
+                return <CvItem cv={cv} onChangeItem={() => foldersContext.removeCvFromFolder(props.folder.id, cv.id)} key={cv.id}/>
+              })
+            })}
+          </div>
+        </InfiniteScroll>
     </Accordeon>
   </div>)
 }
