@@ -11,6 +11,7 @@ export enum CharCategoryKey {
   Cap='cap',
   Color='color',
   Body='body',
+  Unic = 'unic',
 }
 
 export interface ICharCategory extends TimeStamp{

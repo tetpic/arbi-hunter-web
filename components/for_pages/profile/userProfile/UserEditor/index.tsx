@@ -9,7 +9,6 @@ import { useAppContext } from 'context/state'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Button from '@/components/ui/Button'
 import { CharCategoryKey, ICharCategory, ICharItem } from 'data/interfaces/ICharacter'
-import { useRouter } from 'next/router'
 import { ModalType, Preset} from 'types/enums'
 import P from '@/components/ui/P'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
@@ -17,6 +16,7 @@ import useTranslation from 'next-translate/useTranslation'
 import UserCart from '../UserCart'
 import ImageHelper from 'utils/ImageHelper'
 import { CharacterCartModalArgs } from '@/components/modals/CharacterCartModal'
+import { useUserContext } from 'context/user_state'
 
 
 interface Props {
@@ -41,9 +41,9 @@ export enum ModelActions {
 export default function UserEditor(props: Props) {
   const {t} = useTranslation()
   const characterContext = useCharacterContext()
+  const userContext = useUserContext()
   const appContext = useAppContext()
   const theme = appContext.theme
-  const router = useRouter()
   const {isTabletWidth} = appContext.size
   const {categories, setActiveSet, activeSet, variant, setVariant, dataLoaded, init, activeItem, setActiveItem} = characterContext
   const choosenItems = characterContext.choosenItems
@@ -119,12 +119,18 @@ export default function UserEditor(props: Props) {
     })
   )
 
+  useEffect(()=>{
+    console.log(sortedVariants)
+  }, [sortedVariants])
+
+  const commonUser = userContext.currentProfile.id !== Number(process.env.IMNEARID)
+
   return (
     <div className={styles.root}>
     <div className={styles.content}>
       {!isTabletWidth &&
       <div className={styles.settings}>
-        {[...categories.entries()].map(([el, val])=> {
+        {[...categories.entries()].filter(([el, val])=> commonUser?el.key !== CharCategoryKey.Unic:true ).map(([el, val])=> {
           return (
             <div key={el.id} onClick={()=> setActiveSet([el, val])} className={styles.set}>
               <UserPic 
@@ -153,7 +159,7 @@ export default function UserEditor(props: Props) {
         }
       </div>
       <div className={styles.variants}>
-       {activeSet[1] && sortedVariants.map(item=> {
+       {activeSet[1] && sortedVariants.filter(el => commonUser?(el.category.key === CharCategoryKey.Jacket?el.animationKey !== '7':true):true).map(item=> {
         return (
           <div className={styles.variantItem}>
             <UserPic 
