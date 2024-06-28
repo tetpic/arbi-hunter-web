@@ -1,7 +1,11 @@
 @import "styles/index";
 
 .content {
-  @include mq($TabletWidth, max) {
-    padding-inline: 16px;
-  }
+  min-height: 50vh;
 }
+
+.container {
+  padding: 16px;
+}
+
+
