@@ -42,7 +42,7 @@ export default function MediaLanding(props: Props) {
       title={isTabletWidth?t('media_page_categories'):t('media_page_categoriesAll')} 
       link={'/media/page?page=categories'}
       />
-      <MediaCategories categories={props.categories} title={isTabletWidth&&t('media_page_categories')} articlesCounter/>
+      <MediaCategories itemClassName={styles.categoryItem} categories={props.categories} title={isTabletWidth&&t('media_page_categories')} articlesCounter/>
 
       <Title 
       className={styles.title}

@@ -5,6 +5,12 @@
   padding-bottom: 50px;
   @include mq($TabletWidth, max) {
     overflow: hidden;
+
+    .categoryItem {
+      display: flex;
+      flex-direction: column;
+      row-gap: unset !important;
+    }
   }
 }
 
@@ -17,6 +23,8 @@
     justify-content: space-between;
   }
 }
+
+
 
 
 
