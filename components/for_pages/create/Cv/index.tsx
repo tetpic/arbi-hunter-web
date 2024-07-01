@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo,  useRef,  useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { ICV, ICVCreate } from 'data/interfaces/ICV'
 import Button from 'components/ui/Button'
-import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, InterfaceLanguage,  ModalType, ScheduleType, SnackbarType, VacancyLookType, WorkExperience, WorkExperiencePresense } from 'types/enums'
+import { Answer, CompensationType, Currency, EducationTypes, EmploymentType, Genders, InterfaceLanguage,  ModalType, ScheduleType, SnackbarType, WorkExperience, WorkExperiencePresense } from 'types/enums'
 import { useUserContext } from 'context/user_state'
 import {  useCreateVcCvContext } from 'context/createVcCv_state'
 import CvRepository from 'data/repositories/CvRepository'
@@ -151,7 +151,7 @@ export default function Cv(props: Props) {
     bio: props.cv?.bio||'',
     skillsIds: props.cv?.skillsIds||[],
     commission: props.cv?.commission||null,
-    vacancyLookType: props.cv?.vacancyLookType||userContext.currentProfile?.vacancyLookType||VacancyLookType.NotLooking,
+    vacancyLookType: null,
     workExperiencePresense: props.cv?.workExperiencePresense||WorkExperiencePresense.Absent,
     education: props.cv?.education||EducationTypes.Secondary,
     relocation: props.cv?.relocation||Answer.No,
