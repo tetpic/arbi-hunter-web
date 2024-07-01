@@ -255,9 +255,9 @@ export default function CvPage(props: Props) {
       }
     </P>
     }
-    {currentCv?.vacancyLookType &&
-      <p className={classNames(styles.status, currentCv?.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
-        {TranslateVacancyLookType(currentCv?.vacancyLookType, ProfileType.Hirer, t)}
+    {currentCv?.profile.vacancyLookType &&
+      <p className={classNames(styles.status, currentCv?.profile?.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
+        {TranslateVacancyLookType(currentCv?.profile?.vacancyLookType, ProfileType.Hirer, t)}
       </p>
     }
     <div className={styles.topButtonsWrapper}>
