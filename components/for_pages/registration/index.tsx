@@ -42,7 +42,7 @@ export default function Registration(props: Props) {
   const [cityId, setCityId] = useState<number>(undefined)
   const [cityNameValue, setCityNameValue] = useState<string|undefined>(undefined)
   const [country, setCountry] = useState<ISearchCountryResult>()
-  const [progress, setProgress] = useState<number>(props.token?2:1)
+  const [progress, setProgress] = useState<number>(1)
 
 
   const [disableButton, setDisableButton] = useState<boolean>(false)
@@ -87,9 +87,9 @@ export default function Registration(props: Props) {
       RegistrationRepository.completeRegistration(sendData)
       .then(res=> {
         sendToMetrika(AppMetricaEvent.FinishRegistration)
-        // setTimeout(() => {
-        //   userContext.updateUser()
-        // }, 300)
+        setTimeout(() => {
+          userContext.updateUser()
+        }, 300)
       })
       .catch(err=> {
         setDisableButton(false)

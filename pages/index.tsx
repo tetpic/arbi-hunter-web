@@ -37,9 +37,12 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
   if(profileType && token) {
     const user = await UserRepository.getCurrentUser(token)
     const currentProfile = user.profiles[0]
-    const personalPage = await PersonalRepository.getPersonalPageById(currentProfile.id)
+    if(!currentProfile) {
+      return {redirect: {destination: '/registration'}}
+    }
+    const personalPage = await PersonalRepository.getPersonalPageById(currentProfile?.id)
     const backgrounds = await BackgroundRepository.getBackground({profileId: currentProfile?.id}, token, profileType)
-    return {props: {profileType, profile:currentProfile, backgrounds, personalPage}}
+    return {props: {profileType, profile:currentProfile, backgrounds, personalPage: personalPage||null}}
   }
   else {
     return {props: {}}
