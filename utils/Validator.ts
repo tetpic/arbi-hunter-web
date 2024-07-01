@@ -25,7 +25,7 @@ export default class Validator {
   }
 
   static phone(value: string): string | undefined{
-    return Formatter.cleanPhone(value ?? '')?.length >= 12 ? undefined : 'Неверный формат'
+    return Formatter.cleanPhone(value ?? '')?.length >= 9 ? undefined : 'Неверный формат'
   }
 
   static phoneLimit(value: string): string {

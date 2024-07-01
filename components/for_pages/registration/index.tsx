@@ -324,6 +324,7 @@ export default function Registration(props: Props) {
   useEffect(()=>{
     if(props.token) {
       userContext.setToken(props.token)
+      formik.setValues({...formik.values, agreement: true})
     }
   }, [props.token])
 
@@ -333,7 +334,6 @@ export default function Registration(props: Props) {
 
   useEffect(()=>{
     isTabletWidth && appContext.showModal(ModalType.ProfileTypeSwitcher)
-  
   }, [isTabletWidth])
 
   return (
