@@ -316,7 +316,7 @@ export default function MobileSideBar(props: Props) {
         </Link>    
       }
 
-      <Link href={'/sitemap'} className={styles.link} onClick={props.onClose}>
+      <Link href={'/map'} className={styles.link} onClick={props.onClose}>
         <P useThemeColor styleType={['w500', 'medium']}>{t('footer_siteMap')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>

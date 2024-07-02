@@ -118,7 +118,7 @@ export default function Footer(props: Props) {
           <Link href={'/base'} >
             <P styleType={['medium', 'w500']} useThemeColor>{t('footer_knowledgeBase')}</P>
           </Link>
-          <Link href={'/sitemap'} >
+          <Link href={'/map'} >
             <P styleType={['medium', 'w500']} useThemeColor>{t('footer_siteMap')}</P>
           </Link>
         </div>

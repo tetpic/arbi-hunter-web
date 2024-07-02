@@ -3,6 +3,7 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { SourcesWrapper } from 'context/sources_state'
 import { ICV } from 'data/interfaces/ICV'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import CvRepository from 'data/repositories/CvRepository'
 import { CookiesType } from 'types/enums'
 
@@ -19,6 +20,9 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const token = context.req.cookies[CookiesType.accessToken]
   const profileType = context.req.cookies[CookiesType.profileType]
   const progress = Number(context.query.progress)
+  if(profileType === ProfileType.Hirer && token) {
+    return {redirect: {destination: '/create/vacancy', permanent: false} }
+  }
   if(profileType && token && id) {
     const cv = await CvRepository.getById(Number(id), profileType, token).then(res=> res)
     return {props: {cv, id, progress}}

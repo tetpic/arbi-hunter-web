@@ -1,0 +1,28 @@
+@import 'styles/index';
+
+.divider {
+  max-width: 600px;
+  width: 100%;
+  background-color: $greyLight;
+  margin-block: 16px;
+  height: 2px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  padding-top: 32px;
+  min-height: 60vh;
+
+  @include mq($TabletWidth, max) {
+    padding-inline: 16px;
+    padding-top: 16px;
+  }
+}
+
+.link {
+  @include hover {
+    text-decoration: underline;
+  }
+}

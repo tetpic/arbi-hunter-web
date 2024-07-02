@@ -2,6 +2,7 @@ import Vacancy from 'components/for_pages/create/Vacancy'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CreateVcCvWrapper } from 'context/createVcCv_state'
 import { SourcesWrapper } from 'context/sources_state'
+import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
 import { CookiesType } from 'types/enums'
@@ -19,6 +20,9 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   const token = context.req.cookies[CookiesType.accessToken]
   const profileType = context.req.cookies[CookiesType.profileType]
   const progress = Number(context.query.progress)
+  if(profileType === ProfileType.Employee && token) {
+    return {redirect: {destination: '/create/cv', permanent: false} }
+  }
   if(profileType && token && id) {
     try {
       const vacancy = await VacancyRepository.getVacancyById(Number(id), profileType, token).then(res=> res)
