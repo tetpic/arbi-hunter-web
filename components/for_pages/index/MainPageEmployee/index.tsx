@@ -100,6 +100,7 @@ export default function MainPageEmployee() {
     <div className={styles.root}>
       <div className={styles.top}>
         <PersonalHeader 
+        isMy={true}
         action={action} 
         showNextAnimation={()=>!disableClick&&showNextAnimation()}  
         useModel

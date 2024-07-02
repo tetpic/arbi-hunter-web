@@ -23,6 +23,8 @@ import ImageHelper from 'utils/ImageHelper'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import Button from '@/components/ui/Button'
 import { useRouter } from 'next/router'
+import P from '@/components/ui/P'
+import PlusSvg from '@/components/svg/PlusSvg'
 
 interface Props {
   isEditing?: boolean
@@ -30,6 +32,7 @@ interface Props {
   showNextAnimation?: () => void
   action?: ModelActions 
   showMobileBack?: boolean
+  isMy?: boolean
   initialBackground?: IBackground
 }
 
@@ -161,6 +164,14 @@ export default function PersonalHeader(props: Props) {
   }, [personalContext.weather])
 
   return (<div className={styles.root}> 
+    {props.isMy &&  !characterContext.currentCharacter.current && !personalContext.currentProfile.image &&
+      <div className={styles.characterBanner} onClick={() => router.push({pathname: '/profile', query: {page: 'edit'}})}>
+        <P styleType={['w600', 'large']}>Создайте своего оригинального персонажа</P>
+        <div className={styles.addCharButton}>
+          <Button styleType={['circle', 'icon', 'white', 'invertSvg']}><PlusSvg/></Button>
+        </div>
+      </div>
+    }
     {isTabletWidth && props.showMobileBack &&
       <Button 
       styleType={['black', 'icon']} 

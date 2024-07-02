@@ -184,3 +184,76 @@
   justify-content: center;
   align-items: center;
 }
+
+.characterBanner {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  background-color: #4d4d4d4b;
+  border-radius: 16px;
+  column-gap: 16px;
+  padding: 8px;
+  backdrop-filter: blur(0px);
+  background-color: transparent;
+  @include transitionDefault;
+  cursor: pointer;
+
+  p {
+    max-width: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    @include transitionDefault;
+  }
+
+  @include hover {
+    backdrop-filter: blur(4px);
+    background-color: #4d4d4d4b;
+
+    p {
+      max-width: 400px;
+    }
+  }
+
+  @include mq($TabletWidth, max ) {
+    backdrop-filter: unset !important;
+    background-color: unset !important;  
+    flex-direction: column;
+    align-items: center;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 320px;
+    row-gap: 8px;
+
+    p {
+      max-width: unset !important;
+      overflow: unset;
+      white-space: wrap;
+      text-align: center;
+      text-shadow: 0 2px 3px rgb(54, 54, 54);
+      font-size: 20px;
+    }
+
+    button {
+      width: 56px;
+      height: 56px;
+    }
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .addCharButton {
+    padding: 4px;
+    background-color: #ffffff50;
+    border-radius: 50%;
+
+    @include mq($TabletWidth, max ) {   
+      padding: 8px;
+    }
+  }
+}
