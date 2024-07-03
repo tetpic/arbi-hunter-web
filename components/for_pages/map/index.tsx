@@ -32,8 +32,8 @@ export default function SiteMap(props: Props) {
     <P styleType={['large', 'w600', 'alignCenter']}><TelegramSvg/> Техническая поддержка</P>
     </Link>
     <div className={styles.divider}></div>
-    <Link href={'mailto:sp@keyaffiliates.com'}><P styleType={['large', 'w600']}>Партнерам</P></Link>
-    <Link href={'mailto:sp@keyaffiliates.com'}><P styleType={['medium']}>sp@keyaffiliates.com</P></Link>
+    <P styleType={['large', 'w600']}>Партнерам</P>
+    <Link href={'https://t.me/samesonggg'}><P className={styles.link}  styleType={['medium', 'alignCenter']}><TelegramSvg/> По вопросам сотрудничества</P></Link>
 
 
   </div>)
