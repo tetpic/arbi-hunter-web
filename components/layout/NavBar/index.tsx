@@ -8,11 +8,9 @@ import Image from 'next/image'
 import ArbiLogoTextSvg from '@/components/svg/ArbiLogoTextSvg'
 import ChatFeedbackSvg from '@/components/svg/ChatFeedbackSvg'
 import QuestionSvg from '@/components/svg/QuestionSvg'
-import ShopSmallSvg from '@/components/svg/ShopSmallSvg'
 import WalletSvg from '@/components/svg/WalletSvg'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
 import SettingSvg from '@/components/svg/SettingSvg'
-import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ManSvg from '@/components/svg/ManSvg'
 // import Switch from '@/components/ui/Switch'
@@ -25,6 +23,10 @@ import useTranslation from 'next-translate/useTranslation'
 import ExitSvg from '@/components/svg/ExitSvg'
 import Button from '@/components/ui/Button'
 import SupportSvg from '@/components/svg/SupportSvg'
+import ShopSmallAltSvg from '@/components/svg/ShopSmallAltSvg'
+import ManagersSvg from '@/components/svg/ManagersSvg'
+import { useIndexPageContext } from 'context/index_page_state'
+import { ItemsNotificationType } from 'data/interfaces/INotification'
 
 interface Props {
 }
@@ -36,8 +38,9 @@ export default function NavBar(props: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   const {t} = useTranslation()
   const profileType = userContext.currentProfile?.profileType
+  const indexPageContext = useIndexPageContext()
 
-  const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element}} = {
+  const linksSet: {[key: string]: {path: string, query?: {page: string}, text: string, icon: JSX.Element, counter?: number}} = {
     cvs: {
       path: '/cvs',
       text: t('nav_myCvs'),
@@ -52,22 +55,25 @@ export default function NavBar(props: Props) {
       path: '/profile',
       query: {page: 'feedbacks'},
       text: t('nav_myFeedbacks'),
-      icon: <ChatFeedbackSvg className={styles.linkSvg}/>
+      icon: <ChatFeedbackSvg className={styles.linkSvg}/>,
+      counter: indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewProposal)?.count
     },
     feedBacksHir: {
       path: '/responses',
       text: t('nav_myFeedbacks'),
-      icon: <ChatFeedbackSvg className={styles.linkSvg}/>
+      icon: <ChatFeedbackSvg className={styles.linkSvg}/>,
+      counter: indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewApplication)?.count
     },
     messages: {
       path: '/messenger',
       text: t('nav_messenger'),
-      icon: <MessageSvg className={styles.linkSvg}/>
+      icon: <MessageSvg className={styles.linkSvg}/>,
+      counter: indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.ChatMessage)?.count
     },
     shop: {
       path: '/shop',
       text: t('nav_shop'),
-      icon: <ShopSmallSvg className={styles.linkSvg}/>
+      icon: <ShopSmallAltSvg className={styles.linkSvg}/>
     },
     settings: {
       path: '/settings',
@@ -83,7 +89,7 @@ export default function NavBar(props: Props) {
     managers: {
       path: '/managers',
       text: t('nav_managers'),
-      icon: <UserDoubleSvg className={styles.linkSvg}/>
+      icon: <ManagersSvg className={styles.linkSvg}/>
     },
     knowledge: {
       path: '/base',
@@ -146,8 +152,9 @@ export default function NavBar(props: Props) {
           .map((el, i)=> {
             return (
               <Link aria-label='to chats'  className={styles.link} href={{pathname: el.path, query: el.query}} key={el.path + i}>
-                <Button className={styles.buttonIcon} altStyleType={['icon','white', 'invertSvg']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'black']} >
+                <Button className={styles.buttonIcon} altStyleType={['icon','white', 'invertSvg']} styleType={['icon', (activePath===el.path&&activeQuery?.page===el.query?.page&&styles.active)?'gradient':'grey']} >
                   {el.icon}
+                  {el.counter && el.counter > 0 && <div className={styles.counter}>{el.counter}</div>}
                 </Button>
                 <P useThemeColor className={styles.linkText}>{el.text}</P>
               </Link>
@@ -158,7 +165,7 @@ export default function NavBar(props: Props) {
         className={classNames(styles.exitButton, styles.link)}
         onClick={()=>userContext.logout()}
         >
-          <Button className={styles.buttonIcon} styleType={['icon','black']} altStyleType={['icon','whitePurple']} >
+          <Button className={styles.buttonIcon} styleType={['icon','grey']} altStyleType={['icon','whitePurple']} >
             <ExitSvg/>
           </Button>
           <P useThemeColor className={styles.linkText}>{t('logout')}</P>

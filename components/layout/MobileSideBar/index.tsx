@@ -15,13 +15,11 @@ import P from '@/components/ui/P'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import FolderSvg from '@/components/svg/FolderSvg'
 import ChatFeedbackSvg from '@/components/svg/ChatFeedbackSvg'
-import ShopSmallSvg from '@/components/svg/ShopSmallSvg'
 import SettingSvg from '@/components/svg/SettingSvg'
 import ManSvg from '@/components/svg/ManSvg'
 import QuestionSvg from '@/components/svg/QuestionSvg'
 import { useRouter } from 'next/router'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
-import UserDoubleSvg from '@/components/svg/UserDoubleSvg'
 import { Preset } from 'types/enums'
 import StarSvg from '@/components/svg/StarSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
@@ -30,6 +28,10 @@ import useTranslation from 'next-translate/useTranslation'
 import Formatter from 'utils/formatter'
 import ArbiCoinSvg from '@/components/svg/ArbiCoinSvg'
 import SupportSvg from '@/components/svg/SupportSvg'
+import ShopSmallAltSvg from '@/components/svg/ShopSmallAltSvg'
+import ManagersSvg from '@/components/svg/ManagersSvg'
+import { useIndexPageContext } from 'context/index_page_state'
+import { ItemsNotificationType } from 'data/interfaces/INotification'
 
 interface Props {
   onClose: ()=>void
@@ -39,6 +41,7 @@ interface Props {
 export default function MobileSideBar(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
+  const indexPageContext = useIndexPageContext()
   const [active, setActive] = useState<boolean>(false)
   const router = useRouter()
   const isLogged = userContext.isLogged
@@ -165,9 +168,12 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><ChatFeedbackSvg/></div>
+          <div className={styles.icon}><ChatFeedbackSvg/>
+            {indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewProposal)?.count > 0 && <div className={styles.counter}>{ indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewProposal)?.count}</div>}
+          </div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_myFeedbacks')}</P>
-          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
+          <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/>
+          </Button>
         </Link>
       }
 
@@ -209,7 +215,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><UserDoubleSvg/></div>
+          <div className={styles.icon}><ManagersSvg/></div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_managers')}</P>
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
@@ -228,7 +234,7 @@ export default function MobileSideBar(props: Props) {
       onClick={closeHandler}
       className={styles.link}
       >
-        <div className={styles.shopicon}><ShopSmallSvg color={colors.blue}/></div>
+        <div className={styles.shopicon}><ShopSmallAltSvg color={colors.blue}/></div>
         <P useThemeColor styleType={['w500', 'medium', 'blue']}>{t('nav_shop')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.blue}/></Button>
       </Link>

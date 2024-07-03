@@ -11,9 +11,11 @@ import { createContext, useContext,  useEffect,  useState } from 'react'
 import { Languages } from 'types/enums'
 import { useUserContext } from './user_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
+import { ItemsNotificationType } from 'data/interfaces/INotification'
 
 interface IState {
   stats: IStats
+  unreadStats: {type: ItemsNotificationType, count: number}[]
   categories: Map<number, ISpecializationCategory>
   popularCourses: Map<number, ICourse>
   news: Map<number, IArticle>
@@ -22,7 +24,8 @@ interface IState {
   activeVacancies: Map<number, IVacancy>
   init: () => void
   setVacancies: (activeVacancies: Map<number, IVacancy>, archiveVacancies: Map<number, IVacancy>) => void
-  clearStats: () => void
+  clearStats: () => void,
+  setUnreadStats: (unreadStats: {type: ItemsNotificationType;count: number;}[]) => void
 }
 
 
@@ -42,6 +45,7 @@ export function IndexPageWrapper(props: Props) {
   const userContext = useUserContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
   const [activeVacancies, setActiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
+  const [unreadStats, setUnreadStatsState] = useState<{type: ItemsNotificationType, count: number}[]>([])
 
 
   const init = async() => {
@@ -85,6 +89,10 @@ export function IndexPageWrapper(props: Props) {
     setStats(undefined)
   }
 
+  const setUnreadStats = (unreadStats: {type: ItemsNotificationType, count: number}[]) => {
+    setUnreadStatsState(unreadStats)
+  }
+
   useEffect(()=>{
     if(!userContext.currentProfile) {
       clearStats()
@@ -92,7 +100,6 @@ export function IndexPageWrapper(props: Props) {
       setCategories(new Map)
       setPopularCourses(new Map)
       setLoaded(false)
-
     }
    
   }, [userContext.currentProfile, userContext.token])
@@ -108,7 +115,9 @@ export function IndexPageWrapper(props: Props) {
     clearStats,
     activeVacancies,
     archiveVacancies,
-    setVacancies
+    setVacancies,
+    setUnreadStats,
+    unreadStats
   }
 
   return (

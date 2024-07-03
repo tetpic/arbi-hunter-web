@@ -63,7 +63,7 @@ async function request<T = any>(options: string | Options): Promise<T> {
   const headers: HeadersInit = {
     'Authorization': accessToken ? `Bearer ${accessToken}` : '',
     'X-Session': sessionId ? sessionId : '',
-    'profile-type': profile
+    'profile-type': profile,
   }
 
   if (!file) {

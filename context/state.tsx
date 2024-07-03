@@ -16,7 +16,7 @@ interface IState {
   setTheme: (theme: AppTheme) => void
 
   snackbar: SnackbarData | null,
-  showSnackbar: (text: string, type: SnackbarType) => void
+  showSnackbar: (text: string, type: SnackbarType, timeout?: number) => void
 
   modal: ModalType | null
   modalArguments: any
@@ -76,11 +76,11 @@ export function AppWrapper(props: Props) {
     setThemeState(theme)
   }
 
-  const showSnackbar = (text: string, type: SnackbarType) => {
+  const showSnackbar = (text: string, type: SnackbarType, timeout?: number) => {
     setSnackbar({ text, type })
     setTimeout(() => {
       setSnackbar(null)
-    }, 2000)
+    }, timeout||2000)
   }
 
   const showModal = <T extends unknown>(type: ModalType, args?: T) => { 

@@ -12,7 +12,7 @@ import Modes from 'components/ui/Modes'
 import MenuButtonSvg from 'components/svg/MenuButtonSvg'
 import Button from 'components/ui/Button'
 import { useAppContext } from 'context/state'
-import { AppTheme, ModalType, Preset } from 'types/enums'
+import { AppTheme, ModalType, Preset, SnackbarType } from 'types/enums'
 import { getUserImageSource } from 'utils/helpers'
 import SearchBar from '@/components/ui/SearchBar'
 import NotificationSvg from '@/components/svg/NotificationSvg'
@@ -27,6 +27,7 @@ import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
 import Notifications from '@/components/ui/Notifications'
 import { ItemsNotificationType } from 'data/interfaces/INotification'
 import NoNotificationSvg from '@/components/svg/NoNotificationSvg'
+import { useIndexPageContext } from 'context/index_page_state'
 
 interface Props {
   distanceFromTop: number
@@ -37,6 +38,8 @@ export default function Header(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
+  const indexPageContext = useIndexPageContext()
+
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme===AppTheme.Light
@@ -64,6 +67,7 @@ export default function Header(props: Props) {
     ItemsNotificationType.ChatMessage,
   ]
   const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>(allowedStatsTypes.map(t=> ({type: t, count: 0})))
+  const statsRef = useRef<{type: ItemsNotificationType, count: number}[]>(allowedStatsTypes.map(t=> ({type: t, count: 0})))
 
 
 
@@ -108,18 +112,45 @@ export default function Header(props: Props) {
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
       NotificationRepository.getUnreadStats().then(res => {
+          indexPageContext.setUnreadStats(res.items)
           setStats(_ => {
             return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
           })
+          statsRef.current = allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0})) 
         })
       .catch(err => 
         // eslint-disable-next-line no-console
         console.warn(err)
       )
       refreshNotificationInterval.current = setInterval(()=>{
-        NotificationRepository.getUnreadStats().then(res => setStats(_ => {
-          return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
-        }))
+        NotificationRepository.getUnreadStats().then(res => {
+          indexPageContext.setUnreadStats(res.items)
+          res.items.forEach((el, index) => {
+            const resCount = statsRef.current.find(i=> i.type === el.type)?.count||undefined
+            console.log(el.count, resCount)
+            if((el.count > resCount) && resCount) {
+              if(index === 0) {
+                appContext.showSnackbar(`У вас ${
+                  (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && 'новый отклик'
+                  || 'новое сообщение'
+                }`, SnackbarType.success, 4000)
+              }
+              else {
+                setTimeout(() => {
+                  appContext.showSnackbar(`У вас ${
+                    (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && 'новый отклик'
+                    || 'новое сообщение'
+                  }`, SnackbarType.success, 4000)
+  
+                }, 4100 * index)
+              }
+            }
+          })
+          setStats(_ => {
+            return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
+          })
+          statsRef.current = allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0})) 
+        })
         .catch(err => 
           // eslint-disable-next-line no-console
           console.warn(err)
@@ -127,9 +158,9 @@ export default function Header(props: Props) {
       }, 20000)
     }
 
-    return ()=>{
-      clearInterval(refreshNotificationInterval.current)
-    }
+    // return ()=>{
+    //   clearInterval(refreshNotificationInterval.current)
+    // }
   }, [userContext.currentProfile])
 
 
