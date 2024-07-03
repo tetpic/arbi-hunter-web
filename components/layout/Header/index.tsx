@@ -107,9 +107,11 @@ export default function Header(props: Props) {
       clearInterval(refreshNotificationInterval.current)
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
-      NotificationRepository.getUnreadStats().then(res => setStats(_ => {
-        return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
-      }))
+      NotificationRepository.getUnreadStats().then(res => {
+          setStats(_ => {
+            return allowedStatsTypes.map(t => ({type: t, count: res.items.find(i=> i.type === t)?.count||0}))    
+          })
+        })
       .catch(err => 
         // eslint-disable-next-line no-console
         console.warn(err)
