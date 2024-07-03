@@ -28,8 +28,9 @@ export default function SiteMap(props: Props) {
     <Link href={'/create/cv'}><P styleType={['medium']} className={styles.link}>Создать резюме</P></Link>
     <Link href={'/recruiting'}><P styleType={['medium']} className={styles.link}>Каталог вакансий</P></Link>
     <div className={styles.divider}></div>
+    <P styleType={['large', 'w600', 'alignCenter']}>Техническая поддержка</P>
     <Link href={'https://t.me/arbihunter_support'}>
-    <P styleType={['large', 'w600', 'alignCenter']}><TelegramSvg/> Техническая поддержка</P>
+      <P styleType={['medium', 'alignCenter']} className={styles.link}> <TelegramSvg/>  Support-менеджер</P>
     </Link>
     <div className={styles.divider}></div>
     <P styleType={['large', 'w600']}>Партнерам</P>
