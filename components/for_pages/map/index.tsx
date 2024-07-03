@@ -3,23 +3,11 @@ import styles from './index.module.scss'
 import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import TelegramSvg from '@/components/svg/TelegramSvg'
 
 interface Props {
 }
 
-// Главная станица 
-// О компании
-// Условия оказания услуг
-// Политика конфиденциальности
-// Работадателям
-// Создать вакансию
-// Каталог резюме
-// Соискателям
-// Создать резюме
-// Каталог вакансий
-// Техническая поддержка
-// -
-// Партнерам 
 
 export default function SiteMap(props: Props) {
   const router = useRouter()
@@ -40,9 +28,13 @@ export default function SiteMap(props: Props) {
     <Link href={'/create/cv'}><P styleType={['medium']} className={styles.link}>Создать резюме</P></Link>
     <Link href={'/recruiting'}><P styleType={['medium']} className={styles.link}>Каталог вакансий</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Техническая поддержка</P>
+    <Link href={'https://t.me/arbihunter_support'}>
+    <P styleType={['large', 'w600', 'alignCenter']}><TelegramSvg/> Техническая поддержка</P>
+    </Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Партнерам</P>
+    <Link href={'mailto:sp@keyaffiliates.com'}><P styleType={['large', 'w600']}>Партнерам</P></Link>
+    <Link href={'mailto:sp@keyaffiliates.com'}><P styleType={['medium']}>sp@keyaffiliates.com</P></Link>
+
 
   </div>)
 }
