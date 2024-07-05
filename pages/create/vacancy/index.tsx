@@ -27,7 +27,12 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
     try {
       const vacancy = await VacancyRepository.getVacancyById(Number(id), profileType, token).then(res=> res)
       .catch(err => console.warn(err))
-      return {props: {vacancy, id, progress}}
+      if(vacancy) {
+        return {props: {vacancy, id, progress}}
+      }
+      else {
+        return {redirect: {destination: '/create/vacancy', permanent: false} }
+      }
     }
     catch (err) {
       return {redirect: {destination: '/create/vacancy', permanent: false} }
