@@ -61,7 +61,7 @@ export default function Vacancy(props: Props) {
   
   const [title, setTitle] = useState<string>(t('create_vacancy_specialization'))
   const [page, setPage] = useState<JSX.Element>()
-  const maxProgress = useRef<number>(props.vacancy?.completedSteps?.length||1)
+  const maxProgress = useRef<number>(props?.vacancy?.completedSteps?.length||1)
   const initialDescription = `<p>${t('create_vacancy_responsibilities')}</p><ul><li></li><li></li><li></li></ul><p>${t('create_vacancy_requirements')}</p><ul><li></li><li></li><li></li></ul><p>${t('create_vacancy_conditions')}</p><ul><li></li><li></li><li></li></ul>`
 
   const {activeSources, activeGeos, activeVerticals, languageKnowledges, cityId, skills, countryId, categoryIds} = creationContext?.helpObjects
@@ -78,7 +78,7 @@ export default function Vacancy(props: Props) {
 
   const getContactName = () => {
     if(props.vacancy) {
-      const arr = [props.vacancy.profile.firstName, props.vacancy.profile.lastName, props.vacancy.profile.patronymic]
+      const arr = [props.vacancy?.profile?.firstName, props.vacancy?.profile?.lastName, props.vacancy?.profile?.patronymic]
       return arr.filter(Boolean).join(' ')
     }
     else if(userContext.currentProfile) {
@@ -157,8 +157,8 @@ export default function Vacancy(props: Props) {
   const saveVacancy = (data: IVacancyCreate, noRedirect?: boolean) => {
     const sendData = getDataToSend(data)
 
-    if(props.id) {
-      VacancyRepository.editVacancyById(sendData, props.id)
+    if(props?.id) {
+      VacancyRepository.editVacancyById(sendData, props?.id)
       .then(res=>{
         appContext.showSnackbar(t('create_vacancy_refreshed'), SnackbarType.success)
         !noRedirect&&router.push('/vacancies')  
@@ -214,8 +214,8 @@ export default function Vacancy(props: Props) {
         setProgress(pageNumber||progress+1)
         return false
       case 2: 
-        const salaryMinNumber: number = Number(formik.values.salaryMin?.toString().replaceAll(' ', ''))
-        const salaryMaxNumber: number = Number(formik.values.salaryMax?.toString().replaceAll(' ', ''))
+        const salaryMinNumber: number = Number(formik.values.salaryMin?.toString()?.replaceAll(' ', ''))
+        const salaryMaxNumber: number = Number(formik.values.salaryMax?.toString()?.replaceAll(' ', ''))
         if(!salaryMinNumber && !salaryMaxNumber && formik.values.compensation !== CompensationType.Contract) {
           setErr('salaryMin')
           setErr('salaryMax')
@@ -435,8 +435,8 @@ export default function Vacancy(props: Props) {
   }, [userContext.currentProfile])  
 
   useEffect(()=>{
-    if(props.id) {
-      creationContext.getCurrentVc(props.id, props.vacancy)
+    if(props?.id) {
+      creationContext.getCurrentVc(props?.id, props?.vacancy)
     }  
   }, [])
 
@@ -457,7 +457,7 @@ export default function Vacancy(props: Props) {
           formik.submitForm()
         }
       }}
-      vacancy={getDataToSend({...creationContext.draftItem.current, ...props.vacancy, ...formik.values}) as IVacancy}/>
+      vacancy={getDataToSend({...creationContext.draftItem.current, ...(props?.vacancy || {}), ...formik.values}) as IVacancy}/>
     }
 
     {progress === VCItemsCount && !showPreview &&

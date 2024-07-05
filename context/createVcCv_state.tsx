@@ -96,7 +96,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   const [currentCv, setCv] = useState<ICVCreate>()
   const [currentVc, setVc] = useState<IVacancy>()
-  const [progress, handleProgress] = useState<number>(props.progress||1)
+  const [progress, handleProgress] = useState<number>(props?.progress||1)
   const [helpObjects, setHelp] = useState<HelpObject>(initialHelpObject)
   const [categories, setCategoriesState] = useState<Map<ISpecializationCategory, ISpecializationCategory[]|null>>(new Map())
   const [subCategories, setSubCategoriesState] = useState<Map<number, ISpecializationCategory>>(new Map)

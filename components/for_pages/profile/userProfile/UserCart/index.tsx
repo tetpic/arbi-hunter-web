@@ -54,7 +54,7 @@ export default function UserCart(props: Props) {
               className={styles[appContext.theme]}
               active
               size={76} 
-              onClick={()=>props.onSet(item.categoryId)}
+              onClick={()=>props.onSet?.(item.categoryId)}
               image={item.image&&ImageHelper.urlFromFile(item.image, Preset.xsCrop)}/>
               {item.price > 0 && item.isLocked === true &&
                 <P styleType={['alignCenter', 'w600', 'small']} className={styles.price}><ArbiCoinSvg/> {item.price}</P>

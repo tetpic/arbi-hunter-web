@@ -86,7 +86,7 @@ export default function PersonalInformation(props: Props) {
           placeholder={'000 000 00 00'} 
           name={'phone'}  
           className={styles.input} 
-          defaultCountry={userContext.currentProfile.countryCode}
+          defaultCountry={userContext.currentProfile?.countryCode}
           label={`${t('phone')}:`}
           />
         </div>

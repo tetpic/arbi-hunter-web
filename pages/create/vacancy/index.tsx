@@ -26,6 +26,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   if(profileType && token && id) {
     try {
       const vacancy = await VacancyRepository.getVacancyById(Number(id), profileType, token).then(res=> res)
+      .catch(err => console.warn(err))
       return {props: {vacancy, id, progress}}
     }
     catch (err) {
@@ -48,9 +49,9 @@ export default function VacancyCreate(props: Props) {
 
   return  (
     <ContentLayout hideMobileHeader title={'Редактирование Вакансии'}>
-      <CreateVcCvWrapper progress={props.progress}>
+      <CreateVcCvWrapper progress={props?.progress}>
         <SourcesWrapper>
-          <Vacancy id={Number(props.id) as number} vacancy={props.vacancy}/>
+          <Vacancy id={Number(props?.id) as number} vacancy={props?.vacancy}/>
         </SourcesWrapper>
       </CreateVcCvWrapper>
     </ContentLayout>
