@@ -60,11 +60,13 @@ export default function PersonalPage(props: Props) {
   const router = useRouter()
   const isMy = currentProfile?.id === personalContext?.currentProfile?.id
 
-  const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'>>({
+  const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'|'phone'>>({
     initialValues: {
-      company: personalContext?.currentProfile?.company || '',
-      cityId: personalContext?.currentProfile?.cityId || null,
-      bio: personalContext?.currentProfile?.bio || '',
+      company: userContext?.currentProfile?.company || '',
+      cityId: userContext?.currentProfile?.cityId || null,
+      bio: userContext?.currentProfile?.bio || '',
+      phone: userContext?.currentProfile?.phone || '',
+
     },
     onSubmit: () => {}
   })
@@ -128,7 +130,7 @@ export default function PersonalPage(props: Props) {
     .then(_ => {
       if(personalContext.currentProfile?.profileType === ProfileType.Hirer 
         && (formik.values.cityId !== userContext.currentProfile?.cityId||formik.values.company !== userContext.currentProfile?.company)) {
-        userContext.editCurrentProfile(formik.values)
+        userContext.editCurrentProfile(clearObject(formik.values))
         .then(res => {
           if(res) {
             personalContext.setCurrentProfile(res)

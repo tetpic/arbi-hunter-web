@@ -169,7 +169,7 @@ export default function ProfileVacancyItem({vacancy, isActive, isLast, ...props}
           ? vacancy.name 
           : (vacancy.categories[0].translations.find(t => t.languageCode === lang)?.name || vacancy.name)}
         </P>
-        {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
+        {vacancy.city && vacancy.city?.locName && !vacancy.isRemote &&
           <p className={styles.city}>{t('ruCity')} {vacancy.city?.locName}</p>
         }
         {vacancy.isRemote &&

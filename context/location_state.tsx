@@ -114,7 +114,7 @@ export function LocationWrapper(props: Props) {
       const _arr: IGeoName[] = []
       setCities(state=> {
         _arr.concat(..._cities).forEach((c)=> {
-          state.set(c.geonameid, {id: c.geonameid, name: c.locName})
+          state.set(c.geonameid, {id: c.geonameid, name: c?.locName})
         })
         return new Map(state)
       })

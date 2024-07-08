@@ -147,7 +147,7 @@ export default function VacancyPage(props: Props) {
       <div className={styles.companyInfo}>
         <P styleType={['w600', 'medium']} useThemeColor>{currentVacancy.profile?.company}</P>
         {currentVacancy.city?.locName &&
-          <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.city.locName}</P>
+          <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.city?.locName}</P>
         }
       </div>
       <Button 

@@ -75,7 +75,7 @@ function CountryModalInner(props: Props) {
     {locationContext.countries.size > 0 &&
       <div className={styles.list}>
         <CheckboxListField  name={'country'} options={
-          [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el.locName, value: el}))
+          [...formik.values.country, ...[ ...locationContext.countries.values()].filter(el=> !formik.values.country.includes(el))].map(el=> ({label: el?.locName, value: el}))
         }/>
       </div>
     }

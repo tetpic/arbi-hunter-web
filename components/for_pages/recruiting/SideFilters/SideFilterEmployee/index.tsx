@@ -265,7 +265,7 @@ export default function SideFilterEmployee(props: Props) {
             ...formik.values.countries.map(el => locationContext.countries.get(Number(el))), 
             ...[...locationContext.countries?.values()].filter(el => !formik.values.countries.includes(el.geonameid)).slice(0, 3)]
             .map(el=>{
-            return {value: el.geonameid, label: el.locName}
+            return {value: el.geonameid, label: el?.locName}
           })}/>
           {isTabletWidth&&<Spacer basis={4}/>}
           <P styleType={['medium', 'w500', 'blue', 'alignEnd']} className={styles.viewMore}

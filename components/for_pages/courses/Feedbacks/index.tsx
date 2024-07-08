@@ -53,7 +53,7 @@ export default function Feedbacks(props: Props) {
                   }
                 </div>
                 <div className={styles.content}>
-                  <p className={styles.name}>{item.profile.firstName} {item.profile.lastName} &#183; {item.profile.city.locName} </p>
+                  <p className={styles.name}>{item.profile.firstName} {item.profile.lastName} &#183; {item.profile.city?.locName} </p>
                   <RatingLine  rating={item.mark} starClass={styles.star}/>
                   <p className={styles.feedback}>{item.content}</p>
                   <Link className={styles.link} href={'/courses/'+item.course.id}>{t('courses_course')} <span>: &quot;{item.course.name}&quot;</span></Link>

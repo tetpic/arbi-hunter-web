@@ -18,7 +18,6 @@ import Title from '../TitleForSection'
 import useTranslation from 'next-translate/useTranslation'
 import classNames from 'classnames'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
-import { ProfileType } from 'data/interfaces/IRegistration'
 import SystemSvg from '@/components/svg/SystemSvg'
 import MessageReadSvg from '@/components/svg/MessageReadSvg'
 import { useRouter } from 'next/router'
@@ -33,7 +32,6 @@ interface Props {
 export default function Notifications(props: Props) {
   const {t} = useTranslation()
   const userContext = useUserContext()
-  const profileType = userContext.currentProfile.profileType
   const appContext = useAppContext()
   const isTabletWidth = appContext.size.isTabletWidth
   const router = useRouter()
@@ -55,7 +53,7 @@ export default function Notifications(props: Props) {
         }
       case ItemsNotificationType.NewApplication:
         return {
-          name: profileType===ProfileType.Hirer ? 'Отклики' : 'На резюме откликнулись', 
+          name: 'Отклики', 
           icon: <ApplicationProposalSvg/>, colors: ['#F3CE7B', '#E76056'], 
           countText: `У вас  ${count} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
         }
@@ -63,11 +61,11 @@ export default function Notifications(props: Props) {
         return {
           name: 'На резюме откликнулись', 
           icon: <ApplicationProposalSvg/>, 
-          colors: ['#F3CE7B', '#E76056'],  countText: `У вас  ${count} новых предложения`
+          colors: ['#F3CE7B', '#E76056'],  countText: `У вас  ${count} ${Formatter.pluralize(count, 'новое преложение', 'новых преложения', 'новых предложений')}`
         }
       case ItemsNotificationType.Admin:
         return {
-          name: 'Системное уведомление', 
+          name: 'Системные уведомления', 
           icon: <SystemSvg/>, 
           colors: ['#2BC56C', '#4E81F3'], 
           countText: 'Включите уведомления в настройках'

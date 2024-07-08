@@ -121,7 +121,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         >
           {vacancy.company||vacancy.contactName}
         </P>
-        {vacancy.city && vacancy.city.locName && !vacancy.isRemote &&
+        {vacancy.city && vacancy.city?.locName && !vacancy.isRemote &&
           <p className={styles.city}>г. {vacancy.city?.locName}</p>
         }
       </div>

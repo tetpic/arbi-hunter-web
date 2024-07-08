@@ -43,7 +43,8 @@ export default function Header(props: Props) {
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme===AppTheme.Light
-  const {profileType, setProfileType} = userContext
+  const {currentProfile, setProfileType} = userContext
+  const profileType = currentProfile?.profileType
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
@@ -54,24 +55,19 @@ export default function Header(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const refreshNotificationInterval = useRef<ReturnType<typeof setInterval>>()
 
-  const allowedStatsTypes = profileType === ProfileType.Employee ?
-  [
-    ItemsNotificationType.ChatMessage,
-    ItemsNotificationType.Admin,
-    ItemsNotificationType.NewProposal,
-  ]
-  :
-  [
+  const hirerStatsTypes = [
     ItemsNotificationType.NewApplication,
     ItemsNotificationType.Admin,
     ItemsNotificationType.ChatMessage,
   ]
-  const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>(allowedStatsTypes.map(t=> ({type: t, count: 0})))
-  const statsRef = useRef<{type: ItemsNotificationType, count: number}[]>(allowedStatsTypes.map(t=> ({type: t, count: 0})))
 
-
-
-  const stats = _stats?.filter(s=> allowedStatsTypes.includes(s.type))
+  const employeeStatsTypes = [
+    ItemsNotificationType.NewProposal,
+    ItemsNotificationType.ChatMessage,
+    ItemsNotificationType.Admin,
+  ]
+  const [_stats, setStats] = useState<{type: ItemsNotificationType, count: number}[]>([])
+  const statsRef = useRef<{type: ItemsNotificationType, count: number}[]>([])
 
   const onSearchbarSubmit = (data: {search?: string}) => {
     const filters = JSON.parse(router?.query?.filters as string||'{}')
@@ -111,6 +107,8 @@ export default function Header(props: Props) {
       clearInterval(refreshNotificationInterval.current)
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
+      const allowedStatsTypes = userContext.currentProfile.profileType === ProfileType.Hirer?hirerStatsTypes:employeeStatsTypes
+      setStats(allowedStatsTypes.map(t=> ({type: t, count: 0})))
       NotificationRepository.getUnreadStats().then(res => {
           indexPageContext.setUnreadStats(res.items)
           setStats(_ => {
@@ -127,7 +125,6 @@ export default function Header(props: Props) {
           indexPageContext.setUnreadStats(res.items)
           res.items.forEach((el, index) => {
             const resCount = statsRef.current.find(i=> i.type === el.type)?.count||undefined
-            console.log(el.count, resCount)
             if((el.count > resCount) && resCount) {
               if(index === 0) {
                 appContext.showSnackbar(`У вас ${
@@ -232,7 +229,7 @@ export default function Header(props: Props) {
                 altStyleType={['icon','white']}
                 className={styles.iconButton}
                 >
-                  {stats?.map(el => el.count).filter(Boolean).length > 0 &&
+                  {_stats?.map(el => el.count).filter(Boolean).length > 0 &&
                     <NotificationSvg color={isLightTheme?colors.black:''}/>
                     ||
                     <NoNotificationSvg />
@@ -242,7 +239,7 @@ export default function Header(props: Props) {
                 usePopper
                 className={styles.dropdown}
                 popperPlacement='bottom-end'
-                options={<Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>} 
+                options={<Notifications active={dropDown} stats={_stats} onClose={()=>{openDropDown(false)}}/>} 
                 active={dropDown} 
                 key={'notifications'}
                 getRef={(r)=>{dropRef.current = r}}
@@ -281,7 +278,7 @@ export default function Header(props: Props) {
                 altStyleType={['icon', 'white']}
                 className={styles.iconButton}
                 >
-                  {stats?.map(el => el.count).filter(Boolean).length > 0 &&
+                  {_stats?.map(el => el.count).filter(Boolean).length > 0 &&
                   <NotificationSvg color={isLightTheme?colors.black:''}/>
                   ||
                   <NoNotificationSvg />
@@ -290,7 +287,7 @@ export default function Header(props: Props) {
                 <OptionsDropDown 
                 usePopper
                 className={styles.dropdown}
-                options={<Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>} 
+                options={<Notifications active={dropDown} stats={_stats} onClose={()=>{openDropDown(false)}}/>} 
                 active={dropDown} 
                 key={'notifications'}
                 popperPlacement='bottom-end'
@@ -325,14 +322,14 @@ export default function Header(props: Props) {
               altStyleType={['icon','white']}
               className={styles.menuButton}
               >
-                {stats?.map(el => el.count).filter(Boolean).length > 0 &&
+                {_stats?.map(el => el.count).filter(Boolean).length > 0 &&
                   <NotificationSvg color={isLightTheme?colors.black:''}/>
                   ||
                   <NoNotificationSvg />
                 }
               </Button>
               {dropDown &&
-                <Notifications active={dropDown} stats={stats} onClose={()=>{openDropDown(false)}}/>
+                <Notifications active={dropDown} stats={_stats} onClose={()=>{openDropDown(false)}}/>
               }
             </div>
           }
