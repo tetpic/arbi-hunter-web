@@ -46,19 +46,19 @@ export default function EditToolbar(props: Props) {
   const buttons = [
     {name: t('personal_text'), free: true, icon: <TextSvg/>, type: PersonalBlockType.Text, onClick: () => showModal(PersonalBlockType.Text)},
     {name: t('personal_image'), free: true, icon: <PhotoBigSvg/>, type: PersonalBlockType.Image, onClick: () => showModal(PersonalBlockType.Image)},
-    {name: t('personal_gallery'), free: false, icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
-    {name: t('personal_video'), free: false, icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
+    {name: t('personal_gallery'), free: true, icon: <PhotoDoubleSvg/>, type: PersonalBlockType.Gallery, onClick: () => showModal(PersonalBlockType.Gallery)},
+    {name: t('personal_video'), free: true, icon: <VideoCameraSvg/>, type: PersonalBlockType.Video, onClick: () => showModal(PersonalBlockType.Video)},
     // {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
     // {name: t('personal_address'), free: false, icon: <LocationSvg/>, type: PersonalBlockType.Location, onClick: () => showModal(PersonalBlockType.Location)},
-    {name: t('personal_divider'),free: false, icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
+    {name: t('personal_divider'),free: true, icon: <ScaleSvg/>, type: PersonalBlockType.Separator, onClick: () => {
       personalContext.setBlocks(state=> new Map([...state, [state.size+1, {block: {type: PersonalBlockType.Separator}}]]))
     }},
-    {name: t('personal_banner'), free: false, icon: <BannerIconSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
-    {name: t('personal_columns'), free: false, icon: <ColumnsIconSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
-    {name: t('personal_collage'), free: false, icon: <CollageIconSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
-    {name: t('personal_links'), free: false, icon: <LinkBigSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
-    {name: t('personal_textVideo'), free: false, icon: <TextAndVideoSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
-    {name: t('personal_html'), free: false, icon: <HtmlIconSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
+    {name: t('personal_banner'), free: true, icon: <BannerIconSvg/>, type: PersonalBlockType.Banner, onClick: () => showModal(PersonalBlockType.Banner)},
+    {name: t('personal_columns'), free: true, icon: <ColumnsIconSvg/>, type: PersonalBlockType.Columns, onClick: () => showModal(PersonalBlockType.Columns)},
+    {name: t('personal_collage'), free: true, icon: <CollageIconSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
+    {name: t('personal_links'), free: true, icon: <LinkBigSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
+    {name: t('personal_textVideo'), free: true, icon: <TextAndVideoSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
+    {name: t('personal_html'), free: true, icon: <HtmlIconSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
   ]
 
   return (<div className={styles.root}> 
