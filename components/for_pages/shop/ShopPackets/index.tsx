@@ -31,7 +31,20 @@ export default function ShopPackets(props: Props) {
   }
 
   return (<div className={styles.root}> 
-    {[...tariffContext.packets.entries()].filter(([key, value]) => value.purchaseType === PurchaseType.Character||(props.purchaseTypes?props.purchaseTypes.includes(value.purchaseType): true) ).map(([key, value])=> {
+    {[...tariffContext.packets.entries()]
+    .filter(([key, value]) => value.purchaseType === PurchaseType.Character||(props.purchaseTypes?props.purchaseTypes.includes(value.purchaseType): true) )
+    .filter(([key, value])=> {
+      if(value.purchaseType === PurchaseType.VacancyTariff &&  value.key !== 'vacancyStandard') {
+        return false
+      }
+      else if (value.purchaseType === PurchaseType.CvTariff && value.key !== 'cvStandard') {
+        return false
+      }
+      else {
+        return true
+      }
+    })
+    .map(([key, value])=> {
       return <PurchaseItem 
       type='buy'
       tariff={value} 

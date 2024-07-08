@@ -108,6 +108,8 @@ export default function Header(props: Props) {
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
       const allowedStatsTypes = userContext.currentProfile.profileType === ProfileType.Hirer?hirerStatsTypes:employeeStatsTypes
+    
+    
       setStats(allowedStatsTypes.map(t=> ({type: t, count: 0})))
       NotificationRepository.getUnreadStats().then(res => {
           indexPageContext.setUnreadStats(res.items)

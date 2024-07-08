@@ -43,6 +43,7 @@ export interface Buttons {
   helpers?: boolean,
   alignment?: boolean,
   color?: boolean,
+  link?: boolean
 }
 
 interface Props extends IField<string | null>{
@@ -115,10 +116,10 @@ export default function RichTextField(props: Props) {
       Link.extend({
 
       }).configure({
-        openOnClick: false,
-        autolink: false,
+        openOnClick: true,
+        autolink: true,
         HTMLAttributes: {
-          target: null,
+          target: '_blank',
           rel: null
         }
       }),

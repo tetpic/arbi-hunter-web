@@ -29,8 +29,11 @@ export function TariffWrapper(props: Props) {
     const tariffs = await Promise.all(types.map(t=> PurchaseRepository.getTariff(t)))
     tariffs.forEach(el => {
       el.forEach(e=> {
+        // console.log(e)
+        // if((e.purchaseType === PurchaseType.VacancyTariff && e.key !== 'vacancyStarndard')  || (e.purchaseType === PurchaseType.CvTariff && e.key !== 'cvStandard')) return
         setPacketsState(state => {
           state.set(e.id, e)
+          console.log(state)
           return new Map(state)
         })
       })

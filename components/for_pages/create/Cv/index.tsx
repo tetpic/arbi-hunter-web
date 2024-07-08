@@ -98,6 +98,9 @@ export default function Cv(props: Props) {
     const sendData = getSendData(data)
    
     if(props.id) {
+      if(!userContext.currentProfile.birthday && sendData.birthday) {
+        userContext.editCurrentProfile({birthday: sendData.birthday})
+      }
       CvRepository.updateCV(props.id, sendData)
       .then(_=>{
         appContext.showSnackbar(t('create_cv_refreshSuccess'), SnackbarType.success)

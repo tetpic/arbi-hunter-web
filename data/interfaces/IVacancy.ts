@@ -25,6 +25,8 @@ export interface IVacancyCreate extends IJob {
   showTelegramNickname?: boolean
   completedSteps?: number[]
   subscriptions?: ISubscription
+  cityName?: string
+  countryName?: string
 }
 
 

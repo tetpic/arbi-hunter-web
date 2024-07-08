@@ -25,12 +25,13 @@ export default function WorkPlace(props: Props) {
   const formikContext = useFormikContext<IVacancyCreate>()
 
   const cityHandler = (c: ISearchCityResult) => {
+    formikContext.setFieldValue('cityId', c.id)
     const cvHelpers = cvContext.helpObjects
     cvContext.setHelpObjects({...cvHelpers, cityId: c.id})
   }
 
   const countryHandler = (c: ISearchCountryResult) => {
-    
+    formikContext.setFieldValue('countryId', c.geoname.geonameid)
     formikContext.setFieldValue('cityName', '')
     setCurrentCountryCode(c.country_code)
     const cvHelpers = cvContext.helpObjects
@@ -54,7 +55,7 @@ export default function WorkPlace(props: Props) {
       <LocationDropDownInput
       onSetOption={countryHandler} 
       name={'countryName'} 
-      value = {cvContext?.currentVc?.country?.locName||userContext?.currentProfile?.country?.locName}
+      value = {formikContext.values.countryName}
       labelName={t('create_workplaceCountry')+':'}
       requestFn={LocationRepository.searchCountry} 
       />
@@ -65,7 +66,7 @@ export default function WorkPlace(props: Props) {
       onSetOption={cityHandler} 
       name={'cityName'} 
       country={currentCountryCode}
-      value = {cvContext?.currentVc?.city?.locName||userContext?.currentProfile?.city?.locName}
+      value = {formikContext.values.cityName}
       labelName={t('create_workplaceCity')+':'}
       requestFn={LocationRepository.searchCity} 
       />

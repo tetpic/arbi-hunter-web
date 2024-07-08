@@ -130,7 +130,7 @@ export default function SetTariff(props: Props) {
       else {
         return true
       }
-    }).map(el => {
+    }).filter(el => el.key === 'cvStandard'|| el.key === 'vacancyStandard').map(el => {
       return (
         <div 
         className={classnames(styles.tariff)} 

@@ -20,7 +20,7 @@
 .tariffItems {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
   column-gap: 24px;
   width: 100%;
   margin-top: clamp(24px, 7vw, 82px);
@@ -75,7 +75,7 @@
 .buttonsWrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   column-gap: 16px;
   margin-top: 24px;

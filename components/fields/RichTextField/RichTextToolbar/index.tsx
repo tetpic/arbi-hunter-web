@@ -85,6 +85,28 @@ export default function RichTextToolbar(props: Props) {
     })
   }, [editor])
 
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    // cancelled
+    if (url === null) {
+      return
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+  }, [editor])
+
 
   if(!editor){
     return null
@@ -145,6 +167,16 @@ export default function RichTextToolbar(props: Props) {
     <HeadingButton editor={editor} level={6}>
       <>h6</>
     </HeadingButton>
+  }
+
+  {!hideButtons.link &&
+    <ToolbarButton
+    onClick={setLink}
+    isActive={editor.isActive('link')}
+    ><>
+    {'link'}
+    </>
+    </ToolbarButton>
   }
 
   <ToolbarButton

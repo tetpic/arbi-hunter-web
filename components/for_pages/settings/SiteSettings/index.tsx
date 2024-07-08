@@ -47,17 +47,17 @@ export default function SiteSettings(props: Props) {
 
   const formik = useFormik<SiteSettings>({
     initialValues: {
-      countryId: undefined,
-      cityId: undefined,
+      countryId: userContext?.currentProfile?.countryId||undefined,
+      cityId: userContext?.currentProfile?.cityId||undefined,
       language: Cookies.get('NEXT_LOCALE') as InterfaceLanguage||undefined
     },
     onSubmit:submit
   })
 
   const countryHandler = (c: ISearchCountryResult) => {
-    
     formik.setFieldValue('countryId', c.geoname.geonameid)
     formik.setFieldValue('cityName', '')
+    formik.setFieldValue('cityId', undefined)
     setCurrentCountryCode(c.country_code)
   }
 
@@ -98,7 +98,7 @@ export default function SiteSettings(props: Props) {
             <ArrowRightSvg/>
           </div> */}
           
-          <Button styleType={['gradient', 'phoneWide']} onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
+          <Button styleType={['gradient', 'phoneWide']} disabled={!formik.values.cityId || !formik.values.countryId} onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
         </Form>
       </FormikProvider>
     </div>
