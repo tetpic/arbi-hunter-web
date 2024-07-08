@@ -43,8 +43,7 @@ export default function Header(props: Props) {
   const router = useRouter()
   const {isTabletWidth} = appContext.size
   const isLightTheme = appContext.theme===AppTheme.Light
-  const {currentProfile, setProfileType} = userContext
-  const profileType = currentProfile?.profileType
+  const {setProfileType} = userContext
   const [fromTop, setFromTop] = useState<number>(0)
   const [direction, setDirection] = useState<'up'|'down'>('up')
   const dropdownRef = useRef<HTMLDivElement>(null!)
@@ -104,12 +103,12 @@ export default function Header(props: Props) {
   
   useEffect(()=>{
     if(!userContext.currentProfile ) {
+      refreshNotificationInterval.current = null
       clearInterval(refreshNotificationInterval.current)
+      setStats([])
     }
     if(!refreshNotificationInterval.current && userContext.currentProfile) {
-      const allowedStatsTypes = userContext.currentProfile.profileType === ProfileType.Hirer?hirerStatsTypes:employeeStatsTypes
-    
-    
+      const allowedStatsTypes = (userContext.currentProfile.profileType === ProfileType.Hirer&&hirerStatsTypes) || (userContext.currentProfile.profileType === ProfileType.Employee&&employeeStatsTypes)
       setStats(allowedStatsTypes.map(t=> ({type: t, count: 0})))
       NotificationRepository.getUnreadStats().then(res => {
           indexPageContext.setUnreadStats(res.items)
@@ -180,7 +179,7 @@ export default function Header(props: Props) {
             {name: t('employee'), type: ProfileType.Employee},
             {name: t('hirer'), type: ProfileType.Hirer}
           ]}
-          activeButton={profileType}
+          activeButton={userContext.profileType}
           onSet={(type)=>setProfileType(type)}/>
         }
 
