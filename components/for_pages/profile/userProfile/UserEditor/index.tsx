@@ -144,7 +144,7 @@ export default function UserEditor(props: Props) {
       </div>
       ||
       activeSet&&activeSet.length > 0 &&
-      <ItemNavigation activeItem={activeSet[0]?.id} items={[...categories.keys()].map(el=> {return {name: el.name, type: el.id}})} onClick={(n)=> onNavClick(n)}/>
+      <ItemNavigation activeItem={activeSet[0]?.id} items={[...categories.keys()].filter((el)=> commonUser?el.key !== CharCategoryKey.Unic:true ).map(el=> {return {name: el.name, type: el.id}})} onClick={(n)=> onNavClick(n)}/>
       }
 
       <div className={styles.model}> 
