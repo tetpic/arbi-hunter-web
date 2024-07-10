@@ -265,8 +265,8 @@ export function ChatDialogWrapper(props: Props) {
 
 
   const recordVoice = async (stop?: boolean) => {
-    if(stop ) {
-      recorder.current.stop()
+    if(stop && recorder.current) {
+      recorder?.current?.stop()
       recorder.current = null
       clearInterval(starterInterval.current)
       setRecordTime(0)
@@ -274,7 +274,8 @@ export function ChatDialogWrapper(props: Props) {
     }
     else {
       if(!recorder.current) {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true})
+        const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
+        if (!stream) return
         recorder.current = new MediaRecorder(stream)
         recorder.current.audioBitsPerSecond
         recorder.current.ondataavailable = (e) => {

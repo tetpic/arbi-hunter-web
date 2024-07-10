@@ -169,7 +169,7 @@ export default function RichTextToolbar(props: Props) {
     </HeadingButton>
   }
 
-  {!hideButtons.link &&
+  {!hideButtons?.link &&
     <ToolbarButton
     onClick={setLink}
     isActive={editor.isActive('link')}
