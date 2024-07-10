@@ -7,13 +7,11 @@ import { useUserContext } from 'context/user_state'
 import Image from 'next/image'
 import ArbiLogoTextSvg from '@/components/svg/ArbiLogoTextSvg'
 import ChatFeedbackSvg from '@/components/svg/ChatFeedbackSvg'
-import QuestionSvg from '@/components/svg/QuestionSvg'
 import WalletSvg from '@/components/svg/WalletSvg'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
 import SettingSvg from '@/components/svg/SettingSvg'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ManSvg from '@/components/svg/ManSvg'
-// import Switch from '@/components/ui/Switch'
 import { colors } from 'styles/variables'
 import { useAppContext } from 'context/state'
 import { AppTheme } from 'types/enums'
@@ -23,10 +21,11 @@ import useTranslation from 'next-translate/useTranslation'
 import ExitSvg from '@/components/svg/ExitSvg'
 import Button from '@/components/ui/Button'
 import SupportSvg from '@/components/svg/SupportSvg'
-import ShopSmallAltSvg from '@/components/svg/ShopSmallAltSvg'
 import ManagersSvg from '@/components/svg/ManagersSvg'
 import { useIndexPageContext } from 'context/index_page_state'
 import { ItemsNotificationType } from 'data/interfaces/INotification'
+import ShopSmallSvg from '@/components/svg/ShopSmallSvg'
+import SchoolSvg from '@/components/svg/SchoolSvg'
 
 interface Props {
 }
@@ -73,7 +72,7 @@ export default function NavBar(props: Props) {
     shop: {
       path: '/shop',
       text: t('nav_shop'),
-      icon: <ShopSmallAltSvg className={styles.linkSvg}/>
+      icon: <ShopSmallSvg className={styles.linkSvg}/>
     },
     settings: {
       path: '/settings',
@@ -94,7 +93,7 @@ export default function NavBar(props: Props) {
     knowledge: {
       path: '/base',
       text: t('nav_knowlegdeBase'),
-      icon: <QuestionSvg className={styles.linkSvg}/>
+      icon: <SchoolSvg className={styles.linkSvg}/>
     },
     support: {
       path: 'https://t.me/arbihunter_support',

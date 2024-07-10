@@ -59,9 +59,10 @@ export default function Notifications(props: Props) {
         }
       case ItemsNotificationType.NewProposal:
         return {
-          name: 'На резюме откликнулись', 
+          name: 'Отклики', 
           icon: <ApplicationProposalSvg/>, 
-          colors: ['#F3CE7B', '#E76056'],  countText: `У вас  ${count} ${Formatter.pluralize(count, 'новое преложение', 'новых преложения', 'новых предложений')}`
+          colors: ['#F3CE7B', '#E76056'],  
+          countText: `У вас  ${count} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
         }
       case ItemsNotificationType.Admin:
         return {
