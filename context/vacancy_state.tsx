@@ -124,7 +124,7 @@ export function VacancyWrapper(props: Props) {
     VacancyRepository.addToBlackList(id||currentVacancy.id)
     .then(_=> {
       router.back()
-      appContext.showSnackbar('Вакансия добавлена в черный список', SnackbarType.success)
+      appContext.showSnackbar('Вакансия добавлена в скрытые вакансии', SnackbarType.success)
     })
   }
 

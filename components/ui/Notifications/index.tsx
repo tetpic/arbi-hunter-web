@@ -46,7 +46,7 @@ export default function Notifications(props: Props) {
     switch (type) {
       case ItemsNotificationType.ChatMessage:
         return {
-          name: 'У вас есть новые сообщения', 
+          name: 'Новые сообщения', 
           icon: <UnreadMessageSvg/>, 
           colors: ['#AC6CDB', '#586DE4'], 
           countText: `Вам отправили ${count} ${Formatter.pluralize(count, t('message1'), t('message2'), t('message3'))}`

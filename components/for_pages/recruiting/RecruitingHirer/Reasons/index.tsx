@@ -3,8 +3,8 @@ import styles from './index.module.scss'
 import Image from 'next/image'
 import bucket from 'images/recruiting/bucket.png'
 import bucketLight from 'images/recruiting/bucketLight.png'
-import walletWhite from 'images/recruiting/walletWhite.png'
 import hirer1reason from 'images/recruiting/hirer1reason.png'
+import employee1reason from 'images/recruiting/employee1reason.png'
 import hirer2reason from 'images/recruiting/hirer2reason.png'
 import hirer3reason from 'images/recruiting/hirer3reason.png'
 import { useRef } from 'react'
@@ -77,7 +77,7 @@ export default function Reasons({profileType}: Props) {
     <div className={styles.right}>
       <div className={classNames(styles.item, isLightTheme&&styles.item_light)}>
         <div className={isLightTheme?styles.lightImage:styles.image}>
-          <Image src={profileType === ProfileType.Hirer?hirer1reason: walletWhite} alt={'wallet'} width={76} height={76}/>
+          <Image src={profileType === ProfileType.Hirer?hirer1reason: employee1reason} alt={'wallet'} width={76} height={76}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
           {t(texts.subtitle1)}
@@ -88,7 +88,7 @@ export default function Reasons({profileType}: Props) {
       </div>
       <div className={classNames(styles.item, isLightTheme&&styles.item_light)}>
         <div className={isLightTheme?styles.lightImage:styles.image}>
-          <Image src={profileType === ProfileType.Hirer?hirer2reason:walletWhite} alt={'wallet'}  width={76} height={76}/>
+          <Image src={hirer2reason} alt={'wallet'}  width={76} height={76}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
           {t(texts.subtitle2)}
@@ -99,7 +99,7 @@ export default function Reasons({profileType}: Props) {
       </div>
       <div className={classNames(styles.item, isLightTheme&&styles.item_light)}>
         <div className={isLightTheme?styles.lightImage:styles.image}>
-          <Image src={profileType === ProfileType.Hirer?hirer3reason: walletWhite} alt={'wallet'} width={76} height={76}/>
+          <Image src={hirer3reason} alt={'wallet'} width={76} height={76}/>
         </div>
         <P styleType={['huge', 'w600' ]} useThemeColor className={styles.title}>
           {t(texts.subtitle3)}
