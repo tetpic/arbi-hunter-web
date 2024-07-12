@@ -35,8 +35,8 @@ export default function ItemNavigation<T extends string|number>(props: Props<T>)
   useEffect(()=>{
     if(props.activeItem && itemsRef.current.size > 0) {
       let activeItem = itemsRef.current.get(props.activeItem)
-      let activeItemSize = activeItem.getBoundingClientRect()
-      let box = wrapperRef.current.getBoundingClientRect()
+      let activeItemSize = activeItem?.getBoundingClientRect()
+      let box = wrapperRef.current?.getBoundingClientRect()
       if(wrapperRef.current.offsetWidth < itemsListRef.current.offsetWidth) {
         activeItem.scrollIntoView({inline: 'center', behavior: 'smooth', block: 'nearest'})
       }

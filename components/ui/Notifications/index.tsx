@@ -51,27 +51,27 @@ export default function Notifications(props: Props) {
           name: 'Новые сообщения', 
           icon: <UnreadMessageSvg/>, 
           colors: ['#AC6CDB', '#586DE4'], 
-          countText: `Вам отправили ${count} ${Formatter.pluralize(count, t('message1'), t('message2'), t('message3'))}`
+          countText: count > 0 ? 'Вам отправили сообщение': 'Новых сообщений нет'
         }
       case ItemsNotificationType.NewApplication:
         return {
           name: 'Отклики', 
           icon: <ApplicationProposalSvg/>, colors: ['#F3CE7B', '#E76056'], 
-          countText: `У вас  ${count} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
+          countText: `У вас  ${count||'нет'} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
         }
       case ItemsNotificationType.NewProposal:
         return {
           name: 'Отклики', 
           icon: <ApplicationProposalSvg/>, 
           colors: ['#F3CE7B', '#E76056'],  
-          countText: `У вас  ${count} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
+          countText: `У вас  ${count||'нет'} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
         }
       case ItemsNotificationType.Admin:
         return {
           name: 'Системные уведомления', 
           icon: <SystemSvg/>, 
           colors: ['#2BC56C', '#4E81F3'], 
-          countText: 'Включите уведомления в настройках'
+          countText: count > 0? 'Новое уведомление': 'Уведомлений нет '
         }
         case ItemsNotificationType.UserBlocked:
         return {

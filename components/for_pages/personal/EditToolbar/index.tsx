@@ -16,7 +16,7 @@ import { IFile } from 'data/interfaces/Common'
 import useTranslation from 'next-translate/useTranslation'
 import { useTariffContext } from 'context/tariff_state'
 import TextAndVideoSvg from '@/components/svg/TextAndVideoSvg'
-import HtmlIconSvg from '@/components/svg/HtmlIconSvg'
+// import HtmlIconSvg from '@/components/svg/HtmlIconSvg'
 import LinkBigSvg from '@/components/svg/LinkBigSvg'
 import CollageIconSvg from '@/components/svg/CollageIconSvg'
 import BannerIconSvg from '@/components/svg/BannerIconSvg'
@@ -58,7 +58,7 @@ export default function EditToolbar(props: Props) {
     {name: t('personal_collage'), free: true, icon: <CollageIconSvg/>, type: PersonalBlockType.Collage, onClick: () => showModal(PersonalBlockType.Collage)},
     {name: t('personal_links'), free: true, icon: <LinkBigSvg/>, type: PersonalBlockType.Social, onClick: () => showModal(PersonalBlockType.Social)},
     {name: t('personal_textVideo'), free: true, icon: <TextAndVideoSvg/>, type: PersonalBlockType.VideoText, onClick: () => showModal(PersonalBlockType.VideoText)},
-    {name: t('personal_html'), free: true, icon: <HtmlIconSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
+    // {name: t('personal_html'), free: true, icon: <HtmlIconSvg/>, type: PersonalBlockType.Html, onClick: () => showModal(PersonalBlockType.Html)},
   ]
 
   return (<div className={styles.root}> 
