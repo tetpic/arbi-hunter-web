@@ -115,7 +115,7 @@ export default class ChatRepository {
     return res
   }
 
-  static async getChatByContactId(id: number, data?: {applicationId?: number, proposalId?: number}): Promise<any|null> {
+  static async getChatByContactId(id: number, data?: {applicationId?: number, proposalId?: number}):  Promise<IChat | null> {
     const res = await request({
       method: 'get',
       url: `/api/chat/dialog/${id}`,

@@ -135,6 +135,7 @@ export default function ChatItem(props: Props) {
           options={options} 
           active={dropDown} 
           key={chat.id}
+          popperPlacement='bottom'
           getRef={(r)=>{dropRef.current = r}}
           onClose={()=>{openDropDown(false)}}/>
         }

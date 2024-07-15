@@ -116,10 +116,18 @@ export function ChatDialogWrapper(props: Props) {
     if(props.chatId) {
       const [data, pinned] = await  Promise.all([
         ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
-        .catch(err=> err),
+        .catch(err=> {
+          // eslint-disable-next-line no-console
+          console.warn(err)
+          return null
+        }),
         ChatRepository.getPinnedChatMessages(props.chatId)
         .then(res=> res.data)
-        .catch(err=> err)
+        .catch(err=> {
+          // eslint-disable-next-line no-console
+          console.warn(err)
+          return null
+        })
       ]) 
       
         setPinnedState(state => {

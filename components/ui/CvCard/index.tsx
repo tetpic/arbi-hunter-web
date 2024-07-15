@@ -15,8 +15,6 @@ import Button from '../Button'
 import UserPic from '../UserPic'
 import IChat from 'data/interfaces/IChat'
 import { useVacancyContext } from 'context/vacancy_state'
-// import CvRepository from 'data/repositories/CvRepository'
-// import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
@@ -25,6 +23,7 @@ import { getUserImageSource } from 'utils/helpers'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import ChatRepository from 'data/repositories/ChatRepository'
 
 interface ItemProps {
   cv: ICV
@@ -58,7 +57,22 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   const cvContext = useCvContext()
 
   const chatbuttonClickHandler = () => {
-    router.push('/messenger?chat=' + chat.id)
+    if(chat?.id) {
+      router.push('/messenger?chat=' + chat.id)
+    }
+    else {
+      ChatRepository.getChatByContactId(cv.profileId, {proposalId: application?.id})
+      .then(res => {
+        console.log('res', res)
+        router.push('/messenger?chat=' + res.id)
+
+      })
+      .catch(er => {
+        console.warn(er)
+        
+        
+      })
+    }
   }
 
   // const addToSaved = (signal: AbortSignal, folderId?: number ) => {
@@ -157,9 +171,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
 
     <div className={styles.buttonsWrapper}>
       <Button styleType={['gradient', 'phoneWide']} className={styles.button} onClick={inviteHandler}>{t('cv_item_invite')}</Button>
-      {chat&& 
-        <Button styleType={['grey']} altStyleType={['white']} onClick={chatbuttonClickHandler} >{t('cv_item_chat')}</Button>
-      }
+      <Button styleType={['grey']} altStyleType={['white']} onClick={chatbuttonClickHandler} >{t('cv_item_chat')}</Button>
     
     </div>
   </div>
