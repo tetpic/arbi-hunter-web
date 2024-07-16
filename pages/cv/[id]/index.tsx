@@ -4,6 +4,7 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { PersonalWrapper } from 'context/personal_state'
+import { TariffWrapper } from 'context/tariff_state'
 import { VacancyWrapper } from 'context/vacancy_state'
 import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
@@ -93,12 +94,15 @@ export default function Cv(props: Props) {
     <PersonalWrapper key={'cv_page'+props.id}>
       <FeedbacksWrapper>
         <VacancyWrapper>
+          <TariffWrapper>
+
           <FavoritesFolderWrapper>
             {props.cv
               ? <CvPage cvId={props.id}/>
               : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>Резюме скрыто или удалено</P>
             }
           </FavoritesFolderWrapper>
+            </TariffWrapper>
         </VacancyWrapper>
       </FeedbacksWrapper>
     </PersonalWrapper> 

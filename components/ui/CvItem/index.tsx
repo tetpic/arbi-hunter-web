@@ -5,7 +5,7 @@ import { useAppContext } from 'context/state'
 import Image from 'next/image'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
-import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, ProposalRequestType} from 'types/enums'
+import { AppTheme, ApplicationBSSelectType,  ApplicationStatus,  ModalType, Preset, ProposalRequestType, PurchaseType} from 'types/enums'
 import classNames from 'classnames'
 import { IProposalModalProps, ProposalModalPager } from 'components/modals/ProposalModal'
 import { IVacancy } from 'data/interfaces/IVacancy'
@@ -33,6 +33,8 @@ import { IProposal } from 'data/interfaces/IProposal'
 import { IApplication } from 'data/interfaces/IApplication'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import { useTariffContext } from 'context/tariff_state'
 
 interface Props {
   cv: ICV
@@ -48,6 +50,7 @@ export default function CvItem({cv, ...props}: Props) {
   const userContext = useUserContext()
   const folderContext = useFavoritesFolderContext()
   const feedbacksContext = useFeedbacksContext()
+  const tariffContext = useTariffContext()
 
   const defaultImage = '/icons/defaultUser.svg'
   const userImage = getUserImageSource(cv.profile, Preset.sCrop)
@@ -98,8 +101,35 @@ export default function CvItem({cv, ...props}: Props) {
       })
     }
   }
+
+  const purchaseFreemItem = () => {
+    const freeTariffId = [...tariffContext.packets.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen)[0]?.id
+    if(freeTariffId) {
+      PurchaseRepository.purchaseItem({
+        tariffId: freeTariffId
+      })
+      .then(r => {
+        CvRepository.openContacts(cv.id)
+        .then(res=> {
+          setIsOpenContacts(true)
+          setIsLoading(false)
+        })
+      })
+      .catch(err => {
+        isTabletWidth
+        ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
+        :appContext.showModal(ModalType.BuyOpensModal)
+        setIsLoading(false)
+      })
+    }
+    console.log([...tariffContext.packets.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen))
+    // PurchaseRepository.purchaseItem({
+      //   tariffId: tariffContext.
+      // })
+  }
   
-  const openContacts = (e: React.MouseEvent<HTMLButtonElement>) => {
+   
+  const openContacts = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setIsLoading(true)
@@ -109,10 +139,11 @@ export default function CvItem({cv, ...props}: Props) {
       setIsLoading(false)
     })
     .catch(err => {
-      isTabletWidth
-      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
-      :appContext.showModal(ModalType.BuyOpensModal)
-      setIsLoading(false)
+      purchaseFreemItem()
+      // isTabletWidth
+      // ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
+      // :appContext.showModal(ModalType.BuyOpensModal)
+      // setIsLoading(false)
     })
   }
 

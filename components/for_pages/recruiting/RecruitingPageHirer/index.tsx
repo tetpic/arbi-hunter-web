@@ -25,9 +25,10 @@ import useTranslation from 'next-translate/useTranslation'
 import { useUserContext } from 'context/user_state'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useLocationContext } from 'context/location_state'
-import { CompensationType, LanguageKnowLevel } from 'types/enums'
+import { CompensationType, LanguageKnowLevel, PurchaseType } from 'types/enums'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ICV } from 'data/interfaces/ICV'
+import { useTariffContext } from 'context/tariff_state'
 
 
 interface Props {
@@ -57,6 +58,7 @@ function RecruitingPageHirerInner(props: Props) {
   const appContext = useAppContext()
   const userContext = useUserContext()
   const folderContext = useFavoritesFolderContext()
+  const tariffContext = useTariffContext()
   const router = useRouter()
   const [page, setPage] = useState<'filters' | 'cvs'>('cvs')
   const isInited = useRef<boolean>(false)
@@ -111,6 +113,7 @@ function RecruitingPageHirerInner(props: Props) {
       folderContext.getAllFolders(true)
     }
     vacancyContext.setVacancies()
+    tariffContext.setPackets([PurchaseType.ContactsOpen])
     if(props.vcId) {
       vacancyContext.setCurrentVacancy({id: props.vcId})
     }

@@ -8,6 +8,7 @@ import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { LocationWrapper } from 'context/location_state'
 import { SourcesWrapper } from 'context/sources_state'
+import { TariffWrapper } from 'context/tariff_state'
 import { useUserContext } from 'context/user_state'
 import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ICV } from 'data/interfaces/ICV'
@@ -88,9 +89,11 @@ export default function Recruiting(props: Props) {
         <RecruitingPageEmployee filters={params}/>
         ||
         props.auth && props.profileType === ProfileType.Hirer &&
+    <TariffWrapper>
         <FavoritesFolderWrapper>
           <RecruitingPageHirer vcId={Number(props.vcId)} filters={params}/>
         </FavoritesFolderWrapper>
+      </TariffWrapper>
       }
 
     </LocationWrapper>

@@ -12,7 +12,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/router'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, AppTheme, Genders, InterfaceLanguage, ModalType, Preset, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, AppTheme, Genders, InterfaceLanguage, ModalType, Preset, PurchaseType, SnackbarType, VacancyLookType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -49,6 +49,8 @@ import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import DoubleSvg from '@/components/svg/DoubleSvg'
 import EditPencilSvg from '@/components/svg/EditPencilSvg'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import { useTariffContext } from 'context/tariff_state'
+import PurchaseRepository from 'data/repositories/PurchaseRepository'
 
 
 interface Props {
@@ -69,17 +71,18 @@ export default function CvPage(props: Props) {
   const {isTabletWidth} = appContext.size
   const {currentCv} = cvContext
   const isMyCv = currentCv?.profileId === userContext.currentProfile?.id
+  const tariffContext = useTariffContext()
 
-  const makeResponse = () => {
-    const _args:IProposalModalProps = { 
+  function makeResponse() {
+    const _args: IProposalModalProps = {
       cv: currentCv,
       page: ProposalModalPager.OtherVacancy,
       activeVacancies: [...vacancyContext.activeVacancies.values()],
       createProposal: feedBacksContext.createProposal
     }
     isTabletWidth
-      ? appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal,  _args)
-      : appContext.showModal<IProposalModalProps>(ModalType.ProposalModal,  _args)
+      ? appContext.showBottomSheet<IProposalModalProps>(ModalType.ProposalModal, _args)
+      : appContext.showModal<IProposalModalProps>(ModalType.ProposalModal, _args)
   }
 
   const goToChat = () => {
@@ -93,6 +96,27 @@ export default function CvPage(props: Props) {
     })
   }
 
+  const purchaseFreemItem = () => {
+    const freeTariffId = [...tariffContext.packets.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen)[0]?.id
+    if(freeTariffId) {
+      PurchaseRepository.purchaseItem({
+        tariffId: freeTariffId
+      })
+      .then(r => {
+        CvRepository.openContacts(currentCv.id)
+        .then(res=> {
+          cvContext.saveCv(currentCv.id)
+          cvContext.getCv(Number(props.cvId))
+        })
+      })
+      .catch(err => {
+        isTabletWidth
+        ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
+        :appContext.showModal(ModalType.BuyOpensModal)
+      })
+    }
+  }
+
   const openContacts = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -102,9 +126,10 @@ export default function CvPage(props: Props) {
       cvContext.getCv(Number(props.cvId))
     })
     .catch(err => {
-      isTabletWidth
-      ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
-      :appContext.showModal(ModalType.BuyOpensModal)
+      purchaseFreemItem()
+      // isTabletWidth
+      // ?appContext.showBottomSheet(ModalType.BuyOpensModal, null, 180)
+      // :appContext.showModal(ModalType.BuyOpensModal)
     })
   }
 
@@ -165,6 +190,8 @@ export default function CvPage(props: Props) {
     if(userContext.currentProfile) {
       vacancyContext.setVacancies()
       folderContext.getAllFolders(true)
+      tariffContext.setPackets([PurchaseType.ContactsOpen])
+
     }
     else {
       setTimeout(() => {
