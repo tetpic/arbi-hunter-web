@@ -68,11 +68,9 @@ export default function MainPageHirer() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(indexPageContext.stats?.responsesCount.responses_count_interval)>0 &&
                   <span>
-                    {' + '+ indexPageContext.stats?.responsesCount.responses_count_interval}
+                    {(Number(indexPageContext.stats?.responsesCount.responses_count_interval)>0?' + ':'') + indexPageContext.stats?.responsesCount.responses_count_interval}
                   </span>
-                }
               </p>
               }
             </Link>
@@ -82,11 +80,9 @@ export default function MainPageHirer() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(indexPageContext.stats?.viewsCount.views_count_interval)>0 &&
                   <span>
-                    {' + '+ indexPageContext.stats?.viewsCount.views_count_interval}
+                    {(Number(indexPageContext.stats?.newCVsCount.new_cvs_count_interval)>0?' + ':'')+ indexPageContext.stats?.newCVsCount.new_cvs_count_interval}
                   </span>
-                }
               </p>
               }
             </Link>
@@ -96,12 +92,9 @@ export default function MainPageHirer() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-               
-                { Number(indexPageContext.stats?.viewsCount.views_count_interval)>0 &&
                   <span>
-                    {' + '+ indexPageContext.stats?.viewsCount.views_count_interval}
+                    {(Number(indexPageContext.stats?.viewsCount.views_count_interval)>0?' + ':'')+ indexPageContext.stats?.viewsCount.views_count_interval}
                   </span>
-                }
               </p>
               }
             </Link>

@@ -209,7 +209,7 @@ function RecruitingPageHirerInner(props: Props) {
                 return <CvItem 
                 cv={cv} 
                 initialVacancy={vacancyContext.currentVacancy}  
-                key={cv.id} 
+                key={cv.id + cv.isContactsOpen.toString()} 
                 onChangeItem={(_cv: ICV)=> {
                   if(_cv) {
                     cvContext.setFoundCvsState(state => {
