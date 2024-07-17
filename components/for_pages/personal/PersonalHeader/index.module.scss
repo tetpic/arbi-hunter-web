@@ -187,42 +187,50 @@
 
 .characterBanner {
   position: absolute;
-  top: 16px;
+  bottom: 16px;
   right: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background-color: #4d4d4d4b;
   border-radius: 16px;
   column-gap: 16px;
+  row-gap: 16px;
   padding: 8px;
   backdrop-filter: blur(0px);
-  background-color: transparent;
   @include transitionDefault;
   cursor: pointer;
+  max-width: 40%;
 
   p {
-    max-width: 0px;
-    overflow: hidden;
-    white-space: nowrap;
+    text-align: center;
+    background-color: #3E3E4Dbb;
+    padding: 16px;
+    border-radius: 56px;
     @include transitionDefault;
   }
 
-  @include hover {
-    backdrop-filter: blur(4px);
-    background-color: #4d4d4d4b;
-
-    p {
-      max-width: 400px;
-    }
+  button {
+    width: clamp(42px, 10vw, 74px);
+    height: clamp(42px, 10vw, 74px);
+    box-shadow: unset !important;
+    border: unset !important;
   }
 
-  @include mq($TabletWidth, max ) {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @include mq($MdDesktopWidth, max ) {
     backdrop-filter: unset !important;
     background-color: unset !important;  
     flex-direction: column;
     align-items: center;
-    top: 58%;
     left: 50%;
+    width: 100%;
+    bottom: unset;
+    top: 40%;
+    max-width: unset;
     transform: translate(-50%, -50%);
     min-width: 320px;
     row-gap: 8px;
@@ -233,22 +241,17 @@
       white-space: wrap;
       text-align: center;
       text-shadow: 0 2px 3px rgb(54, 54, 54);
-      font-size: 20px;
+      font-size: clamp(12px, 2.9vw, 20px);
     }
-
-    button {
-      width: 56px;
-      height: 56px;
-    }
-
-    svg {
-      width: 32px;
-      height: 32px;
-    }
+  }
+  
+  @include mq($TabletWidth, max ) {
+    bottom: -10%;
+    top: unset;
   }
 
   .addCharButton {
-    padding: 4px;
+    padding: 10px;
     background-color: #ffffff50;
     border-radius: 50%;
 

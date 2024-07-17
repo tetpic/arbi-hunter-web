@@ -53,12 +53,11 @@
     padding: 16px;
     grid-area: c;
     width: calc(50% - 5px);
-    background-color: $black;
     display: grid;
     grid-template-areas: 'd i' 'c i';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
-    background-color: #f5f2f730; 
+    background-color: #3E3E4Dbb;
     backdrop-filter: blur(3px);
     width: calc(33% - 10px);
     @include transitionDefault;

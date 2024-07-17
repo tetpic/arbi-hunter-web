@@ -115,11 +115,9 @@ export default function MainPageEmployee() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(indexPageContext.stats?.responsesCount.responses_count_interval)>0 &&
-                  <span>
-                    {' + '+ indexPageContext.stats?.responsesCount.responses_count_interval}
-                  </span>
-                }
+                <span>
+                  {(Number(indexPageContext.stats?.responsesCount.responses_count_interval)>0?' + ':'') + indexPageContext.stats?.responsesCount.responses_count_interval}
+                </span>
               </p>
               }
             </Link>
@@ -129,11 +127,9 @@ export default function MainPageEmployee() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval)>0 &&
-                  <span>
-                    {' + '+ indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval}
-                  </span>
-                }
+                <span>
+                  {(Number(indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval)>0?' + ':'') + indexPageContext.stats?.newVacanciesCount.new_vacancies_count_interval}
+                </span>
               </p>
               }
             </Link>
@@ -143,11 +139,9 @@ export default function MainPageEmployee() {
               {!indexPageContext.stats && <Spinner className={styles.count} size={22}/>
               ||
               <p className={styles.count}>
-                { Number(indexPageContext.stats?.viewsCount.views_count_interval)>0 &&
-                  <span>
-                    {' + '+ indexPageContext.stats?.viewsCount.views_count_interval}
-                  </span>
-                }
+                <span>
+                  {(Number(indexPageContext.stats?.viewsCount.views_count_interval)>0?' + ':'') + indexPageContext.stats?.viewsCount.views_count_interval}
+                </span>
               </p>
               }
             </Link>

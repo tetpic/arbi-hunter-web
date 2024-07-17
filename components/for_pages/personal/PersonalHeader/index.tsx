@@ -24,7 +24,7 @@ import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import Button from '@/components/ui/Button'
 import { useRouter } from 'next/router'
 import P from '@/components/ui/P'
-import PlusSvg from '@/components/svg/PlusSvg'
+import PlusThinSvg from '@/components/svg/PlusThinSvg'
 
 interface Props {
   isEditing?: boolean
@@ -166,10 +166,10 @@ export default function PersonalHeader(props: Props) {
   return (<div className={styles.root}> 
     {props.isMy &&  !characterContext.currentCharacter.current && !personalContext.currentProfile.image &&
       <div className={styles.characterBanner} onClick={() => router.push({pathname: '/profile', query: {page: 'edit'}})}>
-        <P styleType={['w600', 'large']}>Создайте своего оригинального персонажа</P>
         <div className={styles.addCharButton}>
-          <Button styleType={['circle', 'icon', 'white', 'invertSvg']}><PlusSvg/></Button>
+          <Button styleType={['circle', 'icon', 'white', 'invertSvg']}><PlusThinSvg/></Button>
         </div>
+        <P styleType={['w600', 'large']}>Создайте своего уникального персонажа</P>
       </div>
     }
     {isTabletWidth && props.showMobileBack &&
