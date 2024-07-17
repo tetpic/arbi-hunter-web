@@ -192,9 +192,8 @@
     grid-template-areas: 'd i' 'c c';
     row-gap: 8px;
     grid-template-columns: 1fr auto;
-    // background-color: #f5f2f730; 
-    background-color: #7272727c; 
-     backdrop-filter: blur(3px);
+    background-color: #3E3E4Dbb;
+    backdrop-filter: blur(3px);
     width: calc(33% - 10px);
     @include mq($PhoneWidth, max) {
       grid-template-areas: 'i''d''c';
