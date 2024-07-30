@@ -831,8 +831,9 @@
 
   
   "landing_hir_createVC": "Размести вакансию",
-  "landing_hir_desc1": "Огромная база кандидатов из сферы IT",
-  "landing_hir_desc2": "и маркетинга ждет вашу вакансию внутри",
+  "landing_hir_desc1": "Огромная база кандидатов из сферы Digital ",
+  "landing_hir_desc2": "и affiliate-маркетинга уже внутри",
+  "landing_hir_desc3": "и ждет твою вакансию",
   "landing_hir_createVCAlt": "Разместить вакансию",
   "landing_hir_findVc": "Поиск резюме",
   "landing_hir_startSearching": "Начни поиск в три шага",
@@ -859,7 +860,7 @@
   "landing_promo_intro": "Представляем наше мобильное приложение",
   "landing_promo_desc": "С полным функционалом платформы поиск сотрудников стал еще удобнее!",
   "landing_promo_download": "Скачай приложение по QR коду",
-  "landing_promo_scan": "Отсканируй код с камеры своего телефона",
+  "landing_promo_scan": "Отсканируй код с камеры телефона",
 
   "landing_help_needHelp": "Нужна помощь:",
   "landing_help_leaveOrder": "Оставь заявку, и мы с тобой свяжемся!",
