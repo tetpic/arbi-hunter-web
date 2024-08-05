@@ -56,6 +56,9 @@ export function UserWrapper(props: Props) {
   const isAuth = useRef<boolean>(false)
 
   const setProfileType = (type: ProfileType) => {
+    Cookies.remove(CookiesType.accessToken)
+    Cookies.remove(CookiesType.profileType)
+    Cookies.remove(CookiesType.language)
     Cookies.set(CookiesType.profileType, type)
     setProfileTypeState(type)
   }
