@@ -117,7 +117,7 @@ export default function CvPage(props: Props) {
     }
   }
 
-  const openContacts = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const openContacts = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
     CvRepository.openContacts(currentCv.id)
@@ -194,9 +194,9 @@ export default function CvPage(props: Props) {
 
     }
     else {
-      setTimeout(() => {
-        router.push('/login')
-      }, 4000)
+      // setTimeout(() => {
+      //   router.push('/login')
+      // }, 4000)
     }
 
     return () => {
@@ -245,9 +245,9 @@ export default function CvPage(props: Props) {
     </div>
   }
 
-  if(!userContext.currentProfile) {
-    return <></>
-  }
+  // if(!userContext.currentProfile) {
+  //   return <></>
+  // }
 
 
   const userCard = (<>
@@ -293,7 +293,7 @@ export default function CvPage(props: Props) {
         className={styles.topButton}
         styleType={['gradient','wide']} 
         title={'openProfileTop'} 
-        onClick={openContacts}
+        onClick={(e)=>!userContext.currentProfile? router.push('/login'):openContacts(e)}
         >
           {t('cv_page_openProfile')}
         </Button>
@@ -319,7 +319,7 @@ export default function CvPage(props: Props) {
       }
 
       {
-        !isTabletWidth &&
+        !isTabletWidth && userContext.currentProfile &&
         <>
           <FavoritesButton 
           showStar
@@ -652,7 +652,7 @@ export default function CvPage(props: Props) {
             <Button 
             styleType={['gradient']} 
             title={'openProfileBottom'}         
-            onClick={openContacts}
+            onClick={(e)=>!userContext.currentProfile? router.push('/login'):openContacts(e)}
             >
               {t('cv_page_openProfile')}
             </Button>
