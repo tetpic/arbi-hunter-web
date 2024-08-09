@@ -69,6 +69,8 @@ class MyDocument extends Document {
               accurateTrackBounce:true});
             `}
           </Script>
+          {/* <Script src="https://telegram.org/js/telegram-web-app.js" strategy='beforeInteractive'></Script> */}
+
           <noscript><div><img src="https://mc.yandex.ru/watch/97434160" style={{position: 'absolute', left: '-9999px'}} alt="" /></div></noscript>
         </Head>
 
