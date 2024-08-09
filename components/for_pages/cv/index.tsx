@@ -482,7 +482,7 @@ export default function CvPage(props: Props) {
           {userCard}
         </div>
       }
-      <Banner src={'/images/banners/banner1.jpg'} className={styles.mobileBanner}/>
+      <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.mobileBanner}/>
 
 
       {(currentCv?.isContactsOpen||userContext.currentProfile?.id === currentCv.profile.id)&&

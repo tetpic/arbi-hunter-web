@@ -185,7 +185,7 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       {!isMyVacancy && companyCard}
-      <Banner src={'/images/banners/banner1.jpg'} className={styles.mobileBanner}/>
+      <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.mobileBanner}/>
 
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
