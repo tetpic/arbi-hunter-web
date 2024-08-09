@@ -29,8 +29,10 @@ class MyDocument extends Document {
     return (
       <Html style={{width: '100vw', backgroundColor: theme === AppTheme.Light?'#F5F2F7':'#16161B'}}>
         <Head >
-          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-          <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg"/>
+          <link rel="apple-touch-icon" sizes="152x152" href="/arbihunter152.png"/>
+          <link rel="apple-touch-icon" sizes="76x76" href="/arbihunter76.png"/>
+          <link rel="apple-touch-icon" sizes="120x120" href="/arbihunter120.png"/>
+          <link rel="icon" href="/arbiFavicon48.svg"/>
           <link rel="manifest" href="/site.webmanifest"/>
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#812292"/>
           <link rel="preconnect" href="https://fonts.googleapis.com"/>
