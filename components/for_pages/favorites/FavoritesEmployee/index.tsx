@@ -16,6 +16,7 @@ import FavoritesVacancyItem from '../FavoritesVacancyItem'
 import Formatter from 'utils/formatter'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
+import Banner from '@/components/ui/Banner'
 
 interface Props {
 }
@@ -75,6 +76,7 @@ export default function FavoritesPageEmployee(props: Props) {
 
   return (
     <div className={styles.root}>
+      <div className={styles.content}>
       <Title title={t('favorites_title')} onBackClick={()=>router.back()}/>
       <div className={styles.top}>
         <P styleType={['medium', 'w500']} useThemeColor>{t('favorites_vacancies')}</P>
@@ -94,6 +96,9 @@ export default function FavoritesPageEmployee(props: Props) {
           }
         </div>
       </InfiniteScroll>
+      </div>
+      <Banner src={'/images/banners/banner1.jpg'} className={styles.desktopBanner}/>
+
     </div>
   )
 }
