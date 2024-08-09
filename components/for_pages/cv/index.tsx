@@ -51,6 +51,7 @@ import EditPencilSvg from '@/components/svg/EditPencilSvg'
 import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useTariffContext } from 'context/tariff_state'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
+import Banner from '@/components/ui/Banner'
 
 
 interface Props {
@@ -378,6 +379,7 @@ export default function CvPage(props: Props) {
 
   return (
     <div className={styles.root}>
+      <div className={styles.content}>
       {
         !isTabletWidth &&
         <BackTextButton onClick={router.back}/>
@@ -480,6 +482,8 @@ export default function CvPage(props: Props) {
           {userCard}
         </div>
       }
+      <Banner src={'/images/banners/banner1.jpg'} className={styles.mobileBanner}/>
+
 
       {(currentCv?.isContactsOpen||userContext.currentProfile?.id === currentCv.profile.id)&&
         <div className={styles.contacts}>
@@ -677,7 +681,8 @@ export default function CvPage(props: Props) {
           }
         </div>
       }
-
+      </div>
+      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
     </div>
   )
 }

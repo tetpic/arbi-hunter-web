@@ -48,6 +48,18 @@ function MyApp({Component, pageProps}: AppProps) {
         document.body.classList.add('mobile-ua')
         document.documentElement.className = 'mobile-ua'
       }
+
+      // @ts-ignore
+      // alert(JSON.stringify(window.Telegram.WebApp.initDataUnsafe))
+      try {
+        // @ts-ignore
+        // window.Telegram.WebApp.sendData('lol')
+      }
+      catch(e) {
+        // alert(JSON.stringify(e))
+      }
+
+      
     },
   [])
 
@@ -65,6 +77,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 name="viewport"
                 content="width=device-width, initial-scale=1, viewport-fit=cover"
                 />
+                
             </Head>
             <main className={montserrat.className}>
             <Layout webView={pageProps.webViewOnly} authorized={Boolean(pageProps.token)}> 
