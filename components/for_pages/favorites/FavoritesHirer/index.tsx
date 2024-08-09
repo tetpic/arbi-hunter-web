@@ -14,6 +14,7 @@ import { ModalType } from 'types/enums'
 import { AddFavoritesFolderArgs } from '@/components/modals/AddFavoritesFolder'
 import { FavoritesSettingModalArgs } from '@/components/modals/FavoritesSettingModal'
 import { useUserContext } from 'context/user_state'
+import Banner from '@/components/ui/Banner'
 
 interface Props {
 }
@@ -92,6 +93,8 @@ export default function FavoritesPageHirer(props: Props) {
   )
 
   return (<div className={styles.root}> 
+  <div className={styles.content}>
+
     <Title title={t('favorites_title')} rightButton={titleButtons}/>
     <ItemNavigation activeItem={page} items={pageItems(t)} onClick={setPage}/>
     <div className={styles.foldersWrapper} id={'foldersWrapper'}>
@@ -100,5 +103,8 @@ export default function FavoritesPageHirer(props: Props) {
         return <FavoritesHirerFolder folder={el} key={el.id} initialActive={index===0} />
       })}
     </div>
+      </div>
+    <Banner src={'/images/banners/banner1.jpg'} className={styles.desktopBanner}/>
+
   </div>)
 }

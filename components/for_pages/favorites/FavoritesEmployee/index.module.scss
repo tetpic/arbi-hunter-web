@@ -2,11 +2,29 @@
 
 .root {
   margin-top: clamp(16px, 3vw, 48px);
-  max-width: 556px;
   margin-bottom: 42px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 16px;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
   }
+}
+
+.desktopBanner {
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
+}
+
+.content {
+  max-width: 556px;
+  width: 70%;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+    width: 100%;
+  }
+
 }
 
 .top {

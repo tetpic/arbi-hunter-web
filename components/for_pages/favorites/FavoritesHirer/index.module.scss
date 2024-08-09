@@ -2,12 +2,30 @@
 
 .root {
   margin-top: 48px;
-  max-width: 726px;
   margin-bottom: 64px;
+  display: flex;
+  column-gap: 16px;
+  justify-content: space-between;
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
     margin-top: 16px;
   }
+}
+
+.desktopBanner {
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
+}
+
+.content {
+  max-width: 726px;
+  width: 70%;
+  @include mq($TabletWidth, max) {
+    max-width: unset;
+    width: 100%;
+  }
+
 }
 
 .buttonsWrapper {
