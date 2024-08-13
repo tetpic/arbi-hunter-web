@@ -264,9 +264,9 @@ export default function Notifications(props: Props) {
               }}>
                 {
                   el.type === 'chatMessage' &&
-                  <P styleType={['small', 'greyLight']}>от: {userContext.currentProfile.profileType === ProfileType.Employee? el.data.profileCompany:[el.data.profile.profileFirstName, el.data.profile.profileLastName].join(' ')}</P>
+                  <P styleType={['small', 'greyLight']}>от: {userContext.currentProfile.profileType === ProfileType.Employee? el.data.profileCompany:[el.data?.profile?.profileFirstName, el.data?.profile?.profileLastName].join(' ')}</P>
               }
-                <P styleType={['small']} className={styles.text}>{(el.data.message && el.data.message.length > 20 ? el.data.message?.split('').slice(0, 20).join('') + '...':el.data.message)||el.title}</P>
+                <P styleType={['small']} className={styles.text}>{(el.data?.message && el.data?.message?.length > 20 ? el.data?.message?.split('').slice(0, 20).join('') + '...':el.data?.message)||el.title}</P>
                 <P styleType={['greyLight', 'w500', 'small', 'alignCenter']}>
                   {Formatter.formatDate(el.createdAt, {lang: InterfaceLanguage.Russian, timeOptions: {hour: 'numeric', minute: 'numeric', year: 'numeric'}} )}  
                   <MessageReadSvg className={styles.readIcon} color={!el.isRead&&colors.greyLight}/> 
