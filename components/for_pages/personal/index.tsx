@@ -16,7 +16,7 @@ import Button from '@/components/ui/Button'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
-import { ModalType, PurchaseType, SnackbarType} from 'types/enums'
+import { AppTheme, ModalType, PurchaseType, SnackbarType} from 'types/enums'
 import { PurchasePreviewModalArgs } from '@/components/modals/PurchasePreviewModal'
 import { useTariffContext } from 'context/tariff_state'
 import { useRouter } from 'next/router'
@@ -52,6 +52,7 @@ export default function PersonalPage(props: Props) {
   const {t} = useTranslation()
   const personalContext = usePersonalContext()
   const appContext = useAppContext()
+  const theme = appContext.theme
   const tariffContext = useTariffContext()
   const [isEditing, setIsEditing] = useState(false)
   const userContext = useUserContext()
@@ -262,9 +263,10 @@ export default function PersonalPage(props: Props) {
       <Button 
       className={styles.mobileEditButton} 
       styleType={['icon', 'black', 'svg24']} 
+      altStyleType={['icon', 'whitePurple', 'svg24']}
       onClick={() => setIsEditing(!isEditing)}
       >
-        <PencilSvg color={colors.white}/>
+        <PencilSvg color={theme === AppTheme.Light ?colors.black : colors.white}/>
       </Button>
     }
 

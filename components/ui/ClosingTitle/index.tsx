@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import CrossSvg from 'components/svg/CrossSvg'
 import Button from '../Button'
 import styles from './index.module.scss'
+import P from '../P'
 
 interface Props {
   onClose: ()=>void
@@ -17,7 +18,7 @@ export default function ClosingTitle(props: Props) {
 
   return (    
   <div className={classNames(styles.titleWrapper, props?.classNames?.wrapper)}>
-    <p className={classNames(styles.title, props?.classNames?.title)}>{props.title}</p>
+    <P useThemeColor className={classNames(styles.title, props?.classNames?.title)}>{props.title}</P>
     <Button altStyleType={['invertSvg']} onClick={props.onClose} className={classNames(styles.buttonClose, props?.classNames?.button)} ><CrossSvg/></Button>
   </div>
   )

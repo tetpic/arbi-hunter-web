@@ -182,21 +182,15 @@
       }
     }
      
-    svg {
-      width: 32px;
-      height: 32px;
-    }
+    // svg {
+    //   width: 32px;
+    //   height: 32px;
+    // }
   }
 
   .iconButton {
     position: relative;
     z-index: 3;
-    @include buttonGray;
-    height: unset;
-    padding: 8px;
-    @include hover {
-      background-color: $black;
-    }
     @include mq($TabletWidth, max) {
       background-color: #1b1b22bd;
       border: unset;

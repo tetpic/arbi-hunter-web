@@ -1,6 +1,6 @@
 import { IApplication } from 'data/interfaces/IApplication'
 import styles from './index.module.scss'
-import { ApplicationBSSelectType, ApplicationStatus, ModalType, SnackbarType, ProposalRequestType } from 'types/enums'
+import { ApplicationBSSelectType, ApplicationStatus, ModalType, SnackbarType, ProposalRequestType, AppTheme } from 'types/enums'
 import { IProposalTextModalProps } from 'components/modals/ProposalModal/ProposalTextModal'
 import { useAppContext } from 'context/state'
 import Button from 'components/ui/Button'
@@ -13,6 +13,7 @@ import { IResponseModalProps } from 'components/modals/ResponseModal'
 import PlusSvg from 'components/svg/PlusSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { useFeedbacksContext } from 'context/feedbacks_state'
+import { colors } from 'styles/variables'
 
 interface Props {
   application?: IApplication
@@ -70,6 +71,7 @@ export  function ApplicationHirerNode (props: Props) {
 
 export function ApplicationEmployeeNode (props: Props) {
   const appContext = useAppContext()
+  const theme = appContext.theme
   const dialogContext = useChatDialogContext()
   const {isTabletWidth} = appContext.size
   const {t} = useTranslation()
@@ -102,7 +104,7 @@ export function ApplicationEmployeeNode (props: Props) {
   </p>
   {!props.message?.application?.coverLetter && props.profileType === ProfileType.Employee &&
     <p className={styles.cover} onClick={makeCoverLetter}>
-      <PlusSvg/>
+      <PlusSvg color={theme === AppTheme.Light && colors.blue}/>
       {t('chat_coverLetter')}
     </p>
   }

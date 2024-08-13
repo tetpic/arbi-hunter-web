@@ -20,6 +20,11 @@
   max-width: 88vw;
 }
 
+.ontop {
+  transform: unset;
+  bottom: 16px;
+}
+
 .active {
   opacity: 1;
 }

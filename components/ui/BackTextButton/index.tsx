@@ -23,6 +23,6 @@ export default function BackTextButton(props: Props) {
     <p 
     className={classNames(styles.backButton, props.className)} 
     onClick={props.onClick}>
-      {isTabletWidth?<BackArrowSvg/>:<ArrowLeftSvg color={isLightTheme&&colors.black}/>}{props.text?props.text: t('back')}</p>
+      {isTabletWidth?<BackArrowSvg color={isLightTheme&&colors.black}/>:<ArrowLeftSvg color={isLightTheme&&colors.black}/>}{props.text?props.text: t('back')}</p>
   </>)
 }

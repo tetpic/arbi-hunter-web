@@ -553,7 +553,7 @@ export default function FilterEmployee(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey', 'phoneWide', 'whiteText']} 
-      altStyleType={['whitePurple']}
+      altStyleType={['whitePurple', 'phoneWide']}
       onClick={resetAll}
       className={styles.resetButton}
       >

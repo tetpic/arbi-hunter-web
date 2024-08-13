@@ -24,16 +24,16 @@
     .contentWrapper {
       flex-direction: row;
     }
-    .menuButton {
-      background-color: #2d2d37 !important;
-    }
+    // .menuButton {
+    //   background-color: #2d2d37 !important;
+    // }
   }
 
 }
 
-.menuButton {
-  background-color: #2d2d3742 !important;
-}
+// .menuButton {
+//   background-color: #2d2d3742 !important;
+// }
 
 .hoveredNavBar {
   @include mq($LargeDesktopWidth, max) {
@@ -173,9 +173,9 @@
     transform: unset;
     top: unset;
     left: 0;
-    >div {
-      background-color: $black;
-    }
+    // >div {
+    //   background-color: $black;
+    // }
   }
 }
 

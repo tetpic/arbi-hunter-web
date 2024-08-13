@@ -23,6 +23,7 @@ interface Props {
   vacancy: IVacancy
   onClose?: ()=>void
   isActive?: boolean
+  position?: 'ontop'|'onbottom'
 }
 
 export default function ContactsModal(props: Props) {
@@ -75,7 +76,7 @@ export default function ContactsModal(props: Props) {
   }, [active])
 
 
-  return (<div className={classNames(styles.root, active&&styles.active)} ref={ref} > 
+  return (<div className={classNames(styles.root, active&&styles.active, props.position&&styles[props.position])} ref={ref} > 
     <div className={styles.top}>
       <P styleType={['large', 'w600']} useThemeColor>{t('vacancy_page_contactInfo')}</P>
       <Button 

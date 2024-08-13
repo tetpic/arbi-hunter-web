@@ -10,6 +10,8 @@ import { useAppContext } from 'context/state'
 import { ICV } from 'data/interfaces/ICV'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import { useRouter } from 'next/router'
 
 interface Props {
   onClose: ()=> void
@@ -24,25 +26,29 @@ export interface IApplicationSuccessModalProps {
 
 export default function ApplicationSuccessModal(props: Props) {
   const appContext = useAppContext()
+  const theme = appContext.theme
+  const router = useRouter()
   const args = appContext.modalArguments as IApplicationSuccessModalProps
   const {t} = useTranslation()
 
 
   const body = (
     <div className={styles.root}>
-      <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+      <Button className={styles.closeButton} altStyleType={['invertSvg']} onClick={props.onClose}><CrossSvg/></Button>
       <Image src={folderImage} alt={'folder'} width={152} height={152}/>
-      <p className={styles.title}>{args?.type === 'cv'?t('application_cvSend'):t('application_send')}</p>
+      <P useThemeColor styleType={['textCenter', 'huge', 'w600']} >{args?.type === 'cv'?t('application_cvSend'):t('application_send')}</P>
       <p className={styles.description}>{t('application_sendInfo')}</p>
-      <Link 
-      onClick={props.onClose} 
-      className={styles.grayLink} 
-      href={args.type === 'cv'
-      ?'/profile?page=feedbacks'
-      :`/responses/${args.id}`}
+      <Button 
+      styleType={['grey']} 
+      altStyleType={['whitePurple']} 
+      onClick={()=> {
+
+        router.push(args.type === 'cv'?'/profile?page=feedbacks':'/responses/'+args.id)
+        props.onClose()
+      }} 
       >
         {t('application_goToFeedbacks')}
-      </Link>
+      </Button>
       <Link 
       onClick={props.onClose} 
       className={styles.blueLink} 

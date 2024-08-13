@@ -20,7 +20,7 @@ import ManSvg from '@/components/svg/ManSvg'
 import QuestionSvg from '@/components/svg/QuestionSvg'
 import { useRouter } from 'next/router'
 import DocumentUserSvg from '@/components/svg/DocumentUserSvg'
-import { Preset } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
 import StarSvg from '@/components/svg/StarSvg'
 import HeartSvg from '@/components/svg/HeartSvg'
 import { colors } from 'styles/variables'
@@ -32,6 +32,7 @@ import ShopSmallAltSvg from '@/components/svg/ShopSmallAltSvg'
 import ManagersSvg from '@/components/svg/ManagersSvg'
 import { useIndexPageContext } from 'context/index_page_state'
 import { ItemsNotificationType } from 'data/interfaces/INotification'
+import { useAppContext } from 'context/state'
 
 interface Props {
   onClose: ()=>void
@@ -40,6 +41,8 @@ interface Props {
 
 export default function MobileSideBar(props: Props) {
   const {t} = useTranslation()
+  const appContext = useAppContext()
+  const theme = appContext.theme
   const userContext = useUserContext()
   const indexPageContext = useIndexPageContext()
   const [active, setActive] = useState<boolean>(false)
@@ -139,7 +142,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><FolderSvg/></div>
+          <div className={styles.icon}><FolderSvg color={theme === AppTheme.Light && colors.black}/></div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_myCvs')}</P>
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
@@ -153,7 +156,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><DocumentUserSvg/></div>
+          <div className={styles.icon}><DocumentUserSvg color={theme === AppTheme.Light && colors.black}/></div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_myVacancies')}</P>
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
@@ -168,7 +171,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><ChatFeedbackSvg/>
+          <div className={styles.icon}><ChatFeedbackSvg color={theme === AppTheme.Light && colors.black}/>
             {indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewProposal)?.count > 0 && <div className={styles.counter}>{ indexPageContext.unreadStats.find(el => el.type === ItemsNotificationType.NewProposal)?.count}</div>}
           </div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_myFeedbacks')}</P>
@@ -182,7 +185,7 @@ export default function MobileSideBar(props: Props) {
       onClick={closeHandler}
       className={styles.link}
       >
-        <div className={styles.icon}>{profileType === ProfileType.Hirer?<StarSvg/>:<HeartSvg/>}</div>
+        <div className={styles.icon}>{profileType === ProfileType.Hirer?<StarSvg color={theme === AppTheme.Light && colors.black}/>:<HeartSvg color={theme === AppTheme.Light && colors.black}/>}</div>
         <P useThemeColor styleType={['w500', 'medium']}>{t('favorites_title')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
@@ -190,7 +193,7 @@ export default function MobileSideBar(props: Props) {
 
     <div className={styles.links}>
       <Link href={'/settings'} className={styles.link} onClick={closeHandler}>
-        <div className={styles.icon}><SettingSvg/></div>
+        <div className={styles.icon}><SettingSvg color={theme === AppTheme.Light && colors.black}/></div>
         <P useThemeColor styleType={['w500', 'medium']}>{t('settings')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
@@ -204,7 +207,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><ManSvg/></div>
+          <div className={styles.icon}><ManSvg color={theme === AppTheme.Light && colors.black}/></div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_modelSettings')}</P>
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
@@ -215,7 +218,7 @@ export default function MobileSideBar(props: Props) {
         onClick={closeHandler}
         className={styles.link}
         >
-          <div className={styles.icon}><ManagersSvg/></div>
+          <div className={styles.icon}><ManagersSvg color={theme === AppTheme.Light && colors.black}/></div>
           <P useThemeColor styleType={['w500', 'medium']}>{t('nav_managers')}</P>
           <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
         </Link>
@@ -224,7 +227,7 @@ export default function MobileSideBar(props: Props) {
 
     <div className={styles.links}>
       <Link href={'/base'} className={styles.link} onClick={closeHandler}>
-        <div className={styles.icon}><QuestionSvg/></div>
+        <div className={styles.icon}><QuestionSvg color={theme === AppTheme.Light && colors.black}/></div>
         <P useThemeColor styleType={['w500', 'medium']}>{t('nav_knowlegdeBase')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg color={colors.greyLight}/></Button>
       </Link>
@@ -244,7 +247,7 @@ export default function MobileSideBar(props: Props) {
       onClick={closeHandler}
       className={styles.link}
       >
-        <div className={styles.shopicon}><SupportSvg/></div>
+        <div className={styles.shopicon}><SupportSvg color={theme === AppTheme.Light && colors.black}/></div>
         <P useThemeColor styleType={['w500', 'medium']}>Техподдержка</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
       </Link>

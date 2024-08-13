@@ -3,10 +3,12 @@
 
 .dark {
   --hoverColor: #{$white};
+  --activePColor: #{$white};
 }
 
 .light {
   --hoverColor: #{$blue};
+  --activePColor: #{$blue};
 }
 
 .root {
@@ -49,7 +51,7 @@
     }
 
     &_active{
-      color: $white;
+      color: var(--activePColor);
       pointer-events: none;
     }
   }

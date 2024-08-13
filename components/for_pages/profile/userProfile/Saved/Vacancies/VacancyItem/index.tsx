@@ -87,7 +87,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
     }
     <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
     {(item?.status === ApplicationStatus.Accepted||item?.status === ApplicationStatus.Applied) && (('proposals' in item && item.proposals[0])||('application' in item && !item.application)) &&
-      <P className={styles.option} onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
+      <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler()}}>{t('reject')}</P>
      }
     {isTabletWidth &&
       <P  useThemeColor className={classNames(styles.option)} onClick={() => appContext.hideBottomSheet()}>{t('cancelAlt')}</P>

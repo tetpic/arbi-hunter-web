@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import UserSvg from 'components/svg/UserSvg'
-import BackBtn from 'components/ui/BackBtn'
+// import BackBtn from 'components/ui/BackBtn'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
@@ -32,6 +32,8 @@ import useTranslation from 'next-translate/useTranslation'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
+// import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 
 interface Props {
   id: number
@@ -181,7 +183,10 @@ export default function CurrentCourse(props: Props) {
             //   <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
             // </Button>
             ||
-            <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
+            // <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
+            <Button styleType={['black', 'icon', 'svg24']} altStyleType={['whitePurple', 'icon', 'svg24', 'invertSvg']}>
+              <ArrowLeftSvg/>
+            </Button>
             }
           </div>
       </>

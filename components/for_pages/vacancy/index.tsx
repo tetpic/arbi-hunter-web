@@ -394,6 +394,7 @@ export default function VacancyPage(props: Props) {
             </Button>
             {currentVacancy.showContactName && isShowContacts[1]&&
               <ContactsModal 
+              position='ontop'
               key={'contacts2'} 
               vacancy={currentVacancy} 
               isActive={isShowContacts[1]} 
@@ -420,7 +421,6 @@ export default function VacancyPage(props: Props) {
       }
       </div>
       <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
-
     </div>
   )
 }

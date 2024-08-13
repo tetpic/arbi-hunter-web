@@ -68,7 +68,7 @@ export default function Chats(props: Props) {
           })
           ||
           chatContext.totalChats === 0 &&
-          <P styleType={['medium', 'w500']} className={styles.empty}>{t('chat_notFound')}</P>
+          <P styleType={['medium', 'w500']} className={styles.empty} useThemeColor>{t('chat_notFound')}</P>
         }
       </div>
       <div className={styles.draggable} draggable={true} onDragStart={initial} onDrag={(e)=> resize(e)}></div>

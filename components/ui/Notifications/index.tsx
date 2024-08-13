@@ -124,14 +124,11 @@ export default function Notifications(props: Props) {
     }
   }
 
-
-
   const nextPage = () => {
     NotificationRepository.getNotifyList({types: currentType}, paginator+1, isTabletWidth?30:10).then(res => {  
       setPaginator(state => state + 1)
       setCurrentData(state => ({...state, data: [...state.data, ...res.data]}))
     })
-
   }
 
   useEffect(()=>{
@@ -156,7 +153,7 @@ export default function Notifications(props: Props) {
   <>
   {isTabletWidth && <Title title={'Уведомления'} onBackClick={()=>props.onClose()}/>
     ||
-    <P styleType={['w600', 'large']}>Уведомления</P>
+    <P styleType={['w600', 'large']} useThemeColor>Уведомления</P>
   }
     <div className={styles.banner}>
       <P styleType={['w500', 'medium']} className={styles.banner__title}>Не забудьте о настройках телефона </P>
@@ -198,7 +195,7 @@ export default function Notifications(props: Props) {
             >
               {stat.icon}
             </div> 
-            <P className={styles.name} styleType={['w500', 'medium']}>{stat.name}</P>
+            <P className={styles.name} styleType={['w500', 'medium']} useThemeColor>{stat.name}</P>
             <P className={styles.counterText} styleType={['greyLight', 'w500', 'medium']}>{stat.countText}</P>
             <P styleType={['green', 'small']} className={styles.counterBadge}>{el.count}</P>
           </div>
@@ -222,10 +219,11 @@ export default function Notifications(props: Props) {
         >
           {stat.icon}
         </div> 
-        <P className={styles.name} styleType={isTabletWidth?['w500', 'medium', 'textCenter']:['w500', 'medium']}>{stat.name}</P>
+        <P className={styles.name} useThemeColor styleType={isTabletWidth?['w500', 'medium', 'textCenter']:['w500', 'medium']}>{stat.name}</P>
         <P className={styles.counterText} styleType={['greyLight', 'w500', 'medium']}>{stat.countText}</P>
         <Button 
         styleType={isTabletWidth?['black', 'icon']:['backTransparent', 'icon']} 
+        altStyleType={isTabletWidth?['whitePurple', 'invertSvg', 'icon']:[]}
         className={styles.closeButton}   
         onClick={(e)=>{
           e.preventDefault()
@@ -266,7 +264,7 @@ export default function Notifications(props: Props) {
                   el.type === 'chatMessage' &&
                   <P styleType={['small', 'greyLight']}>от: {userContext.currentProfile.profileType === ProfileType.Employee? el.data.profileCompany:[el.data.profile.profileFirstName, el.data.profile.profileLastName].join(' ')}</P>
               }
-                <P styleType={['small']} className={styles.text}>{(el.data.message && el.data.message.length > 20 ? el.data.message?.split('').slice(0, 20).join('') + '...':el.data.message)||el.title}</P>
+                <P styleType={['small']} useThemeColor className={styles.text}>{(el.data.message && el.data.message.length > 20 ? el.data.message?.split('').slice(0, 20).join('') + '...':el.data.message)||el.title}</P>
                 <P styleType={['greyLight', 'w500', 'small', 'alignCenter']}>
                   {Formatter.formatDate(el.createdAt, {lang: InterfaceLanguage.Russian, timeOptions: {hour: 'numeric', minute: 'numeric', year: 'numeric'}} )}  
                   <MessageReadSvg className={styles.readIcon} color={!el.isRead&&colors.greyLight}/> 
