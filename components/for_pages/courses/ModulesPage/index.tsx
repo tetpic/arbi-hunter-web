@@ -18,6 +18,7 @@ import { colors } from 'styles/variables'
 import { ICongratulationsModalProps } from 'components/modals/CongratulationsModal'
 import useTranslation from 'next-translate/useTranslation'
 import HtmlText from '@/components/ui/HtmlText'
+import P from '@/components/ui/P'
 
 
 
@@ -131,7 +132,7 @@ export default function ModulesPage() {
         }
       </div>
       <div className={styles.textContent}>
-        <p className={styles.stepTitle}>{courseContext.activeStep?.title}</p>
+        <P styleType={['huge', 'w600']} useThemeColor>{courseContext.activeStep?.title}</P>
         {courseContext.activeStep?.stepType === CoursesStepType.Info &&
           <HtmlText text={courseContext.activeStep?.body}/>
         }

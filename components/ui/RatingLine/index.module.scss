@@ -9,5 +9,5 @@
     fill: transparent; 
   }
   @include starPath;
-  background: linear-gradient(to right, $blue 50%, $grey 50%);
+  background: linear-gradient(to right, $blue 50%, var(--secondaryColor) 50%);
 }

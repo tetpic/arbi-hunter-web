@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { CourseStepAnswerType } from 'types/enums'
 import styles from './index.module.scss'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   activeStep: ICourseStep
@@ -36,7 +37,7 @@ export default function Questions({activeStep}: Props) {
   })
 
   return ( <div className={styles.question}>
-    <p className={styles.text} dangerouslySetInnerHTML={{__html: activeStep?.body}}></p>
+    <P styleType={['w500', 'medium']} useThemeColor dangerouslySetInnerHTML={{__html: activeStep?.body}}></P>
     <FormikProvider value={formik}>
       <Form className={styles.form}>
         {activeStep.answerType === CourseStepAnswerType.Single &&

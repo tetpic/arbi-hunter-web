@@ -5,15 +5,12 @@
 }
 
 .moduleWrapper {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   overflow: hidden;
 }
 
 .moduleTitle {
-  font-size: $mediumText;
-  font-weight: $medium;
-  color: $white;
   margin-top: 24px;
   margin-bottom: 16px;
 }
@@ -28,9 +25,6 @@
   // }
 
   .title {
-    color: $white;
-    font-size: $mediumText;
-    font-weight: $medium;
     padding: 8px;
     cursor: pointer;
     margin: 8px;
@@ -39,7 +33,11 @@
     column-gap: 8px;
     border-radius: 14px;
     @include transitionDefault;
-    @include hoverbuttonBorderGradient;
+    @include hover {
+      color: var(--whiteToBlue);
+      background-color: var(--greyLightToPurple)
+    }
+    
 
     span {
       @include buttonGradient;

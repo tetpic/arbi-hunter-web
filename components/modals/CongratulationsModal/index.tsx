@@ -62,7 +62,7 @@ export default function CongratulationsModal(props: Props) {
             {t('courses_downloadCertificate')}
           </Link>
         }
-        <Button className={styles.buttonBorderGradient} onClick={openFeedbacks} >{t('courses_leaveFeedback')}</Button>
+        <Button styleType={['black', 'borderGradient']} altStyleType={['whitePurple']}  onClick={openFeedbacks} >{t('courses_leaveFeedback')}</Button>
       </div>
     </div>
   )

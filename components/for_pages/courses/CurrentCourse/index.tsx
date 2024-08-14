@@ -34,6 +34,7 @@ import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
 // import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import P from '@/components/ui/P'
 
 interface Props {
   id: number
@@ -161,6 +162,7 @@ export default function CurrentCourse(props: Props) {
 
           {isTabletWidth && 
             <ItemNavigation 
+            pClassName={styles.mobileNavigation__p}
             bottomStringClass={styles.bottomString} 
             className={styles.mobileNavigation} 
             activeItem={page} items={navSet()} onClick={pager}/>
@@ -185,7 +187,7 @@ export default function CurrentCourse(props: Props) {
             // </Button>
             ||
             // <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
-            <Button styleType={['black', 'icon', 'svg24']} altStyleType={['whitePurple', 'icon', 'svg24', 'invertSvg']}>
+            <Button styleType={['black', 'icon', 'svg24']} altStyleType={['whitePurple', 'icon', 'svg24', 'invertSvg']} onClick={()=>{router.back()}}>
               <ArrowLeftSvg/>
             </Button>
             }
@@ -207,9 +209,9 @@ export default function CurrentCourse(props: Props) {
         {page === CurrentCoursesNav.Feedbacks && courseStats && courseStats.raiting &&
           <div className={styles.stats}>
             <div className={styles.statsLeft}>
-              <p className={styles.rating}>{courseStats.raiting.raiting}</p>
+              <P useThemeColor styleType={['fs36', 'w700']}>{courseStats.raiting.raiting}</P>
               <RatingLine rating={courseStats.raiting.raiting}/>
-              <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, t('feedback1'), t('feedback2'), t('feedback3'))}</p>
+              <P styleType={['greyLight', 'medium','w500']} >{courseStats.count} {Formatter.pluralize(courseStats.count, t('feedback1'), t('feedback2'), t('feedback3'))}</P>
             </div>
             <div className={styles.statsRight}>
               {courseStats.stats.map((el, index)=> {

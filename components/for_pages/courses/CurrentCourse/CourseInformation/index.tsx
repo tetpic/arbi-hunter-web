@@ -86,12 +86,12 @@ export default function CoursesInformation({course, isMobile}: Props) {
 
     <div className={styles.item}>
       <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_requirements')}</P>
-      <p className={styles.text}>{course.requirements}</p>
+      <P styleType={['w500']} useThemeColor className={styles.text}>{course.requirements}</P>
     </div>
 
     <div className={styles.item}>
       <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_audience')}</P>
-      <p className={styles.text}>{course.audience}</p>
+      <P styleType={['w500']} useThemeColor className={styles.text}>{course.audience}</P>
     </div>
 
   </div>)

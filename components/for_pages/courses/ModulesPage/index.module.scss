@@ -24,7 +24,7 @@
 }
 
 .title {
-  color: $white;
+  color: var(--pTextColor);
   font-size: $largeText;
   font-weight: $medium;
 }
@@ -48,12 +48,6 @@
     justify-content: center;
     padding: 16px;
   }
-}
-
-.stepTitle {
-  color: $white;
-  font-size: $hugeText;
-  font-weight: $semibold;
 }
 
 .text {

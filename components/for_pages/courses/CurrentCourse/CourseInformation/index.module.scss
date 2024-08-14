@@ -91,7 +91,7 @@
 
   &_name {
     grid-area: n;
-    color: $white;
+    color:var(--pTextColor);
   }
 
   &_description {
