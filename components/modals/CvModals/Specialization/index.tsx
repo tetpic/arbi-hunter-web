@@ -95,7 +95,7 @@ function SpecializationModalInner(props: Props) {
     onSave={formik.submitForm} 
     title={t('filters_specializations')}
     withInput={false}
-    disableBackButton={isTabletWidth}
+    // disableBackButton={isTabletWidth}
     >
       <FormikProvider value={formik}>
         <Form>

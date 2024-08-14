@@ -432,7 +432,9 @@ export default function Cv(props: Props) {
           onClick={()=> {
             router.back()
           }}
-          styleType={['black', 'icon']}>
+          styleType={['black', 'icon']}
+          altStyleType={['white', 'icon', 'invertSvg']}
+          >
             <CrossSvg/>
           </Button>
         }

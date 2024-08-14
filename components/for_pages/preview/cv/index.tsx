@@ -73,7 +73,7 @@ export default function CvPreview(props: Props) {
         styleType={['small', currentCv.vacancyLookType === VacancyLookType.NotLooking?'red':'green']} 
         className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.status_red: styles.status_green)}
         >
-          {TranslateVacancyLookType(currentCv.vacancyLookType, ProfileType.Hirer, t)}
+          {TranslateVacancyLookType(currentCv.profile.vacancyLookType, ProfileType.Hirer, t)}
         </P>
         <P 
         styleType={['greyLight', 'w500', 'medium']}>
