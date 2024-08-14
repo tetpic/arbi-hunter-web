@@ -25,7 +25,7 @@ import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
 import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import { Preset, SnackbarType } from 'types/enums'
+import { AppTheme, Preset, SnackbarType } from 'types/enums'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
@@ -53,6 +53,7 @@ export default function CurrentCourse(props: Props) {
   const {isTabletWidth} = useResize()
   const router = useRouter()  
   const appContext = useAppContext()
+  const theme = appContext.theme
   const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks, courseModules} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const course = props.course || currentCourse
@@ -98,16 +99,16 @@ export default function CurrentCourse(props: Props) {
     result = Object.values(availablePages).map(page => {
       switch(page) {
         case CurrentCoursesNav.Information:
-        return {name: t('courses_info'), type: page, icon: <InformationSmallSvg/>}
+        return {name: t('courses_info'), type: page, icon: <InformationSmallSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.Modules:
-        return {name: t('courses_modules'), type: page, icon: <ModulesSvg/>}
+        return {name: t('courses_modules'), type: page, icon: <ModulesSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.Feedbacks:
-        return {name: t('courses_feedbacks'), type: page, icon: <MessageDoubleSvg/>}
+        return {name: t('courses_feedbacks'), type: page, icon: <MessageDoubleSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.News:
-        return {name: t('courses_news'), type: page, icon: <NewsPaperSvg/>}
+        return {name: t('courses_news'), type: page, icon: <NewsPaperSvg color={theme === AppTheme.Light && colors.black}/>}
       }
     })
     return result

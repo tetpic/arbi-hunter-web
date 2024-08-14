@@ -39,6 +39,7 @@ $purpleSmell: #985AFC20;
 #body[data-theme="dark"] {
   --backGroundColor: #{$backgroundBlack};
   --pTextColor: #{$white};
+  --whiteToBlue: #{$white};
   --secondaryColor: #{$grey};
   --borderColor: #{$grey};
   --borderPerimeter: transparent;
@@ -59,6 +60,7 @@ $purpleSmell: #985AFC20;
 #body[data-theme="light"] {
   --backGroundColor: #{$backgroundWhite};
   --pTextColor: #{$grey};
+  --whiteToBlue: #{$blue};
   --secondaryColor: #{$white};
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};

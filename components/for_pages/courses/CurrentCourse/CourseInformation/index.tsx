@@ -1,3 +1,5 @@
+import styles from './index.module.scss'
+
 import classNames from 'classnames'
 import ICourse from 'data/interfaces/ICourse'
 import languages from '@cospired/i18n-iso-languages'
@@ -8,10 +10,11 @@ import Button from 'components/ui/Button'
 import GlobusSvg from 'components/svg/GlobusSvg'
 import TimerSvg from 'components/svg/TimerSvg'
 import EducationSvg from 'components/svg/EducationSvg'
-import styles from './index.module.scss'
 import ImageHelper from 'utils/ImageHelper'
 import { Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
+import { useAppContext } from 'context/state'
 
 interface Props {
   course: ICourse
@@ -19,41 +22,41 @@ interface Props {
 }
 
 export default function CoursesInformation({course, isMobile}: Props) {
+  const appContext = useAppContext()
+  const theme = appContext.theme
   const {t} = useTranslation()
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(()=>{
     setLoaded(true)
   }, [])
-  
 
   languages.registerLocale(require(`@cospired/i18n-iso-languages/langs/${course.language}.json`))
   const courseLang = languages.getName(course.language, course.language)
 
-
   return (<div className={styles.root}> 
     <div className={styles.item}>
       {!isMobile &&
-        <p className={styles.title}>{t('courses_description')}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_description')}</P>
       }
-      <p className={styles.text}>{course.fullDescription}</p>
+      <P styleType={['w500']} useThemeColor className={styles.text}>{course.fullDescription}</P>
     </div>
 
     <div className={classNames(styles.item, styles.stats)}>
       <div className={styles.stat}>
-        <Button className={styles.button}><GlobusSvg/></Button>
-        <p className={styles.stat_title}>{t('courses_lang')}</p>
-        <p className={styles.stat_value}>{courseLang&&(courseLang.charAt(0).toUpperCase() + courseLang.slice(1))}</p>
+        <Button className={styles.button}><GlobusSvg /></Button>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.stat_title}>{t('courses_lang')}</P>
+        <P styleType={['w500', 'medium']} useThemeColor className={styles.stat_value}>{courseLang&&(courseLang.charAt(0).toUpperCase() + courseLang.slice(1))}</P>
       </div>
       <div className={styles.stat}>
         <Button className={styles.button}><TimerSvg/></Button>
-        <p className={styles.stat_title}>{t('courses_time')}</p>
-        <p className={styles.stat_value}>{course.courseTime}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.stat_title}>{t('courses_time')}</P>
+        <P styleType={['w500', 'medium']} useThemeColor className={styles.stat_value}>{course.courseTime}</P>
       </div>
       <div className={styles.stat}>
       <Button className={styles.button}><EducationSvg/></Button>
-        <p className={styles.stat_title}>{t('courses_certificate')}</p>
-        <p className={styles.stat_value}>{course.withCertificate?t('courses_certificateIssues'): t('courses_certificateNotIssued')}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.stat_title}>{t('courses_certificate')}</P>
+        <P styleType={['w500', 'medium']} useThemeColor className={styles.stat_value}>{course.withCertificate?t('courses_certificateIssues'): t('courses_certificateNotIssued')}</P>
       </div>
     </div>
 
@@ -66,7 +69,7 @@ export default function CoursesInformation({course, isMobile}: Props) {
     }
 
     <div className={classNames(styles.item, styles.author)}>
-        <p className={styles.title}>{t('courses_about')} {course.authors.length>1?t('courses_author'):t('courses_authors')}</p>
+        <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_about')} {course.authors.length>1?t('courses_author'):t('courses_authors')}</P>
         {course.authors.length>0&&
         course.authors.map((el, index)=> {
           return <div key={index} className={styles.author_wrapper}>
@@ -82,12 +85,12 @@ export default function CoursesInformation({course, isMobile}: Props) {
       </div>
 
     <div className={styles.item}>
-      <p className={styles.title}>{t('courses_requirements')}</p>
+      <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_requirements')}</P>
       <p className={styles.text}>{course.requirements}</p>
     </div>
 
     <div className={styles.item}>
-      <p className={styles.title}>{t('courses_audience')}</p>
+      <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{t('courses_audience')}</P>
       <p className={styles.text}>{course.audience}</p>
     </div>
 

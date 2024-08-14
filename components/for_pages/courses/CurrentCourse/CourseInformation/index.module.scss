@@ -2,7 +2,7 @@
 
 .root {
   padding: 32px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -14,16 +14,10 @@
 }
 
 .title {
-  font-weight: $semibold;
-  font-size: $largeText;
-  color: $white;
   margin-bottom: 16px;
 }
 
 .text {
-  color: $white;
-  font-weight: $regular;
-  font-size: $mediumText;
   @include mq($TabletWidth, max) {
     color: $greyLight;
   }
@@ -42,7 +36,7 @@
     display: grid;
     row-gap: 8px;
     column-gap: 8px;
-    background-color: $grey;
+    background-color: var(--borderColor);
     align-items: center;
     grid-template-areas: 'b t' 'v v';
     grid-template-columns: auto 1fr;
@@ -65,16 +59,10 @@
 
     &_title {
       grid-area: t;
-      color: $white;
-      font-weight: $medium;
-      font-size: $mediumText;
     }
 
     &_value {
       grid-area: v;
-      color: $white;
-      font-weight: $medium;
-      font-size: $mediumText;
     }
   }
 }
