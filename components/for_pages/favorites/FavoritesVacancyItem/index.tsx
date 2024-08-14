@@ -26,9 +26,6 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
   const image = getUserImageSource(vacancy.profile, Preset.smallIconCrop)
   // @ts-ignore
   const isSuperVip = (process.env.SUPERVIPVACANCIESIDS).includes(vacancy.id)
-  console.log(isSuperVip)
-
-  
 
   return (<Link href={'/vacancy/'+vacancy.id} className={classNames(styles.root, isSuperVip && styles.superVip)}> 
     {isSuperVip &&
