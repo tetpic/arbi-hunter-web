@@ -12,6 +12,9 @@ import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import FavoritesButton from '@/components/ui/FavoritesButton'
+import { Fragment } from 'react'
+import Image from 'next/image'
+import classNames from 'classnames'
 
 interface Props {
   vacancy: IVacancy
@@ -22,9 +25,19 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
   const {t, lang} = useTranslation()
   const isOnline = vacancy.profile.activityStatus === ActivityStatus.Online
   const image = getUserImageSource(vacancy.profile, Preset.smallIconCrop)
+  // @ts-ignore
+  const isSuperVip = (process.env.SUPERVIPVACANCIESIDS).includes(vacancy.id)
+  console.log(isSuperVip)
+
   
 
-  return (<Link href={'/vacancy/'+vacancy.id} className={styles.root}> 
+  return (<Link href={'/vacancy/'+vacancy.id} className={classNames(styles.root, isSuperVip && styles.superVip)}> 
+    {isSuperVip &&
+      <Fragment>
+        <Image src={'/images/superVipVcBack.jpg'} alt={''} width={803} height={803} className={styles.superVipBack}/>
+        <Image src={'/images/vipDollars.png'} alt={''} width={154} height={121} className={styles.dollars}/>
+      </Fragment>
+    }
     <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={(e)=>{
       e.stopPropagation()
       e.preventDefault()
