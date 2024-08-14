@@ -320,13 +320,12 @@ export default function Header(props: Props) {
               buttonRef={dropdownRef}
               onClick={()=>openDropDown(!dropDown)}
               styleType={['icon', 'black']}
-              altStyleType={['icon','white']}
               className={styles.menuButton}
               >
                 {_stats?.map(el => el.count).filter(Boolean).length > 0 &&
-                  <NotificationSvg color={isLightTheme?colors.black:''}/>
+                  <NotificationSvg />
                   ||
-                  <NoNotificationSvg color={isLightTheme?colors.black:''} />
+                  <NoNotificationSvg  />
                 }
               </Button>
               {dropDown &&
@@ -337,10 +336,9 @@ export default function Header(props: Props) {
 
           <Button 
           styleType={['icon', 'black']}  
-          altStyleType={['icon','white']} 
           className={styles.menuButton}
           onClick={()=>{appContext.showModal(ModalType.MobileSideBarModal)}}>
-            <MenuButtonSvg color={isLightTheme&&colors.greyLight}/>
+            <MenuButtonSvg/>
           </Button>
             </>
         }
