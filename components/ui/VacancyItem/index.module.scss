@@ -225,7 +225,7 @@
 .superVip {
   border: #F1CC7B 2px solid;
   box-shadow: 0 0 20px -7px #F1CC7B;
-  margin-top: 80px;
+  margin-top: 44px;
 
   .superVipBack {
     position: absolute;
@@ -239,8 +239,10 @@
   }
 
   .dollars {
+    width: 110px;
+    height: auto;
     position: absolute;
-    top: -76px;
-    right: 20%;
+    top: -54px;
+    right: -27px;
   }
 }

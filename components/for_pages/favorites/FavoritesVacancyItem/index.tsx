@@ -12,7 +12,6 @@ import Link from 'next/link'
 import { getUserImageSource } from 'utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import FavoritesButton from '@/components/ui/FavoritesButton'
-import { Fragment } from 'react'
 import Image from 'next/image'
 import classNames from 'classnames'
 
@@ -33,10 +32,7 @@ export default function FavoritesVacancyItem({vacancy, onLikeClick}: Props) {
 
   return (<Link href={'/vacancy/'+vacancy.id} className={classNames(styles.root, isSuperVip && styles.superVip)}> 
     {isSuperVip &&
-      <Fragment>
         <Image src={'/images/superVipVcBack.jpg'} alt={''} width={803} height={803} className={styles.superVipBack}/>
-        <Image src={'/images/vipDollars.png'} alt={''} width={154} height={121} className={styles.dollars}/>
-      </Fragment>
     }
     <FavoritesButton styleType={['icon', 'backTransparent']} isActive={true} className={styles.like} onClick={(e)=>{
       e.stopPropagation()

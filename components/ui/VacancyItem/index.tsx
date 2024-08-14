@@ -115,7 +115,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     {isSuperVip &&
     <Fragment>
       <Image src={'/images/superVipVcBack.jpg'} alt={''} width={803} height={803} className={styles.superVipBack}/>
-      <Image src={'/images/vipDollars.png'} alt={''} width={154} height={121} className={styles.dollars}/>
+      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={248} height={158} className={styles.dollars}/>
     </Fragment>
     }
 
