@@ -89,12 +89,20 @@ $purpleSmell: #985AFC20;
   --backColorAlt: #dfa145;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$white};
+  --border: #ffffff;
+  --greyLightToPurple: #{$purpleSmell};
+  --blueBlackToWhitePurple: #{$whitePurple};
+  --blueBlackToWhite: #{$white};
+  --greyAltToPuspleSmell: #{$purpleSmell};
+  --greyLightToPurpleGrey: #{$purpleGrey};
+  --greyLightToBackground: #{$backgroundWhite};
+  --greyToBackground: #{$backgroundWhite};
 }
 
 #body[data-theme="dracula"] {
   --backGroundColor: #7e2019;
   --pTextColor: #{$white};
-  --secondaryColor: #{$white};
+  --secondaryColor: #c50000;
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
@@ -102,6 +110,14 @@ $purpleSmell: #985AFC20;
   --backColorAlt: #3d0f0b;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$white};
+  --border: #000000;
+  --greyLightToPurple: #{$greyLight};
+  --blueBlackToWhitePurple: #{$blueBlack};
+  --blueBlackToWhite: #{$blueBlack};
+  --greyAltToPuspleSmell: #{$greyAlt};
+  --greyLightToPurpleGrey: #{$greyLight};
+  --greyLightToBackground: #{$greyLight};
+  --greyToBackground: #{$grey};
 }
 
 $purpleBoxShadow: 0px 0px 10px 0px rgba(152, 90, 252, 0.1254901961);

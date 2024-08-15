@@ -24,7 +24,7 @@ export default function ViewItem(props: Props) {
   return (<div className={styles.root}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} straightSizes image={getUserImageSource(profile, Preset.smallIconCrop)}  size={42}/>
-      <P style={{gridArea: 'n'}} styleType={['large', 'w600']}>{(userType=== ProfileType.Employee&&getUserName(profile))||profile.company}</P>
+      <P style={{gridArea: 'n'}} useThemeColor styleType={['large', 'w600']}>{(userType=== ProfileType.Employee&&getUserName(profile))||profile.company}</P>
       <P style={{gridArea: 'd'}} styleType={['greyLight', 'small', 'w500']}>{userType === ProfileType.Hirer?profile.city?.locName:Formatter.formatDistanceToNow(profile.birthday, {strict: true})}</P>
     </div>
     <P 

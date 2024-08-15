@@ -15,26 +15,26 @@ export default function SiteMap(props: Props) {
   return (<div className={styles.root}> 
     <Title title={'Карта сайта'} onBackClick={router.back} className={styles.title}/>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Главная станица </P>
-    <Link href={'/about'}><P styleType={['medium']} className={styles.link}>О компании</P></Link>
-    <Link href={'/rules'}><P styleType={['medium']} className={styles.link}>Условия оказания услуг</P></Link>
-    <Link href={'/privacy'}><P styleType={['medium']} className={styles.link}>Политика конфиденциальности</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>Главная станица </P>
+    <Link href={'/about'}><P styleType={['medium']} useThemeColor className={styles.link}>О компании</P></Link>
+    <Link href={'/rules'}><P styleType={['medium']} useThemeColor className={styles.link}>Условия оказания услуг</P></Link>
+    <Link href={'/privacy'}><P styleType={['medium']} useThemeColor className={styles.link}>Политика конфиденциальности</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Работадателям</P>
-    <Link href={'/create/vacancy'}><P styleType={['medium']} className={styles.link}>Создать вакансию</P></Link>
-    <Link href={'/recruiting'}><P styleType={['medium']} className={styles.link}>Каталог резюме</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>Работадателям</P>
+    <Link href={'/create/vacancy'}><P styleType={['medium']} useThemeColor className={styles.link}>Создать вакансию</P></Link>
+    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>Каталог резюме</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Соискателям</P>
-    <Link href={'/create/cv'}><P styleType={['medium']} className={styles.link}>Создать резюме</P></Link>
-    <Link href={'/recruiting'}><P styleType={['medium']} className={styles.link}>Каталог вакансий</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>Соискателям</P>
+    <Link href={'/create/cv'}><P styleType={['medium']} useThemeColor className={styles.link}>Создать резюме</P></Link>
+    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>Каталог вакансий</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600', 'alignCenter']}>Техническая поддержка</P>
+    <P styleType={['large', 'w600', 'alignCenter']} useThemeColor>Техническая поддержка</P>
     <Link href={'https://t.me/arbihunter_support'}>
-      <P styleType={['medium', 'alignCenter']} className={styles.link}> <TelegramSvg/>  Support-менеджер</P>
+      <P styleType={['medium', 'alignCenter']} useThemeColor className={styles.link}> <TelegramSvg/>  Support-менеджер</P>
     </Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']}>Партнерам</P>
-    <Link href={'https://t.me/samesonggg'}><P className={styles.link}  styleType={['medium', 'alignCenter']}><TelegramSvg/> По вопросам сотрудничества</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>Партнерам</P>
+    <Link href={'https://t.me/samesonggg'}><P useThemeColor className={styles.link}  styleType={['medium', 'alignCenter']}><TelegramSvg/> По вопросам сотрудничества</P></Link>
 
 
   </div>)

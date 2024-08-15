@@ -31,7 +31,7 @@
     font-weight: $medium;
     font-size: $hugeText;
     line-height: 39px;
-    color: $white;
+    color: var(--pTextColor);
     &:not([value='']) {
       border-bottom: 2px $blue solid !important;
     }

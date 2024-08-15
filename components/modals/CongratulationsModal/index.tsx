@@ -44,7 +44,7 @@ export default function CongratulationsModal(props: Props) {
 
   const body = (
     <div className={styles.root}>
-      <Button className={styles.closeModal} onClick={onBack}><CrossSvg/></Button>
+      <Button className={styles.closeModal} altStyleType={['invertSvg']} onClick={onBack}><CrossSvg/></Button>
       <Image src={prise} alt={'prise'} width={222} height={222}/>
       <P styleType={['w600', 'huge', 'textCenter']} useThemeColor className={styles.title}>{t('courses_congratulations1')} <br/> {t('courses_congratulations2')}</P>
       {args.course.certificate &&

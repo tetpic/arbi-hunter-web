@@ -535,6 +535,7 @@
 
 @mixin textFormatter {
   color: var(--pTextColor);
+  max-width: 100%;
 
   *{
     line-height: 140% !important;
@@ -548,6 +549,10 @@
       color: $blue;
     }
     
+  }
+
+  pre {
+    overflow: auto;
   }
 
   h2 {

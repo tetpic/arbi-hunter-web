@@ -211,7 +211,7 @@ export default function CvItem({cv, ...props}: Props) {
   //@ts-ignore
   style={{'--gradientColor1': '#'+cv.subscriptions?.tariff?.colors[0]+'50', '--gradientColor2':'#'+cv.subscriptions?.tariff?.colors[1]+'50'}}
   href={'cv/'+cv.id}> 
-    <FavoritesButton styleType={['grey', 'icon']} className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
+    <FavoritesButton styleType={['grey', 'icon']} altStyleType={['white', 'icon']} className={styles.favoriteButton} showStar onClick={likeHandler} isActive={cv.isSavedByCurrentProfile}/>
     {userImage && !isTabletWidth &&
       <Image 
       unoptimized

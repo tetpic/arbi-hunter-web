@@ -40,7 +40,7 @@
   flex-direction: column;
   row-gap: 16px;
   @include mq($TabletWidth, max) {
-    background-color: $black;
+    background-color: var(--backColorAlt);
     border-radius: 16px;
     min-height: 150px;
     display: flex;
