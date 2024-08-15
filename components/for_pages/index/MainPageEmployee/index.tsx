@@ -153,8 +153,8 @@ export default function MainPageEmployee() {
 
       {isTabletWidth && indexPageContext.loaded &&
       <>
-        <MobileBanners type={'cvCreate'}/>
-      </>
+        <MobileBanners type={ cvContext.savedCvs.length > 0 ? 'vipVacancy' : 'cvCreate'}/>
+        </>
       }
 
       {indexPageContext.loaded && <>

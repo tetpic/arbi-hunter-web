@@ -106,8 +106,7 @@ export default function MainPageHirer() {
 
 
       {isTabletWidth && indexPageContext.loaded && 
-        // <MobileBanners type={(indexPageContext.activeVacancies.size === 0&&indexPageContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
-        <MobileBanners type={(indexPageContext.activeVacancies.size === 0&&indexPageContext.archiveVacancies.size === 0)?'vacancyCreate':'vipCv'}/>
+        <MobileBanners type={'vacancyCreate'}/>
         ||
         isTabletWidth && <div style={{height: 123, marginTop: 124}}></div>
       }
