@@ -44,7 +44,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser?.length -1]||null
   const isLightTheme = appContext.theme === AppTheme.Light
   // @ts-ignore
-  const isSuperVip = (process.env.SUPERVIPVACANCIESIDS).includes(vacancy.id)
+  const isSuperVip = vacancy.isTop
   console.log(isSuperVip)
 
 
