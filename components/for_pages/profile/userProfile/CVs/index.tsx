@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import { useCvContext } from 'context/cv_state'
 import { ICV } from 'data/interfaces/ICV'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Spacer from 'components/ui/Spacer'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
@@ -58,18 +58,25 @@ export default function CVs(props: Props) {
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
   const [specialVipBanners, setSpecialVipBanners] = useState<IVacancy[]>([])
+  const isLoaded = useRef<boolean>(false)
 
   useEffect(()=>{
     cvContext.setSavedCvs()
     tariffContext.setPackets([PurchaseType.CvTariff])
-    VacancyRepository.searchVacancies({s: JSON.stringify({isTop: true})})
-    .then(res => {
-      setSpecialVipBanners(res.data)
-    })
-    .catch(err=> 
-      // eslint-disable-next-line no-console
-      console.log(err)
-    )
+    if(!isLoaded.current) {
+
+      VacancyRepository.searchVacancies({s: JSON.stringify({isTop: true})})
+      .then(res => {
+        const randomVipVacancies = Formatter.randomElementsFromArray<IVacancy>(res.data, 2)
+        setSpecialVipBanners(randomVipVacancies)
+      })
+      .catch(err=> 
+        // eslint-disable-next-line no-console
+        console.log(err)
+      )
+
+      isLoaded.current = true
+    }
   }, [])
 
   useEffect(()=>{
@@ -158,7 +165,7 @@ export default function CVs(props: Props) {
     </div>
     <div className={styles.banners}>
       <P styleType={['w600', 'huge']}>VIP вакансии</P>
-      {Formatter.randomElementsFromArray<IVacancy>(specialVipBanners, 3).map(vacancy =>  {
+      {specialVipBanners.map(vacancy =>  {
         return <VacancyItem vacancy={vacancy} smallCard key={vacancy.id + 'vacancies'}/>
       })}
     </div>

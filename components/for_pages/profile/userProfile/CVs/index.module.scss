@@ -12,6 +12,10 @@
   row-gap: 16px;
   max-width: 764px;
   width: 70%;
+  @include mq($SmDesktopWidth, max ){
+    width: 100%;
+    max-width: unset;
+  }
   @include mq($TabletWidth, max) {
     margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;
@@ -41,6 +45,10 @@
   flex-direction: column;
   row-gap: 16px;
   margin-top: 24px;
+  min-width: 308px;
+  @include mq($SmDesktopWidth, max) {
+    display: none;
+  }
 
   > p {
     margin-bottom: -16px;
