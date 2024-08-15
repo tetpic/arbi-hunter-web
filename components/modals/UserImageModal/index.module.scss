@@ -10,7 +10,7 @@
 .item {
   width: calc(50% - 8px);
   padding: 16px;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@
 
 .active {
   border: 2px $blue solid;
-  background-color: $black;
+  background-color: var(--backColor);
 }
 
 .modalLayout {
@@ -39,16 +39,7 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 45px;
-
-  .buttonGradient {
-    @include buttonGradient;
-    width: calc(50% - 8px);
-  }
-
-  .button {
-    @include buttonGray;
-    width: calc(50% - 8px);
-  }
+  column-gap: 16px;
 }
 
 .userPic {

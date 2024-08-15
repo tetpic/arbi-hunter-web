@@ -16,7 +16,7 @@
 .item {
   width: calc(50% - 8px);
   padding: 16px;
-  background-color: $grey;
+  background-color: var(--borderColor);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,18 +45,18 @@
     position: absolute;
     width: 125%;
     height: 50%;
-    background-color: black;
+    background-color: var(--backColor);
     display: block;
     bottom: -25%;
     left: -20px;
-    opacity: 0.6;
+    opacity: 0.8;
     filter: blur(10px);
   }
 }
 
 .active {
   border: 2px $blue solid;
-  background-color: $black;
+  background-color: var(--backColor);
 }
 
 .modalLayout {
@@ -68,16 +68,7 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 45px;
-
-  .buttonGradient {
-    @include buttonGradient;
-    width: calc(50% - 8px);
-  }
-
-  .button {
-    @include buttonGray;
-    width: calc(50% - 8px);
-  }
+  column-gap: 16px;
 }
 
 .userPic {
@@ -99,6 +90,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $greyAlt2;
+  background-color: var(--greyAltToPuspleSmell);
   border-radius: 50%;
 }

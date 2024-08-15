@@ -34,7 +34,9 @@
   padding: 8px 16px;
   border-radius: 10px;
   @include transitionDefault;
-  @include hoverbuttonBorderGradient;
+  @include hover {
+    background-color: var(--greyLightToPurple);
+  }
   @include exeptLast {
     margin-bottom: 16px;
   }

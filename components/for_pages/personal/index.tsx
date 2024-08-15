@@ -305,7 +305,7 @@ export default function PersonalPage(props: Props) {
           name={'cityName'} 
           value = {personalContext.currentProfile?.city?.locName}
           labelName={t('city')}
-          requestFn={() => LocationRepository.searchCity({country: personalContext.currentProfile?.country?.country})} 
+          requestFn={(r) => LocationRepository.searchCity({...r, country: personalContext.currentProfile?.country?.country})} 
           />
         </Form>
       </FormikProvider>

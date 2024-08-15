@@ -80,7 +80,7 @@ $purpleSmell: #985AFC20;
 
 #body[data-theme="beer"] {
   --backGroundColor: #f5bc52;
-  --pTextColor: #{$grey};
+  --pTextColor: #634a07;
   --secondaryColor: #{$white};
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
@@ -101,8 +101,8 @@ $purpleSmell: #985AFC20;
 
 #body[data-theme="dracula"] {
   --backGroundColor: #7e2019;
-  --pTextColor: #{$white};
-  --secondaryColor: #c50000;
+  --pTextColor: rgb(252, 165, 165);
+  --secondaryColor: #a32626;
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
@@ -111,7 +111,7 @@ $purpleSmell: #985AFC20;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$white};
   --border: #000000;
-  --greyLightToPurple: #{$greyLight};
+  --greyLightToPurple: #000000;
   --blueBlackToWhitePurple: #{$blueBlack};
   --blueBlackToWhite: #{$blueBlack};
   --greyAltToPuspleSmell: #{$greyAlt};

@@ -373,7 +373,7 @@
 
 @mixin buttonBlack {
   @include buttonDefault;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   position: relative;
   span {
     color: $blue;
@@ -388,10 +388,10 @@
 
 @mixin buttonGray {
   @include buttonDefault;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   color: $white;
   @include hover {
-    background-color: $greyLight;
+    background-color: var(--greyLightToPurple);
   }
 }
 
