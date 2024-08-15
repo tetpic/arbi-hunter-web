@@ -316,6 +316,15 @@
   @include hoverbuttonGradient;
 }
 
+@mixin buttonGoldGradient {
+  background: $goldGradient;
+  background-size: 200%;
+  color: $white;
+  @include buttonDefault;
+  @include hoverbuttonGradient;
+
+}
+
 @mixin buttonBorderGradient {
   background-size: 100%;
   background-color: $grey;

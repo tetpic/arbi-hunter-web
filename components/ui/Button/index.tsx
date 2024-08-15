@@ -17,6 +17,7 @@ export type ButtonStyle =
 'whiteText' |
 'purpleText' |
 'gradient'|
+'goldGradient' |
 'blue'|
 'white'|
 'whitePurple'|

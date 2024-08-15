@@ -25,6 +25,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 import { useUserContext } from 'context/user_state'
+import { Fragment } from 'react'
 
 interface Props {
   vacancy?: IVacancy
@@ -42,6 +43,10 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const router = useRouter()
   const lastProposal = vacancy.proposalsToCurrentUser?.[vacancy.proposalsToCurrentUser?.length -1]||null
   const isLightTheme = appContext.theme === AppTheme.Light
+  // @ts-ignore
+  const isSuperVip = (process.env.SUPERVIPVACANCIESIDS).includes(vacancy.id)
+  console.log(isSuperVip)
+
 
 
   const respondHandler = (e: React.MouseEvent) => {
@@ -103,10 +108,17 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
 
 
   return (<Link 
-  className={classNames(styles.item, isLightTheme && styles.item_light, vacancy.subscriptions?.tariff?.key.includes('Vip')&&styles.VIP)} 
+  className={classNames(styles.item, isLightTheme && styles.item_light, vacancy.subscriptions?.tariff?.key.includes('Vip')&&styles.VIP,  isSuperVip && styles.superVip)} 
   //@ts-ignore
   style={{'--gradientColor1': '#'+vacancy.subscriptions?.tariff?.colors[0]+'20', '--gradientColor2':'#'+vacancy.subscriptions?.tariff?.colors[1]+'20'}}
   href={'/vacancy/'+vacancy.id}> 
+    {isSuperVip &&
+    <Fragment>
+      <Image src={'/images/superVipVcBack.jpg'} alt={''} width={803} height={803} className={styles.superVipBack}/>
+      <Image src={'/images/forCreateVacancyBanner.png'} alt={''} width={248} height={158} className={styles.dollars}/>
+    </Fragment>
+    }
+
     <FavoritesButton styleType={['icon', 'grey']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
    
     <div className={styles.top}>
@@ -159,13 +171,13 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       <div className={styles.buttonsWrapper}>
         {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
           <Button 
-          styleType={['gradient', 'phoneWide']}
+          styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={openChat}
           >Перейти в чат</Button>
         }
         {!lastProposal &&
           <Button 
-          styleType={['gradient', 'phoneWide']}
+          styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={respondHandler}
           >
             Откликнуться
@@ -173,7 +185,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
         {vacancy.showContactName && 
           <Button 
-          styleType={['black', 'borderBlue', 'phoneWide', 'backTransparent']}
+          styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['black', 'borderBlue', 'phoneWide', 'backTransparent']}
           altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
           >
             Контакты
