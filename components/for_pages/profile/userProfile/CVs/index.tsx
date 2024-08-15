@@ -18,6 +18,11 @@ import { useAppContext } from 'context/state'
 import Button from '@/components/ui/Button'
 import PlusSvg from '@/components/svg/PlusSvg'
 import { SearchModalArgs } from '@/components/modals/SearchModal'
+import { IVacancy } from 'data/interfaces/IVacancy'
+import VacancyRepository from 'data/repositories/VacancyRepository'
+import VacancyItem from '@/components/ui/VacancyItem'
+import Formatter from 'utils/formatter'
+import P from '@/components/ui/P'
 
 interface Props {
 }
@@ -52,10 +57,19 @@ export default function CVs(props: Props) {
   const tariffContext = useTariffContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const [specialVipBanners, setSpecialVipBanners] = useState<IVacancy[]>([])
 
   useEffect(()=>{
     cvContext.setSavedCvs()
     tariffContext.setPackets([PurchaseType.CvTariff])
+    VacancyRepository.searchVacancies({s: JSON.stringify({isTop: true})})
+    .then(res => {
+      setSpecialVipBanners(res.data)
+    })
+    .catch(err=> 
+      // eslint-disable-next-line no-console
+      console.log(err)
+    )
   }, [])
 
   useEffect(()=>{
@@ -106,6 +120,8 @@ export default function CVs(props: Props) {
   }
 
   return (
+    <div className={styles.rootWrapper}>
+
     <div className={styles.root}> 
       <Title 
       title={t('profile_title_myCVs')} 
@@ -140,5 +156,13 @@ export default function CVs(props: Props) {
       }
       <Spacer basis={24}/>
     </div>
+    <div className={styles.banners}>
+      <P styleType={['w600', 'huge']}>VIP вакансии</P>
+      {Formatter.randomElementsFromArray<IVacancy>(specialVipBanners, 3).map(vacancy =>  {
+        return <VacancyItem vacancy={vacancy} smallCard key={vacancy.id + 'vacancies'}/>
+      })}
+    </div>
+    </div>
+
   )
 }
