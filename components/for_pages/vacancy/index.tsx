@@ -420,7 +420,8 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       </div>
-      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
+      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'}/>
+
     </div>
   )
 }
