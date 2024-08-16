@@ -408,7 +408,7 @@ export default function VacancyPage(props: Props) {
       
       {!isMyVacancy && !lastProposal &&
       <div className={styles.buttonsWrapper}>
-        <Button styleType={['gradient', 'phoneWide']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
+        <Button styleType={currentVacancy.isTop? ['goldGradient', 'phoneWide']:['gradient', 'phoneWide']} onClick={makeResponse}>{t('vacancy_page_makeApply')}</Button>
       </div>
       }
       
