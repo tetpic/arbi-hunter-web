@@ -36,6 +36,7 @@ import ImageHelper from 'utils/ImageHelper'
 import ChatRepository from 'data/repositories/ChatRepository'
 import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
 import EditPencilSvg from '@/components/svg/EditPencilSvg'
+import Banner from '@/components/ui/Banner'
 
 
 interface Props {
@@ -164,6 +165,7 @@ export default function VacancyPage(props: Props) {
 
   return (
     <div className={styles.root}>
+      <div className={styles.content}>
       {!isTabletWidth && props.isAuthed &&
       <BackTextButton onClick={router.back}/>
       }
@@ -183,6 +185,8 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       {!isMyVacancy && companyCard}
+      <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.mobileBanner}/>
+
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
         {isMyVacancy && !isTabletWidth &&
@@ -414,6 +418,9 @@ export default function VacancyPage(props: Props) {
           </div>
         </div>
       }
+      </div>
+      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
+
     </div>
   )
 }

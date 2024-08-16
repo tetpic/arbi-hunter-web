@@ -82,6 +82,7 @@
   },
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 3088",
+    "devSecure": "next dev -H 127.0.0.1 -p 3088 --experimental-https",
     "build": "next build",
     "start": "next start",
     "start-dev": "next start -H 127.0.0.1 -p 3088",

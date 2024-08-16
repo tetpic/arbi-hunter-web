@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import Link from 'next/link'
 import { VacancyWrapper, useVacancyContext } from 'context/vacancy_state'
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import Formatter from 'utils/formatter'
 import Spacer from 'components/ui/Spacer'
 import { useThrottleFn } from '@react-cmpt/use-throttle'
@@ -26,6 +26,7 @@ import { CvWrapper, useCvContext } from 'context/cv_state'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import { useLocationContext } from 'context/location_state'
+import Banner from '@/components/ui/Banner'
 
 interface Props {
   filters: Partial<IVacancyCvSearchParams>
@@ -189,14 +190,17 @@ function RecruitingPageEmployeeInner(props: Props) {
         {loading &&
           <Spinner size={24} />
           ||
-          !loading && vacancyContext.foundVacancies?.size > 0 && [...vacancyContext.foundVacancies.values()].map(vacancy=> {
-            return <VacancyItem smallCard={isTabletWidth} 
+          !loading && vacancyContext.foundVacancies?.size > 0 && [...vacancyContext.foundVacancies.values()].map((vacancy, index)=> {
+            return <Fragment key={'vacancy_' + vacancy.id}>
+            <VacancyItem smallCard={isTabletWidth} 
             vacancy={vacancy}  
             onChangeItem={(v)=>{
               vacancyContext.refreshVacancyInFound(v)
               // findVacancies()}
             }}
             />
+            {index === 1 &&  <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.banner}/>}
+            </Fragment>
           })
           ||
           <P useThemeColor className='empty'>{t('recruiting_em_noFoundVacancies')}</P>

@@ -1,9 +1,34 @@
 @import 'styles/index';
 
-.root {
-  margin-top: 48px;
+.content {
   max-width: 638px;
   min-height: 70vh;
+  width: 70%;
+  @include mq($TabletWidth, max) {
+    width: 100%;
+    max-width: unset;
+  }
+}
+
+.mobileBanner {
+  display: none;
+  @include mq($TabletWidth, max) {
+    display: block;
+    margin-bottom: 16px;
+  }
+}
+
+.deskBanner {
+  display: block;
+  @include mq($TabletWidth, max) {
+    display: none;
+  }
+}
+
+.root {
+  margin-top: 48px;
+  display: flex;
+  column-gap: 16px;
   @include mq($TabletWidth, max) {
     margin-top: $mobileTopSectionPadding;
     padding-inline: 16px;

@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { useCvContext } from 'context/cv_state'
 import useThrottleFn from '@react-cmpt/use-throttle/lib/useThrottleFn'
 import Spacer from 'components/ui/Spacer'
@@ -29,6 +29,7 @@ import { CompensationType, LanguageKnowLevel, PurchaseType } from 'types/enums'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ICV } from 'data/interfaces/ICV'
 import { useTariffContext } from 'context/tariff_state'
+import Banner from '@/components/ui/Banner'
 
 
 interface Props {
@@ -205,22 +206,26 @@ function RecruitingPageHirerInner(props: Props) {
         loader={<Spinner size={24}/>} 
         dataLength={cvContext.foundCvs?.size + 1}>
           <div className={styles.vacanciesWrapper}>
-            {cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map(cv=> {
-                return <CvItem 
-                cv={cv} 
-                initialVacancy={vacancyContext.currentVacancy}  
-                key={cv.id + cv.isContactsOpen.toString()} 
-                onChangeItem={(_cv: ICV)=> {
-                  if(_cv) {
-                    cvContext.setFoundCvsState(state => {
-                      state.set(_cv.id, _cv)
-                      return new Map(state)
-                    })
+            {cvContext.foundCvs?.size > 0 && [...cvContext.foundCvs.values()].map((cv, index)=> {
+                return <Fragment key={cv.id + cv.isContactsOpen.toString()} >
+                  <CvItem 
+                  cv={cv} 
+                  initialVacancy={vacancyContext.currentVacancy}  
+                  onChangeItem={(_cv: ICV)=> {
+                    if(_cv) {
+                      cvContext.setFoundCvsState(state => {
+                        state.set(_cv.id, _cv)
+                        return new Map(state)
+                      })
+                    }
+                    else {
+                      findCvs()
+                    }
+                  }}/>
+                  {index === 1 && 
+                    <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.banner}/>
                   }
-                  else {
-                    findCvs()
-                  }
-                }}/>
+                </Fragment>
               })
               ||
               !loading && <P useThemeColor className='empty'>{t('recruiting_noFoundCvs')}</P>

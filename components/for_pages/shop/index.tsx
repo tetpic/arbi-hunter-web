@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import useTranslation from 'next-translate/useTranslation'
 import { useAppContext } from 'context/state'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
+import Banner from '@/components/ui/Banner'
 
 interface Props {
 }
@@ -113,10 +114,15 @@ export default function Shop(props: Props) {
   })()
 
   return (<div className={styles.root}> 
+  <div className={styles.content}>
+
   <Title title={t('shop')} onBackClick={()=>router.back()}/>
   <ItemNavigation onAllWidth={isTabletWidth}  className={styles.itemNav} activeItem={page} items={navSet} onClick={setPage}/>
 
   {getPage}
+  </div>
+  <Banner src={'/images/banners/banner1.jpg'} className={styles.desktopBanner}/>
+
 
   </div>)
 }
