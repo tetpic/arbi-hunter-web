@@ -25,7 +25,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
 import { useUserContext } from 'context/user_state'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 
 interface Props {
   vacancy?: IVacancy
@@ -34,6 +34,7 @@ interface Props {
 }
 
 export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
+  const [isLiked, setIsLiked] = useState<boolean>(vacancy.isSavedByCurrentProfile)
   const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const userContext = useUserContext()
@@ -89,11 +90,12 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     e.stopPropagation()
 
     const[signal] = getNewSignal('likeHandler')
-    if(!vacancy.isSavedByCurrentProfile) {
+    if(!isLiked) {
       sendToMetrika(AppMetricaEvent.AddToSaved)
       VacancyRepository.addVcToSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem(vacancy)
+        setIsLiked(true)
       })
       .catch(_=>{})
     }
@@ -101,6 +103,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       VacancyRepository.removeVcFromSaved(vacancy.id, {signal})
       .then(_=> {
         onChangeItem&&onChangeItem(vacancy)
+        setIsLiked(false)
       })
       .catch(_=>{})
     }
@@ -119,7 +122,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
     </Fragment>
     }
 
-    <FavoritesButton styleType={['icon', 'grey']} className={styles.heartButton} isActive={vacancy.isSavedByCurrentProfile} onClick={likeHandler}/>
+    <FavoritesButton styleType={['icon', 'grey']} className={styles.heartButton} isActive={isLiked} onClick={likeHandler}/>
    
     <div className={styles.top}>
       <div className={ styles.card}>

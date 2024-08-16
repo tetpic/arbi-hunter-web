@@ -482,7 +482,7 @@ export default function CvPage(props: Props) {
           {userCard}
         </div>
       }
-      <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.mobileBanner}/>
+      <Banner src={'/images/banners/banner1_mobile.jpg'} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} className={styles.mobileBanner}/>
 
 
       {(currentCv?.isContactsOpen||userContext.currentProfile?.id === currentCv.profile.id)&&
@@ -682,7 +682,7 @@ export default function CvPage(props: Props) {
         </div>
       }
       </div>
-      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
+      <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner1.jpg'} className={styles.deskBanner}/>
     </div>
   )
 }
