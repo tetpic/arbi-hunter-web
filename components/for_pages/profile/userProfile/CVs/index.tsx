@@ -23,6 +23,7 @@ import VacancyRepository from 'data/repositories/VacancyRepository'
 import VacancyItem from '@/components/ui/VacancyItem'
 import Formatter from 'utils/formatter'
 import P from '@/components/ui/P'
+import Banner from '@/components/ui/Banner'
 
 interface Props {
 }
@@ -164,6 +165,7 @@ export default function CVs(props: Props) {
       <Spacer basis={24}/>
     </div>
     <div className={styles.banners}>
+      <Banner  src={'/images/banners/banner1.jpg'} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} className={styles.banner}/>
       <P styleType={['w600', 'huge']}>VIP вакансии</P>
       {specialVipBanners.map(vacancy =>  {
         return <VacancyItem vacancy={vacancy} smallCard key={vacancy.id + 'vacancies'}/>

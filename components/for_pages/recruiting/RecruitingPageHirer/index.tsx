@@ -223,7 +223,7 @@ function RecruitingPageHirerInner(props: Props) {
                     }
                   }}/>
                   {index === 1 && 
-                    <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.banner}/>
+                    <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner1_mobile.jpg'} className={styles.banner}/>
                   }
                 </Fragment>
               })
