@@ -5,6 +5,7 @@
   width: calc(30% - 16px);
   position: relative;
   perspective: 400px;
+  align-self: flex-start;
   @include mq($TabletWidth, max) {
     width: 100%;
   }
@@ -31,8 +32,8 @@
 .hovered {
   @include hover {
     .bannerImage {
-      scale: 1.03;
-      transform: rotateY(-2deg);
+      scale: 1.02;
+      transform: rotateY(-0.5deg);
     }
   }
 }
