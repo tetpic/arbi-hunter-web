@@ -184,6 +184,7 @@ function RecruitingPageEmployeeInner(props: Props) {
       }} 
       hasMore={vacancyContext.foundVacancies?.size < vacancyContext.total} 
       loader={<Spinner size={24}/>} 
+      className={styles.infiniteScroll}
       dataLength={vacancyContext.foundVacancies?.size + 1}>
       <div className={styles.vacanciesWrapper}>
         {loading &&

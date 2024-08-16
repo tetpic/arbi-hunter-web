@@ -8,7 +8,9 @@ const nextConfig = nextTranslate({
     host: process.env.HOST,
     HOST_ROOT: process.env.HOST_ROOT,
     DEV: process.env.DEV,
-    IMNEARID: process.env.IMNEARID
+    IMNEARID: process.env.IMNEARID,
+    SUPERVIPVACANCIESIDS: process.env.SUPERVIPVACANCIESIDS,
+
   },
 
   publicRuntimeConfig: {
@@ -23,7 +25,8 @@ const nextConfig = nextTranslate({
     FREE_COURSES_ID: process.env.FREE_COURSES_ID,
     POPULAR_COURSES_ID: process.env.POPULAR_COURSES_ID,
     YA_METRIKA_ID: process.env.YA_METRIKA_ID,
-    GOOGLE_METRIKA_ID: process.env.GOOGLE_METRIKA_ID
+    GOOGLE_METRIKA_ID: process.env.GOOGLE_METRIKA_ID,
+    SUPERVIPVACANCIESIDS: process.env.SUPERVIPVACANCIESIDS,
   },
   serverRuntimeConfig: {
     HOST: process.env.HOST,

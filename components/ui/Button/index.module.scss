@@ -48,6 +48,10 @@
   @include buttonGradient;
 }
 
+.goldGradient {
+  @include buttonGoldGradient;
+}
+
 .white {
   @include buttonWhite;
   border: 1px $purpleGrey solid;
