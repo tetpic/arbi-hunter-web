@@ -188,7 +188,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         }
         {vacancy.showContactName && 
           <Button 
-          styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['black', 'borderBlue', 'phoneWide', 'backTransparent']}
+          styleType={isSuperVip ? ['goldBordered', 'phoneWide'] : ['black', 'borderBlue', 'phoneWide', 'backTransparent']}
           altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
           >
             Контакты

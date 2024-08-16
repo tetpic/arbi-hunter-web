@@ -79,6 +79,7 @@ export default function VacancyPage(props: Props) {
       :appContext.showModal<IApplicationModalProps>(ModalType.ApplicationModal, args)
     }
   }
+  
 
   const likeHandler = () => {
     if(!currentVacancy.isSavedByCurrentProfile) {
@@ -128,6 +129,7 @@ export default function VacancyPage(props: Props) {
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
     }
+    console.log(currentVacancy)
   }, [currentVacancy])
 
   useEffect(()=>{
@@ -264,7 +266,7 @@ export default function VacancyPage(props: Props) {
           {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection && 
           <>
             <Button 
-            styleType={['gradient', 'phoneWide']}
+            styleType={currentVacancy.isTop? ['goldGradient', 'phoneWide']:['gradient', 'phoneWide']}
             onClick={openChat}
             >
               {t('goToChat')}
@@ -273,7 +275,7 @@ export default function VacancyPage(props: Props) {
           }
            {freeToApplyCvs?.length > 0 && currentVacancy.applicationsByCurrentUser.length>0 &&
               <Button
-              styleType={['gradient', 'phoneWide']}
+              styleType={currentVacancy.isTop? ['goldGradient', 'phoneWide']:['gradient', 'phoneWide']}
               onClick={makeResponse}
               >
               {t('vacancy_page_applyFromOtherCv')}
@@ -281,7 +283,7 @@ export default function VacancyPage(props: Props) {
             }
           {(!lastProposal) && currentVacancy.applicationsByCurrentUser?.length===0 && freeToApplyCvs?.length > 0 &&
             <Button 
-            styleType={['gradient', 'wide']}
+            styleType={currentVacancy.isTop? ['goldGradient', 'wide']:['gradient', 'wide']}
             onClick={makeResponse}
             >
               {t('vacancy_page_makeApply')}
@@ -293,7 +295,7 @@ export default function VacancyPage(props: Props) {
           <div className={styles.contactsButton}>
         
             <Button 
-            styleType={['black', 'borderBlue', 'phoneWide']} 
+            styleType={currentVacancy.isTop? ['goldBordered', 'phoneWide']:['black', 'borderBlue', 'phoneWide']} 
             altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
             onClick={()=>{
               if(userContext.isLogged) {
@@ -379,7 +381,7 @@ export default function VacancyPage(props: Props) {
           <div className={styles.contacts}>
             <P styleType={['w500', 'medium']} useThemeColor>{currentVacancy.contactName}</P>
             <Button 
-            styleType={['black', 'wide', 'borderBlue']} 
+            styleType={currentVacancy.isTop? ['goldBordered', 'wide']:['black', 'wide', 'borderBlue']} 
             altStyleType={['gradient']}
             onClick={()=>{
               if(userContext.isLogged) {
