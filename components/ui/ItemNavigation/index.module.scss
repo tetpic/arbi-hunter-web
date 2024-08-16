@@ -4,10 +4,12 @@
 .dark {
   --hoverColor: #{$white};
   --activePColor: #{$white};
+  --activePColor: #{$white};
 }
 
 .light {
   --hoverColor: #{$blue};
+  --activePColor: #{$blue};
   --activePColor: #{$blue};
 }
 
@@ -21,31 +23,31 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
 
-  .items {
-    display: flex;
-    padding-right: 16px;
-    
-    .item {
-      cursor: pointer;
-      white-space: nowrap;
-      display: block;
-      flex-shrink: 0;
-      @include transitionDefault;
-      @include exeptLast {
-        margin-right: clamp(30px, 5vw, 120px);
-      }
-      @include hover {
-        color: var(--hoverColor);
-      }
-      @include mq($PhoneWidth, max) {
-        font-size: $smallText;
-      }
+.items {
+  display: flex;
+  padding-right: 16px;
   
-      &_active{
-        color: var(--activePColor);
-        pointer-events: none;
-      }
+  .item {
+    cursor: pointer;
+    white-space: nowrap;
+    display: block;
+    flex-shrink: 0;
+    @include transitionDefault;
+    @include exeptLast {
+      margin-right: clamp(30px, 5vw, 120px);
+    }
+    @include hover {
+      color: var(--hoverColor);
+    }
+    @include mq($PhoneWidth, max) {
+      font-size: $smallText;
+    }
+
+    &_active{
+      color: var(--activePColor);
+      pointer-events: none;
     }
   }
 }

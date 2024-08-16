@@ -31,9 +31,9 @@
 
 }
 
-.menuButton {
-  background-color: #2d2d3742 !important;
-}
+// .menuButton {
+//   background-color: #2d2d3742 !important;
+// }
 
 .hoveredNavBar {
   @include mq($LargeDesktopWidth, max) {

@@ -325,7 +325,7 @@ export default function Header(props: Props) {
                 {_stats?.map(el => el.count).filter(Boolean).length > 0 &&
                   <NotificationSvg />
                   ||
-                  <NoNotificationSvg  />
+                  <NoNotificationSvg color={isLightTheme?colors.black:''} />
                 }
               </Button>
               {dropDown &&
