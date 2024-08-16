@@ -257,5 +257,8 @@
 
 .addImageButton {
   align-self: flex-start;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
 }
 

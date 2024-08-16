@@ -3,10 +3,14 @@
 
 .dark {
   --hoverColor: #{$white};
+  --activePColor: #{$white};
+  --activePColor: #{$white};
 }
 
 .light {
   --hoverColor: #{$blue};
+  --activePColor: #{$blue};
+  --activePColor: #{$blue};
 }
 
 .root {
@@ -19,13 +23,6 @@
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-.wrapper {
-  min-width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .items {
@@ -49,11 +46,20 @@
     }
 
     &_active{
-      color: $white;
+      color: var(--activePColor);
       pointer-events: none;
     }
   }
 }
+
+.wrapper {
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
 
 .itemsWide {
   width: 100%;

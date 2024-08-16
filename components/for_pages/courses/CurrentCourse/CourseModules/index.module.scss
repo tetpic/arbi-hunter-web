@@ -6,7 +6,7 @@
 }
 
 .item {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   padding: 16px;
   @include exeptLast {
@@ -37,17 +37,10 @@
 
   .title {
     grid-area: t;
-    font-size: $largeText;
-    font-weight: $semibold;
-    color: $white;
- 
   }
 
   .counter {
     grid-area: c;
-    font-size: $mediumText;
-    font-weight: $medium;
-    color: $greyLight;
   }
 
   .image {

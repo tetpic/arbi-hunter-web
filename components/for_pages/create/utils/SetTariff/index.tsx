@@ -110,10 +110,12 @@ export default function SetTariff(props: Props) {
       }
     }}
     styleType={['icon', 'black']}
+    altStyleType={['icon', 'white', 'invertSvg']}
     ><ArrowLeftSvg/></Button>
   }{t('shop_chooseTariff')}
   {isTabletWidth &&
-    <Button onClick={router.back} styleType={['black', 'icon']}><CrossSvg/></Button>
+    <Button onClick={router.back} styleType={['black', 'icon']}     altStyleType={['icon', 'white', 'invertSvg']}
+><CrossSvg/></Button>
   }
   </P>
   {props.progressBar && <Spacer basis={24}/>}

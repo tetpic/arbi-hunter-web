@@ -17,7 +17,7 @@
 }
 
 .dropDownRoot {
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   border-radius: 16px;
   bottom: 0;
   transform: translateY(100%);
@@ -29,12 +29,14 @@
 .option {
   margin-top: 8px;
   margin-inline: 10px;
-  color: $white;
+  color: var(--pTextColor);
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 10px;
   @include transitionDefault;
-  @include hoverbuttonBorderGradient;
+  @include hover {
+    background-color: var(--greyLightToPurple);
+  }
   @include exeptLast {
     margin-bottom: 16px;
   }

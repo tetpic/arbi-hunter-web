@@ -264,7 +264,7 @@ export default function CvPage(props: Props) {
         </P>
       }
       {currentCv?.isContactsOpen &&
-       <ArrowRightSvg/>
+       <ArrowRightSvg color={isLightTheme && colors.black}/>
       }
     </div>
     {(currentCv?.age || currentCv?.profile?.city?.locName) &&

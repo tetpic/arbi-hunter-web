@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 import { useResize } from 'components/hooks/useResize'
 import SmallStarActiveSvg from 'components/svg/SmallStarSvg'
 import UserSvg from 'components/svg/UserSvg'
-import BackBtn from 'components/ui/BackBtn'
+// import BackBtn from 'components/ui/BackBtn'
 import Navigation from 'components/ui/Navigation'
 import Spinner from 'components/ui/Spinner'
 import { useCoursesContext } from 'context/courses_state'
@@ -25,13 +25,16 @@ import MessageDoubleSvg from 'components/svg/MessageDoubleSvg'
 import NewsPaperSvg from 'components/svg/NewsPaperSvg'
 import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
-import { Preset, SnackbarType } from 'types/enums'
+import { AppTheme, Preset, SnackbarType } from 'types/enums'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import ImageHelper from 'utils/ImageHelper'
 import useTranslation from 'next-translate/useTranslation'
 import ArbiCoinGradientSvg from '@/components/svg/ArbiCoinGradientSvg'
 import Button from '@/components/ui/Button'
 import Spacer from '@/components/ui/Spacer'
+// import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
+import ArrowLeftSvg from '@/components/svg/ArrowLeftSvg'
+import P from '@/components/ui/P'
 
 interface Props {
   id: number
@@ -51,6 +54,7 @@ export default function CurrentCourse(props: Props) {
   const {isTabletWidth} = useResize()
   const router = useRouter()  
   const appContext = useAppContext()
+  const theme = appContext.theme
   const {currentCourse, setCurrentCourse, clearModules, courseStats, setCourseModules, setCourseBlocks, courseModules} = useCoursesContext()
   const [page, setPage] = useState<CurrentCoursesNav>(props.page||CurrentCoursesNav.Information)
   const course = props.course || currentCourse
@@ -96,16 +100,16 @@ export default function CurrentCourse(props: Props) {
     result = Object.values(availablePages).map(page => {
       switch(page) {
         case CurrentCoursesNav.Information:
-        return {name: t('courses_info'), type: page, icon: <InformationSmallSvg/>}
+        return {name: t('courses_info'), type: page, icon: <InformationSmallSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.Modules:
-        return {name: t('courses_modules'), type: page, icon: <ModulesSvg/>}
+        return {name: t('courses_modules'), type: page, icon: <ModulesSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.Feedbacks:
-        return {name: t('courses_feedbacks'), type: page, icon: <MessageDoubleSvg/>}
+        return {name: t('courses_feedbacks'), type: page, icon: <MessageDoubleSvg color={theme === AppTheme.Light && colors.black}/>}
 
         case CurrentCoursesNav.News:
-        return {name: t('courses_news'), type: page, icon: <NewsPaperSvg/>}
+        return {name: t('courses_news'), type: page, icon: <NewsPaperSvg color={theme === AppTheme.Light && colors.black}/>}
       }
     })
     return result
@@ -158,6 +162,7 @@ export default function CurrentCourse(props: Props) {
 
           {isTabletWidth && 
             <ItemNavigation 
+            pClassName={styles.mobileNavigation__p}
             bottomStringClass={styles.bottomString} 
             className={styles.mobileNavigation} 
             activeItem={page} items={navSet()} onClick={pager}/>
@@ -181,7 +186,10 @@ export default function CurrentCourse(props: Props) {
             //   <BookMarkSvg fill={currentCourse?.isSavedByCurrentProfile&&colors.white}/>
             // </Button>
             ||
-            <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
+            // <BackBtn className={styles.iconButton} onClick={()=>{router.back()}} />
+            <Button styleType={['black', 'icon', 'svg24']} altStyleType={['whitePurple', 'icon', 'svg24', 'invertSvg']} onClick={()=>{router.back()}}>
+              <ArrowLeftSvg/>
+            </Button>
             }
           </div>
       </>
@@ -201,9 +209,9 @@ export default function CurrentCourse(props: Props) {
         {page === CurrentCoursesNav.Feedbacks && courseStats && courseStats.raiting &&
           <div className={styles.stats}>
             <div className={styles.statsLeft}>
-              <p className={styles.rating}>{courseStats.raiting.raiting}</p>
+              <P useThemeColor styleType={['fs36', 'w700']}>{courseStats.raiting.raiting}</P>
               <RatingLine rating={courseStats.raiting.raiting}/>
-              <p className={styles.counter}>{courseStats.count} {Formatter.pluralize(courseStats.count, t('feedback1'), t('feedback2'), t('feedback3'))}</p>
+              <P styleType={['greyLight', 'medium','w500']} >{courseStats.count} {Formatter.pluralize(courseStats.count, t('feedback1'), t('feedback2'), t('feedback3'))}</P>
             </div>
             <div className={styles.statsRight}>
               {courseStats.stats.map((el, index)=> {

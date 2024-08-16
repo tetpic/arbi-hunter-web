@@ -16,7 +16,7 @@
   width: 100%;
   height: clamp(48px, 9vw, 56px);
   @include mq($TabletWidth, max) {
-    background-color: $black !important
+    background-color: var(--backColorAlt) !important
   }
 }
 
@@ -33,7 +33,7 @@
   width: 100%;
   height: clamp(48px, 9vw, 56px);
   border: 2px $whitePurple solid;
-  &:before {
+&:before {
     display: none;
   }
 }

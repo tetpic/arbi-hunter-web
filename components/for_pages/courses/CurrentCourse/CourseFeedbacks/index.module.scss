@@ -13,7 +13,7 @@
     margin-bottom: 16px;
   }
   padding: 16px;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   display: grid;
   grid-template-areas: 'i n' 'i s' 'c c';
@@ -28,9 +28,6 @@
 
   .name {
     grid-area: n;
-    color: $white;
-    font-weight: $semibold;
-    font-size: $largeText;
   }
 
   .stats {

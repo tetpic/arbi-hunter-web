@@ -175,7 +175,7 @@ export default function PersonalHeader(props: Props) {
     {isTabletWidth && props.showMobileBack &&
       <Button 
       styleType={['black', 'icon']} 
-      altStyleType={['whitePurple', 'icon']} 
+      altStyleType={['whitePurple', 'icon', 'invertSvg']} 
       className={styles.back} 
       onClick={router.back}
       >

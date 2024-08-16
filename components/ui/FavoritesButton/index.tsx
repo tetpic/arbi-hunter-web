@@ -5,6 +5,8 @@ import Button, { ButtonStyle } from '../Button'
 import StarSvg from '@/components/svg/StarSvg'
 import classNames from 'classnames'
 import { colors } from 'styles/variables'
+import { useAppContext } from 'context/state'
+import { AppTheme } from 'types/enums'
 
 interface Props {
   className?: string
@@ -24,6 +26,8 @@ interface Props {
  */
 
 export default function FavoritesButton(props: Props) {
+  const appContext = useAppContext()
+  const theme = appContext.theme
 
   return (
     <Button 
@@ -34,9 +38,9 @@ export default function FavoritesButton(props: Props) {
     className={classnames(styles.heartButton,  props.className)} 
     >
       {props.showStar && 
-      <StarSvg size={props.size||24} color={colors.white}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
+      <StarSvg size={props.size||24} color={theme === AppTheme.Light? colors.black : colors.white}  className={classNames(styles.star, props.isActive&&styles.starYellow)}/>
       ||
-      <HeartSvg size={props.size||24} color={colors.white}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
+      <HeartSvg size={props.size||24} color={theme === AppTheme.Light? colors.black : colors.white}  className={classNames(styles.heart, props.isActive&&styles.heartRed)}/>
       }
     </Button>
   )

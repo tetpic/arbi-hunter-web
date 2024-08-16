@@ -723,7 +723,7 @@ export default function FilterHirer(props: Props) {
     <div className={styles.buttonsWrapper}>
       <Button 
       styleType={['grey','phoneWide', 'whiteText']} 
-      altStyleType={['white']}
+      altStyleType={['white', 'phoneWide']}
       onClick={resetAll}
       className={styles.resetButton}
       >

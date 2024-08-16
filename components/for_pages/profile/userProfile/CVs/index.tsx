@@ -136,7 +136,7 @@ export default function CVs(props: Props) {
       onBackClick={router.back} 
       rightButton={isTabletWidth &&
         <div className={styles.buttonsWrapper}>
-          <Button styleType={['icon', 'black']} onClick={()=>router.push('/create/cv')}><PlusSvg/></Button>
+          <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']} onClick={()=>router.push('/create/cv')}><PlusSvg/></Button>
           {/* <Button styleType={['icon', 'black']} onClick={()=>onSearch()}><LoupeSvg/>{searchString&&<DotSvg className={styles.dot} color={colors.green}/>}</Button> */}
         </div>
       }/>

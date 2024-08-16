@@ -31,7 +31,7 @@
     height: 100dvh;
     z-index: 100;
     border-radius: unset;
-    background-color: $backgroundBlack;
+    background-color:var(--backGroundColor);
     display: flex;
     flex-direction: column;
   }
@@ -84,7 +84,7 @@
 
 .divider {
   height: 2px;
-  background-color: $grey;
+  background-color: var(--greyToPurpleGrey);
   width: 100%;
   margin-block: 16px;
 }
@@ -109,7 +109,7 @@
     flex-direction: column;
     row-gap: 6px;
     padding: 8px 16px;
-    background-color: $grey;
+    background-color: var(--greyToPurpleGrey);
     border-radius: 16px;
 
     .text {

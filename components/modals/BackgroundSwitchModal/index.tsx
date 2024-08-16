@@ -18,6 +18,7 @@ import useTranslation from 'next-translate/useTranslation'
 import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import SwiperList from '@/components/ui/SwiperList'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose: () => void
@@ -59,7 +60,7 @@ export default function BackgroundSwitchModal(props: Props) {
       width={500}
       height={200}
       />
-    <p>{t('personal_customBackground')}</p>
+    <P useThemeColor>{t('personal_customBackground')}</P>
   </div>
   )
 
@@ -76,7 +77,7 @@ export default function BackgroundSwitchModal(props: Props) {
       width={500}
       height={200}
       />
-      <p>Выбрать здание</p>
+      <P useThemeColor>Выбрать здание</P>
     </div>
   )
 
@@ -103,7 +104,7 @@ export default function BackgroundSwitchModal(props: Props) {
         <PhotoCameraSvg color='#7C7C8C'/>
       </div>
     }
-    <p>{t('personal_uploadPhoto')}</p>
+    <P useThemeColor>{t('personal_uploadPhoto')}</P>
   </label>
   )
 
@@ -126,10 +127,10 @@ export default function BackgroundSwitchModal(props: Props) {
 
     </div>
     <div className={styles.buttonsWrapper}>
-      <Button className={styles.button} onClick={props.onClose}>
+      <Button styleType={['black', 'whiteText', 'phoneWide']} altStyleType={['white', 'phoneWide']} onClick={props.onClose}>
         {t('cancelAlt')}
       </Button>
-      <Button className={styles.buttonGradient} onClick={()=>onSave()}>
+      <Button styleType={['gradient', 'phoneWide']} onClick={()=>onSave()}>
         {t('apply')}
       </Button>
     </div>

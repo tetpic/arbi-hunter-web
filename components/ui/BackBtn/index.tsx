@@ -15,7 +15,7 @@ interface Props {
 
 export default function BackBtn(props: Props) {
   return (
-    <Button styleType={['icon', 'black']} altStyleType={props.altStyleType||['icon', 'whitePurple', 'invertSvg']} onClick={props.onClick} className={classNames(styles.root, props.className)} type='button'>
+    <Button styleType={['icon', 'black']} altStyleType={props.altStyleType||['icon', 'white', 'invertSvg']} onClick={props.onClick} className={classNames(styles.root, props.className)} type='button'>
       <ArrowDownSvg className={styles.arrow}/>
     </Button>
   )

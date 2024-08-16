@@ -16,8 +16,9 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import P from '@/components/ui/P'
 import ImageHelper from 'utils/ImageHelper'
-import { Preset } from 'types/enums'
+import { AppTheme, Preset } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import { useAppContext } from 'context/state'
 
 interface Props {
   course: ICourse
@@ -26,6 +27,8 @@ interface Props {
 
 export default function CourseModules({course}: Props) {
   const {t} = useTranslation()
+  const appContext = useAppContext()
+  const theme = appContext.theme
   const {courseModules, setCourseModules} = useCoursesContext()
   const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true)
   const [activeModule, setActiveModule] = useState<ICourseBlock>(null)
@@ -53,12 +56,13 @@ export default function CourseModules({course}: Props) {
                 alt={'course title'}/>
               }
               <div className={styles.progressBarWrapper}>
-                <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyAlt, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
+                <CircularProgressbar styles={buildStyles({textColor: colors.white, trailColor: colors.greyLight, pathColor: colors.blue})} value={k.progress} text={`${k.progress}%`}/>
               </div>
             </div>
-            <p className={styles.title}>{k.title}</p>
-            <p className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</p>
-            <ArrowDownSvg className={classNames(styles.arrow, activeModule === k&&styles.arrow_active)}/>
+
+            <P styleType={['large', 'w600']} useThemeColor className={styles.title}>{k.title}</P>
+            <P styleType={['medium', 'greyLight', 'w500']} useThemeColor className={styles.counter}>{v?.length||k.stepsCount} {Formatter.pluralize(Number(v?.length||k.stepsCount), t('lesson1'), t('lesson2'), t('lesson3'))}</P>
+            <ArrowDownSvg color={theme === AppTheme.Light && colors.black} className={classNames(styles.arrow, activeModule === k&&styles.arrow_active)}/>
           </div>
           <Accordeon isActive={activeModule === k}>
             <>
@@ -66,11 +70,12 @@ export default function CourseModules({course}: Props) {
               v.map((el, index) => {
                 return (
                   <div className={classNames(styles.step)} key={el.id}>
-                      <p 
+                      <P 
+                      useThemeColor
                       className={styles.stepTitle} 
                       onClick={()=> router.push(`/courses/${course.id}/modules?module=${blockIndex+1}&block=${index+1}&step=1`)}>
                         {index + 1}. {el.title} {/*el.progress === 100?*/ /*<CheckSvg className={styles.checkSvg}/>*/ <PlayTransparentSvg className={styles.playSvg}/>}
-                      </p>
+                      </P>
                       <div className={styles.stepBody} dangerouslySetInnerHTML={{__html: el.body}}></div>
                   </div>
                 )

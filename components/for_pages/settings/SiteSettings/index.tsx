@@ -89,7 +89,7 @@ export default function SiteSettings(props: Props) {
           name={'cityName'} 
           value = {userContext?.currentProfile?.city?.locName}
           labelName={t('city')}
-          requestFn={() => LocationRepository.searchCity({country: currentCountryCode})} 
+          requestFn={(r) => LocationRepository.searchCity({...r, country: currentCountryCode})} 
           />
           
           {/* <div className={styles.langSelection} onClick={onLangChange}>

@@ -15,6 +15,14 @@
   padding-top: 32px;
   min-height: 60vh;
 
+  p {
+    svg {
+      path {
+        stroke: var(--pTextColor);
+      }
+    }
+  }
+    
   @include mq($TabletWidth, max) {
     padding-inline: 16px;
     padding-top: 16px;

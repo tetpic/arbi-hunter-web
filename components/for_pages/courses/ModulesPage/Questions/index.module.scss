@@ -4,12 +4,6 @@
   display: none;
 }
 
-.text {
-  color: $white;
-  font-size: $mediumText;
-  font-weight: $medium;
-}
-
 .form {
   min-width: 50%;
   @include mq($TabletWidth, max) {
@@ -18,7 +12,7 @@
 }
 
 .question {
-  background-color: $black;
+  background-color: var(--backColorAlt);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -39,7 +33,7 @@
     font-weight: $medium;
     padding: 16px;
     min-width: 100%;
-    background-color: $grey;
+    background-color: var(--greyToPurpleGrey);
     cursor: pointer;
     border-radius: 16px;
     justify-content: center;

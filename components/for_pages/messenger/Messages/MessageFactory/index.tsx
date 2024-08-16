@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationStatus, MessageType, ModalType, SnackbarType } from 'types/enums'
+import { ApplicationStatus, AppTheme, MessageType, ModalType, SnackbarType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
@@ -48,6 +48,7 @@ interface Props {
 export default function MessageFactory(props: Props) {
   const {t} = useTranslation()
   const appContext = useAppContext()
+  const theme = appContext.theme
   const {isPhoneWidth} = appContext.size
   const userContext = useUserContext()
   const profileType = userContext?.currentProfile?.profileType
@@ -122,12 +123,12 @@ export default function MessageFactory(props: Props) {
   }
 
   const allOptions: {[key: string]: IOptionList|null} = {
-    reply: {title: t('chat_reply'), icon: <AnswerMessageSvg/>, onClick: replyHandler},
-    copy: {title: t('chat_copyMessage'), icon: <DoubleSvg/> ,onClick: onCopy},
-    setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: t('chat_pin'), icon: <PinMessageSvg/>, onClick: setPinned},
-    forward: {title: t('chat_forwardMesssage'), icon: <ShareMessageSvg/>, onClick: openForwardModal},
-    choose: {title: t('chat_setMessage'), icon: <SetMessageSvg/>, onClick: onSet},
-    remove: {title: t('chat_removeMessage'), icon: <TrashBasketSvg/>, onClick: openDeleteMessageModal},
+    reply: {title: t('chat_reply'), icon: <AnswerMessageSvg color={theme === AppTheme.Light && colors.black}/>, onClick: replyHandler},
+    copy: {title: t('chat_copyMessage'), icon: <DoubleSvg color={theme === AppTheme.Light && colors.black}/> ,onClick: onCopy},
+    setPinned: dialog.chat?.profiles?.[0].role==='participant'?null:{title: t('chat_pin'), icon: <PinMessageSvg color={theme === AppTheme.Light && colors.black}/>, onClick: setPinned},
+    forward: {title: t('chat_forwardMesssage'), icon: <ShareMessageSvg color={theme === AppTheme.Light && colors.black}/>, onClick: openForwardModal},
+    choose: {title: t('chat_setMessage'), icon: <SetMessageSvg color={theme === AppTheme.Light && colors.black}/>, onClick: onSet},
+    remove: {title: t('chat_removeMessage'), icon: <TrashBasketSvg />, onClick: openDeleteMessageModal},
   }
 
   const rightOptions: IOptionList[] = [allOptions.remove, allOptions.forward, allOptions.setPinned]

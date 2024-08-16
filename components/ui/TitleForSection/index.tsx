@@ -42,7 +42,7 @@ export default function Title(props: Props) {
   return (
     <div className={classNames(styles.root, props.className)}>
       {((isTabletWidth&&props.onBackClick)||props.showButton) &&
-        <Button styleType={['icon', 'grey']} altStyleType={['icon', 'white',  'invertSvg']} className={classNames(styles.backButton,props.itemClassName)} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
+        <Button styleType={['icon', 'black']} altStyleType={['icon', 'white',  'invertSvg']} className={classNames(styles.backButton,props.itemClassName)} onClick={props.onBackClick}><ArrowLeftSvg/></Button>
       }
 
       <P styleType={['huge','w600']} style={{marginLeft: '-1px'}} useThemeColor>{props.title}</P> {props.emoji}

@@ -77,6 +77,10 @@
     *{
       font-size: $smallText;
     }
+
+    &__p {
+      color: $white;
+    }
   }
 
   .title {
@@ -182,21 +186,15 @@
       }
     }
      
-    svg {
-      width: 32px;
-      height: 32px;
-    }
+    // svg {
+    //   width: 32px;
+    //   height: 32px;
+    // }
   }
 
   .iconButton {
     position: relative;
     z-index: 3;
-    @include buttonGray;
-    height: unset;
-    padding: 8px;
-    @include hover {
-      background-color: $black;
-    }
     @include mq($TabletWidth, max) {
       background-color: #1b1b22bd;
       border: unset;
@@ -292,18 +290,6 @@
   row-gap: 10px;
 }
 
-.rating {
-  color: $white;
-  font-size: $text36;
-  font-weight: $bold;
-}
-
-.counter {
-  font-size: $mediumText;
-  font-weight: $medium;
-  color: $greyLight;
-}
-
 .statsRight {
   width: 65%;
 }
@@ -318,7 +304,7 @@
     height: 4px;
     border-radius: 4px;
     overflow: hidden;
-    background-color: $grey;
+    background-color: var(--secondaryColor);
   }
 
   .lineText {

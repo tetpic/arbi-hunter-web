@@ -29,7 +29,7 @@ export default function FileNode(props: Props) {
         <div className={styles.fileImageWrapper}>
           <DocumentSheetSvg />
         </div>
-        <P styleType={['medium', 'w500']}>{file.name}</P>
+        <P styleType={['medium', 'w500']} useThemeColor>{file.name}</P>
       
       </div>
     })

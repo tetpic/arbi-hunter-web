@@ -39,6 +39,7 @@ $purpleSmell: #985AFC20;
 #body[data-theme="dark"] {
   --backGroundColor: #{$backgroundBlack};
   --pTextColor: #{$white};
+  --whiteToBlue: #{$white};
   --secondaryColor: #{$grey};
   --borderColor: #{$grey};
   --borderPerimeter: transparent;
@@ -59,6 +60,7 @@ $purpleSmell: #985AFC20;
 #body[data-theme="light"] {
   --backGroundColor: #{$backgroundWhite};
   --pTextColor: #{$grey};
+  --whiteToBlue: #{$blue};
   --secondaryColor: #{$white};
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
@@ -78,8 +80,8 @@ $purpleSmell: #985AFC20;
 
 #body[data-theme="beer"] {
   --backGroundColor: #f5bc52;
-  --pTextColor: #{$grey};
-  --secondaryColor: #{$white};
+  --pTextColor: #634a07;
+  --secondaryColor: #dfa145;
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
@@ -87,12 +89,20 @@ $purpleSmell: #985AFC20;
   --backColorAlt: #dfa145;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$white};
+  --border: #ffffff;
+  --greyLightToPurple: #{$purpleSmell};
+  --blueBlackToWhitePurple: #{$whitePurple};
+  --blueBlackToWhite: #{$white};
+  --greyAltToPuspleSmell: #{$purpleSmell};
+  --greyLightToPurpleGrey: #{$purpleGrey};
+  --greyLightToBackground: #{$backgroundWhite};
+  --greyToBackground: #{$backgroundWhite};
 }
 
 #body[data-theme="dracula"] {
   --backGroundColor: #7e2019;
-  --pTextColor: #{$white};
-  --secondaryColor: #{$white};
+  --pTextColor: rgb(252, 165, 165);
+  --secondaryColor: #a32626;
   --borderColor: #{$whitePurple};
   --borderPerimeter: #{$whitePurple};
   --buttonDefaultColor:  #{$white};
@@ -100,6 +110,14 @@ $purpleSmell: #985AFC20;
   --backColorAlt: #3d0f0b;
   --greyToPurpleGrey: #{$purpleGrey};
   --greyLightToBlack: #{$white};
+  --border: #000000;
+  --greyLightToPurple: #000000;
+  --blueBlackToWhitePurple: #{$blueBlack};
+  --blueBlackToWhite: #{$blueBlack};
+  --greyAltToPuspleSmell: #{$greyAlt};
+  --greyLightToPurpleGrey: #{$greyLight};
+  --greyLightToBackground: #{$greyLight};
+  --greyToBackground: #{$grey};
 }
 
 $purpleBoxShadow: 0px 0px 10px 0px rgba(152, 90, 252, 0.1254901961);

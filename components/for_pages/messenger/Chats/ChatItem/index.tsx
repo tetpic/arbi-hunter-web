@@ -6,7 +6,7 @@ import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
 import IChat from 'data/interfaces/IChat'
 import { getUserImageSource, getUserName } from 'utils/helpers'
-import { ModalType, Preset } from 'types/enums'
+import { AppTheme, ModalType, Preset } from 'types/enums'
 import P from '@/components/ui/P'
 import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
@@ -37,6 +37,7 @@ export default function ChatItem(props: Props) {
   const chatContext = useChatContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
+  const {theme} = appContext
   const dropRef = useRef(null!)
   const itemRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
@@ -100,8 +101,8 @@ export default function ChatItem(props: Props) {
   
  
   const optionsList: IOptionList[] = [
-    chatContext.folders.size>0&&{title: t('chat_changeFolder'),  icon: <FolderSvg/>,onClick: changeFolder, style: isTabletWidth?{backgroundColor: colors.green}:{}},
-    {title: chat.profiles[0].pinned?t('chat_unpin'):t('chat_pin'), icon: chat.profiles[0].pinned?<UnPinSvg/>:<PinMessageSvg/> , onClick: pinChat, style: isTabletWidth?{backgroundColor: colors.yellow}:{}},
+    chatContext.folders.size>0&&{title: t('chat_changeFolder'),  icon: <FolderSvg color={theme === AppTheme.Light && colors.black}/>,onClick: changeFolder, style: isTabletWidth?{backgroundColor: colors.green}:{}},
+    {title: chat.profiles[0].pinned?t('chat_unpin'):t('chat_pin'), icon: chat.profiles[0].pinned?<UnPinSvg color={theme === AppTheme.Light && colors.black}/>:<PinMessageSvg color={theme === AppTheme.Light && colors.black}/> , onClick: pinChat, style: isTabletWidth?{backgroundColor: colors.yellow}:{}},
     {title: t('chat_remove'), icon: <TrashBasketSvg color={isTabletWidth&&colors.white} />, onClick: removeChat, style: isTabletWidth?{backgroundColor: colors.red}:{}}
   ].filter(Boolean)
 

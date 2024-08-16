@@ -42,12 +42,12 @@ export default function SearchModal(props: Props) {
       <Form>
         <div className={styles.root}>
           <div className={styles.top}>
-            <Button styleType={['icon', 'black']} onClick={()=>onBackClick()} ><ArrowLeftSvg/></Button>
+            <Button styleType={['icon', 'black']} altStyleType={['white', 'icon', 'invertSvg']} onClick={()=>onBackClick()} ><ArrowLeftSvg/></Button>
             <InputField styleType={'default'} color={'white'} name={'search'} className={styles.input} placeholder={args.placeholder}/>
           </div>
           <div className={styles.suggestions}>
             {args.suggestions.map(el => {
-              return <P styleType={['w500', 'large']} onClick={()=>{formik.setFieldValue('search', el)}}>{el}</P>
+              return <P useThemeColor styleType={['w500', 'large']} onClick={()=>{formik.setFieldValue('search', el)}}>{el}</P>
             })
             }
           </div>

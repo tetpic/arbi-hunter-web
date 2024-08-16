@@ -8,13 +8,13 @@ import RegistrationRepository from 'data/repositories/RegistrationRepository'
 import Validator from 'utils/Validator'
 import { useAuthContext } from 'context/auth_state'
 import OtpCodeField from 'components/fields/OtpCodeField'
-import classNames from 'classnames'
 import Formatter from 'utils/formatter'
 import Button from 'components/ui/Button'
 import { IRegistrationData } from 'data/interfaces/IRegistration'
 import useAbortController from 'components/hooks/useAbortController'
 import ModalBody from '@/components/layout/Modal/ModalBody'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose?: () => void
@@ -107,9 +107,9 @@ export default function RegistrationModal(props: Props) {
 
 
   const codeField = (<>
-    <p className={styles.confirmTitle}>{t('registration_sendCodeTo')} {args.phone?t('registration_number'):'e-mail'} <br /> 
+    <P useThemeColor styleType={['fs20', 'w600', 'textCenter']}>{t('registration_sendCodeTo')} {args.phone?t('registration_number'):'e-mail'} <br /> 
     {args.phone&&Formatter.formatPhone(args.phone)||args.email}
-    </p>
+    </P>
     <p className={styles.disclaimer}>
       {t('registration_enterDescription1')} <br />
       {t('registration_enterDescription2')}
@@ -127,17 +127,20 @@ export default function RegistrationModal(props: Props) {
   <div className={styles.buttonsWrapper}>
     <Button 
     onClick={props.onClose}
-    className={classNames(styles.navButton, styles.navButton_black)} 
+    styleType={['black', 'phoneWide']}
+    altStyleType={['white', 'phoneWide']}
+    // className={classNames(styles.navButton, styles.navButton_black)} 
     type={'button'} 
     >
       {t('cancel')}
     </Button>
   </div>
+
   {seconds === 0 
-    ? <p className={styles.refreshCode} >{t('registration_sendCodeAgain')}</p>
-    : <p className={styles.timeRemain}>{t('registration_repeatAfter')} {Formatter.formatSecondsToTime(seconds)}</p>
+    ? <P styleType={['medium', 'w500', 'textCenter']} useThemeColor className={styles.refreshCode} >{t('registration_sendCodeAgain')}</P>
+    : <P styleType={['medium', 'w500', 'textCenter']} useThemeColor className={styles.timeRemain}>{t('registration_repeatAfter')} {Formatter.formatSecondsToTime(seconds)}</P>
   }
-  <p className={styles.confirmTitle} data-cy={'confirmCode'} data-value={code}>{code}</p>
+  <P styleType={['fs20', 'w600', 'textCenter']} useThemeColor data-cy={'confirmCode'} data-value={code}>{code}</P>
   </>)
 
   const body = (<div className={styles.body}>
@@ -149,7 +152,7 @@ export default function RegistrationModal(props: Props) {
   </div>)
 
   return ( 
-    <ModalLayout fixed mobileFullScreen className={styles.modalRoot}>
+    <ModalLayout mobileFullScreen className={styles.modalRoot}>
       <ModalBody >
         {body}
       </ModalBody>

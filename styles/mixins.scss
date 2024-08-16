@@ -327,7 +327,7 @@
 
 @mixin buttonBorderGradient {
   background-size: 100%;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   position: relative;
   @include buttonDefault;
   @include hoverbuttonBorderGradient;
@@ -352,7 +352,7 @@
     position: absolute;
     width: calc(100% - 2px);
     height: calc(100% - 2px);
-    background: $grey;
+    background: var(--secondaryColor);
     top: 1px;
     left: 1px;
     z-index: 2;
@@ -373,7 +373,7 @@
 
 @mixin buttonBlack {
   @include buttonDefault;
-  background-color: $black;
+  background-color: var(--backColorAlt);
   position: relative;
   span {
     color: $blue;
@@ -388,10 +388,10 @@
 
 @mixin buttonGray {
   @include buttonDefault;
-  background-color: $grey;
+  background-color: var(--secondaryColor);
   color: $white;
   @include hover {
-    background-color: $greyLight;
+    background-color: var(--greyLightToPurple);
   }
 }
 
@@ -535,6 +535,7 @@
 
 @mixin textFormatter {
   color: var(--pTextColor);
+  max-width: 100%;
 
   *{
     line-height: 140% !important;
@@ -548,6 +549,10 @@
       color: $blue;
     }
     
+  }
+
+  pre {
+    overflow: auto;
   }
 
   h2 {

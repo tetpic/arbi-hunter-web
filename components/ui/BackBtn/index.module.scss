@@ -2,7 +2,7 @@
 
 .root {
   @include mq($TabletWidth, max) {
-    background-color: $black !important;
+    // background-color: $black !important;
   }
 }
 

@@ -14,6 +14,7 @@ import { useAppContext } from 'context/state'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import { SnackbarType } from 'types/enums'
 import useTranslation from 'next-translate/useTranslation'
+import P from '@/components/ui/P'
 
 interface Props {
   onClose: () => void
@@ -86,8 +87,8 @@ export default function CourseFeedbackModal(props: Props) {
   
   const body = (
     <div className={styles.root}>
-      <Button onClick={props.onClose} className={styles.closeButton}><CrossSvg/></Button>
-      <p className={styles.title}>{t('courses_rateAlt')}</p>
+      <Button onClick={props.onClose} altStyleType={['invertSvg']} className={styles.closeButton}><CrossSvg/></Button>
+      <P useThemeColor className={styles.title} styleType={['large', 'w600', 'textCenter']}>{t('courses_rateAlt')}</P>
       <div className={styles.starWrapper} onMouseLeave={()=>{mouseEnterHandler(0)}}>
           {colorsArray.map((color, index) => 
             <div className={styles.svgStarWrapper}  

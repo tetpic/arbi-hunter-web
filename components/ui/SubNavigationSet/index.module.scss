@@ -10,7 +10,7 @@
   cursor: pointer;
   @include transitionDefault;
   @include hover {
-    color: $white;
+    color: var(--whiteToBlue);
   }
 
   &_active {

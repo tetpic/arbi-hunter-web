@@ -396,6 +396,7 @@ export default function VacancyPage(props: Props) {
             </Button>
             {currentVacancy.showContactName && isShowContacts[1]&&
               <ContactsModal 
+              position='ontop'
               key={'contacts2'} 
               vacancy={currentVacancy} 
               isActive={isShowContacts[1]} 
