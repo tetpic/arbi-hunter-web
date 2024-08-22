@@ -66,6 +66,7 @@ export default function Messages(props: Props) {
   const inputRef = useRef<HTMLTextAreaElement>(null!)
 
   const sendMessage = () => {
+    debugger
     if (!value.replace(/\s+/g, ' ').trim() && pastedFiles.size === 0) {
       return
     }
@@ -73,6 +74,7 @@ export default function Messages(props: Props) {
       const clearedMessage = clearObject({message:value, type: MessageType.Text, replyToId: Number(replyTo?.id)})
       dialog.sendMessage(clearedMessage)
       .then(_=> {
+        setValue('')
         const container = document.querySelector('.infinite-scroll-component > div')
         container.scrollIntoView({behavior: 'smooth', block: 'end'})
       })
@@ -81,14 +83,14 @@ export default function Messages(props: Props) {
       const images = [...pastedFiles.values()].filter(file=> file.type.includes('image'))
       const files = [...pastedFiles.values()].filter(file=> !file.type.includes('image'))
 
-      if(images.length > 0) {
+      if(images?.length > 0) {
         dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: images})
         .then(_=> {
           const container = document.querySelector('.infinite-scroll-component > div')
           container.scrollIntoView({behavior: 'smooth', block: 'end'})
         })
       }
-      if(files.length > 0) {
+      if(files?.length > 0) {
         dialog.sendMessage({message: value, type: MessageType.Asset}, {pastedImages: files})
         .then(_=> {
           const container = document.querySelector('.infinite-scroll-component > div')
@@ -98,6 +100,7 @@ export default function Messages(props: Props) {
 
     }
     setValue('')
+
     setPastedFiles(state=> {
       state.clear()
       return new Map(state)
@@ -128,7 +131,7 @@ export default function Messages(props: Props) {
 
   const addFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const items = e.target.files
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items?.length; i++) {
       const fakeId = uuidv4()
       setPastedFiles(state => new Map([...state.entries(), [fakeId, items[i]]]))
     }
@@ -204,6 +207,10 @@ export default function Messages(props: Props) {
     ?appContext.showBottomSheet<IConfirmModalProps>(ModalType.ConfirmModal, _args, 180)
     :appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
   }
+
+  useEffect(()=>{
+    console.log(value)
+  }, [value])
 
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
@@ -448,30 +455,41 @@ export default function Messages(props: Props) {
         />
         </>
         }
-        { choosenIds.size === 0 && value.length === 0 && pastedFiles.size === 0 &&
+        { choosenIds.size === 0 && !value && value?.length === 0 && pastedFiles.size === 0 &&
         <div 
-        className={classNames(styles.microphoneWrapper, dialog.recordTime !== null &&styles.recording)} 
+        data-cy="microphone"
+        className={classNames(styles.microphoneWrapper, dialog.recordTime !== null && dialog.recordTime !== 0 &&styles.recording)} 
         onTouchStart={()=>{
           dialog.recordVoice()
         }} 
         onTouchEnd={(e) => {   
-          if(dialog.recorder?.current?.state === 'recording') {
+
+          if(dialog.recorder?.current?.state === 'recording' || dialog.recordTime !== null || dialog.recordTime !== 0) {
             dialog.recordVoice()
           }
         }} 
         onTouchCancel={(e) => {
+
           if(dialog.recorder?.current?.state === 'recording') {
             dialog.recordVoice()
           }
         }}
         onMouseDown={(e) => {
+
           dialog.recordVoice()
         }}
         onMouseUp={(e) => {
+          if( !isTabletWidth) {
+
+
           dialog.recordVoice()
+          }
         }}
         onMouseLeave={(e) => {
-          dialog.recordVoice(true)
+          if( !isTabletWidth) {
+
+            dialog.recordVoice(true)
+          }
         }}
         onContextMenu={(e)=>{
           e.preventDefault()
@@ -479,7 +497,7 @@ export default function Messages(props: Props) {
         }}
         >
           {
-          dialog.recordTime !== null &&
+          dialog.recordTime !== null &&  dialog.recordTime !== 0 &&
             <>
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
@@ -490,7 +508,8 @@ export default function Messages(props: Props) {
           }
         </div>
         ||
-        <div className={styles.microphoneWrapper}>
+        <div className={styles.microphoneWrapper}         data-cy="text"
+>
           <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
         </div>
         }
