@@ -121,7 +121,7 @@ export default function Shop(props: Props) {
 
   {getPage}
   </div>
-  <Banner src={'/images/banners/banner1.jpg'} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} className={styles.desktopBanner}/>
+  <Banner src={'/images/banners/banner2.jpg'} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} className={styles.desktopBanner}/>
 
 
   </div>)

@@ -199,7 +199,7 @@ function RecruitingPageEmployeeInner(props: Props) {
               // findVacancies()}
             }}
             />
-            {index === 1 &&  <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner1_mobile.jpg'} className={styles.banner}/>}
+            {index === 1 &&  <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner2_mobile.jpg'} className={styles.banner}/>}
             </Fragment>
           })
           ||

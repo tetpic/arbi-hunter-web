@@ -97,7 +97,7 @@ export default function FavoritesPageEmployee(props: Props) {
         </div>
       </InfiniteScroll>
       </div>
-      <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner1.jpg'} className={styles.desktopBanner}/>
+      <Banner href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} src={'/images/banners/banner2.jpg'} className={styles.desktopBanner}/>
 
     </div>
   )

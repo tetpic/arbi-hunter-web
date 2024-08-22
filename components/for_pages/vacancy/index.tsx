@@ -187,7 +187,7 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       {!isMyVacancy && companyCard}
-      <Banner src={'/images/banners/banner1_mobile.jpg'} className={styles.mobileBanner}/>
+      <Banner src={'/images/banners/banner2_mobile.jpg'} className={styles.mobileBanner}/>
 
       <div className={styles.topLine}>
         <P styleType={['w600', 'huge']} useThemeColor>{currentVacancy.name}</P>
@@ -422,7 +422,7 @@ export default function VacancyPage(props: Props) {
         </div>
       }
       </div>
-      <Banner src={'/images/banners/banner1.jpg'} className={styles.deskBanner} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'}/>
+      <Banner src={'/images/banners/banner2.jpg'} className={styles.deskBanner} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'}/>
 
     </div>
   )
