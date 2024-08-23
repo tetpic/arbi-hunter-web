@@ -7,8 +7,6 @@ import { AudioVisualizer } from '../../../../../../node_modules/react-audio-visu
 import P from '@/components/ui/P'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
-import Cookies from 'js-cookie'
-import { CookiesType } from 'types/enums'
 
 // import { buffer } from 'stream/consumers'
 
@@ -57,20 +55,16 @@ export default function AudioNode(props: Props) {
 
 
 useEffect(()=>{
-  fetch(audio.src, {
-    method: 'get',
-    headers: {
-      'authorization': `Bearer ${Cookies.get(CookiesType.accessToken)}`
-    }
-  })
+  fetch(audio.src)
   .then(response => response.blob())
-  .then((b) => {
-    const _audio = new Audio(URL.createObjectURL(b))
-    _audio.addEventListener('loadedmetadata', () => {
-      console.log(_audio.duration)
-     
-    })
+  .then(async(b) => {
     setBlob(b)
+    const arrBuffer = await b.arrayBuffer()
+    const ctx = new AudioContext()
+    ctx.decodeAudioData(arrBuffer).then(buff => {
+      console.log(buff.duration, duration)
+      setDuration(buff.duration)
+    })
   })
   .catch(err => {
     // eslint-disable-next-line no-console
@@ -88,23 +82,33 @@ useEffect(()=>{
       setIsPlay(false)
     })
   }
-  
 }, [audio])
 
-function getDuration(event: any) {
-  event.target.currentTime = 0
-  audio.removeEventListener('timeupdate', getDuration)
-  setDuration(event.target.duration)
-}
+useEffect(()=>{
+  if(time > duration) {
+    audio.pause()
+    audio.currentTime = 0
+    clearInterval(timer.current)
+    setTimeState(0)
+    setIsPlay(false)
 
- useEffect(()=>{ 
-  audio.addEventListener('loadedmetadata', () => {
-    if(!Number.isInteger(audio.duration)) {
-      audio.currentTime = 100000
-      audio.addEventListener('timeupdate', getDuration)
-    }    
-  })
- }, [audio])
+  }
+}, [time])
+
+// function getDuration(event: any) {
+//   event.target.currentTime = 0
+//   audio.removeEventListener('timeupdate', getDuration)
+//   setDuration(event.target.duration)
+// }
+
+//  useEffect(()=>{ 
+//   audio.addEventListener('loadedmetadata', () => {
+//     if(!Number.isInteger(audio.duration)) {
+//       audio.currentTime = 100000
+//       audio.addEventListener('timeupdate', getDuration)
+//     }    
+//   })
+//  }, [audio])
 
  useEffect(()=>{
   if(!active ) {

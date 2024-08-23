@@ -496,8 +496,7 @@ export default function Messages(props: Props) {
           }
         </div>
         ||
-        <div className={styles.microphoneWrapper} data-cy="text"
->
+        <div className={styles.microphoneWrapper} data-cy="text">
           <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
         </div>
         }
