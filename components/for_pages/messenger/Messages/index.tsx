@@ -109,7 +109,7 @@ export default function Messages(props: Props) {
   }
 
   const enterCommandPressHandler = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.metaKey || e.ctrlKey || e.shiftKey) && e.keyCode == 13) {
+    if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.keyCode == 13) {
       sendMessage()
     }
   }
