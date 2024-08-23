@@ -235,7 +235,6 @@ export default function MessageFactory(props: Props) {
   
 
   const applicationMessage = (<>
-
     <div 
     className={side} 
     ref={itemRef } 

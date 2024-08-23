@@ -64,7 +64,8 @@ export function ChatDialogWrapper(props: Props) {
   const [totalMessages, setTotalMessages] = useState<number>()
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
-  const [chunks, setChunks] = useState<BlobPart[]>()
+  // const [chunks, setChunks] = useState<BlobPart[]>()
+  const chunks = useRef<BlobPart[]>([])
   const [recordTime, setRecordTime] = useState<number>(null)
   const [pinned, setPinnedState] = useState<Map<number, IMessage>>(new Map)
   
@@ -278,22 +279,25 @@ export function ChatDialogWrapper(props: Props) {
         const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
         if (!stream) return
         recorder.current = new MediaRecorder(stream)
-        recorder.current.ondataavailable = (e) => {
-          setChunks([e.data])
-        }
       }
       catch (err) {
         // eslint-disable-next-line no-console
         console.warn(err)
       }
     }
+    else {
+      
+    }
       if(status === 'stop' && recorder.current) {
         recorder?.current?.stop()
         clearInterval(starterInterval.current)
         setRecordTime(0)
-        const audioFile = new File(chunks, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
-        sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
-        .then(()=>setChunks([]))
+        recorder.current.ondataavailable = (e) => {
+          chunks.current = [e.data]
+          const audioFile = new File(chunks.current, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
+          sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
+          .then(()=>(chunks.current = []))
+        }
         return
       }
   
@@ -304,68 +308,14 @@ export function ChatDialogWrapper(props: Props) {
       }
 
       if(status === 'cancel') {
-        debugger
         recorder?.current?.stop()
+        recorder.current.ondataavailable = null
         clearInterval(starterInterval.current)
         setRecordTime(0)
-        setChunks([])
-
+        chunks.current = []
         return
       }
 
-
-
-    // if(recorder.current && recorder.current.state === 'recording' && chunks?.length) {
-    //   recorder.current.stop()
-    //   clearInterval(starterInterval.current)
-    //   setRecordTime(0)
-    //   return
-    // }
-
-
-
-
-    
-    // if(stop && recorder.current) {
-    //   recorder?.current?.stop()
-    //   setChunks(null)
-
-    //   // recorder.current = null
-    //   clearInterval(starterInterval.current)
-    //   setRecordTime(0)
-    //   return
-    // }
-    // if(!recorder.current) {
-    //   try {
-    //     const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
-    //     if (!stream) return
-    //     recorder.current = new MediaRecorder(stream)
-    //     recorder.current.ondataavailable = (e) => {
-    //       setChunks([e.data])
-    //     }
-    //   }
-    //   catch (err) {
-    //     // eslint-disable-next-line no-console
-    //     console.warn(err)
-    //   }
-    //   return
-    // }
-    // else {
-    //   if(recorder.current && recorder.current.state === 'recording') {
-    //     recorder.current.stop()
-    //     setChunks(null)
-
-    //     // recorder.current = null
-
-    //     clearInterval(starterInterval.current)
-    //     setRecordTime(0)
-    //     return
-    //   }
-    //   if(recorder.current) {
-    //     recorder.current.start()
-    //     starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
-    //   }
-    // }
   }
 
   const removeMessage = async(type: 'forMe'|'forAll', messageId: number):Promise<boolean> => {

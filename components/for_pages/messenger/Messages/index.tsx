@@ -70,7 +70,6 @@ export default function Messages(props: Props) {
   
 
   const sendMessage = () => {
-    debugger
     if (!value.replace(/\s+/g, ' ').trim() && pastedFiles.size === 0) {
       return
     }
