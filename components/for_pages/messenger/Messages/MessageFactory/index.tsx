@@ -212,7 +212,7 @@ export default function MessageFactory(props: Props) {
     className={classNames(
       side, 
       styles.asset, 
-      ((msg?.assets?.length === 1 || msg?.pastedImages?.length === 1)
+      ((msg?.assets?.length|| msg?.pastedImages?.length)
       &&(msg?.assets?.[0].mimeType.includes('image')||msg?.pastedImages?.[0].type.includes('image')))
       &&!msg.message&&styles.single
     )}>

@@ -8,6 +8,8 @@ import { ModalType, Preset } from 'types/enums'
 import Spinner from '@/components/ui/Spinner'
 import Image from 'next/image'
 import ImageHelper from 'utils/ImageHelper'
+import { ImageGallery } from 'react-image-grid-gallery'
+
 
 interface Props {
   message:  Omit<IMessage, 'replyTo' | 'replyToId' | 'forwarded' | 'forwardedId'>
@@ -28,9 +30,9 @@ export default function ImageNode(props: Props) {
     }
   {
   msg.assets 
-  && msg.assets.length>0 
+  && msg.assets.length===1 
   && msg.assets.map((image, index)=> {
-    return <div key={msg.id+index.toString()} className={classNames(styles.image, msg.assets.length>1&&styles.image_half)}>
+    return <div key={msg.id+index.toString()} className={classNames(styles.image, /*msg.assets.length>1&&styles.image_half*/)}>
       <Image 
       unoptimized
       width={msg.assets.length>1?200:400}
@@ -39,7 +41,23 @@ export default function ImageNode(props: Props) {
       alt={'asset'} 
       height={msg.assets.length>1?200:400} 
       />   
+   
     </div>
   })}
+  {msg.assets && msg.assets.length>1 &&
+   <div  className={classNames(styles.image, /*msg.assets.length>1&&styles.image_half*/)}>
+      <ImageGallery 
+      imagesInfoArray={msg.assets.map((el, ind) => ({
+        alt: 'asset',
+        caption: '',
+        src: ImageHelper.urlFromFile(el, Preset.sResize),
+      }))}
+      columnCount={'auto'}
+      columnWidth={200}
+      gapSize={0}
+      />
+    </div>
+
+  }
   </div>)
 }

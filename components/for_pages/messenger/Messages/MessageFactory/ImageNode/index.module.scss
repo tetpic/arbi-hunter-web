@@ -5,19 +5,19 @@
   flex-wrap: wrap;
   column-gap: 8px;
   row-gap: 8px;
-  margin-bottom: 8px;
- 
-  img {
-    border-radius: 16px;
-  }
 }
 
 .image {
-  max-width: 200px;
+  max-width: 410px;
   position: relative;
-  max-height: 50vh;
-  max-height: 400px;
   height: auto;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 100px;
+  
+  button {
+    display: block;
+  }
 
   .spinner {
     position: absolute;

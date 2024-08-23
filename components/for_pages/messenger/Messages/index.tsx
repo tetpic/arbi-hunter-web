@@ -65,8 +65,6 @@ export default function Messages(props: Props) {
   const [value, setValue] = useState<string>('')
   const [replyTo, setReplyTo] = useState<IMessage>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null!)
-  const [recordButtonPosition, setRecordButtonPosition] = useState(0)
-  const recordButtonInitialPosition = useRef<number>(null)
   
 
   const sendMessage = () => {
@@ -110,10 +108,9 @@ export default function Messages(props: Props) {
     })
   }
 
-  const enterPressHandler = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if(e.key === 'Enter') {
+  const enterCommandPressHandler = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.metaKey || e.ctrlKey || e.shiftKey) && e.keyCode == 13) {
       sendMessage()
-      inputRef.current.blur()
     }
   }
   
@@ -438,6 +435,9 @@ export default function Messages(props: Props) {
           <input type='file' accept='image/png, image/jpg, image/jpeg, image/webp, image/svg+xml, .pdf, .doc, .docx' multiple onChange={(e)=>addFileHandler(e)} style={{display: 'none'}}/>
         </label>        
         <TextareaAutosize 
+          onKeyDown={(e)=>{
+            enterCommandPressHandler(e)
+          }}
           value={value} 
           onChange={(e)=>{
             if(userContext.currentProfile?.profileType === ProfileType.Employee
