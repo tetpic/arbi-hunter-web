@@ -197,7 +197,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   .input {
-    font-size: $mediumText;
+    font-size: 16px;
     font-weight: $medium;
     color: var(--pTextColor);
     width: calc(100% - 76px);
@@ -277,12 +277,15 @@
 .microphoneWrapper {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   column-gap: 8px;
   cursor: pointer;
   border-radius: 10px;
   padding: 4px;
+  width: 42px;
   margin-left: auto;
-  min-height: 40px;
+  min-height: 42px;
+  user-select: none;
   span {
     font-size: $smallText;
     color: $greyLight;
@@ -291,7 +294,7 @@
   canvas {
     width: calc(100% - 10px);
     @include mq($TabletWidth, max) {
-      width: calc(100% - 84px);
+      width: calc(100% - 136px);
     }
   }
 
@@ -444,5 +447,13 @@
       @include lineClamp(1)
     }
   }
-
 }
+
+.recordButtons {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 16px;
+}
+
+

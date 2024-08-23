@@ -41,6 +41,7 @@ import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
 import TextareaAutosize from 'react-textarea-autosize'
+import TrashBasketSvg from '@/components/svg/TrashBasketSvg'
 
 
 interface Props {
@@ -64,6 +65,9 @@ export default function Messages(props: Props) {
   const [value, setValue] = useState<string>('')
   const [replyTo, setReplyTo] = useState<IMessage>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null!)
+  const [recordButtonPosition, setRecordButtonPosition] = useState(0)
+  const recordButtonInitialPosition = useRef<number>(null)
+  
 
   const sendMessage = () => {
     debugger
@@ -208,10 +212,6 @@ export default function Messages(props: Props) {
     :appContext.showModal<IConfirmModalProps>(ModalType.ConfirmModal, _args)
   }
 
-  useEffect(()=>{
-    console.log(value)
-  }, [value])
-
   const isHirer = userContext?.currentProfile?.profileType === ProfileType.Hirer
 
   //TODO:  убрать получение cv после оптимизации запросов к чатам и сообщениям
@@ -241,7 +241,7 @@ export default function Messages(props: Props) {
 
 
   return (
-    <div className={styles.root}> 
+    <div className={styles.root} > 
       {choosenIds.size === 0 &&
       <div className={styles.top} onClick={onTopClick}>
         {dialog.chat &&
@@ -459,38 +459,6 @@ export default function Messages(props: Props) {
         <div 
         data-cy="microphone"
         className={classNames(styles.microphoneWrapper, dialog.recordTime !== null && dialog.recordTime !== 0 &&styles.recording)} 
-        onTouchStart={()=>{
-          dialog.recordVoice()
-        }} 
-        onTouchEnd={(e) => {   
-
-          if(dialog.recorder?.current?.state === 'recording' || dialog.recordTime !== null || dialog.recordTime !== 0) {
-            dialog.recordVoice()
-          }
-        }} 
-        onTouchCancel={(e) => {
-
-          if(dialog.recorder?.current?.state === 'recording') {
-            dialog.recordVoice()
-          }
-        }}
-        onMouseDown={(e) => {
-
-          dialog.recordVoice()
-        }}
-        onMouseUp={(e) => {
-          if( !isTabletWidth) {
-
-
-          dialog.recordVoice()
-          }
-        }}
-        onMouseLeave={(e) => {
-          if( !isTabletWidth) {
-
-            dialog.recordVoice(true)
-          }
-        }}
         onContextMenu={(e)=>{
           e.preventDefault()
           e.stopPropagation()
@@ -501,14 +469,35 @@ export default function Messages(props: Props) {
             <>
               <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
-              <RecordSvg/>
+              <div className={styles.recordButtons} >
+                <Button onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  dialog.recordVoice('cancel')
+                }}>
+                  <TrashBasketSvg/>
+                </Button>
+                <Button onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  dialog.recordVoice('stop')
+                }}>
+                  <RecordSvg  className={styles.recordSvg}  />
+                </Button>
+              </div>
             </>
             ||
-            <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
+            <Button onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              dialog.recordVoice('start')
+            }}>
+              <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
+            </Button>
           }
         </div>
         ||
-        <div className={styles.microphoneWrapper}         data-cy="text"
+        <div className={styles.microphoneWrapper} data-cy="text"
 >
           <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
         </div>
