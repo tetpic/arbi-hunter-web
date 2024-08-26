@@ -17,16 +17,15 @@ interface Props {
 
 export default function AudioNode(props: Props) {
   // const audio = useRef<HTMLAudioElement>(null!)
-  const [audio, setAudio] = useState<HTMLMediaElement>(new Audio(props.audioSrc))
-  audio.preload = 'metadata'
+  const [audio, setAudio] = useState<HTMLMediaElement>(null!)
   const [play, setIsPlay] = useState<boolean>(false)
   const [blob, setBlob] = useState<Blob>()
   const timer = useRef<ReturnType<typeof setInterval>>()
   const [time, setTimeState] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(audio.duration)
+  const [duration, setDuration] = useState<number>(null)
   const visualizerRef = useRef<HTMLDivElement>(null)
-  audio.crossOrigin = 'anonymous'
   const [active, setActive] = useDetectOutsideClick(visualizerRef, false)
+  const audioNode = useRef<any>(null!)
 
   const playPauseHandler = () => {
     if(audio && audio.paused ) {
@@ -53,47 +52,78 @@ export default function AudioNode(props: Props) {
     }
   }
 
-
-useEffect(()=>{
-  fetch(audio.src)
-  .then(response => response.blob())
-  .then(async(b) => {
-    setBlob(b)
-    const arrBuffer = await b.arrayBuffer()
-    const ctx = new AudioContext()
-    ctx.decodeAudioData(arrBuffer).then(buff => {
-      console.log(buff.duration, duration)
-      setDuration(buff.duration)
-    })
-  })
-  .catch(err => {
-    // eslint-disable-next-line no-console
-    console.warn(err)
-  })
-}, [])
-
-useEffect(()=>{
-  if(audio && audio.played) {
-    audio.addEventListener('ended', ()=>{
-      audio.pause()
-      audio.currentTime = 0
-      clearInterval(timer.current)
-      setTimeState(0)
-      setIsPlay(false)
-    })
+  function getDuration(event: any) {
+    event.target.currentTime = 0
+    event.target.removeEventListener('timeupdate', getDuration)
+    console.log(event.target.duration)
+    setDuration(event.target.duration)
   }
+
+
+  useEffect(()=>{
+  if(audio) {
+    audio.addEventListener('loadedmetadata', () => {
+      if (audio.duration === Infinity || isNaN(Number(audio.duration))) {
+        audio.currentTime = 1e101
+        audio.addEventListener('timeupdate', getDuration)
+      }
+      else {
+        console.log(audio.duration)
+        setDuration(audio.duration)
+      }
+    })
+    fetch(audio.src)
+    .then(response => response.blob())
+    .then(async(b) => {
+      setBlob(b)
+      const arrBuffer = await b.arrayBuffer()
+      const ctx = new AudioContext()
+      return
+      ctx.decodeAudioData(arrBuffer).then(buff => {
+        console.log(buff.duration, duration)
+        setDuration(buff.duration)
+      })
+      .catch(e => {
+        console.warn(e)
+      })
+      // audio.src = URL.createObjectURL(b)
+    })
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.warn(err)
+    })
+  
+  }
+  // const ctx = new AudioContext()
+  // ctx.decodeAudioData(arrBuffer).then(buff => {
+  //   console.log(buff.duration, duration)
+  //   setDuration(buff.duration)
+  // })
+
 }, [audio])
 
-useEffect(()=>{
-  if(time > duration) {
-    audio.pause()
-    audio.currentTime = 0
-    clearInterval(timer.current)
-    setTimeState(0)
-    setIsPlay(false)
+// useEffect(()=>{
+//   if(audio && audio.played) {
+//     audio.addEventListener('ended', ()=>{
+//       audio.pause()
+//       audio.currentTime = 0
+//       clearInterval(timer.current)
+//       setTimeState(0)
+//       setIsPlay(false)
+//     })
+//   }
+// }, [audio])
 
-  }
-}, [time])
+// useEffect(()=>{
+//   if(time > duration) {
+//     audio.pause()
+//     audio.currentTime = 0
+//     clearInterval(timer.current)
+//     setTimeState(0)
+//     setIsPlay(false)
+
+//   }
+// }, [time])
 
 // function getDuration(event: any) {
 //   event.target.currentTime = 0
@@ -111,7 +141,7 @@ useEffect(()=>{
 //  }, [audio])
 
  useEffect(()=>{
-  if(!active ) {
+  if(!active && audio ) {
     audio.pause()
     audio.currentTime = 0
     clearInterval(timer.current)
@@ -128,7 +158,8 @@ useEffect(()=>{
         <PlayButtonWhiteSvg className={styles.playSvg}/>
       }
     </Button>
-    <div className={styles.audioNode}>
+    <div className={styles.audioNode} ref={audioNode}>
+      <audio  controls preload='metadata' src={props.audioSrc}  ref={r => setAudio(r)} className={styles.audio}></audio>
       
     {/* <DumbAudioWaveSvg/> */}
     <div className={styles.visualizerWrapper}>

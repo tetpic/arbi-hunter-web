@@ -32,6 +32,8 @@
     "heic2any": "^0.0.4",
     "i18n-iso-countries": "^7.6.0",
     "js-cookie": "^3.0.5",
+    "mic-recorder": "^4.9.0",
+    "mic-recorder-to-mp3": "^2.2.2",
     "next": "^13.5.0",
     "next-i18next": "^14.0.0",
     "next-nprogress-bar": "^2.3.12",
@@ -41,6 +43,7 @@
     "nookies": "^2.5.2",
     "normalize.css": "^8.0.1",
     "numeralize-ru": "^1.0.1",
+    "ogv": "^1.9.0",
     "plop": "^3.1.2",
     "query-string": "^8.1.0",
     "rc-scrollbars": "^1.1.6",
@@ -79,7 +82,8 @@
     "ts-node": "^10.9.2",
     "use-interval": "^1.4.0",
     "use-window-focus": "^1.4.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vmsg": "^0.4.0"
   },
   "scripts": {
     "dev": "next dev -H 127.0.0.1 -p 3088",

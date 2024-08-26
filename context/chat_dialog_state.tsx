@@ -12,6 +12,11 @@ import FileRepository from 'data/repositories/FileRepository'
 import { useAppContext } from './state'
 import { MessageType, SnackbarType } from 'types/enums'
 import useWindowFocus from 'use-window-focus'
+import {Recorder} from 'vmsg'
+
+
+const wasmURL  = './vmsg/vmsg.wasm'
+const shimURL = 'https://unpkg.com/wasm-polyfill.js@0.2.0/wasm-polyfill.js'
 // import { useAudioRecorder } from 'react-audio-voice-recorder'
 // import { recorderControls } from 'react-audio-voice-recorder/dist/hooks/useAudioRecorder'
 
@@ -33,8 +38,9 @@ export interface IDialogState {
   disabledType: Nullable<any>,
   disabled: boolean
   // recorder: recorderControls
-  recorder: MutableRefObject<MediaRecorder>
+  recorder: MutableRefObject<Recorder>
   recordVoice: (status?: 'start'|'stop'|'init'|'cancel') => void
+  recordStatus: 'recording'|'stopped'
   recordTime: number
   refreshMessage: (id: number, message: IMessage) => void
   removeMessage: (type: 'forMe'|'forAll', messageId: number) => Promise<boolean>
@@ -57,7 +63,7 @@ export function ChatDialogWrapper(props: Props) {
   const userContext = useUserContext()
   const chatContext = useChatContext()
   const chatSocket = useChatSocketContext()
-  const recorder = useRef<MediaRecorder>(null!)
+  const recorder = useRef<Recorder>(null!)
   
   const [chat, setChat] = useState<IChat | null>(props.chat ?? null)
   const [page, setPage] = useState<number>(1)
@@ -76,6 +82,7 @@ export function ChatDialogWrapper(props: Props) {
   const reconnectRef = useRef<boolean>(false)
   const windowFocusInit = useRef(false)
   const starterInterval = useRef<ReturnType<typeof setInterval>>()
+  const [recordStatus, setStatus] = useState<'recording'|'stopped'>()
   
   const windowFocused = useWindowFocus()
   const limit = 30
@@ -275,45 +282,82 @@ export function ChatDialogWrapper(props: Props) {
 
   const recordVoice = async (status?: 'start'|'stop'|'init'|'cancel') => {
     if(!recorder.current) {
-      try {
-        const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
-        if (!stream) return
-        recorder.current = new MediaRecorder(stream)
-      }
-      catch (err) {
-        // eslint-disable-next-line no-console
-        console.warn(err)
-      }
+      const Rec:Recorder  = require('vmsg').Recorder
+
+      // @ts-ignore
+      recorder.current = new Rec({
+        wasmURL,
+        shimURL
+      })
+      // try {
+      //   const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
+      //   if (!stream) return
+      //   console.log(MediaRecorder.isTypeSupported('audio/wav; codecs=0'))
+      //   recorder.current = new MediaRecorder(stream)
+      // }
+      // catch (err) {
+      //   // eslint-disable-next-line no-console
+      //   console.warn(err)
+      // }
     }
-    else {
-      
-    }
+
       if(status === 'stop' && recorder.current) {
-        recorder?.current?.stop()
+        setStatus('stopped')
         clearInterval(starterInterval.current)
         setRecordTime(0)
-        recorder.current.ondataavailable = (e) => {
-          chunks.current = [e.data]
-          const audioFile = new File(chunks.current, `audio_${new Date().getTime().toString()}.ogg`, {type: 'audio/ogg; codecs=opus'})
+        recorder.current.stopRecording().then(blob => {
+          console.log(blob)
+          const audioFile = new File([blob], `audio_${new Date().getTime().toString()}`, {type: blob.type})
+          console.log(audioFile)
           sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
           .then(()=>(chunks.current = []))
-        }
-        return
+        })
+
+        // return 
+        // recorder?.current?.stop()
+        // clearInterval(starterInterval.current)
+        // setRecordTime(0)
+        // recorder.current.ondataavailable = (e) => {
+        //   console.log(e.data)
+        //   chunks.current = [e.data]
+        //   const audioFile = new File(chunks.current, `audio_${new Date().getTime().toString()}`, {type: e.data.type})
+        //   console.log(audioFile)
+        //   sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
+        //   .then(()=>(chunks.current = []))
+        // }
+        // return
       }
   
       if(status === 'start') {
-        recorder.current.start()
-        starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
-        return
+        setStatus('recording')
+        recorder.current.init().then(() => {
+            recorder.current.startRecording()
+            starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+          }
+        )
+        // setTimeout(()=>{
+        //   recordVoice('stop')
+        // }, 5000)
+        // return 
+        // recorder.current.start()
+        // starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+        // return
       }
 
       if(status === 'cancel') {
-        recorder?.current?.stop()
-        recorder.current.ondataavailable = null
+        setStatus('stopped')
+        recorder.current.stopRecording()
         clearInterval(starterInterval.current)
         setRecordTime(0)
-        chunks.current = []
-        return
+
+
+        // return
+        // recorder?.current?.stop()
+        // recorder.current.ondataavailable = null
+        // clearInterval(starterInterval.current)
+        // setRecordTime(0)
+        // chunks.current = []
+        // return
       }
 
   }
@@ -417,6 +461,7 @@ export function ChatDialogWrapper(props: Props) {
 
   const value: Partial<IDialogState> = {
     chat,
+    recordStatus,
     messages,
     sendMessage,
     loading,
