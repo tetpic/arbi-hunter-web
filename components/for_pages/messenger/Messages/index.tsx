@@ -489,7 +489,9 @@ export default function Messages(props: Props) {
             <Button onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              dialog.recordVoice('start')
+              if(dialog.recordStatus !== 'recording') {
+                dialog.recordVoice('start')
+              }
             }}>
               <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
             </Button>

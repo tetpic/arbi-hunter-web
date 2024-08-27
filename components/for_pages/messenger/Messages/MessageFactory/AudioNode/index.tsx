@@ -75,11 +75,12 @@ export default function AudioNode(props: Props) {
     fetch(audio.src)
     .then(response => response.blob())
     .then(async(b) => {
-      setBlob(b)
       const arrBuffer = await b.arrayBuffer()
       const ctx = new AudioContext()
-      return
-      ctx.decodeAudioData(arrBuffer).then(buff => {
+      ctx.decodeAudioData(arrBuffer, () => {
+        console.log('done')
+      }, () => console.log('err')).then(buff => {
+        setBlob(b)
         console.log(buff.duration, duration)
         setDuration(buff.duration)
       })
@@ -102,28 +103,27 @@ export default function AudioNode(props: Props) {
 
 }, [audio])
 
-// useEffect(()=>{
-//   if(audio && audio.played) {
-//     audio.addEventListener('ended', ()=>{
-//       audio.pause()
-//       audio.currentTime = 0
-//       clearInterval(timer.current)
-//       setTimeState(0)
-//       setIsPlay(false)
-//     })
-//   }
-// }, [audio])
+useEffect(()=>{
+  if(audio && audio.played) {
+    audio.addEventListener('ended', ()=>{
+      audio.pause()
+      audio.currentTime = 0
+      clearInterval(timer.current)
+      setTimeState(0)
+      setIsPlay(false)
+    })
+  }
+}, [audio])
 
-// useEffect(()=>{
-//   if(time > duration) {
-//     audio.pause()
-//     audio.currentTime = 0
-//     clearInterval(timer.current)
-//     setTimeState(0)
-//     setIsPlay(false)
-
-//   }
-// }, [time])
+useEffect(()=>{
+  if((time > duration) && audio) {
+    audio.pause()
+    audio.currentTime = 0
+    clearInterval(timer.current)
+    setTimeState(0)
+    setIsPlay(false)
+  }
+}, [time])
 
 // function getDuration(event: any) {
 //   event.target.currentTime = 0

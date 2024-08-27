@@ -394,6 +394,10 @@ export function ChatDialogWrapper(props: Props) {
         return new Map(state)
       })
     }
+
+    if(recordStatus === 'recording') {
+      recordVoice('cancel')
+    }
     
     if (props.chatId||props.chat) {
       chatContext.setCurrentChatId(props.chatId||props.chat.id)

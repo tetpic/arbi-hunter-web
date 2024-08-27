@@ -48,6 +48,7 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
+  console.log(props.message)
   const {t} = useTranslation()
   const appContext = useAppContext()
   const theme = appContext.theme
@@ -177,7 +178,7 @@ export default function MessageFactory(props: Props) {
     <div className={styles.stats} ref={itemRef} key={props.message.id}>
     {props.message.forwarded&&<P styleType={['small', 'greyLight']}>{t('chat_forwardedFrom')} {getUserName(msg.profile)}</P>}
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
-      <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>     
+      <MessageReadSvg color={!msg.isReadByRecipient&&colors.greyLight}/>     
     </div>
     </>
   )
