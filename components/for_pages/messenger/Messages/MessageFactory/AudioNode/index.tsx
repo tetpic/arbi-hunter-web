@@ -7,6 +7,7 @@ import { AudioVisualizer } from '../../../../../../node_modules/react-audio-visu
 import P from '@/components/ui/P'
 import Formatter from 'utils/formatter'
 import { useDetectOutsideClick } from '@/components/hooks/useDetectOutsideClick'
+import { decodeOgg } from 'utils/helpers'
 
 // import { buffer } from 'stream/consumers'
 
@@ -77,6 +78,20 @@ export default function AudioNode(props: Props) {
     .then(async(b) => {
       const arrBuffer = await b.arrayBuffer()
       const ctx = new AudioContext()
+      const ua = window.navigator.userAgent
+      const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
+      console.log(b)
+
+      if( iOS && b.type === 'audio/opus') {
+        decodeOgg(arrBuffer, blob => {
+          console.log(blob)
+          setBlob(blob)
+          audio.src = URL.createObjectURL(blob)
+        })
+      }
+      else {
+
+      }
       ctx.decodeAudioData(arrBuffer, () => {
         console.log('done')
       }, () => console.log('err')).then(buff => {

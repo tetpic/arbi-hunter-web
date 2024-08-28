@@ -48,7 +48,6 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
-  console.log(props.message)
   const {t} = useTranslation()
   const appContext = useAppContext()
   const theme = appContext.theme

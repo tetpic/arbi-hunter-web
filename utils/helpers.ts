@@ -149,3 +149,74 @@ export function daysBetween(startDate: Date, endDate: Date) {
   
   return diffDays
 }
+
+export function decodeOgg(arrayBuffer: ArrayBuffer, callback?: (blob: Blob) => void) {
+
+  const typedArray: Uint8Array = new Uint8Array(arrayBuffer)
+  const decoderWorker = new Worker('./decoderWorker.min.js')
+  const wavWorker = new Worker('./waveWorker.min.js')
+  const desiredSampleRate = parseInt('16000',10)
+
+  decoderWorker.postMessage({ 
+    command:'init',
+    decoderSampleRate: desiredSampleRate,
+    outputBufferSampleRate: desiredSampleRate
+  })
+
+  wavWorker.postMessage({ 
+    command:'init',
+    wavBitDepth: parseInt('16',10),
+    wavSampleRate: desiredSampleRate
+  })
+
+  decoderWorker.onmessage = function(e){
+    console.log(e)
+    // null means decoder is finished
+    if (e.data === null) {
+      wavWorker.postMessage({ command: 'done' })
+    }
+
+    // e.data contains decoded buffers as float32 values
+    else {
+      wavWorker.postMessage({
+        command: 'encode',
+        buffers: e.data
+      }, e.data.map(function(typedArray: Uint8Array){
+        return typedArray.buffer
+      }))
+    }
+  }
+
+  wavWorker.onmessage = function(e) {    
+    if (e.data.message === 'page') {
+      console.log(e.data)
+      var fileName = new Date().toISOString() + '.wav'
+      var dataBlob = new Blob( [ e.data.page ], { type: 'audio/wav' } )
+      callback?.(dataBlob)
+      // setBlob(dataBlob)
+      // return dataBlob
+      // var url = URL.createObjectURL( dataBlob );
+      
+
+      // var audio = document.createElement('audio');
+      // audio.controls = true;
+      // audio.src = URL.createObjectURL( dataBlob );
+
+      // var link = document.createElement('a');
+      // link.href = url;
+      // link.download = fileName;
+      // link.innerHTML = link.download;
+
+      // var li = document.createElement('li');
+      // li.appendChild(link);
+      // li.appendChild(audio);
+
+      // recordingslist.appendChild(li);
+    }
+  }
+
+  decoderWorker.postMessage({
+    command: 'decode',
+    pages: typedArray
+  }, [typedArray.buffer] )
+};

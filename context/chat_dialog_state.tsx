@@ -12,7 +12,6 @@ import FileRepository from 'data/repositories/FileRepository'
 import { useAppContext } from './state'
 import { MessageType, SnackbarType } from 'types/enums'
 import useWindowFocus from 'use-window-focus'
-import {Recorder} from 'vmsg'
 
 
 const wasmURL  = './vmsg/vmsg.wasm'
@@ -38,7 +37,7 @@ export interface IDialogState {
   disabledType: Nullable<any>,
   disabled: boolean
   // recorder: recorderControls
-  recorder: MutableRefObject<Recorder>
+  recorder: MutableRefObject<any>
   recordVoice: (status?: 'start'|'stop'|'init'|'cancel') => void
   recordStatus: 'recording'|'stopped'
   recordTime: number
@@ -63,15 +62,14 @@ export function ChatDialogWrapper(props: Props) {
   const userContext = useUserContext()
   const chatContext = useChatContext()
   const chatSocket = useChatSocketContext()
-  const recorder = useRef<Recorder>(null!)
+  const recorder = useRef<any>(null!)
   
   const [chat, setChat] = useState<IChat | null>(props.chat ?? null)
   const [page, setPage] = useState<number>(1)
   const [totalMessages, setTotalMessages] = useState<number>()
   const [messages, setMessages] = useState<Map<number|string, IMessage>>(new Map)
   const [loading, setLoading] = useState(true)
-  // const [chunks, setChunks] = useState<BlobPart[]>()
-  const chunks = useRef<BlobPart[]>([])
+  const chunks = useRef<Blob>()
   const [recordTime, setRecordTime] = useState<number>(null)
   const [pinned, setPinnedState] = useState<Map<number, IMessage>>(new Map)
   
@@ -282,36 +280,57 @@ export function ChatDialogWrapper(props: Props) {
 
   const recordVoice = async (status?: 'start'|'stop'|'init'|'cancel') => {
     if(!recorder.current) {
-      const Rec:Recorder  = require('vmsg').Recorder
-
       // @ts-ignore
-      recorder.current = new Rec({
-        wasmURL,
-        shimURL
+      const Recorder = window.Recorder
+      recorder.current = new Recorder({
+        reuseWorker: true
       })
-      // try {
-      //   const stream = await navigator.mediaDevices?.getUserMedia({audio: true})
-      //   if (!stream) return
-      //   console.log(MediaRecorder.isTypeSupported('audio/wav; codecs=0'))
-      //   recorder.current = new MediaRecorder(stream)
-      // }
-      // catch (err) {
-      //   // eslint-disable-next-line no-console
-      //   console.warn(err)
-      // }
+      // @ts-ignore
+      // eslint-disable-next-line no-console
+      console.log(recorder.current.state)
+      // eslint-disable-next-line no-console
+      console.log(recorder.current)
+
+      recorder.current.onstart = () => {
+        // eslint-disable-next-line no-console
+        setStatus('recording')
+        starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+        console.log('recorder start')
+      }
+      recorder.current.onstop = () => {
+        // eslint-disable-next-line no-console
+        console.log('recorder stop')
+      }
+
+      recorder.current.ondataavailable = (arrBuff: Uint8Array) => {
+        const dataBlob = new Blob([arrBuff], {type: 'audio/ogg'})
+        console.log('SEND DATA BLOB', dataBlob)
+        const audioFile = new File([dataBlob], `audio_${new Date().getTime().toString()}.opus`, {type: 'audio/ogg'})
+
+        sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
+        .then(() => {
+        })
+      }
     }
 
       if(status === 'stop' && recorder.current) {
+
+        recorder.current.stop()
         setStatus('stopped')
         clearInterval(starterInterval.current)
         setRecordTime(0)
-        recorder.current.stopRecording().then(blob => {
-          console.log(blob)
-          const audioFile = new File([blob], `audio_${new Date().getTime().toString()}`, {type: blob.type})
-          console.log(audioFile)
-          sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
-          .then(()=>(chunks.current = []))
-        })
+        return
+
+        // setStatus('stopped')
+        // clearInterval(starterInterval.current)
+        // setRecordTime(0)
+        // recorder.current.stopRecording().then(blob => {
+        //   console.log(blob)
+        //   const audioFile = new File([blob], `audio_${new Date().getTime().toString()}`, {type: blob.type})
+        //   console.log(audioFile)
+        //   sendMessage({message: '', type: MessageType.Voice}, {voiceMessage: audioFile})
+        //   .then(()=>(chunks.current = []))
+        // })
 
         // return 
         // recorder?.current?.stop()
@@ -328,13 +347,20 @@ export function ChatDialogWrapper(props: Props) {
         // return
       }
   
-      if(status === 'start') {
-        setStatus('recording')
-        recorder.current.init().then(() => {
-            recorder.current.startRecording()
-            starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
-          }
-        )
+      if(status === 'start' && recorder.current) {
+        recorder.current.start().catch((e: any) => {
+          // eslint-disable-next-line no-console
+          clearInterval(starterInterval.current)
+          setRecordTime(0)
+          console.warn('ERROR While STATRING RECORDING', e)
+        })
+        return
+
+        // recorder.current.init().then(() => {
+        //     recorder.current.startRecording()
+        //     starterInterval.current = setInterval(()=>setRecordTime(state=> state+1), 1000)
+        //   }
+        // )
         // setTimeout(()=>{
         //   recordVoice('stop')
         // }, 5000)
@@ -344,12 +370,15 @@ export function ChatDialogWrapper(props: Props) {
         // return
       }
 
-      if(status === 'cancel') {
+      if(status === 'cancel' && recorder.current) {
         setStatus('stopped')
-        recorder.current.stopRecording()
+        recorder.current.close()
+        .then(() => {
+          recorder.current = null
+        })
         clearInterval(starterInterval.current)
         setRecordTime(0)
-
+        return
 
         // return
         // recorder?.current?.stop()

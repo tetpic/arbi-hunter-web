@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic'
 import { useAppContext } from 'context/state'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
+import Script from 'next/script'
 
 const FolderManager = dynamic(()=>import('./FolderManager'), {ssr: false})
 const Messages = dynamic(()=>import('./Messages'), {ssr: false})
@@ -58,6 +59,8 @@ export default function Messenger(props: Props) {
 
   return (
     <div className={styles.root}> 
+      <Script src="../recorder.min.js"/>
+
       {chatContext.component.get(ChatComponent.Chat) && 
         <Chats chats={[...chats.values()]} chatId={chatContext.currentChatId} onSelect={handleSelectChat} />
       }
