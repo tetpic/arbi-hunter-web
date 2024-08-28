@@ -30,7 +30,7 @@ import { useAppContext } from 'context/state'
 import useTranslation from 'next-translate/useTranslation'
 import { IMessage } from 'data/interfaces/IChat'
 import CrossSvg from '@/components/svg/CrossSvg'
-import { LiveAudioVisualizer } from '../../../../node_modules/react-audio-visualize'
+// import { LiveAudioVisualizer } from '../../../../node_modules/react-audio-visualize'
 import CheckSvg from '@/components/svg/CheckSvg'
 import ShareMessageSvg from '@/components/svg/ShareMessageSvg'
 import TrashBasketAltSvg from '@/components/svg/TrashBasketAltSvg'
@@ -428,7 +428,7 @@ export default function Messages(props: Props) {
             <Button styleType={['icon','backTransparent', 'svg24', 'circle']} onClick={forwardHandler}><ShareMessageSvg color={colors.blue}/></Button>
           </div>
         }
-        {dialog.recorder?.current?.state !== 'recording' && choosenIds.size === 0 && 
+        {dialog?.recordStatus !== 'recording' && choosenIds.size === 0 && 
         <>
         <label>
           <img src={'/icons/paperclip.svg'}  alt='paperclip' className={styles.paperClip}/>
@@ -466,7 +466,7 @@ export default function Messages(props: Props) {
           {
           dialog.recordTime !== null &&  dialog.recordTime !== 0 &&
             <>
-              <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/>
+              {/* <LiveAudioVisualizer mediaRecorder={dialog.recorder?.current} width={720} height={40}  fftSize={1024}/> */}
               <span className={styles.recordTime}>{Formatter.formatSecondsToTime(dialog.recordTime)}</span>
               <div className={styles.recordButtons} >
                 <Button onClick={(e) => {
@@ -489,15 +489,16 @@ export default function Messages(props: Props) {
             <Button onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              dialog.recordVoice('start')
+              if(dialog.recordStatus !== 'recording') {
+                dialog.recordVoice('start')
+              }
             }}>
               <img src={'/icons/microphone.svg'} style={{pointerEvents: 'none', flexShrink: 0}} alt='microphone icon'/>
             </Button>
           }
         </div>
         ||
-        <div className={styles.microphoneWrapper} data-cy="text"
->
+        <div className={styles.microphoneWrapper} data-cy="text">
           <img onClick={(e)=>{e.stopPropagation();sendMessage()}} src={'/icons/send.svg'} alt='send icon'/>
         </div>
         }

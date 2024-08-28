@@ -39,6 +39,8 @@ export interface IMessage extends TimeStamp {
   isRead?: boolean
   pastedImages?: File[]
   voiceMessage?: File
+  isReadByRecipient?: boolean
+
 }
 
 export interface IChatFolder extends TimeStamp {

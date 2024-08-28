@@ -6,7 +6,9 @@ import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
 import { colors } from 'styles/variables'
-import AudioNode from './AudioNode'
+import dynamic from 'next/dynamic'
+const AudioNode = dynamic(() => import('./AudioNode'), { ssr: false })
+// import AudioNode from './AudioNode'
 import { useAppContext } from 'context/state'
 import { IApplication } from 'data/interfaces/IApplication'
 import Spacer from 'components/ui/Spacer'
@@ -46,6 +48,7 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
+  console.log(props.message)
   const {t} = useTranslation()
   const appContext = useAppContext()
   const theme = appContext.theme
@@ -175,7 +178,7 @@ export default function MessageFactory(props: Props) {
     <div className={styles.stats} ref={itemRef} key={props.message.id}>
     {props.message.forwarded&&<P styleType={['small', 'greyLight']}>{t('chat_forwardedFrom')} {getUserName(msg.profile)}</P>}
       <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
-      <MessageReadSvg color={!msg.isRead&&colors.greyLight}/>     
+      <MessageReadSvg color={!msg.isReadByRecipient&&colors.greyLight}/>     
     </div>
     </>
   )
