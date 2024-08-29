@@ -231,7 +231,11 @@ export default function Messages(props: Props) {
 
   if(!chatContext.currentChatId) {
     return <div className={styles.root} style={{position: 'relative'}}>
-      <P styleType={['large', 'w600']} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>Выберите чат</P>
+      <P 
+      styleType={['large', 'w600']} 
+      style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+        {t('chat_chooseChat')}
+      </P>
     </div>
   }
 

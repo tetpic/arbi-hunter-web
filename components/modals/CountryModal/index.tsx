@@ -63,7 +63,7 @@ function CountryModalInner(props: Props) {
 
   const body = (<div className={styles.root}>
     {isTabletWidth &&
-      <Title title={'Страны'} onBackClick={props.onClose}/>
+      <Title title={t('countries')} onBackClick={props.onClose}/>
     }
     <InputField 
     styleType={'default'} 

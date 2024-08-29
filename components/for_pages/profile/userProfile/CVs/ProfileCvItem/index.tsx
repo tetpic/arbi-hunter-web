@@ -176,7 +176,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
         {tariff.name}
       </P>
 
-      <P styleType={['small', 'greyLight', 'w500']}>Истекает {Formatter.formatDate(cv.subscriptions.endAt, {lang: lang as InterfaceLanguage})}</P>
+      <P styleType={['small', 'greyLight', 'w500']}>{t('item_expires')} {Formatter.formatDate(cv.subscriptions.endAt, {lang: lang as InterfaceLanguage})}</P>
     </div>
     }
 

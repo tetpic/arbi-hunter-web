@@ -59,7 +59,7 @@ function CityModalInner(props: Props) {
 
   const body = (
     <div className={styles.root}> 
-    {isTabletWidth &&<Title title={'Города'} onBackClick={props.onClose}/>}
+    {isTabletWidth &&<Title title={t('cities')} onBackClick={props.onClose}/>}
    
     <InputField styleType={'default'} color={'white'} name={'search'} prefix={<LoupeSvg/>}/>
     <div className={styles.list}>

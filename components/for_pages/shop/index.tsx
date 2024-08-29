@@ -81,7 +81,7 @@ export default function Shop(props: Props) {
         case ShopPages.Orders:
           return {name: t('shop_orders'), type: page}
         case ShopPages.Opens:
-          return {name: 'Открытия', type: page}
+          return {name: t('shop_opens'), type: page}
         case ShopPages.Branding:
           return {name: t('shop_branding'), type: page}
       }

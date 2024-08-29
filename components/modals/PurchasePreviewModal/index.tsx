@@ -232,7 +232,7 @@ export default function PurchasePreviewModal(props: Props) {
               {args.tariffs.get(el.subscription.tariffId).name}
             </P>
             <P styleType={['w500', 'medium', 'greyLight']}>
-              (истекает {Formatter.formatDate(el.subscription.endAt, {lang: lang as InterfaceLanguage})}, осталось {el.subscription.contactsCanOpenCount} {Formatter.pluralize(el.subscription.contactsCanOpenCount, 'открытие', 'открытия', 'открытий')})
+              {t('expires')} {Formatter.formatDate(el.subscription.endAt, {lang: lang as InterfaceLanguage})}, {t('leave')} {el.subscription.contactsCanOpenCount} {Formatter.pluralize(el.subscription.contactsCanOpenCount, t('opens1'), t('opens2'), t('opens3'))}
             </P>
             </>,
             value: el.subscriptionId

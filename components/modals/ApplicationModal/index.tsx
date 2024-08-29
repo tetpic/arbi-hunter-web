@@ -79,7 +79,7 @@ export default function ApplicationModal(props: Props) {
       {!isTabletWidth &&
         <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
       }
-      <P styleType={['medium', 'w500', 'textCenter']}>У вас нет активных резюме</P>
+      <P styleType={['medium', 'w500', 'textCenter']}>{t('application_youHaveNoActiveCvs')}</P>
       <Spacer basis={16}/>
       <Button styleType={['gradient','phoneWide']} onClick={onCreateNewCV}>{t('create')}</Button>
       

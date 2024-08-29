@@ -126,7 +126,10 @@ export default function ChatItem(props: Props) {
             <PinMessageSvg className={styles.pinIcon}/>
           }
         </P>
-        <p className={styles.lastMessage}> {props.chat?.last?.proposal&&<TextNode html={chat.last.proposal.coverLetter}/>||chat.lastMessage||chat?.last?.message||(chat.lastMessageType === 'voice' && 'Голосовое сообщение') || (chat.lastMessageType === 'asset' && 'Файл')} </p>
+        <p className={styles.lastMessage}> {props.chat?.last?.proposal&&
+          <TextNode html={chat.last.proposal.coverLetter}/>
+          ||chat.lastMessage||chat?.last?.message
+          ||(chat.lastMessageType === 'voice' && t('chat_voiceMessage')) || (chat.lastMessageType === 'asset' && t('file'))} </p>
         {props.chat.totalUnread > 0&&
           <p className={styles.counter}>{props.chat.totalUnread}</p>
         }

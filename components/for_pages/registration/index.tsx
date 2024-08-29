@@ -202,7 +202,13 @@ export default function Registration(props: Props) {
     />
     <PasswordField label={`${t('password')}:`} name={'password'} className={styles.input} />
     <div className={styles.agreement}>
-      <CheckboxField circleClassName={styles.checkCircle} itemClassName={styles.check} itemLabelClassName={styles.checkLabel} name={'agreement'} value={true} label={<>Продолжая регистрацию, Вы принимаете  <Link className={styles.link} href={'/privacy'}>политику конфиденциальности </Link> и <Link className={styles.link} href={'/rules'}>правила сервиса </Link></>}/>
+      <CheckboxField 
+      circleClassName={styles.checkCircle} 
+      itemClassName={styles.check} 
+      itemLabelClassName={styles.checkLabel} 
+      name={'agreement'} 
+      value={true} 
+      label={<>{t('registration_tip1')}  <Link className={styles.link} href={'/privacy'}>{t('registration_tip2')} </Link> {t('and')} <Link className={styles.link} href={'/rules'}>{t('registration_tip3')} </Link></>}/>
     </div>
     </>
   )

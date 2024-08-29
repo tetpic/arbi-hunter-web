@@ -18,8 +18,10 @@
   
   "hirer": "Компания",
   "hirer_alt": "Работодатель",
+  "application": "Отклик",
   "company": "Компания",
   "cv": "Резюме",
+  "file": "Файл",
   "courses": "Курсы",
   "media": "Медиа", 
   "vacancy": "Вакансия",
@@ -27,7 +29,9 @@
   "create_cv": "Создать резюме",
   "create": "Создать",
   "country": "Страна",
+  "countries": "Страны",
   "city": "Город",
+  "cities": "Города",
   "name":"Имя",
   "lastName":"Фамилия",
   "patronymic":"Отчество",
@@ -39,6 +43,8 @@
   "continue": "Продолжить",
   "next": "Далее",
   "enter": "Войти",
+  "leave": "осталось",
+  "expires": "истекает",
   "watchAll": "Смотреть все",
   "watchAllAlt": "Все",
   "unavailable": "Недоступно",
@@ -58,6 +64,7 @@
   "logout": "Выйти",
   "free": "Бесплатно",
   "saveAndContinue": "Сохранить и продолжить",
+  "and": "и",
   "set": "Выбрать",
   "setAll":"Выбрать все",
   "stories": "Истории",
@@ -184,6 +191,9 @@
   "message1":"сообщение",
   "message2":"сообщения",
   "message3":"сообщений",
+  "opens1": "открытие",
+  "opens2": "открытия",
+  "opens3": "открытий",
 
 
 
@@ -256,6 +266,8 @@
   "application_watchRelevantCvs":"Смотреть похожие вакансии",
   "application_watchRelevantVacancies":"Смотреть похожие резюме",
   "application_goToFeedbacks":"Перейти в раздел откликов",
+  "application_youHaveNoActiveCvs":"У вас нет активных резюме",
+
 
 
   "banner_createVacancy": "Создайте вакансию",
@@ -382,6 +394,7 @@
 
 
   "chat_searchPlaceholder":"Поиск по чатам",
+  "chat_chooseChat": "Выберите чат",
   "chat_folders":"Папки с чатами",
   "chat_main":"Чаты",
   "chat_settings":"Настройки чата",
@@ -636,6 +649,7 @@
   "footer_securePayment": "Защищенная оплата",
 
   "favorites_title":"Избранное",
+  "favorites_folderEdit":"Редактирование папки",
   "favorites_add":"Добавить",
   "favorites_settings":"Настройки",
   "favorites_searches":"Автопоиски",
@@ -737,6 +751,11 @@
   "item_draftAlmostReady": "Черновик почти готов к публикации",
   "item_draftReady": "Черновик готов к публикации",
 
+  "notifications_youhave": "У вас",
+  "notifications_newResponse": "новый отклик",
+  "notifications_newMessage": "новое сообщение",
+
+
 
   "login": "Войти",
   "login_getRegister": "Зарегистрируйтесь",
@@ -761,6 +780,9 @@
   
   
   "registration": "Регистрация",
+  "registration_tip1": "Продолжая регистрацию, Вы принимаете",
+  "registration_tip2": "политику конфиденциальности",
+  "registration_tip3": "правила сервиса",
   "registration_switcher_setRegMethod":"Выберите способ регистрации",
   "registration_employee":"Частное лицо",
   "registration_workForMe":"Я хочу найти работу для себя",
@@ -800,6 +822,22 @@
   "settings_notification": "Уведомления",
   "settings_patterns": "Шаблоны",
   "settings_profile":"Настройка профиля",
+
+  "sitemap_mainpade": "Главная страница",
+  "sitemap_about": "О компании",
+  "sitemap_rules": "Условия оказания услуг",
+  "sitemap_privacy": "Политика конфиденциальности",
+  "sitemap_forHirers": "Работадателям",
+  "sitemap_createCV": "Создать вакансию",
+  "sitemap_catalogCVs": "Каталог резюме",
+  "sitemap_createVacancy": "Создать резюме",
+  "sitemap_catalogVacancies": "Каталог вакансий",
+  "sitemap_support": "Техническая поддержка",
+  "sitemap_supportManager": "Support-менеджер",
+  "sitemap_forPartners": "Партнерам",
+  "sitemap_partnerQuestions": "По вопросам сотрудничества",
+  "sitemap_forEmployees": "Соискателям",
+
 
 
 
@@ -964,6 +1002,7 @@
 
 
   "profile_active": "Активные",
+  "profile_vipVacancies":"VIP вакансии",
   "profile_noSavedCvs":"Нет сохраненных резюме",
   "profile_settings": "Настройки профиля",
   "profile_drafts": "Черновики",
@@ -1009,6 +1048,8 @@
   
 
   "personal_changeBackground": "Изменить фон",
+  "personal_changeBuilding": "Выбрать здание",
+  "personal_createYourOwnCharacter": "Создайте своего уникального персонажа",
   "personal_changeBanner": "Изменить баннер",
   "personal_photoVideoGif": "Фото, видео, gif",
   "personal_text":"Текст",
@@ -1052,6 +1093,9 @@
 
 
   "shop_balance": "Баланс",
+  "shop_opens": "Открытия",
+  "shop_leave": "Осталось",
+  "shop_from": "из",
   "shop_characterBought": "Персонаж куплен",
   "shop_profileBalance": "Баланс профиля",
   "shop_packets": "Пакеты услуг",

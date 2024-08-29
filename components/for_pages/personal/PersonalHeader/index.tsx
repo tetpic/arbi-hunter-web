@@ -169,7 +169,7 @@ export default function PersonalHeader(props: Props) {
         <div className={styles.addCharButton}>
           <Button styleType={['circle', 'icon', 'white', 'invertSvg']}><PlusThinSvg/></Button>
         </div>
-        <P styleType={['w600', 'large']}>Создайте своего уникального персонажа</P>
+        <P styleType={['w600', 'large']}>{t('personal_createYourOwnCharacter')}</P>
       </div>
     }
     {isTabletWidth && props.showMobileBack &&

@@ -248,7 +248,7 @@ export default function MobileSideBar(props: Props) {
       className={styles.link}
       >
         <div className={styles.shopicon}><SupportSvg color={theme === AppTheme.Light && colors.black}/></div>
-        <P useThemeColor styleType={['w500', 'medium']}>Техподдержка</P>
+        <P useThemeColor styleType={['w500', 'medium']}>{t('nav_support')}</P>
         <Button styleType={['icon', 'backTransparent']} className={styles.arrow}><ArrowRightSvg/></Button>
       </Link>
     </div>

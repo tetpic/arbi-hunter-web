@@ -145,9 +145,6 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
     }
   }, [router])
 
-  console.log(props.purchase)
-
-
   return (
     <div 
     className={styles.item} 
@@ -181,7 +178,7 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
         <Button styleType={['gradient', 'wide']} className={styles.button} onClick={()=>showPreviewModal()}>{tariff.price > 0? t('shop_buy'):t('save')}</Button>
       }
       {props.type === 'info' &&  props.purchase.purchaseType === PurchaseType.ContactsOpen &&
-        <P styleType={['medium', 'w600']}>Осталось {props.purchase.subscription.contactsCanOpenCount} из {props.purchase.subscription.tariff.contactsCanOpenCount}</P>
+        <P styleType={['medium', 'w600']}>{t('shop_leave')} {props.purchase.subscription.contactsCanOpenCount} {t('shop_from')} {props.purchase.subscription.tariff.contactsCanOpenCount}</P>
       }
       {props.type === 'info' &&
         <P 

@@ -166,7 +166,7 @@ export default function CVs(props: Props) {
     </div>
     <div className={styles.banners}>
       <Banner  src={'/images/banners/banner2.jpg'} href={'https://mybroconf.ru/?utm_refcode=432cfc094bc320923abdd9bc188de487d268100c'} className={styles.banner}/>
-      <P styleType={['w600', 'huge']}>VIP вакансии</P>
+      <P styleType={['w600', 'huge']}>{t('profile_vipVacancies')}</P>
       {specialVipBanners.map(vacancy =>  {
         return <VacancyItem vacancy={vacancy} smallCard key={vacancy.id + 'vacancies'}/>
       })}

@@ -141,7 +141,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
         {currentCV?.position||currentCV?.categories[0].name||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
       </P>
       <P styleType={['small', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, t('year1'), t('year2'), t('year3'))}</P>
-      <P styleType={['small', 'greyLight', 'w600']} className={styles.fback}>Отклик</P>
+      <P styleType={['small', 'greyLight', 'w600']} className={styles.fback}>{t('application')}</P>
       <P 
       styleType={['small', 'w600' ]}
       className={styles.timeStamp} 

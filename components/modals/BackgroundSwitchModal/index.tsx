@@ -77,7 +77,7 @@ export default function BackgroundSwitchModal(props: Props) {
       width={500}
       height={200}
       />
-      <P useThemeColor>Выбрать здание</P>
+      <P useThemeColor>{t('personal_changeBuilding')}</P>
     </div>
   )
 

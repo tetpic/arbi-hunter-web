@@ -128,16 +128,16 @@ export default function Header(props: Props) {
             const resCount = statsRef.current.find(i=> i.type === el.type)?.count||undefined
             if((el.count > resCount) && resCount) {
               if(index === 0) {
-                appContext.showSnackbar(`У вас ${
-                  (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && 'новый отклик'
-                  || 'новое сообщение'
+                appContext.showSnackbar(`${t('notifications_youhave')} ${
+                  (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && t('notifications_newResponse')
+                  || t('notifications_newMessage')
                 }`, SnackbarType.success, 4000)
               }
               else {
                 setTimeout(() => {
-                  appContext.showSnackbar(`У вас ${
-                    (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && 'новый отклик'
-                    || 'новое сообщение'
+                  appContext.showSnackbar(`${t('notifications_youhave')} ${
+                    (el.type === ItemsNotificationType.NewProposal || el.type === ItemsNotificationType.NewApplication) && t('notifications_newResponse')
+                    || t('notifications_newMessage')
                   }`, SnackbarType.success, 4000)
   
                 }, 4100 * index)

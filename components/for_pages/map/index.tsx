@@ -4,6 +4,7 @@ import Title from '@/components/ui/TitleForSection'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import TelegramSvg from '@/components/svg/TelegramSvg'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
 }
@@ -11,30 +12,31 @@ interface Props {
 
 export default function SiteMap(props: Props) {
   const router = useRouter()
+  const {t} = useTranslation()
 
   return (<div className={styles.root}> 
     <Title title={'Карта сайта'} onBackClick={router.back} className={styles.title}/>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']} useThemeColor>Главная станица </P>
-    <Link href={'/about'}><P styleType={['medium']} useThemeColor className={styles.link}>О компании</P></Link>
-    <Link href={'/rules'}><P styleType={['medium']} useThemeColor className={styles.link}>Условия оказания услуг</P></Link>
-    <Link href={'/privacy'}><P styleType={['medium']} useThemeColor className={styles.link}>Политика конфиденциальности</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>{t('sitemap_mainpade')} </P>
+    <Link href={'/about'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_about')}</P></Link>
+    <Link href={'/rules'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_rules')}</P></Link>
+    <Link href={'/privacy'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_privacy')}</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']} useThemeColor>Работадателям</P>
-    <Link href={'/create/vacancy'}><P styleType={['medium']} useThemeColor className={styles.link}>Создать вакансию</P></Link>
-    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>Каталог резюме</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>{t('sitemap_forHirers')}</P>
+    <Link href={'/create/vacancy'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_createCV')}</P></Link>
+    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_catalogCVs')}</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']} useThemeColor>Соискателям</P>
-    <Link href={'/create/cv'}><P styleType={['medium']} useThemeColor className={styles.link}>Создать резюме</P></Link>
-    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>Каталог вакансий</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>{t('sitemap_forEmployees')}</P>
+    <Link href={'/create/cv'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_createVacancy')}</P></Link>
+    <Link href={'/recruiting'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_catalogVacancies')}</P></Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600', 'alignCenter']} useThemeColor>Техническая поддержка</P>
+    <P styleType={['large', 'w600', 'alignCenter']} useThemeColor>{t('sitemap_support')}</P>
     <Link href={'https://t.me/arbihunter_support'}>
-      <P styleType={['medium', 'alignCenter']} useThemeColor className={styles.link}> <TelegramSvg/>  Support-менеджер</P>
+      <P styleType={['medium', 'alignCenter']} useThemeColor className={styles.link}> <TelegramSvg/>  {t('sitemap_supportManager')}</P>
     </Link>
     <div className={styles.divider}></div>
-    <P styleType={['large', 'w600']} useThemeColor>Партнерам</P>
-    <Link href={'https://t.me/samesonggg'}><P useThemeColor className={styles.link}  styleType={['medium', 'alignCenter']}><TelegramSvg/> По вопросам сотрудничества</P></Link>
+    <P styleType={['large', 'w600']} useThemeColor>{t('sitemap_forPartners')}</P>
+    <Link href={'https://t.me/samesonggg'}><P useThemeColor className={styles.link}  styleType={['medium', 'alignCenter']}><TelegramSvg/> {t('sitemap_partnerQuestions')}</P></Link>
 
 
   </div>)
