@@ -5,6 +5,7 @@ import { SourcesWrapper } from 'context/sources_state'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -51,9 +52,10 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 interface Props {
 }
 export default function VacancyCreate(props: Props) {
+  const {t} = useTranslation()
 
   return  (
-    <ContentLayout hideMobileHeader title={'Редактирование Вакансии'}>
+    <ContentLayout hideMobileHeader title={t('editVacancy')}>
       <CreateVcCvWrapper progress={props?.progress}>
         <SourcesWrapper>
           <Vacancy id={Number(props?.id) as number} vacancy={props?.vacancy}/>

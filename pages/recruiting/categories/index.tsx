@@ -8,6 +8,7 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import CategoryItem from '@/components/ui/CategoriesList/CategoryItem'
 import { useAppContext } from 'context/state'
 import Title from '@/components/ui/TitleForSection'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   categories: ISpecializationCategory[]
@@ -22,6 +23,7 @@ export const getServerSideProps = async(ctx: {req: {cookies: {[key:string]: stri
 export default function RecruitingCategories (props: Props) {
   const router = useRouter()
   const {isTabletWidth} = useAppContext().size
+  const {t} = useTranslation()
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
     CategoryRepository.getSubCategoriesByCategoryId(c.id)
@@ -33,7 +35,7 @@ export default function RecruitingCategories (props: Props) {
   return (<ContentLayout hideMobileHeader>
     <div className={styles.root}>
       {!isTabletWidth && <BackTextButton onClick={() => router.back()}/>}
-      <Title title={'Категории'} onBackClick={() => router.back()}/>
+      <Title title={t('categories')} onBackClick={() => router.back()}/>
       
       <div className={styles.wrapper}>
         {props.categories.map(el => {

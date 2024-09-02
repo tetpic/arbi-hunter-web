@@ -4,6 +4,7 @@ import { CharacterWrapper } from 'context/character_state'
 import { FeedbacksWrapper } from 'context/feedbacks_state'
 import { ProfilePageWrapper } from 'context/profile_page_state'
 import { VacancyWrapper } from 'context/vacancy_state'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -27,9 +28,10 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 }) 
 
 export default function ProfilePage(props: Props) {
+  const {t} = useTranslation()
 
   return (
-    <ContentLayout hideMobileHeader title='Личный кабинет'>
+    <ContentLayout hideMobileHeader title={t('profile')}>
       <ProfilePageWrapper page={props.page}>
         <CharacterWrapper>
           <FeedbacksWrapper>

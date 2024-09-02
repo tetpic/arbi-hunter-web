@@ -80,12 +80,12 @@ export const TranslatePatternType = (p: ProposalRequestType) => {
   }
 }
 
-export const TranslateGenderType = (g: Genders) => {
+export const TranslateGenderType = (g: Genders, t: Translate) => {
   switch(g) {
     case Genders.Female: 
-    return 'Женский'
+    return t('female')
     case Genders.Male: 
-    return 'Мужской'  
+    return t('male')  
   }
 }
 

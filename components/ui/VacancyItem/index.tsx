@@ -137,7 +137,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
           {vacancy.company||vacancy.contactName}
         </P>
         {vacancy.city && vacancy.city?.locName && !vacancy.isRemote &&
-          <p className={styles.city}>г. {vacancy.city?.locName}</p>
+          <p className={styles.city}>{t('ruCity')} {vacancy.city?.locName}</p>
         }
       </div>
 
@@ -145,7 +145,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         {vacancy.name}
       </P>
       {Number(vacancy.totalApplications) === 0 &&
-        <P styleType={['purple', 'small']} className={styles.firstApp}>Откликнитесь первым!</P>
+        <P styleType={['purple', 'small']} className={styles.firstApp}>{t('item_vacancyFirstApplication')}</P>
       }
 
       
@@ -153,37 +153,37 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       styleType={['alignCenter', 'medium', 'w500']}
       useThemeColor
       >
-        <BriefCaseSvg color={isLightTheme&&colors.black} className={styles.briefCase}/> Опыт {TranslateWorkExperience(vacancy.experience, t).toLowerCase()
+        <BriefCaseSvg color={isLightTheme&&colors.black} className={styles.briefCase}/> {t('experience')} {TranslateWorkExperience(vacancy.experience, t).toLowerCase()
       }
       </P>
 
       <SalaryItem vacancy={vacancy}/>
-      <P  styleType={['medium', 'w500', 'greyLight']} >Опубликовано {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>
+      <P  styleType={['medium', 'w500', 'greyLight']} >{t('vacancy_item_published')} {Formatter.formatDate(vacancy.publishedAt, {timeOptions: {hour: 'numeric', minute: 'numeric'}, lang: lang as InterfaceLanguage})}</P>
       {vacancy?.profile?.activityStatus && !smallCard &&
         <p className={styles.activityStatus}>
           <span className={classNames(styles.dot, vacancy.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>
-          {vacancy.profile.activityStatus === ActivityStatus.Online?'В сети':`Был в сети ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt)}`}
+          {vacancy.profile.activityStatus === ActivityStatus.Online?t('vacancy_item_online'):`${t('vacancy_item_offline')} ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt)}`}
         </p>
       }
       {vacancy.proposalsToCurrentUser?.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&
-        <P  styleType={['medium', 'w500']} className={styles.greenBadge} > Вас пригласили!</P>
+        <P  styleType={['medium', 'w500']} className={styles.greenBadge} > {t('vacancy_item_youInvited')}</P>
         ||
         lastProposal?.type === ProposalRequestType.Rejection &&
-        <P styleType={['medium', 'w500']} className={styles.redBadge}> Вам отказали</P>
+        <P styleType={['medium', 'w500']} className={styles.redBadge}> {t('vacancy_item_youRejected')}</P>
       }
       <div className={styles.buttonsWrapper}>
         {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
           <Button 
           styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={openChat}
-          >Перейти в чат</Button>
+          >{t('goToChat')}</Button>
         }
         {!lastProposal &&
           <Button 
           styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={respondHandler}
           >
-            Откликнуться
+            {t('vacancy_item_makeApply')}
           </Button>
         }
         {vacancy.showContactName && 
@@ -191,7 +191,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
           styleType={isSuperVip ? ['goldBordered', 'phoneWide'] : ['black', 'borderBlue', 'phoneWide', 'backTransparent']}
           altStyleType={['whitePurple', 'borderBlue', 'phoneWide']}
           >
-            Контакты
+            {t('vacancy_item_contacts')}
           </Button>
         }
       </div>

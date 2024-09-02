@@ -48,34 +48,34 @@ export default function Notifications(props: Props) {
     switch (type) {
       case ItemsNotificationType.ChatMessage:
         return {
-          name: 'Новые сообщения', 
+          name: t('notifications_newMessages'), 
           icon: <UnreadMessageSvg/>, 
           colors: ['#AC6CDB', '#586DE4'], 
-          countText: count > 0 ? 'Вам отправили сообщение': 'Новых сообщений нет'
+          countText: count > 0 ? t('notifications_youRecieveMessage'): t('notifications_noNewMessages')
         }
       case ItemsNotificationType.NewApplication:
         return {
-          name: 'Отклики', 
+          name: t('notifications_applications'), 
           icon: <ApplicationProposalSvg/>, colors: ['#F3CE7B', '#E76056'], 
-          countText: `У вас  ${count||'нет'} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
+          countText: `${t('notifications_youhave')}  ${count||t('notifications_no')} ${Formatter.pluralize(count, t('notifications_newResponse'), t('notifications_newRespons2'), t('notifications_newResponse3'))}`
         }
       case ItemsNotificationType.NewProposal:
         return {
-          name: 'Отклики', 
+          name: t('notifications_applications'), 
           icon: <ApplicationProposalSvg/>, 
           colors: ['#F3CE7B', '#E76056'],  
-          countText: `У вас  ${count||'нет'} ${Formatter.pluralize(count, 'новый отклик', 'новых отклика', 'новых откликов')}`
+          countText: `${t('notifications_youhave')}  ${count||t('notifications_no')} ${Formatter.pluralize(count, t('notifications_newResponse'), t('notifications_newRespons2'), t('notifications_newResponse3'))}`
         }
       case ItemsNotificationType.Admin:
         return {
-          name: 'Системные уведомления', 
+          name: t('notifications_system'), 
           icon: <SystemSvg/>, 
           colors: ['#2BC56C', '#4E81F3'], 
-          countText: count > 0? 'Новое уведомление': 'Уведомлений нет '
+          countText: count > 0? t('notifications_new'): t('notifications_haveNoNew')
         }
         case ItemsNotificationType.UserBlocked:
         return {
-          name: 'Пользователь заблокирован', 
+          name: t('notifications_userBlocked'), 
           icon: <SecuritySvg/>, 
           colors: ['#7C5BFF', '#39E1C3']
         }
@@ -87,10 +87,10 @@ export default function Notifications(props: Props) {
         }
       case ItemsNotificationType.UserRegistered:
         return {
-          name: 'Безопасность', 
+          name: t('notifications_secure'), 
           icon: <SecuritySvg/>, 
           colors: ['#AC6CDB', '#586DE4'], 
-          countText: 'Вход с нового устройства'
+          countText: t('notifications_newDevice')
         }
       case ItemsNotificationType.UserUnBlocked:
         return {
@@ -106,7 +106,7 @@ export default function Notifications(props: Props) {
         }
       default:
         return {
-          name: 'У вас есть новые сообщения', 
+          name: t('notifications_youHaveNewMessages'), 
           icon: <UnreadMessageSvg/>, 
           colors: ['#AC6CDB', '#586DE4']
         }
@@ -151,13 +151,13 @@ export default function Notifications(props: Props) {
   return (<div className={styles.root}> 
   {page === 'stats' && 
   <>
-  {isTabletWidth && <Title title={'Уведомления'} onBackClick={()=>props.onClose()}/>
+  {isTabletWidth && <Title title={t('notifications')} onBackClick={()=>props.onClose()}/>
     ||
-    <P styleType={['w600', 'large']} useThemeColor>Уведомления</P>
+    <P styleType={['w600', 'large']} useThemeColor>{t('notifications')}</P>
   }
     <div className={styles.banner}>
-      <P styleType={['w500', 'medium']} className={styles.banner__title}>Не забудьте о настройках телефона </P>
-      <P styleType={['small']} className={styles.banner__sub}>Включите уведомления там, чтобы ничего не пропустить</P>
+      <P styleType={['w500', 'medium']} className={styles.banner__title}>{t('notifications_dontForgetAboutPhoneSettings')} </P>
+      <P styleType={['small']} className={styles.banner__sub}>{t('notifications_enableNotifications')}</P>
       <P 
       styleType={['w500', 'medium']}  
       className={styles.banner__button}
@@ -165,7 +165,7 @@ export default function Notifications(props: Props) {
         router.push({pathname: '/settings', query: {page: 'notifications'}})
         props.onClose()
       }}
-      >Перейти в настройки</P>
+      >{t('notifications_goToSettings')}</P>
       <Image 
       src={'/images/notificationPage/bell.png'} 
       className={styles.banner__image}

@@ -12,6 +12,7 @@ import FileRepository from 'data/repositories/FileRepository'
 import { useAppContext } from './state'
 import { MessageType, SnackbarType } from 'types/enums'
 import useWindowFocus from 'use-window-focus'
+import useTranslation from 'next-translate/useTranslation'
 
 
 const wasmURL  = './vmsg/vmsg.wasm'
@@ -58,6 +59,7 @@ interface Props {
 }
 
 export function ChatDialogWrapper(props: Props) {
+  const {t} = useTranslation()
   const {showSnackbar} = useAppContext()
   const userContext = useUserContext()
   const chatContext = useChatContext()
@@ -248,7 +250,7 @@ export function ChatDialogWrapper(props: Props) {
         data.assetsIds = downloadedImages.map(el=> Number(el.id))
       } 
       catch(err) {
-        showSnackbar('Не удалось загрузить изображения', SnackbarType.error)
+        showSnackbar(t('chat_canNotLoadPictures'), SnackbarType.error)
       }
     }
 
@@ -258,7 +260,7 @@ export function ChatDialogWrapper(props: Props) {
         data.assetsIds = [Number(voiceId.id)]
       }
       catch(err) {
-        showSnackbar('Не удалось загрузить голосовое сообщение', SnackbarType.error)
+        showSnackbar(t('chat_canNotLoadVoiceMessage'), SnackbarType.error)
       }
     }
  

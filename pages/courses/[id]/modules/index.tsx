@@ -3,6 +3,7 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { CoursesWrapper } from 'context/courses_state'
 import ICourse from 'data/interfaces/ICourse'
 import CoursesRepository from 'data/repositories/CoursesRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -31,10 +32,11 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
 }) 
 
 export default function CourseModulesPage(props: Props) {
+  const {t} = useTranslation()
  
 
   return (
-    <ContentLayout title={`|Прохождение курса|${+props.course?.name.toString()}`} hideMobileHeader>
+    <ContentLayout title={`| ${t('courses_getThrough')} | ${+props.course?.name.toString()}`} hideMobileHeader>
       <CoursesWrapper  id={Number(props.id)} block={Number(props.block)} module={Number(props.module)} step={Number(props.step)} course={props.course} >
         <ModulesPage />
       </CoursesWrapper>

@@ -4,6 +4,7 @@ import { CookiesType} from 'types/enums'
 import ICourse from 'data/interfaces/ICourse'
 import ContentLayout from 'components/layout/ContentLayout'
 import { CoursesWrapper } from 'context/courses_state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Query {
   id: string
@@ -34,8 +35,9 @@ interface Props {
 
 export default function Course(props: Props) {
   // console.count('course main refreshed')
+  const {t} = useTranslation()
   return (
-    <ContentLayout title={`Курсы|${props.course.name}`} hideMobileHeader>
+    <ContentLayout title={`${t('courses')} | ${props.course.name}`} hideMobileHeader>
       <CoursesWrapper>
         <CurrentCourse course={props.course} page={props.page} id={Number(props.id)}/>
       </CoursesWrapper>

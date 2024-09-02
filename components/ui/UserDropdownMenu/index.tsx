@@ -17,6 +17,7 @@ import DocumentDoubleSvg from 'components/svg/DocumentDoubleSvg'
 import UserSvg from 'components/svg/UserSvg'
 import { getUserImageSource } from 'utils/helpers'
 import { Preset } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 interface Props {
   className?: string
@@ -30,6 +31,7 @@ interface UserData {
 }
 
 export default function UserDropdownMenu(props: Props) {
+  const {t} = useTranslation()
 
   const {currentProfile, user, logout} = useUserContext()
   const profileType = currentProfile?.profileType||null
@@ -44,7 +46,7 @@ export default function UserDropdownMenu(props: Props) {
       case ProfileType.Hirer: 
         return {
           name: `${currentProfile.company}`,
-          sub: 'Компания'
+          sub: t('hirer')
         }
     }
   }

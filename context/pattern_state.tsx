@@ -3,6 +3,7 @@ import PatternRepository from 'data/repositories/PatternRepository'
 import { createContext, useContext, useState } from 'react'
 import {  ProposalRequestType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   patterns: Map<number,IPattern>
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export function PatternWrapper(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const [patterns, setPatternsState] = useState<Map<number, IPattern>>(new Map())
   const [patternsNotExist, setPatternsNotExistState] = useState<Set<ProposalRequestType>>(new Set())
@@ -56,7 +58,7 @@ export function PatternWrapper(props: Props) {
   const createPattern = (p: IPatternBase) => {
     PatternRepository.createPatternText(p)
     .then(res=> {
-      appContext.showSnackbar('Шаблон успешно создан', SnackbarType.success)
+      appContext.showSnackbar(t('pattern_created'), SnackbarType.success)
       setPatterns()
     })
   }
@@ -64,11 +66,11 @@ export function PatternWrapper(props: Props) {
   const editPattern = (p: IPatternBase, id: number) => {
     PatternRepository.editPatternById(p, id)
     .then(_=> {
-      appContext.showSnackbar('Шаблон успешно сохранён', SnackbarType.success)
+      appContext.showSnackbar(t('pattern_saved'), SnackbarType.success)
       setPatterns()
     })
     .catch(_=> {
-      appContext.showSnackbar('Не удалось сохранить шаблон', SnackbarType.error)
+      appContext.showSnackbar(t('pattern_saveFailed'), SnackbarType.error)
     })
   }
 

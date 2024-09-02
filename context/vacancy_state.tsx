@@ -6,6 +6,7 @@ import { IVacancyCvSearchParams } from 'data/interfaces/Common'
 import { ModerationStatusType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   currentVacancy: IVacancy
@@ -53,6 +54,7 @@ interface Props {
 }
 
 export function VacancyWrapper(props: Props) {
+  const {t} = useTranslation()
   const router = useRouter()
   const appContext = useAppContext()
   const [archiveVacancies, setArchiveVacanciesState] = useState<Map<number, IVacancy>>(new Map())
@@ -124,7 +126,7 @@ export function VacancyWrapper(props: Props) {
     VacancyRepository.addToBlackList(id||currentVacancy.id)
     .then(_=> {
       router.back()
-      appContext.showSnackbar('Вакансия добавлена в скрытые вакансии', SnackbarType.success)
+      appContext.showSnackbar(t('vacancy_page_setHidden'), SnackbarType.success)
     })
   }
 

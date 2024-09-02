@@ -15,12 +15,30 @@
   "smm_manager":"SMM-менеджер",
   "development": "Разработка",
   "management": "Менеджмент",
-  
+  "loginEnter":"Вход",
+  "profile": "Личный кабинет",
+
+  "female":"Женский",
+  "male": "Мужчина",
+
+  "workInCompany": "работа в компании",
+  "employment": "Занятость",
+  "notNeeded": "не требуется",
+  "workExperienceNeeded": "Требуемый опыт",
+  "onlyNew": "Только новые",
+  "experience": "Опыт",
+  "workExperience":"Опыт работы",
+  "salary": "Зарплата",
+  "languageKnowledges":"Знание языков",
+  "recruiting": "Рекрутинг",
   "hirer": "Компания",
+  "education": "Образование",
   "hirer_alt": "Работодатель",
   "application": "Отклик",
   "company": "Компания",
   "cv": "Резюме",
+  "editCv": "Редактирование Резюме",
+  "editVacancy": "Редактирование Вакансии",
   "file": "Файл",
   "courses": "Курсы",
   "media": "Медиа", 
@@ -85,6 +103,7 @@
   "edit": "Изменить",
   "download": "Загрузить файл",
   "remote": "Удаленно",
+  "office": "Oфис",
   "ago":"назад",
   "publish": "Опубликовать",
   "reject": "Отказаться",
@@ -112,6 +131,7 @@
   "fillTheField":"Заполните поле",
   "buy":"Купить",
   "notPresented":"Не указан",
+  "mainPageDescription": "ArbiHunter — HR-сервис будущего. Создай профиль, заполни резюме и получи job offer в арбитраже трафика прямо сейчас!",
 
   "pageInDevelopment":"Страница находится в разработке",
   "backToMainPage":"Вернуться на главную страницу",
@@ -314,6 +334,7 @@
 
 
   "courses_onlineEDucation": "Онлайн обучение",
+  "courses_getThrough": "Прохождение курса",
   "courses_beDemandedSpec": "Станьте<0></0> востребованным<0></0> специалистом",
   "courses_personalCollections":"Подборки для вас",
   "courses_feedbacks":"Отзывы",
@@ -387,6 +408,10 @@
   "community_nameFull":"Название сообщества",
   "comunity_addBanner":"Добавить баннер",
   "community_imageFormats":"Фото, видео, gif",
+  "community_elementChanged":"Элемент успешно изменен",
+  "community_elementCreated":"Элемент успешно создан",
+  "community_elementDeleted":"Успешно удалено",
+
 
   
   
@@ -394,6 +419,8 @@
 
 
   "chat_searchPlaceholder":"Поиск по чатам",
+  "chat_canNotLoadPictures":"Не удалось загрузить изображения",
+  "chat_canNotLoadVoiceMessage":"Не удалось загрузить голосовое сообщение",
   "chat_chooseChat": "Выберите чат",
   "chat_folders":"Папки с чатами",
   "chat_main":"Чаты",
@@ -551,6 +578,7 @@
 
 
   "cv_item_setPosition": "Должность не указана",
+  "cv_deleteOrHidden": "Резюме скрыто или удалено",
   "cv_item_noOpensAvailable": "Нет доступных открытий контактов",
   "cv_item_remote": "Удаленно",
   "cv_item_experience": "Опыт работы",
@@ -717,6 +745,11 @@
   "filters_geos": "Гео",
   "filters_addGeos": "Добавить гео",
 
+  "from18to30": "от 18 до 30 лет",
+  "from30to40": "от 30 до 40 лет",  
+  "from40to50": "от 40 до 50 лет",
+  "from60": "больше 60 лет",
+
 
   "fields_addImage": "Добавить изображение",
   "fields_insertText": "Введите текст",
@@ -747,14 +780,32 @@
   "item_relevantCvs": "Подходящие резюме",
   "item_publishAgain":"Разместить повторно",
   "item_vacancyFilled": "Вакансия заполнена на",
+  "item_vacancyFirstApplication": "Откликнитесь первым!",
   "item_cvFilled": "Резюме заполнено на",
   "item_draftAlmostReady": "Черновик почти готов к публикации",
   "item_draftReady": "Черновик готов к публикации",
 
   "notifications_youhave": "У вас",
   "notifications_newResponse": "новый отклик",
+  "notifications_newResponse2": "новых отклика",
+  "notifications_newResponse3": "новых откликов",
   "notifications_newMessage": "новое сообщение",
-
+  "notifications_newMessages": "Новые сообщения",
+  "notifications_youRecieveMessage": "Вам отправили сообщение",
+  "notifications_noNewMessages": "Новых сообщений нет",
+  "notifications_applications": "Отклики",
+  "notifications_no": "нет",
+  "notifications_system": "Системные уведомления",
+  "notifications_new": "Новое уведомление",
+  "notifications_haveNoNew": "Уведомлений нет",
+  "notifications_userBlocked": "Пользователь заблокирован",
+  "notifications_secure": "Безопасность",
+  "notifications_newDevice": "Вход с нового устройства",
+  "notifications": "Уведомления",
+  "notifications_dontForgetAboutPhoneSettings": "Не забудьте о настройках телефона",
+  "notifications_enableNotifications": "Включите уведомления там, чтобы ничего не пропустить",
+  "notifications_goToSettings": "Перейти в настройки",
+  "notifications_youHaveNewMessages": "У вас есть новые сообщения",
 
 
   "login": "Войти",
@@ -780,6 +831,7 @@
   
   
   "registration": "Регистрация",
+  "registration_accountNotExist": "Аккаунт не существует",
   "registration_tip1": "Продолжая регистрацию, Вы принимаете",
   "registration_tip2": "политику конфиденциальности",
   "registration_tip3": "правила сервиса",
@@ -1002,6 +1054,7 @@
 
 
   "profile_active": "Активные",
+  "profile_confirmRemoveAccount": "Удалить существующий аккаунт?",
   "profile_vipVacancies":"VIP вакансии",
   "profile_noSavedCvs":"Нет сохраненных резюме",
   "profile_settings": "Настройки профиля",
@@ -1037,6 +1090,11 @@
   "profile_emailNotifications":"Почтовые рассылки",
   "profile_pushNotifications":"Push-уведомления",
 
+  "pattern_created":"Шаблон успешно создан",
+  "pattern_saved":"Шаблон успешно сохранён",
+  "pattern_saveFailed":"Не удалось сохранить шаблон",
+
+
   "proposalModal_chooseVc":"Выберите вакансию",
   "proposalModal_invite":"Пригласить",
   "proposalModal_cantSendReject":"Невозможно отправить отказ",
@@ -1050,6 +1108,10 @@
   "personal_changeBackground": "Изменить фон",
   "personal_changeBuilding": "Выбрать здание",
   "personal_createYourOwnCharacter": "Создайте своего уникального персонажа",
+  "personal_chooseEditCharacterTariff": "Выберите тариф редактирования персонажа",
+  "personal_notEnoughMoney": "Недостаточно средств. Хотите пополнить баланс?",
+  "personal_imageSaved": "Изображение сохранено",
+  
   "personal_changeBanner": "Изменить баннер",
   "personal_photoVideoGif": "Фото, видео, gif",
   "personal_text":"Текст",
@@ -1142,6 +1204,8 @@
 
 
   "vacancy_page_edit":"Редактировать",
+  "vacancy_page_setHidden":"Вакансия добавлена в скрытые вакансии",
+
   "vacancy_page_removedOrHidden":"Вакансия скрыта или удалена",
   "vacancy_page_salaryCounter":"на руки",
   "vacancy_page_expires":"Истекает",
@@ -1169,6 +1233,18 @@
   "vacancy_item_removeInfoShort":"Отменить удаление будет невозможно.",
   "vacancy_item_hideVacancy":"Скрыть вакансию",
   "vacancy_item_actionsWithVacancy":"Действия с вакансией",
+  "vacancy_item_published":"Опубликовано",
+  "vacancy_item_youInvited":"Вас пригласили",
+  "vacancy_item_youRejected":"Вам отказали",
+  "vacancy_item_makeApply":"Откликнуться",
+  "vacancy_item_contacts":"Контакты",
+  "vacancy_item_online":"В сети",
+  "vacancy_item_offline":"Был в сети",
+  
+  
+  
+
+
 
   "vacancies_searchInMy": "Поиск в моих вакансиях",
   "vacancies_myVacancies": "Мои вакансии",
@@ -1202,7 +1278,8 @@
 
 
 
-  "responses_onlyNew":"Только новые"
+  "responses_onlyNew":"Только новые",
+  "responses": "Отклики"
 
 
 

@@ -5,6 +5,7 @@ import { IArticle } from 'data/interfaces/IArticle'
 import ICommunity from 'data/interfaces/ICommunity'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CommunitiesRepository from 'data/repositories/CommunitiesRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CategoryType, CookiesType } from 'types/enums'
 
 interface Props {
@@ -31,8 +32,9 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 
 
 export default function Media(props: Props) {
+  const {t} = useTranslation()
   return (
-    <ContentLayout withFooter title={'Медиа'}>
+    <ContentLayout withFooter title={t('media')}>
       <MediaLanding isMobile={props.isMobile} categories={props.categories} communities={props.communities} news={props.news} newsCompilations={props.newsCompilations} />
     </ContentLayout>
   )

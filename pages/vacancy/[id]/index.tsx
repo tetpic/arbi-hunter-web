@@ -54,15 +54,15 @@ export default function Vacancy(props: Props) {
   return (<>
   {props.vacancy &&
     <NextSeo
-      title={'ArbiHunter | Вакансия ' + props.vacancy.name}
-      description={'Зарплата: ' + getSalary({vacancy: props.vacancy}, t)}
+      title={`ArbiHunter | ${t('vacancy')} ` + props.vacancy.name}
+      description={`${t('salary')}: ` + getSalary({vacancy: props.vacancy}, t)}
       openGraph={{
         type: 'website',
         url: `${process.env.HOST_ROOT}/vacancy/${props.vacancy.id}`,
-        title: 'ArbiHunter | ' + props.vacancy.name + ` | работа в компании ${props.vacancy.company}`,
-        description: 'Зарплата: ' 
+        title: 'ArbiHunter | ' + props.vacancy.name + ` | ${t('workInCompany')} ${props.vacancy.company}`,
+        description: `${t('salary')}: ` 
         + getSalary({vacancy: props.vacancy}, t) 
-        + `. Требуемый опыт: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ' лет': 'не требуется'}. Занятость: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?'Удаленно. ':'Oфис. '} Работа в компании ${props.vacancy.company}.`,
+        + `. ${t('workExperienceNeeded')}: ${props.vacancy.experience?TranslateWorkExperience(props.vacancy.experience, t).toLowerCase() + ` ${t('year3')}` : t('notNeeded')}. ${t('employment')}: ${TranslateEmploymentType(props.vacancy.employment, t)}. ${props.vacancy.isRemote?`${t('remote')}. `:`${t('office')}. `} ${t('workInCompany')} ${props.vacancy.company}.`,
         images: [
           {
             url: `${process.env.HOST_ROOT}/api/share-image/vacancy/${props.vacancy.id}`,

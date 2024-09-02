@@ -15,7 +15,7 @@ export default function SiteMap(props: Props) {
   const {t} = useTranslation()
 
   return (<div className={styles.root}> 
-    <Title title={'Карта сайта'} onBackClick={router.back} className={styles.title}/>
+    <Title title={t('footer_siteMap')} onBackClick={router.back} className={styles.title}/>
     <div className={styles.divider}></div>
     <P styleType={['large', 'w600']} useThemeColor>{t('sitemap_mainpade')} </P>
     <Link href={'/about'}><P styleType={['medium']} useThemeColor className={styles.link}>{t('sitemap_about')}</P></Link>

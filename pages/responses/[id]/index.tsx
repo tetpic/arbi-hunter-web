@@ -1,6 +1,7 @@
 import Responses from 'components/for_pages/responses'
 import ContentLayout from 'components/layout/ContentLayout'
 import { ProfileType } from 'data/interfaces/IRegistration'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -26,9 +27,10 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 
 
 export default function ResponseItem(props: Props) {
+  const {t} = useTranslation()
   
   return ( 
-    <ContentLayout title={'Отклики'} hideMobileHeader>
+    <ContentLayout title={t('responses')} hideMobileHeader>
       <Responses id={Number(props.id)}/>
     </ContentLayout>
   )

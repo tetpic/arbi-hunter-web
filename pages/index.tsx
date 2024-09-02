@@ -13,6 +13,7 @@ import { IUserProfile } from 'data/interfaces/IUser'
 import BackgroundRepository from 'data/repositories/BackgroundsRepository'
 import PersonalRepository from 'data/repositories/PersonalRepository'
 import UserRepository from 'data/repositories/UserRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 interface Query {
@@ -51,11 +52,12 @@ export const getServerSideProps = (async (context: {req: { cookies: { [x: string
 
 export default function Page(props: Props) {
   const {isTabletWidth} = useAppContext().size  
+  const {t} = useTranslation()
   
   return (
     <ContentLayout 
-    title={'Главная страница'} 
-    description='ArbiHunter — HR-сервис будущего. Создай профиль, заполни резюме и получи job offer в арбитраже трафика прямо сейчас!'  
+    title={t('sitemap_mainpade')} 
+    description={t('mainPageDescription')}  
     withFooter={!isTabletWidth || !Boolean(props?.profile)}disabledNavBar={!props?.profile} 
     withMobileMenu={Boolean(props?.profile)}>
       <PersonalWrapper profile={props?.profile} initialBacks={props?.backgrounds} personalPage={props?.personalPage}>

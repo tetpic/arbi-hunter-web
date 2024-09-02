@@ -62,16 +62,16 @@ export default function Cv(props: Props) {
     <>
     {props.cv &&
      <NextSeo
-      title={'ArbiHunter | Резюме ' + props.cv?.categories[0].name}
-      description={`Резюме ${props.cv.categories[0].name}`+' Зарплата: ' + getSalary({cv: props.cv}, t)}
+      title={`ArbiHunter | ${t('cv')} ` + props.cv?.categories[0].name}
+      description={`${t('cv')} ${props.cv.categories[0].name}`+` ${t('salary')}: ` + getSalary({cv: props.cv}, t)}
       openGraph={{
         type: 'website',
       url: `${process.env.HOST_ROOT}/cv/${props.cv.id}`,
-      title: 'ArbiHunter | Резюме ' +  props.cv.categories[0].name,
+      title: `ArbiHunter | ${t('cv')} ` +  props.cv.categories[0].name,
       description: [
-        `Зарплата:  ${getSalary({cv: props.cv}, t)}`,
-        `Опыт работы: ${Formatter.fullTimeLine(props.cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}`,
-        props.cv.languageKnowledges.length>0&&`Знание языков: ${props.cv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ' - ' + TranslateLanguageKnowLevel(el.level, true)})).map(el => el.name).join(', ')}`
+        `${t('salary')}:  ${getSalary({cv: props.cv}, t)}`,
+        `${t('workExperience')}: ${Formatter.fullTimeLine(props.cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}`,
+        props.cv.languageKnowledges.length>0&&`${t('languageKnowledges')}: ${props.cv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ' - ' + TranslateLanguageKnowLevel(el.level, true)})).map(el => el.name).join(', ')}`
       ].filter(Boolean).join(', '),
       images: [
         {
@@ -90,7 +90,7 @@ export default function Cv(props: Props) {
       />
     }
   
-  <ContentLayout title='Резюме' hideMobileHeader>
+  <ContentLayout title={t('cv')} hideMobileHeader>
     <PersonalWrapper key={'cv_page'+props.id}>
       <FeedbacksWrapper>
         <VacancyWrapper>
@@ -99,7 +99,7 @@ export default function Cv(props: Props) {
           <FavoritesFolderWrapper>
             {props.cv
               ? <CvPage cvId={props.id}/>
-              : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>Резюме скрыто или удалено</P>
+              : <P styleType={['textCenter']} style={{width: '100%', paddingBlock: '100px'}}>{t('cv_deleteOrHidden')}</P>
             }
           </FavoritesFolderWrapper>
             </TariffWrapper>

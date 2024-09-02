@@ -15,6 +15,7 @@ import { ICV } from 'data/interfaces/ICV'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import VacancyRepository from 'data/repositories/VacancyRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { useEffect } from 'react'
 import { CookiesType } from 'types/enums'
 import { AppMetricaEvent, sendToMetrika } from 'utils/sendToMetrics'
@@ -61,6 +62,7 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
 }) 
 
 export default function Recruiting(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const profileType = userContext.profileType
   const params: FilterParams  = props.filters&&JSON.parse(props.filters)||{}
@@ -73,7 +75,7 @@ export default function Recruiting(props: Props) {
   }, [])
   
 
-  return (<ContentLayout hideMobileHeader title='Рекрутинг'>
+  return (<ContentLayout hideMobileHeader title={t('recruiting')}>
     <SourcesWrapper>
     <CreateVcCvWrapper>
     <FeedbacksWrapper>

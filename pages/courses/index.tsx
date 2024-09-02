@@ -7,6 +7,7 @@ import { ICategory } from 'data/interfaces/Common'
 import ICourse, { ICourseFeedback } from 'data/interfaces/ICourse'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CategoryType, Languages } from 'types/enums'
 import Formatter from 'utils/formatter'
 
@@ -41,9 +42,10 @@ export const getServerSideProps = (async (context: { req: { cookies: { [x: strin
 
 
 export default function Courses(props: Props) {
+  const {t} = useTranslation()
   
   return (
-    <ContentLayout withFooter title={'Онлайн обучение'} hideMobileHeader>
+    <ContentLayout withFooter title={t('courses_onlineEDucation')} hideMobileHeader>
       <CoursesWrapper>
         <MediaWrapper>
           <CoursesMain 

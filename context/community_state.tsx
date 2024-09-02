@@ -10,6 +10,7 @@ import { CategoryType, SnackbarType } from 'types/enums'
 import { useAppContext } from './state'
 import { useUserContext } from './user_state'
 import { IPagination } from 'types/types'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   communities: Map<number, ICommunity>
@@ -40,6 +41,7 @@ interface Props {
 }
 
 export function CommunityWrapper(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const profileType = userContext?.currentProfile?.profileType||null
@@ -202,7 +204,7 @@ export function CommunityWrapper(props: Props) {
         state.set(id, res)
         return new Map(state)
       })
-      appContext.showSnackbar('Элемент успешно изменен', SnackbarType.success)
+      appContext.showSnackbar(t('community_elementChanged'), SnackbarType.success)
       return true
     }
     else {
@@ -211,7 +213,7 @@ export function CommunityWrapper(props: Props) {
         const oldState = [...state.entries()]
         return new Map([[res.id, res], ...oldState])
       })
-      appContext.showSnackbar('Элемент успешно создан', SnackbarType.success)
+      appContext.showSnackbar(t('community_elementCreated'), SnackbarType.success)
       return true
     }
   }
@@ -222,7 +224,7 @@ export function CommunityWrapper(props: Props) {
       state.delete(id)
       return new Map(state)
     })
-    appContext.showSnackbar('Успешно удалено', SnackbarType.success)
+    appContext.showSnackbar(t('community_elementDeleted'), SnackbarType.success)
     return true
   }
 

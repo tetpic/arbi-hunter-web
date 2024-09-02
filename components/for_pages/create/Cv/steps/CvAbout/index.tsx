@@ -40,8 +40,8 @@ export default function CvAbout(props: Props) {
   name='gender' 
   label={t('gender')}
   options={[
-    {label: TranslateGenderType(Genders.Male), value: Genders.Male},
-    {label: TranslateGenderType(Genders.Female), value: Genders.Female},
+    {label: TranslateGenderType(Genders.Male, t), value: Genders.Male},
+    {label: TranslateGenderType(Genders.Female, t), value: Genders.Female},
   ]}/>
 
   <div className={styles.inputsWrapper}>

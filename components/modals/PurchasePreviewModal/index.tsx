@@ -255,7 +255,7 @@ export default function PurchasePreviewModal(props: Props) {
           props.onClose()
         }}
         >
-          Создать
+          {t('create')}
         </Button>
         ||
       <Button 

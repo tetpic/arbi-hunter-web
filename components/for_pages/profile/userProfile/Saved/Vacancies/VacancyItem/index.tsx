@@ -35,7 +35,6 @@ interface Props {
   status?: ApplicationStatus
 }
 
-//TODO: доделать всплывашку OptionsModal
 export default function VacancyItem({vc, item, refreshCallback, onRemove, status}: Props) {  
   const appContext = useAppContext()
   const router = useRouter()

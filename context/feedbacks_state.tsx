@@ -246,18 +246,18 @@ export function FeedbacksWrapper(props: Props) {
     switch(p) {
       case FilterItems.Age:
         arr = ['18 30', '30 40', '40 50', '50 100']
-        return {type:p, items: arr, translatedItems: ['от 18 до 30 лет', 'от 30 до 40 лет', 'от 40 до 50 лет', 'больше 60 лет'], activeItem: null, translatedActiveItem: null,  translation: 'Возраст'}
+        return {type:p, items: arr, translatedItems: [t('from18to30'), t('from30to40'), t('from40to50'), t('from50to100'), t('from60')], activeItem: null, translatedActiveItem: null,  translation: t('age')}
       case FilterItems.Education:
         arr = arrayFromEnum(EducationTypes)
-        return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el, t)), activeItem: null, translatedActiveItem: null, translation: 'Образование'}
+        return {type:p, items: arr, translatedItems: arr.map(el=>TranslateEducationType(el, t)), activeItem: null, translatedActiveItem: null, translation: t('education')}
       case FilterItems.Experience:
         arr = arrayFromEnum(WorkExperience)
-        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el, t)), activeItem: null, translatedActiveItem: null,  translation: 'Опыт'}
+        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateWorkExperience(el, t)), activeItem: null, translatedActiveItem: null,  translation: t('experience')}
       case FilterItems.Gender:
         arr = arrayFromEnum(Genders)
-        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateGenderType(el)), activeItem: null, translatedActiveItem: null,  translation: 'Пол'}
+        return { type:p, items: arr, translatedItems: arr.map(el=> TranslateGenderType(el, t)), activeItem: null, translatedActiveItem: null,  translation: t('gender')}
       case FilterItems.New:
-        return {type: p, translation: 'Только новые'}
+        return {type: p, translation: t('onlyNew')}
     }
   }
 

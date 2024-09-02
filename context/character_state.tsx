@@ -9,6 +9,7 @@ import { ModalType, SnackbarType } from 'types/enums'
 import { useRouter } from 'next/router'
 import { IConfirmModalProps } from '@/components/modals/ConfirmModal'
 import { ShopPages } from '@/components/for_pages/shop'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   init: ()=> Promise<boolean>,
@@ -48,6 +49,7 @@ interface Props {
 }
 
 export function CharacterWrapper(props: Props) {
+  const {t} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const router = useRouter()
@@ -132,7 +134,7 @@ export function CharacterWrapper(props: Props) {
       return true
     })
     .catch(err => {
-      appContext.showSnackbar('Недостаточно средств', SnackbarType.error)
+      appContext.showSnackbar(t('shop_Insufficient_funds'), SnackbarType.error)
       router.push('/shop')
       return false
     })
@@ -176,7 +178,7 @@ export function CharacterWrapper(props: Props) {
     }
     setSavingProcess(true)   
     if(!characterId.current) {
-      appContext.showSnackbar('Выберите тариф редактирования персонажа', SnackbarType.error)
+      appContext.showSnackbar(t('personal_chooseEditCharacterTariff'), SnackbarType.error)
       setTimeout(() => {
         router.push({pathname: '/shop', query: {page: ShopPages.Packets}})
       })
@@ -194,7 +196,7 @@ export function CharacterWrapper(props: Props) {
       }))
       .catch(_ => {
         const _args: IConfirmModalProps = {
-          text: 'Недостаточно средств. Хотите пополнить баланс?',
+          text: t('personal_notEnoughMoney'),
           callback: () => {
             router.push('/shop')
           }
@@ -225,7 +227,7 @@ export function CharacterWrapper(props: Props) {
       return
     })
       
-    appContext.showSnackbar('Изображение сохранено', SnackbarType.success)
+    appContext.showSnackbar(t('personal_imageSaved'), SnackbarType.success)
     userContext.updateUser()
     setSavingProcess(false)
 

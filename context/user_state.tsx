@@ -9,6 +9,7 @@ import UserRepository from 'data/repositories/UserRepository'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from './state'
 import { clearObject } from 'utils/helpers'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   token: string,
@@ -42,6 +43,7 @@ interface Props {
 }
 
 export function UserWrapper(props: Props) {
+  const {t} = useTranslation()
   const appContext = useAppContext()
   const router = useRouter()
 
@@ -78,7 +80,7 @@ export function UserWrapper(props: Props) {
         
         setCurrentProfileState(data.profiles[0])
         if(data.profiles.length === 0 && data.isRegistrationCompleted) {
-          appContext.showSnackbar('Аккаунт не существует', SnackbarType.error)
+          appContext.showSnackbar(t('registration_accountNotExist'), SnackbarType.error)
           router.push('/registration')
         }
       }
@@ -141,7 +143,7 @@ export function UserWrapper(props: Props) {
   }
 
   const removeCurrentProfile = () => {
-    if(confirm('Удалить существующий аккаунт?')) {
+    if(confirm(t('profile_confirmRemoveAccount'))) {
       UserRepository.removeCurrentUserByType(currentProfile?.profileType)
       .then(_=>{
         logout()

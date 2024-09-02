@@ -5,6 +5,7 @@ import { FavoritesFolderWrapper } from 'context/favorites_folder_state'
 import { IFolder } from 'data/interfaces/IFolder'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import FavoritesFolderRepository from 'data/repositories/FavoritesFolderRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { CookiesType } from 'types/enums'
 
 
@@ -27,9 +28,10 @@ interface Props {
 }
 
 export default function FavoritesPage(props: Props) {
+  const {t} = useTranslation()
 
   return (
-    <ContentLayout title='Избранное' hideMobileHeader withMobileMenu={props.profileType === ProfileType.Hirer }>
+    <ContentLayout title={t('favorites_title')} hideMobileHeader withMobileMenu={props.profileType === ProfileType.Hirer }>
       {props.profileType === ProfileType.Hirer 
         ? <FavoritesFolderWrapper initialFolders={props.folders}>
             <FavoritesPageHirer/> 

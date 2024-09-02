@@ -3,6 +3,7 @@ import ContentLayout from 'components/layout/ContentLayout'
 import { useUserContext } from 'context/user_state'
 import UserRepository from 'data/repositories/UserRepository'
 import Cookies from 'js-cookie'
+import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import { CookiesType } from 'types/enums'
 
@@ -39,6 +40,7 @@ export const getServerSideProps = (async (context: {query: {token: string}}) => 
 
 export default function LoginPage(props: Props) { 
   const userContext = useUserContext()
+  const {t} = useTranslation()
   const router = useRouter()
   if(props.queryToken) {
     userContext.setToken(props.queryToken)
@@ -48,7 +50,7 @@ export default function LoginPage(props: Props) {
   }
 
   return ( 
-    <ContentLayout title={'Вход'} hideMobileHeader>
+    <ContentLayout title={t('loginEnter')} hideMobileHeader>
       <Login/>
     </ContentLayout>
   )
