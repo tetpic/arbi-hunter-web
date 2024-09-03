@@ -232,8 +232,8 @@ export default function VacancyPage(props: Props) {
         className={styles.stats}
         items={[
           {name: t('vacancy_page_shows'), count: currentVacancy.totalShows},
-          {name: t('vacancy_page_views'), count: currentVacancy.totalViews},
-          {name: t('vacancy_page_applications'), count: currentVacancy.totalApplications},
+          {name: t('vacancy_page_views'), count: currentVacancy.totalViews, link: '/views?vacancyId='+currentVacancy.id},
+          {name: t('vacancy_page_applications'), count: currentVacancy.totalApplications, link: '/responses/'+currentVacancy.id+'/'},
         ]} 
         title={t('vacancy_page_statsTitle')} 
         />

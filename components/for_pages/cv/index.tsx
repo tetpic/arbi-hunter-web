@@ -52,6 +52,8 @@ import { useFeedbacksContext } from 'context/feedbacks_state'
 import { useTariffContext } from 'context/tariff_state'
 import PurchaseRepository from 'data/repositories/PurchaseRepository'
 import Banner from '@/components/ui/Banner'
+import { ImageViewerModalProps } from '@/components/modals/ImageViewerModal'
+import ImageHelper from 'utils/ImageHelper'
 
 
 interface Props {
@@ -253,7 +255,16 @@ export default function CvPage(props: Props) {
 
   const userCard = (<>
     <div className={classNames(styles.top, currentCv?.isContactsOpen&&styles.topActive)} onClick={()=>currentCv?.isContactsOpen&&openProfile()}>
-      <UserPic size={80} image={getUserImageSource(currentCv?.profile, Preset.iconCrop)}/>
+      <UserPic 
+      size={80} 
+      image={getUserImageSource(currentCv?.profile, Preset.iconCrop)} 
+      onClick={() => {
+        if(currentCv?.profile?.image?.source && !currentCv?.profile.useOwnLogo) {
+          appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {
+            src: ImageHelper.urlFromFile(currentCv?.profile?.image, Preset.mdCrop),
+          })
+        }
+      }}/>
       {currentCv?.isContactsOpen &&
         <P 
         useThemeColor
@@ -424,8 +435,9 @@ export default function CvPage(props: Props) {
         className={styles.stats}
         items={[
           {name: t('cv_pagee_shows'), count: currentCv?.totalShows},
-          {name: t('cv_pagee_views'), count: currentCv?.totalViews},
-          {name: t('cv_page_applications'), count: currentCv?.totalApplications},
+          {name: t('cv_pagee_views'), count: currentCv?.totalViews, link: `/views?cvId=${currentCv?.id}`},
+          {name: t('cv_page_applications'), count: currentCv?.totalApplications, link: '/profile?page=feedbacks'},
+  
         ]} 
         title={t('cv_page_statsTitle')}/>
         {currentCv.published&&!currentCv.moderationRejectReason && 
