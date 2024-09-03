@@ -20,8 +20,8 @@ export default function ImageViewerModal(props: Props) {
   const theme = appContext.theme
   const args = appContext.modalArguments as ImageViewerModalProps
 
-  return (<ModalLayout className={styles.layout}>
-    <ModalBody>
+  return (<ModalLayout className={styles.layout} >
+    <ModalBody className={styles.body}>
       <Button styleType={['icon', 'backTransparent']} onClick={props.onClose}><CrossSvg color={theme === AppTheme.Light && colors.black}/></Button>
       <img onClick={props.onClose} src={args.src} alt={'image viewer'}/>
     </ModalBody>
