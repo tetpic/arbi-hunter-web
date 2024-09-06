@@ -771,6 +771,7 @@
   "registration_haveAccount": "Уже есть аккаунт?",
   "registration_phoneExist": "Такой номер уже есть в системе",
   "registration_emailExist": "Такой email уже есть в системе",
+  "registration_companyExist": "Такая компания уже есть в системе",
   "registration_enterCorrectPhone": "Введите корректный номер",
   "registration_enterCorrectEmail": "Введите корректный email",
   "registration_chooseCityAndCountry": "Выберите страну и город из списка",

@@ -79,11 +79,11 @@ export default function CvPreview(props: Props) {
         styleType={['greyLight', 'w500', 'medium']}>
           {[
             currentCv.gender === 'male'&&t('gender_male')||currentCv.gender === 'female' &&t('gender_female')||null, 
-            currentCv.birthday&&getAge(currentCv.age?currentCv.age: Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
+            currentCv.birthday&&getAge(currentCv.age ? currentCv.age : currentCv.birthday && Number(Formatter.formatDistanceToNow(currentCv.birthday, {strict: true}))), 
             currentCv.city?.locName].filter(Boolean).join(' · ')
           }
         </P>
-        <P styleType={['w600', 'large']} useThemeColor>{creationContext.activeSubCategory[0].name}</P>
+        <P styleType={['w600', 'large']} useThemeColor>{creationContext.activeSubCategory?.[0]?.name}</P>
         <SalaryItem cv={currentCv}/>
 
       </PreviewItem>
@@ -177,9 +177,9 @@ export default function CvPreview(props: Props) {
           <HtmlText text={currentCv.bio} className={styles.bio}/>
         </PreviewItem>
       }
-
+      
         <PreviewItem 
-        title={`${t('create_workExperience')} ${Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
+        title={`${t('create_workExperience')} ${currentCv.experienceInfo.length && Formatter.fullTimeLine(currentCv.experienceInfo.map(el=> [el.fromDate, el.toDate]))}` }
         onClick={() => props.onBack(3)}
         >
           {currentCv.experienceInfo.length > 0 && 
@@ -203,8 +203,8 @@ export default function CvPreview(props: Props) {
         onClick={() => props.onBack(4)}
         > 
           <P styleType={['w500', 'medium']} useThemeColor className={styles.educationGrade}>{TranslateEducationType(currentCv.education, t)}</P>
-          { currentCv.educationInfo.length > 0 && 
-            currentCv.educationInfo.map(el=> {
+          { currentCv.educationInfo?.length > 0 && 
+            currentCv.educationInfo?.map(el=> {
               return <div className={styles.experience}>
                 <P styleType={['w500', 'medium']} useThemeColor>{el.institution}</P>
                 {el.speciality &&
@@ -219,35 +219,35 @@ export default function CvPreview(props: Props) {
           }
         </PreviewItem>
 
-      {creationContext.helpObjects.skills && creationContext.helpObjects.skills.size > 0 &&
+      {creationContext.helpObjects?.skills && creationContext.helpObjects?.skills?.size > 0 &&
         <PreviewItem 
         title={t('create_cv_skills')}
         onClick={() => props.onBack(5)}
         >
-          <TagList tags={[...creationContext.helpObjects.skills.values()].map(el => ({name: el.title}))} />
+          <TagList tags={[...creationContext.helpObjects?.skills?.values()].map(el => ({name: el.title}))} />
         </PreviewItem>
       }
 
-      {creationContext.helpObjects.activeSources && creationContext.helpObjects.activeSources.size > 0 &&
+      {creationContext.helpObjects?.activeSources && creationContext.helpObjects?.activeSources?.size > 0 &&
         <PreviewItem title={t('cv_page_sources')} onClick={()=>props.onBack(5)}>
-          <TagList tags={[...creationContext.helpObjects.activeSources.values()].map(el => ({name: el.title}))}/>
+          <TagList tags={[...creationContext.helpObjects?.activeSources?.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }      
 
-      {creationContext.helpObjects.activeGeos && creationContext.helpObjects.activeGeos.size > 0 &&
+      {creationContext.helpObjects?.activeGeos && creationContext.helpObjects?.activeGeos.size > 0 &&
         <PreviewItem title={t('cv_page_geos')} onClick={()=>props.onBack(5)}>
-          <TagList tags={[...creationContext.helpObjects.activeGeos.values()].map(el => ({name: el.title}))}/>
+          <TagList tags={[...creationContext.helpObjects?.activeGeos.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
-      {creationContext.helpObjects.activeVerticals && creationContext.helpObjects.activeVerticals.size > 0 &&
+      {creationContext.helpObjects?.activeVerticals && creationContext.helpObjects?.activeVerticals?.size > 0 &&
         <PreviewItem title={t('cv_page_verticals')} onClick={()=>props.onBack(5)}>
-          <TagList tags={[...creationContext.helpObjects.activeVerticals.values()].map(el => ({name: el.title}))}/>
+          <TagList tags={[...creationContext.helpObjects?.activeVerticals?.values()].map(el => ({name: el.title}))}/>
         </PreviewItem>
       }
 
 
-      {currentCv.languageKnowledges && currentCv.languageKnowledges.length > 0 && 
+      {currentCv.languageKnowledges && currentCv.languageKnowledges?.length > 0 && 
         <PreviewItem 
         title={t('create_languageKnowledges')}
         onClick={() => props.onBack(5)}
@@ -256,7 +256,7 @@ export default function CvPreview(props: Props) {
         </PreviewItem>
       }
 
-      {(currentCv.portfolio || (currentCv.assets && currentCv.assets.length > 0)) &&
+      {(currentCv.portfolio || (currentCv.assets && currentCv.assets?.length > 0)) &&
         <PreviewItem 
         title={t('cv_page_portfolio')}
         onClick={() => props.onBack(5)}
