@@ -67,7 +67,7 @@ export default function CvItem({cv, ...props}: Props) {
     if(props.initialVacancy) {
       const args:IProposalTextModalProps = {application: null, 
         type: ApplicationBSSelectType.ThisVacancy, 
-        vcId: props.initialVacancy.id, 
+        vcId: props.initialVacancy?.id, 
         cv, 
         onSubmit: ()=>props.onChangeItem(),
         createProposal: feedbacksContext.createProposal
@@ -79,7 +79,7 @@ export default function CvItem({cv, ...props}: Props) {
     }
     const args = { cv, 
       page: ProposalModalPager.OtherVacancy,
-      activeVacancies: [...vacancyContext.activeVacancies.values()],
+      activeVacancies: [...vacancyContext.activeVacancies?.values()],
       createProposal: feedbacksContext.createProposal
     }
     isTabletWidth
@@ -91,7 +91,7 @@ export default function CvItem({cv, ...props}: Props) {
     e.preventDefault()
     e.stopPropagation()
 
-    const activeChat = cv.proposalsByCurrentUser.filter(el => el.status === ApplicationStatus.Accepted||el.status === ApplicationStatus.Applied)
+    const activeChat = cv.proposalsByCurrentUser?.filter(el => el.status === ApplicationStatus.Accepted||el.status === ApplicationStatus.Applied)
     if(activeChat[0]){
       ChatRepository.getChatByContactId(cv.profile.id, {proposalId: activeChat[0].id})
       .then(res=>{
@@ -103,7 +103,7 @@ export default function CvItem({cv, ...props}: Props) {
   }
 
   const purchaseFreemItem = () => {
-    const freeTariffId = [...tariffContext.packets.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen)[0]?.id
+    const freeTariffId = [...tariffContext?.packets?.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen)[0]?.id
     if(freeTariffId) {
       PurchaseRepository.purchaseItem({
         tariffId: freeTariffId
@@ -122,7 +122,7 @@ export default function CvItem({cv, ...props}: Props) {
         setIsLoading(false)
       })
     }
-    console.log([...tariffContext.packets.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen))
+    // console.log([...tariffContext.packets?.values()].filter(el => el.price === 0 && el.purchaseType === PurchaseType.ContactsOpen))
     // PurchaseRepository.purchaseItem({
       //   tariffId: tariffContext.
       // })
@@ -182,7 +182,7 @@ export default function CvItem({cv, ...props}: Props) {
     e.stopPropagation()
     const [signal] = getNewSignal('likeHandler')
     if(!cv.isSavedByCurrentProfile) {
-      userContext.currentProfile.addSavedToDefaultFolder?addToSaved(signal):showFolderModal(signal)
+      userContext.currentProfile?.addSavedToDefaultFolder ? addToSaved(signal) : showFolderModal(signal)
     }
     else {
       removeFromSaved(signal)
@@ -192,7 +192,7 @@ export default function CvItem({cv, ...props}: Props) {
   const rejectionHandler = () => {
     const _args: IProposalTextModalProps = {
       type: ApplicationBSSelectType.Reject, 
-      application: cv.applicationsToCurrentUser[0]?({...cv.applicationsToCurrentUser?.[0], proposals: []} as IApplication):({...cv.proposalsByCurrentUser?.[0], proposals: []} as IApplication), 
+      application: cv.applicationsToCurrentUser?.[0]?({...cv.applicationsToCurrentUser?.[0], proposals: []} as IApplication):({...cv.proposalsByCurrentUser?.[0], proposals: []} as IApplication), 
       cv: cv, 
       vcId: cv.applicationsToCurrentUser?.[0]?.vacancyId||cv.proposalsByCurrentUser?.[0]?.vacancyId,
       onSubmit: (type?: ProposalRequestType, text?: string, proposal?: IProposal) => {          
@@ -215,7 +215,7 @@ export default function CvItem({cv, ...props}: Props) {
     {userImage && !isTabletWidth &&
       <Image 
       unoptimized
-      className={cv.profile?.useOwnLogo?styles.logo:styles.image} 
+      className={cv.profile?.useOwnLogo ? styles.logo : styles.image} 
       src={userImage} 
       alt={'def image'} width={320} height={320} 
       />
@@ -230,9 +230,9 @@ export default function CvItem({cv, ...props}: Props) {
     <div className={styles.content}>
       <CvItemTop cv={cv} userImage={userImage}/>
 
-      {cv.profile.vacancyLookType &&
-        <p className={classNames(styles.lookType, styles[cv.profile.vacancyLookType])}>
-          {TranslateVacancyLookType(cv.profile.vacancyLookType, ProfileType.Hirer, t)}
+      {cv.profile?.vacancyLookType &&
+        <p className={classNames(styles.lookType, styles[cv.profile?.vacancyLookType])}>
+          {TranslateVacancyLookType(cv.profile?.vacancyLookType, ProfileType.Hirer, t)}
         </p>
       }
 
@@ -258,7 +258,7 @@ export default function CvItem({cv, ...props}: Props) {
           <P styleType={['small', 'greyLight']}>
             {t('cv_item_experience')} 
           </P>
-          {cv.experienceInfo && cv.experienceInfo.length > 0 && 
+          {cv.experienceInfo && cv.experienceInfo?.length > 0 && 
             <P styleType={['medium', 'w500']} useThemeColor>
               {Formatter.fullTimeLine(cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}
             </P>
@@ -273,7 +273,7 @@ export default function CvItem({cv, ...props}: Props) {
         <P styleType={['small', 'greyLight']}>
           {t('cv_item_lastWorkPlace')} 
         </P>
-        <P styleType={['medium', 'w500']}>{cv.lastExperienceInfo.company}</P>
+        <P styleType={['medium', 'w500']}>{cv.lastExperienceInfo?.company}</P>
       </div>
       }
     </div>
@@ -284,7 +284,7 @@ export default function CvItem({cv, ...props}: Props) {
         </Button>
       }
       {
-        cv.proposalsByCurrentUser.length === 0 && isOpenContacts &&
+        cv.proposalsByCurrentUser?.length === 0 && isOpenContacts &&
         <Button styleType={['gradient', 'wide']}  onClick={respondHandler}>{t('cv_item_invite')}</Button>
         ||
         isOpenContacts &&
@@ -293,7 +293,7 @@ export default function CvItem({cv, ...props}: Props) {
       {isOpenContacts && 
         <Button styleType={['borderBlue', 'grey', 'wide','backTransparent']} altStyleType={['borderBlue', 'white' ,'wide']} ><P altStyleType={['blue']}>{t('cv_item_contacts')}</P></Button>
       }
-      {(cv.applicationsToCurrentUser.length > 0 || cv.proposalsByCurrentUser.length > 0) &&
+      {(cv.applicationsToCurrentUser?.length > 0 || cv.proposalsByCurrentUser?.length > 0) &&
         <Button 
         styleType={['icon', 'grey']} 
         altStyleType={['borderBlue', 'white', 'icon' ]}

@@ -380,7 +380,7 @@ export default function Messages(props: Props) {
         {replyTo &&
           <div className={styles.replyMessage}>
             <div className={styles.replyMessageContent}>
-              <P styleType={['greyLight', 'small']}>Reply from {getUserName(replyTo.profile)}</P>
+              <P styleType={['greyLight', 'small']}>{t('replyFrom')} {getUserName(replyTo.profile)}</P>
               <P styleType={['medium']}>{replyTo.message}</P>
             </div>
             <Button styleType={['icon', 'backTransparent', 'circle']} onClick={() => setReplyTo(null)}><CrossSvg/></Button>

@@ -1,20 +1,19 @@
 import { Form, FormikProvider, useFormik } from 'formik'
 import styles from './index.module.scss'
 import { ISearchCityResult, ISearchCountryResult } from 'data/interfaces/ILocation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import LocationRepository from 'data/repositories/LocationRepository'
 import { useUserContext } from 'context/user_state'
 import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
 import Button from '@/components/ui/Button'
 // import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
-import { InterfaceLanguage, ModalType, SnackbarType } from 'types/enums'
+import { InterfaceLanguage, ModalType } from 'types/enums'
 import { IChangeLanguageModalArgs } from '@/components/modals/ChangeLanguageModal'
 // import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import Cookies from 'js-cookie'
 import setLanguage from 'next-translate/setLanguage'
 import useTranslation from 'next-translate/useTranslation'
-import UserRepository from 'data/repositories/UserRepository'
 
 interface Props {
 }
@@ -31,6 +30,7 @@ export default function SiteSettings(props: Props) {
   const {isTabletWidth} = appContext.size
   const {t} = useTranslation()
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
+  const currentProfile = useRef(userContext?.currentProfile)
 
 
   const submit = (data: SiteSettings) => {
@@ -38,11 +38,12 @@ export default function SiteSettings(props: Props) {
     Cookies.set('NEXT_LOCALE', data.language, {path: '/'})
     setLanguage(data.language, false)
     userContext.editCurrentProfile({countryId: data.countryId, cityId: data.cityId})
-    UserRepository.editCurrentUser({language: data.language})
-    .then(user => {
-      userContext.updateUser(user)
-      appContext.showSnackbar(t('saved'), SnackbarType.success)
-    })
+    //TODO: вернуть когда добавят возможность переключать языка
+    // UserRepository.editCurrentUser({language: data.language})
+    // .then(user => {
+    //   userContext.updateUser(user)
+    //   appContext.showSnackbar(t('saved'), SnackbarType.success)
+    // })
   }
 
   const formik = useFormik<SiteSettings>({
@@ -80,14 +81,14 @@ export default function SiteSettings(props: Props) {
           <LocationDropDownInput
           onSetOption={countryHandler} 
           name={'countryName'} 
-          value = {userContext?.currentProfile?.country?.locName}
+          value = {currentProfile?.current?.country?.locName}
           labelName={t('country')}
           requestFn={LocationRepository.searchCountry} 
           />
           <LocationDropDownInput
           onSetOption={cityHandler} 
           name={'cityName'} 
-          value = {userContext?.currentProfile?.city?.locName}
+          value = {currentProfile?.current.city?.locName}
           labelName={t('city')}
           requestFn={(r) => LocationRepository.searchCity({...r, country: currentCountryCode})} 
           />

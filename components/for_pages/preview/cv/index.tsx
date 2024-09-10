@@ -69,12 +69,14 @@ export default function CvPreview(props: Props) {
       wrapperClassName={styles.item}
       onClick={() => props.onBack(1)}
       >
+        {currentCv.profile.vacancyLookType &&
         <P 
         styleType={['small', currentCv.vacancyLookType === VacancyLookType.NotLooking?'red':'green']} 
         className={classNames(styles.status, currentCv.vacancyLookType === VacancyLookType.NotLooking?styles.status_red: styles.status_green)}
         >
           {TranslateVacancyLookType(currentCv.profile.vacancyLookType, ProfileType.Hirer, t)}
         </P>
+        }
         <P 
         styleType={['greyLight', 'w500', 'medium']}>
           {[

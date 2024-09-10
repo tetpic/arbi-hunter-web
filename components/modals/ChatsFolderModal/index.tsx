@@ -12,6 +12,7 @@ import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   onClose: () => void
@@ -60,7 +61,7 @@ export default function ChatsFolderModal(props: Props) {
         const collocutor = chat.profiles[0].role === 'admin'?chat.participant:chat.profile
         return (
           <div className={styles.item} key={chat.id} onClick={(e)=>{e.stopPropagation(); checkHandler(chat, isActive)}}>
-            <UserPic className={styles.userPic}/>
+            <UserPic className={styles.userPic} image={getUserImageSource(collocutor)}/>
             <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.firstName} {collocutor?.lastName}</P>
             <Checkbox className={styles.checkBox} value={chat.id} isActive={isActive} onChange={()=>checkHandler(chat, isActive)}/>
           </div>

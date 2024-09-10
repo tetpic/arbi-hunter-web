@@ -12,7 +12,7 @@ import { IProposalModalProps, ProposalModalPager } from 'components/modals/Propo
 import { useRouter } from 'next/router'
 import { useVacancyContext } from 'context/vacancy_state'
 import BackTextButton from '@/components/ui/BackTextButton'
-import { Answer, AppTheme, Genders, InterfaceLanguage, ModalType, Preset, PurchaseType, SnackbarType, VacancyLookType } from 'types/enums'
+import { Answer, AppTheme, Genders, InterfaceLanguage, ModalType, Preset, PurchaseType, SnackbarType } from 'types/enums'
 import P from '@/components/ui/P'
 import Button from '@/components/ui/Button'
 import CloseEyeSvg from '@/components/svg/CloseEyeSvg'
@@ -295,7 +295,7 @@ export default function CvPage(props: Props) {
     </P>
     }
     {currentCv?.profile.vacancyLookType &&
-      <p className={classNames(styles.status, currentCv?.profile?.vacancyLookType === VacancyLookType.NotLooking?styles.red: styles.green)}>
+      <p className={classNames(styles.status, styles[currentCv.profile?.vacancyLookType])}>
         {TranslateVacancyLookType(currentCv?.profile?.vacancyLookType, ProfileType.Hirer, t)}
       </p>
     }
