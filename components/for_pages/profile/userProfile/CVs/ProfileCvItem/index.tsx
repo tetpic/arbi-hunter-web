@@ -187,8 +187,8 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
       title={t('item_statistics')}     
       items={[
         {name: t('item_shows'), count: cv.totalShows},
-        {name: t('item_views'), count: cv.totalViews},
-        {name: t('item_totalProposals'), count: cv.totalProposals},
+        {name: t('item_views'), count: cv.totalViews, link: `/views?cvId=${cv.id}`},
+        {name: t('item_totalProposals'), count: cv.totalProposals, link: '/profile?page=feedbacks'},
       ]}
       />
       ||

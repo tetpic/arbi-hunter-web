@@ -6,7 +6,6 @@ import TagsRadioList from '../../../utils/TagsRadioList'
 import { Genders } from 'types/enums'
 import { TranslateGenderType } from 'utils/enumsTranslations'
 import PhoneCountryField from '@/components/fields/PhoneCountryField'
-import TextAreaField from '@/components/fields/TextAreaField'
 import SectionSubtitle from '../../../utils/SectionSubtitle'
 import { useState } from 'react'
 import ArrowDownSvg from '@/components/svg/ArrowDownSvg'
@@ -17,6 +16,7 @@ import { useUserContext } from 'context/user_state'
 import Validator from 'utils/Validator'
 import useTranslation from 'next-translate/useTranslation'
 import TelegramLogoSvg from '@/components/svg/TelegramLogoSvg'
+import RichTextField from '@/components/fields/RichTextField'
 
 interface Props {
 }
@@ -115,6 +115,7 @@ export default function CvAbout(props: Props) {
   </div>
 
   <SectionSubtitle text={t('create_cv_attTextAbout')}/>
-  <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder={t('create_cv_describeYOutExperience')} onChange={(el)=>setFieldValue('bio', el.target.value)}/>
+  <RichTextField name={'bio'} hideToolBar placeholder={t('create_cv_describeYOutExperience')} editorClassName={styles.textArea}/>
+  {/* <TextAreaField areaClassname={styles.textArea} name={'bio'} autoSize placeholder={t('create_cv_describeYOutExperience')} onChange={(el)=>setFieldValue('bio', el.target.value)}/> */}
   </div>)
 }

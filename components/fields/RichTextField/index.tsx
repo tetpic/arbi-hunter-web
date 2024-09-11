@@ -55,6 +55,7 @@ interface Props extends IField<string | null>{
   placeholderClassName?: string
   editorClassName?: string
   labelClassName?: string
+  hideToolBar?: boolean
 }
 
 export default function RichTextField(props: Props) {
@@ -157,7 +158,9 @@ export default function RichTextField(props: Props) {
   return (
     <div className={styles.root}> 
       <div className={classNames(styles.field, className) }>
-        <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
+        {!props.hideToolBar  && 
+          <RichTextToolbar editor={editor} onAddImage={props.onAddImage} hideButtons={props.hideButtons}/>
+        }
         <div className={classNames(styles.editor, props.editorClassName, !focus&&props.label&&styles.focused, isLightTheme&&styles.editor_light)}>
           {!focus &&
             <p className={classNames(styles.label, props.labelClassName)}>{props.label}</p>

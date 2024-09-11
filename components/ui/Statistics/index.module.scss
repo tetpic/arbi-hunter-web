@@ -14,6 +14,7 @@
     color: $greyLight;
     font-weight: $medium;
     margin-bottom: 16px;
+    @include transitionDefault;
   }
 
   .items {
@@ -27,7 +28,21 @@
     position: relative;
   }
 
+  &_itemLink {
+    cursor: pointer;
+    @include hover {
+      .stats_desc {
+        color: $blue;
+      }
+
+      .stats_count {
+        color: $blue;
+      }
+    }
+  }
+
   &_count {
+    @include transitionDefault;
     text-align: center;
 
     span {

@@ -21,12 +21,22 @@ export default function ImageNode(props: Props) {
 
   return (<div className={styles.imagesWrapper}>
     {msg.pastedImages && msg.pastedImages.length>0&&
-      msg.pastedImages.map(el=>{
-        return <div className={classNames(styles.image, msg.pastedImages.length>1&&styles.image_half)}>
-          <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} />
+      // msg.pastedImages.map(el=>{
+         <div className={styles.image}>
+           <ImageGallery 
+      imagesInfoArray={msg.pastedImages.map((el, ind) => ({
+        alt: 'asset',
+        caption: '',
+        src:URL.createObjectURL(el)
+      }))}
+      columnCount={'auto'}
+      columnWidth={200}
+      gapSize={0}
+      />
+          {/* <img onClick={()=>appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {src: URL.createObjectURL(el)})} src={URL.createObjectURL(el)} /> */}
           <Spinner className={styles.spinner} size={44} color={colors.blue}/>
         </div>
-      })
+      // })
     }
   {
   msg.assets 

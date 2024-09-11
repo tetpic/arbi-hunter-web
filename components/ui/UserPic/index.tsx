@@ -27,14 +27,16 @@ export default function UserPic(props: Props) {
   const router = useRouter()
 
   const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
-    e.stopPropagation()
-    e.preventDefault()    
-    props.link&&router.push(props.link)
-    props.onClick&&props.onClick()
+    if(props.onClick || props.link) {
+      e.stopPropagation()
+      e.preventDefault()    
+      props.link&&router.push(props.link)
+      props.onClick&&props.onClick()
+    }
   }
 
   return ( 
-    <div className={classNames(styles.imageWrapper, props.className, props.active&&styles.active)} style={props.straightSizes&&{height: props.size, width: props.size}} onClick={onClickHandler}>
+    <div className={classNames(styles.imageWrapper, props.className, props.active&&styles.active, props.onClick && styles.clickable)} style={props.straightSizes&&{height: props.size, width: props.size}} onClick={onClickHandler}>
       {
       props.icon !== null && props.icon 
       ||

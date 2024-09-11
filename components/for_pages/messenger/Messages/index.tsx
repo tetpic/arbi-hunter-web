@@ -109,7 +109,7 @@ export default function Messages(props: Props) {
   }
 
   const enterCommandPressHandler = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((e.metaKey || e.ctrlKey || e.shiftKey) && e.keyCode == 13) {
+    if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.keyCode == 13) {
       sendMessage()
     }
   }
@@ -384,7 +384,7 @@ export default function Messages(props: Props) {
         {replyTo &&
           <div className={styles.replyMessage}>
             <div className={styles.replyMessageContent}>
-              <P styleType={['greyLight', 'small']}>Reply from {getUserName(replyTo.profile)}</P>
+              <P styleType={['greyLight', 'small']}>{t('replyFrom')} {getUserName(replyTo.profile)}</P>
               <P styleType={['medium']}>{replyTo.message}</P>
             </div>
             <Button styleType={['icon', 'backTransparent', 'circle']} onClick={() => setReplyTo(null)}><CrossSvg/></Button>

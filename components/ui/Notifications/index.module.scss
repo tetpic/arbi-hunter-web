@@ -21,7 +21,10 @@
 .root {
   min-width: 375px;
   padding: 16px;
-  border-radius: 26px;
+  border-radius: 16px;
+  background-color: var(--backColor);
+  margin: -2px;
+  box-shadow: 0 0 10px 0 var(--backGroundColor);
   @include mq($TabletWidth, max) {
     position: fixed;
     top: 0;

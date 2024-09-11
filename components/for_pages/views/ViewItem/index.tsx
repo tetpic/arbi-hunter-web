@@ -11,6 +11,7 @@ import useTranslation from 'next-translate/useTranslation'
 import Button from '@/components/ui/Button'
 import DotSvg from '@/components/svg/DotSvg'
 import { colors } from 'styles/variables'
+import Link from 'next/link'
 
 interface Props {
   view: IView
@@ -19,9 +20,10 @@ interface Props {
 export default function ViewItem(props: Props) {
   const userType = props.view.profile.profileType
   const profile = props.view.profile
+  
   const {t, lang} = useTranslation()
 
-  return (<div className={styles.root}> 
+  return (<Link className={styles.root} href={'/personal/' + profile.id}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} straightSizes image={getUserImageSource(profile, Preset.smallIconCrop)}  size={42}/>
       <P style={{gridArea: 'n'}} useThemeColor styleType={['large', 'w600']}>{(userType=== ProfileType.Employee&&getUserName(profile))||profile.company}</P>
@@ -36,6 +38,6 @@ export default function ViewItem(props: Props) {
       <P styleType={['medium', 'w500', 'greyLight']}>{t('views_watched')}</P>
       <P styleType={['medium', 'w500']} useThemeColor>{Formatter.formatDate(props.view.createdAt, {lang: lang as InterfaceLanguage||InterfaceLanguage.Russian, timeOptions: {hour: 'numeric', minute: 'numeric', year: 'numeric'}} )}</P>
     </div>
-    <Button href={'/personal/' + profile.id} styleType={['gradient', 'phoneWide']}>{userType === ProfileType.Hirer?t('views_companyProfile'): t('views_employeeProfile')}</Button>
-  </div>)
+    <Button styleType={['gradient', 'phoneWide']}>{userType === ProfileType.Hirer?t('views_companyProfile'): t('views_employeeProfile')}</Button>
+  </Link>)
 }

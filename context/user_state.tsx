@@ -122,6 +122,7 @@ export function UserWrapper(props: Props) {
    
     return UserRepository.editProfileByType(data, currentProfile?.profileType)
     .then(p=> {
+      debugger
       setCurrentProfileState(p)
       return p
     })

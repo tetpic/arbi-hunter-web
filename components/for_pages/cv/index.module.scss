@@ -89,6 +89,21 @@
     }
   }
 
+  .activelyLooking {
+    background-color: $greenLight;
+    color: $green;
+  }
+  
+  .passivelyLooking {
+    background-color: $yellowLight;
+    color: $yellow;
+  }
+  
+  .notLooking {
+    background-color: $redLight;
+    color: $red;
+  }
+
   .userName {
     margin-right: auto;
   }

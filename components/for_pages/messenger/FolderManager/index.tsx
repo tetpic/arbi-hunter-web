@@ -26,6 +26,7 @@ import ArrowRightSvg from 'components/svg/ArrowRightSvg'
 import { IChatsFolderModalProps } from 'components/modals/ChatsFolderModal'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
+import { getUserImageSource } from 'utils/helpers'
 
 interface Props {
   onBack?: () => void
@@ -145,8 +146,8 @@ function FolderEditor(props: Props) {
             return (
               <div className={styles.itemWrapper}>
                 <div className={styles.item}>
-                  <UserPic size={32}/>
-                  <p className={styles.name}>{collocutor.firstName} {collocutor.lastName}</p>
+                  <UserPic size={32} image={getUserImageSource(collocutor)}/>
+                  <P useThemeColor className={styles.name}>{collocutor.firstName} {collocutor.lastName}</P>
                   <Button type='button' className={styles.removeButton} onClick={()=>removeChatFromlist(chat)}>{isTabletWidth?t('delete'):<TrashBasketSvg/>}</Button>
                 </div>
               </div>
@@ -154,7 +155,7 @@ function FolderEditor(props: Props) {
           })}
         </div>
         {!isTabletWidth &&
-          <Button className={styles.createBtn} type='button' onClick={formik.submitForm}>
+          <Button className={styles.createBtn} styleType={['gradient']} type='button' onClick={formik.submitForm}>
             {props.folderToEdit?t('save'): t('chat_folder_create')}
           </Button>
         }

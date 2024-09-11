@@ -20,7 +20,7 @@ export default function Views(props: Props) {
   const cvContext = useCvContext()
   const vacancyContext = useVacancyContext()
   const {t} = useTranslation()
-  const activeCvsItem = (cvContext.savedCvs.filter(el=> el.published === true&&el.subscriptions))
+  const activeCvsItem = (cvContext.savedCvs.filter(el=> el.published === true))
   const activeVacanciesItem = (vacancyContext.activeVacancies)
   const [views, setViewsState] = useState<Map<number, IView>>(new Map)
   const isInited = useRef<boolean>(false)
@@ -35,7 +35,7 @@ export default function Views(props: Props) {
   }, [])
 
   const getCvViews = async() => {
-    const res = await Promise.all(activeCvsItem.map(el => ViewsRepository.getCvViews(el.id)))
+    const res = await Promise.all((router.query.cvId ? [router.query.cvId] : activeCvsItem.map(cv => cv.id)).map(el => ViewsRepository.getCvViews(el)))
     res.forEach(el => {
       setViewsState(state => {
         el.data.forEach(elItem => {
@@ -50,7 +50,7 @@ export default function Views(props: Props) {
   }
 
   const getVacancyViews = async() => {
-    const res = await Promise.all([...activeVacanciesItem.keys()].map(el => ViewsRepository.getVacancyViews(el)))
+    const res = await Promise.all((router.query.vacancyId ? [router.query.vacancyId] : [...activeVacanciesItem.keys()]).map(el => ViewsRepository.getVacancyViews(el)))
     res.forEach(el => {
       setViewsState(state => {
         el.data.forEach(elItem => {

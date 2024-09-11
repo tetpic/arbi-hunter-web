@@ -16,6 +16,10 @@
   }
 }
 
+.createBtn {
+  align-self: center
+}
+
 .backButton {
   @include transitionDefault;
   @include hover {

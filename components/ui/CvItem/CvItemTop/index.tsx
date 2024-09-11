@@ -21,14 +21,14 @@ export default function CvItemTop(props: Props) {
       {(!props.cv.profile?.useOwnLogo||isTabletWidth) &&
         <UserPic straightSizes className={styles.userPic} image={props.userImage} size={46}/>
       }
-      {props.cv.categories.length > 0 &&
-        <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{props.cv.categories[0].name}</P>
+      {props.cv.categories?.length > 0 &&
+        <P styleType={['large', 'w600']} useThemeColor className={styles.name}>{props.cv.categories?.[0]?.name}</P>
       }
-      {props.cv.profile.activityStatus === ActivityStatus.Online &&
+      {props.cv.profile?.activityStatus === ActivityStatus.Online &&
         <P styleType={['medium', 'w500', 'green']} className={styles.sub}>{t('views_onlineNow')}</P>
       }
-      {props.cv.profile.lastActivityAt && props.cv.profile.activityStatus === ActivityStatus.Offline &&
-        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>{t('views_offline')} {Formatter.formatDateRelative(props.cv.profile.lastActivityAt)}</P>
+      {props.cv.profile?.lastActivityAt && props.cv.profile?.activityStatus === ActivityStatus.Offline &&
+        <P styleType={['medium', 'w500', 'greyLight']} className={styles.sub}>{t('views_offline')} {Formatter.formatDateRelative(props.cv?.profile?.lastActivityAt)}</P>
       }
     </div>
   )

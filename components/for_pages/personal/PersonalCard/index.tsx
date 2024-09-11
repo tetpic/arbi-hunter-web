@@ -22,6 +22,7 @@ import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
 import P from '@/components/ui/P'
 import ImageHelper from 'utils/ImageHelper'
+import { ImageViewerModalProps } from '@/components/modals/ImageViewerModal'
 
 interface Props {
   isEditing?: boolean
@@ -110,6 +111,13 @@ export default function PersonalCard(props: Props) {
     &&
       <UserPic 
       className={styles.userPic} 
+      onClick={() => {
+        if(personalContext?.currentProfile?.image?.source && !personalContext?.currentProfile?.useOwnLogo) {
+          appContext.showModal<ImageViewerModalProps>(ModalType.ImageViewerModal, {
+            src: ImageHelper.urlFromFile(personalContext?.currentProfile?.image, Preset.mdCrop),
+          })
+        }
+      }}
       image={logoImage?.image
         ?URL.createObjectURL(logoImage?.image)
         :ImageHelper.urlFromFile(

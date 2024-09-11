@@ -93,8 +93,14 @@ export default function Registration(props: Props) {
       })
       .catch(err=> {
         setDisableButton(false)
-        appContext.showSnackbar(t('registration_emailExist'), SnackbarType.error)
-        return
+        if(err.message === 'Company with same name already exists') {
+          appContext.showSnackbar(t('registration_companyExist'), SnackbarType.error)
+          return
+        }
+        else {
+          appContext.showSnackbar(t('registration_emailExist'), SnackbarType.error)
+          return
+        }
       })
     }
   }
@@ -309,10 +315,10 @@ export default function Registration(props: Props) {
   }, [userContext.currentProfile])
 
   useEffect(()=>{
-    if(!props.token) {
+    // if(!props.token) {
       setProgress(1)
       formik.resetForm()
-    }
+    // }
   }, [userContext.profileType])
 
   useEffect(()=>{
