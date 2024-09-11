@@ -69,7 +69,7 @@ export default function Buildings(props: Props) {
       height={300} />
     }
     {
-      props.background && props.profile?.image && props.profile?.logo && !props.profile?.useOwnLogo &&
+      props.background && props.profile?.image && props.profile?.logo && 
       <div className={styles.buildingWrapper}>
         <Image 
         unoptimized
