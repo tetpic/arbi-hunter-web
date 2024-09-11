@@ -191,7 +191,7 @@ export default function PersonalPage(props: Props) {
       </ContentItem>
     }
     <ContentItem  className={styles.bodyItem}>
-      {personalContext.currentProfile?.bio && bioText.trim().length > 2 && !isEditing &&
+      {personalContext.currentProfile?.bio && bioText.trim().length > 2 && !isEditing && !props.webView &&
         <>
           <P styleType={['huge', 'w600']} useThemeColor>{t('personal_about_company')}</P>
           <Spacer basis={16}/>
