@@ -61,7 +61,7 @@ export default function PersonalPage(props: Props) {
   const currentProfile = userContext.currentProfile
   const router = useRouter()
   const isMy = currentProfile?.id === personalContext?.currentProfile?.id
-  const bioText = personalContext.currentProfile?.bio ? getTextFromHTML(personalContext.currentProfile?.bio): ''
+  const bioText = personalContext.currentProfile?.bio ? getTextFromHTML(personalContext.currentProfile?.bio).trim(): ''
 
 
   const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'|'phone'>>({
@@ -190,8 +190,9 @@ export default function PersonalPage(props: Props) {
         <EditToolbar/>
       </ContentItem>
     }
+    {(personalContext.blocks.size > 0 || bioText.length > 0) &&
     <ContentItem  className={styles.bodyItem}>
-      {personalContext.currentProfile?.bio && bioText.trim().length > 2 && !isEditing && !props.webView &&
+      {personalContext.currentProfile?.bio && bioText.length > 2 && !isEditing && !props.webView &&
         <>
           <P styleType={['huge', 'w600']} useThemeColor>{t('personal_about_company')}</P>
           <Spacer basis={16}/>
@@ -199,14 +200,11 @@ export default function PersonalPage(props: Props) {
           <Spacer basis={26}/>
         </>
       }
-      {personalContext.blocks.size > 0 &&
+      {(personalContext.blocks.size > 0 || bioText.length > 0) &&
       <PersonalBody isEditing={!props.id && isEditing && !isTabletWidth} webView={props.webView}/>
-      ||
-      <div className={styles.emptyWrapper}>
-        <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
-      </div>
       }
     </ContentItem>
+    }
   </>)
 
   const employeeEditor = (<>
