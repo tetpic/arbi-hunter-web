@@ -355,9 +355,9 @@ export default function CvPage(props: Props) {
       text: currentCv.profile.email,
       icon: <MailAltSvg/>
     },
-    currentCv.profile.phone&&{
-      href: 'tel:'+currentCv.profile.phone, 
-      text: currentCv.profile.phone,
+    (currentCv.phone || currentCv.profile.phone)&&{
+      href: 'tel:'+currentCv.phone||currentCv.profile.phone, 
+      text: Formatter.formatPhone(currentCv.phone||currentCv.profile.phone),
       icon: <PhoneSvg/>
     },
     (currentCv.telegramNickname||currentCv.profile.telegramNickname)&&{

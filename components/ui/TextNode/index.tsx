@@ -4,13 +4,18 @@ interface Props {
   html: string|TrustedHTML
 }
 
+export function getTextFromHTML(html: string) {
+  const textNode = document.createElement('div')
+  textNode.insertAdjacentHTML('afterbegin', html.toString())
+  return textNode.innerText.toString()
+}
+
 export default function TextNode(props: Props) {
   const [text, setText] = useState<string>()
 
   useEffect(()=>{
-    const textNode = document.createElement('div')
-    textNode.insertAdjacentHTML('afterbegin', props.html.toString())
-    setText(textNode.innerText.toString())
+    const result = getTextFromHTML(props.html.toString())
+    setText(result)
   }, [props.html])
 
   return (<>{text}</>)
