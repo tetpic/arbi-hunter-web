@@ -41,6 +41,7 @@ interface Props extends IField<string>{
   validateOnSubmit?: boolean
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   priceFormatting?: boolean
+  onlyLetters?: boolean
   labelClassName?: string
   inputClassName?: string
   backgroundColor?: string
@@ -89,6 +90,10 @@ export default function InputField(props: Props) {
       props.isNumbersOnly && (e.target.value = numbers)
       const formatted = Formatter.formatNumber(Number(numbers))
       props.priceFormatting && (e.target.value = formatted==='0'?'':formatted)
+    }
+    if(props.onlyLetters) {
+      const _text = e.target.value.replace(/[^A-Za-zА-Яа-я\u00C0-\u02AF\u1E00-\u1EFF]/g, '')
+      e.target.value = _text
     }
   }
   

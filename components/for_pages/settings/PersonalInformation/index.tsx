@@ -52,20 +52,26 @@ export default function PersonalInformation(props: Props) {
           name={'firstName'}
           label={`${t('name')}: `}
           labelType={'top'}
+          onlyLetters
+          validate={Validator.required}
           />
 
           <InputField 
           styleType={'default'} 
           color={'default'} 
           name={'lastName'}
+          onlyLetters
           label={`${t('lastName')}: `}
           labelType={'top'}
+          validate={Validator.required}
+
           />
 
           <InputField 
           styleType={'default'} 
           color={'default'} 
           name={'patronymic'}
+          onlyLetters
           label={`${t('patronymic')}: `}
           labelType={'top'}
           />
@@ -86,6 +92,7 @@ export default function PersonalInformation(props: Props) {
           placeholder={'000 000 00 00'} 
           name={'phone'}  
           className={styles.input} 
+          validate={Validator.combine([Validator.required, Validator.phone])}
           defaultCountry={userContext.currentProfile?.countryCode}
           label={`${t('phone')}:`}
           />
