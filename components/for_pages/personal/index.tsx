@@ -42,6 +42,7 @@ import DoubleSvg from '@/components/svg/DoubleSvg'
 import { colors } from 'styles/variables'
 import { TranslateVacancyLookType } from 'utils/enumsTranslations'
 import PencilSvg from '@/components/svg/PencilSvg'
+import { getTextFromHTML } from '@/components/ui/TextNode'
 
 interface Props {
   id?: number
@@ -60,6 +61,8 @@ export default function PersonalPage(props: Props) {
   const currentProfile = userContext.currentProfile
   const router = useRouter()
   const isMy = currentProfile?.id === personalContext?.currentProfile?.id
+  const bioText = personalContext.currentProfile?.bio ? getTextFromHTML(personalContext.currentProfile?.bio).trim(): ''
+
 
   const formik = useFormik<Pick<IUserProfile, 'company'|'cityId'|'bio'|'phone'>>({
     initialValues: {
@@ -130,7 +133,10 @@ export default function PersonalPage(props: Props) {
     )
     .then(_ => {
       if(personalContext.currentProfile?.profileType === ProfileType.Hirer 
-        && (formik.values.cityId !== userContext.currentProfile?.cityId||formik.values.company !== userContext.currentProfile?.company)) {
+        && (formik.values.cityId !== userContext.currentProfile?.cityId
+          ||formik.values.company !== userContext.currentProfile?.company
+          || (formik.values.bio !== userContext.currentProfile.bio)
+        )) {
         userContext.editCurrentProfile(clearObject(formik.values))
         .then(res => {
           if(res) {
@@ -176,21 +182,29 @@ export default function PersonalPage(props: Props) {
       && personalContext.backgrounds?.get(BackgroundCategoryType.Places)) 
   )
 
+
   const hirerEditor = (<>
+
     {isEditing && !isTabletWidth &&
       <ContentItem className={classNames(styles.bodyItem, isEditing&&styles.bodyItem_edit)}>
         <EditToolbar/>
       </ContentItem>
     }
+    {(personalContext.blocks.size > 0 || bioText.length > 0) &&
     <ContentItem  className={styles.bodyItem}>
-      {personalContext.blocks.size > 0 &&
+      {personalContext.currentProfile?.bio && bioText.length > 2 && !isEditing && !props.webView &&
+        <>
+          <P styleType={['huge', 'w600']} useThemeColor>{t('personal_about_company')}</P>
+          <Spacer basis={16}/>
+          <HtmlText text={personalContext.currentProfile?.bio}/>
+          <Spacer basis={26}/>
+        </>
+      }
+      {(personalContext.blocks.size > 0 || bioText.length > 0) &&
       <PersonalBody isEditing={!props.id && isEditing && !isTabletWidth} webView={props.webView}/>
-      ||
-      <div className={styles.emptyWrapper}>
-        <P styleType={['w500', 'medium']}>{t('personal_noInfo')}</P>
-      </div>
       }
     </ContentItem>
+    }
   </>)
 
   const employeeEditor = (<>
@@ -199,7 +213,7 @@ export default function PersonalPage(props: Props) {
       <Form className={styles.employeeForm}>
         <P styleType={['medium', 'w500', 'greyLight']}>{t('personal_about')}</P>
         <Spacer basis={16}/>
-        <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}}/>
+        <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}} editorClassName={styles.bioInput}/>
         <Spacer basis={16}/>
       </Form>
     </FormikProvider>
@@ -300,6 +314,7 @@ export default function PersonalPage(props: Props) {
           color={'white'} 
           name={'company'}
           />
+
           <LocationDropDownInput
           onSetOption={cityHandler} 
           name={'cityName'} 
@@ -307,6 +322,13 @@ export default function PersonalPage(props: Props) {
           labelName={t('city')}
           requestFn={(r) => LocationRepository.searchCity({...r, country: personalContext.currentProfile?.country?.country})} 
           />
+          <div className={styles.companyAbout}>
+            <P styleType={['medium', 'w500', 'greyLight']}>{t('personal_about_company')}</P>
+            <Spacer basis={16}/>
+            <RichTextField name={'bio'} hideButtons={{helpers: true, color: true}} editorClassName={styles.bioInput}/>
+            <Spacer basis={26}/>
+          </div>
+
         </Form>
       </FormikProvider>
     }
