@@ -240,6 +240,7 @@ export default function Registration(props: Props) {
     label={`${t('name')}:`}
     className={styles.input}
     labelType='top'
+    onlyLetters
     styleType={'default'}
     color={'default'}
     name={'firstName'}
@@ -251,6 +252,7 @@ export default function Registration(props: Props) {
     className={styles.input}
     labelType='top'
     styleType={'default'}
+    onlyLetters
     color={'default'}
     name={'lastName'}
     validate={Validator.combine([Validator.required, Validator.onlyChars])}
@@ -261,8 +263,10 @@ export default function Registration(props: Props) {
     className={styles.input}
     labelType='top'
     styleType={'default'}
+    onlyLetters
     color={'default'}
     name={'patronymic'}
+    validate={Validator.onlyChars}
     />
 
     <InputField
