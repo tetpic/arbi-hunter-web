@@ -237,7 +237,8 @@ export default function Registration(props: Props) {
     styleType={'default'}
     color={'default'}
     name={'firstName'}
-    validate={Validator.combine([Validator.required, Validator.onlyChars])}
+    onlyLetters
+    validate={Validator.combine([Validator.required])}
     />
 
     <InputField
@@ -247,7 +248,8 @@ export default function Registration(props: Props) {
     styleType={'default'}
     color={'default'}
     name={'lastName'}
-    validate={Validator.combine([Validator.required, Validator.onlyChars])}
+    onlyLetters
+    validate={Validator.combine([Validator.required])}
     />
 
     <InputField
@@ -256,6 +258,7 @@ export default function Registration(props: Props) {
     labelType='top'
     styleType={'default'}
     color={'default'}
+    onlyLetters
     name={'patronymic'}
     />
 
