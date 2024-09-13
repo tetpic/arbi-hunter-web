@@ -12,6 +12,8 @@ import FloatingFieldLabel from 'components/ui/FloatingFieldLabel'
 import FieldLabel from 'components/ui/FieldLabel'
 import Formatter from 'utils/formatter'
 import { useAppContext } from 'context/state'
+import { SnackbarType } from 'types/enums'
+import useTranslation from 'next-translate/useTranslation'
 
 type FormatType = 'phone'
 
@@ -51,6 +53,8 @@ interface Props extends IField<string>{
 
 //TODO: отрефакторить на несколько разных компонентов: InputField, PriceInputField, PhoneInputField, NumberInputField например
 export default function InputField(props: Props) {  
+  const appContext = useAppContext()
+  const {t} = useTranslation()
   const {theme} = useAppContext()
   const [wrapperRef, press, hover] = usePressAndHover()
   const [field, meta, helpers] = useField(props as any)
@@ -93,6 +97,9 @@ export default function InputField(props: Props) {
     }
     if(props.onlyLetters) {
       const _text = e.target.value.replace(/[^A-Za-zА-Яа-я\u00C0-\u02AF\u1E00-\u1EFF]/g, '')
+      if(_text !== e.target.value) {
+        appContext.showSnackbar(t('use_only_letters'), SnackbarType.error)
+      }
       e.target.value = _text
     }
   }
