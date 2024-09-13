@@ -8,10 +8,11 @@ import CategoryRepository from 'data/repositories/CategoryRepository'
 import CoursesRepository from 'data/repositories/CoursesRepository'
 import UserRepository from 'data/repositories/UserRepository'
 import { createContext, useContext,  useEffect,  useState } from 'react'
-import { Languages } from 'types/enums'
+import { InterfaceLanguage, Languages } from 'types/enums'
 import { useUserContext } from './user_state'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import { ItemsNotificationType } from 'data/interfaces/INotification'
+import useTranslation from 'next-translate/useTranslation'
 
 interface IState {
   stats: IStats
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export function IndexPageWrapper(props: Props) {
+  const {lang} = useTranslation()
   const [stats, setStats] = useState<IStats>()
   const [categories, setCategories] = useState<Map<number, ISpecializationCategory>>(new Map)
   const [popularCourses, setPopularCourses] = useState<Map<number, ICourse>>(new Map)
@@ -53,7 +55,7 @@ export function IndexPageWrapper(props: Props) {
     const [ _stats, _courses, _categories, _news] = await Promise.all([
       UserRepository.getStats(), 
       CoursesRepository.getCourses({page: 1, limit: 10, categories: [runtimeConfig.FREE_COURSES_ID]},Languages.ru),
-      CategoryRepository.getCategories(),
+      CategoryRepository.getCategories(lang as InterfaceLanguage),
       ArticlesRepository.getNews({isTop: true}),
     ])
     setStats(_stats)

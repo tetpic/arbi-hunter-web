@@ -25,6 +25,7 @@ import BottomSheetLayout from '@/components/layout/BottomSheet/BottomSheetLayout
 import BottomSheetBody from '@/components/layout/BottomSheet/BottomSheetBody'
 import ImageHelper from 'utils/ImageHelper'
 import { useRouter } from 'next/router'
+import { getCategoryName } from 'utils/helpers'
 
 interface Props {
   onClose: () => void
@@ -209,7 +210,7 @@ export default function PurchasePreviewModal(props: Props) {
         rootClass={styles.radioListField}
         options={
           items.map(el=> ({
-            label: el.categories[0].name,
+            label: getCategoryName(el.categories[0], lang),
             value: el.id
           }))
         } 

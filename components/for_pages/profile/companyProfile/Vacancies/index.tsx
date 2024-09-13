@@ -20,6 +20,7 @@ import PlusSvg from '@/components/svg/PlusSvg'
 import DotSvg from '@/components/svg/DotSvg'
 import { colors } from 'styles/variables'
 import { SearchModalArgs } from '@/components/modals/SearchModal'
+import { getCategoryName } from 'utils/helpers'
 
 interface Props {
 }
@@ -42,7 +43,7 @@ function translate (n: VacanciesNavigation, t:Translate) {
 }
 
 export default function Vacancies(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const vacancyContext = useVacancyContext()
   const tariffContext = useTariffContext()
   const userContext = useUserContext()
@@ -64,7 +65,7 @@ export default function Vacancies(props: Props) {
         vacancyContext.setSearchString(s)
       },
       placeholder: t('search_byName'),
-      suggestions: [...new Set(vacancyContext.savedVCs.map(el=> el.categories[0].name)).values()],
+      suggestions: [...new Set(vacancyContext.savedVCs.map(el=> getCategoryName(el.categories[0], lang))).values()],
       initialValue: vacancyContext.searchString
     })
     if(data) {

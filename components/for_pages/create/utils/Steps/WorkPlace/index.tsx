@@ -18,7 +18,7 @@ interface Props {
 export default function WorkPlace(props: Props) {
   const cvContext = useCreateVcCvContext()
   const userContext = useUserContext()
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
 
@@ -57,7 +57,7 @@ export default function WorkPlace(props: Props) {
       name={'countryName'} 
       value = {formikContext.values.countryName}
       labelName={t('create_workplaceCountry')+':'}
-      requestFn={LocationRepository.searchCountry} 
+      requestFn={(args) => LocationRepository.searchCountry({...args, lang: lang})} 
       />
 
       <Spacer basis={16}/>
@@ -68,7 +68,7 @@ export default function WorkPlace(props: Props) {
       country={currentCountryCode}
       value = {formikContext.values.cityName}
       labelName={t('create_workplaceCity')+':'}
-      requestFn={LocationRepository.searchCity} 
+      requestFn={(arg) => LocationRepository.searchCity({...arg, lang: lang})} 
       />
     </>
     }

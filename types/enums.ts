@@ -1,3 +1,4 @@
+import { Translate } from 'next-translate'
 import translateEnum from './translations'
 
 export enum ModalType {
@@ -160,7 +161,7 @@ export enum CompensationType {
   Contract = 'contract'
 }
 
-export const CompensationTypeTranslated = translateEnum(CompensationType, [/*'Оклад', 'Комиссия', 'Гибрид(оклад + процент)', 'Сдельная',*/ 'Договорная'])
+export const CompensationTypeTranslated = (t: Translate) => {return translateEnum(CompensationType, [/*'Оклад', 'Комиссия', 'Гибрид(оклад + процент)', 'Сдельная',*/ 'compensation_contract'], t)}
 
 export enum Currency {
   RUB = 'RUB',
@@ -254,7 +255,14 @@ export enum WorkExperience {
   From6 = 'from6',
 }
 
-export const WorkExperienceTranslate = translateEnum(WorkExperience, ['Без опыта', '1-3 года', '3-6 лет', 'от 6 лет'])
+export const WorkExperienceTranslate = (t: Translate) => {
+  return  translateEnum(WorkExperience, [
+    'workExperience_no', 
+    'workExperience_from1to3Alt', 
+    'workExperience_from3to6Alt', 
+    'workExperience_from6Alt'
+  ], t)
+}
 
 
 export enum HirerRolePermission {
@@ -374,7 +382,7 @@ export enum ModerationStatusType {
 export enum InterfaceLanguage {
   English= 'en',
   Russian='ru',
-  Ukranian='ua'
+  Ukranian='uk'
 }
 
 export enum SearchIn {

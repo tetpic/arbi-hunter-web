@@ -9,6 +9,8 @@ import { useUserContext } from './user_state'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import { IGeoName, ISearchCityResult } from 'data/interfaces/ILocation'
 import SkillsRepository from 'data/repositories/SkillsRepository'
+import useTranslation from 'next-translate/useTranslation'
+import { InterfaceLanguage } from 'types/enums'
 
 
 export interface HelpObject {
@@ -79,6 +81,7 @@ interface Props {
 
 export function CreateVcCvWrapper(props: Props) {
   const userContext = useUserContext()
+  const {lang} = useTranslation()
 
   const initialHelpObject: HelpObject = {
     activeSources: new Map,
@@ -128,7 +131,7 @@ export function CreateVcCvWrapper(props: Props) {
   }
 
   const setCategories =():Promise<boolean> => {
-    return CategoryRepository.getCategories()
+    return CategoryRepository.getCategories(lang as InterfaceLanguage)
     .then(res => {
       setCategoriesState(()=> {
         let map = new Map()
@@ -153,7 +156,7 @@ export function CreateVcCvWrapper(props: Props) {
       return
     }
     
-    return CategoryRepository.getSubcategories({limit: 20, ...data})
+    return CategoryRepository.getSubcategories({limit: 20, ...data, }, lang as InterfaceLanguage)
     .then(res => {
       setSubCategoriesState(state => {
         state.clear()
@@ -168,7 +171,7 @@ export function CreateVcCvWrapper(props: Props) {
 
   const setSubcategoriesToCategory = (s: ISpecializationCategory) => {
     if(!categories.get(s)) {
-      CategoryRepository.getSubCategoriesByCategoryId(s.id, {withCVsCount: true, withNewCVsCount: true})
+      CategoryRepository.getSubCategoriesByCategoryId(s.id, {withCVsCount: true, withNewCVsCount: true}, lang as InterfaceLanguage)
       .then(res => {
         setCategoriesState(state => {
           state.set(s, res)

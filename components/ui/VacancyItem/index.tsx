@@ -46,9 +46,6 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   // @ts-ignore
   const isSuperVip = vacancy.isTop
-  console.log(isSuperVip)
-
-
 
   const respondHandler = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -162,7 +159,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
       {vacancy?.profile?.activityStatus && !smallCard &&
         <p className={styles.activityStatus}>
           <span className={classNames(styles.dot, vacancy.profile.activityStatus === ActivityStatus.Online?styles.dot_green:styles.dot_red)}></span>
-          {vacancy.profile.activityStatus === ActivityStatus.Online?t('vacancy_item_online'):`${t('vacancy_item_offline')} ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt)}`}
+          {vacancy.profile.activityStatus === ActivityStatus.Online?t('vacancy_item_online'):`${t('vacancy_item_offline')} ${Formatter.formatDateRelative(vacancy.profile.lastActivityAt, lang as InterfaceLanguage)}`}
         </p>
       }
       {vacancy.proposalsToCurrentUser?.length > 0 && lastProposal?.type !== ProposalRequestType.Rejection &&

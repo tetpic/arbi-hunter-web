@@ -254,7 +254,7 @@ export default function CvPreview(props: Props) {
         title={t('create_languageKnowledges')}
         onClick={() => props.onBack(5)}
         >
-          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, t, true)}))} />
         </PreviewItem>
       }
 

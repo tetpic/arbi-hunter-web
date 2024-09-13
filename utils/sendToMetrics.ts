@@ -18,10 +18,6 @@ export enum AppMetricaEvent {
 
 export function sendToMetrika(data: AppMetricaEvent) {
   const yaId = runtimeConfig.YA_METRIKA_ID
-  debugger
-  // @ts-ignore
-  console.log(ym)
-  
   // @ts-ignore
   ym(yaId, 'reachGoal', data)
   // @ts-ignore

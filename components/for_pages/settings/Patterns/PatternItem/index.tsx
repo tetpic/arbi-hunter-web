@@ -57,7 +57,7 @@ export default function PatternItem(props: Props) {
       onClick={()=>setActive(!isActive)}
       className={styles.item}
       >
-        {props.new?t('profile_createPattern'):TranslatePatternType(props.pattern?.type)}
+        {props.new?t('profile_createPattern'):TranslatePatternType(props.pattern?.type, t)}
         <ArrowDownSvg className={classNames(styles.arrow, isActive&&styles.arrow_active)} color={isLightTheme&&colors.black} />
       </P>
     } 
@@ -74,7 +74,7 @@ export default function PatternItem(props: Props) {
           activeItemClassName={styles.radioActive}
           itemLabelClassName={styles.radioLabel}
           options={
-            [...patternContext.patternsNotExist.values()].map(el=> {return {value: el, label: TranslatePatternType(el)}})
+            [...patternContext.patternsNotExist.values()].map(el=> {return {value: el, label: TranslatePatternType(el, t)}})
           }
           />
         }

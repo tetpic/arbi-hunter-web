@@ -43,7 +43,7 @@ interface Props {
 }
 
 export default function CvItem({cv, ...props}: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const {getNewSignal} = useAbortController()
   const vacancyContext = useVacancyContext()
@@ -247,7 +247,7 @@ export default function CvItem({cv, ...props}: Props) {
       }
 
       <P styleType={['alignCenter', 'w500', 'medium']} useThemeColor className={styles.info}>
-        {[getSalary({cv}, t), getAge(cv.age), cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
+        {[getSalary({cv}, t), getAge(cv.age), lang === 'en'? cv.city?.asciiname :cv.city?.locName].filter(Boolean).map((el, index, arr)=>{
           return (
             <>{el} {index < arr.length - 1 && <DotSvg/>}</>
           )

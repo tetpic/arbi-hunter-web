@@ -8,12 +8,15 @@ import LocationDropDownInput from '@/components/fields/LocationDropdownInput'
 import Button from '@/components/ui/Button'
 // import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 import { useAppContext } from 'context/state'
-import { InterfaceLanguage, ModalType } from 'types/enums'
+import { CookiesType, InterfaceLanguage, ModalType, SnackbarType } from 'types/enums'
 import { IChangeLanguageModalArgs } from '@/components/modals/ChangeLanguageModal'
 // import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
 import Cookies from 'js-cookie'
 import setLanguage from 'next-translate/setLanguage'
 import useTranslation from 'next-translate/useTranslation'
+import UserRepository from 'data/repositories/UserRepository'
+import { TranslateInterfaceLanguage } from 'utils/enumsTranslations'
+import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
 
 interface Props {
 }
@@ -28,29 +31,29 @@ export default function SiteSettings(props: Props) {
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const [currentCountryCode, setCurrentCountryCode] = useState<string>('RU')
   const currentProfile = useRef(userContext?.currentProfile)
 
 
   const submit = (data: SiteSettings) => {
-    
-    Cookies.set('NEXT_LOCALE', data.language, {path: '/'})
+    Cookies.set(CookiesType.language, data.language, {path: '/'})
+    Cookies.set(CookiesType.NEXT_LOCALE, data.language, {path: '/'})
     setLanguage(data.language, false)
     userContext.editCurrentProfile({countryId: data.countryId, cityId: data.cityId})
     //TODO: вернуть когда добавят возможность переключать языка
-    // UserRepository.editCurrentUser({language: data.language})
-    // .then(user => {
-    //   userContext.updateUser(user)
-    //   appContext.showSnackbar(t('saved'), SnackbarType.success)
-    // })
+    UserRepository.editCurrentUser({language: data.language})
+    .then(user => {
+      userContext.updateUser(user)
+      appContext.showSnackbar(t('saved'), SnackbarType.success)
+    })
   }
 
   const formik = useFormik<SiteSettings>({
     initialValues: {
       countryId: userContext?.currentProfile?.countryId||undefined,
       cityId: userContext?.currentProfile?.cityId||undefined,
-      language: Cookies.get('NEXT_LOCALE') as InterfaceLanguage||undefined
+      language: Cookies.get(CookiesType.language) as InterfaceLanguage||undefined
     },
     onSubmit:submit
   })
@@ -83,21 +86,21 @@ export default function SiteSettings(props: Props) {
           name={'countryName'} 
           value = {currentProfile?.current?.country?.locName}
           labelName={t('country')}
-          requestFn={LocationRepository.searchCountry} 
+          requestFn={(arg) =>LocationRepository.searchCountry({...arg, lang})} 
           />
           <LocationDropDownInput
           onSetOption={cityHandler} 
           name={'cityName'} 
           value = {currentProfile?.current.city?.locName}
           labelName={t('city')}
-          requestFn={(r) => LocationRepository.searchCity({...r, country: currentCountryCode})} 
+          requestFn={(r) => LocationRepository.searchCity({...r, country: currentCountryCode, lang})} 
           />
           
-          {/* <div className={styles.langSelection} onClick={onLangChange}>
+          <div className={styles.langSelection} onClick={onLangChange}>
             <p className={styles.langTitle}>{t('app_language')}</p>
             <p className={styles.lang}>{TranslateInterfaceLanguage(formik.values.language)}</p>
             <ArrowRightSvg/>
-          </div> */}
+          </div>
           
           <Button styleType={['gradient', 'phoneWide']} disabled={!formik.values.cityId || !formik.values.countryId} onClick={formik.submitForm} className={styles.button}>{t('save')}</Button>
         </Form>

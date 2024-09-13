@@ -50,7 +50,7 @@ interface Props {
 }
 
 export default function PersonalPage(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const personalContext = usePersonalContext()
   const appContext = useAppContext()
   const theme = appContext.theme
@@ -320,7 +320,7 @@ export default function PersonalPage(props: Props) {
           name={'cityName'} 
           value = {personalContext.currentProfile?.city?.locName}
           labelName={t('city')}
-          requestFn={(r) => LocationRepository.searchCity({...r, country: personalContext.currentProfile?.country?.country})} 
+          requestFn={(r) => LocationRepository.searchCity({...r, country: personalContext.currentProfile?.country?.country, lang})} 
           />
           <div className={styles.companyAbout}>
             <P styleType={['medium', 'w500', 'greyLight']}>{t('personal_about_company')}</P>

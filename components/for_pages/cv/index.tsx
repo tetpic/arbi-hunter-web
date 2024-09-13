@@ -41,7 +41,7 @@ import ViberLogoSvg from '@/components/svg/ViberLogoSvg'
 import useTranslation from 'next-translate/useTranslation'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
-import { clearObject, copyToClipboard, getUserImageSource } from 'utils/helpers'
+import { clearObject, copyToClipboard, getCategoryName, getUserImageSource } from 'utils/helpers'
 import useAbortController from '@/components/hooks/useAbortController'
 import { ChooseFolderToSaveArgs } from '@/components/modals/ChooseFolderToSave'
 import { useFavoritesFolderContext } from 'context/favorites_folder_state'
@@ -418,7 +418,7 @@ export default function CvPage(props: Props) {
       <div className={styles.userTop}>
         <div className={styles.topLine}>
           <P useThemeColor styleType={['fs20', 'w600']}>
-            {currentCv?.categories[0].name}
+            {getCategoryName(currentCv.categories[0], lang)}
           </P>
           {!isTabletWidth &&
             <P 
@@ -529,7 +529,7 @@ export default function CvPage(props: Props) {
         styleType={['fs20', 'w600']} 
         className={styles.speciality}
         >
-          {currentCv.categories[0].name}
+          {getCategoryName(currentCv.categories[0], lang)}
         </P>
         <SalaryItem cv={currentCv} className={styles.salary}/>
       </>
@@ -632,7 +632,7 @@ export default function CvPage(props: Props) {
           <P useThemeColor styleType={['large', 'w600']}>{t('cv_page_languageKnowledges')}</P>
           <TagList 
           tagClassName={styles.tag} 
-          tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} 
+          tags={currentCv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, t, true)}))} 
           />
         </div>
       }

@@ -56,7 +56,6 @@ export default function AudioNode(props: Props) {
   function getDuration(event: any) {
     event.target.currentTime = 0
     event.target.removeEventListener('timeupdate', getDuration)
-    console.log(event.target.duration)
     setDuration(event.target.duration)
   }
 
@@ -69,7 +68,6 @@ export default function AudioNode(props: Props) {
         audio.addEventListener('timeupdate', getDuration)
       }
       else {
-        console.log(audio.duration)
         setDuration(audio.duration)
       }
     })
@@ -80,11 +78,9 @@ export default function AudioNode(props: Props) {
       const ctx = new AudioContext()
       const ua = window.navigator.userAgent
       const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
-      console.log(b)
 
       if( iOS && b.type === 'audio/opus') {
         decodeOgg(arrBuffer, blob => {
-          console.log(blob)
           setBlob(blob)
           audio.src = URL.createObjectURL(blob)
         })
@@ -93,13 +89,12 @@ export default function AudioNode(props: Props) {
 
       }
       ctx.decodeAudioData(arrBuffer, () => {
-        console.log('done')
-      }, () => console.log('err')).then(buff => {
+      }, () => {}).then(buff => {
         setBlob(b)
-        console.log(buff.duration, duration)
         setDuration(buff.duration)
       })
       .catch(e => {
+        // eslint-disable-next-line no-console
         console.warn(e)
       })
       // audio.src = URL.createObjectURL(b)

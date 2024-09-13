@@ -9,7 +9,7 @@ import ICommunity from 'data/interfaces/ICommunity'
 import ArticlesRepository from 'data/repositories/ArticlesRepository'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Languages, Preset } from 'types/enums'
+import { InterfaceLanguage, Languages, Preset } from 'types/enums'
 import Formatter from 'utils/formatter'
 import styles from './index.module.scss'
 import ImageHelper from 'utils/ImageHelper'
@@ -22,7 +22,7 @@ interface Props {
 export type CommunityNewsViewModalProps = [IArticle, ICommunity, boolean]
 
 export default function CommunityNewsViewModal(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const [item, community, isAdmin] = appContext.modalArguments as CommunityNewsViewModalProps
   const [article, setArticle] = useState<IArticle>()
@@ -49,7 +49,7 @@ export default function CommunityNewsViewModal(props: Props) {
       className={styles.userPic} 
       image={community.logo && ImageHelper.urlFromFile(community.logo, Preset.smallIconCrop)}/>
       <p className={styles.commName}>{item.community.name}</p>
-      <p className={styles.published}>{Formatter.formatDateRelative(item.createdAt)}</p>
+      <p className={styles.published}>{Formatter.formatDateRelative(item.createdAt, lang as InterfaceLanguage)}</p>
       {!isAdmin &&
         <Button className={styles.yellowButton}>{t('community_subscribe')}</Button>
       }

@@ -1,5 +1,5 @@
 export const  periods: {name: string, value: number}[] = [
-  {name: 'Три дня', value: 3},
-  {name: 'Неделя', value: 7},
-  {name: 'Месяц', value: 30},
+  {name: 'threeDays', value: 3},
+  {name: 'week', value: 7},
+  {name: 'Month', value: 30},
 ]

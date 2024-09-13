@@ -1,14 +1,14 @@
 import { ICategorySearchParams, ISpecializationCategory } from 'data/interfaces/Common'
-import { Languages } from 'types/enums'
+import { InterfaceLanguage, Languages } from 'types/enums'
 import request from 'utils/request'
 
 export default class CategoryRepository {
-  static async getCategories(): Promise<ISpecializationCategory[]|null> {
+  static async getCategories( lang?: InterfaceLanguage): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/service-category',
       data: {
-        lang: Languages.ru
+        lang: lang|| Languages.ru
       }
     })
     if(res.err) {
@@ -17,13 +17,14 @@ export default class CategoryRepository {
     return res
   }
 
-  static async getSubcategories(data?: Partial<ICategorySearchParams>): Promise<ISpecializationCategory[]|null> {
+  static async getSubcategories(data?: Partial<ICategorySearchParams>, lang?: InterfaceLanguage): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/service-category',
       data: {
         ...data,
-        subcategoriesOnly: true
+        subcategoriesOnly: true,
+        lang
       }
     })
     if(res.err) {
@@ -32,12 +33,12 @@ export default class CategoryRepository {
     return res
   }
 
-  static async getSubCategoriesByCategoryId(id: number, data?: Partial<ICategorySearchParams>): Promise<ISpecializationCategory[]|null> {
+  static async getSubCategoriesByCategoryId(id: number, data?: Partial<ICategorySearchParams>, lang?: InterfaceLanguage): Promise<ISpecializationCategory[]|null> {
     const res = await request({
       method: 'get',
       url: '/api/service-category',
       data: {
-        lang: Languages.ru,
+        lang: lang|| Languages.ru,
         categoryId: id,
         ...data
       }

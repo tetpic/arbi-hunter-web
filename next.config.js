@@ -3,6 +3,10 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const nextTranslate = require('next-translate-plugin')
 const nextConfig = nextTranslate({
   reactStrictMode: true,
+  i18n: {
+    locales: ['en-US', 'ru-RU', 'ua-UA'],
+    defaultLocale: 'ru-RU',
+  },
   swcMinify: true,
   env: {
     host: process.env.HOST,

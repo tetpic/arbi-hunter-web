@@ -1,5 +1,6 @@
 import { IGeoName, ISearchCityResult, ISearchCountryRequest, ISearchLocalyRequest } from 'data/interfaces/ILocation'
 import LocationRepository from 'data/repositories/LocationRepository'
+import useTranslation from 'next-translate/useTranslation'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 interface IState {
@@ -23,6 +24,7 @@ interface Props {
 export function LocationWrapper(props: Props) {
   const [cities, setCities] = useState<Map<number, ISearchCityResult>>(new Map())
   const [countries, setCountries] = useState<Map<number, IGeoName>>(new Map())
+  const {lang} = useTranslation()
 
   const getCities = async(data: Partial<ISearchLocalyRequest>, countries: string[], cts?: ISearchCityResult[]) => {
     if(cts && cts.length > 0) {
@@ -36,11 +38,11 @@ export function LocationWrapper(props: Props) {
     }
     const _cities:Map<number, ISearchCityResult> = new Map()
     if(countries.length === 0) {
-      const res = await LocationRepository.searchCity({...data})
+      const res = await LocationRepository.searchCity({...data, lang: lang})
       res.forEach(el=> _cities.set(el.id, el))
     }
     else {
-      const res = await Promise.all(countries.map(el=> LocationRepository.searchCity({...data, country: el}))); 
+      const res = await Promise.all(countries.map(el=> LocationRepository.searchCity({...data, country: el, lang: lang}))); 
       [].concat(...res).forEach(c=> {
         _cities.set(c.id, c)
       })
@@ -60,7 +62,7 @@ export function LocationWrapper(props: Props) {
       })
       return
     }
-    LocationRepository.searchCountry(data).then(res => {
+    LocationRepository.searchCountry({...data, lang}).then(res => {
       setCountries(_ => {
         const _newMap = new Map()
         const commonCountriesIds: number[] = [

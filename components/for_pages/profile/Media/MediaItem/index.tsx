@@ -6,11 +6,12 @@ import { IArticle } from 'data/interfaces/IArticle'
 import UserPic from 'components/ui/UserPic'
 import Formatter from 'utils/formatter'
 import ThreeDotsButton from 'components/ui/ThreeDotsButton'
-import { CategoryType, Preset } from 'types/enums'
+import { CategoryType, InterfaceLanguage, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import classNames from 'classnames'
 import { useMediaContext } from 'context/media_state'
 import ImageHelper from 'utils/ImageHelper'
+import useTranslation from 'next-translate/useTranslation'
 
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
  * @type CategoryType
  */
 export default function MediaItem({media, showContent, type}: Props) {
+  const {lang} = useTranslation()
 
   const mediaContext = useMediaContext()
 
@@ -44,7 +46,7 @@ export default function MediaItem({media, showContent, type}: Props) {
         image={media.image?.source&&ImageHelper.urlFromFile(media.image, Preset.smallIconCrop)}/>
       }
       <p className={styles.name} title={media.name}>{media.community?.name||media.shortDescription||media.name}</p>
-      <p className={styles.date}>{Formatter.formatDateRelative(media.createdAt)}</p>
+      <p className={styles.date}>{Formatter.formatDateRelative(media.createdAt, lang as InterfaceLanguage)}</p>
       {!type || !isNews && <ThreeDotsButton className={styles.dots}/>}
     </div>
     {(!type || !isNews) && 

@@ -23,7 +23,7 @@ import CvRepository from 'data/repositories/CvRepository'
 import folderImage from 'images/folder.png'
 import Image from 'next/image'
 import Link from 'next/link'
-import { clearObject, getUserImageSource, getUserName } from 'utils/helpers'
+import { clearObject, getCategoryName, getUserImageSource, getUserName } from 'utils/helpers'
 import { useRouter } from 'next/navigation'
 import P from '@/components/ui/P'
 import { useAppContext } from 'context/state'
@@ -49,7 +49,7 @@ interface Props {
 }
 
 export default function Messages(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const dialog = useChatDialogContext()
   const chatContext = useChatContext()
   const {messages, loading, chat} = dialog
@@ -376,7 +376,7 @@ export default function Messages(props: Props) {
       </div>
       {cv && cv.categories[0] &&
       <Link href={`/cv/${cv.id}`} className={styles.bottom}>
-        <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
+        <p className={styles.bottom__desc}>{getCategoryName(cv?.categories[0], lang)}</p>
       </Link>
       }
       <div className={classNames(styles.newMessage, userContext.currentProfile?.profileType === ProfileType.Employee

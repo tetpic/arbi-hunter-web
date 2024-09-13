@@ -87,7 +87,7 @@ export default function HirerFieldsModal(props: Props) {
           options={[
             {value: null, label: t('allTheTime')},
             ...periods.map(el=>{
-              return {value: el.value, label: el.name}
+              return {value: el.value, label: t(el.name)}
             })         
           ]} />
         }

@@ -91,7 +91,7 @@ export default function ProposalModal(props: Props) {
           name={'type'} 
           options={Object.values(ApplicationBSSelectType)
           .map(el=> {
-            return {value: el, label: TranslateApplicationBSSelectType(el)}
+            return {value: el, label: TranslateApplicationBSSelectType(el, t)}
           })}/>
         ||
         page === ProposalModalPager.OtherVacancy &&

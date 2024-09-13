@@ -19,7 +19,7 @@ import { useFavoritesFolderContext } from 'context/favorites_folder_state'
 import { useUserContext } from 'context/user_state'
 import useAbortController from '@/components/hooks/useAbortController'
 import P from '../P'
-import { getUserImageSource } from 'utils/helpers'
+import { getCategoryName, getUserImageSource } from 'utils/helpers'
 import { ProfileType } from 'data/interfaces/IRegistration'
 import useTranslation from 'next-translate/useTranslation'
 import { useFeedbacksContext } from 'context/feedbacks_state'
@@ -63,14 +63,11 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     else {
       ChatRepository.getChatByContactId(cv.profileId, {proposalId: application?.id})
       .then(res => {
-        console.log('res', res)
         router.push('/messenger?chat=' + res.id)
-
       })
       .catch(er => {
+        // eslint-disable-next-line no-console
         console.warn(er)
-        
-        
       })
     }
   }
@@ -138,7 +135,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     <div className={styles.top} onClick={()=>(application?.cvId||cv?.id)&&router.push(application?.cvId?'/cv/'+application?.cvId: '/cv/'+cv?.id)}>
       <UserPic size={46} image={getUserImageSource(application.profile.profileType === ProfileType.Employee?application.profile:cv.profile)} className={styles.userPic}/>
       <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>
-        {currentCV?.position||currentCV?.categories[0].name||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
+        {currentCV?.position||getCategoryName(currentCV?.categories[0], lang)||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
       </P>
       <P styleType={['small', 'w500', 'greyLight']} className={styles.name}>{currentCV?.firstName} {currentCV?.lastName} <DotSvg/> {currentCV?.age} {Formatter.pluralize(currentCV?.age, t('year1'), t('year2'), t('year3'))}</P>
       <P styleType={['small', 'greyLight', 'w600']} className={styles.fback}>{t('application')}</P>

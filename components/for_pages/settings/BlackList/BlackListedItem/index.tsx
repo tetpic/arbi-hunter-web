@@ -2,7 +2,7 @@ import UserPic from '@/components/ui/UserPic'
 import styles from './index.module.scss'
 import { IVacancy } from 'data/interfaces/IVacancy'
 import P from '@/components/ui/P'
-import { getSalary, getUserName } from 'utils/helpers'
+import { getCategoryName, getSalary, getUserName } from 'utils/helpers'
 import Button from '@/components/ui/Button'
 import { IUserProfile } from 'data/interfaces/IUser'
 import ImageHelper from 'utils/ImageHelper'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function BlackListedItem(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
 
   return (<div className={styles.root}> 
@@ -31,7 +31,7 @@ export default function BlackListedItem(props: Props) {
    </div>
    {(props.vacancy || props.cv) &&
    <>
-    <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.name||props.cv.categories[0]?.name}</P>
+    <P useThemeColor styleType={['large', 'w600']}>{props.vacancy?.name||getCategoryName(props.cv.categories[0], lang)}</P>
     <P useThemeColor>{getSalary({vacancy: props.vacancy, cv: props.cv}, t)}</P>
    </>
    }

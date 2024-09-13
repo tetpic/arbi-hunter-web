@@ -137,7 +137,7 @@ export default function VacancyPreview(props: Props) {
 
       {currentVacancy.languageKnowledges && currentVacancy.languageKnowledges.length > 0 && 
         <PreviewItem title={t('vacancy_page_languagesKnowledges')} onClick={()=>props.onBack(5)}>
-          <TagList tagClassName={styles.langTag} tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          <TagList tagClassName={styles.langTag} tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, t, true)}))} />
         </PreviewItem>
       }
     </div>

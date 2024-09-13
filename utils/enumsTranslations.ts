@@ -1,6 +1,24 @@
 import { ProfileType } from 'data/interfaces/IRegistration'
 import { Translate } from 'next-translate'
-import { AcceptApplicationType, ApplicationBSSelectType, ApplicationStatus, CompensationType, Currency, EducationTypes, EmploymentType, Genders, HirerRole, HirerRolePermission, InterfaceLanguage, LanguageKnowLevel, Languages,  ProposalRequestType, ScheduleType, SearchIn, TariffType, VacancyLookType, WorkExperience } from 'types/enums'
+import { 
+  ApplicationBSSelectType, 
+  ApplicationStatus, 
+  CompensationType, 
+  Currency, 
+  EducationTypes, 
+  EmploymentType, 
+  Genders, 
+  HirerRole,
+  HirerRolePermission, 
+  InterfaceLanguage, 
+  LanguageKnowLevel, 
+  Languages,  
+  ProposalRequestType, 
+  ScheduleType,  
+  SearchIn,   
+  VacancyLookType, 
+  WorkExperience 
+} from 'types/enums'
 import translateEnum from 'types/translations'
 
 export const arrayFromEnum = (k: {[key: string|number]: string}) => {
@@ -50,32 +68,17 @@ export const TranslateCurrency = (c: Currency, svg?: boolean) => {
   
 }
 
-export const TranslateAcceptApplicationType = (t: AcceptApplicationType) => {
-  switch (t) {
-    case AcceptApplicationType.PhoneInterview:
-      return 'Телефонное интервью'
-    case AcceptApplicationType.Interview:
-      return 'Интервью'
-    case AcceptApplicationType.WorkApplication:
-      return 'Предложение о работе'
-    case AcceptApplicationType.GoingToWork:
-      return 'Выход на работу'
-    case AcceptApplicationType.Esmitate:
-      return 'Оценка'
-  }
-}
 
-
-export const TranslatePatternType = (p: ProposalRequestType) => {
+export const TranslatePatternType = (p: ProposalRequestType, t: Translate) => {
   switch (p) {
     case ProposalRequestType.InfoRequest:
-      return 'Приглашение'
+      return t('invite')
     case ProposalRequestType.Interview:
-      return 'Пройти тест'
+      return t('takeATest')
     case ProposalRequestType.Rejection:
-      return 'Отказ'
+      return t('rejection')
     case ProposalRequestType.Consider:
-      return 'Подумать'
+      return t('consider')
 
   }
 }
@@ -104,77 +107,45 @@ export const TranslateWorkExperience = (w: WorkExperience, t: Translate) => {
 
 export const TranslateCompensationType = (c: CompensationType, t?: Translate) => {
   switch(c) {
-    // case CompensationType.Commission: 
-    // return 'Процент'
     case CompensationType.Contract:
       return t?.('compensation_contract')||'Договорная'
-    // case CompensationType.Gybrid: 
-    //   return 'Гибрид'
-    // case CompensationType.Piecework: 
-    //   return 'Сдельная'
     case CompensationType.Salary:
       return t?.('compensation_salary')||'Зарплата'
     }
 }
 
-export const TranslateApplicationBSSelectType = (t: ApplicationBSSelectType) => {
-  switch(t) {
+export const TranslateApplicationBSSelectType = (type: ApplicationBSSelectType, t: Translate) => {
+  switch(type) {
     case ApplicationBSSelectType.AnotherVacancy:
-      return'На другую вакансию'
+      return t('onOtherVacancy')
     case ApplicationBSSelectType.Reject:
-      return'Отказ'
+      return t('rejection')
     case ApplicationBSSelectType.ThisVacancy:
-      return 'На эту вакансию'
+      return t('onThisVacancy')
   }
 }
 
-export const TranslateLanguageKnowLevel = (l: LanguageKnowLevel, lowerCase?: boolean) => {  
+export const TranslateLanguageKnowLevel = (l: LanguageKnowLevel, t: Translate, lowerCase?: boolean, ) => {  
   switch(l) {
     case LanguageKnowLevel.Advanced :
-      return lowerCase?'продвинутый': 'Продвинутый'
+      return lowerCase?t('languageKnowLevel_advanced').toLowerCase(): t('languageKnowLevel_advanced')
     case LanguageKnowLevel.Beginner :
-      return lowerCase?'начинающий': 'Начинающий'
+      return lowerCase?t('languageKnowLevel_beginner').toLowerCase(): t('languageKnowLevel_beginner')
     case LanguageKnowLevel.Intermediate :
-      return lowerCase?'средний': 'Средний'
+      return lowerCase?t('languageKnowLevel_intermediate').toLowerCase(): t('languageKnowLevel_intermediate')
     case LanguageKnowLevel.Professional :
-      return lowerCase?'профессионал': 'Профессионал'
+      return lowerCase?t('languageKnowLevel_professional').toLowerCase(): t('languageKnowLevel_professional')
   }
 }
 
-export const TranslateProposalType = (p: ApplicationStatus) => {
+export const TranslateProposalType = (p: ApplicationStatus, t: Translate) => {
   switch(p) {
     case ApplicationStatus.Accepted:
-      return 'Приглашение'
+      return t('invite')
     case ApplicationStatus.Applied:
-      return 'Ожидание'
+      return t('profile_feedbacks_paused')
     case ApplicationStatus.Rejected:
-      return 'Отказ'
-  }
-}
-
-export const TranslateProposalRequestType = (p: ProposalRequestType) => {
-  switch(p) {
-    case ProposalRequestType.InfoRequest:
-      return 'Запрос информации'
-    case ProposalRequestType.Interview:
-      return 'Приглашение'
-    case ProposalRequestType.New:
-      return ''
-    case ProposalRequestType.Rejection:
-      return 'Отказ'
-    case ProposalRequestType.Consider:
-      return 'На рассмотрении'
-  }
-}
-
-export const TranslateTariffType = (t: TariffType) => {
-  switch(t) {
-    case TariffType.Standard:
-      return 'Тариф стандарт'
-    case TariffType.StandardPlus:
-      return 'Тариф Стандарт+'
-    case TariffType.Vip:
-      return 'Тариф VIP'
+      return t('rejection')
   }
 }
 
@@ -284,5 +255,5 @@ export const TranslateVacancyLookType = (v: VacancyLookType, profileType: Profil
   }
 }
 
-export const TranslateSearchInType = translateEnum(SearchIn, ['в названии вакансии', 'в названии компании'])
+export const TranslateSearchInType = (t: Translate) =>  {return translateEnum(SearchIn, ['searchInVacancyName', 'searchInCompanyName'], t)}
 

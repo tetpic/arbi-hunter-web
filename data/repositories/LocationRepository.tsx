@@ -1,7 +1,7 @@
 import { ISearchLocalyRequest, ISearchCityResult, ISearchCountryRequest, ISearchCountryResult, IGeoName } from 'data/interfaces/ILocation'
 import request from 'utils/request'
 import {AxiosRequestConfig} from 'axios'
-import { Languages } from 'types/enums'
+import { InterfaceLanguage, Languages } from 'types/enums'
 
 export default class LocationRepository {
   static async searchCountry(data: Partial<ISearchCountryRequest>, config?: AxiosRequestConfig): Promise<ISearchCountryResult[]> {
@@ -31,12 +31,12 @@ export default class LocationRepository {
     return res
   }
 
-  static async getById(id: number): Promise<IGeoName|null> {
+  static async getById(id: number, lang?: InterfaceLanguage): Promise<IGeoName|null> {
     const res = await request({
       method: 'get',
       url: `/api/location/${id}`,
       data: {
-        lang: Languages.ru
+        lang: lang||Languages.ru
       }
     })
     if(res.err) {

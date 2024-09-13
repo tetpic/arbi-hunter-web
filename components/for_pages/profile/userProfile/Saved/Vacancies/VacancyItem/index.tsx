@@ -18,7 +18,7 @@ import { IProposal } from 'data/interfaces/IProposal'
 import { useRouter } from 'next/router'
 import ApplicationRepository from 'data/repositories/ApplicationRepository'
 import OptionsDropDown from 'components/ui/OptionsDropDown'
-import { getUserImageSource } from 'utils/helpers'
+import { getCategoryName, getUserImageSource } from 'utils/helpers'
 import ChatRepository from 'data/repositories/ChatRepository'
 import P from '@/components/ui/P'
 import { IApplication } from 'data/interfaces/IApplication'
@@ -39,7 +39,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
   const appContext = useAppContext()
   const router = useRouter()
   const {isTabletWidth} = appContext.size
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const dropRef = useRef(null!)
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const [chatId, setChatId] = useState<number>()
@@ -82,7 +82,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
 
   const options = (<div className={styles.options} onMouseLeave={()=>openDropDown(false)}>
     {isTabletWidth &&
-      <P styleType={['greyLight', 'medium']}>{vc?.name||vc.categories[0].name}</P>
+      <P styleType={['greyLight', 'medium']}>{vc?.name||getCategoryName(vc.categories[0], lang)}</P>
     }
     <P className={styles.option} useThemeColor onClick={(e)=>{e.stopPropagation();rejectHandler(true)}}>{t('delete')}</P>
     {(item?.status === ApplicationStatus.Accepted||item?.status === ApplicationStatus.Applied) && (('proposals' in item && item.proposals[0])||('application' in item && !item.application)) &&
@@ -146,7 +146,7 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
           || ('proposals' in item && item.proposals.length === 0 && item.status === ApplicationStatus.Applied) && ApplicationStatus.Applied
           || ('application' in item && item.status === ApplicationStatus.Rejected || item.type === ProposalRequestType.Rejection) && ApplicationStatus.Rejected
           || ('application' in item && item.status !== ApplicationStatus.Rejected) && ApplicationStatus.Accepted
-        )}
+        , t)}
       </p>
     }
     <div className={styles.bottom}>

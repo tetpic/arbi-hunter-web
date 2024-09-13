@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationStatus, AppTheme, MessageType, ModalType, SnackbarType } from 'types/enums'
+import { ApplicationStatus, AppTheme, InterfaceLanguage, MessageType, ModalType, SnackbarType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
@@ -48,7 +48,7 @@ interface Props {
 
 
 export default function MessageFactory(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const appContext = useAppContext()
   const theme = appContext.theme
   const {isPhoneWidth} = appContext.size
@@ -176,7 +176,7 @@ export default function MessageFactory(props: Props) {
     <>
     <div className={styles.stats} ref={itemRef} key={props.message.id}>
     {props.message.forwarded&&<P styleType={['small', 'greyLight']}>{t('chat_forwardedFrom')} {getUserName(msg.profile)}</P>}
-      <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt)}</span>
+      <span className={styles.time}>{Formatter.formatDateRelative(msg.createdAt, lang as InterfaceLanguage)}</span>
       <MessageReadSvg color={!msg.isReadByRecipient&&colors.greyLight}/>     
     </div>
     </>

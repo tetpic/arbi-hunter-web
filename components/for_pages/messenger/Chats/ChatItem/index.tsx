@@ -6,7 +6,7 @@ import TextNode from 'components/ui/TextNode'
 import classNames from 'classnames'
 import IChat from 'data/interfaces/IChat'
 import { getUserImageSource, getUserName } from 'utils/helpers'
-import { AppTheme, ModalType, Preset } from 'types/enums'
+import { AppTheme, InterfaceLanguage, ModalType, Preset } from 'types/enums'
 import P from '@/components/ui/P'
 import OptionsList, { IOptionList } from '@/components/ui/OptionsList'
 import PinMessageSvg from '@/components/svg/PinMessageSvg'
@@ -32,7 +32,7 @@ interface Props {
 }
 
 export default function ChatItem(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const chat = props.chat
   const chatContext = useChatContext()
   const appContext = useAppContext()
@@ -121,7 +121,7 @@ export default function ChatItem(props: Props) {
        
         <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
         <P className={styles.time} styleType={['small', 'greyLight', 'alignCenter']}>
-          {Formatter.formatDateRelative(chat.lastMessageAt)}  
+          {Formatter.formatDateRelative(chat.lastMessageAt, lang as InterfaceLanguage)}  
           {props.chat.profiles?.[0]?.pinned &&
             <PinMessageSvg className={styles.pinIcon}/>
           }

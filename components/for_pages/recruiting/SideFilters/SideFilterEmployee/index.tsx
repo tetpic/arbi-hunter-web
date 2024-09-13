@@ -336,7 +336,7 @@ export default function SideFilterEmployee(props: Props) {
           <CheckboxListField 
           name={'experience'} 
           rootClass={styles.radioField}
-          options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+          options={WorkExperienceTranslate(t).map(el=> {return {value: el[0], label: el[1]}})}
           />
           {isTabletWidth&&<Spacer basis={4}/>}
          <div className={styles.divider}></div>
@@ -392,7 +392,7 @@ export default function SideFilterEmployee(props: Props) {
             options={[
               {value: null, label: t('allTheTime')},
               ...periods.map(el=>{
-                return {value: el.value, label: el.name}
+                return {value: el.value, label: t(el.name)}
               })         
             ]} 
             />

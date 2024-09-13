@@ -1,4 +1,12 @@
 {
+  "consider": "Подумать",
+  "takeATest": "Пройти тест",
+  "rejection": "Отказ",
+  "onThisVacancy": "На эту вакансию",
+  "onOtherVacancy": "На другую вакансию",
+  "invite": "Приглашение",
+  "yesterdayAt": "Вчера в",
+  "tomorrowAt":"Завтра в",
   "search": "Поиск",
   "searchAlt": "Найти",
   "search_cv": "Поиск резюме",
@@ -17,6 +25,17 @@
   "management": "Менеджмент",
   "loginEnter":"Вход",
   "profile": "Личный кабинет",
+  "searchInVacancyName": "в названии вакансии",
+  "searchInCompanyName": "в названии компании",
+  "week": "Неделя",
+  "threeDays": "Три дня",
+  "Month": "Месяц",
+
+  
+  "languageKnowLevel_advanced":"Продвинутый",
+  "languageKnowLevel_intermediate":"Средний",
+  "languageKnowLevel_beginner":"Начинающий",
+  "languageKnowLevel_professional":"Профессионал",
 
   "female":"Женский",
   "male": "Мужчина",
@@ -246,8 +265,11 @@
 
   "workExperience_no":"Без опыта",
   "workExperience_from1to3":"От 1 до 3",
+  "workExperience_from1to3Alt":"1-3 года",
   "workExperience_from3to6":"От 3 до 6",
+  "workExperience_from3to6Alt":"3-6 лет",
   "workExperience_from6":"Более 6 лет",  
+  "workExperience_from6Alt":"от 6 лет",  
 
   "employment_fullTime": "Полная",
   "employment_partTime": "Частичная",
@@ -1104,7 +1126,7 @@
   "proposalModal_inviting":"Приглашение",
   "proposalModal_cantSendInvite":"Невозможно отправить приглашение",
   
-  "proposalModal_vcOrCvRemovedOrHidden":"')}. Вакансия или резюме удалено или не опубликовано",
+  "proposalModal_vcOrCvRemovedOrHidden":"Вакансия или резюме удалено или не опубликовано",
   
 
   "personal_changeBackground": "Изменить фон",

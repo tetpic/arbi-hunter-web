@@ -399,7 +399,7 @@ export default function FilterHirer(props: Props) {
             formik.values.forLastNumberOfDays &&
             <div className={styles.itemContent}>
               <RemovableItem 
-              text={periods.find(el => el?.value === formik.values.forLastNumberOfDays).name}
+              text={t(periods.find(el => el?.value === formik.values.forLastNumberOfDays).name)}
               onClick={()=>formik.setFieldValue('forLastNumberOfDays', null)}
               /> 
             </div>
@@ -690,7 +690,7 @@ export default function FilterHirer(props: Props) {
                 <RemovableItem 
               key={el?.language} 
               onClick={()=>removeLanguage(el)} 
-              text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, true)}`} 
+              text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, t, true)}`} 
               /> 
             )
             } 
@@ -710,7 +710,7 @@ export default function FilterHirer(props: Props) {
                 <RemovableItem 
                 key={el?.language} 
                 onClick={()=>removeLanguage(el)} 
-                text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, true)}`} 
+                text={`${TranslateLanguage(el?.language, t)}, ${TranslateLanguageKnowLevel(el?.level, t, true)}`} 
                 /> 
               )
             }

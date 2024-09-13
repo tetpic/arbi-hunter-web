@@ -290,7 +290,7 @@ export default function Skills(props: Props) {
     {cvContext.helpObjects?.languageKnowledges?.size > 0 &&
       <div className={styles.itemsWrapper}>
         {cvContext.helpObjects&& [...cvContext.helpObjects?.languageKnowledges.values()]
-        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={(TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true))} /> )
+        .map((el)=> <RemovableItem key={el.language} onClick={()=>removeLanguage(el)} text={(TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, t, true))} /> )
         }
       </div>
     } 

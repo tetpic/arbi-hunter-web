@@ -19,6 +19,7 @@ import Spinner from 'components/ui/Spinner'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import useTranslation from 'next-translate/useTranslation'
+import { getCategoryName } from 'utils/helpers'
 
 interface Props {
   onClose: ()=> void
@@ -40,7 +41,7 @@ function SpecializationModalInner(props: Props) {
   const cvContext = useCreateVcCvContext()
   const {activeCategory, setActiveCategory} = cvContext
   const [chooseAll, setChooseAll] = useState<boolean>(false)
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
   // useEffect(()=>{
   //   setActiveCategory(args.activeSubCategories)  
@@ -124,7 +125,7 @@ function SpecializationModalInner(props: Props) {
                     <div onClick={()=>setChooseAll(false)}>
                       {subCategories.length > 0 &&
                         <CheckboxListField rootClass={styles.radiosField} name={'specialization'} options={subCategories.map(el=> {
-                          return {value: el, label: el.name}
+                          return {value: el, label: getCategoryName(el, lang)}
                         })}/>
                       }
                     </div>
@@ -132,7 +133,7 @@ function SpecializationModalInner(props: Props) {
                   ||
                   subCategories && !args?.manyItems &&
                   <RadioListField rootClass={styles.radiosField} name={'specialization'} options={subCategories.map(el=> {
-                    return {value: el, label: el.name}
+                    return {value: el, label: getCategoryName(el, lang)}
                   })}/>
                 }
               </div>

@@ -71,7 +71,7 @@ export default function Cv(props: Props) {
       description: [
         `${t('salary')}:  ${getSalary({cv: props.cv}, t)}`,
         `${t('workExperience')}: ${Formatter.fullTimeLine(props.cv.experienceInfo?.map(el=> [el.fromDate, el.toDate]))}`,
-        props.cv.languageKnowledges.length>0&&`${t('languageKnowledges')}: ${props.cv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ' - ' + TranslateLanguageKnowLevel(el.level, true)})).map(el => el.name).join(', ')}`
+        props.cv.languageKnowledges.length>0&&`${t('languageKnowledges')}: ${props.cv.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ' - ' + TranslateLanguageKnowLevel(el.level, t, true)})).map(el => el.name).join(', ')}`
       ].filter(Boolean).join(', '),
       images: [
         {

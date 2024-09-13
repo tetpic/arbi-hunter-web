@@ -34,7 +34,7 @@ interface Props {
 }
 
 export default function Registration(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const userContext = useUserContext()
   const appContext = useAppContext()
   const {isTabletWidth} = appContext.size
@@ -294,7 +294,7 @@ export default function Registration(props: Props) {
     onSetOption={countryHandler}
     name={'countryId'}
     labelName={`${t('country')}: `}
-    requestFn={LocationRepository.searchCountry}
+    requestFn={(arg) =>LocationRepository.searchCountry({...arg, lang})}
     className={styles.dropInput}
     />
 
@@ -302,7 +302,7 @@ export default function Registration(props: Props) {
     onSetOption={cityHandler}
     name={'cityId'}
     labelName={`${t('city')}: `}
-    requestFn={LocationRepository.searchCity}
+    requestFn={(args) =>LocationRepository.searchCity({...args, lang})}
     country={country&&country.country_code}
     value={cityNameValue}
     onChange={(s: string) => {setCityNameValue(s)}}

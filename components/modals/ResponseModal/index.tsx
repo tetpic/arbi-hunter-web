@@ -19,6 +19,7 @@ import classNames from 'classnames'
 import BottomSheetLayout from 'components/layout/BottomSheet/BottomSheetLayout'
 import BottomSheetBody from 'components/layout/BottomSheet/BottomSheetBody'
 import useTranslation from 'next-translate/useTranslation'
+import { getCategoryName } from 'utils/helpers'
 
 interface Props {
   onClose?: () => void
@@ -35,7 +36,7 @@ export default function ResponseModal(props: Props) {
   const appContext = useAppContext()
   const args: IResponseModalProps = props.isBottomSheet?appContext.bottomSheetArguments:appContext.modalArguments
   const [currentCv, setCurrentCv] = useState<ICV>(null)
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
   const submit = (data: {coverLetter: string}) => {
     ApplicationRepository.patchApplicationRespond(args.application.id, data)
@@ -60,7 +61,7 @@ export default function ResponseModal(props: Props) {
     <div className={styles.top}>
       <UserPic className={styles.picture}/>
       <p className={styles.resume}>{t('response_cv')}</p>
-      <p className={styles.name}>{currentCv?.categories[0]?.name}</p>
+      <p className={styles.name}>{getCategoryName(currentCv?.categories[0], lang)}</p>
     </div>
     <div className={classNames(styles.form, props.isBottomSheet&&styles.form__bottom)}>
         <TextAreaField 

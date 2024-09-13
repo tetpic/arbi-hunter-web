@@ -23,9 +23,10 @@ import DocumentSheetSvg from '@/components/svg/DocumentSheetSvg'
 import MobileBanners from '../MobileBanners'
 import { BackgroundCategoryType } from 'data/interfaces/IBackground'
 import { useIndexPageContext } from 'context/index_page_state'
+import { InterfaceLanguage } from 'types/enums'
 
 export default function MainPageEmployee() {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const router =  useRouter()
   const personalContext = usePersonalContext()
   const characterContext = useCharacterContext()
@@ -69,7 +70,7 @@ export default function MainPageEmployee() {
   }
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
-    CategoryRepository.getSubCategoriesByCategoryId(c.id)
+    CategoryRepository.getSubCategoriesByCategoryId(c.id, undefined, lang as InterfaceLanguage)
     .then(res => {
       router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories:res.map(el => el.id)})}})
     })

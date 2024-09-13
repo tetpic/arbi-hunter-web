@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import Spacer from 'components/ui/Spacer'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import { useUserContext } from 'context/user_state'
-import { getUserImageSource } from 'utils/helpers'
+import { getCategoryName, getUserImageSource } from 'utils/helpers'
 import ProfileCvItem from './ProfileCvItem'
 import { useTariffContext } from 'context/tariff_state'
 import { ModalType, Preset, PurchaseType } from 'types/enums'
@@ -46,7 +46,7 @@ function translate (n: CVNavigation, t: Translate) {
 }
 
 export default function CVs(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const router = useRouter()
   const cvContext = useCvContext()
   const userContext = useUserContext()
@@ -103,7 +103,7 @@ export default function CVs(props: Props) {
   }, [activeItem, cvContext.savedCvs, searchedCvs])
 
   const setFilteredData = (s:string) => {
-    const data = cvContext.savedCvs.filter(el => el.categories[0].name.toLowerCase().includes(s.toLowerCase()))
+    const data = cvContext.savedCvs.filter(el => getCategoryName(el.categories[0], lang).toLowerCase().includes(s.toLowerCase()))
     setSearchedCvs(data)
   }
 
@@ -115,7 +115,7 @@ export default function CVs(props: Props) {
         setSearchString(s)
       },
       placeholder: t('search_byName'),
-      suggestions: [...new Set(cvContext.savedCvs.map(el=> el.categories[0].name)).values()],
+      suggestions: [...new Set(cvContext.savedCvs.map(el=> getCategoryName(el.categories[0], lang))).values()],
       initialValue: searchString
     })
     if(data) {

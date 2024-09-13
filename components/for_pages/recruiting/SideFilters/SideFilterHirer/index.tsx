@@ -346,7 +346,7 @@ export default function SideFilterHirer(props: Props) {
           <CheckboxListField 
           name={'experience'} 
           rootClass={styles.radioField}
-          options={WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}})}
+          options={WorkExperienceTranslate(t).map(el=> {return {value: el[0], label: el[1]}})}
           />
           {isTabletWidth&&<Spacer basis={4}/>}
         </Accordeon>

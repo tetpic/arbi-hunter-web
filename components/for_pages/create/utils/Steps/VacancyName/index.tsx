@@ -14,7 +14,7 @@ import { ISpecializationCategory } from 'data/interfaces/Common'
 import { useCreateVcCvContext } from 'context/createVcCv_state'
 import { ISpecializationModalProps } from '@/components/modals/CvModals/Specialization'
 import { useAppContext } from 'context/state'
-import { AppTheme, ModalType } from 'types/enums'
+import { AppTheme, InterfaceLanguage, ModalType } from 'types/enums'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import { colors } from 'styles/variables'
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function VacancyName(props: Props) {
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
   const [tags, setTagsState]= useState<ISpecializationCategory[]>([])
   const [suggestions, setSuggestions] = useState<ISpecializationCategory[]>([])
   const inputWrapperRef = useRef(null!)
@@ -42,7 +42,7 @@ export default function VacancyName(props: Props) {
     if(!isClicked.current) {
       setIsActive(true)
     }
-    CategoryRepository.getSubcategories({search: s})
+    CategoryRepository.getSubcategories({search: s}, lang as InterfaceLanguage)
     .then(res=> {
       setSuggestions(res)
       isClicked.current = false
@@ -50,7 +50,7 @@ export default function VacancyName(props: Props) {
   }
 
   const setTags = () => {
-    CategoryRepository.getSubcategories({recommended: true})
+    CategoryRepository.getSubcategories({recommended: true},  lang as InterfaceLanguage)
     .then(r=> {
       const recommended = r.filter(el => el.recommended)
       setTagsState(recommended)
@@ -78,7 +78,7 @@ export default function VacancyName(props: Props) {
       cvContext.setActiveSubcategory([category])
     }
     else {
-      CategoryRepository.getSubcategories({key: 'sub-other'})
+      CategoryRepository.getSubcategories({key: 'sub-other'},  lang as InterfaceLanguage)
       .then(res=> {
         cvContext.setActiveSubcategory(res)
       })

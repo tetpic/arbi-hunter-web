@@ -2,7 +2,7 @@ import ContentLayout from '@/components/layout/ContentLayout'
 import styles from './index.module.scss'
 import BackTextButton from '@/components/ui/BackTextButton'
 import { useRouter } from 'next/router'
-import { CookiesType } from 'types/enums'
+import { CookiesType, InterfaceLanguage } from 'types/enums'
 import CategoryRepository from 'data/repositories/CategoryRepository'
 import { ISpecializationCategory } from 'data/interfaces/Common'
 import CategoryItem from '@/components/ui/CategoriesList/CategoryItem'
@@ -16,17 +16,19 @@ interface Props {
 
 export const getServerSideProps = async(ctx: {req: {cookies: {[key:string]: string}}}) => {
   const token = ctx.req.cookies[CookiesType.accessToken]
-  const categories = await CategoryRepository.getCategories()
+  const lang = ctx.req.cookies[CookiesType.language] as InterfaceLanguage
+  const categories = await CategoryRepository.getCategories(lang)
   return {props: {categories}}
 }
 
 export default function RecruitingCategories (props: Props) {
   const router = useRouter()
   const {isTabletWidth} = useAppContext().size
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
   const onCategoryClickHandler = (c: ISpecializationCategory) => {
-    CategoryRepository.getSubCategoriesByCategoryId(c.id)
+    debugger
+    CategoryRepository.getSubCategoriesByCategoryId(c.id, undefined, lang as InterfaceLanguage)
     .then(res => {
       router.push({pathname: '/recruiting', query: {filters: JSON.stringify({categories:res.map(el => el.id)})}})
     })

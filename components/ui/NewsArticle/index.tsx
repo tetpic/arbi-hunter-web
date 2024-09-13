@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useUserContext } from 'context/user_state'
 import { useAppContext } from 'context/state'
-import { ModalType, Preset } from 'types/enums'
+import { InterfaceLanguage, ModalType, Preset } from 'types/enums'
 import { useDetectOutsideClick } from 'components/hooks/useDetectOutsideClick'
 import { useResize } from 'components/hooks/useResize'
 import OptionsDropDown from '../OptionsDropDown'
@@ -59,7 +59,7 @@ export default function NewsArticle(props: Props) {
   const [dropDown, openDropDown] = useDetectOutsideClick(dropRef, false)
   const router = useRouter()
   const {isTabletWidth} = useResize()
-  const {t} = useTranslation()
+  const {t, lang} = useTranslation()
 
 
   const optionsList = <OptionsList 
@@ -104,7 +104,7 @@ export default function NewsArticle(props: Props) {
       }
       <P className={styles.name} styleType={['large', 'w600']} useThemeColor>{props.titleName}</P>
       {!props.disableLikes && 
-      <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt)}</p>
+      <p className={styles.time}>{Formatter.formatDateRelative(article.createdAt, lang as InterfaceLanguage)}</p>
       }
       <ThreeDotsButton onMouseEnter={()=>openDropDown(true)} onClick={openModal} className={styles.dots}/>
       {!isTabletWidth && props.options &&

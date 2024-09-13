@@ -174,7 +174,7 @@ export default function FilterEmployee(props: Props) {
   }
 
   const options = {
-    workExperience: WorkExperienceTranslate.map(el=> {return {value: el[0], label: el[1]}}),
+    workExperience: WorkExperienceTranslate(t).map(el=> {return {value: el[0], label: el[1]}}),
     employmentType: Object.values(EmploymentType).map(el => {
       return  {value: el as EmploymentType, label: TranslateEmploymentType(el as EmploymentType, t, true)}
     }),
@@ -184,7 +184,7 @@ export default function FilterEmployee(props: Props) {
     forLastNumbersOfDays: [
       {value: null, label: t('allTheTime')},
       ...periods.map(el=>{
-        return {value: el?.value, label: el?.name}
+        return {value: el?.value, label: t(el?.name)}
       })         
     ]
   }
@@ -261,12 +261,12 @@ export default function FilterEmployee(props: Props) {
               <TagsRadioList 
               className={styles.tags} 
               name={'searchIn'} 
-              options={TranslateSearchInType.map(el => ({value: el[0], label: el[1]}))}/>
+              options={TranslateSearchInType(t).map(el => ({value: el[0], label: el[1]}))}/>
               ||
             <RadioListField 
             itemClassName={styles.radioField}
             name={'searchIn'}
-            options={TranslateSearchInType.map(el => ({value: el[0], label: el[1]}))}            
+            options={TranslateSearchInType(t).map(el => ({value: el[0], label: el[1]}))}            
             />
           }
           </div>

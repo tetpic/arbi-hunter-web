@@ -23,7 +23,7 @@ import { useTariffContext } from 'context/tariff_state'
 import P from '@/components/ui/P'
 import useTranslation from 'next-translate/useTranslation'
 import { RemoveCvVcConfirmModalArgs } from '@/components/modals/RemoveCvVcConfirmModal'
-import { copyToClipboard } from 'utils/helpers'
+import { copyToClipboard, getCategoryName } from 'utils/helpers'
 
 interface Props {
   cv: ICV
@@ -148,7 +148,7 @@ export default function ProfileCvItem({cv, isLast, ...props}: Props) {
   return (<div className={classNames(styles.root, props.className)} onClick={()=>!props.type&&router.push(`/cv/${cv.id}`)}> 
     <div className={styles.top}>
       <UserPic className={styles.userPic} image={props.image} size={46}/>
-      <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{cv.categories[0]?.name||t('cv_item_setPosition')}</P>
+      <P styleType={['large', 'w600']} useThemeColor className={styles.position}>{getCategoryName(cv.categories[0], lang)||t('cv_item_setPosition')}</P>
       <P  className={styles.refreshed}>{t('item_refreshed')} {Formatter.formatDate(cv.updatedAt, {lang: lang as InterfaceLanguage, timeOptions: {year: 'numeric'}})}</P>
       <ThreeDotsButton className={styles.dots}  onMouseEnter={openModal} onClick={(e)=> {
         e.stopPropagation()

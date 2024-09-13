@@ -96,7 +96,7 @@ export default function LangaugesModal(props: Props) {
               key={index}
               className={styles.item} 
               value={el} 
-              label={TranslateLanguageKnowLevel(el)} 
+              label={TranslateLanguageKnowLevel(el, t)} 
               isActive={el === levelRadioActive} 
               onChange={(l)=> setLevelRadioActive(l as LanguageKnowLevel)}
               />

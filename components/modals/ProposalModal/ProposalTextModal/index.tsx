@@ -124,7 +124,7 @@ export default function ProposalTextModal(props: Props) {
         onClick={()=>{
           setPattern([...patternContext.patterns.values()].find(pt => pt.type === el))
           setTypeState(el)
-        }}>{TranslatePatternType(el)}</p>
+        }}>{TranslatePatternType(el, t)}</p>
       })}
       </div>
       <FormikProvider value={formik} >

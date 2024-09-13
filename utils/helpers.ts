@@ -7,6 +7,7 @@ import { TranslateCompensationType, TranslateCurrency } from './enumsTranslation
 import { CompensationType, Preset } from 'types/enums'
 import ImageHelper from './ImageHelper'
 import { Translate } from 'next-translate'
+import { ISpecializationCategory } from 'data/interfaces/Common'
 
 export const getUserImageSource = (userProfile: IUserProfile, preset?: Preset): string|null => {
   switch(userProfile?.profileType) {
@@ -30,6 +31,12 @@ export const getUserImageSource = (userProfile: IUserProfile, preset?: Preset): 
     default:
       return null
   }
+}
+
+export const getCategoryName = (category: ISpecializationCategory, lang: string) => {
+  if(!category) return null
+  const found = category.translations.find(t=>t.languageCode===lang)
+  return found?.name || category.name
 }
 
 export const shareData = async(data: ShareData) => { 

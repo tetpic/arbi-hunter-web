@@ -19,7 +19,7 @@ import { usePersonalContext } from 'context/personal_state'
 import BackTextButton from '@/components/ui/BackTextButton'
 import P from '@/components/ui/P'
 import ArrowRightSvg from '@/components/svg/ArrowRightSvg'
-import { getSalary } from 'utils/helpers'
+import { getCategoryName, getSalary } from 'utils/helpers'
 import FavoritesButton from '@/components/ui/FavoritesButton'
 import EmploymentBoard from '@/components/ui/EmploymentBoard'
 import HtmlText from '@/components/ui/HtmlText'
@@ -129,7 +129,6 @@ export default function VacancyPage(props: Props) {
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
     }
-    console.log(currentVacancy)
   }, [currentVacancy])
 
   useEffect(()=>{
@@ -201,7 +200,7 @@ export default function VacancyPage(props: Props) {
           </P>
         }
       </div>
-      <P styleType={['w500', 'medium', 'greyLight']}>{currentVacancy.categories[0].name}</P>
+      <P styleType={['w500', 'medium', 'greyLight']}>{getCategoryName(currentVacancy.categories[0], lang)}</P>
       {salary &&
         <P styleType={['w600', 'large']} useThemeColor>{salary} {t('vacancy_page_salaryCounter')}</P>
       }
@@ -371,7 +370,7 @@ export default function VacancyPage(props: Props) {
           <P styleType={['w600', 'large']} useThemeColor>{t('vacancy_page_languagesKnowledges')}</P>
           <TagList 
           tagClassName={styles.tag}
-          tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, true)}))} />
+          tags={currentVacancy.languageKnowledges.map(el=>({name: TranslateLanguage(el.language, t) + ', ' + TranslateLanguageKnowLevel(el.level, t, true)}))} />
         </div>
       }
 
