@@ -21,6 +21,25 @@ RUN echo "SENTRY_AUTH_TOKEN"
 RUN echo $SENTRY_AUTH_TOKEN
 # Building app
 RUN npm run build
+RUN rm -rf pages
+RUN rm -rf components
+RUN rm -rf config
+RUN rm -rf context
+RUN rm -rf data
+RUN rm -rf deploy
+RUN rm -rf docker
+RUN rm -rf enviroments
+RUN rm -rf hooks
+RUN rm -rf locales
+RUN rm -rf plop-templates
+RUN rm -rf styles
+RUN rm -rf types
+RUN rm -rf utils
+RUN rm -rf *.yml
+RUN rm -rf *.ts
+RUN rm -rf *.js
+RUN rm -rf *.sh
+RUN rm -rf *.md
 EXPOSE 8080/tcp
 
 # Running the app
