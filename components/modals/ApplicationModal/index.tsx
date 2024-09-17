@@ -85,6 +85,17 @@ export default function ApplicationModal(props: Props) {
       
     </div>
   )
+  const noActiveCv = (
+    <div className={styles.root} >
+      {!isTabletWidth &&
+        <Button className={styles.closeButton} onClick={props.onClose}><CrossSvg/></Button>
+      }
+      <P styleType={['medium', 'w500', 'textCenter']}>Откликнитесь другим резюме</P>
+      <Spacer basis={16}/>
+      <Button styleType={['gradient','phoneWide']} onClick={onCreateNewCV}>{t('create')}</Button>
+      
+    </div>
+  )
 
   const body = (
     <div className={styles.root} >
@@ -126,7 +137,7 @@ export default function ApplicationModal(props: Props) {
 
   return (<ModalLayout className={styles.modalLayout}>
     <ModalBody>
-     {modalArguments.cvs.length>0?body:noCv}
+     {modalArguments.cvs.length===0?noCv:filteredCvs.length === 0?noActiveCv:body}
 
     </ModalBody>
   </ModalLayout>)
