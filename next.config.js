@@ -9,12 +9,12 @@ const nextConfig = nextTranslate({
   },
   swcMinify: true,
   env: {
-    host: process.env.HOST,
+    HOST: process.env.HOST,
+    HOST_INNER: process.env.HOST_INNER,
     HOST_ROOT: process.env.HOST_ROOT,
     DEV: process.env.DEV,
     IMNEARID: process.env.IMNEARID,
     SUPERVIPVACANCIESIDS: process.env.SUPERVIPVACANCIESIDS,
-
   },
 
   publicRuntimeConfig: {
