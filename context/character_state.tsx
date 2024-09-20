@@ -78,9 +78,9 @@ export function CharacterWrapper(props: Props) {
       ]
     )
 
-    const sortedCategories = categoriesList.sort((a, b)=> a.sort-b.sort)
+    const sortedCategories = categoriesList && categoriesList?.sort((a, b)=> a.sort-b.sort)
 
-    if(categoriesList && categories.size === 0) {
+    if(categoriesList && categories.size === 0 && sortedCategories?.length) {
       setCategoriesState(state=> {
         sortedCategories.forEach(category=> {
           state.set(category, itemsList.filter(item => item.categoryId === category.id))
@@ -89,7 +89,7 @@ export function CharacterWrapper(props: Props) {
       })
     }
 
-    if(itemsList) {
+    if(itemsList && sortedCategories?.length > 0) {
       setActiveSetState([
         sortedCategories[0], 
         itemsList.filter(c => c.categoryId === sortedCategories[0].id)
