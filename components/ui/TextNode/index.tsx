@@ -6,8 +6,8 @@ interface Props {
 
 export function getTextFromHTML(html: string) {
   const textNode = document.createElement('div')
-  textNode.insertAdjacentHTML('afterbegin', html.toString())
-  return textNode.innerText.toString()
+  textNode.insertAdjacentHTML('afterbegin', html?.toString() || '')
+  return textNode?.innerText?.toString() || ''
 }
 
 export default function TextNode(props: Props) {
