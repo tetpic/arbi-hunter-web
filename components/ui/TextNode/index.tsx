@@ -6,16 +6,19 @@ interface Props {
 
 export function getTextFromHTML(html: string) {
   const textNode = document.createElement('div')
-  textNode.insertAdjacentHTML('afterbegin', html?.toString() || '')
+  textNode.insertAdjacentHTML('afterbegin', (html || '').toString() || '')
   return textNode?.innerText?.toString() || ''
 }
 
 export default function TextNode(props: Props) {
-  const [text, setText] = useState<string>()
+  const [text, setText] = useState<string>(undefined)
 
   useEffect(()=>{
-    const result = getTextFromHTML(props.html.toString())
-    setText(result)
+    if(props.html) {
+
+      const result = getTextFromHTML((props.html || '').toString())
+      setText(result)
+    }
   }, [props.html])
 
   return (<>{text}</>)

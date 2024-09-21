@@ -136,7 +136,7 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
   return (
     <div className={styles.itemWrapper}>
     <div className={styles.top} onClick={()=>(application?.cvId||cv?.id)&&router.push(application?.cvId?'/cv/'+application?.cvId: '/cv/'+cv?.id)}>
-      <UserPic size={46} image={getUserImageSource(application.profile.profileType === ProfileType.Employee?application.profile:cv.profile)} className={styles.userPic}/>
+      <UserPic size={46} image={getUserImageSource(application?.profile?.profileType === ProfileType.Employee?application?.profile:cv?.profile)} className={styles.userPic}/>
       <P styleType={['large', 'w600']} useThemeColor  className={styles.position}>
         {currentCV?.position||currentCV?.categories[0].name||currentCV.categories[0].translations[0].name||t('cv_item_setPosition')}
       </P>
