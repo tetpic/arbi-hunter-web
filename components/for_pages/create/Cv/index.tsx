@@ -88,7 +88,6 @@ export default function Cv(props: Props) {
   }
 
   const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
-    console.log(userContext)
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar(t('create_setSpecialization'), SnackbarType.error)

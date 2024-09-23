@@ -76,7 +76,8 @@ export default function AudioNode(props: Props) {
       const arrBuffer = await b.arrayBuffer()
       const ctx = new AudioContext()
       ctx.decodeAudioData(arrBuffer, () => {
-      }, () => console.log('err')).then(buff => {
+      // eslint-disable-next-line no-console
+      }, () => console.warn('err')).then(buff => {
         setBlob(b)
         setDuration(buff.duration)
       })
