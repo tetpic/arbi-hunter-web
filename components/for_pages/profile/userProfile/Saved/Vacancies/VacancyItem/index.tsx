@@ -105,17 +105,19 @@ export default function VacancyItem({vc, item, refreshCallback, onRemove, status
   }
 
   useEffect(()=>{
-    ChatRepository.getChatByContactId(item.profile.id, item?.applicationId&&{applicationId: item?.applicationId}||{proposalId: item?.id})
-    .then(res => {
-      setChatId(res?.id)
-    })
-    .catch(() => {})
+    if(item.profile) {
+      ChatRepository.getChatByContactId(item.profile?.id, item?.applicationId&&{applicationId: item?.applicationId}||{proposalId: item?.id})
+      .then(res => {
+        setChatId(res?.id)
+      })
+      .catch(() => {})
+    }
   }, [])
 
   return (<div className={styles.root} onClick={()=>router.push(`/vacancy/${vc.id}`)}> 
     <div className={styles.top}>
-      <UserPic className={styles.userPic} size={44} image={getUserImageSource(item.profile.profileType === ProfileType.Hirer?item.profile:vc?.profile, Preset.smallIconCrop)}/>
-      <P styleType={['w600','large']} useThemeColor className={styles.company}>{item.profile.profileType === ProfileType.Hirer?item.profile.company: vc?.company||vc?.contactName}</P>
+      <UserPic className={styles.userPic} size={44} image={getUserImageSource(item.profile?.profileType === ProfileType.Hirer?item.profile:vc?.profile, Preset.smallIconCrop)}/>
+      <P styleType={['w600','large']} useThemeColor className={styles.company}>{item.profile?.profileType === ProfileType.Hirer?item.profile.company: vc?.company||vc?.contactName}</P>
       {(vc?.isRemote || vc?.city) &&
         <P className={styles.city}>{vc.isRemote?t('employmentBoard_remote'): vc.city&&`${t('ruCity')} ${vc.city?.locName}`}</P>
       }

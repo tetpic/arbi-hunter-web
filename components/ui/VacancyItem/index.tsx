@@ -202,7 +202,7 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
           <Image 
           unoptimized
           className={styles.image} 
-          src={ImageHelper.urlFromFile(vacancy?.profile?.logo, Preset.xsResize)} 
+          src={ImageHelper.urlFromFile(vacancy?.profile?.logo, Preset.xsCrop)} 
           alt={'def image'} 
           width={150} 
           height={150}/>          
