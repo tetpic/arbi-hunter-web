@@ -72,7 +72,7 @@
 }
 
 .active {
-  background-color: var(--greyToPurpleGrey);
+  background-color: var(--greyAltToPuspleSmell);
 }
 
 .container {
@@ -110,4 +110,8 @@
   path {
     stroke: $greyLight;
   }
+}
+
+.noName {
+  opacity: 0.6;
 }

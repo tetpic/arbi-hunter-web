@@ -251,7 +251,9 @@ export default function Messages(props: Props) {
           onClick={()=> router.push('/personal/' + collocutor?.id)}
           image={getUserImageSource(collocutor, Preset.smallIconCrop)}
           />
-          <P styleType={['large', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
+          <P styleType={['large', 'w500']} useThemeColor className={classNames(styles.name, !collocutor && styles.noName)}>
+            {collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company ? collocutor?.company : 'Профиль удалён'}
+          </P>
           {collocutor?.activityStatus===ActivityStatus.Online&&
           <p className={styles.time}>{<span className={styles.online}>{t('chat_online')}</span>}</p>
           }

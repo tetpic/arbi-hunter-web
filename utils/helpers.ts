@@ -99,7 +99,12 @@ export const getSalary = (data: {cv?: ICV, vacancy?: IVacancy}, t?: Translate):s
 }
 
 export const getUserName = (profile: IUserProfile):string => {
-  return [profile?.firstName, profile?.patronymic, profile?.lastName].filter(Boolean).join(' ')
+  if(!profile) {
+    return 'Профиль удален'
+  }
+  else {
+    return [profile?.firstName, profile?.patronymic, profile?.lastName].filter(Boolean).join(' ')
+  }
 }
 
 export function copyToClipboard(text: string):boolean {

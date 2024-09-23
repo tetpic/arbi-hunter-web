@@ -25,6 +25,10 @@
   position: relative;
 }
 
+.noName {
+  opacity: .6;
+}
+
 .choosenLine {
   .choosenCheck {
     background-color: $blue;

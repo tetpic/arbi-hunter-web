@@ -119,7 +119,9 @@ export default function ChatItem(props: Props) {
         image={getUserImageSource(collocutor, Preset.smallIconCrop)}
         />
        
-        <P styleType={['medium', 'w500']} useThemeColor className={styles.name}>{collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company}</P>
+        <P styleType={['medium', 'w500']} useThemeColor className={classNames(styles.name, !collocutor && styles.noName)}>
+          {collocutor?.profileType === ProfileType.Employee?getUserName(collocutor):collocutor?.company ? collocutor?.company : 'Профиль удалён'}
+        </P>
         <P className={styles.time} styleType={['small', 'greyLight', 'alignCenter']}>
           {Formatter.formatDateRelative(chat.lastMessageAt)}  
           {props.chat.profiles?.[0]?.pinned &&

@@ -14,6 +14,8 @@ import { Translate } from 'next-translate'
 import useTranslation from 'next-translate/useTranslation'
 import ItemNavigation from '@/components/ui/ItemNavigation'
 import Spacer from '@/components/ui/Spacer'
+import Spinner from '@/components/ui/Spinner'
+import P from '@/components/ui/P'
 
 interface Props {
   id?: number
@@ -64,7 +66,6 @@ export default function VCFeedbacks(props: Props) {
       return {name: TranslateVCNavigation(el, t), type: el, count: (el !== VCNaviagation.All ? count?.count||'0' : responsesContext?.VCFeedbacks?.size).toString()}
     })
     setNavSet(res)
-    setLoading(false)
   }
 
   useEffect(()=>{
@@ -100,10 +101,6 @@ export default function VCFeedbacks(props: Props) {
     sortItems()
   }, [currentPage, responsesContext.VCFeedbacks])
 
-  useEffect(()=>{
-    // vacancyContext.setVacancies()
-  }, [])
-
   const onNavigationClick = (t: VCNaviagation) => {
     setCurrentPage(t)
     if(isTabletWidth) {
@@ -138,10 +135,14 @@ export default function VCFeedbacks(props: Props) {
     {((!showNav && isTabletWidth) || !isTabletWidth ) &&
       <>
       {
-        responsesContext.filteredVcResponses.length>0&&
+        responsesContext.filteredVcResponses.length>0 && !loading && responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).length > 0 &&
         responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).map(el=> {
           return <CvCard onChangeItem={changeItem} cv={el.cv} key={el.id} application={el} vcId={props.id} chat={el.chat[0]} />
         })
+        ||
+        loading && <Spinner straight size={24}/>
+        ||
+        !loading && responsesContext.filteredVcResponses.filter(e => !e.cvDeletedOrHidden).length === 0 && <P useThemeColor styleType={['medium', 'w500', 'greyLight']}>Нет актуальных откликов</P>
       }
       </>
     }
