@@ -6,7 +6,7 @@ import { CookiesType, SnackbarType } from 'types/enums'
 import {CookiesLifeTime} from 'types/constants'
 import { Subject } from 'rxjs'
 import UserRepository from 'data/repositories/UserRepository'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useAppContext } from './state'
 import { clearObject } from 'utils/helpers'
 
@@ -23,7 +23,7 @@ interface IState {
   setProfileType: (t: ProfileType) => void,
   editCurrentProfile: (d: Partial<IUserProfile>)=> Promise<IUserProfile|false>
   removeCurrentProfile: () => void
-  updateUser: (user?: IUser) => Promise<IUser> 
+  updateUser: (user?: IUser, disableNotify?: boolean) => Promise<IUser> 
   refreshUser: () => void
 }
 
@@ -63,7 +63,7 @@ export function UserWrapper(props: Props) {
     setProfileTypeState(type)
   }
 
-  const updateUser = async (newUser?: IUser): Promise<IUser> => {
+  const updateUser = async (newUser?: IUser, disableNotify?: boolean): Promise<IUser> => {
     if (newUser) {
       UserRepository.editCurrentUser(newUser)
       .then(usr=> {
@@ -77,7 +77,7 @@ export function UserWrapper(props: Props) {
         setUser(data)
         
         setCurrentProfileState(data.profiles[0])
-        if(data.profiles.length === 0 && data.isRegistrationCompleted) {
+        if(data.profiles.length === 0 && data.isRegistrationCompleted && !disableNotify && router.pathname !== '/registration') {
           appContext.showSnackbar('Аккаунт не существует', SnackbarType.error)
           router.push('/registration')
         }
@@ -109,6 +109,7 @@ export function UserWrapper(props: Props) {
   }
 
   const editCurrentProfile = async(data: Partial<IUserProfile>): Promise<IUserProfile|false> => {
+    debugger
     if(data.phone) {
       const dataToSend = {
         phone: data.phone, 
@@ -121,10 +122,18 @@ export function UserWrapper(props: Props) {
     return UserRepository.editProfileByType(data, currentProfile?.profileType)
     .then(p=> {
       debugger
-      setCurrentProfileState(p)
-      return p
+      if(p) {
+        setCurrentProfileState(p)
+        return p
+      }
+      else {
+        return false
+      }
     })
-    .catch(_=> {
+    .catch(err=> {
+      // eslint-disable-next-line no-console
+      console.warn(err)
+      debugger
       return false
     })
   }

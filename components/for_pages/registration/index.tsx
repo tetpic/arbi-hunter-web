@@ -88,7 +88,7 @@ export default function Registration(props: Props) {
       .then(res=> {
         sendToMetrika(AppMetricaEvent.FinishRegistration)
         setTimeout(() => {
-          userContext.updateUser()
+          userContext.updateUser(null, true)
         }, 300)
       })
       .catch(err=> {

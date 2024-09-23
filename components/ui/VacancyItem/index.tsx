@@ -172,13 +172,13 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
         <P styleType={['medium', 'w500']} className={styles.redBadge}> Вам отказали</P>
       }
       <div className={styles.buttonsWrapper}>
-        {lastProposal&&lastProposal?.type !== ProposalRequestType.Rejection &&
+        {lastProposal && lastProposal?.type !== ProposalRequestType.Rejection && !lastProposal.cvDeletedOrHidden &&
           <Button 
           styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={openChat}
           >Перейти в чат</Button>
         }
-        {!lastProposal &&
+        {(!lastProposal || lastProposal.cvDeletedOrHidden) &&
           <Button 
           styleType={isSuperVip ? ['goldGradient', 'phoneWide'] : ['gradient', 'phoneWide']}
           onClick={respondHandler}

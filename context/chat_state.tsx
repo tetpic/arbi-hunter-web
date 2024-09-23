@@ -7,6 +7,8 @@ import useWindowFocus from 'use-window-focus'
 import { useUserContext } from './user_state'
 import { useRouter } from 'next/router'
 import { useAppContext } from './state'
+import { SnackbarType } from 'types/enums'
+import { IPagination } from 'types/types'
 
 
 interface IState {
@@ -57,6 +59,7 @@ interface Props {
 
 export function ChatWrapper(props: Props) {
   const userContext = useUserContext()
+  const appContext = useAppContext()
   const {isTabletWidth} = useAppContext().size
   const isLogged = userContext.isLogged
   const router = useRouter()
@@ -105,26 +108,35 @@ export function ChatWrapper(props: Props) {
     }
     abortControllerRef.current = new AbortController()
     try {
-      console.time('loadChatsInContext')
-      const data = await ChatRepository.getChatList(filters, {signal: abortControllerRef.current?.signal!})
-      console.timeEnd('loadChatsInContext')
-      abortControllerRef.current = null
-      setChats(state=> {
-        state.clear()
-        data.data.forEach(el=> {
-          state.set(el.id, el)
-        })
-        return new Map(state)
+      const data: IPagination<IChat> | null = await ChatRepository.getChatList(filters, {signal: abortControllerRef.current?.signal!})
+      .catch(err => {
+        if(err.message !== 'canceled') {
+          appContext.showSnackbar('Request error. Can not load chat list', SnackbarType.error)
+          return null
+        }
       })
-      chatsRef.current.size === 0&&(chatsRef.current = new Map(data.data.map(el=> [el.id, el])))
-      setTotalChats(data.total)
+      abortControllerRef.current = null
+      if(data) {
+        setChats(state=> {
+          state.clear()
+          data.data.forEach(el=> {
+            state.set(el.id, el)
+          })
+          return new Map(state)
+        })
+        chatsRef.current.size === 0&&(chatsRef.current = new Map(data.data.map(el=> [el.id, el])))
+        setTotalChats(data.total)
+      }
     } catch (e) {
       return
     }
   }
 
   const setFoldersFromInit = async():Promise<boolean> => {
-    const folders = await ChatRepository.getChatFolders()
+    const folders: IPagination<IChatFolder> | null = await ChatRepository.getChatFolders().catch(err => {
+      appContext.showSnackbar('Request error. Can not load chat folders', SnackbarType.error)
+      return null
+    })
     setFolders(_=> new Map(folders.data.map(el=> [el.id, el])))
     return true
   }
@@ -143,7 +155,6 @@ export function ChatWrapper(props: Props) {
   const setFilter = (data?: IChatsFilter) => {
     
     if(!data) {
-      console.log('set chats in setFilter')
       setChats(chatsRef.current)
       setFilterState(null)
       return
@@ -160,8 +171,6 @@ export function ChatWrapper(props: Props) {
 
   const decreaseUnreadCount = (chatId: number)=> {
     if(chats.size === 0) return
-    console.log('set chats in decreaseUnreadCount')
-
     setChats(state=> {
       const chatNeeded = state.get(chatId)
       if(!chatNeeded) return state
@@ -175,7 +184,10 @@ export function ChatWrapper(props: Props) {
   }
 
   const removeChatFolder = async (id: number): Promise<boolean> => {
-    await ChatRepository.deleteChatFolder(id)
+    await ChatRepository.deleteChatFolder(id).catch(err => {
+      appContext.showSnackbar('Request error. Can not delete chat folder', SnackbarType.error)
+      return null
+    })
     setFolders(state => {
       state.delete(id)
       return new Map(state)
@@ -186,8 +198,6 @@ export function ChatWrapper(props: Props) {
   const setSearch = (search?: string) => {
     ChatRepository.getChatList({search})
     .then(res=> {
-      console.log('set chats in setSearch')
-
       setTotalChats(res.total)
       setChats(state => {
         state.clear()
@@ -202,22 +212,26 @@ export function ChatWrapper(props: Props) {
   const setChatsFromFolder = async (chatName: string) => {
     const folderToSet = [...folders.values()].find(el => el.name === chatName)||null
     if(folderToSet) {
-      const chats = await ChatRepository.getChatList({chatFolderId: folderToSet.id})
-      console.log('set chats in setChatsFromFolder')
-
-      setChats(new Map(chats.data.map(el=> [el.id, el])))
-      router.replace({query: { ...router.query, chat: chats.data[0]?.id}}, undefined, {shallow: true})
-      setCurrentChatId(chats.data[0]?.id)
+      const chats: IPagination<IChat> | null = await ChatRepository.getChatList({chatFolderId: folderToSet.id}).catch(err => {
+        appContext.showSnackbar('Can not load chat list', SnackbarType.error)
+        return null
+      })
+      if(chats) {
+        setChats(new Map(chats.data.map(el=> [el.id, el])))
+        router.replace({query: { ...router.query, chat: chats.data[0]?.id}}, undefined, {shallow: true})
+        setCurrentChatId(chats.data[0]?.id)
+      }
     }
     else {
-      console.log('set chats in setChatsFromFolder')
-
       setChats(chatsRef.current)
     }
   }
 
   const editChatFolder = async (data: {chatFolderId: number, chatsIds: number[] }, name: string): Promise<boolean> => {
-    await ChatRepository.moveChatToFolder(data)
+    await ChatRepository.moveChatToFolder(data).catch(err => {
+      appContext.showSnackbar('Request error. Can not move chat', SnackbarType.error)
+      return null
+    })
     const folder = await ChatRepository.editChatFolderState({id: data.chatFolderId, name})
     setFolders(state=> {
       state.set(folder.id, folder)
@@ -230,6 +244,8 @@ export function ChatWrapper(props: Props) {
     try{
       const res = await ChatRepository.createChatFolder({ name })
       await ChatRepository.moveChatToFolder( {chatFolderId: res.id, chatsIds: chats.map(c => c.id)})
+      // eslint-disable-next-line no-console
+      .catch(err=> console.warn(err))
       const folders = await ChatRepository.getChatFolders()
       setFolders(state=> {
         return new Map(folders.data.map(el=> [el.id, el]))
@@ -254,8 +270,6 @@ export function ChatWrapper(props: Props) {
   const debouncedReconnect = debounce(async () => {
     const data = await ChatRepository.getChatList({})
     if(data.data) {
-      console.log('set chats in debouncedReconnect')
-
       setChats(new Map(data.data.map(el=> [el.id, el])) ?? new Map)
       setTotalChats(data.total)
     }
@@ -275,8 +289,6 @@ export function ChatWrapper(props: Props) {
     }
     const subscription = chatSocket.messageState$.subscribe((message) => {
       if (chats.has(message.chatId)) {
-        console.log('set chats in subscription')
-
         setChats(state => {
           const newState = [...state.values()].map(i => i.id === message.chatId ? {
             ...i,

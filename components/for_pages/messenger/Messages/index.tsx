@@ -7,7 +7,7 @@ import { ProfileType } from 'data/interfaces/IRegistration'
 import MessageFactory from './MessageFactory'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { useChatDialogContext } from 'context/chat_dialog_state'
-import { ActivityStatus, AppTheme, MessageType, ModalType, Preset } from 'types/enums'
+import { ActivityStatus, ApplicationStatus, AppTheme, MessageType, ModalType, Preset } from 'types/enums'
 import Spinner from 'components/ui/Spinner'
 import { colors } from 'styles/variables'
 import Button from 'components/ui/Button'
@@ -213,6 +213,8 @@ export default function Messages(props: Props) {
   //TODO:  убрать получение cv после оптимизации запросов к чатам и сообщениям
     useEffect(()=>{
       if(dialog.chat) {
+        console.log(dialog.chat)
+        
         setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
         if(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id) {
           CvRepository.getById(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id)
@@ -287,6 +289,10 @@ export default function Messages(props: Props) {
           <p className={styles.invite__title}>{t('chat_chatByVacancy')}</p>
           <P styleType={['small', 'w500']} useThemeColor className={styles.invite__vacancy}>{dialog.chat?.proposal?.vacancy?.name||dialog.chat?.application?.vacancy?.name}</P>
         </Link>
+        ||
+        <div className={styles.invite}>
+          <P styleType={['small', 'greyLight']}>Вакансия скрыта или удалена</P>
+        </div>
       }
       {dialog.pinned.size>0 &&
         <div className={styles.pinnedMessages}>
@@ -376,9 +382,14 @@ export default function Messages(props: Props) {
       <Link href={`/cv/${cv.id}`} className={styles.bottom}>
         <p className={styles.bottom__desc}>{cv?.categories[0]?.name}</p>
       </Link>
+      ||
+     <div className={styles.bottom}>
+      <P styleType={['small', 'greyLight']}>Резюме скрыто или удалено</P>
+     </div>
+      
       }
       <div className={classNames(styles.newMessage, userContext.currentProfile?.profileType === ProfileType.Employee
-            && dialog.chat?.employeeCanWrite === false && styles.newMessage_disabled)} onPaste={onPasteHandler}>
+            && (dialog.chat?.employeeCanWrite === false || dialog.chat.application.status === ApplicationStatus.Rejected) && styles.newMessage_disabled)} onPaste={onPasteHandler}>
         {replyTo &&
           <div className={styles.replyMessage}>
             <div className={styles.replyMessageContent}>

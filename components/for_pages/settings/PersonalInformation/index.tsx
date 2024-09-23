@@ -22,12 +22,17 @@ export default function PersonalInformation(props: Props) {
   const personalContext = useUserContext()
 
   const submitData = (data: Partial<IUserProfile>) =>{
+    debugger
     
     userContext.editCurrentProfile(data)
     .then(res=> {
       if(res) {
+        debugger
         appContext.showSnackbar(t('data_saved'), SnackbarType.success)
       }
+    })
+    .catch(err => {
+      appContext.showSnackbar(err.message, SnackbarType.error)
     })
   }
 
@@ -97,7 +102,7 @@ export default function PersonalInformation(props: Props) {
           label={`${t('phone')}:`}
           />
         </div>
-        <Button className={styles.button}>{t('save')}</Button>
+        <Button className={styles.button} onClick={() => dataFormik.handleSubmit()} type='button'>{t('save')}</Button>
       </Form>
     </FormikProvider>
   )

@@ -243,7 +243,6 @@ export default class ChatRepository {
       url: `/api/chat/messages/search?search=${search}`,
     })
     if(res.err) {
-      
       return null
     }
     return res
@@ -258,8 +257,7 @@ export default class ChatRepository {
         limit
       },
     })
-    if(res.err) {
-      
+    if(res?.err) {
       return null
     }
     return res

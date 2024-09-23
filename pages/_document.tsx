@@ -25,7 +25,7 @@ class MyDocument extends Document {
   render() {
     //@ts-ignore
     //@ts-nocheck
-    const theme: AppTheme = this.props.__NEXT_DATA__.props.pageProps.theme
+    const theme: AppTheme = this.props.__NEXT_DATA__?.props?.pageProps?.theme
     return (
       <Html style={{width: '100vw', backgroundColor: theme === AppTheme.Light?'#F5F2F7':'#16161B'}}>
         <Head >

@@ -12,6 +12,7 @@ import { RestoreFields } from '..'
 
 interface Props {
   onComplete?: () => void
+  disableNotifyIfNotExist?: boolean
 }
 
 export default function PhoneOrEmail(props: Props) {
@@ -30,7 +31,7 @@ export default function PhoneOrEmail(props: Props) {
         return true
       }
     })
-    if(!isRegistered) {
+    if(!isRegistered && !props.disableNotifyIfNotExist) {
       appContext.showSnackbar(t('login_accountNotExist'), SnackbarType.error)
       return 
     }

@@ -88,6 +88,7 @@ export default function Cv(props: Props) {
   }
 
   const saveCV = (data: ICVCreate, noReplace?: boolean,) => {
+    console.log(userContext)
     if(creationContext.activeSubCategory.length === 0) {
       setProgress(1)
       appContext.showSnackbar(t('create_setSpecialization'), SnackbarType.error)
@@ -96,11 +97,13 @@ export default function Cv(props: Props) {
     }
 
     const sendData = getSendData(data)
+
+    if((!userContext.currentProfile.birthday && sendData.birthday) || (new Date(sendData.birthday) !== new Date(userContext.currentProfile.birthday))) {
+      debugger
+      userContext.editCurrentProfile({birthday: sendData.birthday})
+    }
    
     if(props.id) {
-      if(!userContext.currentProfile.birthday && sendData.birthday) {
-        userContext.editCurrentProfile({birthday: sendData.birthday})
-      }
       CvRepository.updateCV(props.id, sendData)
       .then(_=>{
         appContext.showSnackbar(t('create_cv_refreshSuccess'), SnackbarType.success)

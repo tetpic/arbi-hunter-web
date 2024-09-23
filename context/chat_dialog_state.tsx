@@ -122,11 +122,13 @@ export function ChatDialogWrapper(props: Props) {
   const loadMessages = async (lastCreatedAt?: string) => {
     setLoading(true)
     if(props.chatId) {
+      debugger
       const [data, pinned] = await  Promise.all([
         ChatRepository.getMessagesByChatId(props.chatId, lastCreatedAt, limit )
         .catch(err=> {
           // eslint-disable-next-line no-console
           console.warn(err)
+          chatContext.setCurrentChatId(null)
           return null
         }),
         ChatRepository.getPinnedChatMessages(props.chatId)
@@ -136,8 +138,13 @@ export function ChatDialogWrapper(props: Props) {
           console.warn(err)
           return null
         })
-      ]) 
+      ]).catch(err => {
+        // eslint-disable-next-line no-console
+        console.warn(err)
+        return null
+      })
       
+      if (pinned) {
         setPinnedState(state => {
           state.clear()
           if(pinned&&pinned.length > 0) {
@@ -147,8 +154,11 @@ export function ChatDialogWrapper(props: Props) {
           }
           return new Map(state)
         })   
+      }
     
-      processLoadedMessages(data.data, data.total)
+      if(data) {
+        processLoadedMessages(data.data, data.total)
+      }
     }
     setLoading(false)
   }
@@ -183,14 +193,20 @@ export function ChatDialogWrapper(props: Props) {
 
     if(chatIdRef.current){
       const data = await ChatRepository.getMessagesByChatId(props.chatId!, null, limit)
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.warn(err)
+      })
 
       if (!reconnectRef.current) {
         return
       }
-      const lastIds = data.data.map(i => i.id)
-      const currentIds = messagesRef.current.map(i => i.id)
-      const existsIds = currentIds.filter(i => lastIds.includes(i))
-      const newIds = lastIds.filter(i => !existsIds.includes(i))
+      if(data) {
+        const lastIds = data.data.map(i => i.id)
+        const currentIds = messagesRef.current.map(i => i.id)
+        const existsIds = currentIds.filter(i => lastIds.includes(i))
+        const newIds = lastIds.filter(i => !existsIds.includes(i))
+      }
       
       // if (newIds.length > 0) {
       //   setMessages(state => (new Map([[i.id, i], ...state.entries()])))

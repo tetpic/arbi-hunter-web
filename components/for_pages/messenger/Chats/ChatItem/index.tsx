@@ -90,6 +90,9 @@ export default function ChatItem(props: Props) {
         ChatRepository.removeOneChat(chat.id)
         .then(res => {
           chatContext.removeChat(chat.id)
+          if(chat.id === chatContext.currentChatId) {
+            chatContext.setCurrentChatId(null)
+          }
           isTabletWidth?appContext.hideBottomSheet():appContext.hideModal()
         })
       }

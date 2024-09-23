@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 
 import { IMessage } from 'data/interfaces/IChat'
-import { ApplicationStatus, AppTheme, MessageType, ModalType, SnackbarType } from 'types/enums'
+import { ApplicationStatus, AppTheme, MessageType, ModalType, ProposalRequestType, SnackbarType } from 'types/enums'
 import Formatter from 'utils/formatter'
 import classNames from 'classnames'
 import MessageReadSvg from 'components/svg/MessageReadSvg'
@@ -49,6 +49,7 @@ interface Props {
 
 export default function MessageFactory(props: Props) {
   console.log(props.message)
+  
   const {t} = useTranslation()
   const appContext = useAppContext()
   const theme = appContext.theme
@@ -63,8 +64,6 @@ export default function MessageFactory(props: Props) {
   const chats = chatContext.chats
   const msg = props.message.forwarded?props.message.forwarded:props.message
   const timeout = useRef<ReturnType<typeof setTimeout>>()
-
-  
   
   const collocutor = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?'me':'other'
   const side:string = userContext?.currentProfile?.userId===props.message.profile?.userId||userContext?.currentProfile?.id===props.message?.profileId?styles.rightMessage:styles.leftMessage
@@ -247,10 +246,10 @@ export default function MessageFactory(props: Props) {
     onTouchEnd={() => clearTimeout(timeout.current)}
     onTouchMove={() => clearTimeout(timeout.current)}
     >
-    { optionsDropDown}
+      {optionsDropDown}
       {replyedMessage}
-        <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
-        {stats}
+      <ApplicationEmployeeNode application={props.application} message={msg as IMessage} profileType={profileType}/>
+      {stats}
     </div>
     {
     props.message.application?.status !== ApplicationStatus.Rejected 
@@ -278,7 +277,7 @@ export default function MessageFactory(props: Props) {
     >
       {optionsDropDown}
       {replyedMessage}
-      <p className={styles.message}>{t('chat_cvApplication')}</p>
+      <p className={styles.message}>{msg.proposal?.type === ProposalRequestType.Rejection ? t('proposalModal_reject') : t('chat_cvApplication')}</p>
       <Spacer basis={8} />
       {msg.proposal?.coverLetter &&
       <p dangerouslySetInnerHTML={{__html: msg.proposal?.coverLetter}} ></p>

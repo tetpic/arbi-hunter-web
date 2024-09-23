@@ -23,7 +23,11 @@ export const getServerSideProps = (async (context: {query: Query, req: { cookies
   const profileType = context.req.cookies[CookiesType.profileType]
 
   if(token) {
-    const chats = await ChatRepository.getChatList({limit: 20}, null, token, profileType)
+    const chats = await ChatRepository.getChatList({limit: 20}, null, token, profileType).catch(err => {
+      // eslint-disable-next-line no-console
+      console.warn(err)
+      return null
+    })
     return {props: {chat: context?.query?.chat||null, chats: chats.data} as Props} 
   }
   else {
