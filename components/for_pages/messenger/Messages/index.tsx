@@ -387,7 +387,7 @@ export default function Messages(props: Props) {
       
       }
       <div className={classNames(styles.newMessage, userContext.currentProfile?.profileType === ProfileType.Employee
-            && (dialog.chat?.employeeCanWrite === false || dialog.chat.application.status === ApplicationStatus.Rejected) && styles.newMessage_disabled)} onPaste={onPasteHandler}>
+            && (dialog.chat?.employeeCanWrite === false || dialog.chat?.application?.status === ApplicationStatus.Rejected) && styles.newMessage_disabled)} onPaste={onPasteHandler}>
         {replyTo &&
           <div className={styles.replyMessage}>
             <div className={styles.replyMessageContent}>
