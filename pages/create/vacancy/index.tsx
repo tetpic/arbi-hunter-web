@@ -26,6 +26,7 @@ export const getServerSideProps = (async (context: { query: Query; req: { cookie
   if(profileType && token && id) {
     try {
       const vacancy = await VacancyRepository.getVacancyById(Number(id), profileType, token).then(res=> res)
+      // eslint-disable-next-line no-console
       .catch(err => console.warn(err))
       if(vacancy) {
         return {props: {vacancy, id, progress}}
