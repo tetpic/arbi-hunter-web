@@ -129,7 +129,6 @@ export default function VacancyPage(props: Props) {
     if(currentVacancy?.id === props.id && !personalContext.personalPage) {
       personalContext.setPersonalPage({profile: currentVacancy.profile})
     }
-    console.log(currentVacancy)
   }, [currentVacancy])
 
   useEffect(()=>{

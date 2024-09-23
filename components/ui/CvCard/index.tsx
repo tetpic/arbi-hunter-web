@@ -63,14 +63,11 @@ export default function CvCard({cv, chat, vcId, application, ...props}: ItemProp
     else {
       ChatRepository.getChatByContactId(cv.profileId, {proposalId: application?.id})
       .then(res => {
-        console.log('res', res)
         router.push('/messenger?chat=' + res.id)
-
       })
       .catch(er => {
+        // eslint-disable-next-line no-console
         console.warn(er)
-        
-        
       })
     }
   }

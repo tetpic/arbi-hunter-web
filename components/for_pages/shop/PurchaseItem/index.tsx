@@ -145,7 +145,6 @@ export default function PurchaseItem({tariff, cvs, vacancies, ...props}: Props) 
     }
   }, [router])
 
-  console.log(props.purchase)
 
 
   return (

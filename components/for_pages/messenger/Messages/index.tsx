@@ -212,9 +212,7 @@ export default function Messages(props: Props) {
 
   //TODO:  убрать получение cv после оптимизации запросов к чатам и сообщениям
     useEffect(()=>{
-      if(dialog.chat) {
-        console.log(dialog.chat)
-        
+      if(dialog.chat) {        
         setCollocutor(dialog.chat?.profiles[0]?.role === 'admin'?dialog.chat?.participant:dialog?.chat?.profile)
         if(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id) {
           CvRepository.getById(dialog?.chat?.application?.cv?.id||dialog?.chat?.proposal?.cv?.id)

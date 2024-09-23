@@ -46,7 +46,6 @@ export default function VacancyItem({vacancy, onChangeItem, smallCard}: Props) {
   const isLightTheme = appContext.theme === AppTheme.Light
   // @ts-ignore
   const isSuperVip = vacancy.isTop
-  console.log(isSuperVip)
 
 
 
